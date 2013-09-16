@@ -49,7 +49,7 @@ namespace Bullseye.Routines
                                         new Decorator(ret => Me.HealthPercent < 100, BeastmasteryDefensive()),
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckInterrupts && U.CanInterrupt, BeastmasteryInterrupts()),
                                         BeastmasteryUtility(),
-                                        new Decorator(ret => BsHotKeyManager.IsCooldown, 
+                                        new Decorator(ret => BsHotKeyManager.IsCooldown,
                                         new PrioritySelector(
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive())),
@@ -63,7 +63,20 @@ namespace Bullseye.Routines
         internal static Composite BeastmasterySt()
         {
             return new PrioritySelector(
-                 );
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
+                Spell.Cast("Focus Fire", ret => FocusFireFiveStacks),
+                Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
+                Spell.Cast("Fervor", ret => FervorReqs),
+                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
+                Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.Cast("Kill Command"),
+                Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
+                Spell.Cast("Powershot", ret => TalentPowershot),
+                Spell.Cast("Barrage", ret => TalentBarrage),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus61 || BestialWrathUp || (Me.Level < 50 && Lua.PlayerPower > 29)),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus60, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
 
@@ -75,7 +88,7 @@ namespace Bullseye.Routines
 
         internal static Composite BeastmasteryDefensive()
         {
-            return new PrioritySelector(     
+            return new PrioritySelector(
                 I.BeastmasteryUseHealthStone()
                 );
         }
@@ -105,12 +118,12 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryUtility()
         {
             return new PrioritySelector(
-                 
+
                 );
         }
 
 
-  
+
 
         internal static Composite BeastmasteryInterrupts()
         {
@@ -121,8 +134,30 @@ namespace Bullseye.Routines
 
         #region Booleans
 
-  
+        internal static bool FervorReqs { get { return BsTalentManager.HasTalent(10) && Lua.PlayerPower <= 50; } }
+        internal static bool LockAndLoadProc { get { return Me.HasAura("Lock and Load"); } }
+        internal static bool TalentGlaiveToss { get { return BsTalentManager.HasTalent(16); } }
+        internal static bool TalentPowershot { get { return BsTalentManager.HasTalent(17); } }
+        internal static bool TalentBarrage { get { return BsTalentManager.HasTalent(18); } }
+        internal static bool DireBeastEnabled { get { return BsTalentManager.HasTalent(11); } }
+        internal static bool MurderofCrows { get { return BsTalentManager.HasTalent(13) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(131894, 0, 2000); } }
+        internal static bool LynxRush { get { return BsTalentManager.HasTalent(15) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(120697, 0, 2000); } }
+        internal static bool RapidFireAura { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(3045, 0, 2000); } }
+        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 2000); } }
+        internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 6000); } }
+        internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
+        internal static bool FocusFireFiveStacks { get { return Me.HasCachedAura(19615, 5); } }
+        internal static bool BestialWrathNotUp { get { return Lua.PlayerPower > 60 && !Me.HasAura(34471); } }
+        internal static bool BestialWrathUp { get { return Me.HasAura(34471); } }
+        internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
+        internal static bool MultiShotThrillProc { get { return Me.HasAura("Thrill of the Hunt") && !SerpentStingRefresh; } }
+        internal static bool ThrillProc { get { return Me.HasAura("Thrill of the Hunt"); } }
+        internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
+        internal static bool Focus60 { get { return Lua.PlayerPower < 60; } }
+        internal static bool Focus61 { get { return Lua.PlayerPower >= 61; } }
+
+
         #endregion Booleans
 
-        }
+    }
 }
