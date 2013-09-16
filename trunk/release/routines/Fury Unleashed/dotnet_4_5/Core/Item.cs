@@ -155,10 +155,10 @@ namespace FuryUnleashed.Core
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
-                    new Decorator(ret => (FuGlobal.BloodbathAura || !FuGlobal.BbTalent) && FuGlobal.ColossusSmashAura,
+                    new Decorator(ret => (FuGlobal.BloodbathAura || FuGlobal.SbTalent || FuGlobal.AvTalent) && FuGlobal.ColossusSmashAura,
                         new Action(ret => { UseArmsItems(); return RunStatus.Failure; } ))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
-                    new Decorator(ret => (FuGlobal.BloodbathAura || !FuGlobal.BbTalent) && FuGlobal.ColossusSmashAura,
+                    new Decorator(ret => (FuGlobal.BloodbathAura || FuGlobal.SbTalent || FuGlobal.AvTalent) && FuGlobal.ColossusSmashAura,
                         new Action(ret => { UseFuryItems(); return RunStatus.Failure; }))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                     new Decorator(ret => FuGlobal.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,

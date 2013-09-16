@@ -31,25 +31,21 @@ namespace FuryUnleashed.Routines
                 new Switch<WoWSpec>(ret => Me.Specialization,
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Arms.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => SG.Instance.Arms.CheckAoE,
                                 new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Arms.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => SG.Instance.Arms.CheckInterruptsAoE,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => SG.Instance.Fury.CheckInterruptsAoE,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Protection.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => SG.Instance.Protection.CheckInterruptsAoE,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Protection.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
@@ -159,14 +155,6 @@ namespace FuryUnleashed.Routines
             return colossusSmash != null && colossusSmash.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
 
-        internal static bool FadingDw(int fadingtime)
-        {
-            if (!Me.GotTarget)
-                return false;
-            WoWAura deepwounds = Spell.CachedTargetAuras.FirstOrDefault(a => a.SpellId == 115767 && a.CreatorGuid == StyxWoW.Me.Guid);
-            return deepwounds != null && deepwounds.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-        }
-
         internal static bool FadingEnrage(int fadingtime)
         {
             if (!Me.GotTarget)
@@ -236,19 +224,6 @@ namespace FuryUnleashed.Routines
             }
         }
 
-        #region 5.4 Added Items
-        // Tierset Aura Detection
-        // Somehow doesnt work with ID
-        internal static bool Tier16TwoPieceBonus { get { return Me.HasAura("Item - Warrior T16 DPS 2P Bonus"); } }               // Unchecked
-        internal static bool Tier16FourPieceBonus { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Unchecked
-        internal static bool Tier16TwoPieceBonusT { get { return Me.HasAura("Item - Warrior T16 Protection 2P Bonus"); } }        // Unchecked
-        internal static bool Tier16FourPieceBonusT { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked
-
-        // Cached Aura's - Can only be used with MY aura's (HasCachedAura).
-        internal static bool ReadinessAura { get { return Me.HasCachedAura(145955, 0); } } // Evil Eye of Galakras trinket Aura.
-        
-        #endregion
-
         // Specs
         internal static bool IsArmsSpec             { get { return TalentManager.CurrentSpec == WoWSpec.WarriorArms; } }
         internal static bool IsFurySpec             { get { return TalentManager.CurrentSpec == WoWSpec.WarriorFury; } }
@@ -256,8 +231,8 @@ namespace FuryUnleashed.Routines
 
         // Tierset Aura Detection
         // Somehow doesnt work with ID
-        internal static bool Tier15TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T15 DPS 2P Bonus"); } }               // Works - 138120
-        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }               // Does not work - Triggers SbT15P4Aura
+        internal static bool Tier15TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T15 DPS 2P Bonus"); } }
+        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }
         internal static bool Tier15TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T15 Protection 2P Bonus"); } }        // Works - 138280
         internal static bool Tier15FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T15 Protection 4P Bonus"); } }        // Works - 138281
 
@@ -286,14 +261,13 @@ namespace FuryUnleashed.Routines
         internal static bool RecklessnessAura       { get { return Me.HasCachedAura(1719, 0); } }
         internal static bool ShieldBarrierAura      { get { return Me.HasCachedAura(112048, 0); } }
         internal static bool ShieldBlockAura        { get { return Me.HasCachedAura(2565, 0); } }
-        internal static bool SweepingStrikesAura    { get { return Me.HasCachedAura(12328, 0); }}
         internal static bool SuddenExecAura         { get { return Me.HasCachedAura(139958, 0); } }
         internal static bool TasteforBloodAura      { get { return Me.HasCachedAura(56636, 0); } }
         internal static bool UltimatumAura          { get { return Me.HasCachedAura(122510, 0); } }
-        internal static bool VictoriousAura         { get { return Me.HasCachedAura(32216, 0) || Me.HasCachedAura(138279, 0); } }
+        internal static bool VictoriousAura         { get { return Me.HasCachedAura(32216, 0); } }
 
         // Cached Proc Aura's
-        internal static bool VictoriousT15P2Aura    { get { return Me.HasCachedAura(138279, 0); } } // Prot T15 Effect
+        internal static bool VictoriousT15Aura      { get { return Me.HasCachedAura(138279, 0); } }
 
         internal static bool ColossusSmashAura      { get { return Me.CurrentTarget.HasCachedAura(86346, 0); } }
         internal static bool ColossusSmashAuraT     { get { return Me.CurrentTarget.HasCachedAura(86346, 0, 5000); } }
@@ -305,7 +279,7 @@ namespace FuryUnleashed.Routines
         internal static bool MeatCleaverAuraS1      { get { return Me.HasCachedAura(85739, 1); } }
         internal static bool MeatCleaverAuraS2      { get { return Me.HasCachedAura(85739, 2); } }
         internal static bool MeatCleaverAuraS3      { get { return Me.HasCachedAura(85739, 3); } }
-        internal static bool RagingBlow2S           { get { return Me.HasCachedAura(131116, 2); } }
+        internal static bool RagingBlowStacks       { get { return Me.HasCachedAura(131116, 2); } }
         internal static bool TasteForBloodS3        { get { return Me.HasCachedAura(56636, 3); } }
 
         // Cached Aura's - Can be used with ANY aura's (HasAnyCachedAura).
@@ -315,8 +289,8 @@ namespace FuryUnleashed.Routines
         internal static bool CommandingShoutAura    { get { return Me.HasAnyCachedAura(469, 0); } }
         internal static bool HeroismAura            { get { return Me.HasAnyCachedAura(32182, 0); } }
         internal static bool TimeWarpAura           { get { return Me.HasAnyCachedAura(80353, 0); } }
-        internal static bool SkullBannerAura        { get { return Me.HasAnyCachedAura(114206, 0) || Me.HasAnyCachedAura(138127, 0); } }
-        internal static bool SbT15P4Aura            { get { return Me.HasAnyCachedAura(138127, 0); } } // DPS T15 Effect
+        internal static bool SkullBannerAura        { get { return Me.HasAnyCachedAura(114206, 0); } }
+        internal static bool SbT15P4Aura            { get { return Me.HasAnyCachedAura(138127, 0); } }
         internal static bool RallyingCryAura        { get { return Me.HasAnyCachedAura(97462, 0); } }
 
         internal static bool WeakenedBlowsAura      { get { return Me.CurrentTarget.HasAnyCachedAura(115798, 0); } }

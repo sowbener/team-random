@@ -30,7 +30,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Development)]
+        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
         [Category("General")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]
@@ -56,13 +56,6 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.SiegeOfOrgrimmar)]
-        [Category("General")]
-        [DisplayName("Wow Patch Version")]
-        [Description("Select which rotations you prefer - Excellent ToT or Beta SoO")]
-        public Enum.WoWVersion WowRotVersion { get; set; }
         #endregion
 
         // ========================================================================================

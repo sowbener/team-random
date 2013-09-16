@@ -65,50 +65,6 @@ namespace FuryUnleashed.Shared.Helpers
             60410  // Elegon
         };
         #endregion
-		
-		#region Rare & Elites
-		public static bool RareUnitsList(this WoWUnit unit)
-        {
-            return unit != null && (RareListIds.Contains(unit.Entry));
-        }
-        public static HashSet<uint> RareListIds { get { return RareList; } }
-        private static readonly HashSet<uint> RareList = new HashSet<uint>
-        {
-			// 5.4 - Timeless Isles rares.
-            73174, //Archiereus
-            72775, //Bufo
-            73171, //Champion
-            72045, //Chelon
-            73175, //Cinderfall
-            73854, //Cranegnasher
-            73281, //Dreadship
-            73158, //EGander
-            73279, //Evermaw
-            73172, //Flintlord
-            73282, //Garnia
-            72970, //Golgannar
-            73161, //Furyshell
-            72909, //Gu'chi
-            73167, //Huolon
-            73163, //ImpPython
-            73160, //Ironfur
-            73169, //Jakur
-            72193, //Karkanos
-            73277, //Leafmender
-            73166, //Spineclaw
-            72048, //Rattleskew
-            73157, //RockMoss
-            71864, //Spelurk
-            72769, //Jadefire
-            73704, //Stinkbraid
-            72808, //Tsavo'ka
-            73173, //Urdur
-            73170, //Osu
-            72245, //Zesqua
-            71919, //Zhu-Gon
-            72032  //Zvezdan
-        };
-		#endregion
 
         #region Dummy & Boss ID's
         public static HashSet<uint> BossIds { get { return Bosses; } }

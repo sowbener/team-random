@@ -26,7 +26,7 @@ namespace FuryUnleashed.Shared.Helpers
         {
             try
             {
-                Logger.InitLogO("\r\nChecking if the used revision is the latest, updates if not - Can be disabled in the GUI.");
+                Logger.InitLogO("Checking if the used revision is the latest, updates if not - Can be disabled in the GUI.");
                 var remoteRev = GetRevision();
 
                 if (InternalSettings.Instance.General.CurrentRevision != remoteRev)
@@ -39,11 +39,11 @@ namespace FuryUnleashed.Shared.Helpers
                     InternalSettings.Instance.General.CurrentRevision = remoteRev;
                     InternalSettings.Instance.General.Save();
 
-                    Logger.InitLogO("A new version of Fury Unleashed was installed. Please restart Honorbuddy.");
+                    Logger.InitLogO("A new version of Fury Unleashed was installed. Please restart Honorbuddy. \r\n");
                 }
                 else
                 {
-                    Logger.InitLogO("No updates found.");
+                    Logger.InitLogO("No updates found. \r\n");
                 }
             }
             catch (Exception ex)

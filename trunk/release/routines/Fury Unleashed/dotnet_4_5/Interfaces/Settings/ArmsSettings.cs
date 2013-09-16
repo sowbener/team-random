@@ -247,6 +247,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Shattering Throw")]
         [Description("Checked enables Shattering Throw.")]
         public bool CheckShatteringThrow { get; set; }
+		
+		[Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Arms - Selectable Options")]
+        [DisplayName("Enable Heroic Throw")]
+        [Description("Enables Heroic Throw.")]
+        public bool CheckHeroicThrow { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
@@ -254,13 +261,6 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Lifeblood")]
         [Description("Checked enables Lifeblood.")]
         public bool CheckLifeblood { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Arms - Selectable Options")]
-        [DisplayName("Enable Heroic Throw")]
-        [Description("Enables Heroic Throw.")]
-        public bool CheckHeroicThrow { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(10)]

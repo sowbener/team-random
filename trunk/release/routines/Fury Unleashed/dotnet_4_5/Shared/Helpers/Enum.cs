@@ -115,12 +115,6 @@ namespace FuryUnleashed.Shared.Helpers
             Bloodbath,
             StormBolt
         }
-
-        public enum WoWVersion
-        {
-            SiegeOfOrgrimmar,
-            ThroneOfThunder
-        }
         #endregion
     }
 }

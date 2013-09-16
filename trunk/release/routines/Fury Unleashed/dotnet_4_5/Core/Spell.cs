@@ -66,7 +66,7 @@ namespace FuryUnleashed.Core
                             Logger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
                         }));
         }
-        
+
         // Casting on Ground by String
         public static Composite CastOnGround(string spell, LocationRetriever onLocation)
         {

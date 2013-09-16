@@ -167,13 +167,13 @@ namespace FuryUnleashed.Routines
                 //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
                 //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
                 Spell.Cast("Impending Victory", ret => G.IvTalent && (Me.HealthPercent <= SG.Instance.Protection.ImpendingVictoryNum || G.FadingVc(2000)) && (
-                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousT15P2Aura)) ||
+                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousT15Aura)) ||
                     (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousT15P2Aura))),
+                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousT15Aura))),
                 Spell.Cast("Victory Rush", ret => !G.IvTalent && (Me.HealthPercent <= SG.Instance.Protection.VictoryRushNum || G.FadingVc(2000)) && (
-                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousT15P2Aura)) ||
+                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousT15Aura)) ||
                     (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousT15P2Aura)))
+                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousT15Aura)))
                     );
         }
 

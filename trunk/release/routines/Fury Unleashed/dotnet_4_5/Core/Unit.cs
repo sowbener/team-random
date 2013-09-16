@@ -136,11 +136,6 @@ namespace FuryUnleashed.Core
             get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.HamstringUnitsList(); }
         }
 
-        public static bool IsTargetRare
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.RareUnitsList(); }
-        }
-
         public static bool IsTargetBoss
         {
             get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.TargetIsBoss(); }
@@ -150,6 +145,7 @@ namespace FuryUnleashed.Core
         {
             get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
         }
+
         #endregion
     }
 }
