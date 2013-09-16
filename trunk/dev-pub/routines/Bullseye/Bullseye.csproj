@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A25D1BD-CF0C-4DC2-A061-329FA143D4A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bullseye</RootNamespace>
+    <AssemblyName>Bullseye</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Honorbuddy, Version=2.5.7684.656, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Honorbuddy.exe</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tripper.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c40611ce03f849a2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Games\FlashFXP\Tripper.Tools.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bullseye.cs" />
+    <Compile Include="Core\BS_Item.cs" />
+    <Compile Include="Core\BS_Spell.cs" />
+    <Compile Include="Core\BS_Unit.cs" />
+    <Compile Include="Helpers\BS_CombatLog.cs" />
+    <Compile Include="Helpers\BS_Throttle.cs" />
+    <Compile Include="Helpers\BS_EncounterSpecifics.cs" />
+    <Compile Include="Helpers\BS_Enum.cs" />
+    <Compile Include="Helpers\BS_Logger.cs" />
+    <Compile Include="Interfaces\GUI\BS_Interface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\GUI\BS_Interface.Designer.cs">
+      <DependentUpon>BS_Interface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\BS_Hashsets.cs" />
+    <Compile Include="Helpers\BS_Lua.cs" />
+    <Compile Include="Interfaces\GUI\BS_PropertyGridExtention.cs" />
+    <Compile Include="Interfaces\Settings\BS_General_Settings.cs" />
+    <Compile Include="Interfaces\Settings\BS_Hotkeys_Settings.cs" />
+    <Compile Include="Interfaces\Settings\BS_Survival_Settings.cs" />
+    <Compile Include="Interfaces\Settings\BS_Settings.cs" />
+    <Compile Include="Interfaces\Settings\BS_Markmanship_Settings.cs" />
+    <Compile Include="Interfaces\Settings\BS_Beastmastery_Settings.cs" />
+    <Compile Include="Managers\BS_TalentManager.cs" />
+    <Compile Include="Managers\BS_HotKeyManager.cs" />
+    <Compile Include="Routines\BS_Markmanship.cs" />
+    <Compile Include="Routines\BS_Beastmastery.cs" />
+    <Compile Include="Routines\BS_Survival.cs" />
+    <Compile Include="Routines\BS_Global.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interfaces\GUI\BS_Interface.resx">
+      <DependentUpon>BS_Interface.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\Images\bullseye.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

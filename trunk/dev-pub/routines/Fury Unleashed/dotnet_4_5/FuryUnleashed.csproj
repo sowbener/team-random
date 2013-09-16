@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A25D1BD-CF0C-4DC2-A061-329FA143D4A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FuryUnleashed</RootNamespace>
+    <AssemblyName>FuryUnleashed</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Honorbuddy, Version=2.5.7671.655, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\references\Honorbuddy.exe</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tripper.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c40611ce03f849a2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\references\Tripper.Tools.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Item.cs" />
+    <Compile Include="Core\Spell.cs" />
+    <Compile Include="Core\Unit.cs" />
+    <Compile Include="FuryUnleashed.cs" />
+    <Compile Include="Shared\Helpers\BotEvents.cs" />
+    <Compile Include="Shared\Helpers\Throttle.cs" />
+    <Compile Include="Shared\Helpers\Enum.cs" />
+    <Compile Include="Shared\Helpers\Logger.cs" />
+    <Compile Include="Interfaces\GUI\Interface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\GUI\Interface.Designer.cs">
+      <DependentUpon>Interface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\Helpers\Hashsets.cs" />
+    <Compile Include="Shared\Helpers\Lua.cs" />
+    <Compile Include="Interfaces\GUI\GuiExtentions.cs" />
+    <Compile Include="Interfaces\Settings\GeneralSettings.cs" />
+    <Compile Include="Interfaces\Settings\HotkeysSettings.cs" />
+    <Compile Include="Interfaces\Settings\Settings.cs" />
+    <Compile Include="Interfaces\Settings\ProtSettings.cs" />
+    <Compile Include="Interfaces\Settings\ArmsSettings.cs" />
+    <Compile Include="Interfaces\Settings\FurySettings.cs" />
+    <Compile Include="Shared\Helpers\Updater.cs" />
+    <Compile Include="Shared\Managers\TalentManager.cs" />
+    <Compile Include="Shared\Managers\HotKeyManager.cs" />
+    <Compile Include="Routines\ArmsCombat.cs" />
+    <Compile Include="Routines\FuryCombat.cs" />
+    <Compile Include="Routines\GlobalCombat.cs" />
+    <Compile Include="Routines\ProtCombat.cs" />
+    <Compile Include="Shared\Utilities\PerformanceLogger.cs" />
+    <Compile Include="Shared\Utilities\TreeSharp.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interfaces\GUI\Interface.resx">
+      <DependentUpon>Interface.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\Images\RoutineLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

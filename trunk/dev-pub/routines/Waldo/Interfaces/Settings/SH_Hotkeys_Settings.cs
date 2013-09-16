@@ -1,0 +1,79 @@
+﻿using System.Windows.Forms;
+using Waldo.Helpers;
+using Styx.Common;
+using Styx.Helpers;
+using System.ComponentModel;
+
+namespace Waldo.Interfaces.Settings
+{
+    internal class WaSettingsH : Styx.Helpers.Settings
+    {
+        public static WaSettingsH Instance = new WaSettingsH();
+
+        public WaSettingsH()
+            : base(WaSettings.SettingsPath + "_Hotkey.xml")
+        {
+        }
+
+
+        #region Hotkeys
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Keys.None)]
+        [Category("Hotkeys")]
+        [DisplayName("Tricks Key")]
+        [Description("Choose preferred Tricks of the Trade key.")]
+        public Keys Tricks { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Keys.None)]
+        [Category("Hotkeys")]
+        [DisplayName("Tier6 Ability Key")]
+        [Description("Choose preferred Tier 6 ability key.")]
+        public Keys Tier6 { get; set; }
+
+        
+        [Setting]
+        [Styx.Helpers.DefaultValue(WaEnum.Mode.Auto)]
+        [Category("Hotkeys")]
+        [DisplayName("Mode Selector")]
+        [Description("Choose preferred Hotkey Mode.")]
+        public WaEnum.Mode ModeSelection { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(ModifierKeys.Alt)]
+        [Category("Hotkeys")]
+        [DisplayName("Modifier Key")]
+        [Description("Choose preferred modifier key.")]
+        public ModifierKeys ModKeyChoice { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Keys.None)]
+        [Category("Hotkeys")]
+        [DisplayName("Pause Key")]
+        [Description("Choose preferred pause key.")]
+        public Keys PauseKeyChoice { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Keys.None)]
+        [Category("Hotkeys")]
+        [DisplayName("Cooldown Key")]
+        [Description("Choose preferred cooldown key.")]
+        public Keys CooldownKeyChoice { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Keys.None)]
+        [Category("Hotkeys")]
+        [DisplayName("Multi-Target Key (AoE)")]
+        [Description("Choose preferred AoE key.")]
+        public Keys MultiTgtKeyChoice { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Keys.None)]
+        [Category("Hotkeys")]
+        [DisplayName("Special Key")]
+        [Description("Choose preferred special key.")]
+        public Keys SpecialKeyChoice { get; set; }
+        #endregion
+    }
+}

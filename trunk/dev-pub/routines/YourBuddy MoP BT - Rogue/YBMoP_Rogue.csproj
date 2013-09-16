@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A25D1BD-CF0C-4DC2-A061-329FA143D4A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YBMoP_BT_Rogue</RootNamespace>
+    <AssemblyName>YBMoP BT - Rogue</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FlashFXP">
+      <HintPath>C:\Program Files (x86)\Buddy\Raiding\FlashFXP.exe</HintPath>
+    </Reference>
+    <Reference Include="Honorbuddy">
+      <HintPath>..\..\Honorbuddy.exe</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tripper.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c40611ce03f849a2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Buddy\Raiding\Tripper.Tools.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\YBMoP_Item.cs" />
+    <Compile Include="Core\YBMoP_Spell.cs" />
+    <Compile Include="Core\YBMoP_Unit.cs" />
+    <Compile Include="Helpers\YBMoP_Poisons.cs" />
+    <Compile Include="Helpers\YBMoP_Throttle.cs" />
+    <Compile Include="Helpers\YBMoP_EncounterSpecifics.cs" />
+    <Compile Include="Helpers\YBMoP_ENUM.cs" />
+    <Compile Include="Helpers\YBMoP_Logger.cs" />
+    <Compile Include="Interfaces\GUI\YBMoP_Com_GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\GUI\YBMoP_Com_GUI.Designer.cs">
+      <DependentUpon>YBMoP_Com_GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\GUI\YBMoP_Ass_GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\GUI\YBMoP_Ass_GUI.Designer.cs">
+      <DependentUpon>YBMoP_Ass_GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\GUI\YBMoP_General_GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\GUI\YBMoP_General_GUI.Designer.cs">
+      <DependentUpon>YBMoP_General_GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\Settings\YBMoP_BT_Com_Settings.cs" />
+    <Compile Include="Interfaces\Settings\YBMoP_BT_Ass_Settings.cs" />
+    <Compile Include="Interfaces\Settings\YBMoP_BT_General_Settings.cs" />
+    <Compile Include="Helpers\YBMoP_Hashsets.cs" />
+    <Compile Include="Helpers\YBMoP_Lua.cs" />
+    <Compile Include="Managers\YBMoP_TalentManager.cs" />
+    <Compile Include="Helpers\YBMoP_CboItem.cs" />
+    <Compile Include="Managers\YBMoP_HotKeyManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Routines\YBMoP_Ass.cs" />
+    <Compile Include="Routines\YBMoP_Combat.cs" />
+    <Compile Include="Routines\YBMoP_Global.cs" />
+    <Compile Include="YBMoP_Main.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\Images\YBMoP-Rogue-Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Interfaces\GUI\YBMoP_Com_GUI.resx">
+      <DependentUpon>YBMoP_Com_GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\GUI\YBMoP_Ass_GUI.resx">
+      <DependentUpon>YBMoP_Ass_GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\GUI\YBMoP_General_GUI.resx">
+      <DependentUpon>YBMoP_General_GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
