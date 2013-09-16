@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Styx.Common;
 
+
 namespace Pokehbuddyplug
 {
     internal static class Updater
