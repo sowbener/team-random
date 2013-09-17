@@ -49,6 +49,9 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(Keys.X)]
         public Keys PauseKeyChoice { get; set; }
 
+        [Setting, DefaultValue(Keys.None)]
+        public Keys TreePerformanceChoice { get; set; }
+
         [Setting, DefaultValue("")]
         public string LastStatCounted { get; set; }
 
