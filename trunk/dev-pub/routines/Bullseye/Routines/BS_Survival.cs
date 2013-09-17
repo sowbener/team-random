@@ -23,8 +23,6 @@ namespace Bullseye.Routines
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        private static int _numNearByEnemies;
-
         #region Initialize Rotations
         internal static Composite InitializeSurvival
         {
@@ -44,7 +42,7 @@ namespace Bullseye.Routines
                                         SurvivalUtility(),
                                         I.SurvivalUseItems(),
                                         SurvivalOffensive(),
-                                        new Decorator(ret => SG.Instance.Survival.CheckAoE && (_numNearByEnemies >= 2), SurvivalMt()),
+                                        new Decorator(ret => SG.Instance.Survival.CheckAoE && (BsUnit.NearbyAttackableUnitsCount >= 2), SurvivalMt()),
                                             SurvivalSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
@@ -61,11 +59,6 @@ namespace Bullseye.Routines
             }
         }
         #endregion
-
-        private static void CacheLocalVars()
-        {
-            _numNearByEnemies = BsUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 20).Count(x => true); // 
-        }
 
         #region Rotations
         internal static Composite SurvivalSt()
@@ -112,7 +105,7 @@ namespace Bullseye.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Revive Pet", ret => !Me.Pet.IsAlive),
-                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40));
+                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40 && !Me.Pet.HasAura("Mend Pet")));
         }
 
         internal static Composite SurvivalDefensive()
