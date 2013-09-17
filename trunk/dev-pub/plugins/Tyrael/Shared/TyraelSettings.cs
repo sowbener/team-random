@@ -26,10 +26,10 @@ namespace Tyrael.Shared
         }
 
         [Setting, DefaultValue(true)]
-        public bool AllowUsageTracking { get; set; }
+        public bool ChatOutput { get; set; }
 
         [Setting, DefaultValue(true)]
-        public bool ChatOutput { get; set; }
+        public bool ClickToMove { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool HealingMode { get; set; }
@@ -37,20 +37,17 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(false)]
         public bool PluginPulsing { get; set; }
 
-
         [Setting, DefaultValue(30)]
         public int HonorbuddyTps { get; set; }
 
-        [Setting, DefaultValue(TyraelHelper.LockState.True)]
-        public TyraelHelper.LockState FrameLock { get; set; }
-
+        [Setting, DefaultValue(TyraelUtilities.LockState.True)]
+        public TyraelUtilities.LockState FrameLock { get; set; }
 
         [Setting, DefaultValue(ModifierKeys.Alt)]
         public ModifierKeys ModKeyChoice { get; set; }
 
         [Setting, DefaultValue(Keys.X)]
         public Keys PauseKeyChoice { get; set; }
-
 
         [Setting, DefaultValue("")]
         public string LastStatCounted { get; set; }

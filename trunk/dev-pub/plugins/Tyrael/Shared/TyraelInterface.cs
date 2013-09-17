@@ -96,9 +96,10 @@ namespace Tyrael.Shared
             TPSTrackBar.Value = TyraelSettings.Instance.HonorbuddyTps;
             HonorbuddyTps = TyraelSettings.Instance.HonorbuddyTps;
 
-            checkFrameLock.Checked = TyraelSettings.Instance.FrameLock == TyraelHelper.LockState.True;
+            checkFrameLock.Checked = TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True;
 
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
+            checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
             checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
         }
@@ -108,6 +109,11 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Enables chat output in WoW.");
         }
 
+        private void checkClicktoMove_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Enables click to move in WoW.");
+        }
+
         private void checkFrameLock_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables framelock - Read the Tyrael FAQ for more info!");
@@ -115,7 +121,7 @@ namespace Tyrael.Shared
 
         private void checkHealingMode_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("We recommend you to use the Pause Hotkeys when this is enabled.");
+            TpsLabel.Text = Text = string.Format("Use the Pause Hotkeys when this is enabled!");
         }
 
         private void checkPlugins_MouseMove(object sender, MouseEventArgs e)
@@ -152,12 +158,17 @@ namespace Tyrael.Shared
 
         private void checkFrameLock_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.FrameLock = checkFrameLock.Checked ? TyraelHelper.LockState.True : TyraelHelper.LockState.False;
+            TyraelSettings.Instance.FrameLock = checkFrameLock.Checked ? TyraelUtilities.LockState.True : TyraelUtilities.LockState.False;
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
         {
             TyraelSettings.Instance.ChatOutput = checkChatOutput.Checked;
+        }
+
+        private void checkClicktoMove_CheckedChanged(object sender, EventArgs e)
+        {
+            TyraelSettings.Instance.ClickToMove = checkClicktoMove.Checked;
         }
 
         private void checkHealingMode_CheckedChanged(object sender, EventArgs e)
@@ -183,19 +194,33 @@ namespace Tyrael.Shared
         private void SaveButton_Click(object sender, EventArgs e)
         {
             TyraelSettings.Instance.Save();
+            TyraelUtilities.ReRegisterHotkeys();
             TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
-            TyraelHotkeyManager.RemoveAllKeys();
-            TyraelHotkeyManager.RegisterHotKeys();
             Tyrael.PluginPulsing();
+
             if (TpsChanges)
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
-            if (TyraelSettings.Instance.ChatOutput)
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] ChatOutput enabled!");
-            if (TyraelSettings.Instance.FrameLock == TyraelHelper.LockState.True)
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] FrameLock enabled!");
-            if (TyraelSettings.Instance.HealingMode)
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] HealingMode enabled!");
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Interface saved and closed!");
+            Logging.Write(Colors.DodgerBlue, 
+                    "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.ChatOutput 
+                    ? "[Tyrael] ChatOutput enabled!" 
+                    : "[Tyrael] ChatOutput disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.ClickToMove
+                    ? "[Tyrael] Click to Move enabled!"
+                    : "[Tyrael] Click to Move disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True
+                    ? "[Tyrael] FrameLock enabled!"
+                    : "[Tyrael] FrameLock disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.HealingMode
+                    ? "[Tyrael] Continues Healing mode enabled!"
+                    : "[Tyrael] Continues Healing mode disabled!");
+            Logging.Write(Colors.DodgerBlue, 
+                    "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
+            Logging.Write(Colors.DodgerBlue, 
+                    "[Tyrael] Interface saved and closed!");
             Close();
         }
     }

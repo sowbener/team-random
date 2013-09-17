@@ -17,7 +17,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 2, 2);
+        public static readonly Version Revision = new Version(5, 2, 5);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         private const byte DefaultTps = 30;
@@ -33,7 +33,7 @@ namespace Tyrael
 
         public override PulseFlags PulseFlags
         {
-            get { return !TyraelHotkeyManager.IsPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua; }
+            get { return !TyraelUtilities.IsTyraelPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua; }
         }
 
         public override Form ConfigurationForm
@@ -56,13 +56,12 @@ namespace Tyrael
 
                 PluginPulsing();
 
-                TyraelHelper.StatCounter();
-                TyraelHotkeyManager.RegisterHotKeys();
+                TyraelUtilities.StatCounter();
+                TyraelUtilities.RegisterHotkeys();
                 TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
 
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is the selected Ticks per Second.", TreeRoot.TicksPerSecond);
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} has been initialized.", Name);
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} {1} has been initialized.", Name, Revision);
             }
             catch (Exception initExept)
             {
@@ -73,7 +72,7 @@ namespace Tyrael
         public override void Stop()
         {
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");
-            TyraelHotkeyManager.RemoveAllKeys();
+            TyraelUtilities.RemoveHotkeys();
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Reconfiguring Honorbuddy.");
             GlobalSettings.Instance.LogoutForInactivity = true;
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Resetting TreeRoot to default value.");
@@ -100,10 +99,10 @@ namespace Tyrael
         private static PrioritySelector CreateRoot()
         {
             return new PrioritySelector(
-                new Decorator(ret => TyraelHotkeyManager.IsPaused, new ActionAlwaysSucceed()),
-                new Switch<TyraelHelper.LockState>(ctx => TyraelSettings.Instance.FrameLock,
-                    new SwitchArgument<TyraelHelper.LockState>(TyraelHelper.LockState.True, ExecuteFrameLocked()),
-                    new SwitchArgument<TyraelHelper.LockState>(TyraelHelper.LockState.False, ExecuteNormal())),
+                new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
+                new Switch<TyraelUtilities.LockState>(ctx => TyraelSettings.Instance.FrameLock,
+                    new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.True, ExecuteFrameLocked()),
+                    new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.False, ExecuteNormal())),
                 RoutineManager.Current.PreCombatBuffBehavior,
                 RoutineManager.Current.RestBehavior);
         }

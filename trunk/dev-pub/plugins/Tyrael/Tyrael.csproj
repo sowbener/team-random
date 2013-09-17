@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Honorbuddy">
-      <HintPath>..\..\..\..\..\FU Premium\branches\References\Honorbuddy.exe</HintPath>
+      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Honorbuddy.exe</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -45,12 +45,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tripper.Tools">
-      <HintPath>..\..\..\..\..\FU Premium\branches\References\Tripper.Tools.dll</HintPath>
+      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Tripper.Tools.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shared\TyraelHelper.cs" />
-    <Compile Include="Shared\TyraelHotkeyManager.cs" />
+    <Compile Include="Shared\TyraelUtilities.cs" />
     <Compile Include="Shared\TyraelInterface.cs">
       <SubType>Form</SubType>
     </Compile>
