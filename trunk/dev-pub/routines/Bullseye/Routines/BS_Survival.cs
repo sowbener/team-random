@@ -76,10 +76,10 @@ namespace Bullseye.Routines
             Spell.Cast("Black Arrow"),
             Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => ThrillProc && BlackArrowIsOnCooldown),
             Spell.Cast("Dire Beast"),
-            Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-            Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67 || (Me.Level < 50 && Lua.PlayerPower > 29)),
-            Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus66, true),
-            Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+            Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
+            Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67),
+            Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
+            Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
         internal static Composite SurvivalMt()
