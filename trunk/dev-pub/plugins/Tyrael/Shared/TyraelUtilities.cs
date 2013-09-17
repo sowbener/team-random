@@ -18,26 +18,30 @@ namespace Tyrael.Shared
     public class TyraelUtilities
     {
         #region Performance Timer
-        private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
-        private static int _cachedTreeRoot;
 
-        internal static Composite Tree(string obj)
+        public static int CachedTreeRootTicks;
+        private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
+
+        /* Usage: TreeSharp.Tree(true) within a composite. */
+        internal static Composite Tree(bool enable)
         {
             return new Action(ret =>
             {
                 if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
-                    var elap = (int)TreePerformanceTimer.ElapsedMilliseconds;
-                    _cachedTreeRoot = elap;
-                    if (IsKeyDown(TyraelSettings.Instance.TreePerformanceChoice))
-                        Logging.Write(Colors.GreenYellow, @"[TreePerformance] Elapsed Time to traverse {0}: {1} ms ({2} ms client lag)", obj, elap, Lag.TotalMilliseconds);
+                    var elapsed = (int)TreePerformanceTimer.ElapsedMilliseconds;
+                    CachedTreeRootTicks = elapsed;
+
+                    if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
+                    {
+                        Logging.Write(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", elapsed, Lag.TotalMilliseconds);
+                    }
 
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
                 }
 
                 TreePerformanceTimer.Start();
-
                 return RunStatus.Failure;
             });
         }
@@ -46,15 +50,38 @@ namespace Tyrael.Shared
         {
             get { return TimeSpan.FromMilliseconds((StyxWoW.WoWClient.Latency)); }
         }
+
+        //private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
+        //private static int _cachedTreeRoot;
+
+        //internal static Composite Tree(bool enable)
+        //{
+        //    return new Action(ret =>
+        //    {
+        //        if (TreePerformanceTimer.ElapsedMilliseconds > 0)
+        //        {
+        //            var elap = (int)TreePerformanceTimer.ElapsedMilliseconds;
+        //            _cachedTreeRoot = elap;
+        //            //if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
+        //            Logging.Write(Colors.GreenYellow, @"[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", elap, Lag.TotalMilliseconds);
+
+        //            TreePerformanceTimer.Stop();
+        //            TreePerformanceTimer.Reset();
+        //        }
+
+        //        TreePerformanceTimer.Start();
+
+        //        return RunStatus.Failure;
+        //    });
+        //}
         #endregion
 
         #region Hotkeys
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern short GetAsyncKeyState(int vkey);
-
-        internal static bool IsKeyDown(Keys key)
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
+        public static bool IsKeyAsyncDown(Keys key)
         {
-            return (GetAsyncKeyState((int)key) & 0x8000) != 0;
+            return (GetAsyncKeyState(key)) != 0;
         }
 
         public static bool IsTyraelPaused { get; set; }

@@ -99,6 +99,7 @@ namespace Tyrael
         private static PrioritySelector CreateRoot()
         {
             return new PrioritySelector(
+                new Decorator(ret => TyraelSettings.Instance.ScaleTps, TyraelUtilities.Tree(true)),
                 new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
                 new Switch<TyraelUtilities.LockState>(ctx => TyraelSettings.Instance.FrameLock,
                     new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.True, ExecuteFrameLocked()),
