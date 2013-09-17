@@ -102,6 +102,7 @@ namespace Tyrael.Shared
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
             checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
+            checkScaleTps.Checked = TyraelSettings.Instance.ScaleTps;
         }
 
         private void checkChatOutput_MouseMove(object sender, MouseEventArgs e)
@@ -127,6 +128,11 @@ namespace Tyrael.Shared
         private void checkPlugins_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables plugins in Tyrael.");
+        }
+
+        private void checkScaleTps_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Enables TPS scaling in Tyrael.");
         }
 
         private readonly int _var = TyraelSettings.Instance.HonorbuddyTps;
@@ -181,6 +187,11 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PluginPulsing = checkPlugins.Checked;
         }
 
+        private void checkScaleTps_CheckedChanged(object sender, EventArgs e)
+        {
+            TyraelSettings.Instance.ScaleTps = checkScaleTps.Checked;
+        }
+
         private void comboModifierKey_SelectedIndexChanged(object sender, EventArgs e)
         {
             TyraelSettings.Instance.ModKeyChoice = (ModifierKeys)GetComboBoxEnum(comboModifierKey);
@@ -198,9 +209,6 @@ namespace Tyrael.Shared
             TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
             Tyrael.PluginPulsing();
 
-            if (TpsChanges)
-            Logging.Write(Colors.DodgerBlue, 
-                    "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ChatOutput 
                     ? "[Tyrael] ChatOutput enabled!" 
@@ -217,8 +225,22 @@ namespace Tyrael.Shared
                 TyraelSettings.Instance.HealingMode
                     ? "[Tyrael] Continues Healing mode enabled!"
                     : "[Tyrael] Continues Healing mode disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.PluginPulsing
+                    ? "[Tyrael] Plugins are enabled!"
+                    : "[Tyrael] Plugins are disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.ScaleTps
+                    ? "[Tyrael] TPS scaling is enabled!"
+                    : "[Tyrael] TPS scaling is disabled!");
+
             Logging.Write(Colors.DodgerBlue, 
                     "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
+
+            if (TpsChanges)
+            Logging.Write(Colors.DodgerBlue,
+                    "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
+
             Logging.Write(Colors.DodgerBlue, 
                     "[Tyrael] Interface saved and closed!");
             Close();

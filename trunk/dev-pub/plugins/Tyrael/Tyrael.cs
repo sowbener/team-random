@@ -61,7 +61,7 @@ namespace Tyrael
                 TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
 
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} {1} has been initialized.", Name, Revision);
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} {1} has been started.", Name, Revision);
             }
             catch (Exception initExept)
             {

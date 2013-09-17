@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.SettingsPanel = new System.Windows.Forms.Panel();
+            this.checkClicktoMove = new System.Windows.Forms.CheckBox();
             this.comboPauseKey = new System.Windows.Forms.ComboBox();
             this.comboModifierKey = new System.Windows.Forms.ComboBox();
             this.PauseLabel = new System.Windows.Forms.Label();
@@ -41,28 +42,39 @@
             this.NamePanel = new System.Windows.Forms.Panel();
             this.LabelName = new System.Windows.Forms.Label();
             this.TpsLabel = new System.Windows.Forms.Label();
-            this.checkClicktoMove = new System.Windows.Forms.CheckBox();
+            this.checkScaleTps = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // SettingsPanel
             // 
             this.SettingsPanel.BackColor = System.Drawing.Color.White;
-            this.SettingsPanel.Controls.Add(this.checkClicktoMove);
-            this.SettingsPanel.Controls.Add(this.comboPauseKey);
-            this.SettingsPanel.Controls.Add(this.comboModifierKey);
-            this.SettingsPanel.Controls.Add(this.PauseLabel);
-            this.SettingsPanel.Controls.Add(this.checkPlugins);
-            this.SettingsPanel.Controls.Add(this.checkHealingMode);
-            this.SettingsPanel.Controls.Add(this.checkFrameLock);
-            this.SettingsPanel.Controls.Add(this.checkChatOutput);
             this.SettingsPanel.Controls.Add(this.TPSTrackBar);
             this.SettingsPanel.Location = new System.Drawing.Point(2, 45);
             this.SettingsPanel.Name = "SettingsPanel";
-            this.SettingsPanel.Size = new System.Drawing.Size(507, 149);
+            this.SettingsPanel.Size = new System.Drawing.Size(507, 50);
             this.SettingsPanel.TabIndex = 0;
+            // 
+            // checkClicktoMove
+            // 
+            this.checkClicktoMove.AutoSize = true;
+            this.checkClicktoMove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkClicktoMove.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.checkClicktoMove.Location = new System.Drawing.Point(10, 23);
+            this.checkClicktoMove.Name = "checkClicktoMove";
+            this.checkClicktoMove.Size = new System.Drawing.Size(162, 21);
+            this.checkClicktoMove.TabIndex = 8;
+            this.checkClicktoMove.Text = "Enable Click to Move";
+            this.checkClicktoMove.UseVisualStyleBackColor = false;
+            this.checkClicktoMove.CheckedChanged += new System.EventHandler(this.checkClicktoMove_CheckedChanged);
+            this.checkClicktoMove.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.checkClicktoMove.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkClicktoMove_MouseMove);
             // 
             // comboPauseKey
             // 
@@ -72,9 +84,9 @@
             this.comboPauseKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboPauseKey.ForeColor = System.Drawing.Color.DodgerBlue;
             this.comboPauseKey.FormattingEnabled = true;
-            this.comboPauseKey.Location = new System.Drawing.Point(376, 102);
+            this.comboPauseKey.Location = new System.Drawing.Point(13, 59);
             this.comboPauseKey.Name = "comboPauseKey";
-            this.comboPauseKey.Size = new System.Drawing.Size(121, 25);
+            this.comboPauseKey.Size = new System.Drawing.Size(229, 25);
             this.comboPauseKey.TabIndex = 7;
             this.comboPauseKey.SelectedIndexChanged += new System.EventHandler(this.comboPauseKey_SelectedIndexChanged);
             this.comboPauseKey.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -87,9 +99,9 @@
             this.comboModifierKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboModifierKey.ForeColor = System.Drawing.Color.DodgerBlue;
             this.comboModifierKey.FormattingEnabled = true;
-            this.comboModifierKey.Location = new System.Drawing.Point(376, 71);
+            this.comboModifierKey.Location = new System.Drawing.Point(13, 22);
             this.comboModifierKey.Name = "comboModifierKey";
-            this.comboModifierKey.Size = new System.Drawing.Size(121, 25);
+            this.comboModifierKey.Size = new System.Drawing.Size(229, 25);
             this.comboModifierKey.TabIndex = 6;
             this.comboModifierKey.SelectedIndexChanged += new System.EventHandler(this.comboModifierKey_SelectedIndexChanged);
             this.comboModifierKey.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -98,11 +110,11 @@
             // 
             this.PauseLabel.AutoSize = true;
             this.PauseLabel.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.PauseLabel.Location = new System.Drawing.Point(373, 45);
+            this.PauseLabel.Location = new System.Drawing.Point(10, 3);
             this.PauseLabel.Name = "PauseLabel";
-            this.PauseLabel.Size = new System.Drawing.Size(99, 17);
+            this.PauseLabel.Size = new System.Drawing.Size(227, 17);
             this.PauseLabel.TabIndex = 5;
-            this.PauseLabel.Text = "Pause Hotkeys";
+            this.PauseLabel.Text = "Select Pause Hotkey Combination";
             this.PauseLabel.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             // 
             // checkPlugins
@@ -110,7 +122,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(24, 123);
+            this.checkPlugins.Location = new System.Drawing.Point(10, 83);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -125,7 +137,7 @@
             this.checkHealingMode.AutoSize = true;
             this.checkHealingMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkHealingMode.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkHealingMode.Location = new System.Drawing.Point(24, 83);
+            this.checkHealingMode.Location = new System.Drawing.Point(10, 43);
             this.checkHealingMode.Name = "checkHealingMode";
             this.checkHealingMode.Size = new System.Drawing.Size(240, 21);
             this.checkHealingMode.TabIndex = 3;
@@ -140,7 +152,7 @@
             this.checkFrameLock.AutoSize = true;
             this.checkFrameLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkFrameLock.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkFrameLock.Location = new System.Drawing.Point(24, 103);
+            this.checkFrameLock.Location = new System.Drawing.Point(10, 63);
             this.checkFrameLock.Name = "checkFrameLock";
             this.checkFrameLock.Size = new System.Drawing.Size(139, 21);
             this.checkFrameLock.TabIndex = 2;
@@ -155,7 +167,7 @@
             this.checkChatOutput.AutoSize = true;
             this.checkChatOutput.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkChatOutput.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkChatOutput.Location = new System.Drawing.Point(24, 43);
+            this.checkChatOutput.Location = new System.Drawing.Point(10, 3);
             this.checkChatOutput.Name = "checkChatOutput";
             this.checkChatOutput.Size = new System.Drawing.Size(149, 21);
             this.checkChatOutput.TabIndex = 1;
@@ -187,7 +199,7 @@
             this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveButton.Location = new System.Drawing.Point(374, 196);
+            this.SaveButton.Location = new System.Drawing.Point(374, 229);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(135, 22);
             this.SaveButton.TabIndex = 0;
@@ -223,34 +235,61 @@
             this.TpsLabel.BackColor = System.Drawing.Color.Transparent;
             this.TpsLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TpsLabel.ForeColor = System.Drawing.Color.White;
-            this.TpsLabel.Location = new System.Drawing.Point(23, 198);
+            this.TpsLabel.Location = new System.Drawing.Point(9, 231);
             this.TpsLabel.Name = "TpsLabel";
             this.TpsLabel.Size = new System.Drawing.Size(43, 17);
             this.TpsLabel.TabIndex = 1;
             this.TpsLabel.Text = "Tyrael";
             // 
-            // checkClicktoMove
+            // checkScaleTps
             // 
-            this.checkClicktoMove.AutoSize = true;
-            this.checkClicktoMove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkClicktoMove.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkClicktoMove.Location = new System.Drawing.Point(24, 63);
-            this.checkClicktoMove.Name = "checkClicktoMove";
-            this.checkClicktoMove.Size = new System.Drawing.Size(162, 21);
-            this.checkClicktoMove.TabIndex = 8;
-            this.checkClicktoMove.Text = "Enable Click to Move";
-            this.checkClicktoMove.UseVisualStyleBackColor = false;
-            this.checkClicktoMove.CheckedChanged += new System.EventHandler(this.checkClicktoMove_CheckedChanged);
-            this.checkClicktoMove.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.checkClicktoMove.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkClicktoMove_MouseMove);
+            this.checkScaleTps.AutoSize = true;
+            this.checkScaleTps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkScaleTps.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.checkScaleTps.Location = new System.Drawing.Point(10, 103);
+            this.checkScaleTps.Name = "checkScaleTps";
+            this.checkScaleTps.Size = new System.Drawing.Size(215, 21);
+            this.checkScaleTps.TabIndex = 9;
+            this.checkScaleTps.Text = "Enable Scale Ticks per Second";
+            this.checkScaleTps.UseVisualStyleBackColor = false;
+            this.checkScaleTps.CheckedChanged += new System.EventHandler(this.checkScaleTps_CheckedChanged);
+            this.checkScaleTps.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.checkScaleTps.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkScaleTps_MouseMove);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.checkScaleTps);
+            this.panel1.Controls.Add(this.checkChatOutput);
+            this.panel1.Controls.Add(this.checkClicktoMove);
+            this.panel1.Controls.Add(this.checkHealingMode);
+            this.panel1.Controls.Add(this.checkFrameLock);
+            this.panel1.Controls.Add(this.checkPlugins);
+            this.panel1.Location = new System.Drawing.Point(2, 97);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(253, 130);
+            this.panel1.TabIndex = 10;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.comboPauseKey);
+            this.panel2.Controls.Add(this.PauseLabel);
+            this.panel2.Controls.Add(this.comboModifierKey);
+            this.panel2.Location = new System.Drawing.Point(257, 97);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(252, 130);
+            this.panel2.TabIndex = 11;
             // 
             // TyraelInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(511, 220);
+            this.ClientSize = new System.Drawing.Size(511, 253);
             this.ControlBox = false;
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.TpsLabel);
             this.Controls.Add(this.NamePanel);
@@ -270,6 +309,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).EndInit();
             this.NamePanel.ResumeLayout(false);
             this.NamePanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,6 +334,9 @@
         private System.Windows.Forms.ComboBox comboModifierKey;
         private System.Windows.Forms.ComboBox comboPauseKey;
         private System.Windows.Forms.CheckBox checkClicktoMove;
+        private System.Windows.Forms.CheckBox checkScaleTps;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
 
     }
 }
