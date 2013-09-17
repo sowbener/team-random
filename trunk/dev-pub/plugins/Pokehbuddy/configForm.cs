@@ -691,7 +691,7 @@ namespace Pokehbuddyplug
             value = x.Evaluate();
             total = int.Parse(value.ToString());
             label50.Text = value.ToString();
-            Logging.Write("Lua test : " + CalcLua(s));
+            //Logging.Write("Lua test : " + CalcLua(s));
 
 
             int mypet = Pokehbuddy.GetTypeByID(Pokehbuddy.ReadSlot(1));
@@ -1263,7 +1263,7 @@ namespace Pokehbuddyplug
                         while (rdr.Read())
                         {
                             string cel1 = rdr.GetInt32(0).ToString();
-                            string[] row1 = { rdr.GetInt32(1).ToString(), rdr.GetInt32(2).ToString(), rdr.GetInt32(3).ToString(), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), "?" };
+                            string[] row1 = { rdr.GetInt32(1).ToString(), rdr.GetString(2), rdr.GetInt32(3).ToString(), rdr.GetString(4), rdr.GetString(5), rdr.GetString(6), rdr.GetString(7), "?" };
                             listView1.Items.Add(cel1).SubItems.AddRange(row1);
                         }
                     }
@@ -1639,7 +1639,7 @@ namespace Pokehbuddyplug
                 {
                     //geen dubbele? Insert it!
 
-                    string q = "INSERT INTO Logics(SpeciesID,LogicType,isDefault,Author,Logic,Spellset,Notes) VALUES(" + SpeciesID + "," + LogicType + "," + isDefault + ",'" + Author + "','" + Logic + "','" + SpellSet + "','" + Note + "')";
+                    string q = "INSERT INTO Logics(SpeciesID,LogicType,isDefault,Author,Logic,Spellset,Notes) VALUES(" + SpeciesID + ",'" + LogicType + "'," + isDefault + ",'" + Author + "','" + Logic + "','" + SpellSet + "','" + Note + "')";
                     doNonQuery(q);
                     //Set Pet Selected Logic
                     SetPetLogic(PetID, LogicRecNum(SpeciesID, Logic, SpellSet));
@@ -1660,7 +1660,7 @@ namespace Pokehbuddyplug
                 string SpeciesID = Pokehbuddy.GetSpeciesByName(Path.GetFileName(filename).Replace(".xml", ""));
                 if (!CheckForDouble(SpeciesID, Logic, SpellSet))
                 {
-                    string q = "INSERT INTO Logics(SpeciesID,LogicType,isDefault,Author,Logic,Spellset,Notes) VALUES(" + SpeciesID + "," + LogicType + "," + isDefault + ",'" + Author + "','" + Logic + "','" + SpellSet + "','" + Note + "')";
+                    string q = "INSERT INTO Logics(SpeciesID,LogicType,isDefault,Author,Logic,Spellset,Notes) VALUES(" + SpeciesID + ",'" + LogicType + "'," + isDefault + ",'" + Author + "','" + Logic + "','" + SpellSet + "','" + Note + "')";
                     doNonQuery(q);
                 }
 
@@ -1797,7 +1797,7 @@ namespace Pokehbuddyplug
             Logic = '" + textBox8.Text + @"',
             Author = '" + label84.Text + @"',
             Spellset = '" + textBox9.Text + @"',
-            LogicType = " + textBox11.Text + @"
+            LogicType = '" + textBox11.Text + @"'
             
             Where ID = " + listView1.SelectedItems[0].Text;
             //Logging.Write("Query : " + q);
@@ -2057,7 +2057,7 @@ namespace Pokehbuddyplug
             'SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false',
             'Unknown',
             'ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)',
-            0)";
+            '0')";
             //Logging.Write("Query : " + q);
             doNonQuery(q);
             //LogicType = " + textBox11.Text + @",

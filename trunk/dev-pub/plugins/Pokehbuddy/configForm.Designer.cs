@@ -85,6 +85,7 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label88 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button56 = new System.Windows.Forms.Button();
             this.button47 = new System.Windows.Forms.Button();
@@ -149,15 +150,19 @@
             this.label75 = new System.Windows.Forms.Label();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.button10 = new System.Windows.Forms.Button();
+            this.comboBox9 = new System.Windows.Forms.ComboBox();
+            this.button11 = new System.Windows.Forms.Button();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.button55 = new System.Windows.Forms.Button();
             this.button48 = new System.Windows.Forms.Button();
             this.label73 = new System.Windows.Forms.Label();
             this.button28 = new System.Windows.Forms.Button();
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.button27 = new System.Windows.Forms.Button();
-            this.comboBox9 = new System.Windows.Forms.ComboBox();
             this.button13 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
@@ -166,10 +171,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
             this.label71 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button10 = new System.Windows.Forms.Button();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
@@ -309,8 +311,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.label88 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -332,6 +332,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox11.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -353,7 +354,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.groupBox9.SuspendLayout();
-            this.groupBox15.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -1207,6 +1207,15 @@
             this.tabPage4.Text = "Logic Manager";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
             // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(645, 97);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(39, 13);
+            this.label88.TabIndex = 62;
+            this.label88.Text = "Index :";
+            // 
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(692, 93);
@@ -1648,11 +1657,11 @@
             // button32
             // 
             this.button32.Enabled = false;
-            this.button32.Location = new System.Drawing.Point(17, 287);
+            this.button32.Location = new System.Drawing.Point(504, 287);
             this.button32.Name = "button32";
-            this.button32.Size = new System.Drawing.Size(70, 43);
+            this.button32.Size = new System.Drawing.Size(122, 43);
             this.button32.TabIndex = 34;
-            this.button32.Text = "Set Default for Species";
+            this.button32.Text = "Set Default for Species (Save first!!)";
             this.button32.UseVisualStyleBackColor = true;
             this.button32.Click += new System.EventHandler(this.button32_Click);
             // 
@@ -1840,6 +1849,108 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Pet Logic Creator";
             // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.button10);
+            this.groupBox15.Controls.Add(this.comboBox9);
+            this.groupBox15.Controls.Add(this.button11);
+            this.groupBox15.Controls.Add(this.checkBox9);
+            this.groupBox15.Controls.Add(this.checkBox10);
+            this.groupBox15.Controls.Add(this.checkBox12);
+            this.groupBox15.Controls.Add(this.button1);
+            this.groupBox15.Location = new System.Drawing.Point(779, 1535);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(169, 131);
+            this.groupBox15.TabIndex = 17;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "groupBox15";
+            this.groupBox15.Visible = false;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(20, 31);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(95, 26);
+            this.button10.TabIndex = 17;
+            this.button10.Text = "Refresh pet";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Visible = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // comboBox9
+            // 
+            this.comboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox9.FormattingEnabled = true;
+            this.comboBox9.Items.AddRange(new object[] {
+            "Pet 1",
+            "Pet 2",
+            "Pet 3"});
+            this.comboBox9.Location = new System.Drawing.Point(20, 58);
+            this.comboBox9.Name = "comboBox9";
+            this.comboBox9.Size = new System.Drawing.Size(71, 21);
+            this.comboBox9.TabIndex = 26;
+            this.comboBox9.Visible = false;
+            this.comboBox9.SelectedIndexChanged += new System.EventHandler(this.comboBox9_SelectedIndexChanged);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(20, 19);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(124, 36);
+            this.button11.TabIndex = 18;
+            this.button11.Text = "SAVE";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Visible = false;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(-106, 84);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(250, 17);
+            this.checkBox9.TabIndex = 28;
+            this.checkBox9.Text = "Save (similar) species (use only with basic skills)";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            this.checkBox9.Visible = false;
+            this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged);
+            // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Enabled = false;
+            this.checkBox10.Location = new System.Drawing.Point(-35, 103);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(179, 17);
+            this.checkBox10.TabIndex = 29;
+            this.checkBox10.Text = "Overwrite existing similar species";
+            this.checkBox10.UseVisualStyleBackColor = true;
+            this.checkBox10.Visible = false;
+            // 
+            // checkBox12
+            // 
+            this.checkBox12.AutoSize = true;
+            this.checkBox12.Checked = true;
+            this.checkBox12.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox12.Location = new System.Drawing.Point(20, 61);
+            this.checkBox12.Name = "checkBox12";
+            this.checkBox12.Size = new System.Drawing.Size(124, 17);
+            this.checkBox12.TabIndex = 31;
+            this.checkBox12.Text = "Save pet specific file";
+            this.checkBox12.UseVisualStyleBackColor = true;
+            this.checkBox12.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(-14, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(189, 64);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Revert to species generic (AUTOSAVE, NO UNDO)";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // button55
             // 
             this.button55.Location = new System.Drawing.Point(666, 10);
@@ -1881,43 +1992,6 @@
             this.button28.UseVisualStyleBackColor = true;
             this.button28.Click += new System.EventHandler(this.button28_Click);
             // 
-            // checkBox12
-            // 
-            this.checkBox12.AutoSize = true;
-            this.checkBox12.Checked = true;
-            this.checkBox12.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox12.Location = new System.Drawing.Point(20, 61);
-            this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(124, 17);
-            this.checkBox12.TabIndex = 31;
-            this.checkBox12.Text = "Save pet specific file";
-            this.checkBox12.UseVisualStyleBackColor = true;
-            this.checkBox12.Visible = false;
-            // 
-            // checkBox10
-            // 
-            this.checkBox10.AutoSize = true;
-            this.checkBox10.Enabled = false;
-            this.checkBox10.Location = new System.Drawing.Point(-35, 103);
-            this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(179, 17);
-            this.checkBox10.TabIndex = 29;
-            this.checkBox10.Text = "Overwrite existing similar species";
-            this.checkBox10.UseVisualStyleBackColor = true;
-            this.checkBox10.Visible = false;
-            // 
-            // checkBox9
-            // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(-106, 84);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(250, 17);
-            this.checkBox9.TabIndex = 28;
-            this.checkBox9.Text = "Save (similar) species (use only with basic skills)";
-            this.checkBox9.UseVisualStyleBackColor = true;
-            this.checkBox9.Visible = false;
-            this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged);
-            // 
             // button27
             // 
             this.button27.Location = new System.Drawing.Point(559, 366);
@@ -1927,21 +2001,6 @@
             this.button27.Text = "EDIT";
             this.button27.UseVisualStyleBackColor = true;
             this.button27.Click += new System.EventHandler(this.button27_Click);
-            // 
-            // comboBox9
-            // 
-            this.comboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox9.FormattingEnabled = true;
-            this.comboBox9.Items.AddRange(new object[] {
-            "Pet 1",
-            "Pet 2",
-            "Pet 3"});
-            this.comboBox9.Location = new System.Drawing.Point(20, 58);
-            this.comboBox9.Name = "comboBox9";
-            this.comboBox9.Size = new System.Drawing.Size(71, 21);
-            this.comboBox9.TabIndex = 26;
-            this.comboBox9.Visible = false;
-            this.comboBox9.SelectedIndexChanged += new System.EventHandler(this.comboBox9_SelectedIndexChanged);
             // 
             // button13
             // 
@@ -2016,28 +2075,6 @@
             this.label71.TabIndex = 19;
             this.label71.Text = "0000";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(-14, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(189, 64);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Revert to species generic (AUTOSAVE, NO UNDO)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(20, 19);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(124, 36);
-            this.button11.TabIndex = 18;
-            this.button11.Text = "SAVE";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Visible = false;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
@@ -2047,17 +2084,6 @@
             this.listBox1.ScrollAlwaysVisible = true;
             this.listBox1.Size = new System.Drawing.Size(550, 316);
             this.listBox1.TabIndex = 0;
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(20, 31);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(95, 26);
-            this.button10.TabIndex = 17;
-            this.button10.Text = "Refresh pet";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Visible = false;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // groupBox11
             // 
@@ -3451,32 +3477,6 @@
             // 
             this.openFileDialog1.Filter = "XML Files|*.xml;";
             // 
-            // groupBox15
-            // 
-            this.groupBox15.Controls.Add(this.button10);
-            this.groupBox15.Controls.Add(this.comboBox9);
-            this.groupBox15.Controls.Add(this.button11);
-            this.groupBox15.Controls.Add(this.checkBox9);
-            this.groupBox15.Controls.Add(this.checkBox10);
-            this.groupBox15.Controls.Add(this.checkBox12);
-            this.groupBox15.Controls.Add(this.button1);
-            this.groupBox15.Location = new System.Drawing.Point(779, 1535);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(169, 131);
-            this.groupBox15.TabIndex = 17;
-            this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "groupBox15";
-            this.groupBox15.Visible = false;
-            // 
-            // label88
-            // 
-            this.label88.AutoSize = true;
-            this.label88.Location = new System.Drawing.Point(645, 97);
-            this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(39, 13);
-            this.label88.TabIndex = 62;
-            this.label88.Text = "Index :";
-            // 
             // configForm
             // 
             this.BackColor = System.Drawing.Color.Black;
@@ -3523,6 +3523,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
@@ -3549,8 +3551,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.groupBox9.ResumeLayout(false);
-            this.groupBox15.ResumeLayout(false);
-            this.groupBox15.PerformLayout();
             this.ResumeLayout(false);
 
         }
