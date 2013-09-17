@@ -33,6 +33,7 @@ namespace Bullseye.Routines
                         new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
                         G.InitializeCaching(),
+                        HandleCommon(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckAutoAttack, Lua.StartAutoAttack),
@@ -74,7 +75,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus61 || BestialWrathUp || (Me.Level < 50 && Lua.PlayerPower > 29)),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus61 || BestialWrathUp),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
@@ -84,7 +85,12 @@ namespace Bullseye.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Serpent Sting", ret => !G.HasSerpentSting),
+                Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
+                Spell.Cast("Powershot", ret => TalentPowershot),
+                Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.Cast("Multi-Shot"),
+                Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
@@ -96,6 +102,12 @@ namespace Bullseye.Routines
                 );
         }
 
+        internal static Composite HandleCommon()
+        {
+            return new PrioritySelector(
+                Spell.Cast("Revive Pet", ret => !Me.Pet.IsAlive),
+                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40));
+        }
 
         internal static Composite BeastmasteryOffensive()
         {
