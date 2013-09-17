@@ -41,7 +41,7 @@ namespace Bullseye.Routines
                                         SurvivalUtility(),
                                         I.SurvivalUseItems(),
                                         SurvivalOffensive(),
-                                        new Decorator(ret => SG.Instance.Survival.CheckAoE && (BsUnit.NearbyAttackableUnitsCount >= 2), SurvivalMt()),
+                                        new Decorator(ret => SG.Instance.Survival.CheckAoE && (BsUnit.NearbyAttackableUnitsCount > 2), SurvivalMt()),
                                             SurvivalSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(

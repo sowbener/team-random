@@ -70,7 +70,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
-                Spell.Cast("Kill Command"),
+                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
@@ -88,8 +88,8 @@ namespace Bullseye.Routines
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
-                Spell.Cast("Multi-Shot"),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.Cast("Multi-Shot"),              
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
@@ -112,6 +112,26 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryOffensive()
         {
             return new PrioritySelector(
+                   Spell.Cast("A Murder of Crows", ret => MurderofCrows && (
+                    (SG.Instance.Beastmastery.MurderofCrows == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Beastmastery.MurderofCrows == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Beastmastery.MurderofCrows == BsEnum.AbilityTrigger.Always)
+                    )),
+                    Spell.Cast("Lynx Rush", ret => LynxRush && (
+                    (SG.Instance.Beastmastery.LynxRush == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Beastmastery.LynxRush == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Beastmastery.LynxRush == BsEnum.AbilityTrigger.Always)
+                    )),
+                    Spell.Cast("Rapid Fire", ret => RapidFireAura && (
+                    (SG.Instance.Beastmastery.RapidFire == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Beastmastery.RapidFire == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Beastmastery.RapidFire == BsEnum.AbilityTrigger.Always)
+                    )),
+                    Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
+                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
+                    )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Beastmastery.ClassRacials == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.ClassRacials == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
