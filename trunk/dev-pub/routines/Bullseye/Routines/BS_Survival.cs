@@ -31,7 +31,6 @@ namespace Bullseye.Routines
                 return new PrioritySelector(
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, BsLogger.TreePerformance("InitializeSurvival")),
                         new Decorator(ret => (BsHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
-                        new Action(delegate { CacheLocalVars(); return RunStatus.Failure; }),
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
                         G.InitializeCaching(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
