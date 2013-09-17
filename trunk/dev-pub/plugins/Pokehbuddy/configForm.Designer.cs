@@ -30,6 +30,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Unknown");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Simple leveling");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Boost leveling");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test3");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label91 = new System.Windows.Forms.Label();
@@ -85,6 +89,10 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.button58 = new System.Windows.Forms.Button();
+            this.button57 = new System.Windows.Forms.Button();
+            this.listView2 = new System.Windows.Forms.ListView();
             this.label88 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button56 = new System.Windows.Forms.Button();
@@ -319,6 +327,7 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.groupBox16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox10.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -1161,6 +1170,7 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.groupBox16);
             this.tabPage4.Controls.Add(this.label88);
             this.tabPage4.Controls.Add(this.numericUpDown1);
             this.tabPage4.Controls.Add(this.button56);
@@ -1206,6 +1216,60 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Logic Manager";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Controls.Add(this.button58);
+            this.groupBox16.Controls.Add(this.button57);
+            this.groupBox16.Controls.Add(this.listView2);
+            this.groupBox16.Location = new System.Drawing.Point(405, 302);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(389, 231);
+            this.groupBox16.TabIndex = 64;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "Logic Type";
+            this.groupBox16.Visible = false;
+            // 
+            // button58
+            // 
+            this.button58.Location = new System.Drawing.Point(266, 127);
+            this.button58.Name = "button58";
+            this.button58.Size = new System.Drawing.Size(63, 33);
+            this.button58.TabIndex = 65;
+            this.button58.Text = "Cancel";
+            this.button58.UseVisualStyleBackColor = true;
+            this.button58.Click += new System.EventHandler(this.button58_Click);
+            // 
+            // button57
+            // 
+            this.button57.Location = new System.Drawing.Point(266, 79);
+            this.button57.Name = "button57";
+            this.button57.Size = new System.Drawing.Size(63, 33);
+            this.button57.TabIndex = 64;
+            this.button57.Text = "Ok";
+            this.button57.UseVisualStyleBackColor = true;
+            this.button57.Click += new System.EventHandler(this.button57_Click);
+            // 
+            // listView2
+            // 
+            this.listView2.CheckBoxes = true;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.Checked = true;
+            listViewItem2.StateImageIndex = 1;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.Checked = true;
+            listViewItem4.StateImageIndex = 1;
+            this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4});
+            this.listView2.Location = new System.Drawing.Point(6, 19);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(254, 197);
+            this.listView2.TabIndex = 63;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.List;
             // 
             // label88
             // 
@@ -1264,7 +1328,7 @@
             this.groupBox10.Controls.Add(this.groupBox13);
             this.groupBox10.Controls.Add(this.groupBox14);
             this.groupBox10.Controls.Add(this.groupBox12);
-            this.groupBox10.Location = new System.Drawing.Point(3, 536);
+            this.groupBox10.Location = new System.Drawing.Point(18, 539);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(402, 238);
             this.groupBox10.TabIndex = 56;
@@ -3506,6 +3570,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar5)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.groupBox16.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox10.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
@@ -3850,6 +3915,10 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.GroupBox groupBox15;
         private System.Windows.Forms.Label label88;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.Button button58;
+        private System.Windows.Forms.Button button57;
 
     }
 

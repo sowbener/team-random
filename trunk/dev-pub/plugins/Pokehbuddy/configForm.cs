@@ -316,6 +316,7 @@ namespace Pokehbuddyplug
             MacroLoad();
 
             this.groupBox10.Location = new System.Drawing.Point(6, 287);
+            this.groupBox16.Location = new System.Drawing.Point(3, 287);
             toolTip1.SetToolTip(this.textBox11, "Complicated, will think of this later");
 
             checkBox11.Checked = Pokehbuddy.MySettings.AllowAutoUpdate;
@@ -1786,7 +1787,16 @@ namespace Pokehbuddyplug
 
         private void button42_Click(object sender, System.EventArgs e)
         {
-            button43.Enabled = true;
+            //button43.Enabled = true;
+            for (int i = 0; i < 99; i++)
+            {
+                if (i < listView2.Items.Count) listView2.Items[i].Checked = false;
+                if (textBox11.Text.Contains(i.ToString()) && i < listView2.Items.Count) listView2.Items[i].Checked = true;
+            }
+
+            
+            groupBox16.Visible = true;
+
 
         }
 
@@ -2401,6 +2411,23 @@ namespace Pokehbuddyplug
         private void numericUpDown1_ValueChanged(object sender, System.EventArgs e)
         {
             comboBox17.SelectedText = "";
+        }
+
+        private void button58_Click(object sender, System.EventArgs e)
+        {
+            groupBox16.Visible = false;
+        }
+
+        private void button57_Click(object sender, System.EventArgs e)
+        {
+            string dummy="";
+            foreach (ListViewItem l in listView2.Items)
+            {
+                if (l.Checked) dummy = dummy + l.Index.ToString();
+            }
+            textBox11.Text = dummy;
+            groupBox16.Visible = false;
+            button43.Enabled = true;
         }
         
 
