@@ -95,8 +95,8 @@ namespace Bullseye.Routines
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Multi-Shot"),
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus66, true),
-                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
 
