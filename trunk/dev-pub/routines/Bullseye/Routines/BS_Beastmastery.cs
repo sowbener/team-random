@@ -74,10 +74,10 @@ namespace Bullseye.Routines
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus61 || BestialWrathUp),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus60, true),
-                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
 
@@ -91,8 +91,8 @@ namespace Bullseye.Routines
                 Spell.Cast("Multi-Shot"),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus60, true),
-                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
         internal static Composite BeastmasteryDefensive()

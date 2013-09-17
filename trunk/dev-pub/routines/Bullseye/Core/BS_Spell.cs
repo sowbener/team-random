@@ -663,8 +663,8 @@ namespace Bullseye.Core
             Logger.DebugLog("FixGlobalCooldownInitialize: using Singular GCD");
             switch (StyxWoW.Me.Class)
             {
-                case WoWClass.DeathKnight:
-                    FixGlobalCooldownCheckSpell = "Frost Presence";
+                case WoWClass.Hunter:
+                    FixGlobalCooldownCheckSpell = "Hunter's Mark";
                     break;
             }
 
@@ -673,8 +673,8 @@ namespace Bullseye.Core
 
             switch (StyxWoW.Me.Class)
             {
-                case WoWClass.DeathKnight:
-                    // FixGlobalCooldownCheckSpell = "";
+                case WoWClass.Hunter:
+                    FixGlobalCooldownCheckSpell = "Arcane Shot";
                     break;
             }
 #endif
