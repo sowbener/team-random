@@ -99,11 +99,11 @@ namespace Bullseye.Routines
             Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
             Spell.Cast("Powershot", ret => TalentPowershot),
             Spell.Cast("Barrage", ret => TalentBarrage),
-            Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
+            Spell.Cast("Serpent Sting", ret => !G.HasSerpentSting),
             Spell.Cast("Explosive Shot"),
             Spell.Cast("Kill Shot", ret => TargetSoonDead),
             Spell.Cast("Black Arrow"),
-            Spell.PreventDoubleCast("Multi Shot", 0.7),
+            Spell.PreventDoubleCast("Multi-Shot", 0.7),
             Spell.Cast("Dire Beast"),
             Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus66, true)
                );

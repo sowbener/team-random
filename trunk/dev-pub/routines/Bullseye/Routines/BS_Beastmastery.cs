@@ -53,7 +53,7 @@ namespace Bullseye.Routines
                                         new PrioritySelector(
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive())),
-                                        new Decorator(ret => BsHotKeyManager.IsAoe && SG.Instance.Beastmastery.CheckAoE && (U.NearbyAttackableUnitsCount >= 3 || U.IsAoETarget), BeastmasteryMt()),
+                                        new Decorator(ret => BsHotKeyManager.IsAoe, BeastmasteryMt()),
                                         BeastmasterySt())));
             }
         }
@@ -83,7 +83,10 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryMt()
         {
             return new PrioritySelector(
-                       );
+                Spell.Cast("Serpent Sting", ret => !G.HasSerpentSting),
+                Spell.Cast("Multi-Shot"),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767) + 0.1, target => Me.CurrentTarget, ret => Focus60, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641) + 0.1, target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
         internal static Composite BeastmasteryDefensive()
@@ -144,6 +147,7 @@ namespace Bullseye.Routines
         internal static bool LynxRush { get { return BsTalentManager.HasTalent(15) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(120697, 0, 2000); } }
         internal static bool RapidFireAura { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(3045, 0, 2000); } }
         internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 2000); } }
+        internal static bool SerpentStingAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(1978); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 6000); } }
         internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
         internal static bool FocusFireFiveStacks { get { return Me.HasCachedAura(19615, 5); } }

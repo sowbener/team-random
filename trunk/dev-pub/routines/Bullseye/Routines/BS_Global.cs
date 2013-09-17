@@ -140,56 +140,19 @@ namespace Bullseye.Routines
 
         #region Diseases
 
-        internal static bool HasBothDis
+
+        internal static bool HasSerpentSting
         {
             get
             {
                 if (!Me.GotTarget)
                     return false;
-                WoWAura frostFever =
-                    Me.CurrentTarget.GetAllAuras().FirstOrDefault(
-                        u => u.CreatorGuid == Me.Guid && u.SpellId == 55095);
-                WoWAura bloodPlague =
-                    Me.CurrentTarget.GetAllAuras().FirstOrDefault(
-                        u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-                return frostFever != null && frostFever.TimeLeft >= TimeSpan.FromSeconds(2) ||
-                       (bloodPlague != null && bloodPlague.TimeLeft >= TimeSpan.FromSeconds(2));
+                //return Me.CurrentTarget.HasCachedAura(Defines.SerpentStingAura, 0, 2000);	// ID doesn't work - have to use string...why?
+                //return Me.CurrentTarget.CachedHasAura("Serpent Sting", 0, true, 2000);
+                return Me.CurrentTarget != null && Me.CurrentTarget.HasAura("Serpent Sting", 0, true, 2000);
             }
         }
 
-        internal static bool HasffDis
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura frostFever = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 55095);
-                return frostFever != null && frostFever.TimeLeft >= TimeSpan.FromSeconds(2);
-            }
-        }
-
-        public static WoWUnit BestUnholyFrenzyTarget
-        {
-            get
-            {
-                // If the player has a focus target set, use it instead.
-                if (StyxWoW.Me.FocusedUnitGuid != 0 && StyxWoW.Me.FocusedUnit.IsAlive)
-                    return StyxWoW.Me.FocusedUnit;
-
-                return Me;
-            }
-        }
-
-        internal static bool HasbpDis
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura bloodPlague = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-                return bloodPlague != null && bloodPlague.TimeLeft >= TimeSpan.FromSeconds(2);
-            }
-        }
 
 
 

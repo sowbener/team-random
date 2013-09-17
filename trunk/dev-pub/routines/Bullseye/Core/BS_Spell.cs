@@ -171,6 +171,21 @@ namespace Bullseye.Core
 
         #region SpellCastingTime //Taken from PR?
 
+
+        public static bool HasAura(this WoWUnit unit, string aura, int stacks = 0, bool isMyAura = false, int msLeft = 0)
+        {
+            WoWAura result = unit.GetAuraFromName(aura, isMyAura);
+
+            if (result == null)
+                return false;
+
+            if (result.TimeLeft.TotalMilliseconds > msLeft)
+                return result.StackCount >= stacks;
+
+            return false;
+        }
+
+
         public static double GetSpellCastTime(string spell)
         {
             SpellFindResults results;
