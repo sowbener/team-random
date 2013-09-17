@@ -87,7 +87,6 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button56 = new System.Windows.Forms.Button();
-            this.label88 = new System.Windows.Forms.Label();
             this.button47 = new System.Windows.Forms.Button();
             this.button46 = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
@@ -310,6 +309,8 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.label88 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -352,6 +353,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.groupBox9.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -1159,9 +1161,9 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.label88);
             this.tabPage4.Controls.Add(this.numericUpDown1);
             this.tabPage4.Controls.Add(this.button56);
-            this.tabPage4.Controls.Add(this.label88);
             this.tabPage4.Controls.Add(this.button47);
             this.tabPage4.Controls.Add(this.button46);
             this.tabPage4.Controls.Add(this.groupBox10);
@@ -1224,18 +1226,6 @@
             this.button56.UseVisualStyleBackColor = true;
             this.button56.Click += new System.EventHandler(this.button56_Click);
             // 
-            // label88
-            // 
-            this.label88.AutoSize = true;
-            this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label88.Location = new System.Drawing.Point(414, 303);
-            this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(457, 120);
-            this.label88.TabIndex = 59;
-            this.label88.Text = "The Logic Manager is not fully implemented yet!\r\nIt is not being used during pet " +
-                "combat.\r\n\r\nBut feel free to start converting your old logics\r\nand play around wi" +
-                "th it";
-            // 
             // button47
             // 
             this.button47.Enabled = false;
@@ -1265,7 +1255,7 @@
             this.groupBox10.Controls.Add(this.groupBox13);
             this.groupBox10.Controls.Add(this.groupBox14);
             this.groupBox10.Controls.Add(this.groupBox12);
-            this.groupBox10.Location = new System.Drawing.Point(6, 287);
+            this.groupBox10.Location = new System.Drawing.Point(3, 536);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(402, 238);
             this.groupBox10.TabIndex = 56;
@@ -1822,15 +1812,12 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.groupBox15);
             this.tabPage2.Controls.Add(this.button55);
             this.tabPage2.Controls.Add(this.button48);
             this.tabPage2.Controls.Add(this.label73);
             this.tabPage2.Controls.Add(this.button28);
-            this.tabPage2.Controls.Add(this.checkBox12);
-            this.tabPage2.Controls.Add(this.checkBox10);
-            this.tabPage2.Controls.Add(this.checkBox9);
             this.tabPage2.Controls.Add(this.button27);
-            this.tabPage2.Controls.Add(this.comboBox9);
             this.tabPage2.Controls.Add(this.button13);
             this.tabPage2.Controls.Add(this.button12);
             this.tabPage2.Controls.Add(this.label22);
@@ -1839,10 +1826,7 @@
             this.tabPage2.Controls.Add(this.label12);
             this.tabPage2.Controls.Add(this.label51);
             this.tabPage2.Controls.Add(this.label71);
-            this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.button11);
             this.tabPage2.Controls.Add(this.listBox1);
-            this.tabPage2.Controls.Add(this.button10);
             this.tabPage2.Controls.Add(this.groupBox11);
             this.tabPage2.Controls.Add(this.label61);
             this.tabPage2.Controls.Add(this.button5);
@@ -1858,9 +1842,9 @@
             // 
             // button55
             // 
-            this.button55.Location = new System.Drawing.Point(627, 11);
+            this.button55.Location = new System.Drawing.Point(666, 10);
             this.button55.Name = "button55";
-            this.button55.Size = new System.Drawing.Size(108, 39);
+            this.button55.Size = new System.Drawing.Size(91, 39);
             this.button55.TabIndex = 36;
             this.button55.Text = "Rebuild Pet Database";
             this.button55.UseVisualStyleBackColor = true;
@@ -1902,33 +1886,36 @@
             this.checkBox12.AutoSize = true;
             this.checkBox12.Checked = true;
             this.checkBox12.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox12.Location = new System.Drawing.Point(748, 268);
+            this.checkBox12.Location = new System.Drawing.Point(20, 61);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(124, 17);
             this.checkBox12.TabIndex = 31;
             this.checkBox12.Text = "Save pet specific file";
             this.checkBox12.UseVisualStyleBackColor = true;
+            this.checkBox12.Visible = false;
             // 
             // checkBox10
             // 
             this.checkBox10.AutoSize = true;
             this.checkBox10.Enabled = false;
-            this.checkBox10.Location = new System.Drawing.Point(693, 310);
+            this.checkBox10.Location = new System.Drawing.Point(-35, 103);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(179, 17);
             this.checkBox10.TabIndex = 29;
             this.checkBox10.Text = "Overwrite existing similar species";
             this.checkBox10.UseVisualStyleBackColor = true;
+            this.checkBox10.Visible = false;
             // 
             // checkBox9
             // 
             this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(622, 291);
+            this.checkBox9.Location = new System.Drawing.Point(-106, 84);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(250, 17);
             this.checkBox9.TabIndex = 28;
             this.checkBox9.Text = "Save (similar) species (use only with basic skills)";
             this.checkBox9.UseVisualStyleBackColor = true;
+            this.checkBox9.Visible = false;
             this.checkBox9.CheckedChanged += new System.EventHandler(this.checkBox9_CheckedChanged);
             // 
             // button27
@@ -1949,10 +1936,11 @@
             "Pet 1",
             "Pet 2",
             "Pet 3"});
-            this.comboBox9.Location = new System.Drawing.Point(492, 35);
+            this.comboBox9.Location = new System.Drawing.Point(20, 58);
             this.comboBox9.Name = "comboBox9";
             this.comboBox9.Size = new System.Drawing.Size(71, 21);
             this.comboBox9.TabIndex = 26;
+            this.comboBox9.Visible = false;
             this.comboBox9.SelectedIndexChanged += new System.EventHandler(this.comboBox9_SelectedIndexChanged);
             // 
             // button13
@@ -2030,22 +2018,24 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(684, 473);
+            this.button1.Location = new System.Drawing.Point(-14, 15);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(189, 64);
             this.button1.TabIndex = 5;
             this.button1.Text = "Revert to species generic (AUTOSAVE, NO UNDO)";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(748, 226);
+            this.button11.Location = new System.Drawing.Point(20, 19);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(124, 36);
             this.button11.TabIndex = 18;
             this.button11.Text = "SAVE";
             this.button11.UseVisualStyleBackColor = true;
+            this.button11.Visible = false;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // listBox1
@@ -2060,12 +2050,13 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(492, 8);
+            this.button10.Location = new System.Drawing.Point(20, 31);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(95, 26);
             this.button10.TabIndex = 17;
             this.button10.Text = "Refresh pet";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Visible = false;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // groupBox11
@@ -3460,6 +3451,32 @@
             // 
             this.openFileDialog1.Filter = "XML Files|*.xml;";
             // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.button10);
+            this.groupBox15.Controls.Add(this.comboBox9);
+            this.groupBox15.Controls.Add(this.button11);
+            this.groupBox15.Controls.Add(this.checkBox9);
+            this.groupBox15.Controls.Add(this.checkBox10);
+            this.groupBox15.Controls.Add(this.checkBox12);
+            this.groupBox15.Controls.Add(this.button1);
+            this.groupBox15.Location = new System.Drawing.Point(779, 1535);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(169, 131);
+            this.groupBox15.TabIndex = 17;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "groupBox15";
+            this.groupBox15.Visible = false;
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(645, 97);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(39, 13);
+            this.label88.TabIndex = 62;
+            this.label88.Text = "Index :";
+            // 
             // configForm
             // 
             this.BackColor = System.Drawing.Color.Black;
@@ -3532,6 +3549,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.groupBox9.ResumeLayout(false);
+            this.groupBox15.ResumeLayout(false);
+            this.groupBox15.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3818,7 +3837,6 @@
         private System.Windows.Forms.Button button50;
         private System.Windows.Forms.Label label86;
         private System.Windows.Forms.Label label87;
-        private System.Windows.Forms.Label label88;
         private System.Windows.Forms.Label label90;
         private System.Windows.Forms.Label label89;
         private System.Windows.Forms.Button button51;
@@ -3830,6 +3848,8 @@
         private System.Windows.Forms.Button button55;
         private System.Windows.Forms.Button button56;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.Label label88;
 
     }
 

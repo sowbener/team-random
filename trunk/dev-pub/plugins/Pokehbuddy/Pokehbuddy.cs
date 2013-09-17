@@ -199,6 +199,7 @@ namespace Pokehbuddyplug
             {
                 File.Copy(Application.StartupPath + "\\Plugins\\Pokehbuddy\\Data\\PetLogics.db.default", cs);
             }
+            LoadPetSettings("0", "0");
 
 
             string filename = Application.StartupPath + "\\Plugins\\Pokehbuddy\\whitelist.txt";
@@ -543,17 +544,15 @@ namespace Pokehbuddyplug
              }*/
             //private string PetDefaultLogics[] = {"SWAPOUT Health(THISPET) ISLESSTHAN 50","CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false",""};
             bool didlogic = false;
-            LoadPetSettings(ReadActiveSlot(), ReadActiveSlotSpecies());
-            try
-            {
-                Logging.Write(GetEquippedOrDefaultLogic(ReadActiveSlot(), ReadActiveSlotSpecies()));
-            }
-            catch (Exception ex)
-            {
-                Logging.Write(ex.ToString());
-            }
+            //LoadPetSettings(ReadActiveSlot(), ReadActiveSlotSpecies());
+            
+             PetSettings.Logic=GetEquippedOrDefaultLogic(ReadActiveSlot(), ReadActiveSlotSpecies());
+            
 
             string dumdum = "";
+            Stopwatch dummy = new Stopwatch();
+            dummy.Start();
+
             if (!MySettings.DetailedLogging)
             {
                 dumdum = PreParsing(DefaultLogicz.Logic + "@" + PetSettings.Logic);
@@ -567,8 +566,7 @@ namespace Pokehbuddyplug
             string[] PetLogics = dumdum.Split('@');
             bool stopdoingstuff = false;
             BBLog("Doing Logic");
-            Stopwatch dummy = new Stopwatch();
-            dummy.Start();
+            
             foreach (string alogic in PetLogics)
             {
 
@@ -602,7 +600,7 @@ namespace Pokehbuddyplug
 
             }
             dummy.Stop();
-           // BBLog("time elapsed " + dummy.ElapsedMilliseconds);
+            BBLog("time elapsed " + dummy.ElapsedMilliseconds);
             dummy.Reset();
             if (Pokehbuddy.MySettings.DetailedLogging)
             {
@@ -727,7 +725,9 @@ namespace Pokehbuddyplug
             }
         }
         public string GetEquippedOrDefaultLogic(string petID, string speciesID)
+            
         {
+            if (!DigitsOnly(speciesID)) speciesID = GetSpeciesByName(speciesID);
             string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false";
 
             
@@ -813,74 +813,70 @@ namespace Pokehbuddyplug
             }
             return dummy;
         }
-
+        static bool DigitsOnly(string s)
+        {
+            foreach (char c in s)
+            {
+                if (c < '0' || c > '9')
+                    return false;
+            }
+            return true;
+        }
 
         public string GetEquippedOrDefaultSpellset(string petID, string speciesID)
         {
+            
             string dummy = "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)";
-
-
-            string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\PetLogics.db";
-
-            using (SQLiteConnection con = new SQLiteConnection(cs))
+            try
             {
-                con.Open();
-                string stm = "";
-
-                stm = "SELECT LogicID FROM PetSelection WHERE PetID = '" + petID + "'";
-                string returned = "-1";
-
-                using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                {
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                    {
-                        if (rdr.HasRows)
-                        {
-                            while (rdr.Read())
-                            {
-                                string cel1 = rdr.GetString(0);
-
-                                returned = cel1;
-
-                            }
-
-                        }
-                    }
-                }
                 
+                if (!DigitsOnly(speciesID))speciesID = GetSpeciesByName(speciesID);
 
+                
+                string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\PetLogics.db";
 
-
-                string whattodo = "";
-                if (returned == "-1")
+                using (SQLiteConnection con = new SQLiteConnection(cs))
                 {
-                    whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
-                }
-                else
-                {
-                    whattodo = "ID = '" + returned + "'";
-                }
+                    
+                    con.Open();
+                    string stm = "";
 
+                    stm = "SELECT LogicID FROM PetSelection WHERE PetID = '" + petID + "'";
+                    string returned = "-1";
 
-                stm = "SELECT Spellset FROM Logics WHERE " + whattodo;
-
-                using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                {
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
                     {
-                        if (rdr.HasRows)
+                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
                         {
-                            while (rdr.Read())
+                            if (rdr.HasRows)
                             {
-                                string cel1 = rdr.GetString(0);
-                                dummy = cel1;
+                                while (rdr.Read())
+                                {
+                                    string cel1 = rdr.GetString(0);
+
+                                    returned = cel1;
+
+                                }
+
                             }
                         }
                     }
-                }
-                if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
-                {
-                    stm = "SELECT Spellset FROM Logics WHERE SpeciesID = " + speciesID+" LIMIT 1" ;
+
+
+
+                    
+                    string whattodo = "";
+                    if (returned == "-1")
+                    {
+                        whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
+                    }
+                    else
+                    {
+                        whattodo = "ID = '" + returned + "'";
+                    }
+
+
+                    stm = "SELECT Spellset FROM Logics WHERE " + whattodo;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
                     {
@@ -896,15 +892,40 @@ namespace Pokehbuddyplug
                             }
                         }
                     }
+                    
+                    if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
+                    {
+                        stm = "SELECT Spellset FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
+
+                        using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
+                        {
+                            using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                            {
+                                if (rdr.HasRows)
+                                {
+                                    while (rdr.Read())
+                                    {
+                                        string cel1 = rdr.GetString(0);
+                                        dummy = cel1;
+                                    }
+                                }
+                            }
+                        }
+                        
 
 
 
 
+                    }
 
+                    con.Close();
                 }
-
-                con.Close();
             }
+            catch (Exception e)
+            {
+                Logging.Write(e.ToString());
+            }
+            
             return dummy;
         }
 
@@ -1039,7 +1060,7 @@ namespace Pokehbuddyplug
 
         public void WantSwapping()
         {
-            if (GetCurrentPetHealth() > 0 && GetPetHealth(1) < 30 && GetPetHealth(2) < 30 && GetPetHealth(3) < 30)
+            if (GetCurrentPetHealth() > 0 && GetPetHealth(1) < 25 && GetPetHealth(2) < 25 && GetPetHealth(3) < 25)
             {
                 return;
                 if (CanSelect(3)) { CombatCallPet(3); Thread.Sleep(500); return; }
@@ -1523,10 +1544,14 @@ namespace Pokehbuddyplug
             for (int i = 1; i < 4; i++)
             {
                 //if (MySettings.DetailedLogging) BBLog("Checking for custom abilities for pet slot: " + i + " ID:" + ReadSlot(i));
-                LoadPetSettings(ReadSlot(i), ReadSlotSpecies(i));
+                //LoadPetSettings(ReadSlot(i), ReadSlotSpecies(i));
+                
+                    PetSettings.SpellLayout = GetEquippedOrDefaultSpellset(ReadSlot(i), ReadSlotSpecies(i));
+                    //Logging.Write("6");
                 if (PetSettings.SpellLayout == "") PetSettings.SpellLayout = "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)";
                 //parse settings looking for AssignAbility1, AssignAbility2, AssignAbility3
                 string dumdum = PetSettings.SpellLayout;
+                //Logging.Write(dumdum);
 
                 string[] PetLogics = dumdum.Split('@');
 

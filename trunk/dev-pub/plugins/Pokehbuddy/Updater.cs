@@ -7,12 +7,14 @@ using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Styx.Common;
 
-
 namespace Pokehbuddyplug
 {
     internal static class Updater
     {
-        private const string PbSvnUrl = "http://team-random.googlecode.com/svn/trunk/PokeBuddy/Pokehbuddy/";
+        //private const string PbSvnUrl = "http://team-random.googlecode.com/svn/trunk/PokeBuddy/Pokehbuddy/"; // oude svn
+        //private const string PbSvnUrl = "http://subversion.assembla.com/svn/team-random/trunk/dev-priv/plugins/Pokehbuddy/";  // private beta
+        private const string PbSvnUrl = "http://subversion.assembla.com/svn/team-random/trunk/dev-pub/plugins/Pokehbuddy/";  // public beta
+        
 
         private static readonly Regex _linkPattern = new Regex(@"<li><a href="".+"">(?<ln>.+(?:..))</a></li>",
                                                                RegexOptions.CultureInvariant);

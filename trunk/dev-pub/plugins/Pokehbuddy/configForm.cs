@@ -314,7 +314,8 @@ namespace Pokehbuddyplug
             BlacklistLoad();
             WhitelistLoad();
             MacroLoad();
-            
+
+            this.groupBox10.Location = new System.Drawing.Point(6, 287);
             toolTip1.SetToolTip(this.textBox11, "Complicated, will think of this later");
 
             checkBox11.Checked = Pokehbuddy.MySettings.AllowAutoUpdate;
@@ -352,6 +353,8 @@ namespace Pokehbuddyplug
             comboBox14.SelectedIndex = Pokehbuddy.MySettings.MinPetsAlive - 1;
 
             comboBox8.Items.Clear();
+            
+
             int dummy = 0;
             for (int i = 1; i < 60; i++)
             {
@@ -1168,20 +1171,27 @@ namespace Pokehbuddyplug
 
             string theicon = "";
             if (numericUpDown1.Value == 0)
+                                
+                
             {
 
                 label75.Text = Pokehbuddy.ReadSlot(comboBox17.SelectedIndex + 1);
                 label77.Text = Pokehbuddy.ReadSlotSpecies(comboBox17.SelectedIndex + 1);
+                label71.Text=label75.Text;
+                label22.Text=label77.Text;
+
                 label79.Text = Pokehbuddy.GetSpeciesByName(label77.Text);
                 theicon = Pokehbuddy.SlotIcon(comboBox17.SelectedIndex + 1);
             }
             else
             {
                 int bla = (int)numericUpDown1.Value;
-                Logging.Write(bla.ToString());
+                //Logging.Write(bla.ToString());
                 label75.Text = Pokehbuddy.ReadIndex(bla);
                 label77.Text = Pokehbuddy.ReadIndexSpecies(bla);
                 label79.Text = Pokehbuddy.GetSpeciesByName(label77.Text);
+                label71.Text = label75.Text;
+                label22.Text = label77.Text;
                 theicon = Pokehbuddy.IndexIcon(bla);
             }
 
@@ -1193,6 +1203,7 @@ namespace Pokehbuddyplug
                 image = baseurl + image + ".jpg";
                 //Logging.Write("loading image :" + image);
                 pictureBox10.ImageLocation = image;
+                pictureBox2.ImageLocation = image;
                 /*//5.1//
                 label20.Text=pok.GetNameByID(label71.Text);
                 List<string> cnt3 = Lua.GetReturnValues("local speciesID, customName, _, _, _,_, name, icon  = C_PetJournal.GetPetInfoByPetID(string.format('%X',"+label71.Text+")) if customName==nil then return 'No custom name' end	return customName");
