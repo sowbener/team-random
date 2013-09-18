@@ -37,7 +37,7 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(false)]
         public bool PluginPulsing { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, DefaultValue(true)]
         public bool ScaleTps { get; set; }
 
         [Setting, DefaultValue(30)]
@@ -52,7 +52,7 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(ModifierKeys.Alt)]
         public ModifierKeys ModKeyChoice { get; set; }
 
-        [Setting, DefaultValue(Keys.X)]
+        [Setting, DefaultValue(Keys.F12)]
         public Keys PauseKeyChoice { get; set; }
 
         [Setting, DefaultValue(Keys.None)]
@@ -60,6 +60,5 @@ namespace Tyrael.Shared
 
         [Setting, DefaultValue("")]
         public string LastStatCounted { get; set; }
-
     }
 }
