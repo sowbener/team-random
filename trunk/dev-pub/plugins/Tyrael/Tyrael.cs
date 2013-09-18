@@ -70,6 +70,11 @@ namespace Tyrael
             }
         }
 
+        public override void Pulse()
+        {
+            TU.Scaling();
+        }
+
         public override void Stop()
         {
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");

@@ -52,10 +52,10 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(ModifierKeys.Alt)]
         public ModifierKeys ModKeyChoice { get; set; }
 
-        [Setting, DefaultValue(Keys.F12)]
+        [Setting, DefaultValue(Keys.X)]
         public Keys PauseKeyChoice { get; set; }
 
-        [Setting, DefaultValue(Keys.None)]
+        [Setting, DefaultValue(Keys.F12)]
         public Keys TreePerformanceChoice { get; set; }
 
         [Setting, DefaultValue("")]

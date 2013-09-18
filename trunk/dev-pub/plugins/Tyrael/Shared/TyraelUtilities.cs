@@ -41,8 +41,6 @@ namespace Tyrael.Shared
                         Logging.Write(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", elapsed, Lag.TotalMilliseconds);
                     }
 
-                    Scaling();
-
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
                 }
