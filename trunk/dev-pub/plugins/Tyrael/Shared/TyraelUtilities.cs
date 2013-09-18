@@ -20,7 +20,7 @@ namespace Tyrael.Shared
     public class TyraelUtilities
     {
         #region Performance Timer
-        public static int CachedTreeRootTicks = 0;
+        public static int CachedTreeRootTime = 0;
         public static bool TimerReady = true;
 
         private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
@@ -34,7 +34,7 @@ namespace Tyrael.Shared
                 if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
                     var elapsed = (int)TreePerformanceTimer.ElapsedMilliseconds;
-                    CachedTreeRootTicks = elapsed;
+                    CachedTreeRootTime = elapsed;
 
                     if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
                     {
@@ -58,19 +58,19 @@ namespace Tyrael.Shared
         public static void Scaling()
         {
             if (!TyraelSettings.Instance.ScaleTps || TimerReady == false) return;
-            if (CachedTreeRootTicks < 1)
+            if (CachedTreeRootTime < 1)
             {
-                Logging.WriteDiagnostic(Colors.DodgerBlue, "[Tyrael] CachedTreeRootTicks returns null");
+                Logging.WriteDiagnostic(Colors.DodgerBlue, "[Tyrael] CachedTreeRootTicks returns null ({0})", CachedTreeRootTime);
                 return;
             }
-            if (CachedTreeRootTicks > 199)
+            if (CachedTreeRootTime > 199)
             {
                 TreeRoot.TicksPerSecond = 5;
             }
             TimerReady = false;
-            var scaledTps = 1000/CachedTreeRootTicks;
+            var scaledTps = 1000/CachedTreeRootTime;
             TreeRoot.TicksPerSecond = (byte)scaledTps;
-            Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTicks, TimerReady);
+            Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTime, TimerReady);
             ScaleTimer(TyraelSettings.Instance.ScaleRefresh);
         }
 
