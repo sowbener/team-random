@@ -36,17 +36,12 @@
             System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test3");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.label91 = new System.Windows.Forms.Label();
-            this.button53 = new System.Windows.Forms.Button();
-            this.button52 = new System.Windows.Forms.Button();
-            this.button51 = new System.Windows.Forms.Button();
-            this.label90 = new System.Windows.Forms.Label();
-            this.label89 = new System.Windows.Forms.Label();
+            this.button59 = new System.Windows.Forms.Button();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.listBox8 = new System.Windows.Forms.ListBox();
             this.label87 = new System.Windows.Forms.Label();
-            this.label86 = new System.Windows.Forms.Label();
-            this.button50 = new System.Windows.Forms.Button();
-            this.button49 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkBox13 = new System.Windows.Forms.CheckBox();
             this.button54 = new System.Windows.Forms.Button();
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -381,81 +376,42 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage5.Controls.Add(this.label91);
-            this.tabPage5.Controls.Add(this.button53);
-            this.tabPage5.Controls.Add(this.button52);
-            this.tabPage5.Controls.Add(this.button51);
-            this.tabPage5.Controls.Add(this.label90);
-            this.tabPage5.Controls.Add(this.label89);
+            this.tabPage5.Controls.Add(this.button59);
+            this.tabPage5.Controls.Add(this.textBox12);
+            this.tabPage5.Controls.Add(this.listBox8);
             this.tabPage5.Controls.Add(this.label87);
-            this.tabPage5.Controls.Add(this.label86);
-            this.tabPage5.Controls.Add(this.button50);
-            this.tabPage5.Controls.Add(this.button49);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Size = new System.Drawing.Size(879, 546);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "1-Click Settings";
             // 
-            // label91
+            // button59
             // 
-            this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(126, 162);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(246, 13);
-            this.label91.TabIndex = 9;
-            this.label91.Text = "Enables Combat Bot, puts Lucky Yi on the whitelist";
+            this.button59.Location = new System.Drawing.Point(482, 223);
+            this.button59.Name = "button59";
+            this.button59.Size = new System.Drawing.Size(97, 159);
+            this.button59.TabIndex = 12;
+            this.button59.Text = "GO!";
+            this.button59.UseVisualStyleBackColor = true;
+            this.button59.Click += new System.EventHandler(this.button59_Click);
             // 
-            // button53
+            // textBox12
             // 
-            this.button53.Location = new System.Drawing.Point(13, 144);
-            this.button53.Name = "button53";
-            this.button53.Size = new System.Drawing.Size(107, 49);
-            this.button53.TabIndex = 8;
-            this.button53.Text = "Lucky Yi farming";
-            this.toolTip1.SetToolTip(this.button53, "Set BotBase to GB2 and enable PetArea");
-            this.button53.UseVisualStyleBackColor = true;
-            this.button53.Click += new System.EventHandler(this.button53_Click);
+            this.textBox12.Location = new System.Drawing.Point(8, 223);
+            this.textBox12.Multiline = true;
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(468, 168);
+            this.textBox12.TabIndex = 11;
             // 
-            // button52
+            // listBox8
             // 
-            this.button52.Location = new System.Drawing.Point(13, 308);
-            this.button52.Name = "button52";
-            this.button52.Size = new System.Drawing.Size(107, 49);
-            this.button52.TabIndex = 7;
-            this.button52.Text = "PVP - rating system";
-            this.toolTip1.SetToolTip(this.button52, "Set BotBase to GB2 and enable PetArea");
-            this.button52.UseVisualStyleBackColor = true;
-            this.button52.Click += new System.EventHandler(this.button52_Click);
-            // 
-            // button51
-            // 
-            this.button51.Location = new System.Drawing.Point(13, 253);
-            this.button51.Name = "button51";
-            this.button51.Size = new System.Drawing.Size(107, 49);
-            this.button51.TabIndex = 6;
-            this.button51.Text = "PVP - simple rotation";
-            this.toolTip1.SetToolTip(this.button51, "Set BotBase to GB2 and enable PetArea");
-            this.button51.UseVisualStyleBackColor = true;
-            this.button51.Click += new System.EventHandler(this.button51_Click);
-            // 
-            // label90
-            // 
-            this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(126, 81);
-            this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(287, 13);
-            this.label90.TabIndex = 5;
-            this.label90.Text = "Enables GatherBuddy2, PetArea and manages the settings.";
-            // 
-            // label89
-            // 
-            this.label89.AutoSize = true;
-            this.label89.Location = new System.Drawing.Point(126, 32);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(287, 13);
-            this.label89.TabIndex = 4;
-            this.label89.Text = "Enables GatherBuddy2, PetArea and manages the settings.";
+            this.listBox8.FormattingEnabled = true;
+            this.listBox8.Location = new System.Drawing.Point(8, 5);
+            this.listBox8.Name = "listBox8";
+            this.listBox8.Size = new System.Drawing.Size(468, 212);
+            this.listBox8.TabIndex = 10;
+            this.listBox8.SelectedIndexChanged += new System.EventHandler(this.listBox8_SelectedIndexChanged);
             // 
             // label87
             // 
@@ -463,45 +419,15 @@
             this.label87.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label87.Location = new System.Drawing.Point(86, 491);
             this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(717, 50);
+            this.label87.Size = new System.Drawing.Size(714, 50);
             this.label87.TabIndex = 3;
-            this.label87.Text = "When using these buttons you\'ll still need to make/download logics\r\nOtherwise, th" +
-                "e pets will keep spamming 1 until they are below 30%";
-            // 
-            // label86
-            // 
-            this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(126, 96);
-            this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(174, 26);
-            this.label86.TabIndex = 2;
-            this.label86.Text = "You might wanna change the \r\nPetArea profiles in PetArea Settings";
-            // 
-            // button50
-            // 
-            this.button50.Location = new System.Drawing.Point(13, 78);
-            this.button50.Name = "button50";
-            this.button50.Size = new System.Drawing.Size(107, 49);
-            this.button50.TabIndex = 1;
-            this.button50.Text = "Boost pet in slot 1\r\n(aka ringer mode)";
-            this.toolTip1.SetToolTip(this.button50, "Set BotBase to GB2 and enable PetArea");
-            this.button50.UseVisualStyleBackColor = true;
-            this.button50.Click += new System.EventHandler(this.button50_Click);
-            // 
-            // button49
-            // 
-            this.button49.Location = new System.Drawing.Point(13, 14);
-            this.button49.Name = "button49";
-            this.button49.Size = new System.Drawing.Size(107, 49);
-            this.button49.TabIndex = 0;
-            this.button49.Text = "Level all pets in current team";
-            this.toolTip1.SetToolTip(this.button49, "Set BotBase to GB2 and enable PetArea");
-            this.button49.UseVisualStyleBackColor = true;
-            this.button49.Click += new System.EventHandler(this.button49_Click);
+            this.label87.Text = "When using these you\'ll still need to make/download logics\r\nOtherwise, the pets w" +
+                "ill keep spamming 1 until they are below 30%";
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.checkBox13);
             this.tabPage1.Controls.Add(this.button54);
             this.tabPage1.Controls.Add(this.checkBox11);
             this.tabPage1.Controls.Add(this.groupBox7);
@@ -514,6 +440,18 @@
             this.tabPage1.Size = new System.Drawing.Size(879, 546);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General settings";
+            // 
+            // checkBox13
+            // 
+            this.checkBox13.AutoSize = true;
+            this.checkBox13.Location = new System.Drawing.Point(753, 297);
+            this.checkBox13.Name = "checkBox13";
+            this.checkBox13.Size = new System.Drawing.Size(118, 17);
+            this.checkBox13.TabIndex = 37;
+            this.checkBox13.Text = "Allow role detection";
+            this.toolTip1.SetToolTip(this.checkBox13, "Only functions on pets with nothing equipped");
+            this.checkBox13.UseVisualStyleBackColor = true;
+            this.checkBox13.CheckedChanged += new System.EventHandler(this.checkBox13_CheckedChanged);
             // 
             // button54
             // 
@@ -1222,7 +1160,7 @@
             this.groupBox16.Controls.Add(this.button58);
             this.groupBox16.Controls.Add(this.button57);
             this.groupBox16.Controls.Add(this.listView2);
-            this.groupBox16.Location = new System.Drawing.Point(405, 302);
+            this.groupBox16.Location = new System.Drawing.Point(136, 510);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(389, 231);
             this.groupBox16.TabIndex = 64;
@@ -1232,7 +1170,7 @@
             // 
             // button58
             // 
-            this.button58.Location = new System.Drawing.Point(266, 127);
+            this.button58.Location = new System.Drawing.Point(320, 131);
             this.button58.Name = "button58";
             this.button58.Size = new System.Drawing.Size(63, 33);
             this.button58.TabIndex = 65;
@@ -1242,7 +1180,7 @@
             // 
             // button57
             // 
-            this.button57.Location = new System.Drawing.Point(266, 79);
+            this.button57.Location = new System.Drawing.Point(320, 83);
             this.button57.Name = "button57";
             this.button57.Size = new System.Drawing.Size(63, 33);
             this.button57.TabIndex = 64;
@@ -1266,7 +1204,7 @@
             listViewItem4});
             this.listView2.Location = new System.Drawing.Point(6, 19);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(254, 197);
+            this.listView2.Size = new System.Drawing.Size(308, 197);
             this.listView2.TabIndex = 63;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.List;
@@ -3898,16 +3836,7 @@
         private System.Windows.Forms.Button button46;
         private System.Windows.Forms.TextBox hiddenbox;
         private System.Windows.Forms.Button button48;
-        private System.Windows.Forms.Button button49;
-        private System.Windows.Forms.Button button50;
-        private System.Windows.Forms.Label label86;
         private System.Windows.Forms.Label label87;
-        private System.Windows.Forms.Label label90;
-        private System.Windows.Forms.Label label89;
-        private System.Windows.Forms.Button button51;
-        private System.Windows.Forms.Button button52;
-        private System.Windows.Forms.Button button53;
-        private System.Windows.Forms.Label label91;
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.Button button54;
         private System.Windows.Forms.Button button55;
@@ -3919,6 +3848,10 @@
         private System.Windows.Forms.GroupBox groupBox16;
         private System.Windows.Forms.Button button58;
         private System.Windows.Forms.Button button57;
+        private System.Windows.Forms.CheckBox checkBox13;
+        private System.Windows.Forms.ListBox listBox8;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Button button59;
 
     }
 

@@ -91,6 +91,7 @@ using Styx.TreeSharp;
 //using Microsoft.VisualBasic.Interaction;
 using CalcEngine;
 using System.Data.SQLite;
+using System.Reflection;
 
 //using System.Data.SqlServerCe;
 
@@ -314,6 +315,7 @@ namespace Pokehbuddyplug
             BlacklistLoad();
             WhitelistLoad();
             MacroLoad();
+            GetQuickSettings();
 
             this.groupBox10.Location = new System.Drawing.Point(6, 287);
             this.groupBox16.Location = new System.Drawing.Point(3, 287);
@@ -2161,6 +2163,37 @@ namespace Pokehbuddyplug
 
         }
 
+        private void GetQuickSettings()
+        {
+            string[] array = Directory.GetFiles(Application.StartupPath + "\\Plugins\\Pokehbuddy\\QuickSettings", "*.cs");
+            //Logging.Write("getting quicksettings" + array.Length.ToString());
+            foreach (string s in array.Where(pp => !pp.Contains("blank")))
+            {
+              //  Logging.Write(s);
+                string ddd = Path.GetFileName(s).Replace(".cs", "") + "Init";
+                //Logging.Write(ddd);
+                
+                
+                MethodInfo theMethod = this.GetType().GetMethod(ddd);
+                
+                try
+                {
+                    theMethod.Invoke(this, null);
+                }
+                catch (Exception e)
+                {
+                    Logging.Write(e.ToString());
+                }
+
+            }
+            listBox8.Items.Clear();
+            foreach (string s in Pokehbuddy.quicksettingsnames)
+            {
+                listBox8.Items.Add(s);
+            }
+
+        }
+
         private void closeForm()
         {
             BlacklistSave();
@@ -2175,193 +2208,12 @@ namespace Pokehbuddyplug
             this.Close();
         }
 
-        private void button49_Click(object sender, System.EventArgs e)
-        {
-
-            ProfileManager.LoadEmpty();
-            
-            EnablePlugin("PetArea");
-            SetBotBase("gather");
-            
-
-            Pokehbuddy.MySettings.AboveLevel = 5;
-            Pokehbuddy.MySettings.AdFactor = 2;
-            Pokehbuddy.MySettings.BelowLevel = 3;
-            Pokehbuddy.MySettings.DisFactor = 2;
-            Pokehbuddy.MySettings.Distance = 300;
-            Pokehbuddy.MySettings.DoPreCombatSwapping = true;
-            Pokehbuddy.MySettings.DoPVP = false;
-            Pokehbuddy.MySettings.ForfeitIfNotInteresting = false;
-            Pokehbuddy.MySettings.GetRarity = 2;
-            Pokehbuddy.MySettings.HPFactor = 10;
-            Pokehbuddy.MySettings.LevelFactor = -20;
-            Pokehbuddy.MySettings.MinPetsAlive = 1;
-            Pokehbuddy.MySettings.PVPMaxTime = 1;
-            Pokehbuddy.MySettings.PVPMinTime = 0;
-            Pokehbuddy.MySettings.UseBandagesToHeal = 0;
-            
-            Pokehbuddy.MySettings.UseBlackList = true;
-            Pokehbuddy.MySettings.UseHealSkill = 1;
-            Pokehbuddy.MySettings.UseRatingSystem = true;
-            Pokehbuddy.MySettings.UseWhiteList = false;
-            Pokehbuddy.MySettings.PetOrder = "2,3,1";
-            closeForm();
-
-            
-        }
-        
-
-        private void button50_Click(object sender, System.EventArgs e)
-        {
-            //
-            ProfileManager.LoadEmpty();
-            
-            EnablePlugin("PetArea");
-            SetBotBase("gather");
-            
-            
 
 
-            string addtodefault = "SWAPOUT EnemyPetLevel ISGREATERTHAN MyPetLevel + 3 $ Health(THISPET) ISLESSTHAN 70 $ MyPetsAlive ISGREATERTHAN 1";
-            var item = listBox6.FindString(addtodefault);
-            if (item == ListBox.NoMatches)
-            {
-                listBox6.Items.Add(addtodefault);
-             }
-            SaveDefault();
-
-            Pokehbuddy.MySettings.AboveLevel = 8;
-            Pokehbuddy.MySettings.AdFactor = 2;
-            Pokehbuddy.MySettings.BelowLevel = 3;
-            Pokehbuddy.MySettings.DisFactor = 2;
-            Pokehbuddy.MySettings.Distance = 300;
-            Pokehbuddy.MySettings.DoPreCombatSwapping = false;
-            Pokehbuddy.MySettings.DoPVP = false;
-            Pokehbuddy.MySettings.ForfeitIfNotInteresting = false;
-            Pokehbuddy.MySettings.GetRarity = 2;
-            Pokehbuddy.MySettings.HPFactor = 10;
-            Pokehbuddy.MySettings.LevelFactor = -20;
-            Pokehbuddy.MySettings.MinPetsAlive = 1;
-            Pokehbuddy.MySettings.PVPMaxTime = 1;
-            Pokehbuddy.MySettings.PVPMinTime = 0;
-            Pokehbuddy.MySettings.UseBandagesToHeal = 0;
-
-            Pokehbuddy.MySettings.UseBlackList = true;
-            Pokehbuddy.MySettings.UseHealSkill = 1;
-            Pokehbuddy.MySettings.UseRatingSystem = false;
-            Pokehbuddy.MySettings.UseWhiteList = false;
-            Pokehbuddy.MySettings.PetOrder = "2,3,1";
-            closeForm();
-        }
-
-        private void button51_Click(object sender, System.EventArgs e)
-        {
-            ProfileManager.LoadEmpty();
-
-            //EnablePlugin("PetArea");
-            SetBotBase("combat bot");
 
 
-            Pokehbuddy.MySettings.AboveLevel = 5;
-            Pokehbuddy.MySettings.AdFactor = 2;
-            Pokehbuddy.MySettings.BelowLevel = 3;
-            Pokehbuddy.MySettings.DisFactor = 2;
-            Pokehbuddy.MySettings.Distance = 1;
-            Pokehbuddy.MySettings.DoPreCombatSwapping = true;
-            Pokehbuddy.MySettings.DoPVP = true;
-            Pokehbuddy.MySettings.ForfeitIfNotInteresting = false;
-            Pokehbuddy.MySettings.GetRarity = 2;
-            Pokehbuddy.MySettings.HPFactor = 10;
-            Pokehbuddy.MySettings.LevelFactor = -20;
-            Pokehbuddy.MySettings.MinPetsAlive = 1;
-            Pokehbuddy.MySettings.PVPMaxTime = 0;
-            Pokehbuddy.MySettings.PVPMinTime = 0;
-            Pokehbuddy.MySettings.UseBandagesToHeal = 0;
-
-            Pokehbuddy.MySettings.UseBlackList = true;
-            Pokehbuddy.MySettings.UseHealSkill = 1;
-            Pokehbuddy.MySettings.UseRatingSystem = false;
-            Pokehbuddy.MySettings.UseWhiteList = false;
-            Pokehbuddy.MySettings.PetOrder = "2,3,1";
-            closeForm();
-        }
-
-        private void button52_Click(object sender, System.EventArgs e)
-        {
-            ProfileManager.LoadEmpty();
-
-            //EnablePlugin("PetArea");
-            SetBotBase("combat bot");
 
 
-            Pokehbuddy.MySettings.AboveLevel = 5;
-            Pokehbuddy.MySettings.AdFactor = 2;
-            Pokehbuddy.MySettings.BelowLevel = 3;
-            Pokehbuddy.MySettings.DisFactor = 2;
-            Pokehbuddy.MySettings.Distance = 1;
-            Pokehbuddy.MySettings.DoPreCombatSwapping = true;
-            Pokehbuddy.MySettings.DoPVP = true;
-            Pokehbuddy.MySettings.ForfeitIfNotInteresting = false;
-            Pokehbuddy.MySettings.GetRarity = 2;
-            Pokehbuddy.MySettings.HPFactor = 10;
-            Pokehbuddy.MySettings.LevelFactor = 2;
-            Pokehbuddy.MySettings.MinPetsAlive = 1;
-            Pokehbuddy.MySettings.PVPMaxTime = 0;
-            Pokehbuddy.MySettings.PVPMinTime = 0;
-            Pokehbuddy.MySettings.UseBandagesToHeal = 0;
-
-            Pokehbuddy.MySettings.UseBlackList = true;
-            Pokehbuddy.MySettings.UseHealSkill = 1;
-            Pokehbuddy.MySettings.UseRatingSystem = true;
-            Pokehbuddy.MySettings.UseWhiteList = false;
-            Pokehbuddy.MySettings.PetOrder = "2,3,1";
-            closeForm();
-
-        }
-
-        private void button53_Click(object sender, System.EventArgs e)
-        {
-            ProfileManager.LoadEmpty();
-
-            //EnablePlugin("PetArea");
-            SetBotBase("combat bot");
-
-
-            Pokehbuddy.MySettings.AboveLevel = 5;
-            Pokehbuddy.MySettings.AdFactor = 2;
-            Pokehbuddy.MySettings.BelowLevel = 3;
-            Pokehbuddy.MySettings.DisFactor = 2;
-            Pokehbuddy.MySettings.Distance = 300;
-            Pokehbuddy.MySettings.DoPreCombatSwapping = true;
-            Pokehbuddy.MySettings.DoPVP = false;
-            Pokehbuddy.MySettings.ForfeitIfNotInteresting = false;
-            Pokehbuddy.MySettings.GetRarity = 2;
-            Pokehbuddy.MySettings.HPFactor = 10;
-            Pokehbuddy.MySettings.LevelFactor = 2;
-            Pokehbuddy.MySettings.MinPetsAlive = 1;
-            Pokehbuddy.MySettings.PVPMaxTime = 0;
-            Pokehbuddy.MySettings.PVPMinTime = 0;
-            Pokehbuddy.MySettings.UseBandagesToHeal = 0;
-
-            Pokehbuddy.MySettings.UseBlackList = false;
-            Pokehbuddy.MySettings.UseHealSkill = 1;
-            Pokehbuddy.MySettings.UseRatingSystem = true;
-            Pokehbuddy.MySettings.UseWhiteList = true;
-            Pokehbuddy.MySettings.PetOrder = "2,3,1";
-
-
-            string addwhitelist = "lucky yi";
-            var item = listBox4.FindString(addwhitelist);
-            if (item == ListBox.NoMatches)
-            {
-                listBox4.Items.Add(addwhitelist);
-            }
-            WhitelistSave();
-
-
-            closeForm();
-
-        }
 
         private void checkBox11_CheckedChanged(object sender, System.EventArgs e)
         {
@@ -2428,6 +2280,33 @@ namespace Pokehbuddyplug
             textBox11.Text = dummy;
             groupBox16.Visible = false;
             button43.Enabled = true;
+        }
+
+        private void checkBox13_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.AllowRoleDetect = checkBox4.Checked;
+        }
+
+        private void listBox8_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (listBox8.SelectedIndex < 0) return;
+            textBox12.Text = Pokehbuddy.quicksettingdesc[listBox8.SelectedIndex];
+        }
+
+        private void button59_Click(object sender, System.EventArgs e)
+        {
+            if (listBox8.SelectedIndex < 0) return;
+            string ddd = Pokehbuddy.quicksettingsfuncs[listBox8.SelectedIndex];
+            MethodInfo theMethod = this.GetType().GetMethod(ddd);
+
+            try
+            {
+                theMethod.Invoke(this, null);
+            }
+            catch (Exception ee)
+            {
+                Logging.Write(ee.ToString());
+            }
         }
         
 

@@ -80,6 +80,7 @@ using Styx.WoWInternals.WoWObjects;
 using Styx.TreeSharp;
 //using Microsoft.VisualBasic.Interaction;
 using CalcEngine;
+using System.Reflection;
 
 namespace Pokehbuddyplug
 {
@@ -104,6 +105,9 @@ namespace Pokehbuddyplug
         //private static readonly Form1 Gui2 = new Form1();
         public static List<string> theblacklist = new List<string>();
         public static List<string> thewhitelist = new List<string>();
+        public static List<string> quicksettingsnames = new List<string>();
+        public static List<string> quicksettingdesc = new List<string>();
+        public static List<string> quicksettingsfuncs = new List<string>();
 
         private string[] PetDefaultLogics = { "SWAPOUT Health(THISPET) ISLESSTHAN 30", "PASSTURN HASBUFF(822) EQUALS true", "PASSTURN HASBUFF(498) EQUALS true", "CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false" };
         public Pokehbuddy()
@@ -185,6 +189,7 @@ namespace Pokehbuddyplug
                 catch { } // Catch all, like 404's.
             }
         }
+       
 
         public override void Initialize()
         {
@@ -193,6 +198,7 @@ namespace Pokehbuddyplug
             initdone = true;
 
             PrintSettings();
+            //GetQuickSettings();
 
             string cs = Application.StartupPath + "\\Plugins\\Pokehbuddy\\PetLogics.db";
             if (!File.Exists(cs))
@@ -869,6 +875,11 @@ namespace Pokehbuddyplug
                     if (returned == "-1")
                     {
                         whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
+
+                        if (MySettings.AllowRoleDetect)
+                        {
+                            //iets anders  whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
+                        }
                     }
                     else
                     {
@@ -2492,10 +2503,10 @@ namespace Pokehbuddyplug
             Load();
         }
 
-        [Setting, DefaultValue(1)]
+        [Setting, DefaultValue(4)]
         public int HPFactor { get; set; }
 
-        [Setting, DefaultValue(-100)]
+        [Setting, DefaultValue(-30)]
         public int LevelFactor { get; set; }
 
         [Setting, DefaultValue(1)]
@@ -2504,7 +2515,7 @@ namespace Pokehbuddyplug
         [Setting, DefaultValue(1)]
         public int DisFactor { get; set; }
 
-        [Setting, DefaultValue(250)]
+        [Setting, DefaultValue(300)]
         public int Distance { get; set; }
 
         [Setting, DefaultValue(3)]
@@ -2546,7 +2557,7 @@ namespace Pokehbuddyplug
         [Setting, DefaultValue(false)]
         public bool UseWhiteList { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, DefaultValue(true)]
         public bool UseBlackList { get; set; }
 
         [Setting, DefaultValue(true)]
@@ -2560,7 +2571,10 @@ namespace Pokehbuddyplug
 
         [Setting, DefaultValue(false)]
         public bool AllowAutoUpdate { get; set; }
-
+        
+        [Setting, DefaultValue(false)]
+        public bool AllowRoleDetect { get; set; }
+        
         [Setting, DefaultValue(0)]
         public int CurrentRevision { get; set; }
         
