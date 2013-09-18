@@ -30,10 +30,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Unknown");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Simple leveling");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Boost leveling");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test3");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Unknown");
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Simple leveling");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Boost leveling");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("test3");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button59 = new System.Windows.Forms.Button();
@@ -84,6 +84,7 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button49 = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.button58 = new System.Windows.Forms.Button();
             this.button57 = new System.Windows.Forms.Button();
@@ -1108,6 +1109,7 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.button49);
             this.tabPage4.Controls.Add(this.groupBox16);
             this.tabPage4.Controls.Add(this.label88);
             this.tabPage4.Controls.Add(this.numericUpDown1);
@@ -1155,6 +1157,18 @@
             this.tabPage4.Text = "Logic Manager";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
             // 
+            // button49
+            // 
+            this.button49.Enabled = false;
+            this.button49.Location = new System.Drawing.Point(634, 166);
+            this.button49.Name = "button49";
+            this.button49.Size = new System.Drawing.Size(95, 32);
+            this.button49.TabIndex = 65;
+            this.button49.Text = "Unequip Logics";
+            this.toolTip1.SetToolTip(this.button49, "This allows the Role Detector to find a logic for this pet");
+            this.button49.UseVisualStyleBackColor = true;
+            this.button49.Click += new System.EventHandler(this.button49_Click);
+            // 
             // groupBox16
             // 
             this.groupBox16.Controls.Add(this.button58);
@@ -1191,17 +1205,17 @@
             // listView2
             // 
             this.listView2.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.Checked = true;
-            listViewItem2.StateImageIndex = 1;
-            listViewItem3.StateImageIndex = 0;
-            listViewItem4.Checked = true;
-            listViewItem4.StateImageIndex = 1;
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.Checked = true;
+            listViewItem6.StateImageIndex = 1;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.Checked = true;
+            listViewItem8.StateImageIndex = 1;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4});
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8});
             this.listView2.Location = new System.Drawing.Point(6, 19);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(308, 197);
@@ -1849,7 +1863,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(879, 546);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Pet Logic Creator";
+            this.tabPage2.Text = "Pet Logic Builder";
             // 
             // groupBox15
             // 
@@ -3852,6 +3866,7 @@
         private System.Windows.Forms.ListBox listBox8;
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Button button59;
+        private System.Windows.Forms.Button button49;
 
     }
 

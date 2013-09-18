@@ -1580,6 +1580,12 @@ namespace Pokehbuddyplug
             using (SQLiteConnection con = new SQLiteConnection(cs))
             {
                 con.Open();
+                if (logicid == "-1")
+                {
+                    string q = @"DELETE FROM PetSelection Where PetID = " + petid;
+                    doNonQuery(q);
+                    return;
+                }
 
                 string stm = "SELECT LogicID FROM PetSelection WHERE PetID = " + petid;
 
@@ -2307,6 +2313,11 @@ namespace Pokehbuddyplug
             {
                 Logging.Write(ee.ToString());
             }
+        }
+
+        private void button49_Click(object sender, System.EventArgs e)
+        {
+            SetPetLogic(label75.Text, "-1");
         }
         
 
