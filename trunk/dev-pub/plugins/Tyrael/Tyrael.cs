@@ -81,11 +81,6 @@ namespace Tyrael
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
         }
 
-        public override void Pulse()
-        {
-            TU.Scaling();
-        }
-
         public static void PluginPulsing()
         {
             if (TyraelSettings.Instance.PluginPulsing)

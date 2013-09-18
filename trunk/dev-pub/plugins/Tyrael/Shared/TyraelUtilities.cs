@@ -20,8 +20,8 @@ namespace Tyrael.Shared
     public class TyraelUtilities
     {
         #region Performance Timer
-        public static int CachedTreeRootTime = 0;
-        public static bool TimerReady = true;
+        private static int _cachedTreeRootTime;
+        private static bool _timerReady = true;
 
         private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
         private static ScaleTimer _timer;
@@ -34,12 +34,14 @@ namespace Tyrael.Shared
                 if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
                     var elapsed = (int)TreePerformanceTimer.ElapsedMilliseconds;
-                    CachedTreeRootTime = elapsed;
+                    _cachedTreeRootTime = elapsed;
 
                     if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
                     {
                         Logging.Write(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", elapsed, Lag.TotalMilliseconds);
                     }
+
+                    Scaling();
 
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
@@ -57,27 +59,27 @@ namespace Tyrael.Shared
 
         public static void Scaling()
         {
-            if (!TyraelSettings.Instance.ScaleTps || TimerReady == false) 
+            if (!TyraelSettings.Instance.ScaleTps || _timerReady == false) 
                 return;
 
-            if (CachedTreeRootTime < 1)
+            if (_cachedTreeRootTime < 1)
             {
-                Logging.WriteDiagnostic(Colors.DodgerBlue, "[Tyrael] CachedTreeRootTicks returns null ({0})", CachedTreeRootTime);
+                Logging.WriteDiagnostic(Colors.DodgerBlue, "[Tyrael] CachedTreeRootTicks returns null ({0})", _cachedTreeRootTime);
                 return;
             }
 
-            if (CachedTreeRootTime > 199)
+            if (_cachedTreeRootTime > 199)
             {
                 TreeRoot.TicksPerSecond = 5;
             }
 
-            TimerReady = false;
-            var scaledTps = 1000/CachedTreeRootTime;
+            _timerReady = false;
+            var scaledTps = 1000/_cachedTreeRootTime;
             TreeRoot.TicksPerSecond = (byte)scaledTps;
 
             if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
             {
-                Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTime, TimerReady);
+                Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, _cachedTreeRootTime, _timerReady);
             }
 
             ScaleTimer(TyraelSettings.Instance.ScaleRefresh);
@@ -93,7 +95,7 @@ namespace Tyrael.Shared
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            TimerReady = true;
+            _timerReady = true;
         }
         #endregion
 
