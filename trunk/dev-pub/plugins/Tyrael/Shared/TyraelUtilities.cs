@@ -1,26 +1,30 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Windows.Media;
-using Styx;
+﻿using Styx;
 using Styx.Common;
-using System;
-using System.Globalization;
-using System.Net;
-using System.Threading.Tasks;
 using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Windows.Forms;
+using System.Windows.Media;
 using Action = Styx.TreeSharp.Action;
+using ScaleTimer = System.Timers.Timer;
 
 namespace Tyrael.Shared
 {
     public class TyraelUtilities
     {
         #region Performance Timer
+        public static int CachedTreeRootTicks = 0;
+        public static bool TimerReady = true;
 
-        public static int CachedTreeRootTicks;
         private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
+        private static ScaleTimer _timer;
 
         /* Usage: TreeSharp.Tree(true) within a composite. */
         internal static Composite Tree(bool enable)
@@ -51,29 +55,37 @@ namespace Tyrael.Shared
             get { return TimeSpan.FromMilliseconds((StyxWoW.WoWClient.Latency)); }
         }
 
-        //private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
-        //private static int _cachedTreeRoot;
+        public static void Scaling()
+        {
+            if (!TyraelSettings.Instance.ScaleTps || TimerReady == false) return;
+            if (CachedTreeRootTicks < 1)
+            {
+                Logging.WriteDiagnostic(Colors.DodgerBlue, "[Tyrael] CachedTreeRootTicks returns null");
+                return;
+            }
+            if (CachedTreeRootTicks > 199)
+            {
+                TreeRoot.TicksPerSecond = 5;
+            }
+            TimerReady = false;
+            var scaledTps = 1000/CachedTreeRootTicks;
+            TreeRoot.TicksPerSecond = (byte)scaledTps;
+            Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTicks, TimerReady);
+            ScaleTimer(TyraelSettings.Instance.ScaleRefresh);
+        }
 
-        //internal static Composite Tree(bool enable)
-        //{
-        //    return new Action(ret =>
-        //    {
-        //        if (TreePerformanceTimer.ElapsedMilliseconds > 0)
-        //        {
-        //            var elap = (int)TreePerformanceTimer.ElapsedMilliseconds;
-        //            _cachedTreeRoot = elap;
-        //            //if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
-        //            Logging.Write(Colors.GreenYellow, @"[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", elap, Lag.TotalMilliseconds);
+        public static void ScaleTimer(int tickingtime)
+        {
+            _timer = new ScaleTimer(tickingtime);
+            _timer.Elapsed += OnTimedEvent;
+            _timer.AutoReset = false;
+            _timer.Enabled = true;
+        }
 
-        //            TreePerformanceTimer.Stop();
-        //            TreePerformanceTimer.Reset();
-        //        }
-
-        //        TreePerformanceTimer.Start();
-
-        //        return RunStatus.Failure;
-        //    });
-        //}
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            TimerReady = true;
+        }
         #endregion
 
         #region Hotkeys

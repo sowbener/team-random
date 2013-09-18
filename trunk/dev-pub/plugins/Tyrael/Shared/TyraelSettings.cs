@@ -43,6 +43,9 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(30)]
         public int HonorbuddyTps { get; set; }
 
+        [Setting, DefaultValue(1000)]
+        public int ScaleRefresh { get; set; }
+
         [Setting, DefaultValue(TyraelUtilities.LockState.True)]
         public TyraelUtilities.LockState FrameLock { get; set; }
 

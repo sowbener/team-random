@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.SettingsPanel = new System.Windows.Forms.Panel();
+            this.TPSTrackBar = new System.Windows.Forms.TrackBar();
             this.checkClicktoMove = new System.Windows.Forms.CheckBox();
             this.comboPauseKey = new System.Windows.Forms.ComboBox();
             this.comboModifierKey = new System.Windows.Forms.ComboBox();
@@ -37,7 +38,6 @@
             this.checkHealingMode = new System.Windows.Forms.CheckBox();
             this.checkFrameLock = new System.Windows.Forms.CheckBox();
             this.checkChatOutput = new System.Windows.Forms.CheckBox();
-            this.TPSTrackBar = new System.Windows.Forms.TrackBar();
             this.SaveButton = new System.Windows.Forms.Button();
             this.NamePanel = new System.Windows.Forms.Panel();
             this.LabelName = new System.Windows.Forms.Label();
@@ -60,6 +60,22 @@
             this.SettingsPanel.Name = "SettingsPanel";
             this.SettingsPanel.Size = new System.Drawing.Size(507, 50);
             this.SettingsPanel.TabIndex = 0;
+            // 
+            // TPSTrackBar
+            // 
+            this.TPSTrackBar.BackColor = System.Drawing.Color.White;
+            this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.TPSTrackBar.Location = new System.Drawing.Point(24, 2);
+            this.TPSTrackBar.Maximum = 200;
+            this.TPSTrackBar.Minimum = 15;
+            this.TPSTrackBar.Name = "TPSTrackBar";
+            this.TPSTrackBar.Size = new System.Drawing.Size(449, 45);
+            this.TPSTrackBar.SmallChange = 10;
+            this.TPSTrackBar.TabIndex = 0;
+            this.TPSTrackBar.TickFrequency = 10;
+            this.TPSTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.TPSTrackBar.Value = 30;
+            this.TPSTrackBar.Scroll += new System.EventHandler(this.TPSTrackBar_Scroll);
             // 
             // checkClicktoMove
             // 
@@ -176,22 +192,6 @@
             this.checkChatOutput.CheckedChanged += new System.EventHandler(this.checkChatOutput_CheckedChanged);
             this.checkChatOutput.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.checkChatOutput.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkChatOutput_MouseMove);
-            // 
-            // TPSTrackBar
-            // 
-            this.TPSTrackBar.BackColor = System.Drawing.Color.White;
-            this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.TPSTrackBar.Location = new System.Drawing.Point(24, 2);
-            this.TPSTrackBar.Maximum = 200;
-            this.TPSTrackBar.Minimum = 15;
-            this.TPSTrackBar.Name = "TPSTrackBar";
-            this.TPSTrackBar.Size = new System.Drawing.Size(449, 45);
-            this.TPSTrackBar.SmallChange = 10;
-            this.TPSTrackBar.TabIndex = 0;
-            this.TPSTrackBar.TickFrequency = 10;
-            this.TPSTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.TPSTrackBar.Value = 30;
-            this.TPSTrackBar.Scroll += new System.EventHandler(this.TPSTrackBar_Scroll);
             // 
             // SaveButton
             // 

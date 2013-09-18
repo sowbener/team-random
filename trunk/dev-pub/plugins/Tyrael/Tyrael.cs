@@ -11,7 +11,8 @@ using System;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Tyrael.Shared;
-using Action = Styx.TreeSharp.Action;
+using TU = Tyrael.Shared.TyraelUtilities;
+using TA = Styx.TreeSharp.Action;
 
 namespace Tyrael
 {
@@ -33,7 +34,7 @@ namespace Tyrael
 
         public override PulseFlags PulseFlags
         {
-            get { return !TyraelUtilities.IsTyraelPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua; }
+            get { return !TU.IsTyraelPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua; }
         }
 
         public override Form ConfigurationForm
@@ -56,8 +57,8 @@ namespace Tyrael
 
                 PluginPulsing();
 
-                TyraelUtilities.StatCounter();
-                TyraelUtilities.RegisterHotkeys();
+                TU.StatCounter();
+                TU.RegisterHotkeys();
                 TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
 
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
@@ -72,12 +73,17 @@ namespace Tyrael
         public override void Stop()
         {
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");
-            TyraelUtilities.RemoveHotkeys();
+            TU.RemoveHotkeys();
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Reconfiguring Honorbuddy.");
             GlobalSettings.Instance.LogoutForInactivity = true;
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Resetting TreeRoot to default value.");
             TreeRoot.TicksPerSecond = DefaultTps;
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
+        }
+
+        public override void Pulse()
+        {
+            TU.Scaling();
         }
 
         public static void PluginPulsing()
@@ -99,11 +105,11 @@ namespace Tyrael
         private static PrioritySelector CreateRoot()
         {
             return new PrioritySelector(
-                new Decorator(ret => TyraelSettings.Instance.ScaleTps, TyraelUtilities.Tree(true)),
-                new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
-                new Switch<TyraelUtilities.LockState>(ctx => TyraelSettings.Instance.FrameLock,
-                    new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.True, ExecuteFrameLocked()),
-                    new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.False, ExecuteNormal())),
+                new Decorator(ret => TyraelSettings.Instance.ScaleTps, TU.Tree(true)),
+                new Decorator(ret => TU.IsTyraelPaused, new ActionAlwaysSucceed()),
+                new Switch<TU.LockState>(ctx => TyraelSettings.Instance.FrameLock,
+                    new SwitchArgument<TU.LockState>(TU.LockState.True, ExecuteFrameLocked()),
+                    new SwitchArgument<TU.LockState>(TU.LockState.False, ExecuteNormal())),
                 RoutineManager.Current.PreCombatBuffBehavior,
                 RoutineManager.Current.RestBehavior);
         }
@@ -113,7 +119,7 @@ namespace Tyrael
             return new Decorator(ret => SanityCheckCombat(),
                 new PrioritySelector(
                     new FrameLockSelector(RoutineManager.Current.HealBehavior),
-                    new FrameLockSelector(RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure)),
+                    new FrameLockSelector(RoutineManager.Current.CombatBuffBehavior ?? new TA(ret => RunStatus.Failure)),
                     new FrameLockSelector(RoutineManager.Current.CombatBehavior)));
         }
 
@@ -122,7 +128,7 @@ namespace Tyrael
             return new Decorator(ret => SanityCheckCombat(),
                 new PrioritySelector(
                     RoutineManager.Current.HealBehavior,
-                    RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
+                    RoutineManager.Current.CombatBuffBehavior ?? new TA(ret => RunStatus.Failure),
                     RoutineManager.Current.CombatBehavior));
         }
 
