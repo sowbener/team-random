@@ -57,20 +57,29 @@ namespace Tyrael.Shared
 
         public static void Scaling()
         {
-            if (!TyraelSettings.Instance.ScaleTps || TimerReady == false) return;
+            if (!TyraelSettings.Instance.ScaleTps || TimerReady == false) 
+                return;
+
             if (CachedTreeRootTime < 1)
             {
                 Logging.WriteDiagnostic(Colors.DodgerBlue, "[Tyrael] CachedTreeRootTicks returns null ({0})", CachedTreeRootTime);
                 return;
             }
+
             if (CachedTreeRootTime > 199)
             {
                 TreeRoot.TicksPerSecond = 5;
             }
+
             TimerReady = false;
             var scaledTps = 1000/CachedTreeRootTime;
             TreeRoot.TicksPerSecond = (byte)scaledTps;
-            Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTime, TimerReady);
+
+            if (IsKeyAsyncDown(TyraelSettings.Instance.TreePerformanceChoice))
+            {
+                Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTime, TimerReady);
+            }
+
             ScaleTimer(TyraelSettings.Instance.ScaleRefresh);
         }
 
