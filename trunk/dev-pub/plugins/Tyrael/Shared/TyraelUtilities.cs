@@ -31,7 +31,7 @@ namespace Tyrael.Shared
         {
             return new Action(ret =>
             {
-                if (TreePerformanceTimer.ElapsedMilliseconds > 0 && TimerReady)
+                if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
                     var elapsed = (int)TreePerformanceTimer.ElapsedMilliseconds;
                     CachedTreeRootTime = elapsed;
