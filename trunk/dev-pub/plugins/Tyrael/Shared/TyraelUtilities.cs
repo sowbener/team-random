@@ -117,12 +117,12 @@ namespace Tyrael.Shared
                 IsTyraelPaused = !IsTyraelPaused;
                 if (IsTyraelPaused)
                 {
-                    Lua.DoString("print('[Tyrael] Rotation Paused!')");
+                    Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     TreeRoot.TicksPerSecond = 5;
                 }
                 else
                 {
-                    Lua.DoString("print('[Tyrael] Rotation Resumed!')");
+                    Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
                 }
             });
