@@ -33,7 +33,7 @@ namespace Bullseye.Routines
                         new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
                         G.InitializeCaching(),
-                        HandleCommon(),
+                        new Decorator(ret => SG.Instance.Beastmastery.EnablePetStuff, HandleCommon()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckAutoAttack, Lua.StartAutoAttack),
@@ -65,12 +65,12 @@ namespace Bullseye.Routines
         {
             return new PrioritySelector(
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
-                Spell.Cast("Focus Fire", ret => FocusFireFiveStacks),
+                Spell.Cast("Focus Fire", ret => FocusFireFiveStacks && !Me.HasAura(34471)),
                 Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
-                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
+                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp && !FocusFireFiveStacks),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
-                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
+                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f && Me.Pet.IsAlive),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
@@ -126,6 +126,12 @@ namespace Bullseye.Routines
                     (SG.Instance.Beastmastery.RapidFire == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.RapidFire == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.RapidFire == BsEnum.AbilityTrigger.Always)
+                    )),
+                //Rabid
+                Spell.Cast("Rapid", ret => (
+                    (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||

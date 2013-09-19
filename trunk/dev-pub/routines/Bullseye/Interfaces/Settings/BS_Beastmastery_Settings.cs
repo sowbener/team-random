@@ -38,6 +38,13 @@ namespace Bullseye.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(BsEnum.AbilityTrigger.Always)]
         [Category("Beastmastery - Ability Options")]
+        [DisplayName("Rabid")]
+        [Description("Select the usage of Rabid")]
+        public BsEnum.AbilityTrigger Rabid { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(BsEnum.AbilityTrigger.Always)]
+        [Category("Beastmastery - Ability Options")]
         [DisplayName("Stampede")]
         [Description("Select the usage of Stampede.")]
         public BsEnum.AbilityTrigger Stampede { get; set; }
@@ -109,6 +116,14 @@ namespace Bullseye.Interfaces.Settings
         [DisplayName("Enable Auto Attack")]
         [Description("Enables auto attack, persistent combat while tabbing units.")]
         public bool CheckAutoAttack { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Beastmastery - Selectable Options")]
+        [DisplayName("Enable Pet Stuff")]
+        [Description("Enables Pet Stuff (Auto Mend Pet)")]
+        public bool EnablePetStuff { get; set; }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
