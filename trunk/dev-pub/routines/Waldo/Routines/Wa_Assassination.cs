@@ -118,6 +118,7 @@ namespace Waldo.Routines
               new Decorator(ret => U.NearbyAttackableUnitsCount > 2,
               new PrioritySelector(
               Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 5),
+              Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 1 && G.TargetRuptureFalling),
               Spell.Cast("Envenom", ret => Lua.PlayerComboPts > 4),
               Spell.Cast("Slice and Dice", ret => Me.ComboPoints > 1 && G.FucknoSND)
                 )));
