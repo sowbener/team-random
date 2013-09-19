@@ -77,9 +77,9 @@ namespace FuryUnleashed.Routines
                                 new Decorator(ret => Me.HealthPercent < 100, SoO_FuryDefensive()),
                                 SoO_FuryUtility(),
                                 SoO_FuryVictorious(),
+                                I.CreateItemBehaviour(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
                                         SoO_FuryRacials(),
                                         SoO_FuryOffensive())),
                                 new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_FuryMt()),
@@ -89,9 +89,9 @@ namespace FuryUnleashed.Routines
                                 new Decorator(ret => Me.HealthPercent < 100, SoO_FuryDefensive()),
                                 SoO_FuryUtility(),
                                 SoO_FuryVictorious(),
+                                I.CreateItemBehaviour(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
                                         SoO_FuryRacials(),
                                         SoO_FuryOffensive())),
                                 new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_FuryMt()),
@@ -144,12 +144,17 @@ namespace FuryUnleashed.Routines
         #endregion
 
         #region 5.4 Rotations
-
-        // SimulationCraft 540-1 (r17660) - 1H/2H Fury - Slightly Modified.
-
+        // SimulationCraft 540-1 (r17675) - 1H/2H Fury - Slightly Modified.
         internal static Composite SoO_FurySt()
         {
             return new PrioritySelector(
+                new Decorator(ret => G.AlmostDead,
+                    new PrioritySelector(
+                        Spell.Cast("Colossus Smash", ret => G.ColossusSmashAura),
+                        Spell.Cast("Bloodthirst", ret => !G.EnrageAura),
+                        Spell.Cast("Execute"),
+                        Spell.Cast("Heroic Strike", ret => G.DumpAllRage && Me.CurrentRage > 60)
+                        )),
                 //actions.single_target+=/heroic_strike,if=((debuff.colossus_smash.up&rage>=40)&target.health.pct>=20)|rage>=100&buff.enrage.up
                 Spell.Cast("Heroic Strike", ret => (Me.CurrentRage >= 100 && G.EnrageAura) || (G.NonExecuteCheck && Me.CurrentRage >= 40 && G.ColossusSmashAura)),
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up

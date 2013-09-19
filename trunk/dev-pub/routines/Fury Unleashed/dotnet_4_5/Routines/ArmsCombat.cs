@@ -75,9 +75,9 @@ namespace FuryUnleashed.Routines
                                 new Decorator(ret => Me.HealthPercent < 100, SoO_ArmsDefensive()),
                                 SoO_ArmsUtility(),
                                 SoO_ArmsVictorious(),
+                                I.CreateItemBehaviour(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
                                         SoO_ArmsRacials(),
                                         SoO_ArmsOffensive())),
                                 new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
@@ -87,9 +87,9 @@ namespace FuryUnleashed.Routines
                                 new Decorator(ret => Me.HealthPercent < 100, SoO_ArmsDefensive()),
                                 SoO_ArmsUtility(),
                                 SoO_ArmsVictorious(),
+                                I.CreateItemBehaviour(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
                                         SoO_ArmsRacials(),
                                         SoO_ArmsOffensive())),
                                 new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
@@ -142,14 +142,14 @@ namespace FuryUnleashed.Routines
         #endregion
 
         #region 5.4 Rotations
-
-        // SimulationCraft 540-1 (r17624) - 2H Arms
-
+        // SimulationCraft 540-1 (r17677) - 2H Arms
         internal static Composite SoO_ArmsSt()
         {
             return new PrioritySelector(
                 //actions.single_target=heroic_strike,if=rage>115|(debuff.colossus_smash.up&rage>40&set_bonus.tier16_2pc_melee)
                 Spell.Cast("Heroic Strike", ret => Me.CurrentRage > 115 || (G.ColossusSmashAura && Me.CurrentRage > 40 && G.Tier16TwoPieceBonus)),
+                //actions.single_target+=/mortal_strike,if=dot.deep_wounds.remains<1.0|buff.enrage.down
+                Spell.Cast("Mortal Strike", ret => G.FadingDw(1000) || !G.EnrageAura),
                 //actions.single_target+=/colossus_smash,if=debuff.colossus_smash.remains<1.0
                 Spell.Cast("Colossus Smash", ret => !G.ColossusSmashAura || G.FadingCs(1000)),
                 //actions.single_target+=/mortal_strike
@@ -158,12 +158,12 @@ namespace FuryUnleashed.Routines
                 Spell.Cast("Storm Bolt", ret => G.SbTalent && G.ColossusSmashAura && Tier6AbilityUsage),
                 //actions.single_target+=/dragon_roar,if=enabled&!debuff.colossus_smash.up
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityUsage),
-                //actions.single_target+=/execute,if=buff.sudden_execute.down|buff.taste_for_blood.down|rage>70
-                Spell.Cast("Execute", ret => !G.SuddenExecAura || !G.TasteforBloodAura || Me.CurrentRage > 70),
-                //actions.single_target+=/slam,if=(debuff.colossus_smash.up&buff.taste_for_blood.stack<3)&target.health.pct>=20
-                Spell.Cast("Slam", ret => G.NonExecuteCheck && !G.TasteForBloodS3 && G.ColossusSmashAura),
-                //actions.single_target+=/overpower,if=target.health.pct>=20|buff.sudden_execute.up
-                Spell.Cast("Overpower", ret => G.NonExecuteCheck || G.SuddenExecAura),
+                //actions.single_target+=/execute,if=buff.sudden_execute.down|buff.taste_for_blood.down|rage>90|target.time_to_die<12
+                Spell.Cast("Execute", ret => !G.SuddenExecAura || !G.TasteforBloodAura || Me.CurrentRage > 90),
+                //actions.single_target+=/overpower,if=target.health.pct>=20&rage<100|buff.sudden_execute.up
+                Spell.Cast("Overpower", ret => (G.NonExecuteCheck && Me.CurrentRage < 100) || G.SuddenExecAura),
+                //actions.single_target+=/slam,if=target.health.pct>=20
+                Spell.Cast("Slam", ret => G.NonExecuteCheck),
                 //actions.single_target+=/battle_shout
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
@@ -182,23 +182,25 @@ namespace FuryUnleashed.Routines
                 Spell.Cast("Cleave", ret => Me.CurrentRage > 110 && U.NearbyAttackableUnitsCount <= 4),
                 //actions.aoe+=/bladestorm,if=enabled&(buff.bloodbath.up|!talent.bloodbath.enabled)
                 Spell.Cast("Bladestorm", ret => G.BsTalent && (G.BloodbathAura || !G.BbTalent) && Tier4AbilityAoEUsage),
-                //actions.aoe+=/dragon_roar,if=enabled&(buff.bloodbath.up|!talent.bloodbath.enabled)
-                Spell.Cast("Dragon Roar", ret => G.DrTalent && (G.BloodbathAura || !G.BbTalent) && Tier4AbilityAoEUsage),
-                //Added
+                //actions.aoe+=/dragon_roar,if=enabled&debuff.colossus_smash.down
+                Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityAoEUsage),
+                //for the sake of Shockwave support ... added.
                 Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                //actions.aoe+=/thunder_clap,target=2,if=dot.deep_wounds.attack_power*1.1<stat.attack_power
-                Spell.Cast("Thunderclap", ret => U.NeedThunderclapUnitsCount > 1),
                 //actions.aoe+=/colossus_smash,if=debuff.colossus_smash.remains<1
-                Spell.Cast("Colossus Smash", ret => !G.ColossusSmashAura || G.FadingCs(1000)),
+                Spell.Cast("Colossus Smash", ret => G.FadingCs(1000)),
+                //actions.aoe+=/thunder_clap,target=2,if=dot.deep_wounds.attack_power*1.1<stat.attack_power
+                Spell.Cast("Thunderclap", ret => U.NeedThunderclapUnitsCount > 0),
+                //actions.aoe+=/mortal_strike,if=active_enemies=2|rage<50
+                Spell.Cast("Mortal Strike", ret => U.NearbyAttackableUnitsCount == 2 || Me.CurrentRage < 50),
+                //actions.aoe+=/execute,if=buff.sudden_execute.down&active_enemies=2
+                Spell.Cast("Execute", ret => !G.SuddenExecAura && U.NearbyAttackableUnitsCount == 2),
                 //actions.aoe+=/slam,if=buff.sweeping_strikes.up&debuff.colossus_smash.up
                 Spell.Cast("Slam", ret => G.SweepingStrikesAura && G.ColossusSmashAura),
-                //actions.aoe+=/mortal_strike
-                Spell.Cast("Mortal Strike"),
-                //Added
-                Spell.Cast("Storm Bolt", ret => G.SwTalent && Tier6AbilityUsage),
+                //actions.aoe+=/overpower,if=active_enemies=2
+                Spell.Cast("Overpower", ret => U.NearbyAttackableUnitsCount == 2),
                 //actions.aoe+=/slam,if=buff.sweeping_strikes.up
                 Spell.Cast("Slam", ret => G.SweepingStrikesAura),
-                //actions.aoe+=/battle_shout,if=rage<70 
+                //actions.aoe+=/battle_shout
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me)))
