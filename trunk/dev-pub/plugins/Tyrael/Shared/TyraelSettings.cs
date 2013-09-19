@@ -25,6 +25,7 @@ namespace Tyrael.Shared
         {
         }
 
+        #region UI Settings
         [Setting, DefaultValue(true)]
         public bool ChatOutput { get; set; }
 
@@ -43,9 +44,6 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(30)]
         public int HonorbuddyTps { get; set; }
 
-        [Setting, DefaultValue(1000)]
-        public int ScaleRefresh { get; set; }
-
         [Setting, DefaultValue(TyraelUtilities.LockState.True)]
         public TyraelUtilities.LockState FrameLock { get; set; }
 
@@ -54,11 +52,24 @@ namespace Tyrael.Shared
 
         [Setting, DefaultValue(Keys.X)]
         public Keys PauseKeyChoice { get; set; }
+        #endregion
+
+        #region Manual Settings
+        // You can change these values in the XML file.
+        [Setting, DefaultValue(1000)]
+        public int ScaleRefresh { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool ScaleLogging { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool TreePerformanceLogging { get; set; }
 
         [Setting, DefaultValue(Keys.F12)]
         public Keys TreePerformanceChoice { get; set; }
 
         [Setting, DefaultValue("")]
         public string LastStatCounted { get; set; }
+        #endregion
     }
 }

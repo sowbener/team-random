@@ -37,7 +37,8 @@ namespace Tyrael.Shared
                     var elapsed = (int)TreePerformanceTimer.ElapsedMilliseconds;
                     CachedTreeRootTime = elapsed;
 
-                    Logging.WriteDiagnostic(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", CachedTreeRootTime, CachedClientLatency);
+                    if (TyraelSettings.Instance.TreePerformanceLogging)
+                        Logging.Write(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", CachedTreeRootTime, CachedClientLatency);                        
 
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
@@ -71,7 +72,8 @@ namespace Tyrael.Shared
             var scaledTps = 1000/CachedTreeRootTime;
             TreeRoot.TicksPerSecond = (byte)scaledTps;
 
-            Logging.WriteDiagnostic(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTime, TimerReady);
+            if (TyraelSettings.Instance.ScaleLogging)
+                Logging.Write(Colors.GreenYellow, "TPS set to: {0} ({1} is CachedTreeRootTicks) - ({2} is TimerState)", TreeRoot.TicksPerSecond, CachedTreeRootTime, TimerReady);
 
             ScaleTimer(TyraelSettings.Instance.ScaleRefresh);
         }
