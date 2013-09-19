@@ -61,12 +61,15 @@ namespace FuryUnleashed
 
         public override void Pulse()
         {
-            if (!StyxWoW.IsInGame || !StyxWoW.IsInWorld)
+			if (!StyxWoW.IsInWorld || Me == null || !Me.IsValid || Me.IsDead)
+            {
                 return;
+            }
 
             if (TalentManager.Pulse())
-                // ReSharper disable once RedundantJumpStatement
-                return;
+			{
+				return;
+			}
         }
 
         public override void OnButtonPress()
