@@ -75,7 +75,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus61 || BestialWrathUp),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => KillCommandCooldown && (Focus61 || BestialWrathUp)),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
@@ -188,6 +188,7 @@ namespace Bullseye.Routines
         internal static bool SerpentStingAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(1978); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 6000); } }
         internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
+        internal static bool KillCommandCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(34026).Cooldown; } }
         internal static bool FocusFireFiveStacks { get { return Me.HasCachedAura(19615, 5); } }
         internal static bool BestialWrathNotUp { get { return Lua.PlayerPower > 60 && !Me.HasAura(34471); } }
         internal static bool BestialWrathUp { get { return Me.HasAura(34471); } }
