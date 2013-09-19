@@ -3,6 +3,7 @@ using FuryUnleashed.Shared.Helpers;
 using FuryUnleashed.Shared.Managers;
 using FuryUnleashed.Shared.Utilities;
 using Styx;
+using Styx.CommonBot;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
@@ -95,6 +96,30 @@ namespace FuryUnleashed.Core
 
         #endregion
 
+        #region Unit Booleans
+
+        public static bool IsInRange(this WoWUnit unit, string spell)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                var spellId = results.Override != null ? results.Override.Id : results.Original.Id;
+                return IsInRange(unit, WoWSpell.FromId(spellId));
+            }
+            return false;
+        }
+
+        public static bool IsInRange(this WoWUnit unit, int spell)
+        {
+            return IsInRange(unit, WoWSpell.FromId(spell));
+        }
+
+        public static bool IsInRange(this WoWUnit unit, WoWSpell spell)
+        {
+            return unit.Distance <= (spell.MaxRange + unit.CombatReach);
+        }
+        #endregion
+
         #region Self Functions
         // Using CombatReach - Range test
         public static float CalculatedMeleeRange
@@ -149,6 +174,22 @@ namespace FuryUnleashed.Core
         public static bool IsDoNotUseOnTgt
         {
             get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
+        }
+
+        public static bool IsViable(WoWObject wowObject)
+        {
+            return (wowObject != null) && wowObject.IsValid;
+        }
+
+        public static bool IsValid(this WoWUnit unit)
+        {
+            return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
+        }
+
+        public static void UpdateObjectManager()
+        {
+            using (new PerformanceLogger("ObjManager Update"))
+                ObjectManager.Update();
         }
         #endregion
     }
