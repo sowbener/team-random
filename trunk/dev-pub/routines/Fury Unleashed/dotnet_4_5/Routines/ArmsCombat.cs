@@ -69,6 +69,7 @@ namespace FuryUnleashed.Routines
                                 SoO_ArmsRacials(),
                                 SoO_ArmsOffensive(),
                                 new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
+                                new Decorator(ret => G.ExecuteCheck, SoO_ArmsExec()),
                                 SoO_ArmsSt())),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -81,6 +82,7 @@ namespace FuryUnleashed.Routines
                                         SoO_ArmsRacials(),
                                         SoO_ArmsOffensive())),
                                 new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
+                                new Decorator(ret => G.ExecuteCheck, SoO_ArmsExec()),
                                 SoO_ArmsSt())),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
@@ -93,6 +95,7 @@ namespace FuryUnleashed.Routines
                                         SoO_ArmsRacials(),
                                         SoO_ArmsOffensive())),
                                 new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
+                                new Decorator(ret => G.ExecuteCheck, SoO_ArmsExec()),
                                 SoO_ArmsSt()))));
             }
         }
@@ -142,12 +145,12 @@ namespace FuryUnleashed.Routines
         #endregion
 
         #region 5.4 Rotations
-        // SimulationCraft 540-1 (r17677) - 2H Arms
+        // SimulationCraft 540-1 (r17677) - 2H Arms - Slightly customized with experiences and Icy-Veins - http://www.icy-veins.com/arms-warrior-wow-pve-dps-rotation-cooldowns-abilities
         internal static Composite SoO_ArmsSt()
         {
             return new PrioritySelector(
                 //actions.single_target=heroic_strike,if=rage>115|(debuff.colossus_smash.up&rage>40&set_bonus.tier16_2pc_melee)
-                Spell.Cast("Heroic Strike", ret => Me.CurrentRage > 115 || (G.ColossusSmashAura && Me.CurrentRage > 40 && G.Tier16TwoPieceBonus)),
+                Spell.Cast("Heroic Strike", ret => Me.CurrentRage > 115 || (Me.CurrentRage > 95 && G.UrGlyph) || (G.ColossusSmashAura && Me.CurrentRage > 40 && G.Tier16TwoPieceBonus)),
                 //actions.single_target+=/mortal_strike,if=dot.deep_wounds.remains<1.0|buff.enrage.down
                 Spell.Cast("Mortal Strike", ret => G.FadingDw(1000) || !G.EnrageAura),
                 //actions.single_target+=/colossus_smash,if=debuff.colossus_smash.remains<1.0
@@ -157,13 +160,19 @@ namespace FuryUnleashed.Routines
                 //actions.single_target+=/storm_bolt,if=enabled&debuff.colossus_smash.up
                 Spell.Cast("Storm Bolt", ret => G.SbTalent && G.ColossusSmashAura && Tier6AbilityUsage),
                 //actions.single_target+=/dragon_roar,if=enabled&!debuff.colossus_smash.up
-                Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityUsage),
+                new Decorator(ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityUsage,
+                    new PrioritySelector(
+                        Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityUsage),
+                        Spell.Cast("Impending Victory", ret => G.IvTalent))),
                 //actions.single_target+=/execute,if=buff.sudden_execute.down|buff.taste_for_blood.down|rage>90|target.time_to_die<12
-                Spell.Cast("Execute", ret => !G.SuddenExecAura || !G.TasteforBloodAura || Me.CurrentRage > 90),
+                //Different Execute Rotation
                 //actions.single_target+=/overpower,if=target.health.pct>=20&rage<100|buff.sudden_execute.up
-                Spell.Cast("Overpower", ret => (G.NonExecuteCheck && Me.CurrentRage < 100) || G.SuddenExecAura),
+                new Decorator(ret => (G.NonExecuteCheck && Me.CurrentRage < 100) || G.SuddenExecAura,
+                    new PrioritySelector(
+                        Spell.Cast("Overpower", ret => !G.RecklessnessAura),
+                        Spell.Cast("Slam", ret => G.RecklessnessAura))),
                 //actions.single_target+=/slam,if=target.health.pct>=20
-                Spell.Cast("Slam", ret => G.NonExecuteCheck),
+                Spell.Cast("Slam", ret => G.NonExecuteCheck && Me.CurrentRage > 40),
                 //actions.single_target+=/battle_shout
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
@@ -171,6 +180,28 @@ namespace FuryUnleashed.Routines
                 //actions.single_target+=/heroic_throw 
                 Spell.Cast("Heroic Throw", ret => SG.Instance.Arms.CheckHeroicThrow)
                 );
+        }
+
+        internal static Composite SoO_ArmsExec()
+        {
+            return new PrioritySelector(
+                Spell.Cast("Colossus Smash"),
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast("Mortal Strike"),
+                        Spell.Cast("Execute", ret => Me.CurrentRage >= Me.MaxRage - 15),
+                        Spell.Cast("Overpower", ret => G.SuddenExecAura),
+                        Spell.Cast("Dragon Roar", ret => G.DrTalent && Tier4AbilityUsage),
+                        Spell.Cast("Impending Victory", ret => G.IvTalent),
+                        new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me))))),
+                new Decorator(ret => G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast("Execute"),
+                        Spell.Cast("Dragon Roar", ret => G.DrTalent && Tier4AbilityUsage),
+                        Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage)
+                        )));
         }
 
         internal static Composite SoO_ArmsMt()
