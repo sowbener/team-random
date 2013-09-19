@@ -196,7 +196,7 @@ namespace Bullseye.Routines
         internal static bool MultiShotThrillProc { get { return Me.HasAura("Thrill of the Hunt") && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura("Thrill of the Hunt"); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
-        internal static bool Focus60 { get { return Lua.PlayerPower < 60; } }
+        internal static bool Focus60 { get { return Lua.PlayerPower < 64; } }
         internal static bool Focus61 { get { return Lua.PlayerPower >= 61; } }
 
 
