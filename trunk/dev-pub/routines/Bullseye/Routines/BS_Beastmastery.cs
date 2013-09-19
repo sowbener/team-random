@@ -75,7 +75,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => ThrillProc || KillCommandCooldown && (Focus61 || BestialWrathUp)),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => ThrillProc || (KillCommandCooldown && Focus61) || BestialWrathUp || Lua.PlayerPower > 90),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
