@@ -90,7 +90,7 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 Spell.Cast("Taunt", ret => SG.Instance.Protection.CheckAutoTaunt && !G.TargettingMe),
                 Spell.Cast("Execute", ret => G.ExecuteCheck && Me.CurrentRage >= 100 && !G.TargettingMe),
-                Spell.Cast("Heroic Strike", ret => G.UltimatumAura || (Me.CurrentRage >= 100 && !G.TargettingMe && G.NonExecuteCheck)),
+                Spell.Cast("Heroic Strike", ret => G.UltimatumAura || (Me.CurrentRage >= Me.MaxRage - 10 && !G.TargettingMe && G.NonExecuteCheck)),
                 Spell.Cast("Shield Slam", ret => Me.CurrentRage <= 90),
                 Spell.Cast("Revenge", ret => Me.CurrentRage <= 100),
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Protection.ShoutSelection,
@@ -114,7 +114,7 @@ namespace FuryUnleashed.Routines
         internal static Composite ProtMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Cleave", ret => G.UltimatumAura || (Me.CurrentRage >= 100 && !G.TargettingMe)),
+                Spell.Cast("Cleave", ret => G.UltimatumAura || (Me.CurrentRage >= Me.MaxRage - 10 && !G.TargettingMe)),
                 Spell.Cast("Thunder Clap"),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (
                     (SG.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
