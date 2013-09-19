@@ -21,6 +21,7 @@ namespace Tyrael.Shared
     {
         #region Performance Timer
         public static bool TimerReady = true;
+        public static double CachedClientLatency = 0;
         public static int CachedTreeRootTime = 0;
 
         private static readonly Stopwatch TreePerformanceTimer = new Stopwatch();
@@ -36,7 +37,7 @@ namespace Tyrael.Shared
                     var elapsed = (int)TreePerformanceTimer.ElapsedMilliseconds;
                     CachedTreeRootTime = elapsed;
 
-                    Logging.WriteDiagnostic(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", elapsed, Lag.TotalMilliseconds);
+                    Logging.WriteDiagnostic(Colors.GreenYellow, "[TreePerformance] Elapsed Time to traverse: {0} ms ({1} ms client lag)", CachedTreeRootTime, CachedClientLatency);
 
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
@@ -85,6 +86,8 @@ namespace Tyrael.Shared
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
+            var latency = Lag.TotalMilliseconds;
+            CachedClientLatency = latency;
             TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
             TimerReady = true;
         }
