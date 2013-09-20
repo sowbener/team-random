@@ -30,19 +30,17 @@ namespace DeathVader.Routines
             get
             {
                 return new PrioritySelector(
-                   new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
                     new Decorator(ret => Me.Specialization == WoWSpec.DeathKnightUnholy && DvUnit.DefaultBuffCheck && ((SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new PrioritySelector(
-                            Spell.Cast("Raise Dead", ret => Me, ret => SG.Instance.Unholy.PrebuffPet && !Me.GotAlivePet))),
-                    new Action(delegate { DvSpell.GetCachedAuras(); return RunStatus.Failure; }));
+                            Spell.Cast("Raise Dead", ret => Me, ret => SG.Instance.Unholy.PrebuffPet && !Me.GotAlivePet))));
             }
         }
 
         internal static Composite InitializeCaching()
         {
             return new PrioritySelector(
-                new Action(delegate { DvSpell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { DvUnit.GetAttackableMeleeUnitsCount(); return RunStatus.Failure; })
+                new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                new Action(delegate { DvUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; })
                 );
         }
 
@@ -62,14 +60,35 @@ namespace DeathVader.Routines
             get {  return Me.GetRuneCount(0) + Me.GetRuneCount(1); }
         }
 
-        internal static int BloodRuneSlotsActive { get { return Me.GetRuneCount(0) + Me.GetRuneCount(1); } }
+        internal static int BloodRuneSlotsActive
+        {
+            get
+            {
+               // DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
+                return StyxWoW.Me.BloodRuneCount;
+            }
+        }
 
-        internal static int FrostRuneSlotsActive { get { return Me.GetRuneCount(2) + Me.GetRuneCount(3); } }
+        internal static int FrostRuneSlotsActive
+        {
+            get
+            {
+               // DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
+                return StyxWoW.Me.FrostRuneCount;
+            }
+        }
 
 
         internal static bool DeathRuneSlotsActiveFesterReal { get { return StyxWoW.Me.BloodRuneCount > 1 || StyxWoW.Me.DeathRuneCount > 1; } }
-        
-        internal static int UnholyRuneSlotsActive { get { return Me.GetRuneCount(4) + Me.GetRuneCount(5); } }
+
+        internal static int UnholyRuneSlotsActive
+        {
+            get
+            {
+               // DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
+                return StyxWoW.Me.UnholyRuneCount;
+            }
+        }
 
         /// <summary>
         /// check that we are in the last tick of Frost Fever or Blood Plague on current target and have a fully depleted rune
@@ -81,7 +100,7 @@ namespace DeathVader.Routines
                 if (!Me.GotTarget)
                     return false;
                 int bloodPlague = (int)Me.CurrentTarget.GetAuraTimeLeft("Blood Plague").TotalMilliseconds;
-                return DvTalentManager.HasTalent(2) && Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura(bloodPlague) && (BloodRuneSlotsActive == 0 || FrostRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0);
+                return DvTalentManager.HasTalent(2) && Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura(55078) && (BloodRuneSlotsActive == 0 || FrostRuneSlotsActive == 0);
             }
         }
 

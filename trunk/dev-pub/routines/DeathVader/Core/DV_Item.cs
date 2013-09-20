@@ -59,7 +59,7 @@ namespace DeathVader.Core
         public static Composite UseItem(uint id)
         {
             return new PrioritySelector(
-                ctx => ObjectManager.GetObjectsOfType<WoWItem>().FirstOrDefault(item => item.Entry == id),
+                ctx => ObjectManager.GetObjectsOfTypeFast<WoWItem>().FirstOrDefault(item => item.Entry == id),
                 new Decorator(
                     ctx => ctx != null && CanUseItem((WoWItem)ctx),
                     new Action(ctx => UseItem((WoWItem)ctx))));

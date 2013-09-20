@@ -455,6 +455,9 @@ namespace DeathVader.Core
         #endregion
 
         #region Aura Tracking & Caching
+
+
+        
         // Cached Aura retrieval - Aura's applied by anyone
         public static bool HasAnyCachedAura(this WoWUnit unit, string aura, int stacks, int msuLeft = 0)
         {
@@ -644,6 +647,25 @@ namespace DeathVader.Core
 
             return false;
         }
+
+        public static uint HasCachedStack(this WoWUnit unit, string aura, bool fromMyAura = false, int expiry = 1000)
+        {
+            {
+                if (unit != null)
+                {
+
+                    var cachedResult = fromMyAura ? CachedTargetAuras.FirstOrDefault(a => a.Name == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : CachedTargetAuras.FirstOrDefault(a => a.Name == aura && a.TimeLeft > TimeSpan.Zero);
+
+                    if (cachedResult == null)
+                        return 0;
+
+                    return cachedResult.StackCount;
+                }
+                return 0;
+            }
+        }
+        
+        //this WoWUnit unit, string aura, bool fromMyAura = false, int expiry = 1000
 
         public static bool HasCachedAura(this WoWUnit unit, int aura, int stacks, int msuLeft = 0)
         {

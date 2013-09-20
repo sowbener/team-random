@@ -18,7 +18,7 @@ using System.Linq;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 
-namespace DeathVader
+namespace DeathVader.Helpers
 {
     internal class CombatLogEventArgs : LuaEventArgs
     {

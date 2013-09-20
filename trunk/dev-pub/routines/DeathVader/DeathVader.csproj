@@ -62,6 +62,7 @@
     <Compile Include="Core\DV_Spell.cs" />
     <Compile Include="Core\DV_Unit.cs" />
     <Compile Include="DeathVader.cs" />
+    <Compile Include="Helpers\DV_DeathTracker.cs" />
     <Compile Include="Helpers\DV_Dkstuff.cs" />
     <Compile Include="Helpers\DV_CombatLog.cs" />
     <Compile Include="Helpers\DV_DoTTracker.cs" />
