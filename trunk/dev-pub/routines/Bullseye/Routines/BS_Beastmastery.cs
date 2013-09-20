@@ -68,7 +68,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Focus Fire", ret => FocusFireFiveStacks && !Me.HasAura(34471)),
                 Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
-                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp && !FocusFireFiveStacks),
+                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
