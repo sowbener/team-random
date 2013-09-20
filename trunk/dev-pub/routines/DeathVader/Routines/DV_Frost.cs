@@ -67,7 +67,7 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapFirstCheck),
                         Spell.Cast("Outbreak", ret => NeedEitherDis && SG.Instance.Frost.EnableOutbreak),
-                        Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
+                        Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && UnholyBlightTalent && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                         Spell.Cast("Frost Strike", ret => ObliterateProc || Lua.PlayerPower > 88),
                         Spell.Cast("Howling Blast", ret => G.BloodRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapSecondCheck),
@@ -91,7 +91,7 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                     //    Spell.Cast("Plague Leech", ret => TalentManager.HasTalent(2) && (!PLBP || !PLFF)),
                        Spell.Cast("Outbreak", ret => SG.Instance.Frost.EnableOutbreak && UnholyBlightCheck && NeedEitherDis),
-                       Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
+                       Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && UnholyBlightTalent && Me.CurrentTarget.IsWithinMeleeRange && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                        Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.Cast("Howling Blast", ret => (NeedFrostFever && UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak) || (!SG.Instance.Frost.EnableOutbreak && NeedFrostFever && UnholyBlightCheck)),
                         Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && !Me.CurrentTarget.HasMyAura("Blood Plague")) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && !Me.CurrentTarget.HasMyAura("Blood Plague"))),
@@ -259,10 +259,11 @@ namespace DeathVader.Routines
         private static bool RP20 { get { return Lua.PlayerPower >= 20; } }
 
         //OutbreakCooldownCheck
-        private static bool OutBreakCooldown { get { return Spell.GetSpellCooldown("Outbreak").TotalMilliseconds > 500; } }
+        private static bool OutBreakCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(77575).Cooldown; } }
 
         //UnholyBlight Check (For Aura)
-        private static bool UnholyBlightCheck { get { return DvTalentManager.HasTalent(3) && !Me.HasAura(115989); } }
+        private static bool UnholyBlightCheck { get { return !Me.HasAura(115989); } }
+        private static bool UnholyBlightTalent { get { return DvTalentManager.HasTalent(3); } }
 
         //SoulReaper Checks
         private static bool SoulReaperNon4SetBonusHPCheck { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 36; } }

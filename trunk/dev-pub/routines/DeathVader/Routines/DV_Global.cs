@@ -78,6 +78,10 @@ namespace DeathVader.Routines
             }
         }
 
+        internal static int BloodRuneSlotsActivePL { get { return Me.GetRuneCount(0) + Me.GetRuneCount(1); } }
+        internal static int FrostRuneSlotsActivePL { get { return Me.GetRuneCount(2) + Me.GetRuneCount(3); } }
+        internal static int UnholyRuneSlotsActivePL { get { return Me.GetRuneCount(4) + Me.GetRuneCount(5); } }
+
 
         internal static bool DeathRuneSlotsActiveFesterReal { get { return StyxWoW.Me.BloodRuneCount > 1 || StyxWoW.Me.DeathRuneCount > 1; } }
 
