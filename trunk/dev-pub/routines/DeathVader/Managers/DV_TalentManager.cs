@@ -112,6 +112,21 @@ namespace DeathVader.Managers
             }
         }
 
+     //   public static bool Pulse()
+     //   {
+      //      if (EventRebuildTimer.IsFinished && RebuildNeeded)
+     //       {
+     //           RebuildNeeded = false;
+     //           Helpers.Logger.DiagLogP("FU TalentManager: Rebuilding behaviors due to changes detected.");
+      //          Update();
+      //          Root.Instance.PreBuffSelector();
+     //           Root.Instance.CombatSelector();
+       //         return true;
+     //       }
+
+     //       return false;
+    //    }
+
         #region Nested type: Talent
 
         private struct Talent

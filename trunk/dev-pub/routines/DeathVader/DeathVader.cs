@@ -89,6 +89,7 @@ namespace DeathVader
         public override Composite PreCombatBuffBehavior { get { return _preCombatBuffBehavior; } }
         #endregion
 
+
         #region Pulse
         public override void Pulse()
         {
@@ -97,6 +98,11 @@ namespace DeathVader
               
                 // Double cast shit
                 Spell.PulseDoubleCastEntries();
+
+                if (!StyxWoW.IsInWorld || Me == null || !Me.IsValid || Me.IsDead)
+                {
+                    return;
+                }
 
                 //DotTTracker
                 if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
