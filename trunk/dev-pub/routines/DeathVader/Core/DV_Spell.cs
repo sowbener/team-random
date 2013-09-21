@@ -648,7 +648,7 @@ namespace DeathVader.Core
             return false;
         }
 
-        public static uint HasCachedStack(this WoWUnit unit, string aura, bool fromMyAura = false, int expiry = 1000)
+        public static uint HasCachedStack(this WoWUnit unit, string aura, bool fromMyAura = false)
         {
             {
                 if (unit != null)

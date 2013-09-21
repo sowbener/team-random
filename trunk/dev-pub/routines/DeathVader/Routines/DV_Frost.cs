@@ -105,7 +105,7 @@ namespace DeathVader.Routines
                         Spell.Cast("Frost Strike", ret => T.HasTalent(14) && FrostRunes0),
                  //       Spell.Cast("Frost Strike", ret => T.HasTalent(13) && BloodTapChargesUnder10),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
-                        Spell.Cast("Obliterate",ret=> !NeedBloodPlague && !NeedFrostFever),
+                        Spell.Cast("Obliterate", ret=> !NeedBloodPlague && !NeedFrostFever),
                         //actions.single_target+=/frost_strike,if=talent.runic_corruption.enabled&buff.runic_corruption.down
                  //       Spell.PreventDoubleCast("Blood Tap", ThrottleTime, ret => TalentManager.HasTalent(13) && BloodTapStackOver10 && RP20),
                         Spell.Cast("Frost Strike")                                                                   
@@ -244,7 +244,7 @@ namespace DeathVader.Routines
         {
             get
             {
-                return Lua.PlayerPower < 20 && Spell.GetSpellCooldown(49020).TotalMilliseconds > 2000 && Spell.GetSpellCooldown(49184).TotalMilliseconds > 2000  && Me.CurrentTarget.IsBoss && Me.IsWithinMeleeRange;
+                return G.DeathRuneSlotsActive + G.FrostRuneSlotsActive == 0 && G.UnholyRuneSlotsActive == 0;
             }
         }
 
