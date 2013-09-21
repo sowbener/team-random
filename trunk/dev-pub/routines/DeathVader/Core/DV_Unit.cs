@@ -21,6 +21,16 @@ namespace DeathVader.Core
             }
         }
 
+        public static HashSet<uint> IgnoreMobs = new HashSet<uint>
+            {
+                52288, // Venomous Effusion (NPC near the snake boss in ZG. Its the green lines on the ground. We want to ignore them.)
+                52302, // Venomous Effusion Stalker (Same as above. A dummy unit)
+                52320, // Pool of Acid
+                52525, // Bloodvenom
+
+                52387, // Cave in stalker - Kilnara
+            };
+
         // Check if we don't Dvck up while casting shouts ...
         internal static bool DefaultBuffCheck
         {
@@ -78,6 +88,8 @@ namespace DeathVader.Core
             get { return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid); }
         }
 
+
+  
         // Is Targer a Boss or Dummy
         public static bool IsTargetBoss
         {

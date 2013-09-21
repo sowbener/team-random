@@ -79,6 +79,7 @@
     <Compile Include="Helpers\DV_Hashsets.cs" />
     <Compile Include="Helpers\DV_Lua.cs" />
     <Compile Include="Interfaces\GUI\DV_PropertyGridExtention.cs" />
+    <Compile Include="Interfaces\Settings\DV_Blood_Settings.cs" />
     <Compile Include="Interfaces\Settings\DV_General_Settings.cs" />
     <Compile Include="Interfaces\Settings\DV_Hotkeys_Settings.cs" />
     <Compile Include="Interfaces\Settings\DV_Settings.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Interfaces\Settings\DV_Frost_Settings.cs" />
     <Compile Include="Managers\DV_TalentManager.cs" />
     <Compile Include="Managers\DV_HotKeyManager.cs" />
+    <Compile Include="Managers\DV_TankManager_Singular.cs" />
+    <Compile Include="Routines\DV_Blood.cs" />
     <Compile Include="Routines\DV_Unholy.cs" />
     <Compile Include="Routines\DV_Frost.cs" />
     <Compile Include="Routines\DV_Global.cs" />

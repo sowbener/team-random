@@ -28,6 +28,7 @@ namespace DeathVader.Interfaces.Settings
 
         #region Spec Loading Wrappers
         private DvSettingsU _DvSettingsU;
+        private DvSettingsB _DvSettingsB;
         private DvSettingsF _DvSettingsF;
         private DvSettingsG _DvSettingsG;
 
@@ -35,6 +36,11 @@ namespace DeathVader.Interfaces.Settings
         public DvSettingsU Unholy
         {
             get { return _DvSettingsU ?? (_DvSettingsU = new DvSettingsU()); }
+        }
+
+        public DvSettingsB Blood
+        {
+            get { return _DvSettingsB ?? (_DvSettingsB = new DvSettingsB()); }
         }
 
         [Browsable(false)]

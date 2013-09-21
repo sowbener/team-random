@@ -97,6 +97,32 @@ namespace DeathVader.Core
                             new Action(ctx => UseItem((WoWItem)ctx))))));
         }
 
+        public static Composite BloodUseItems()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => (
+                    (SG.Instance.Blood.Trinket1 == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
+                    (SG.Instance.Blood.Trinket1 == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Blood.Trinket1 == DvEnum.AbilityTrigger.Always)),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
+                        new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                            new Action(ctx => UseItem((WoWItem)ctx))))),
+                new Decorator(ret => (
+                    (SG.Instance.Blood.Trinket1 == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
+                    (SG.Instance.Blood.Trinket1 == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Blood.Trinket1 == DvEnum.AbilityTrigger.Always)),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
+                        new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                            new Action(ctx => UseItem((WoWItem)ctx))))),
+                new Decorator(ret => (
+                    (SG.Instance.Blood.UseHands == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
+                    (SG.Instance.Blood.UseHands == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Blood.UseHands == DvEnum.AbilityTrigger.Always)),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Hands),
+                        new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                            new Action(ctx => UseItem((WoWItem)ctx))))));
+        }
+
         public static Composite FrostUseItems()
         {
             return new PrioritySelector(
@@ -128,6 +154,20 @@ namespace DeathVader.Core
         {
             return new PrioritySelector(
                 new Decorator(ret => SG.Instance.Unholy.CheckHealthStone && Me.HealthPercent < SG.Instance.Unholy.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                DvLogger.CombatLogG("Using {0}", ((WoWItem)ret).Name);
+                            }
+                                )))));
+        }
+
+        public static Composite BloodUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => SG.Instance.Blood.CheckHealthStone && Me.HealthPercent < SG.Instance.Blood.CheckHealthStoneNum,
                     new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
                         new Decorator(ret => ret != null,
                             new Action(ret =>

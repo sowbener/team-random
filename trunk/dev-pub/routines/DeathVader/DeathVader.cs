@@ -36,8 +36,9 @@ using Styx.CommonBot.Routines;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using A = DeathVader.Routines.DvFrost;
-using F = DeathVader.Routines.DvUnholy;
+using F = DeathVader.Routines.DvFrost;
+using U = DeathVader.Routines.DvUnholy;
+using B = DeathVader.Routines.DvBlood;
 using SG = DeathVader.Interfaces.Settings.DvSettings;
 using G = DeathVader.Routines.DvGlobal;
 using Spell = DeathVader.Core.DvSpell;
@@ -85,7 +86,7 @@ namespace DeathVader
         #region Behaviors
         private Composite _combatBehavior, _preCombatBuffBehavior;
 
-        public override Composite CombatBehavior        { get { return _combatBehavior; } }
+        public override Composite CombatBehavior { get { return CombatSelector(); ; } }
         public override Composite PreCombatBuffBehavior { get { return _preCombatBuffBehavior; } }
         #endregion
 
@@ -142,9 +143,12 @@ namespace DeathVader
             DvLogger.StatCounter();
             DvLogger.LogTimer(500);
 
+            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
+                DeathStrikeTracker.Initialize();
+
             /* Start Combat */
             PreBuffSelector();
-            RotationSelector();
+            CombatSelector();
         }
         #endregion
 
@@ -159,27 +163,15 @@ namespace DeathVader
             return null;
         }
 
-        internal Composite RotationSelector()
+
+        internal Composite CombatSelector()
         {
-            if (_combatBehavior == null)
-            {
-                DvLogger.InitLogF("Initializing combat behaviours.");
-                _combatBehavior = null;
-            }
-            switch (Me.Specialization)
-            {
-                    case WoWSpec.DeathKnightFrost:
-                        if (_combatBehavior == null) { _combatBehavior = A.InitializeFrost; DvLogger.InitLogO("Frost combat behaviour is initialized."); }
-                        break;
-                    case WoWSpec.DeathKnightUnholy:
-                        if (_combatBehavior == null) { _combatBehavior = F.InitializeUnholy; DvLogger.InitLogO("Unholy combat behaviour is initialized."); }
-                        break;
-                    default:
-                        StopBot("Current class or specialization is not supported! Stopping HonorBuddy.");
-                    break;
-            }
-            return null;
+            return new Switch<WoWSpec>(ret => Me.Specialization,
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightBlood, B.InitializeBlood),
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightFrost, F.InitializeFrost),
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, U.InitializeUnholy));
         }
+
         #endregion
 
         #region Forced LockSelector

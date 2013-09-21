@@ -123,7 +123,13 @@ namespace DeathVader.Routines
             }
         }
 
-
+        internal static Composite HandlePestilence()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => Me.CurrentTarget != null && DvUnit.AoeBPCheck,
+                    new PrioritySelector(
+                        Spell.PreventDoubleCast("Pestilence", 2, ret => Me.CurrentTarget != null && Me.CurrentTarget.HasAura(55078)))));
+        }
 
         internal static int ActiveRuneCount
         {

@@ -15,6 +15,7 @@ using SH = DeathVader.Interfaces.Settings.DvSettingsH;
 using Spell = DeathVader.Core.DvSpell;
 using U = DeathVader.Core.DvUnit;
 using Styx.CommonBot;
+using Styx.WoWInternals;
 
 namespace DeathVader.Routines
 {
@@ -197,7 +198,7 @@ namespace DeathVader.Routines
 
         //Blood Tap
         //buff.blood_charge.stack>10&(runic_power>76|(runic_power>=20&buff.killing_machine.react))
-        private static bool NeedBloodTapFirstCheck { get { return DvTalentManager.HasTalent(13) && Me.HasCachedAura(114851, 10) && (DvLua.PlayerPower > 76 || (Me.HasAura(51124) && DvLua.PlayerPower >= 20)); } }
+        private static bool NeedBloodTapFirstCheck { get { return  DvTalentManager.HasTalent(13) && Me.HasCachedAura(114851, 10) && (DvLua.PlayerPower > 76 || (Me.HasAura(51124) && DvLua.PlayerPower >= 20)); } }
         //Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP
         private static bool NeedBloodTapSecondCheck { get { return DvTalentManager.HasTalent(13) && Me.HasCachedAura(114851, 5) && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP && !Me.CurrentTarget.HasAura(130735); } }
         //actions.single_target+=/blood_tap,if=talent.blood_tap.enabled&(target.health.pct-3*(target.health.pct%target.time_to_die)>45|buff.blood_charge.stack>=8)

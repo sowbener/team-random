@@ -270,6 +270,10 @@ namespace DeathVader.Interfaces.GUI
                 case WoWSpec.DeathKnightUnholy:
                     selectSpec = DvSettings.Unholy;
                     break;
+
+                case WoWSpec.DeathKnightBlood:
+                    selectSpec = DvSettings.Blood;
+                    break;
             }
 
             if (selectSpec != null)
