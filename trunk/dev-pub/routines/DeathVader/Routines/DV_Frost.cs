@@ -71,7 +71,7 @@ namespace DeathVader.Routines
                         Spell.Cast("Frost Strike", ret => ObliterateProc || Lua.PlayerPower > 88),
                         Spell.Cast("Howling Blast", ret => G.BloodRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapSecondCheck),
-                        Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
+                        Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.Cast("Howling Blast", ret => UnholyBlightCheck && NeedFrostFever),
                         Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague)),
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
