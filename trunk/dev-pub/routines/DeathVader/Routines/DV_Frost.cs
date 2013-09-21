@@ -181,15 +181,13 @@ namespace DeathVader.Routines
         }
 
 
-  
-
         internal static Composite FrostInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                     Spell.Cast("Mind Freeze")
                       ),
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                     Spell.Cast("Strangulate", ret => !Spell.SpellOnCooldown("Strangulate") && !Spell.SpellOnCooldown("Asphyxiate") && Spell.SpellOnCooldown("Mind Freeze")
                     )));
         }

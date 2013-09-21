@@ -7,7 +7,7 @@ using Styx.WoWInternals.WoWObjects;
 using System.Collections.Generic;
 using Styx.Pathing;
 
-namespace DeathVader.Helpers.DkStuff
+namespace DeathVader.Helpers
 {
     internal static class Extensions
     {
