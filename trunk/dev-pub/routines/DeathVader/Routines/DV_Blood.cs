@@ -1,5 +1,6 @@
 ﻿using CommonBehaviors.Actions;
 using DeathVader.Core;
+using System.Linq;
 using DeathVader.Helpers;
 using DeathVader.Managers;
 using Styx;
@@ -32,6 +33,7 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeBlood")),
                         new Decorator(ret => (DvHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),
+                        new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
                         G.InitializeCaching(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
                                 new PrioritySelector(
@@ -92,6 +94,14 @@ namespace DeathVader.Routines
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike));
         }
 
+        internal static Composite BloodTaunt()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => TankManager.Instance.NeedToTaunt.Any() && TankManager.Instance.NeedToTaunt.FirstOrDefault().InLineOfSpellSight,
+               new PrioritySelector(
+                Spell.Cast("Death Grip", ret => TankManager.Instance.NeedToTaunt.FirstOrDefault()),
+                Spell.Cast("Dark Command", ret => TankManager.Instance.NeedToTaunt.FirstOrDefault()))));
+        }
 
 
         internal static Composite BloodDefensive()

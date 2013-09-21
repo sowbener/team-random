@@ -36,6 +36,18 @@ namespace DeathVader.Interfaces.Settings
             set;
         }
 
+          [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Blood")]
+        [DisplayName("Auto Taunting")]
+        [Description("Will Auto Taunt Targets during combat.")]
+        public bool EnableAutoTaunting
+        {
+            get;
+            set;
+        }
+
+
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Blood")]
