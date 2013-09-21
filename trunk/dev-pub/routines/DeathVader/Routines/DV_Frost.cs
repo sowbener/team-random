@@ -107,7 +107,6 @@ namespace DeathVader.Routines
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
                         Spell.Cast("Obliterate",ret=> !NeedBloodPlague && !NeedFrostFever),
                         //actions.single_target+=/frost_strike,if=talent.runic_corruption.enabled&buff.runic_corruption.down
-                        Spell.Cast("Frost Strike", ret => !Me.HasAura("Runic Corruption")),
                  //       Spell.PreventDoubleCast("Blood Tap", ThrottleTime, ret => TalentManager.HasTalent(13) && BloodTapStackOver10 && RP20),
                         Spell.Cast("Frost Strike")                                                                   
                         );
