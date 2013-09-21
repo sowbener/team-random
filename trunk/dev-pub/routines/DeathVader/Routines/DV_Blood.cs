@@ -100,6 +100,7 @@ namespace DeathVader.Routines
                 new Decorator(ret => TankManager.Instance.NeedToTaunt.Any() && TankManager.Instance.NeedToTaunt.FirstOrDefault().InLineOfSpellSight,
                new PrioritySelector(
                 Spell.Cast("Death Grip", ret => TankManager.Instance.NeedToTaunt.FirstOrDefault()),
+                Spell.Cast("Gorefiend's Grasp", ret => T.HasTalent(16) && DvUnit.NearbyAttackableUnitsCount > 3),
                 Spell.Cast("Dark Command", ret => TankManager.Instance.NeedToTaunt.FirstOrDefault()))));
         }
 
