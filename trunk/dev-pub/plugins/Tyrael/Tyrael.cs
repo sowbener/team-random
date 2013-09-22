@@ -18,7 +18,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 2, 5);
+        public static readonly Version Revision = new Version(5, 2, 6);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         private const byte DefaultTps = 30;
@@ -70,11 +70,6 @@ namespace Tyrael
             }
         }
 
-        public override void Pulse()
-        {
-            TU.Scaling();
-        }
-
         public override void Stop()
         {
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");
@@ -105,7 +100,6 @@ namespace Tyrael
         private static PrioritySelector CreateRoot()
         {
             return new PrioritySelector(
-                new Decorator(ret => TyraelSettings.Instance.ScaleTps, TU.Tree(true)),
                 new Decorator(ret => TU.IsTyraelPaused, new ActionAlwaysSucceed()),
                 new Switch<TU.LockState>(ctx => TyraelSettings.Instance.FrameLock,
                     new SwitchArgument<TU.LockState>(TU.LockState.True, ExecuteFrameLocked()),

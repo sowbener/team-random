@@ -244,6 +244,7 @@
             // checkScaleTps
             // 
             this.checkScaleTps.AutoSize = true;
+            this.checkScaleTps.Enabled = false;
             this.checkScaleTps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkScaleTps.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkScaleTps.Location = new System.Drawing.Point(10, 103);
