@@ -121,12 +121,12 @@ namespace Shammy.Routines
                     Spell.Cast(8050))),
            new Decorator(ret => G.TargetsHaveFlameShock1,
                new PrioritySelector(
-               Spell.Cast(8050))),
+               Spell.Cast(8050)),
                Spell.PreventDoubleCast(403, 1, ret => MaelstormStacks4),
                Spell.Cast(73680),                       
                Spell.PreventDoubleCast(403, 1, ret => MaelstormStacks2),
                Spell.Cast("Stormstrike"),
-               Spell.Cast(8042, ret => U.NearbyAttackableUnitsCount < 4));
+               Spell.Cast(8042, ret => U.NearbyAttackableUnitsCount < 4)));
         }
 
         internal static Composite EnhancementDefensive()
