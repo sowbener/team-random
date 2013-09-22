@@ -110,7 +110,7 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.Cast("Anti-Magic Shell", on => Me, ret => NeedAntiMagicShell),
                 Spell.Cast("Bone Shield", on => Me, ret => NeedBoneShield),
-                new Decorator(ret => Me.HealthPercent < 100 && PRSettings.Instance.EnableSelfHealing,
+                new Decorator(ret => Me.HealthPercent < 100 && DeathKnightSettings.EnableSelfHealing,
                               new PrioritySelector(
                                   Spell.Cast("Rune Tap", on => Me, ret => NeedRuneTapWoTn), // Instant
                                   Spell.Cast("Rune Tap", ret => Me, ret => NeedRuneTap), // 30 sec cooldown - default 90 percentHP

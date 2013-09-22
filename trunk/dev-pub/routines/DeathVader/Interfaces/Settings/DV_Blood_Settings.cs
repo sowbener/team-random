@@ -47,6 +47,17 @@ namespace DeathVader.Interfaces.Settings
             set;
         }
 
+          [Setting]
+          [Styx.Helpers.DefaultValue(true)]
+          [Category("Blood")]
+          [DisplayName("Enable Self-healing")]
+          [Description("Will use Self-Healing Abilities during combat.")]
+          public bool EnableSelfHealing
+          {
+              get;
+              set;
+          }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
