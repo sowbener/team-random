@@ -88,7 +88,7 @@ namespace Bullseye.Core
                     new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
-                new Decorator(ret => (
+                new Decorator(ret => Me.HasAura(34471) && (
                     (SG.Instance.Beastmastery.UseHands == BsEnum.AbilityTrigger.OnBossDummy && BsUnit.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.UseHands == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.UseHands == BsEnum.AbilityTrigger.Always)),
