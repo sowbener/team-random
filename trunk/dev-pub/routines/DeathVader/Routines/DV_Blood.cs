@@ -76,7 +76,7 @@ namespace DeathVader.Routines
                 //new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector(Spell.PreventDoubleCast("Necrotic Strike", ThrottleTime, ret => NeedNecroticStrike))),
                 Spell.Cast("Soul Reaper", ret => NeedSoulReaper && OkToUseBloodRuneForDamage),  // Never use Soul Reaping if you have no Blood runes, as this will cause Heart Strike to consume a Death rune, which should be saved for Death Strike.
                 Spell.Cast(55050, ret => Me.BloodRuneCount > 0 && OkToUseBloodRuneForDamage), // Never use Heart Strike if you have no Blood runes, as this will cause Heart Strike to consume a Death rune, which should be saved for Death Strike.
-                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive > 1));
+                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive > 0));
           //      Spell.Cast("Death Coil", ret => Me.CurrentTarget != null && !Me.CurrentTarget.IsWithinMeleeRange && Me.CurrentRunicPower >= 90));
         }
 
@@ -90,7 +90,7 @@ namespace DeathVader.Routines
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
                 Spell.Cast("Icy Touch", ret => NeedFrostFever),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
-                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive > 1),
+                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive > 0),
                 Spell.PreventDoubleCast("Blood Boil", 0.5, ret => ((Me.BloodRuneCount > 0 && OkToUseBloodRuneForDamage) || HasCrimsonScourge) && !NeedEitherDis),
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike));
         }
