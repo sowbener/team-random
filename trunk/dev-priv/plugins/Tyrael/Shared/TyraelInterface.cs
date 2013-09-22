@@ -205,6 +205,7 @@ namespace Tyrael.Shared
         private void SaveButton_Click(object sender, EventArgs e)
         {
             TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
             Tyrael.PluginPulsing();

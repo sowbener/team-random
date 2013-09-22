@@ -57,6 +57,7 @@ namespace Tyrael
 
                 PluginPulsing();
 
+                TU.ClickToMove();
                 TU.StatCounter();
                 TU.RegisterHotkeys();
                 TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
