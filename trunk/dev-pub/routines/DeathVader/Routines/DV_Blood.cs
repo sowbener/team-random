@@ -33,6 +33,7 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeBlood")),
                         new Decorator(ret => (DvHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),
+                        Spell.PreventDoubleCast(45529, 0.5, ret => NeedBloodTap),
                         new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
                         G.InitializeCaching(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
