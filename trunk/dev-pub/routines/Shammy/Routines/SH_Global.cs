@@ -122,102 +122,12 @@ namespace Shammy.Routines
 
         #endregion Runes
 
-        #region Diseases
+        #region FlameShockTargets
 
-        internal static bool HasBothDis
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura EnhancementFever =
-                    Me.CurrentTarget.GetAllAuras().FirstOrDefault(
-                        u => u.CreatorGuid == Me.Guid && u.SpellId == 55095);
-                WoWAura bloodPlague =
-                    Me.CurrentTarget.GetAllAuras().FirstOrDefault(
-                        u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-                return EnhancementFever != null && EnhancementFever.TimeLeft >= TimeSpan.FromSeconds(2) ||
-                       (bloodPlague != null && bloodPlague.TimeLeft >= TimeSpan.FromSeconds(2));
-            }
-        }
+        internal static bool TargetsHaveFlameShock4 { get { return SmUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Flame Shock")) >= 3; } }
+        internal static bool TargetsHaveFlameShock1 { get { return SmUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Flame Shock")) >= 1; } }
 
-        internal static bool HasffDis
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura EnhancementFever = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 55095);
-                return EnhancementFever != null && EnhancementFever.TimeLeft >= TimeSpan.FromSeconds(2);
-            }
-        }
-
-        public static WoWUnit BestElementalFrenzyTarget
-        {
-            get
-            {
-                // If the player has a focus target set, use it instead.
-                if (StyxWoW.Me.FocusedUnitGuid != 0 && StyxWoW.Me.FocusedUnit.IsAlive)
-                    return StyxWoW.Me.FocusedUnit;
-
-                return Me;
-            }
-        }
-
-        internal static bool HasbpDis
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura bloodPlague = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-                return bloodPlague != null && bloodPlague.TimeLeft >= TimeSpan.FromSeconds(2);
-            }
-        }
-
-        internal static bool HasbpDisPL1
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura bloodPlague = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-                return bloodPlague != null && bloodPlague.TimeLeft >= TimeSpan.FromSeconds(1);
-            }
-        }
-
-        internal static bool HasbpDisPL2
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-                WoWAura bloodPlague = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-                return bloodPlague != null && bloodPlague.TimeLeft >= TimeSpan.FromSeconds(3);
-            }
-        }
-
-        public static bool CanCastPlagueLeech
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-
-                WoWAura EnhancementFever =
-                    Me.CurrentTarget.GetAllAuras().FirstOrDefault(
-                        u => u.CreatorGuid == Me.Guid && u.SpellId == 55095);
-                WoWAura bloodPlague =
-                    Me.CurrentTarget.GetAllAuras().FirstOrDefault(
-                        u => u.CreatorGuid == Me.Guid && u.SpellId == 55078);
-
-                // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
-                return EnhancementFever != null && EnhancementFever.TimeLeft < TimeSpan.FromSeconds(2) ||
-                       bloodPlague != null && bloodPlague.TimeLeft < TimeSpan.FromSeconds(2);
-            }
-        }
-
-        #endregion Diseases
+        #endregion FlameShockTargets
 
         #region YOUWANNALOOKHERE stuff
         internal static Composite InitializeOnKeyActions()

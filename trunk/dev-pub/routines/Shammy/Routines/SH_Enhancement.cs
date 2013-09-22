@@ -100,20 +100,33 @@ namespace Shammy.Routines
                 Spell.PreventDoubleCast(403, 1, ret => EverythingOnCooldown && MaelstormStacks1 && !Me.HasAura(128201)));
         }
 
+        // SpellID = 8050 (Fire Nova)
+        // SpellID = 60103 (Lava Lash)
+        // SpellID = 8190 (Magma Totem)
+        // SpellID = 3599 (Searing Totem)
+        // SpellID = 403 (Chain lightning)
+        // SpellID = 73680 (Unleash elements)
+        // SpellID = 8042 (Earth Shock)
         internal static Composite EnhancementMt()
         {
             return new PrioritySelector(
-                        Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasAura("Flame Shock")),
-                        Spell.Cast("Fire Nova", ret => Me.CurrentTarget.HasAura("Flame Shock")),
-                        Spell.PreventDoubleCast("Magma Totem", 1, ret => U.AttackableMeleeUnitsCount > 5 && !Totems.Exist(WoWTotem.Magma)),
-                        Spell.PreventDoubleCast("Searing Totem", 1, ret => U.AttackableMeleeUnitsCount <= 5 && (!Totems.Exist(WoWTotem.Searing) || !Totems.Exist(WoWTotem.FireElemental))),
-                        Spell.Cast("Lava Lash", ret => Me.CurrentTarget.HasAura("Flame Shock")),
-                        Spell.PreventDoubleCast("Chain Lightning", 1, ret => MaelstormStacks4),
-                        Spell.Cast("Unleash Elements"),                       
-                        Spell.PreventDoubleCast("Chain Lightning", 1, ret => MaelstormStacks2),
-                        Spell.Cast("Stormstrike"),
-                        Spell.Cast("Earth Shock", ret => U.AttackableMeleeUnitsCount < 4)
-                        );
+             Spell.PreventDoubleCast(8190, 1, ret => U.NearbyAttackableUnitsCount > 5 && !Totems.Exist(WoWTotem.Magma)),
+             Spell.PreventDoubleCast("Searing Totem", 1, ret => U.NearbyAttackableUnitsCount <= 5 && (!Totems.Exist(WoWTotem.Searing) || !Totems.Exist(WoWTotem.FireElemental))),
+             new Decorator(ret => !Me.CurrentTarget.HasMyAura("Flame Shock"),
+                 new PrioritySelector(
+                     Spell.Cast(8050))),
+                     Spell.Cast(60103),
+            new Decorator(ret => G.TargetsHaveFlameShock4,
+                new PrioritySelector(
+                    Spell.Cast(8050))),
+           new Decorator(ret => G.TargetsHaveFlameShock1,
+               new PrioritySelector(
+               Spell.Cast(8050))),
+               Spell.PreventDoubleCast(403, 1, ret => MaelstormStacks4),
+               Spell.Cast(73680),                       
+               Spell.PreventDoubleCast(403, 1, ret => MaelstormStacks2),
+               Spell.Cast("Stormstrike"),
+               Spell.Cast(8042, ret => U.NearbyAttackableUnitsCount < 4));
         }
 
         internal static Composite EnhancementDefensive()
