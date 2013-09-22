@@ -45,7 +45,7 @@ namespace DeathVader.Routines
                                         BloodUtility(),
                                         I.BloodUseItems(),
                                         BloodOffensive(),
-                                        new Decorator(ret => SG.Instance.Blood.CheckAoE && (U.AttackableMeleeUnitsCount >= 2), BloodMt()),
+                                        new Decorator(ret => SG.Instance.Blood.CheckAoE && U.NearbyAttackableUnitsCount > 2, BloodMt()),
                                             BloodSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Hotkey,
                                 new PrioritySelector(
@@ -57,7 +57,7 @@ namespace DeathVader.Routines
                                                 new PrioritySelector(
                                                         I.BloodUseItems(),
                                                         BloodOffensive())),
-                                        new Decorator(ret => DvHotKeyManager.IsAoe && SG.Instance.Blood.CheckAoE && U.AttackableMeleeUnitsCount >= 2, BloodMt()),
+                                        new Decorator(ret => DvHotKeyManager.IsAoe, BloodMt()),
                                         BloodSt())));
             }
         }
@@ -68,7 +68,7 @@ namespace DeathVader.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
-                Spell.PreventDoubleCast("Blood Boil", 0.5, ret => NeedToRefreshDiseasesWithBloodBoil && !NeedDeathStrike),
+                Spell.Cast("Blood Boil", ret => !NeedDeathStrike),
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
                 Spell.Cast("Icy Touch", ret => NeedFrostFever),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
@@ -84,7 +84,7 @@ namespace DeathVader.Routines
         internal static Composite BloodMt()
         {
             return new PrioritySelector(
-                Spell.PreventDoubleCast("Blood Boil", 0.5, ret => HasCrimsonScourge && !NeedEitherDis), // get rid of the Proc
+                Spell.Cast("Blood Boil", ret => HasCrimsonScourge), // get rid of the Proc
                 G.HandlePestilence(),
                 Spell.Cast("Unholy Blight", ret => DeathKnightSettings.EnableUnholyBlight),
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
@@ -254,7 +254,7 @@ namespace DeathVader.Routines
             }
         }
 
-        private static bool NeedBoneShield { get { return UseBoneShieldDefensively && NoOtherCooldownActive("BoneShield"); } }
+        private static bool NeedBoneShield { get { return !Me.HasAura("Bone Shield"); } }
 
         private static bool NeedDeathPact { get { return UsePetSacrifice && Me.HealthPercent < PetSacrificePercent; } }
 
