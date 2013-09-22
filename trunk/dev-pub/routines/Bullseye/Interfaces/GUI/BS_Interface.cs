@@ -114,8 +114,6 @@ namespace Bullseye.Interfaces.GUI
             ComboHkModifier.Items.Add(new BsEnum.BsCboItem((int)Styx.Common.ModifierKeys.Win, "Win - Mod"));
 
             // Hotkey - Cooldowns
-            ComboHkCooldown.Items.Add(new BsEnum.BsCboItem((int)Keys.XButton1, "Mouse button 4"));
-            ComboHkCooldown.Items.Add(new BsEnum.BsCboItem((int)Keys.XButton2, "Mouse button 5"));
             ComboHkCooldown.Items.Add(new BsEnum.BsCboItem((int)Keys.D1, "1 (no numpad)"));
             ComboHkCooldown.Items.Add(new BsEnum.BsCboItem((int)Keys.D2, "2 (no numpad)"));
             ComboHkCooldown.Items.Add(new BsEnum.BsCboItem((int)Keys.D3, "3 (no numpad)"));
@@ -156,8 +154,6 @@ namespace Bullseye.Interfaces.GUI
             ComboHkCooldown.Items.Add(new BsEnum.BsCboItem((int)Keys.None, "No Hotkey"));
 
             // Hotkey - AoE
-            ComboHkMultiTgt.Items.Add(new BsEnum.BsCboItem((int)Keys.XButton1, "Mouse button 4"));
-            ComboHkMultiTgt.Items.Add(new BsEnum.BsCboItem((int)Keys.XButton2, "Mouse button 5"));
             ComboHkMultiTgt.Items.Add(new BsEnum.BsCboItem((int)Keys.D1, "1 (no numpad)"));
             ComboHkMultiTgt.Items.Add(new BsEnum.BsCboItem((int)Keys.D2, "2 (no numpad)"));
             ComboHkMultiTgt.Items.Add(new BsEnum.BsCboItem((int)Keys.D3, "3 (no numpad)"));
@@ -198,8 +194,6 @@ namespace Bullseye.Interfaces.GUI
             ComboHkMultiTgt.Items.Add(new BsEnum.BsCboItem((int)Keys.None, "No Hotkey"));
 
             // Hotkey - Pause
-            ComboHkPause.Items.Add(new BsEnum.BsCboItem((int)Keys.XButton1, "Mouse button 4"));
-            ComboHkPause.Items.Add(new BsEnum.BsCboItem((int)Keys.XButton2, "Mouse button 5"));
             ComboHkPause.Items.Add(new BsEnum.BsCboItem((int)Keys.D1, "1 (no numpad)"));
             ComboHkPause.Items.Add(new BsEnum.BsCboItem((int)Keys.D2, "2 (no numpad)"));
             ComboHkPause.Items.Add(new BsEnum.BsCboItem((int)Keys.D3, "3 (no numpad)"));
