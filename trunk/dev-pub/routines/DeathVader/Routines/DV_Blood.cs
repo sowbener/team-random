@@ -108,8 +108,20 @@ namespace DeathVader.Routines
         internal static Composite BloodDefensive()
         {
             return new PrioritySelector(
-                Spell.PreventDoubleCast("Death Strike", 0.5, ret => Me.HasAura(101568)),
-                Spell.Cast("Death Siphon", ret => T.HasTalent(11) && Me.HealthPercent <= SG.Instance.Blood.DeathSiphonHP),
+                Spell.Cast("Anti-Magic Shell", on => Me, ret => NeedAntiMagicShell),
+                Spell.Cast("Bone Shield", on => Me, ret => NeedBoneShield),
+                new Decorator(ret => Me.HealthPercent < 100 && PRSettings.Instance.EnableSelfHealing,
+                              new PrioritySelector(
+                                  Spell.Cast("Rune Tap", on => Me, ret => NeedRuneTapWoTn), // Instant
+                                  Spell.Cast("Rune Tap", ret => Me, ret => NeedRuneTap), // 30 sec cooldown - default 90 percentHP
+                                  Spell.Cast("Death Pact", on => Me, ret => NeedDeathPact), // 2 min cooldown  - default 50 percentHP
+                                  Spell.Cast("Raise Dead", on => Me, ret => NeedRaiseDead), // 2 min cooldown - default 50 percentHP
+                                  Spell.Cast("Death Coil", on => Me, ret => NeedDeathCoilHeal), // 2 min cooldown  - default 60 percentHP
+                                  Spell.Cast("Lichborne", on => Me, ret => NeedLichborne), // 2 min cooldown - default 60 percentHP
+                                  Spell.Cast("Vampiric Blood", on => Me, ret => NeedVampiricBlood), // 1 min cooldown - default 60 percentHP
+                                  Spell.Cast("Icebound Fortitude", on => Me, ret => NeedIceboundFortitude), // 3 min cooldown - default 60 percentHP
+                                  Spell.Cast("Dancing Rune Weapon", ret => NeedDancingRuneWeapon), // 1.5 min cooldown - default 80 percentHP
+                                  Spell.Cast("Empower Rune Weapon", on => Me, ret => NeedEmpowerRuneWeapon), // 5 min cooldown
                 I.BloodUseHealthStone()
                 );
         }
