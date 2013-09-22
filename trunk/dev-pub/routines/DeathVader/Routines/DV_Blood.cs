@@ -33,7 +33,7 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeBlood")),
                         new Decorator(ret => (DvHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),
-                        Spell.PreventDoubleCast(45529, 0.5, ret => NeedBloodTap),
+                        Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                         new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
                         G.InitializeCaching(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
@@ -281,7 +281,7 @@ namespace DeathVader.Routines
             }
         }
 
-        private static bool NeedBloodTap { get { return Me.HasCachedAura("Blood Charge", 5) && (G.DeathRuneSlotsActive < 0 || G.FrostRuneSlotsActive < 0 || G.UnholyRuneSlotsActive < 0); } }
+        private static bool NeedBloodTap { get { return Me.HasCachedAura(114851, 5); } }
 
         private static bool NeedRuneStrike { get { return (Me.CurrentRunicPower >= RuneStrikePercent || Me.HealthPercent > 90) && Me.CurrentRunicPower >= 30 && (Me.UnholyRuneCount == 0 || Me.FrostRuneCount == 0 || Me.CurrentRunicPower >= Me.MaxRunicPower) && !NeedDeathCoilHeal && !NeedDancingRuneWeapon; } }
 
