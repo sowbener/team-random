@@ -111,7 +111,7 @@ namespace Shammy.Routines
         {
             return new PrioritySelector(
              Spell.PreventDoubleCast(8190, 1, ret => U.NearbyAttackableUnitsCount > 5 && !Totems.Exist(WoWTotem.Magma)),
-             Spell.PreventDoubleCast("Searing Totem", 1, ret => U.NearbyAttackableUnitsCount <= 5 && (!Totems.Exist(WoWTotem.Searing) || !Totems.Exist(WoWTotem.FireElemental))),
+             Spell.PreventDoubleCast(3599, 1, ret => U.NearbyAttackableUnitsCount <= 5 && (!Totems.Exist(WoWTotem.Searing) || !Totems.Exist(WoWTotem.FireElemental))),
              new Decorator(ret => !Me.CurrentTarget.HasMyAura("Flame Shock"),
                  new PrioritySelector(
                      Spell.Cast(8050))),
