@@ -123,7 +123,7 @@ namespace DeathVader.Routines
                                   Spell.Cast("Dancing Rune Weapon", ret => NeedDancingRuneWeapon), // 1.5 min cooldown - default 80 percentHP
                                   Spell.Cast("Empower Rune Weapon", on => Me, ret => NeedEmpowerRuneWeapon), // 5 min cooldown
                 I.BloodUseHealthStone()
-                );
+                )));
         }
 
 
