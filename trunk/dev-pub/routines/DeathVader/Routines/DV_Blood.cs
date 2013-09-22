@@ -36,6 +36,7 @@ namespace DeathVader.Routines
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                         new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
                         G.InitializeCaching(),
+                        AutoGoreGrasp(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Blood.CheckAutoAttack, Lua.StartAutoAttack),
@@ -93,6 +94,14 @@ namespace DeathVader.Routines
                 Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive > 0),
                 Spell.PreventDoubleCast("Blood Boil", 0.5, ret => ((Me.BloodRuneCount > 0 && OkToUseBloodRuneForDamage) || HasCrimsonScourge) && !NeedEitherDis),
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike));
+        }
+
+        internal static Composite AutoGoreGrasp()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => DeathKnightSettings.EnableAutoGoreGrasp && T.HasTalent(16) && DvUnit.NearbyAttackableUnitsCount > 2,
+                    new PrioritySelector(
+                        Spell.Cast("Gorefiend's Grasp"))));
         }
 
         internal static Composite BloodTaunt()

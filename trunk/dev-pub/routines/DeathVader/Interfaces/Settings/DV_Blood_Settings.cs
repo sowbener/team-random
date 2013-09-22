@@ -58,6 +58,17 @@ namespace DeathVader.Interfaces.Settings
               set;
           }
 
+          [Setting]
+          [Styx.Helpers.DefaultValue(false)]
+          [Category("Blood")]
+          [DisplayName("Enable Auto Gore Grasp")]
+          [Description("Will use Auto Gore Grasp Abilities during combat.")]
+          public bool EnableAutoGoreGrasp
+          {
+              get;
+              set;
+          }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
