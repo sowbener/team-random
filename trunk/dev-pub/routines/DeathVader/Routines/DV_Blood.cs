@@ -68,7 +68,7 @@ namespace DeathVader.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
-                Spell.Cast("Blood Boil", ret => !NeedDeathStrike),
+                Spell.Cast("Blood Boil", ret => !NeedDeathStrike && HasCrimsonScourge),
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
                 Spell.Cast("Icy Touch", ret => NeedFrostFever),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
@@ -87,7 +87,7 @@ namespace DeathVader.Routines
                 Spell.Cast("Blood Boil", ret => HasCrimsonScourge), // get rid of the Proc
                 G.HandlePestilence(),
                 Spell.Cast("Unholy Blight", ret => DeathKnightSettings.EnableUnholyBlight),
-                Spell.Cast("Outbreak", ret => NeedEitherDis),
+                Spell.Cast("Outbreak", ret => NeedEitherDis && !DvTalentManager.HasTalent(1)),
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
                 Spell.Cast("Icy Touch", ret => NeedFrostFever),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
