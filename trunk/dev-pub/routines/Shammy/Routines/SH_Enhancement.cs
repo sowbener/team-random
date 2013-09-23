@@ -110,8 +110,8 @@ namespace Shammy.Routines
         internal static Composite EnhancementMt()
         {
             return new PrioritySelector(
-             Spell.PreventDoubleCast(8190, 1, ret => U.NearbyAttackableUnitsCount > 5 && !Totems.Exist(WoWTotem.Magma)),
-             Spell.PreventDoubleCast(3599, 1, ret => U.NearbyAttackableUnitsCount <= 5 && (!Totems.Exist(WoWTotem.Searing) || !Totems.Exist(WoWTotem.FireElemental))),
+             Spell.PreventDoubleCast(8190, 1, ret => U.NearbyAttackableUnitsCount > 5 && NeedMagmaTotem),
+             Spell.PreventDoubleCast(3599, 1, ret => U.NearbyAttackableUnitsCount <= 5 && NeedSearingTotem),
              new Decorator(ret => !Me.CurrentTarget.HasMyAura("Flame Shock"),
                  new PrioritySelector(
                      Spell.Cast(8050))),
@@ -119,12 +119,12 @@ namespace Shammy.Routines
             new Decorator(ret => G.TargetsHaveFlameShock4,
                 new PrioritySelector(
                     Spell.Cast(8050))),
-           new Decorator(ret => G.TargetsHaveFlameShock1,
+           new Decorator(ret => Me.CurrentTarget.HasMyAura("Flame Shock"),
                new PrioritySelector(
                Spell.Cast(8050),
-               Spell.PreventDoubleCast(403, 1, ret => MaelstormStacks4),
-               Spell.Cast(73680),                       
-               Spell.PreventDoubleCast(403, 1, ret => MaelstormStacks2),
+               Spell.PreventDoubleCast(421, 1, ret => MaelstormStacks4),
+               Spell.Cast(73680),
+               Spell.PreventDoubleCast(421, 1, ret => MaelstormStacks2),
                Spell.Cast("Stormstrike"),
                Spell.Cast(8042, ret => U.NearbyAttackableUnitsCount < 4))));
         }
@@ -405,6 +405,16 @@ namespace Shammy.Routines
             {
                 return Me.GotTarget 
                             && Me.CurrentTarget.SpellDistance() < Totems.GetTotemRange(WoWTotem.Searing) - 2f 
+                            && !Totems.Exist(WoWTotemType.Fire);
+            }
+        }
+
+        private static bool NeedMagmaTotem
+        {
+            get
+            {
+                return Me.GotTarget
+                            && Me.CurrentTarget.SpellDistance() < Totems.GetTotemRange(WoWTotem.Magma) - 2f
                             && !Totems.Exist(WoWTotemType.Fire);
             }
         }
