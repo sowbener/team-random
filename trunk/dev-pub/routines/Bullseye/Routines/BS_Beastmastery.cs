@@ -66,13 +66,14 @@ namespace Bullseye.Routines
         {
             return new PrioritySelector(
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
-                Spell.Cast("Focus Fire", ret => FocusFireFiveStacks && !Me.HasAura(34471)),
+                Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && !Me.HasAura(34471)),
                 Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
+                Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
@@ -175,6 +176,14 @@ namespace Bullseye.Routines
         #endregion
 
         #region Booleans
+
+        private static uint FocusFireStackCount
+        {
+            get
+            {
+                return Spell.GetAuraStackCount("Frenzy");
+            }
+        }
 
         internal static bool FervorReqs { get { return BsTalentManager.HasTalent(10) && Lua.PlayerPower <= 50; } }
         internal static bool LockAndLoadProc { get { return Me.HasAura("Lock and Load"); } }

@@ -197,6 +197,44 @@ namespace Bullseye.Core
             return 99999.9;
         }
 
+        public static uint StackCount(WoWUnit unit, string aura)
+        {
+            {
+                if (unit != null)
+                {
+                    WoWAura result = unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.StackCount > 0);
+                    if (result != null) return result.StackCount;
+                }
+                return 0;
+            }
+        }
+
+        public static uint GetAuraStackCount(string aura)
+        {
+            var result = StyxWoW.Me.GetAuraFromName(aura);
+
+            if (result != null)
+            {
+                if (result.StackCount > 0)
+                    return result.StackCount;
+            }
+
+            return 0;
+        }
+
+        public static uint GetAuraStackCount(int spellId)
+        {
+            var result = StyxWoW.Me.GetAuraFromID(spellId);
+
+            if (result != null)
+            {
+                if (result.StackCount > 0)
+                    return result.StackCount;
+            }
+
+            return 0;
+        }
+
         public static double GetSpellCastTime(int spell)
         {
             SpellFindResults results;
