@@ -1,9 +1,9 @@
-﻿using FuryUnleashed.Shared.Utilities;
-// ReSharper disable ImplicitlyCapturedClosure
+﻿// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 using CommonBehaviors.Actions;
 using FuryUnleashed.Shared.Helpers;
+using FuryUnleashed.Shared.Utilities;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
@@ -63,7 +63,7 @@ namespace FuryUnleashed.Core
                         {
                             SpellManager.Cast(spell, onUnit(ret));
                             CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
+                            Logger.CombatLogO("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
                         }));
         }
         
@@ -89,6 +89,31 @@ namespace FuryUnleashed.Core
                                 CooldownTracker.SpellUsed(spell);
                                 Logger.CombatLogO("Casting: " + spell);
                             }
+                        )));
+        }
+
+        // Casting on Ground by Int
+        public static Composite CastOnGround(int spell, LocationRetriever onLocation)
+        {
+            return CastOnGround(spell, onLocation, ret => true);
+        }
+
+        public static Composite CastOnGround(int spell, LocationRetriever onLocation, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        {
+            return
+                new Decorator(ret => onLocation != null && requirements(ret) && SpellManager.CanCast(spell) && (StyxWoW.Me.Location.Distance(onLocation(ret)) <= WoWSpell.FromId(spell).MaxRange || WoWSpell.FromId(spell).MaxRange == 0),
+                    new Sequence(
+                       new Action(ret => SpellManager.Cast(spell)),
+                        new DecoratorContinue(ctx => waitForSpell,
+                            new WaitContinue(1, ret =>
+                                StyxWoW.Me.CurrentPendingCursorSpell != null &&
+                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spell, new ActionAlwaysSucceed())),
+                        new Action(ret =>
+                        {
+                            SpellManager.ClickRemoteLocation(onLocation(ret));
+                            CooldownTracker.SpellUsed(spell);
+                            Logger.CombatLogO("Casting: " + spell);
+                        }
                         )));
         }
         #endregion

@@ -86,6 +86,14 @@ namespace FuryUnleashed.Core
                     NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
         }
 
+        public static int NearbySlamCleaveUnitsCount;
+        public static void GetNearbySlamCleaveUnitsCount()
+        {
+            using (new PerformanceLogger("GetNearbySlamCleaveUnitsCount"))
+                if (Me.CurrentTarget != null)
+                    NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
+        }
+
         public static int NeedThunderclapUnitsCount;
         public static void GetNeedThunderclapUnitsCount()
         {
@@ -97,6 +105,11 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Unit Booleans
+        // Checks if unit is Valid - Not used yet - Need to update IsInRange.
+        public static bool IsValid(this WoWUnit unit)
+        {
+            return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
+        }
 
         public static bool IsInRange(this WoWUnit unit, string spell)
         {
@@ -118,6 +131,26 @@ namespace FuryUnleashed.Core
         {
             return unit.Distance <= (spell.MaxRange + unit.CombatReach);
         }
+
+        public static bool IsHamstringTarget
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.HamstringUnitsList(); }
+        }
+
+        public static bool IsTargetRare
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.RareUnitsList(); }
+        }
+
+        public static bool IsTargetBoss
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.TargetIsBoss(); }
+        }
+
+        public static bool IsDoNotUseOnTgt
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
+        }
         #endregion
 
         #region Self Functions
@@ -130,6 +163,16 @@ namespace FuryUnleashed.Core
                 if (StyxWoW.Me.CurrentTarget.IsPlayer) { return 5f; }
                 return Math.Max(5f, StyxWoW.Me.CombatReach + 1.3333334f + StyxWoW.Me.CurrentTarget.CombatReach);
             }
+        }
+		
+		public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
+        {
+            return Math.Abs(spell.MaxRange) < 1 ? 0 : (unit != null ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
+        }
+
+        public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
+        {
+            return Math.Abs(spell.MinRange) < 1 ? 0 : (unit != null ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
         }
         #endregion
 
@@ -156,36 +199,7 @@ namespace FuryUnleashed.Core
             }
         }
 
-        public static bool IsHamstringTarget
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.HamstringUnitsList(); }
-        }
-
-        public static bool IsTargetRare
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.RareUnitsList(); }
-        }
-
-        public static bool IsTargetBoss
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.TargetIsBoss(); }
-        }
-
-        public static bool IsDoNotUseOnTgt
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
-        }
-
-        public static bool IsViable(WoWObject wowObject)
-        {
-            return (wowObject != null) && wowObject.IsValid;
-        }
-
-        public static bool IsValid(this WoWUnit unit)
-        {
-            return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
-        }
-
+        // Can be used in Pulse.
         public static void UpdateObjectManager()
         {
             using (new PerformanceLogger("ObjManager Update"))

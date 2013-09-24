@@ -188,8 +188,22 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(75)]
         [Category("Arms - Regeneration Options")]
         [DisplayName("Impending Victory %")]
-        [Description("Will use Impending Victory or Victory Rush when health % is less than or equal to the set value.")]
+        [Description("Will use Impending Victory when health % is less than or equal to the set value.")]
         public int CheckImpVicNum { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Arms - Regeneration Options")]
+        [DisplayName("Enable Victory Rush")]
+        [Description("Checked enables Victory Rush.")]
+        public bool CheckVicRush { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(75)]
+        [Category("Arms - Regeneration Options")]
+        [DisplayName("Victory Rush %")]
+        [Description("Will use Victory Rush when health % is less than or equal to the set value.")]
+        public int CheckVicRushNum { get; set; }
         #endregion
 
         // ========================================================================================
@@ -228,18 +242,18 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAoE { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Arms - Selectable Options")]
+        [DisplayName("Multi-Target (AoE) Units")]
+        [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 2!")]
+        public int CheckAoENum { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Arms - Selectable Options")]
         [DisplayName("Enable Auto Attack")]
         [Description("Enables auto attack, persistent combat while tabbing units.")]
         public bool CheckAutoAttack { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Arms - Selectable Options")]
-        [DisplayName("Enable Item De-Sync")]
-        [Description("Enables de-sync of items - With this enabled it uses Hands / Waist outside Trinket Cooldowns.")]
-        public bool CheckDesyncTrinkHands { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

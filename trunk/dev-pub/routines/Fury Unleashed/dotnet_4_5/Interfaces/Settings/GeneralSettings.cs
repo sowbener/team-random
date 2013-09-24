@@ -56,13 +56,31 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region Rotational Settings
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Category("Rotational Settings")]
+        [DisplayName("Arms Rotation Version")]
+        [Description("Select which rotations you prefer - Development or Release.")]
+        public Enum.WoWVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.SiegeOfOrgrimmar)]
-        [Category("General")]
-        [DisplayName("Wow Patch Version")]
-        [Description("Select which rotations you prefer - Excellent ToT or Beta SoO")]
-        public Enum.WoWVersion WowRotVersion { get; set; }
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Category("Rotational Settings")]
+        [DisplayName("Fury Rotation Version")]
+        [Description("Select which rotations you prefer - Development or Release.")]
+        public Enum.WoWVersion CrFuryRotVersion { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
+        [Category("Rotational Settings")]
+        [DisplayName("Prot Rotation Version")]
+        [Description("Select which rotations you prefer - Development or Release.")]
+        public Enum.WoWVersion CrProtRotVersion { get; set; }
         #endregion
 
         // ========================================================================================

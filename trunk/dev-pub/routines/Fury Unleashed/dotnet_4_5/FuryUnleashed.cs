@@ -21,7 +21,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 4, 4);
+        public static readonly Version Revision = new Version(1, 5, 0);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
@@ -68,6 +68,7 @@ namespace FuryUnleashed
 
             if (TalentManager.Pulse())
 			{
+                // ReSharper disable once RedundantJumpStatement
 				return;
 			}
         }

@@ -4,10 +4,12 @@ using FuryUnleashed.Shared.Managers;
 using FuryUnleashed.Shared.Utilities;
 using Styx;
 using Styx.TreeSharp;
+using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using G = FuryUnleashed.Routines.FuGlobal;
 using I = FuryUnleashed.Core.Item;
+using SB = FuryUnleashed.Shared.Helpers.SpellBook;
 using SG = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using SH = FuryUnleashed.Interfaces.Settings.SettingsH;
 using Spell = FuryUnleashed.Core.Spell;
@@ -31,8 +33,10 @@ namespace FuryUnleashed.Routines
                         new Decorator(ret => SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
                     new Decorator(ret => U.DefaultBuffCheck && ((SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => !G.BattleShoutAura)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => !G.CommandingShoutAura)))));
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, 
+                                Spell.Cast(SB.BattleShout, on => Me, ret => !G.BattleShoutAura)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, 
+                                Spell.Cast(SB.CommandingShout, on => Me, ret => !G.CommandingShoutAura)))));
             }
         }
 
@@ -43,18 +47,20 @@ namespace FuryUnleashed.Routines
                 return new PrioritySelector(
                     new Decorator(ret => SG.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                    new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => SG.Instance.Arms.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.WoWVersion>(ctx => SG.Instance.General.WowRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.SiegeOfOrgrimmar,
-                            new Decorator(ret => !Spell.IsGlobalCooldown(), SoOArmsCombat)),
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.ThroneOfThunder,
-                            new Decorator(ret => !Spell.IsGlobalCooldown(), ToTArmsCombat))));
+                    new Switch<Enum.WoWVersion>(ctx => SG.Instance.General.CrArmsRotVersion,
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development,
+                            new Decorator(ret => true, DevArmsCombat)),
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release,
+                            new Decorator(ret => true, RelArmsCombat))));
+                            //!Spell.IsGlobalCooldown()
             }
         }
 
-        internal static Composite SoOArmsCombat
+        internal static Composite DevArmsCombat
         {
             get
             {
@@ -62,45 +68,45 @@ namespace FuryUnleashed.Routines
                     new Switch<Enum.Mode>(ctx => SH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, SoO_ArmsDefensive()),
-                                SoO_ArmsUtility(),
-                                SoO_ArmsVictorious(),
+                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
+                                Dev_ArmsUtility(),
+                                Dev_ArmsVictorious(),
                                 I.CreateItemBehaviour(),
-                                SoO_ArmsRacials(),
-                                SoO_ArmsOffensive(),
-                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
-                                new Decorator(ret => G.ExecuteCheck, SoO_ArmsExec()),
-                                SoO_ArmsSt())),
+                                Dev_ArmsRacials(),
+                                Dev_ArmsOffensive(),
+                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
+                                new Decorator(ret => G.ExecuteCheck, Dev_ArmsExec()),
+                                Dev_ArmsSt())),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, SoO_ArmsDefensive()),
-                                SoO_ArmsUtility(),
-                                SoO_ArmsVictorious(),
-                                I.CreateItemBehaviour(),
+                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
+                                Dev_ArmsUtility(),
+                                Dev_ArmsVictorious(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        SoO_ArmsRacials(),
-                                        SoO_ArmsOffensive())),
-                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
-                                new Decorator(ret => G.ExecuteCheck, SoO_ArmsExec()),
-                                SoO_ArmsSt())),
+                                        I.CreateItemBehaviour(),
+                                        Dev_ArmsRacials(),
+                                        Dev_ArmsOffensive())),
+                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
+                                new Decorator(ret => G.ExecuteCheck, Dev_ArmsExec()),
+                                Dev_ArmsSt())),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, SoO_ArmsDefensive()),
-                                SoO_ArmsUtility(),
-                                SoO_ArmsVictorious(),
-                                I.CreateItemBehaviour(),
+                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
+                                Dev_ArmsUtility(),
+                                Dev_ArmsVictorious(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        SoO_ArmsRacials(),
-                                        SoO_ArmsOffensive())),
-                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SoO_ArmsMt()),
-                                new Decorator(ret => G.ExecuteCheck, SoO_ArmsExec()),
-                                SoO_ArmsSt()))));
+                                        I.CreateItemBehaviour(),
+                                        Dev_ArmsRacials(),
+                                        Dev_ArmsOffensive())),
+                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
+                                new Decorator(ret => G.ExecuteCheck, Dev_ArmsExec()),
+                                Dev_ArmsSt()))));
             }
         }
 
-        internal static Composite ToTArmsCombat
+        internal static Composite RelArmsCombat
         {
             get
             {
@@ -114,7 +120,7 @@ namespace FuryUnleashed.Routines
                                 I.CreateItemBehaviour(),
                                 ArmsRacials(),
                                 ArmsOffensive(),
-                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, ArmsMt()),
+                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, ArmsMt()),
                                 ArmsSt())),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -126,7 +132,7 @@ namespace FuryUnleashed.Routines
                                         I.CreateItemBehaviour(),
                                         ArmsRacials(),
                                         ArmsOffensive())),
-                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= 2, ArmsMt()),
+                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, ArmsMt()),
                                 ArmsSt())),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
@@ -138,173 +144,186 @@ namespace FuryUnleashed.Routines
                                         I.CreateItemBehaviour(),
                                         ArmsRacials(),
                                         ArmsOffensive())),
-                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && (U.NearbyAttackableUnitsCount >= 2), ArmsMt()),
+                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, ArmsMt()),
                                 ArmsSt()))));
             }
         }
         #endregion
 
-        #region 5.4 Rotations
-        // SimulationCraft 540-1 (r17677) - 2H Arms - Slightly customized with experiences and Icy-Veins - http://www.icy-veins.com/arms-warrior-wow-pve-dps-rotation-cooldowns-abilities
-        internal static Composite SoO_ArmsSt()
+        #region Development Rotations
+        // Based on a mix of (Should perform excellent!):
+        // No T16P2 rotational support, as it's experimental.
+        // http://www.mmo-champion.com/threads/1340569-5-4-Guide-Arms-PVE
+        // http://www.icy-veins.com/arms-warrior-wow-pve-dps-rotation-cooldowns-abilities (Not much, mostly the other link)
+        internal static Composite Dev_ArmsSt()
         {
             return new PrioritySelector(
-                //actions.single_target=heroic_strike,if=rage>115|(debuff.colossus_smash.up&rage>40&set_bonus.tier16_2pc_melee)
-                Spell.Cast("Heroic Strike", ret => Me.CurrentRage > 115 || (Me.CurrentRage > 95 && G.UrGlyph) || (G.ColossusSmashAura && Me.CurrentRage > 40 && G.Tier16TwoPieceBonus)),
-                //actions.single_target+=/mortal_strike,if=dot.deep_wounds.remains<1.0|buff.enrage.down
-                Spell.Cast("Mortal Strike", ret => G.FadingDw(1000) || !G.EnrageAura),
-                //actions.single_target+=/colossus_smash,if=debuff.colossus_smash.remains<1.0
-                Spell.Cast("Colossus Smash", ret => !G.ColossusSmashAura || G.FadingCs(1000)),
-                //actions.single_target+=/mortal_strike
-                Spell.Cast("Mortal Strike"),
-                //actions.single_target+=/storm_bolt,if=enabled&debuff.colossus_smash.up
-                Spell.Cast("Storm Bolt", ret => G.SbTalent && G.ColossusSmashAura && Tier6AbilityUsage),
-                //actions.single_target+=/dragon_roar,if=enabled&!debuff.colossus_smash.up
-                new Decorator(ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityUsage,
-                    new PrioritySelector(
-                        Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityUsage),
-                        Spell.Cast("Impending Victory", ret => G.IvTalent))),
-                //actions.single_target+=/execute,if=buff.sudden_execute.down|buff.taste_for_blood.down|rage>90|target.time_to_die<12
-                //Different Execute Rotation
-                //actions.single_target+=/overpower,if=target.health.pct>=20&rage<100|buff.sudden_execute.up
-                new Decorator(ret => (G.NonExecuteCheck && Me.CurrentRage < 100) || G.SuddenExecAura,
-                    new PrioritySelector(
-                        Spell.Cast("Overpower", ret => !G.RecklessnessAura),
-                        Spell.Cast("Slam", ret => G.RecklessnessAura))),
-                //actions.single_target+=/slam,if=target.health.pct>=20
-                Spell.Cast("Slam", ret => G.NonExecuteCheck && Me.CurrentRage > 40),
-                //actions.single_target+=/battle_shout
-                new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me))),
-                //actions.single_target+=/heroic_throw 
-                Spell.Cast("Heroic Throw", ret => SG.Instance.Arms.CheckHeroicThrow)
-                );
-        }
-
-        internal static Composite SoO_ArmsExec()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Colossus Smash"),
-                new Decorator(ret => !G.ColossusSmashAura,
-                    new PrioritySelector(
-                        Spell.Cast("Mortal Strike"),
-                        Spell.Cast("Execute", ret => Me.CurrentRage >= Me.MaxRage - 15),
-                        Spell.Cast("Overpower", ret => G.SuddenExecAura),
-                        Spell.Cast("Dragon Roar", ret => G.DrTalent && Tier4AbilityUsage),
-                        Spell.Cast("Impending Victory", ret => G.IvTalent),
-                        new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me))))),
+                // Inside Colossus Smash window
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast("Execute"),
-                        Spell.Cast("Dragon Roar", ret => G.DrTalent && Tier4AbilityUsage),
-                        Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage)
+                        Spell.Cast(SB.Execute, ret => G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.Slam, ret => !G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.MortalStrike, ret => G.SLOC),
+                        Spell.Cast(SB.Overpower, ret => G.SLOC && G.MSOC),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage - 10))),
+                // Outside Colossus Smash window
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.ColossusSmash),
+                        Spell.Cast(SB.MortalStrike),
+
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added.
+
+                        Spell.Cast(SB.Overpower),
+                        Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Arms.CheckHeroicThrow),
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage), // Added - For the sake of supporting it.
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
+
+                        new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me))),
+                        Spell.Cast(SB.Execute, ret => G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.Slam, ret => Me.CurrentRage >= 90 && !G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && SG.Instance.Fury.CheckRotImpVic) // Added for the sake of supporting it rotational.                        
                         )));
         }
 
-        internal static Composite SoO_ArmsMt()
+        internal static Composite Dev_ArmsExec()
         {
             return new PrioritySelector(
-                //actions.aoe=sweeping_strikes
-                Spell.Cast("Sweeping Strikes"),
-                //actions.aoe+=/cleave,if=rage>110&active_enemies<=4
-                Spell.Cast("Cleave", ret => Me.CurrentRage > 110 && U.NearbyAttackableUnitsCount <= 4),
-                //actions.aoe+=/bladestorm,if=enabled&(buff.bloodbath.up|!talent.bloodbath.enabled)
-                Spell.Cast("Bladestorm", ret => G.BsTalent && (G.BloodbathAura || !G.BbTalent) && Tier4AbilityAoEUsage),
-                //actions.aoe+=/dragon_roar,if=enabled&debuff.colossus_smash.down
-                Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && Tier4AbilityAoEUsage),
-                //for the sake of Shockwave support ... added.
-                Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                //actions.aoe+=/colossus_smash,if=debuff.colossus_smash.remains<1
-                Spell.Cast("Colossus Smash", ret => G.FadingCs(1000)),
-                //actions.aoe+=/thunder_clap,target=2,if=dot.deep_wounds.attack_power*1.1<stat.attack_power
-                Spell.Cast("Thunderclap", ret => U.NeedThunderclapUnitsCount > 0),
-                //actions.aoe+=/mortal_strike,if=active_enemies=2|rage<50
-                Spell.Cast("Mortal Strike", ret => U.NearbyAttackableUnitsCount == 2 || Me.CurrentRage < 50),
-                //actions.aoe+=/execute,if=buff.sudden_execute.down&active_enemies=2
-                Spell.Cast("Execute", ret => !G.SuddenExecAura && U.NearbyAttackableUnitsCount == 2),
-                //actions.aoe+=/slam,if=buff.sweeping_strikes.up&debuff.colossus_smash.up
-                Spell.Cast("Slam", ret => G.SweepingStrikesAura && G.ColossusSmashAura),
-                //actions.aoe+=/overpower,if=active_enemies=2
-                Spell.Cast("Overpower", ret => U.NearbyAttackableUnitsCount == 2),
-                //actions.aoe+=/slam,if=buff.sweeping_strikes.up
-                Spell.Cast("Slam", ret => G.SweepingStrikesAura),
-                //actions.aoe+=/battle_shout
-                new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me)))
+                // Inside Colossus Smash window
+                new Decorator(ret => G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.Execute),
+                        Spell.Cast(SB.MortalStrike),
+
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && Me.CurrentRage < 30 && BloodbathSync && Tier4AbilityUsage), // Added
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Me.CurrentRage < 30 && Tier6AbilityUsage), // Added.
+
+                        Spell.Cast(SB.Overpower),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage - 10))),
+                // Outside Colossus Smash window
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => Me.CurrentRage >= 80 || G.DeathScentenceAuraT16),
+
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added.
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
+
+                        Spell.Cast(SB.ColossusSmash),
+                        Spell.Cast(SB.MortalStrike),
+                        Spell.Cast(SB.Overpower),
+                        Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Arms.CheckHeroicThrow),
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage), // Added - For the sake of supporting it.
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
+
+                        new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me)))))
                 );
         }
 
-        internal static Composite SoO_ArmsOffensive()
+        //Check from here
+        internal static Composite Dev_ArmsMt()
         {
             return new PrioritySelector(
-                //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
-                Spell.Cast("Recklessness", ret => ((G.AvatarAura || G.AVCD <= 1500) || (G.BloodbathAura || G.BBCD <= 1500) || (G.SbTalent)) && RecklessnessUsage),
-                //actions+=/bloodbath,if=enabled&(debuff.colossus_smash.up|cooldown.colossus_smash.remains<4)
-                Spell.Cast("Bloodbath", ret => G.BbTalent && (G.ColossusSmashAura || G.CSCD < 4000) && Tier6AbilityUsage),
-                //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
-                Spell.Cast("Avatar", ret => G.AvTalent && G.RecklessnessAura && Tier6AbilityUsage),
-                //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
-                Spell.Cast("Skull Banner", ret => !G.SkullBannerAura && G.RecklessnessAura && SkullBannerUsage),
-                //actions+=/berserker_rage,if=buff.enrage.remains<0.5
-                Spell.Cast("Berserker Rage", ret => (!G.EnrageAura || G.FadingEnrage(500)) && BerserkerRageUsage)
+                Spell.Cast(SB.SweepingStrikes),
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
+                    new PrioritySelector(
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
+
+                        Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 2),
+                        Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
+                        new Decorator(ret => G.NonExecuteCheck,
+                            Dev_ArmsSt()),
+                        new Decorator(ret => G.ExecuteCheck,
+                            Dev_ArmsExec()))),
+                new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
+                    new PrioritySelector(
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0),
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
+
+                        Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 3),
+                        Spell.Cast(SB.Whirlwind, ret => U.NearbySlamCleaveUnitsCount < U.NearbyAttackableUnitsCount),
+                        Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
+                        new Decorator(ret => G.NonExecuteCheck,
+                            Dev_ArmsSt()),
+                        new Decorator(ret => G.ExecuteCheck,
+                            Dev_ArmsExec()))));
+        }
+
+        internal static Composite Dev_ArmsOffensive()
+        {
+            return new PrioritySelector(
+                Spell.Cast(SB.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(500)) && G.ColossusSmashAura && BerserkerRageUsage),
+                Spell.Cast(SB.Bloodbath, ret => Tier4AbilityUsage),
+
+                Spell.Cast(SB.Recklessness, ret => RecklessnessUsage),
+                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage),
+                Spell.Cast(SB.Avatar, ret => G.AvTalent && RecklessnessSync && Tier6AbilityUsage)
                 );
         }
 
-        internal static Composite SoO_ArmsVictorious()
+        internal static Composite Dev_ArmsVictorious()
         {
             return new PrioritySelector(
-                Spell.Cast("Impending Victory", ret => !G.IVOC && G.IvTalent && SG.Instance.Arms.CheckImpVic && Me.HealthPercent <= SG.Instance.Arms.CheckImpVicNum),
-                Spell.Cast("Victory Rush", ret => !G.VROC && !G.IvTalent && G.VictoriousAura && SG.Instance.Arms.CheckImpVic && Me.HealthPercent <= SG.Instance.Arms.CheckImpVicNum)
+                Spell.Cast(SB.ImpendingVictory, ret => !G.IVOC && G.IvTalent && SG.Instance.Arms.CheckImpVic && Me.HealthPercent <= SG.Instance.Arms.CheckImpVicNum),
+                Spell.Cast(SB.VictoryRush, ret => !G.VROC && G.VictoriousAura && SG.Instance.Arms.CheckVicRush && Me.HealthPercent <= SG.Instance.Arms.CheckVicRushNum)
                 );
         }
 
-        internal static Composite SoO_ArmsRacials()
+        internal static Composite Dev_ArmsRacials()
         {
             return new PrioritySelector(
-                new Decorator(ret =>
-                    (SG.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (SG.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                    (SG.Instance.Arms.ClassRacials == Enum.AbilityTrigger.Always),
+                new Decorator(ret => RacialUsage,
                     Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
                     ));
         }
 
-        internal static Composite SoO_ArmsDefensive()
+        internal static Composite Dev_ArmsDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Die by the Sword", ret => SG.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Arms.CheckDiebytheSwordNum),
-                Spell.Cast("Enraged Regeneration", ret => G.ErTalent && SG.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= SG.Instance.Arms.CheckEnragedRegenNum),
-                Spell.Cast("Lifeblood", ret => SG.Instance.Arms.CheckLifeblood && Me.HealthPercent <= SG.Instance.Arms.CheckLifebloodNum),
-                Spell.Cast("Shield Wall", ret => SG.Instance.Arms.CheckShieldWall && Me.HealthPercent <= SG.Instance.Arms.CheckShieldWallNum),
+                Spell.Cast(SB.DiebytheSword, ret => SG.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Arms.CheckDiebytheSwordNum),
+                Spell.Cast(SB.EnragedRegeneration, ret => G.ErTalent && SG.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= SG.Instance.Arms.CheckEnragedRegenNum),
+                Spell.Cast(SB.ShieldWall, ret => SG.Instance.Arms.CheckShieldWall && Me.HealthPercent <= SG.Instance.Arms.CheckShieldWallNum),
+                Spell.Cast(SB.SpellReflection, ret => SG.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
                 I.ArmsUseHealthStone()
                 );
         }
 
-        internal static Composite SoO_ArmsUtility()
+        internal static Composite Dev_ArmsUtility()
         {
             return new PrioritySelector(
-                Spell.CastOnGround("Demoralizing Banner", loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Arms.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Arms.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
-                Spell.Cast("Hamstring", ret => !U.IsTargetBoss && !G.HamstringAura && (SG.Instance.Arms.HamString == Enum.Hamstring.Always || SG.Instance.Arms.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
-                Spell.Cast("Intimidating Shout", ret => SG.Instance.Arms.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
-                Spell.Cast("Mass Spell Reflection", ret => G.MrTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && MassSpellReflectionUsage),
-                Spell.Cast("Piercing Howl", ret => G.PhTalent && SG.Instance.Arms.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum),
-                Spell.Cast("Rallying Cry", ret => U.RaidMembersNeedCryCount > 0),
-                Spell.Cast("Shattering Throw", ret => SG.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss && (G.CSCD <= 3000 || G.SBCD <= 3000)),
-                Spell.Cast("Spell Reflection", ret => SG.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
-                Spell.Cast("Staggering Shout", ret => G.SsTalent && SG.Instance.Arms.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum)
+                Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Arms.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Arms.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
+                Spell.Cast(SB.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (SG.Instance.Arms.HamString == Enum.Hamstring.Always || SG.Instance.Arms.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
+                Spell.Cast(SB.IntimidatingShout, ret => SG.Instance.Arms.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
+                Spell.Cast(SB.MassSpellReflection, ret => G.MrTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && MassSpellReflectionUsage),
+                Spell.Cast(SB.PiercingHowl, ret => G.PhTalent && SG.Instance.Arms.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum),
+                Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
+                Spell.Cast(SB.ShatteringThrow, ret => SG.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss),
+                Spell.Cast(SB.StaggeringShout, ret => G.SsTalent && SG.Instance.Arms.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum)
                 );
         }
         #endregion
 
-        #region 5.3 Rotations
+        #region Release Rotations
         internal static Composite ArmsSt()
         {
             return new PrioritySelector(
-                // SimulationCraft 530-6 (r16981) - 2H Arms
+                // SimulationCraft 530-6 (r16981) - 2H Arms - Slightly Optimized
+                Spell.Cast("Execute", ret => G.DeathScentenceAuraT16),
                 Spell.Cast("Heroic Strike", ret => Me.CurrentRage >= Me.MaxRage - 15 || (G.ColossusSmashAura && Me.CurrentRage >= Me.MaxRage - 40 && G.NonExecuteCheck)),
                 Spell.Cast("Mortal Strike"),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (G.BloodbathAura || G.AvTalent || G.SbTalent) && !G.ColossusSmashAura && G.NonExecuteCheck && (
@@ -318,7 +337,7 @@ namespace FuryUnleashed.Routines
                     (SG.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Colossus Smash", ret => !G.ColossusSmashAura || G.FadingCs(1000)),
-                Spell.Cast("Execute", ret => G.ColossusSmashAura || G.RecklessnessAura || Me.CurrentRage >= Me.MaxRage - 25),
+                Spell.Cast("Execute", ret => G.ColossusSmashAura || G.RecklessnessAura || Me.CurrentRage >= Me.MaxRage - 25 || G.DeathScentenceAuraT16),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (((G.BloodbathAura || G.AvTalent || G.SbTalent) && G.NonExecuteCheck) || (!G.ColossusSmashAura && G.ExecuteCheck)) && (
                     (SG.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
@@ -327,7 +346,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast("Slam", ret => G.ColossusSmashAura && (G.FadingCs(1000) || G.RecklessnessAura) && G.NonExecuteCheck),
                 Spell.Cast("Overpower", ret => G.TasteForBloodS3 && G.NonExecuteCheck),
                 Spell.Cast("Slam", ret => G.ColossusSmashAura && G.FadingCs(2500) && G.NonExecuteCheck),
-                Spell.Cast("Execute", ret => !G.SuddenExecAura),
+                Spell.Cast("Execute", ret => !G.SuddenExecAura || G.DeathScentenceAuraT16),
                 Spell.Cast("Overpower", ret => G.NonExecuteCheck || G.SuddenExecAura),
                 Spell.Cast("Slam", ret => Me.CurrentRage >= 40 && G.NonExecuteCheck),
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
@@ -338,10 +357,10 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        // SimulationCraft 530-6 (r16981) - 2H Arms
         internal static Composite ArmsMt()
         {
             return new PrioritySelector(
+                Spell.Cast("Execute", ret => G.DeathScentenceAuraT16),
                 Spell.Cast("Sweeping Strikes"),
                 Spell.Cast("Cleave", ret => Me.CurrentRage > 110),
                 Spell.Cast("Mortal Strike"),
@@ -405,7 +424,7 @@ namespace FuryUnleashed.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Impending Victory", ret => !G.IVOC && G.IvTalent && SG.Instance.Arms.CheckImpVic && Me.HealthPercent <= SG.Instance.Arms.CheckImpVicNum),
-                Spell.Cast("Victory Rush", ret => !G.VROC && !G.IvTalent && G.VictoriousAura && SG.Instance.Arms.CheckImpVic && Me.HealthPercent <= SG.Instance.Arms.CheckImpVicNum)
+                Spell.Cast("Victory Rush", ret => !G.VROC && !G.IvTalent && G.VictoriousAura && SG.Instance.Arms.CheckVicRush && Me.HealthPercent <= SG.Instance.Arms.CheckVicRushNum)
                 );
         }
 
@@ -528,6 +547,22 @@ namespace FuryUnleashed.Routines
                 return ((SG.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (SG.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (SG.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool RecklessnessSync
+        {
+            get
+            {
+                return ((G.RecklessnessAura) || (G.ReadinessAura));
+            }
+        }
+
+        internal static bool BloodbathSync
+        {
+            get
+            {
+                return ((G.BloodbathAura || G.AvTalent || G.SbTalent) || (G.ReadinessAura));
             }
         }
         #endregion

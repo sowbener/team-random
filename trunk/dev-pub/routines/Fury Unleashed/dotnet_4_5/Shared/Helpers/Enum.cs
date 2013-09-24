@@ -118,8 +118,8 @@ namespace FuryUnleashed.Shared.Helpers
 
         public enum WoWVersion
         {
-            SiegeOfOrgrimmar,
-            ThroneOfThunder
+            Development,
+            Release
         }
         #endregion
     }
