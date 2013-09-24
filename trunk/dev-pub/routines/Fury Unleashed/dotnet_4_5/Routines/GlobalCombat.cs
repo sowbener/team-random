@@ -29,6 +29,7 @@ namespace FuryUnleashed.Routines
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Decorator(ret => SG.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
                 new Switch<WoWSpec>(ret => Me.Specialization,
+
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
                             new Decorator(ret => SG.Instance.Arms.CheckAoE && SG.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
@@ -38,6 +39,7 @@ namespace FuryUnleashed.Routines
                             new Decorator(ret => SG.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
                             new Action(delegate { Unit.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
+
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
                             new Decorator(ret => SG.Instance.Fury.CheckAoE && SG.Instance.Fury.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
@@ -46,6 +48,7 @@ namespace FuryUnleashed.Routines
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
+
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
                             new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,

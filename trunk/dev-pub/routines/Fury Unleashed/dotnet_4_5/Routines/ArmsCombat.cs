@@ -230,16 +230,16 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_ArmsMt()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.SweepingStrikes),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Arms.CheckAoEThunderclap), // Should be MultiDot Mortal Strike ...
+                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Arms.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
 
+                        Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 2),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
@@ -248,13 +248,14 @@ namespace FuryUnleashed.Routines
                             Dev_ArmsExec()))),
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
                     new PrioritySelector(
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Arms.CheckAoEThunderclap),
+                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Arms.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0),
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
 
+                        Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 3),
                         Spell.Cast(SB.Whirlwind, ret => U.NearbySlamCleaveUnitsCount < U.NearbyAttackableUnitsCount),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
