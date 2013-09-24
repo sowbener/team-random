@@ -154,6 +154,7 @@ namespace FuryUnleashed.Routines
         // Based on a mix of (Should perform excellent!):
         // No T16P2 rotational support, as it's experimental.
         // http://www.mmo-champion.com/threads/1340569-5-4-Guide-Arms-PVE
+        // http://us.battle.net/wow/en/forum/topic/8087999196?page=1 (Not much, mostly the other link)
         // http://www.icy-veins.com/arms-warrior-wow-pve-dps-rotation-cooldowns-abilities (Not much, mostly the other link)
         internal static Composite Dev_ArmsSt()
         {
@@ -165,7 +166,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.Slam, ret => !G.DeathScentenceAuraT16),
                         Spell.Cast(SB.MortalStrike, ret => G.SLOC),
                         Spell.Cast(SB.Overpower, ret => G.SLOC && G.MSOC),
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage - 10))),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
                 // Outside Colossus Smash window
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
@@ -203,7 +204,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Me.CurrentRage < 30 && Tier6AbilityUsage), // Added.
 
                         Spell.Cast(SB.Overpower),
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage - 10))),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
                 // Outside Colossus Smash window
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
@@ -241,6 +242,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 2),
+                        Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
                             Dev_ArmsSt()),
@@ -257,7 +259,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 3),
-                        Spell.Cast(SB.Whirlwind, ret => U.NearbySlamCleaveUnitsCount < U.NearbyAttackableUnitsCount),
+                        Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
                             Dev_ArmsSt()),
