@@ -66,7 +66,7 @@ namespace DeathVader.Routines
         internal static Composite BloodSt()
         {
             return new PrioritySelector(
-                Spell.PreventDoubleCast(45529, 0.5, ret => NeedBloodTap),
+                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
                 Spell.Cast("Blood Boil", ret => !NeedDeathStrike && HasCrimsonScourge),
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
@@ -84,7 +84,7 @@ namespace DeathVader.Routines
         internal static Composite BloodMt()
         {
             return new PrioritySelector(
-                Spell.PreventDoubleCast(45529, 0.5, ret => NeedBloodTap),
+                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                 Spell.Cast("Blood Boil", ret => HasCrimsonScourge), // get rid of the Proc
                 G.HandlePestilence(),
                 Spell.Cast("Unholy Blight", ret => DeathKnightSettings.EnableUnholyBlight),
