@@ -53,7 +53,7 @@ namespace Xiaolin
         public static XIMain Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        internal static readonly Version Revision = new Version(1, 0, 8);
+        internal static readonly Version Revision = new Version(1, 0, 0);
         internal static readonly string XIName = "Xiaolin - IR " + Revision;
 
         public override string Name { get { return XIName; } }

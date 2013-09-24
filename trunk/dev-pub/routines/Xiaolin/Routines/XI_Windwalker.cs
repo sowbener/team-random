@@ -19,7 +19,6 @@ using Styx.CommonBot;
 namespace Xiaolin.Routines
 {
     class XIWindwalker
-
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
