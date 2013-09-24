@@ -242,7 +242,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 2),
-                        Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
+                        //Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
                             Dev_ArmsSt()),
@@ -259,7 +259,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 3),
-                        Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
+                        //Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
                             Dev_ArmsSt()),
