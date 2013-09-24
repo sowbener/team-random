@@ -169,8 +169,9 @@ namespace Bullseye.Routines
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
-                        Spell.Cast("Mind Freeze")));
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                        Spell.Cast("Silencing Shot")
+                          ));
             }
         }
 

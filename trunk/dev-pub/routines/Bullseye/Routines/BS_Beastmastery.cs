@@ -171,7 +171,9 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryInterrupts()
         {
             return new PrioritySelector(
-                       );
+                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                    Spell.Cast("Silencing Shot")
+                      ));
         }
         #endregion
 
