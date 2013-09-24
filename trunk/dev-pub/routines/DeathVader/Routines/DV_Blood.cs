@@ -255,7 +255,7 @@ namespace DeathVader.Routines
             }
         }
 
-        private static bool NeedBloodTap { get { return BloodTapStackCount == 5 && (Me.DeathRuneCount < 2 || Me.BloodRuneCount < 2); } }
+        private static bool NeedBloodTap { get { return BloodTapStackCount > 5 && Me.BloodRuneCount > 0; } }
 
         private static bool NeedBoneShield { get { return !Me.HasAura("Bone Shield"); } }
 
@@ -297,7 +297,7 @@ namespace DeathVader.Routines
         {
             get
             {
-                return Spell.GetAuraStackCount("Blood Charge");
+                return Spell.GetAuraStackCount(114851);
             }
         }
 
