@@ -122,7 +122,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckTreePerformance { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(500)]
+        [Styx.Helpers.DefaultValue(2500)]
         [Category("Debug Timers")]
         [DisplayName("Logging Throttle Time")]
         [Description("Time between advanced logs - Throttle  - Requires Debug Logging enabled.")]

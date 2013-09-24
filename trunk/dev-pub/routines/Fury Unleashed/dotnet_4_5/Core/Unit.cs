@@ -91,7 +91,7 @@ namespace FuryUnleashed.Core
         {
             using (new PerformanceLogger("GetNearbySlamCleaveUnitsCount"))
                 if (Me.CurrentTarget != null)
-                    NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
+                    NearbySlamCleaveUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
         }
 
         public static int NeedThunderclapUnitsCount;
