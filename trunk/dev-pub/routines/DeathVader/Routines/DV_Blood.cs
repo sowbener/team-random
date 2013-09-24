@@ -291,7 +291,7 @@ namespace DeathVader.Routines
             }
         }
 
-        private static bool NeedBloodTap { get { return Me.HasCachedAura(114851, 5) && (Me.FrostRuneCount == 0 || Me.DeathRuneCount == 0 || Me.UnholyRuneCount == 0|| Me.BloodRuneCount == 0); } }
+        private static bool NeedBloodTap { get { return DvTalentManager.HasTalent(13) && Me.HasCachedAura(114851, 5); } }
 
         private static bool NeedRuneStrike { get { return (Me.CurrentRunicPower >= RuneStrikePercent || Me.HealthPercent > 90) && Me.CurrentRunicPower >= 30 && (Me.UnholyRuneCount == 0 || Me.FrostRuneCount == 0 || Me.CurrentRunicPower >= Me.MaxRunicPower) && !NeedDeathCoilHeal && !NeedDancingRuneWeapon; } }
 
