@@ -255,6 +255,8 @@ namespace DeathVader.Routines
             }
         }
 
+        private static bool NeedBloodTap { get { return BloodTapStackCount == 5 && (Me.DeathRuneCount < 2 || Me.BloodRuneCount < 2); } }
+
         private static bool NeedBoneShield { get { return !Me.HasAura("Bone Shield"); } }
 
         private static bool NeedDeathPact { get { return UsePetSacrifice && Me.HealthPercent < PetSacrificePercent; } }
@@ -291,7 +293,13 @@ namespace DeathVader.Routines
             }
         }
 
-        private static bool NeedBloodTap { get { return DvTalentManager.HasTalent(13) && Me.HasCachedAura(114851, 5); } }
+        private static uint BloodTapStackCount
+        {
+            get
+            {
+                return Spell.GetAuraStackCount("Blood Charge");
+            }
+        }
 
         private static bool NeedRuneStrike { get { return (Me.CurrentRunicPower >= RuneStrikePercent || Me.HealthPercent > 90) && Me.CurrentRunicPower >= 30 && (Me.UnholyRuneCount == 0 || Me.FrostRuneCount == 0 || Me.CurrentRunicPower >= Me.MaxRunicPower) && !NeedDeathCoilHeal && !NeedDancingRuneWeapon; } }
 

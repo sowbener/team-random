@@ -456,7 +456,44 @@ namespace DeathVader.Core
 
         #region Aura Tracking & Caching
 
+        public static WoWAura GetAuraFromName(this WoWUnit unit, string aura, bool isMyAura = false)
+        {
+            return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.TimeLeft > TimeSpan.Zero);
+        }
 
+        /// <summary>
+        /// Gets an Aura by ID. Note: this is a fix for the HB API wraper GetAuraById
+        /// </summary>
+        public static WoWAura GetAuraFromID(this WoWUnit unit, int aura, bool isMyAura = false)
+        {
+            return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.TimeLeft > TimeSpan.Zero);
+        }
+
+        public static uint GetAuraStackCount(string aura)
+        {
+            var result = StyxWoW.Me.GetAuraFromName(aura);
+
+            if (result != null)
+            {
+                if (result.StackCount > 0)
+                    return result.StackCount;
+            }
+
+            return 0;
+        }
+
+        public static uint GetAuraStackCount(int spellId)
+        {
+            var result = StyxWoW.Me.GetAuraFromID(spellId);
+
+            if (result != null)
+            {
+                if (result.StackCount > 0)
+                    return result.StackCount;
+            }
+
+            return 0;
+        }
         
         // Cached Aura retrieval - Aura's applied by anyone
         public static bool HasAnyCachedAura(this WoWUnit unit, string aura, int stacks, int msuLeft = 0)
