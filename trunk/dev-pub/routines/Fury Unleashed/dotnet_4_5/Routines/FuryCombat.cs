@@ -223,9 +223,12 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
+                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
+
                         Spell.Cast(SB.Bloodthirst), 
                         Spell.Cast(SB.Whirlwind),
-                        Spell.Cast(SB.RagingBlow, ret => Me.CurrentRage <= 60 && G.MeatCleaverAuraS3))),
+                        Spell.Cast(SB.RagingBlow, ret => Me.CurrentRage <= 60 && G.MeatCleaverAuraS3)
+                        )),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 4,
                     new PrioritySelector(
 
@@ -233,6 +236,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Fury.CheckAoEThunderclap), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS3),
                         Spell.Cast(SB.Bloodthirst),
@@ -248,6 +253,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Fury.CheckAoEThunderclap), // Added
+
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS2),
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.ColossusSmash),
@@ -261,6 +268,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Fury.CheckAoEThunderclap), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Bloodthirst),

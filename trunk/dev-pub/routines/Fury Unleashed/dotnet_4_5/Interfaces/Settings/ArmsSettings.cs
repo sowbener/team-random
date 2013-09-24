@@ -289,6 +289,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Rotational Impending Victory")]
         [Description("Checked enabled Impending Victory as a rotational filler - Ignoring HP settings!")]
         public bool CheckRotImpVic { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Arms - Selectable Options")]
+        [DisplayName("Enable Thunder Clap")]
+        [Description("Enables Thunder Clap to spread Deep Wounds in AoE - NeedThunderclapUnitsCount.")]
+        public bool CheckAoEThunderclap { get; set; }
         #endregion
 
         // ========================================================================================

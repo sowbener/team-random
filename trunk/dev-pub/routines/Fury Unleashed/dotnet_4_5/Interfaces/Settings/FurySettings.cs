@@ -276,6 +276,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Shattering Throw")]
         [Description("Checked enables Shattering Throw.")]
         public bool CheckShatteringThrow { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Fury - Selectable Options")]
+        [DisplayName("Enable Thunder Clap")]
+        [Description("Enables Thunder Clap to spread Deep Wounds in AoE - NeedThunderclapUnitsCount.")]
+        public bool CheckAoEThunderclap { get; set; }
         #endregion
 
         // ========================================================================================

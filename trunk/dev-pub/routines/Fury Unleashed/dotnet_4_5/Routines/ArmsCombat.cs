@@ -233,7 +233,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast(SB.SweepingStrikes),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Arms.CheckAoEThunderclap), // Should be MultiDot Mortal Strike ...
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
@@ -248,7 +248,7 @@ namespace FuryUnleashed.Routines
                             Dev_ArmsExec()))),
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
                     new PrioritySelector(
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0),
+                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Arms.CheckAoEThunderclap),
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
