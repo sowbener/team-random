@@ -277,6 +277,13 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAoE { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Protection - Selectable Options")]
+        [DisplayName("Multi-Target (AoE) Units")]
+        [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 2!")]
+        public int CheckAoENum { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Selectable Options")]
         [DisplayName("Enable Auto Attack")]

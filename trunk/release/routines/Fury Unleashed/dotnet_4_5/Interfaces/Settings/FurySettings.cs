@@ -189,8 +189,22 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(75)]
         [Category("Fury - Regeneration Options")]
         [DisplayName("Impending Victory %")]
-        [Description("Will use Impending Victory or Victory Rush when health % is less than or equal to the set value.")]
+        [Description("Will use Impending Victory when health % is less than or equal to the set value.")]
         public int CheckImpVicNum { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Fury - Regeneration Options")]
+        [DisplayName("Enable Victory Rush")]
+        [Description("Checked enables Victory Rush.")]
+        public bool CheckVicRush { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(75)]
+        [Category("Fury - Regeneration Options")]
+        [DisplayName("Victory Rush %")]
+        [Description("Will use Victory Rush when health % is less than or equal to the set value.")]
+        public int CheckVicRushNum { get; set; }
         #endregion
 
         // ========================================================================================
@@ -229,6 +243,13 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAoE { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Fury - Selectable Options")]
+        [DisplayName("Multi-Target (AoE) Units")]
+        [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 3!")]
+        public int CheckAoENum { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Enable Auto Attack")]
@@ -238,33 +259,12 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Fury - Selectable Options")]
-        [DisplayName("Enable Item De-Sync")]
-        [Description("Enables de-sync of items - With this enabled it uses Hands / Waist outside Trinket Cooldowns.")]
-        public bool CheckDesyncTrinkHands { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Fury - Selectable Options")]
         [DisplayName("Enable Heroic Throw")]
         [Description("Enables Heroic Throw.")]
         public bool CheckHeroicThrow { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("Fury - Selectable Options")]
-        [DisplayName("Enable Lifeblood")]
-        [Description("Checked enables Lifeblood.")]
-        public bool CheckLifeblood { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(10)]
-        [Category("Fury - Selectable Options")]
-        [DisplayName("Lifeblood %")]
-        [Description("Will use Lifeblood when health % is less than or equal to the set value.")]
-        public int CheckLifebloodNum { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Enable Rotational Impending Victory")]
         [Description("Checked enabled Impending Victory as a rotational filler - Ignoring HP settings!")]
@@ -276,6 +276,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Shattering Throw")]
         [Description("Checked enables Shattering Throw.")]
         public bool CheckShatteringThrow { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Fury - Selectable Options")]
+        [DisplayName("Enable Thunder Clap")]
+        [Description("Enables Thunder Clap to spread Deep Wounds in AoE - NeedThunderclapUnitsCount.")]
+        public bool CheckAoEThunderclap { get; set; }
         #endregion
 
         // ========================================================================================

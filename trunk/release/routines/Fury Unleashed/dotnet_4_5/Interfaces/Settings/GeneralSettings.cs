@@ -30,7 +30,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
+        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Development)]
         [Category("General")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]
@@ -56,6 +56,31 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region Rotational Settings
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Category("Rotational Settings")]
+        [DisplayName("Arms Rotation Version")]
+        [Description("Select which rotations you prefer - Development or Release.")]
+        public Enum.WoWVersion CrArmsRotVersion { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Category("Rotational Settings")]
+        [DisplayName("Fury Rotation Version")]
+        [Description("Select which rotations you prefer - Development or Release.")]
+        public Enum.WoWVersion CrFuryRotVersion { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
+        [Category("Rotational Settings")]
+        [DisplayName("Prot Rotation Version")]
+        [Description("Select which rotations you prefer - Development or Release.")]
+        public Enum.WoWVersion CrProtRotVersion { get; set; }
         #endregion
 
         // ========================================================================================
@@ -97,7 +122,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckTreePerformance { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(500)]
+        [Styx.Helpers.DefaultValue(2500)]
         [Category("Debug Timers")]
         [DisplayName("Logging Throttle Time")]
         [Description("Time between advanced logs - Throttle  - Requires Debug Logging enabled.")]

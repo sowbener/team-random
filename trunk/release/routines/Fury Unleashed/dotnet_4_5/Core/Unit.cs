@@ -3,6 +3,7 @@ using FuryUnleashed.Shared.Helpers;
 using FuryUnleashed.Shared.Managers;
 using FuryUnleashed.Shared.Utilities;
 using Styx;
+using Styx.CommonBot;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
@@ -85,6 +86,14 @@ namespace FuryUnleashed.Core
                     NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
         }
 
+        public static int NearbySlamCleaveUnitsCount;
+        public static void GetNearbySlamCleaveUnitsCount()
+        {
+            using (new PerformanceLogger("GetNearbySlamCleaveUnitsCount"))
+                if (Me.CurrentTarget != null)
+                    NearbySlamCleaveUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
+        }
+
         public static int NeedThunderclapUnitsCount;
         public static void GetNeedThunderclapUnitsCount()
         {
@@ -93,6 +102,55 @@ namespace FuryUnleashed.Core
                     NeedThunderclapUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count(u => !u.HasAura(115767));
         }
 
+        #endregion
+
+        #region Unit Booleans
+        // Checks if unit is Valid - Not used yet - Need to update IsInRange.
+        public static bool IsValid(this WoWUnit unit)
+        {
+            return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
+        }
+
+        public static bool IsInRange(this WoWUnit unit, string spell)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                var spellId = results.Override != null ? results.Override.Id : results.Original.Id;
+                return IsInRange(unit, WoWSpell.FromId(spellId));
+            }
+            return false;
+        }
+
+        public static bool IsInRange(this WoWUnit unit, int spell)
+        {
+            return IsInRange(unit, WoWSpell.FromId(spell));
+        }
+
+        public static bool IsInRange(this WoWUnit unit, WoWSpell spell)
+        {
+            return unit.Distance <= (spell.MaxRange + unit.CombatReach);
+        }
+
+        public static bool IsHamstringTarget
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.HamstringUnitsList(); }
+        }
+
+        public static bool IsTargetRare
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.RareUnitsList(); }
+        }
+
+        public static bool IsTargetBoss
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.TargetIsBoss(); }
+        }
+
+        public static bool IsDoNotUseOnTgt
+        {
+            get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
+        }
         #endregion
 
         #region Self Functions
@@ -105,6 +163,16 @@ namespace FuryUnleashed.Core
                 if (StyxWoW.Me.CurrentTarget.IsPlayer) { return 5f; }
                 return Math.Max(5f, StyxWoW.Me.CombatReach + 1.3333334f + StyxWoW.Me.CurrentTarget.CombatReach);
             }
+        }
+		
+		public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
+        {
+            return Math.Abs(spell.MaxRange) < 1 ? 0 : (unit != null ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
+        }
+
+        public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
+        {
+            return Math.Abs(spell.MinRange) < 1 ? 0 : (unit != null ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
         }
         #endregion
 
@@ -131,21 +199,12 @@ namespace FuryUnleashed.Core
             }
         }
 
-        public static bool IsHamstringTarget
+        // Can be used in Pulse.
+        public static void UpdateObjectManager()
         {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.HamstringUnitsList(); }
+            using (new PerformanceLogger("ObjManager Update"))
+                ObjectManager.Update();
         }
-
-        public static bool IsTargetBoss
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.TargetIsBoss(); }
-        }
-
-        public static bool IsDoNotUseOnTgt
-        {
-            get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
-        }
-
         #endregion
     }
 }

@@ -237,6 +237,7 @@ namespace FuryUnleashed.Shared.Helpers
             get
             {
                 return new PrioritySelector(
+                    //Cached Units Logging
                     new Decorator(ret => InternalSettings.Instance.General.CheckUnitLogging,
                         new PrioritySelector(
                             new ThrottlePasses(1,
@@ -244,16 +245,17 @@ namespace FuryUnleashed.Shared.Helpers
                                 RunStatus.Failure,
                                 new Action(delegate
                                 {
-                                    AdvancedLogP("Unit Logging:");
-                                    AdvancedLogW("Target Name: {0}", StyxWoW.Me.CurrentTarget.SafeName);
                                     AdvancedLogP("Cached Unit Counts:");
-                                    AdvancedLogW("Melee Unit Count: {0}", Unit.AttackableMeleeUnitsCount);
-                                    AdvancedLogW("Interrupt AoE Unit Count: {0}", Unit.InterruptableUnitsCount);
-                                    AdvancedLogW("Nearby Unit Count: {0}", Unit.NearbyAttackableUnitsCount);
-                                    AdvancedLogW("Rallying Cry Unit Count: {0}", Unit.RaidMembersNeedCryCount);
-                                    AdvancedLogW("Melee Units need DeepWounds: {0}", Unit.NeedThunderclapUnitsCount);
+                                    AdvancedLogW("Units - In Range (2Y - SlamCleave): {0}",
+                                        Unit.NearbySlamCleaveUnitsCount);
+                                    AdvancedLogW("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
+                                    AdvancedLogW("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
+                                    AdvancedLogW("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
+                                    AdvancedLogW("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
+                                    AdvancedLogW("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
                                 }
                                     )))),
+                    // Cached Aura's Logging
                     new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
                         new PrioritySelector(
                             new ThrottlePasses(1,
@@ -272,8 +274,8 @@ namespace FuryUnleashed.Shared.Helpers
                                     {
                                         AdvancedLogW("{0}", WoWAura);
                                     }
-                                    // ReSharper restore InconsistentNaming
-                                })))));
+                                }
+                                    )))));
             }
         }
         #endregion

@@ -4,6 +4,7 @@ using FuryUnleashed.Shared.Managers;
 using FuryUnleashed.Shared.Utilities;
 using Styx;
 using Styx.TreeSharp;
+using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using G = FuryUnleashed.Routines.FuGlobal;
@@ -41,8 +42,77 @@ namespace FuryUnleashed.Routines
             get
             {
                 return new PrioritySelector(
+                    new Decorator(ret => SG.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
+                    new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                    new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
+                    G.InitializeCaching(),
+                    G.InitializeOnKeyActions(),
+                    new Decorator(ret => SG.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                    new Switch<Enum.WoWVersion>(ctx => SG.Instance.General.CrProtRotVersion,
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development,
+                            new Decorator(ret => true, DevProtCombat)),
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release,
+                            new Decorator(ret => true, RelProtCombat))));
+                //!Spell.IsGlobalCooldown()
+            }
+        }
+
+        internal static Composite DevProtCombat
+        {
+            get
+            {
+                return new PrioritySelector(
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                        new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
+                        G.InitializeCaching(),
+                        G.InitializeOnKeyActions(),
+                        new Decorator(ret => SG.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto && !Spell.IsGlobalCooldown(),
+                                new PrioritySelector(
+                                        new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
+                                        Dev_ProtVictorious(),
+                                        Dev_ProtUtility(),
+                                        I.CreateItemBehaviour(),
+                                        Dev_ProtRacials(),
+                                        Dev_ProtOffensive(),
+                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Protection.CheckAoENum, Dev_ProtMt()),
+                                        Dev_ProtSt())),
+                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.SemiHotkey && !Spell.IsGlobalCooldown(),
+                                new PrioritySelector(
+                                        new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
+                                        Dev_ProtVictorious(),
+                                        Dev_ProtUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                        I.CreateItemBehaviour(),
+                                                        Dev_ProtRacials(),
+                                                        Dev_ProtOffensive())),
+                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Protection.CheckAoENum, Dev_ProtMt()),
+                                        Dev_ProtSt())),
+                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Hotkey && !Spell.IsGlobalCooldown(),
+                                new PrioritySelector(
+                                        new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
+                                        Dev_ProtVictorious(),
+                                        Dev_ProtUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                        I.CreateItemBehaviour(),
+                                                        Dev_ProtRacials(),
+                                                        Dev_ProtOffensive())),
+                                        new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Protection.CheckAoENum, Dev_ProtMt()),
+                                        Dev_ProtSt())));
+            }
+        }
+
+        internal static Composite RelProtCombat
+        {
+            get
+            {
+                return new PrioritySelector(
+                        new Decorator(ret => SG.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
+                        new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                        new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
                         G.InitializeCaching(),
                         G.InitializeOnKeyActions(),
                         new Decorator(ret => SG.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
@@ -54,7 +124,7 @@ namespace FuryUnleashed.Routines
                                         I.CreateItemBehaviour(),
                                         ProtRacials(),
                                         ProtOffensive(),
-                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= 2, ProtMt()),
+                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Protection.CheckAoENum, ProtMt()),
                                         ProtSt())),
                         new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.SemiHotkey && !Spell.IsGlobalCooldown(),
                                 new PrioritySelector(
@@ -66,7 +136,7 @@ namespace FuryUnleashed.Routines
                                                         I.CreateItemBehaviour(),
                                                         ProtRacials(),
                                                         ProtOffensive())),
-                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= 2, ProtMt()),
+                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Protection.CheckAoENum, ProtMt()),
                                         ProtSt())),
                         new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Hotkey && !Spell.IsGlobalCooldown(),
                                 new PrioritySelector(
@@ -78,19 +148,65 @@ namespace FuryUnleashed.Routines
                                                         I.CreateItemBehaviour(),
                                                         ProtRacials(),
                                                         ProtOffensive())),
-                                        new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= 2, ProtMt()),
+                                        new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Protection.CheckAoENum, ProtMt()),
                                         ProtSt())));
             }
         }
         #endregion
 
-        #region Rotations
+        #region Development Rotations
+        internal static Composite Dev_ProtSt()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_ProtMt()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_ProtDefensive()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_ProtVictorious()
+        {
+            return new PrioritySelector(
+                    //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
+                    //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
+                    );
+        }
+
+        internal static Composite Dev_ProtRacials()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_ProtOffensive()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_ProtUtility()
+        {
+            return new PrioritySelector(
+                );
+        }
+        #endregion
+
+        #region Release Rotations
         internal static Composite ProtSt()
         {
             return new PrioritySelector(
                 Spell.Cast("Taunt", ret => SG.Instance.Protection.CheckAutoTaunt && !G.TargettingMe),
                 Spell.Cast("Execute", ret => G.ExecuteCheck && Me.CurrentRage >= 100 && !G.TargettingMe),
-                Spell.Cast("Heroic Strike", ret => G.UltimatumAura || (Me.CurrentRage >= 100 && !G.TargettingMe && G.NonExecuteCheck)),
+                Spell.Cast("Heroic Strike", ret => G.UltimatumAura || (Me.CurrentRage >= Me.MaxRage - 10 && G.NonExecuteCheck)),
                 Spell.Cast("Shield Slam", ret => Me.CurrentRage <= 90),
                 Spell.Cast("Revenge", ret => Me.CurrentRage <= 100),
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Protection.ShoutSelection,
@@ -114,7 +230,7 @@ namespace FuryUnleashed.Routines
         internal static Composite ProtMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Cleave", ret => G.UltimatumAura || (Me.CurrentRage >= 100 && !G.TargettingMe)),
+                Spell.Cast("Cleave", ret => G.UltimatumAura || (Me.CurrentRage >= Me.MaxRage - 10 && !G.TargettingMe)),
                 Spell.Cast("Thunder Clap"),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (
                     (SG.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
@@ -167,13 +283,13 @@ namespace FuryUnleashed.Routines
                 //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
                 //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
                 Spell.Cast("Impending Victory", ret => G.IvTalent && (Me.HealthPercent <= SG.Instance.Protection.ImpendingVictoryNum || G.FadingVc(2000)) && (
-                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousT15Aura)) ||
+                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
                     (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousT15Aura))),
+                    (SG.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15))),
                 Spell.Cast("Victory Rush", ret => !G.IvTalent && (Me.HealthPercent <= SG.Instance.Protection.VictoryRushNum || G.FadingVc(2000)) && (
-                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousT15Aura)) ||
+                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
                     (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousT15Aura)))
+                    (SG.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15)))
                     );
         }
 

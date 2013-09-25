@@ -1,16 +1,10 @@
-﻿
-//DONE - TODO: Add Spell Reflect and Shield Wall support to Arms and Fury.
-//TODO: Update Arms Rotation to maximize DPS according to SimC (Further Optimize based on guides).
-//TODO: Update Fury Rotation to maximize DPS according to SimC (Further Optimize based on guides).
-//TODO: Update Protection Rotation to maximize TPS according to guides.
-//TODO: Improve Hamstring logic.
-
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Interfaces.GUI;
 using FuryUnleashed.Shared.Helpers;
 using FuryUnleashed.Shared.Managers;
 using JetBrains.Annotations;
 using Styx;
+using Styx.Common;
 using Styx.CommonBot;
 using Styx.CommonBot.Routines;
 using Styx.TreeSharp;
@@ -27,7 +21,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 4, 0);
+        public static readonly Version Revision = new Version(1, 4, 7);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
@@ -53,6 +47,10 @@ namespace FuryUnleashed
         {
             try
             {
+                TreeHooks.Instance.ClearAll();
+                Updater.CheckForUpdate();
+
+                Logger.InitLogW("\r\n------------------------------------------");
                 Unleash();
             }
             catch (Exception exception)
@@ -63,12 +61,16 @@ namespace FuryUnleashed
 
         public override void Pulse()
         {
-            if (!StyxWoW.IsInGame || !StyxWoW.IsInWorld)
+			if (!StyxWoW.IsInWorld || Me == null || !Me.IsValid || Me.IsDead)
+            {
                 return;
+            }
 
             if (TalentManager.Pulse())
+			{
                 // ReSharper disable once RedundantJumpStatement
-                return;
+				return;
+			}
         }
 
         public override void OnButtonPress()
@@ -94,9 +96,6 @@ namespace FuryUnleashed
             Logger.InitLogO("\r\n");
             Logger.InitLogO("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
             Logger.InitLogW("-------------------------------------------\r\n");
-
-            //TreeHooks.Instance.ClearAll();
-            Updater.CheckForUpdate();
 
             /* Update TalentManager */
             try { TalentManager.Update(); }

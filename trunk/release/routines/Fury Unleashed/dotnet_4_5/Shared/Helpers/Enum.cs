@@ -115,6 +115,12 @@ namespace FuryUnleashed.Shared.Helpers
             Bloodbath,
             StormBolt
         }
+
+        public enum WoWVersion
+        {
+            Development,
+            Release
+        }
         #endregion
     }
 }
