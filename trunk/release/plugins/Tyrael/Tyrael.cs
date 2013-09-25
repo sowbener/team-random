@@ -18,7 +18,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 2, 6);
+        public static readonly Version Revision = new Version(5, 2, 7);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         private const byte DefaultTps = 30;
