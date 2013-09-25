@@ -40,7 +40,7 @@
   <ItemGroup>
     <Reference Include="Honorbuddy, Version=2.5.7684.656, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Honorbuddy.exe</HintPath>
+      <HintPath>..\..\..\..\references\Honorbuddy.exe</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tripper.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c40611ce03f849a2, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Games\FlashFXP\Tripper.Tools.dll</HintPath>
+      <HintPath>..\..\..\..\references\Tripper.Tools.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

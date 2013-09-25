@@ -106,6 +106,8 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterUtility()
         {
             return new PrioritySelector(
+                Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true),
+                Spell.Cast("Disable", ret => UnitIsFleeing)
                 );
         }
 
@@ -120,8 +122,9 @@ namespace Xiaolin.Routines
 
 
         #region Booleans
-
-
+        //thanks PR
+        internal static bool CanPlaceBlackOxStatue { get { return SG.Instance.Brewmaster.SummonBlackOxStatue && Me.CurrentTarget != null && !Me.HasAura("Sanctuary of the Ox") && !Me.CurrentTarget.IsFlying && !Me.IsOnTransport; } }
+        internal static bool UnitIsFleeing { get { return Me.CurrentTarget != null && ((Me.CurrentTarget.IsPlayer || Me.CurrentTarget.Fleeing) && Me.CurrentTarget.MovementInfo.RunSpeed > 3.5); } }
         #endregion Booleans
 
     }

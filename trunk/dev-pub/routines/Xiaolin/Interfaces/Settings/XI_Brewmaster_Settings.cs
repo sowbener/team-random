@@ -14,6 +14,14 @@ namespace Xiaolin.Interfaces.Settings
 
         #region Ability Options
         [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Set Black Ox Statue")]
+        public bool SummonBlackOxStatue { get; set; }
+        
+        
+        //old ones?
+        [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.Always)]
         [Category("Unholy - Ability Options")]
         [DisplayName("Summon Gargoyle")]
