@@ -96,7 +96,7 @@ namespace DeathVader.Routines
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => BloodTapFirstCheck2H),
                 Spell.Cast("Howling Blast", ret => OutBreakCooldown && UnholyBlightCheck && NeedFrostFever2H),
                 Spell.Cast("Plague Strike", ret => OutBreakCooldown && UnholyBlightCheck && NeedBloodPlague2H),
-                Spell.Cast("Rime", ret => HowlingBlastProc),
+                Spell.Cast("Howling Blast", ret => HowlingBlastProc),
                 Spell.Cast("Obliterate", ret => ObliterateProc),
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => BloodTapSecondCheck2H),
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => BloodTapThirdCheck2H),

@@ -84,7 +84,7 @@ namespace DeathVader
         #endregion
 
         #region Behaviors
-        private Composite _combatBehavior, _preCombatBuffBehavior;
+        private Composite _preCombatBuffBehavior;
 
         public override Composite CombatBehavior { get { return CombatSelector(); ; } }
         public override Composite PreCombatBuffBehavior { get { return _preCombatBuffBehavior; } }

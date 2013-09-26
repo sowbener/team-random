@@ -119,7 +119,7 @@ namespace DeathVader.Routines
                 int bloodPlague = (int)Me.CurrentTarget.GetAuraTimeLeft("Blood Plague").TotalMilliseconds;
                 // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
                 return (frostFever.Between(350, 3000) || bloodPlague.Between(350, 3000))
-                    && (BloodRuneSlotsActive == 0 || FrostRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0);
+                    && (FrostRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0);
             }
         }
 
