@@ -66,7 +66,7 @@ namespace Bullseye.Routines
         {
             return new PrioritySelector(
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
-                Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && !Me.HasAura(34471)),
+                Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
