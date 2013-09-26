@@ -136,16 +136,12 @@ namespace FuryUnleashed.Core
         //                Spell.Cast("Blah"),
         //                Spell.Cast("Blah"));
         //}  
-        public class SequenceCast
+        internal class SequenceCast
         {
             private readonly List<Composite> _children;
-
             private int _current;
-
             private readonly int _endSequence;
             private bool _sequenceRunning;
-            // ReSharper disable once MemberHidesStaticFromOuterClass
-            public delegate T Selection<out T>(object context);
 
             public SequenceCast(List<Composite> l)
             {
@@ -157,19 +153,19 @@ namespace FuryUnleashed.Core
 
             public Composite Execute(Selection<bool> reqs = null)
             {
-                return new Decorator(ret => _sequenceRunning || ((reqs != null && reqs(ret)) || (reqs == null)), new PrioritySelector(WaitForCast, ExecuteCurrentNode()));
+                return new Decorator(ret => _sequenceRunning || (reqs == null || reqs(ret)), new PrioritySelector(WaitForCast, ExecuteCurrentNode()));
             }
 
-            private Composite WaitForCast
+            private static Composite WaitForCast
             {
-                get { return new Decorator(ret => StyxWoW.Me.IsCasting || SpellManager.GlobalCooldown, new Action(ret => RunStatus.Success)); }
+                get { return new Decorator(ret => Me.IsCasting || SpellManager.GlobalCooldown, new Action(ret => RunStatus.Success)); }
             }
 
             private Composite ExecuteCurrentNode()
             {
                 return new Action(context =>
                 {
-                    //Check for end of sequence 
+                    //Check for end of sequence
                     if (_current >= _endSequence)
                     {
                         _current = 0;
@@ -177,16 +173,16 @@ namespace FuryUnleashed.Core
                         return RunStatus.Failure;
                     }
 
-                    //Sequence isnt over, try to run next node 
+                    //Sequence isnt over, try to run next node
                     var node = _children.ElementAt(_current);
                     node.Start(context);
                     while (node.Tick(context) == RunStatus.Running)
                     {
-                        //Run Node 
+                        //Run Node
                     }
                     node.Stop(context);
 
-                    //Node Failed, so sequence over! 
+                    //Node Failed, so sequence over!
                     if (node.LastStatus == RunStatus.Failure)
                     {
                         _current = 0;
@@ -194,7 +190,7 @@ namespace FuryUnleashed.Core
                         return RunStatus.Failure;
                     }
 
-                    //Node Succeded, Increment!! 
+                    //Node Succeed, Increment!!
                     _current++;
                     _sequenceRunning = true;
                     return RunStatus.Success;
