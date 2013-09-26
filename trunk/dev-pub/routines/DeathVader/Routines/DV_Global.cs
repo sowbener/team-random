@@ -63,7 +63,7 @@ namespace DeathVader.Routines
         {
             get
             {
-               // DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
+                DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
                 return StyxWoW.Me.BloodRuneCount;
             }
         }
@@ -72,7 +72,7 @@ namespace DeathVader.Routines
         {
             get
             {
-               // DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
+                DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
                 return StyxWoW.Me.FrostRuneCount;
             }
         }
@@ -88,7 +88,7 @@ namespace DeathVader.Routines
         {
             get
             {
-               // DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
+                DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
                 return StyxWoW.Me.UnholyRuneCount;
             }
         }
