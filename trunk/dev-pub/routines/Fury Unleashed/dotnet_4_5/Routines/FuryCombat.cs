@@ -53,9 +53,9 @@ namespace FuryUnleashed.Routines
                     new Decorator(ret => SG.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
                     new Switch<Enum.WoWVersion>(ctx => SG.Instance.General.CrFuryRotVersion,
                         new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development,
-                            new Decorator(ret => true, DevFuryCombat)),
+                            new Decorator(ret => !Spell.IsGlobalCooldown(), DevFuryCombat)),
                         new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release,
-                            new Decorator(ret => true, RelFuryCombat))));
+                            new Decorator(ret => !Spell.IsGlobalCooldown(), RelFuryCombat))));
                             //!Spell.IsGlobalCooldown()
             }
         }
@@ -226,7 +226,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
+                        //Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Bloodthirst), 
                         Spell.Cast(SB.Whirlwind),
@@ -240,7 +240,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
+                        //Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS3),
                         Spell.Cast(SB.Bloodthirst),
@@ -256,7 +256,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
+                        //Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS2),
                         Spell.Cast(SB.Bloodthirst),
@@ -272,7 +272,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
+                        //Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Bloodthirst),
