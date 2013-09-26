@@ -160,6 +160,9 @@ namespace FuryUnleashed.Routines
                     new PrioritySelector(
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30),
                         Spell.Cast(SB.Bloodthirst),
+
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Major damage.
+
                         Spell.Cast(SB.RagingBlow),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura))),
                 new Decorator(ret => !G.ColossusSmashAura,
@@ -237,7 +240,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Fury.CheckAoEThunderclap), // Added
+                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS3),
                         Spell.Cast(SB.Bloodthirst),
@@ -253,7 +256,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Fury.CheckAoEThunderclap), // Added
+                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS2),
                         Spell.Cast(SB.Bloodthirst),
@@ -269,7 +272,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.ThunderClap, ret => U.NeedThunderclapUnitsCount > 0 && SG.Instance.Fury.CheckAoEThunderclap), // Added
+                        Spell.Cast(SB.ThunderClap, ret => SG.Instance.Fury.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Bloodthirst),

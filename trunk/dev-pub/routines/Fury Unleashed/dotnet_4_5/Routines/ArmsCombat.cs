@@ -163,8 +163,11 @@ namespace FuryUnleashed.Routines
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.Execute, ret => G.DeathScentenceAuraT16),
-                        Spell.Cast(SB.Slam, ret => !G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.Slam),
                         Spell.Cast(SB.MortalStrike, ret => G.SLOC),
+
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
+
                         Spell.Cast(SB.Overpower, ret => G.SLOC && G.MSOC),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
                 // Outside Colossus Smash window
@@ -173,8 +176,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.MortalStrike),
 
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added.
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
 
                         Spell.Cast(SB.Overpower),
                         Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Arms.CheckHeroicThrow),
@@ -200,8 +203,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.Execute),
                         Spell.Cast(SB.MortalStrike),
 
-                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && Me.CurrentRage < 30 && BloodbathSync && Tier4AbilityUsage), // Added
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Me.CurrentRage < 30 && Tier6AbilityUsage), // Added.
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
 
                         Spell.Cast(SB.Overpower),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
@@ -227,8 +229,6 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        //Check from here
-        //Spell.Cast(SB.Whirlwind, ret => U.NearbyAttackableUnitsCount / 3.4 > U.NearbySlamCleaveUnitsCount),
         internal static Composite Dev_ArmsMt()
         {
             return new PrioritySelector(
@@ -243,7 +243,8 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 2),
+                        Spell.Cast(SB.Slam/*, ret => !G.WhirlwindViable*/),
+                        /*Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),*/
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
                             Dev_ArmsSt()),
@@ -260,7 +261,8 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam, ret => U.NearbySlamCleaveUnitsCount >= 3),
+                        Spell.Cast(SB.Slam/*, ret => !G.WhirlwindViable*/), 
+                        /*Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),*/
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NonExecuteCheck,
                             Dev_ArmsSt()),

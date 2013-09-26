@@ -119,12 +119,33 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Sequence Casting Methods
+        // Example Use
+        //public static List<Composite> complist = new List<Composite>(){ 
+        //             Spell.Cast("Ball Buster"), 
+        //             Spell.Cast("Ball Destroyer"),  
+        //             Spell.Cast("Nut *****er")};
+
+        //public static SequenceCast MySequence = new SequenceCast(complist);
+
+        //public static Composite Rotaion()
+        //{
+        //    return new PrioritySelector(
+        //                MySequence.Execute(ret => SomethingAwesomeHappened),
+        //                Spell.Cast("Blah"),
+        //                Spell.Cast("Blah"),
+        //                Spell.Cast("Blah"),
+        //                Spell.Cast("Blah"));
+        //}  
         public class SequenceCast
         {
             private readonly List<Composite> _children;
+
             private int _current;
+
             private readonly int _endSequence;
             private bool _sequenceRunning;
+            // ReSharper disable once MemberHidesStaticFromOuterClass
+            public delegate T Selection<out T>(object context);
 
             public SequenceCast(List<Composite> l)
             {
@@ -139,7 +160,7 @@ namespace FuryUnleashed.Core
                 return new Decorator(ret => _sequenceRunning || ((reqs != null && reqs(ret)) || (reqs == null)), new PrioritySelector(WaitForCast, ExecuteCurrentNode()));
             }
 
-            private static Composite WaitForCast
+            private Composite WaitForCast
             {
                 get { return new Decorator(ret => StyxWoW.Me.IsCasting || SpellManager.GlobalCooldown, new Action(ret => RunStatus.Success)); }
             }

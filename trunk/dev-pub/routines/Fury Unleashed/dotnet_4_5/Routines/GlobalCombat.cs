@@ -238,6 +238,17 @@ namespace FuryUnleashed.Routines
             }
         }
 
+        internal static bool WhirlwindViable
+        {
+            get
+            {
+                var wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
+                var slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
+
+                return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.3) / slamcost;
+            }
+        }
+
         // Specs
         internal static bool IsArmsSpec             { get { return TalentManager.CurrentSpec == WoWSpec.WarriorArms; } }
         internal static bool IsFurySpec             { get { return TalentManager.CurrentSpec == WoWSpec.WarriorFury; } }
