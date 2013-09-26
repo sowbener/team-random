@@ -50,7 +50,6 @@ namespace FuryUnleashed
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
-                Logger.InitLogW("\r\n------------------------------------------");
                 Unleash();
             }
             catch (Exception exception)
