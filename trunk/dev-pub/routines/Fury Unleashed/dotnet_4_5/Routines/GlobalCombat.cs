@@ -198,9 +198,9 @@ namespace FuryUnleashed.Routines
         // Booleans for multiple use.
         internal static bool AlmostDead             { get { return Me.CurrentTarget.HealthPercent <= 10; } }
         internal static bool DumpAllRage            { get { return Me.CurrentTarget.HealthPercent <= 2.5; } }
-        internal static bool ExecuteCheck           { get { return Me.CurrentTarget.HealthPercent <= 20; } }
+        internal static bool ExecutePhase           { get { return Me.CurrentTarget.HealthPercent <= 20; } }
         internal static bool HotkeyMode             { get { return SH.Instance.ModeSelection == Enum.Mode.Hotkey || SH.Instance.ModeSelection == Enum.Mode.SemiHotkey; } }
-        internal static bool NonExecuteCheck        { get { return Me.CurrentTarget.HealthPercent >  20; } }
+        internal static bool NormalPhase            { get { return Me.CurrentTarget.HealthPercent > 20; } }
         internal static bool TargetNotNull          { get { return Me.CurrentTarget != null; } }
         internal static bool TargettingMe           { get { return Me.CurrentTarget.IsTargetingMeOrPet; } }
         internal static bool HasteAbilities         { get { return (AncientHysteriaAura || BloodLustAura || HeroismAura || TimeWarpAura); } }
