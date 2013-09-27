@@ -90,9 +90,6 @@ namespace Waldo.Routines
         }
 
 
-        private static bool AntiCipation3Stacks { get { return AnticipationStacks < 3 && Me.HasAura(115189); } }
-        private static bool AntiCipation4Stacks { get { return AnticipationStacks < 4 && Me.HasAura(115189); } }
-
 
         static Composite ComboBuilders()
         {
@@ -119,12 +116,6 @@ namespace Waldo.Routines
                 Spell.Cast("Preparation", ret => !Me.HasAura("Vanish") && Spell.GetSpellCooldown("Vanish").Seconds > 60));
         }
 
-
-        //actions.generator=run_action_list,name=pool,if=buff.master_of_subtlety.down&buff.shadow_dance.down&debuff.find_weakness.down&(energy+cooldown.shadow_dance.remains*energy.regen<80|energy+cooldown.vanish.remains*energy.regen<60)
-        //actions.generator+=/hemorrhage,if=remains<3|position_front
-        //actions.generator+=/shuriken_toss,if=talent.shuriken_toss.enabled&(energy<65&energy.regen<16)
-        //actions.generator+=/backstab
-        //actions.generator+=/run_action_list,name=pool
 
         static Composite SubMt()
         {
@@ -197,6 +188,9 @@ namespace Waldo.Routines
         #endregion
 
         #region BoolsChampion
+
+        private static bool AntiCipation3Stacks { get { return AnticipationStacks < 3 && Me.HasAura(115189); } }
+        private static bool AntiCipation4Stacks { get { return AnticipationStacks < 4 && Me.HasAura(115189); } }
 
         private static uint AnticipationStacks
         {
