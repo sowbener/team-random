@@ -19,7 +19,7 @@ using Styx.CommonBot;
 
 namespace Waldo.Routines
 {
-    class WaElemental
+    class WaCombat
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 

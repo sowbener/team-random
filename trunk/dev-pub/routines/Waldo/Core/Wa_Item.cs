@@ -122,6 +122,34 @@ namespace Waldo.Core
                             new Action(ctx => UseItem((WoWItem)ctx))))));
         }
 
+        public static Composite SubUseItems()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => (
+                    (SG.Instance.Subtlety.Trinket1 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.Trinket1 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Subtlety.Trinket1 == WaEnum.AbilityTrigger.Always)),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
+                        new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                            new Action(ctx => UseItem((WoWItem)ctx))))),
+
+                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseItem(76089)),
+                new Decorator(ret => (
+                    (SG.Instance.Subtlety.Trinket2 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.Trinket2 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Subtlety.Trinket2 == WaEnum.AbilityTrigger.Always)),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
+                        new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                            new Action(ctx => UseItem((WoWItem)ctx))))),
+                new Decorator(ret => (
+                    (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.Always)),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Hands),
+                        new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                            new Action(ctx => UseItem((WoWItem)ctx))))));
+        }
+
 
         public static Composite ComUseHealthStone()
         {
@@ -151,6 +179,20 @@ namespace Waldo.Core
                                 )))));
         }
 
+
+        public static Composite SubUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => SG.Instance.Subtlety.CheckHealthStone && Me.HealthPercent < SG.Instance.Subtlety.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                WaLogger.CombatLogG("Using {0}", ((WoWItem)ret).Name);
+                            }
+                                )))));
+        }
 
         internal static bool WieldsTwoHandedWeapons
         {

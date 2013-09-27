@@ -84,6 +84,7 @@ namespace Waldo.Routines
         internal static bool TargetNoRupture { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(1943, 0); } }
         internal static bool TargetHaveRupture { get { return Me.CurrentTarget != null & Me.CurrentTarget.HasCachedAura(1943, 0); } }
         internal static bool TargetRuptureFalling { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAuraDown("Rupture", 0, 2000); } }
+        internal static bool HemorrhageDebuffFalling { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAuraDown("Hemorrhage", 0, 3000) || !Me.CurrentTarget.HasCachedAura("Hemorrhage", 0); } }
         internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAuraDown("Rupture", 0, 3000); } }
         internal static bool Anticipate4stacks { get { return Me.HasCachedAura(115189, 4); } }
         internal static bool Anticipate1stacks { get { return Me.HasCachedAura(115189, 1); } }
@@ -94,6 +95,9 @@ namespace Waldo.Routines
         internal static bool FucknoSND { get { return !Me.HasCachedAura(5171, 0); } }
         internal static bool IloveyouSND { get { return Me.HasCachedAura(5171, 0); } }
         internal static bool MySNDBabyIsFalling { get { return !Me.HasCachedAura(5171, 0, 2000); } }
+        internal static bool SliceandDiceSub { get { return Me.HasCachedAuraDown(5171, 0, 4000); } }
+        internal static bool SliceAndDiceSubGenerator { get { return Me.HasCachedAuraDown(5171, 0, 6000); } }
+        internal static bool TargetHaveRupture4 { get { return Me.HasCachedAuraDown("Rupture", 0, 4000); } }
         internal static bool MeHasShadowFocus { get { return Me.HasCachedAura(108209, 0); } }
         internal static bool Vanishisoncooldown { get { return WaSpell.SpellOnCooldown(1856); } }
         internal static bool Kick { get { return WaSpell.SpellOnCooldown("Kick"); } }

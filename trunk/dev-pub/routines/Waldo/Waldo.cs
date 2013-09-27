@@ -18,7 +18,8 @@ using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using A = Waldo.Routines.WaAssassination;
-using F = Waldo.Routines.WaElemental;
+using F = Waldo.Routines.WaCombat;
+using S = Waldo.Routines.WaSubtlety;
 using G = Waldo.Routines.WaGlobal;
 using Movement = Waldo.Helpers.Movement;
 using Spell = Waldo.Core.WaSpell;
@@ -137,7 +138,8 @@ namespace Waldo
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, A.InitializeAss),
-                new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, F.InitializeCom)
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, F.InitializeCom),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, S.InitializeSub)
                 );
         }
 

@@ -69,13 +69,15 @@
       <DependentUpon>Wa_Interface.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\GUI\Wa_PropertyGridExtention.cs" />
-    <Compile Include="Interfaces\Settings\SH_General_Settings.cs" />
-    <Compile Include="Interfaces\Settings\SH_Hotkeys_Settings.cs" />
-    <Compile Include="Interfaces\Settings\SH_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Wa_Subtlety_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Wa_General_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Wa_Hotkeys_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Wa_Settings.cs" />
     <Compile Include="Interfaces\Settings\Wa_Assassination_Settings.cs" />
     <Compile Include="Interfaces\Settings\Wa_Combat_Settings.cs" />
     <Compile Include="Managers\Wa_HotKeyManager.cs" />
     <Compile Include="Managers\Wa_TalentManager.cs" />
+    <Compile Include="Routines\Wa_Subtlety.cs" />
     <Compile Include="Routines\Wa_LowLevel.cs" />
     <Compile Include="Routines\Wa_Assassination.cs" />
     <Compile Include="Routines\Wa_Combat.cs" />

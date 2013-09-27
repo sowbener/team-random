@@ -30,6 +30,7 @@ namespace Waldo.Interfaces.Settings
         private WaSettingsC _WaSettingsC;
         private WaSettingsA _WaSettingsA;
         private WaSettingsG _WaSettingsG;
+        private WaSettingsS _WaSettingsS;
 
         [Browsable(false)]
         public WaSettingsC Combat
@@ -41,6 +42,12 @@ namespace Waldo.Interfaces.Settings
         public WaSettingsA Assassination
         {
             get { return _WaSettingsA ?? (_WaSettingsA = new WaSettingsA()); }
+        }
+
+        [Browsable(false)]
+        public WaSettingsS Subtlety
+        {
+            get { return _WaSettingsS ?? (_WaSettingsS = new WaSettingsS()); }
         }
 
         [Browsable(false)]
