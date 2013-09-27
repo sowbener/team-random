@@ -141,7 +141,7 @@ namespace Waldo.Core
                     new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
-                new Decorator(ret => (
+                new Decorator(ret => Me.HasAura("Shadow Dance") && (
                     (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.Always)),

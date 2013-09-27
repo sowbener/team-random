@@ -76,13 +76,10 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Premeditation", ret => Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 3 || AntiCipation3Stacks)),
-                Spell.Cast("Ambush", ret => Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AntiCipation3Stacks)),
-                Spell.Cast("Shadow Dance", ret => !Me.HasAura("Stealth") && !Me.HasAura("Vanish") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
-                //actions+=/vanish,if=energy>=45&energy<=75&combo_points<=3&buff.shadow_dance.down&buff.master_of_subtlety.down&debuff.find_weakness.down
+                Spell.Cast("Ambush", ret => Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AntiCipation3Stacks)),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower >= 45 && Lua.PlayerPower <= 75 && Lua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
-                //actions+=/run_action_list,name=generator,if=talent.anticipation.enabled&anticipation_charges<4&buff.slice_and_dice.up&dot.rupture.remains>2&(buff.slice_and_dice.remains<6|dot.rupture.remains<4)
                 new Decorator(ret => AntiCipation4Stacks && (G.SliceAndDiceSubGenerator || G.TargetHaveRupture4), ComboBuilders()),
-                new Decorator(ret => Lua.PlayerComboPts == 5, Finishers()),
+                new Decorator(ret => Lua.PlayerComboPts == 5 || AnticipationStacks > 3, Finishers()),
                 new Decorator(ret => Lua.PlayerComboPts < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
 
@@ -106,7 +103,7 @@ namespace Waldo.Routines
             return new PrioritySelector(
             Spell.Cast("Slice and Dice", ret => G.SliceandDiceSub || !Me.HasAura("Slice and Dice")),
             Spell.Cast("Rupture", ret => G.TargetRuptureFalling || G.TargetNoRupture),
-            Spell.Cast("Eviscerate"),
+            Spell.Cast("Eviscerate", ret => !G.TargetRuptureFalling && Me.HasAura("Slice and Dice")),
             Pooling());
         }
 
@@ -142,10 +139,15 @@ namespace Waldo.Routines
         static Composite SubOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Shadow Blades", ret => (G.SpeedBuffsAura || G.ShadowBladesSND) && (
+                Spell.Cast("Shadow Blades", ret => (G.SpeedBuffsAura || Me.HasAura(105697)) && (
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.Always)
+                    )),
+                Spell.Cast("Shadow Dance", ret => !Me.HasAura("Stealth") && !Me.HasAura("Vanish") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (
+                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
+                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
                     (SG.Instance.Subtlety.ClassRacials == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
@@ -202,6 +204,7 @@ namespace Waldo.Routines
 
 
         #endregion
+
         #region Tricks of the trade
         private static WoWUnit TricksTarget
         {

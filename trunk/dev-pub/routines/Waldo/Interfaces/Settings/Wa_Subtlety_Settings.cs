@@ -25,9 +25,9 @@ namespace Waldo.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(WaEnum.AbilityTrigger.OnBossDummy)]
         [Category("Assassination - Ability Options")]
-        [DisplayName("Vendetta")]
-        [Description("Select the usage of Vendetta.")]
-        public WaEnum.AbilityTrigger Vendetta { get; set; }
+        [DisplayName("Shadow Dance")]
+        [Description("Select the usage of Shadow Dance.")]
+        public WaEnum.AbilityTrigger ShadowDance{ get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(WaEnum.AbilityTrigger.OnBossDummy)]
