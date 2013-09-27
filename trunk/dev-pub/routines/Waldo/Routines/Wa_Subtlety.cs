@@ -139,7 +139,7 @@ namespace Waldo.Routines
         static Composite SubOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Shadow Blades", ret => (G.SpeedBuffsAura || Me.HasAura(105697)) && (
+                Spell.Cast("Shadow Blades", ret => !Me.CurrentTarget.HasMyAura("Find Weakness") || (G.SpeedBuffsAura || Me.HasAura(105697)) && (
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.Always)
