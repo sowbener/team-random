@@ -118,7 +118,7 @@ namespace Bullseye.Interfaces.Settings
         public bool CheckAutoAttack { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Beastmastery - Selectable Options")]
         [DisplayName("Enable Pet Stuff")]
         [Description("Enables Pet Stuff (Auto Mend Pet)")]
