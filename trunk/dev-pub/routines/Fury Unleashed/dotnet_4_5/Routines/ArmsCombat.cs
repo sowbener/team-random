@@ -52,11 +52,8 @@ namespace FuryUnleashed.Routines
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => SG.Instance.Arms.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
                     new Switch<Enum.WoWVersion>(ctx => SG.Instance.General.CrArmsRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development,
-                            new Decorator(ret => !Spell.IsGlobalCooldown(), DevArmsCombat)),
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release,
-                            new Decorator(ret => !Spell.IsGlobalCooldown(), RelArmsCombat))));
-                            //!Spell.IsGlobalCooldown()
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, DevArmsCombat),
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, RelArmsCombat)));
             }
         }
 
@@ -69,40 +66,49 @@ namespace FuryUnleashed.Routines
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsUtility(),
-                                Dev_ArmsVictorious(),
-                                I.CreateItemBehaviour(),
+                                Dev_ArmsNonGcdUtility(),
                                 Dev_ArmsRacials(),
                                 Dev_ArmsOffensive(),
-                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                new Decorator(ret => G.ExecutePhase, Dev_ArmsExec()),
-                                new Decorator(ret => G.NormalPhase, Dev_ArmsSt()))),
+                                I.CreateItemBehaviour(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_ArmsGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
+                                        new Decorator(ret => G.ExecutePhase, Dev_ArmsExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_ArmsSt())
+                                        )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsUtility(),
-                                Dev_ArmsVictorious(),
+                                Dev_ArmsNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
                                         Dev_ArmsRacials(),
-                                        Dev_ArmsOffensive())),
-                                new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                new Decorator(ret => G.ExecutePhase, Dev_ArmsExec()),
-                                new Decorator(ret => G.NormalPhase, Dev_ArmsSt()))),
+                                        Dev_ArmsOffensive(),
+                                        I.CreateItemBehaviour())),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_ArmsGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
+                                        new Decorator(ret => G.ExecutePhase, Dev_ArmsExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_ArmsSt())
+                                        )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsUtility(),
-                                Dev_ArmsVictorious(),
+                                Dev_ArmsNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
                                         Dev_ArmsRacials(),
-                                        Dev_ArmsOffensive())),
-                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                new Decorator(ret => G.ExecutePhase, Dev_ArmsExec()),
-                                new Decorator(ret => G.NormalPhase, Dev_ArmsSt())))));
+                                        Dev_ArmsOffensive(),
+                                        I.CreateItemBehaviour())),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_ArmsGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Arms.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
+                                        new Decorator(ret => G.ExecutePhase, Dev_ArmsExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_ArmsSt())
+                                        ))))));
             }
         }
 
@@ -114,7 +120,7 @@ namespace FuryUnleashed.Routines
                     new Switch<Enum.Mode>(ctx => SH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, ArmsDefensive()),
+                                new Decorator(ret => Me.HealthPercent < 100, ArmsDefensive()), 
                                 ArmsUtility(),
                                 ArmsVictorious(),
                                 I.CreateItemBehaviour(),
@@ -156,6 +162,8 @@ namespace FuryUnleashed.Routines
         // http://www.mmo-champion.com/threads/1340569-5-4-Guide-Arms-PVE
         // http://us.battle.net/wow/en/forum/topic/8087999196?page=1 (Not much, mostly the other link)
         // http://www.icy-veins.com/arms-warrior-wow-pve-dps-rotation-cooldowns-abilities (Not much, mostly the other link)
+
+        // TODO: Thunderclap is fine on MT, would be nice to check Deepwounds Strength on the other Units (to apply stronger DW to the other units on STR procs or something like this).
         internal static Composite Dev_ArmsSt()
         {
             return new PrioritySelector(
@@ -165,7 +173,6 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.Execute, ret => G.DeathScentenceAuraT16),
                         Spell.Cast(SB.MortalStrike), // Trying this for rage.
                         Spell.Cast(SB.Slam),
-                        //Spell.Cast(SB.MortalStrike, ret => G.SLOC),
 
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
 
@@ -243,6 +250,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
 
                         Spell.Cast(SB.SweepingStrikes),
+                        Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
                         Spell.Cast(SB.Slam/*, ret => !G.WhirlwindViable*/),
                         /*Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),*/
@@ -261,6 +269,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
 
                         Spell.Cast(SB.SweepingStrikes),
+                        Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
                         Spell.Cast(SB.Slam/*, ret => !G.WhirlwindViable*/), 
                         /*Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),*/
@@ -283,11 +292,13 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_ArmsVictorious()
+        internal static Composite Dev_ArmsGcdUtility()
         {
             return new PrioritySelector(
                 Spell.Cast(SB.ImpendingVictory, ret => !G.IVOC && G.IvTalent && SG.Instance.Arms.CheckImpVic && Me.HealthPercent <= SG.Instance.Arms.CheckImpVicNum),
-                Spell.Cast(SB.VictoryRush, ret => !G.VROC && G.VictoriousAura && SG.Instance.Arms.CheckVicRush && Me.HealthPercent <= SG.Instance.Arms.CheckVicRushNum)
+                Spell.Cast(SB.VictoryRush, ret => !G.VROC && G.VictoriousAura && SG.Instance.Arms.CheckVicRush && Me.HealthPercent <= SG.Instance.Arms.CheckVicRushNum),
+                Spell.Cast(SB.IntimidatingShout, ret => SG.Instance.Arms.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
+                Spell.Cast(SB.ShatteringThrow, ret => SG.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss)
                 );
         }
 
@@ -310,16 +321,14 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_ArmsUtility()
+        internal static Composite Dev_ArmsNonGcdUtility()
         {
             return new PrioritySelector(
                 Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Arms.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Arms.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
                 Spell.Cast(SB.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (SG.Instance.Arms.HamString == Enum.Hamstring.Always || SG.Instance.Arms.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
-                Spell.Cast(SB.IntimidatingShout, ret => SG.Instance.Arms.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
                 Spell.Cast(SB.MassSpellReflection, ret => G.MrTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && MassSpellReflectionUsage),
                 Spell.Cast(SB.PiercingHowl, ret => G.PhTalent && SG.Instance.Arms.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum),
                 Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
-                Spell.Cast(SB.ShatteringThrow, ret => SG.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss),
                 Spell.Cast(SB.StaggeringShout, ret => G.SsTalent && SG.Instance.Arms.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum)
                 );
         }

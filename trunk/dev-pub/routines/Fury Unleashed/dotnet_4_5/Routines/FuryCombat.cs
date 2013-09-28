@@ -52,10 +52,8 @@ namespace FuryUnleashed.Routines
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => SG.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
                     new Switch<Enum.WoWVersion>(ctx => SG.Instance.General.CrFuryRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development,
-                            new Decorator(ret => !Spell.IsGlobalCooldown(), DevFuryCombat)),
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release,
-                            new Decorator(ret => !Spell.IsGlobalCooldown(), RelFuryCombat))));
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, DevFuryCombat),
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, RelFuryCombat)));
             }
         }
 
@@ -68,40 +66,49 @@ namespace FuryUnleashed.Routines
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_FuryDefensive()),
-                                Dev_FuryUtility(),
-                                Dev_FuryVictorious(),
-                                I.CreateItemBehaviour(),
+                                Dev_FuryNonGcdUtility(),
                                 Dev_FuryRacials(),
                                 Dev_FuryOffensive(),
-                                new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                                new Decorator(ret => G.NormalPhase, Dev_FurySt()))),
+                                I.CreateItemBehaviour(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_FuryGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
+                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
+                                        )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_FuryDefensive()),
-                                Dev_FuryUtility(),
-                                Dev_FuryVictorious(),
-                                I.CreateItemBehaviour(),
+                                Dev_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                         Dev_FuryRacials(),
-                                        Dev_FuryOffensive())),
-                                new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                                new Decorator(ret => G.NormalPhase, Dev_FurySt()))),
+                                        Dev_FuryOffensive(),
+                                        I.CreateItemBehaviour())),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_FuryGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
+                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
+                                        )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_FuryDefensive()),
-                                Dev_FuryUtility(),
-                                Dev_FuryVictorious(),
-                                I.CreateItemBehaviour(),
+                                Dev_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                         Dev_FuryRacials(),
-                                        Dev_FuryOffensive())),
-                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                                new Decorator(ret => G.NormalPhase, Dev_FurySt())))));
+                                        Dev_FuryOffensive(),
+                                        I.CreateItemBehaviour())), 
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_FuryGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
+                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
+                                        ))))));
             }
         }
 
@@ -156,6 +163,7 @@ namespace FuryUnleashed.Routines
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30),
+                        Spell.Cast(SB.StormBolt, ret => G.ReadinessAura),
                         Spell.Cast(SB.Bloodthirst),
 
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Major damage.
@@ -263,6 +271,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
+                        Spell.Cast(SB.Execute, ret => G.ColossusSmashAura), // Added
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.ColossusSmash),
@@ -285,11 +294,13 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_FuryVictorious()
+        internal static Composite Dev_FuryGcdUtility()
         {
             return new PrioritySelector(
                 Spell.Cast(SB.ImpendingVictory, ret => !G.IVOC && G.IvTalent && SG.Instance.Fury.CheckImpVic && Me.HealthPercent <= SG.Instance.Fury.CheckImpVicNum),
-                Spell.Cast(SB.VictoryRush, ret => !G.VROC && G.VictoriousAura && SG.Instance.Fury.CheckVicRush && Me.HealthPercent <= SG.Instance.Fury.CheckVicRushNum)
+                Spell.Cast(SB.VictoryRush, ret => !G.VROC && G.VictoriousAura && SG.Instance.Fury.CheckVicRush && Me.HealthPercent <= SG.Instance.Fury.CheckVicRushNum),
+                Spell.Cast(SB.IntimidatingShout, ret => SG.Instance.Fury.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
+                Spell.Cast(SB.ShatteringThrow, ret => SG.Instance.Fury.CheckShatteringThrow && U.IsTargetBoss && (G.CSCD <= 3000 || G.SBCD <= 3000))
                 );
         }
 
@@ -312,16 +323,14 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_FuryUtility()
+        internal static Composite Dev_FuryNonGcdUtility()
         {
             return new PrioritySelector(
                 Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Fury.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
                 Spell.Cast(SB.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (SG.Instance.Fury.HamString == Enum.Hamstring.Always || SG.Instance.Fury.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
-                Spell.Cast(SB.IntimidatingShout, ret => SG.Instance.Fury.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
                 Spell.Cast(SB.MassSpellReflection, ret => G.MrTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && MassSpellReflectionUsage),
                 Spell.Cast(SB.PiercingHowl, ret => G.PhTalent && SG.Instance.Fury.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum),
                 Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
-                Spell.Cast(SB.ShatteringThrow, ret => SG.Instance.Fury.CheckShatteringThrow && U.IsTargetBoss && (G.CSCD <= 3000 || G.SBCD <= 3000)),
                 Spell.Cast(SB.StaggeringShout, ret => G.SsTalent && SG.Instance.Fury.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum)
                 );
         }

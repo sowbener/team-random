@@ -281,7 +281,7 @@ namespace FuryUnleashed.Routines
         internal static bool LastStandAura          { get { return Me.HasCachedAura(12975, 0); } }
         internal static bool MeatCleaverAura        { get { return Me.HasCachedAura(85739, 0); } }
         internal static bool RagingBlowAura         { get { return Me.HasCachedAura(131116, 0); } }
-        internal static bool ReadinessAura          { get { return Me.HasCachedAura(145955, 0); } } // Evil Eye of Galakras trinket Aura.
+        internal static bool ReadinessAura          { get { return Me.HasCachedAura("Readiness", 0); } } // Evil Eye of Galakras trinket Aura.
         internal static bool RecklessnessAura       { get { return Me.HasCachedAura(1719, 0); } }
         internal static bool RecklessnessAuraT      { get { return Me.HasCachedAura(1719, 0, 10000); } }
         internal static bool ShieldBarrierAura      { get { return Me.HasCachedAura(112048, 0); } }
