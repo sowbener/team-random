@@ -163,7 +163,7 @@ namespace FuryUnleashed.Routines
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30),
-                        Spell.Cast(SB.StormBolt, ret => G.ReadinessAura),
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && G.ReadinessAura && Tier6AbilityUsage),
                         Spell.Cast(SB.Bloodthirst),
 
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Major damage.
@@ -202,7 +202,8 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.Execute))),
+                        Spell.Cast(SB.Execute),
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage))),
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.ColossusSmash),
