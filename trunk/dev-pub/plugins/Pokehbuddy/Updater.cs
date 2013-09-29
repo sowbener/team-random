@@ -58,14 +58,15 @@ namespace Pokehbuddyplug
 
         private static int GetRevision()
         {
-            var client = new WebClient();
-            string html = client.DownloadString(PbSvnUrl);
-            var pattern = new Regex(@" - Revision (?<rev>\d+):", RegexOptions.CultureInvariant);
-            Match match = pattern.Match(html);
-            if (match.Success && match.Groups["rev"].Success)
-                return int.Parse(match.Groups["rev"].Value);
+            System.Net.WebClient wc = new System.Net.WebClient();
+            string webData = wc.DownloadString(PbSvnUrl + "version");
+
+
+            return int.Parse(webData);
             throw new Exception("Unable to retreive revision");
         }
+
+
 
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)
         {

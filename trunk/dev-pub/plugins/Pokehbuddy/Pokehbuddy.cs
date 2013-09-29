@@ -23,6 +23,8 @@ using Styx;
 //using Styx.Logic.Pathing;
 
 using Styx.Helpers;
+using BattlePetSwapper;
+
 
 
 
@@ -86,6 +88,7 @@ namespace Pokehbuddyplug
 {
     public partial class Pokehbuddy : HBPlugin
     {
+        public static BPSPlugin BPS = new BPSPlugin();
         private readonly WaitTimer _updateTimer = WaitTimer.TenSeconds;
         private ulong oldguid = 0;
         private int skipcounter = 0;
@@ -137,6 +140,9 @@ namespace Pokehbuddyplug
                 if (!File.Exists(filename)) File.Copy(reserve, filename);
                 filename = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Default Logic.xml";
                 reserve = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Data\\Default Logic.xml.default";
+                if (!File.Exists(filename)) File.Copy(reserve, filename);
+                filename = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
+                reserve = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Data\\Library.db.default";
                 if (!File.Exists(filename)) File.Copy(reserve, filename);
 
 
@@ -249,6 +255,10 @@ namespace Pokehbuddyplug
                 disable = true;
                 return;
             }
+            
+            if (MySettings.BPSEnabled) BPS.Pulse();
+
+
 
 
             oldlogging = Pokehbuddy.MySettings.DetailedLogging;
@@ -2400,6 +2410,7 @@ namespace Pokehbuddyplug
             }
             catch (Exception exc)
             {
+                
 
             }
 
@@ -2580,8 +2591,9 @@ namespace Pokehbuddyplug
         
         [Setting, DefaultValue("")]
         public string LastDayChecked { get; set; }
-        
-        
+
+        [Setting, DefaultValue(false)]
+        public bool BPSEnabled { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool DetailedLogging { get; set; }

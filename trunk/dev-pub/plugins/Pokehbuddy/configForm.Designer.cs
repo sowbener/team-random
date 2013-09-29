@@ -30,10 +30,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Unknown");
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Simple leveling");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Boost leveling");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("test3");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Unknown");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Simple leveling");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Boost leveling");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test3");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button59 = new System.Windows.Forms.Button();
@@ -84,6 +84,8 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button53 = new System.Windows.Forms.Button();
+            this.button51 = new System.Windows.Forms.Button();
             this.button49 = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.button58 = new System.Windows.Forms.Button();
@@ -154,6 +156,10 @@
             this.label75 = new System.Windows.Forms.Label();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label86 = new System.Windows.Forms.Label();
+            this.button52 = new System.Windows.Forms.Button();
+            this.comboBox18 = new System.Windows.Forms.ComboBox();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.button10 = new System.Windows.Forms.Button();
             this.comboBox9 = new System.Windows.Forms.ComboBox();
@@ -273,6 +279,9 @@
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.checkBox14 = new System.Windows.Forms.CheckBox();
+            this.button50 = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.spell1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -315,6 +324,8 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button60 = new System.Windows.Forms.Button();
+            this.label89 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -337,6 +348,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox11.SuspendLayout();
@@ -352,6 +364,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            this.tabPage6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox4.SuspendLayout();
@@ -368,6 +381,7 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(0, 155);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -1109,6 +1123,9 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.label89);
+            this.tabPage4.Controls.Add(this.button53);
+            this.tabPage4.Controls.Add(this.button51);
             this.tabPage4.Controls.Add(this.button49);
             this.tabPage4.Controls.Add(this.groupBox16);
             this.tabPage4.Controls.Add(this.label88);
@@ -1157,6 +1174,27 @@
             this.tabPage4.Text = "Logic Manager";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
             // 
+            // button53
+            // 
+            this.button53.Enabled = false;
+            this.button53.Location = new System.Drawing.Point(380, 340);
+            this.button53.Name = "button53";
+            this.button53.Size = new System.Drawing.Size(64, 20);
+            this.button53.TabIndex = 67;
+            this.button53.Text = "Generate";
+            this.button53.UseVisualStyleBackColor = true;
+            this.button53.Click += new System.EventHandler(this.button53_Click);
+            // 
+            // button51
+            // 
+            this.button51.Location = new System.Drawing.Point(765, 435);
+            this.button51.Name = "button51";
+            this.button51.Size = new System.Drawing.Size(106, 47);
+            this.button51.TabIndex = 66;
+            this.button51.Text = "Library of Logics\r\n   (dev stuff)";
+            this.button51.UseVisualStyleBackColor = true;
+            this.button51.Click += new System.EventHandler(this.button51_Click);
+            // 
             // button49
             // 
             this.button49.Enabled = false;
@@ -1174,7 +1212,7 @@
             this.groupBox16.Controls.Add(this.button58);
             this.groupBox16.Controls.Add(this.button57);
             this.groupBox16.Controls.Add(this.listView2);
-            this.groupBox16.Location = new System.Drawing.Point(136, 510);
+            this.groupBox16.Location = new System.Drawing.Point(383, 455);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(389, 231);
             this.groupBox16.TabIndex = 64;
@@ -1205,17 +1243,17 @@
             // listView2
             // 
             this.listView2.CheckBoxes = true;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem6.Checked = true;
-            listViewItem6.StateImageIndex = 1;
-            listViewItem7.StateImageIndex = 0;
-            listViewItem8.Checked = true;
-            listViewItem8.StateImageIndex = 1;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.Checked = true;
+            listViewItem2.StateImageIndex = 1;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.Checked = true;
+            listViewItem4.StateImageIndex = 1;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem5,
-            listViewItem6,
-            listViewItem7,
-            listViewItem8});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4});
             this.listView2.Location = new System.Drawing.Point(6, 19);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(308, 197);
@@ -1280,7 +1318,7 @@
             this.groupBox10.Controls.Add(this.groupBox13);
             this.groupBox10.Controls.Add(this.groupBox14);
             this.groupBox10.Controls.Add(this.groupBox12);
-            this.groupBox10.Location = new System.Drawing.Point(18, 539);
+            this.groupBox10.Location = new System.Drawing.Point(18, 515);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(402, 238);
             this.groupBox10.TabIndex = 56;
@@ -1837,6 +1875,10 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.label86);
+            this.tabPage2.Controls.Add(this.button52);
+            this.tabPage2.Controls.Add(this.comboBox18);
             this.tabPage2.Controls.Add(this.groupBox15);
             this.tabPage2.Controls.Add(this.button55);
             this.tabPage2.Controls.Add(this.button48);
@@ -1864,6 +1906,48 @@
             this.tabPage2.Size = new System.Drawing.Size(879, 546);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Pet Logic Builder";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(634, 490);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(534, 116);
+            this.dataGridView1.TabIndex = 40;
+            this.dataGridView1.Visible = false;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(704, 231);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(152, 13);
+            this.label86.TabIndex = 39;
+            this.label86.Text = "Search library for logic for skill :";
+            // 
+            // button52
+            // 
+            this.button52.Location = new System.Drawing.Point(799, 249);
+            this.button52.Name = "button52";
+            this.button52.Size = new System.Drawing.Size(32, 19);
+            this.button52.TabIndex = 38;
+            this.button52.Text = "Go";
+            this.button52.UseVisualStyleBackColor = true;
+            this.button52.Click += new System.EventHandler(this.button52_Click);
+            // 
+            // comboBox18
+            // 
+            this.comboBox18.FormattingEnabled = true;
+            this.comboBox18.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3"});
+            this.comboBox18.Location = new System.Drawing.Point(757, 247);
+            this.comboBox18.Name = "comboBox18";
+            this.comboBox18.Size = new System.Drawing.Size(41, 21);
+            this.comboBox18.TabIndex = 37;
+            this.comboBox18.Text = "1";
             // 
             // groupBox15
             // 
@@ -2103,6 +2187,7 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.button60);
             this.groupBox11.Controls.Add(this.textBox2);
             this.groupBox11.Controls.Add(this.button9);
             this.groupBox11.Controls.Add(this.button99);
@@ -2193,7 +2278,7 @@
             this.button4.Enabled = false;
             this.button4.Location = new System.Drawing.Point(487, 86);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(59, 47);
+            this.button4.Size = new System.Drawing.Size(59, 34);
             this.button4.TabIndex = 13;
             this.button4.Text = "FINISH";
             this.button4.UseVisualStyleBackColor = true;
@@ -2233,7 +2318,7 @@
             this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(552, 85);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(48, 47);
+            this.button2.Size = new System.Drawing.Size(48, 35);
             this.button2.TabIndex = 9;
             this.button2.Text = "Add";
             this.button2.UseVisualStyleBackColor = true;
@@ -3152,6 +3237,39 @@
             this.pictureBox6.TabIndex = 22;
             this.pictureBox6.TabStop = false;
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.checkBox14);
+            this.tabPage6.Controls.Add(this.button50);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(879, 546);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "3rd party addons";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // checkBox14
+            // 
+            this.checkBox14.AutoSize = true;
+            this.checkBox14.Location = new System.Drawing.Point(27, 54);
+            this.checkBox14.Name = "checkBox14";
+            this.checkBox14.Size = new System.Drawing.Size(111, 17);
+            this.checkBox14.TabIndex = 1;
+            this.checkBox14.Text = "BattlePetSwapper";
+            this.checkBox14.UseVisualStyleBackColor = true;
+            this.checkBox14.CheckedChanged += new System.EventHandler(this.checkBox14_CheckedChanged);
+            // 
+            // button50
+            // 
+            this.button50.Location = new System.Drawing.Point(153, 38);
+            this.button50.Name = "button50";
+            this.button50.Size = new System.Drawing.Size(130, 47);
+            this.button50.TabIndex = 0;
+            this.button50.Text = "BattlePetSwapper settings";
+            this.button50.UseVisualStyleBackColor = true;
+            this.button50.Click += new System.EventHandler(this.button50_Click);
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3493,6 +3611,27 @@
             // 
             this.openFileDialog1.Filter = "XML Files|*.xml;";
             // 
+            // button60
+            // 
+            this.button60.Location = new System.Drawing.Point(490, 127);
+            this.button60.Name = "button60";
+            this.button60.Size = new System.Drawing.Size(109, 25);
+            this.button60.TabIndex = 17;
+            this.button60.Text = "Insert in selected";
+            this.button60.UseVisualStyleBackColor = true;
+            this.button60.Visible = false;
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label89.Location = new System.Drawing.Point(513, 338);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(216, 20);
+            this.label89.TabIndex = 68;
+            this.label89.Text = "Please set a default logic!";
+            this.label89.Visible = false;
+            // 
             // configForm
             // 
             this.BackColor = System.Drawing.Color.Black;
@@ -3540,6 +3679,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -3560,6 +3700,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox4.ResumeLayout(false);
@@ -3867,6 +4009,17 @@
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Button button59;
         private System.Windows.Forms.Button button49;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.CheckBox checkBox14;
+        private System.Windows.Forms.Button button50;
+        private System.Windows.Forms.Button button51;
+        private System.Windows.Forms.Label label86;
+        private System.Windows.Forms.Button button52;
+        private System.Windows.Forms.ComboBox comboBox18;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button53;
+        private System.Windows.Forms.Label label89;
+        private System.Windows.Forms.Button button60;
 
     }
 

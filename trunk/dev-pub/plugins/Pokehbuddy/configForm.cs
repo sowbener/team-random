@@ -102,6 +102,7 @@ namespace Pokehbuddyplug
 {
     partial class configForm
     {
+        DataTable table = new DataTable();
         int initdone = 0;
         private void BlacklistSave()
         {
@@ -1301,7 +1302,7 @@ namespace Pokehbuddyplug
                             
                             
                         }
-                        if (!haveadefault && listView1.Items.Count > 0) MessageBox.Show("No default selected, please select one");
+                        if (!haveadefault && listView1.Items.Count > 0) label89.Visible = true; else label89.Visible = false;
                     }
                 }
 
@@ -1738,6 +1739,7 @@ namespace Pokehbuddyplug
             button43.Enabled = false;
             button39.Enabled = true;
             button47.Enabled = true;
+            button53.Enabled = true;
             button38.Enabled = true;
             button56.Enabled = true;
 
@@ -1760,6 +1762,7 @@ namespace Pokehbuddyplug
             button39.Enabled = false;
             button47.Enabled = false;
             button38.Enabled = false;
+            button53.Enabled = false;
             button56.Enabled = false;
 
 
@@ -2135,7 +2138,7 @@ namespace Pokehbuddyplug
             listBox1.Items.Clear();
             foreach (string alogic in PetLogics)
             {
-                listBox1.Items.Add(alogic);
+                AddToList(alogic);
             }
             tabControl1.SelectedTab = tabPage2;
 
@@ -2318,6 +2321,138 @@ namespace Pokehbuddyplug
         private void button49_Click(object sender, System.EventArgs e)
         {
             SetPetLogic(label75.Text, "-1");
+        }
+
+        private void button50_Click(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.BPS.OnButtonPress();
+
+        }
+
+        private void checkBox14_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.BPSEnabled = checkBox14.Checked;
+        }
+
+        private void button51_Click(object sender, System.EventArgs e)
+        {
+            Librarian.Librarian Lib = new Librarian.Librarian();
+            Lib.Show();
+        }
+        
+
+        private void button52_Click(object sender, System.EventArgs e)
+        {
+            string[] skillz = textBox9.Text.Split('@');
+            string[] gotskills = { "", "", "" };
+
+            foreach (string alogic in skillz)
+            {
+                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY1(") == 0))
+                {
+                    int FirstChr = alogic.IndexOf("ASSIGNABILITY1(") + 15;
+                    int SecondChr = alogic.IndexOf(")", FirstChr);
+                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
+
+                    gotskills[0]=strTemp;
+                }
+                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY2(") == 0))
+                {
+                    int FirstChr = alogic.IndexOf("ASSIGNABILITY2(") + 15;
+                    int SecondChr = alogic.IndexOf(")", FirstChr);
+                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
+
+                    gotskills[1]=strTemp;
+                }
+                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY3(") == 0))
+                {
+                    int FirstChr = alogic.IndexOf("ASSIGNABILITY3(") + 15;
+                    int SecondChr = alogic.IndexOf(")", FirstChr);
+                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
+
+                    gotskills[2]=strTemp;
+                }
+            }
+
+
+            if (comboBox18.Text == "1")
+            {
+                Librarian.Librarian libje = new Librarian.Librarian();
+                string dummy = libje.SearchLib(gotskills[0]);
+
+                AddToList(dummy.Replace("**sn**", "1"));
+            }
+            if (comboBox18.Text == "2")
+            {
+                Librarian.Librarian libje = new Librarian.Librarian();
+                string dummy = libje.SearchLib(gotskills[1]);
+
+                AddToList(dummy.Replace("**sn**", "2"));
+            }
+            if (comboBox18.Text == "3")
+            {
+                Librarian.Librarian libje = new Librarian.Librarian();
+                string dummy = libje.SearchLib(gotskills[2]);
+
+                AddToList(dummy.Replace("**sn**", "3"));
+            }
+            
+        }
+
+        private void dataGridView1_CellClick(object sender, System.Windows.Forms.DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button53_Click(object sender, System.EventArgs e)
+        {
+            string[] skillz = textBox9.Text.Split('@');
+            string[] gotskills = { "", "", "" };
+
+            foreach (string alogic in skillz)
+            {
+                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY1(") == 0))
+                {
+                    int FirstChr = alogic.IndexOf("ASSIGNABILITY1(") + 15;
+                    int SecondChr = alogic.IndexOf(")", FirstChr);
+                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
+
+                    gotskills[0] = strTemp;
+                }
+                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY2(") == 0))
+                {
+                    int FirstChr = alogic.IndexOf("ASSIGNABILITY2(") + 15;
+                    int SecondChr = alogic.IndexOf(")", FirstChr);
+                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
+
+                    gotskills[1] = strTemp;
+                }
+                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY3(") == 0))
+                {
+                    int FirstChr = alogic.IndexOf("ASSIGNABILITY3(") + 15;
+                    int SecondChr = alogic.IndexOf(")", FirstChr);
+                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
+
+                    gotskills[2] = strTemp;
+                }
+            }
+
+            Librarian.Librarian libje = new Librarian.Librarian();
+            string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 30";
+            dummy = dummy +"@" + libje.SearchLib(gotskills[2]).Replace("**sn**", "3");
+            dummy = dummy +"@" + libje.SearchLib(gotskills[1]).Replace("**sn**", "2");
+            dummy = dummy + "@" + libje.SearchLib(gotskills[0]).Replace("**sn**", "1");
+            textBox8.Text = dummy;
+            
+            
+
+
+
+
+
+
+
+
         }
         
 
@@ -2599,12 +2734,38 @@ namespace Pokehbuddyplug
             button2.Enabled = true;
 
         }
+        private void AddToList(string s)
+        {
+            listBox1.Items.Add(s);
 
+            int i = 0;
+            
+            while (s.TakeWhile(c => c == '$').Count() > table.Columns.Count - 3)
+            {
+                table.Columns.Add();
+                i++;
+            }
+            
+            string firstone = s.Split(new char[] { ' ' }, 2)[0];
+            String[] bla = s.Replace(firstone,"").TrimStart().Split('$');
+            string[] z = new string[1 + bla.Length];
+            z[0] = firstone;
+            bla.CopyTo(z, 1);
+            
+           
+            table.Rows.Add(z);
+            dataGridView1.DataSource = table;
+
+        }
         private void button2_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Add(textBox2.Text);
-            textBox2.Text = "";
+            AddToList(textBox2.Text);
+            
             button2.Enabled = false;
+            
+            
+           
+            textBox2.Text = "";
 
         }
 
@@ -2755,7 +2916,7 @@ namespace Pokehbuddyplug
             string[] PetLogics = dumdum.Split('@');
             foreach (string alogic in PetLogics)
             {
-                listBox1.Items.Add(alogic);
+                AddToList(alogic);
             }
 
 
@@ -2801,7 +2962,7 @@ namespace Pokehbuddyplug
                 string[] PetLogics = dumdum.Split('@');
                 foreach (string alogic in PetLogics)
                 {
-                    listBox1.Items.Add(alogic);
+                    AddToList(alogic);
                 }
 
                 string theicon = Pokehbuddy.SlotIcon(comboBox9.SelectedIndex + 1);
