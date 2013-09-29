@@ -72,7 +72,7 @@ namespace FuryUnleashed.Shared.Helpers
 
         public static void CombatLogO(string message, params object[] args)
         {
-            if (message == _lastCombatmsg) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
             Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }

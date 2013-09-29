@@ -521,6 +521,22 @@ namespace FuryUnleashed.Core
             var auras = unit.GetAllAuras();
             return auras.Any(a => a.Spell.SpellEffects.Any(se => applyType.Contains(se.AuraType)));
         }
+		
+        internal static bool FadingSelfAura(int spellid, int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura fadingaura = CachedAuras.FirstOrDefault(a => a.SpellId == spellid && a.CreatorGuid == StyxWoW.Me.Guid);
+            return fadingaura != null && fadingaura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
+        internal static bool FadingTargetAura(int spellid, int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura fadingaura = CachedTargetAuras.FirstOrDefault(a => a.SpellId == spellid && a.CreatorGuid == StyxWoW.Me.Guid);
+            return fadingaura != null && fadingaura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
         #endregion
 
         #region GCD Detection

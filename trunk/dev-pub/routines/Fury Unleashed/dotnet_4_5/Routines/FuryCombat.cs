@@ -163,35 +163,29 @@ namespace FuryUnleashed.Routines
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30),
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && G.ReadinessAura && Tier6AbilityUsage),
                         Spell.Cast(SB.Bloodthirst),
-
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Major damage.
-
                         Spell.Cast(SB.RagingBlow),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura))),
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
-
+                        Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4 - Waiting for CS window unless expires.
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage),
-
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage > Me.MaxRage - 10 && G.CSCD >= 3000),
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow2S && G.CSCD >= 3000),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura),
-
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow1S && G.CSCD >= 3000),
                         new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me, ret => Me.CurrentRage < 70)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me, ret => Me.CurrentRage < 70))),
-
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage),
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
-
                         Spell.Cast(SB.WildStrike, ret => !G.BloodsurgeAura && G.CSCD >= 3000 && Me.CurrentRage >= 90),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage),
-
                         Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && SG.Instance.Fury.CheckRotImpVic), // Added for the sake of supporting it rotational.
                         Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Fury.CheckHeroicThrow) // Added for the sake of supporting it rotational.
                         )));
@@ -202,20 +196,18 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.Execute),
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage))),
+                        Spell.Cast(SB.Execute),
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4 - Waiting for CS window unless expires.
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
-
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-
                         Spell.Cast(SB.RagingBlow),
                         Spell.Cast(SB.Execute, ret => Me.CurrentRage == Me.MaxRage - 10),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage),
-
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.BTCD >= 2000 && G.CSCD >= 6000 && Tier4AbilityUsage) // Added
                         )));
@@ -224,6 +216,7 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_FuryMt()
         {
             return new PrioritySelector(
+                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 5,
                     new PrioritySelector(
 
@@ -342,7 +335,7 @@ namespace FuryUnleashed.Routines
         {
             return new PrioritySelector(
                 // SimulationCraft 530-6 (r16981) - 1H/2H Fury - Slightly Optimized.
-                Spell.Cast("Execute", ret => G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => G.DeathSentenceAuraT16),
                 new Decorator(ret => G.AlmostDead,
                         new PrioritySelector(
                                 Spell.Cast("Colossus Smash", ret => G.ColossusSmashAura),
@@ -355,7 +348,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast("Wild Strike", ret => G.BloodsurgeAura && G.NormalPhase && G.BTCD <= 1000),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (G.BloodbathAura || G.AvTalent || G.SbTalent) && !G.ColossusSmashAura && Tier4AbilityUsage),
                 Spell.Cast("Colossus Smash"),
-                Spell.Cast("Execute", ret => G.ExecutePhase || G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => G.ExecutePhase || G.DeathSentenceAuraT16),
                 Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage),
                 Spell.Cast("Raging Blow", ret => G.RagingBlow2S || (G.RagingBlowAura && (G.ColossusSmashAura || (G.BTCD >= 1000 && G.FadingRb(3000))))),
                 Spell.Cast("Wild Strike", ret => G.BloodsurgeAura),
@@ -379,7 +372,7 @@ namespace FuryUnleashed.Routines
         internal static Composite FuryMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Execute", ret => G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => G.DeathSentenceAuraT16),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
                         Spell.Cast("Cleave", ret => Me.CurrentRage >= 110),

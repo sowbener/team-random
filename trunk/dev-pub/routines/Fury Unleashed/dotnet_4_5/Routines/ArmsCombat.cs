@@ -170,34 +170,29 @@ namespace FuryUnleashed.Routines
                 // Inside Colossus Smash window
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.Execute, ret => G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4
                         Spell.Cast(SB.MortalStrike), // Trying this for rage.
                         Spell.Cast(SB.Slam),
-
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
-
                         Spell.Cast(SB.Overpower, ret => G.SLOC && G.MSOC),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
                 // Outside Colossus Smash window
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4 - Waiting for CS window unless expires.
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.MortalStrike),
-
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added.
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
-
                         Spell.Cast(SB.Overpower),
                         Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Arms.CheckHeroicThrow),
-
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage), // Added - For the sake of supporting it.
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
-
                         new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me))),
-                        Spell.Cast(SB.Execute, ret => G.DeathScentenceAuraT16),
-                        Spell.Cast(SB.Slam, ret => Me.CurrentRage >= 90 && !G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16),
+                        Spell.Cast(SB.Slam, ret => Me.CurrentRage >= 90 && !G.DeathSentenceAuraT16),
                         Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && SG.Instance.Fury.CheckRotImpVic) // Added for the sake of supporting it rotational.                        
                         )));
         }
@@ -218,7 +213,7 @@ namespace FuryUnleashed.Routines
                 // Outside Colossus Smash window
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.Execute, ret => Me.CurrentRage >= 80 || G.DeathScentenceAuraT16),
+                        Spell.Cast(SB.Execute, ret => Me.CurrentRage >= 80 || (G.FadingDeathSentence(3000) && G.CSCD >= 1500)), // Added T16 P4 - Waiting for CS window unless expires.
 
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added.
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
@@ -240,6 +235,7 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_ArmsMt()
         {
             return new PrioritySelector(
+                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
                         Spell.Cast(SB.ThunderClap, ret => SG.Instance.Arms.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...
@@ -339,7 +335,7 @@ namespace FuryUnleashed.Routines
         {
             return new PrioritySelector(
                 // SimulationCraft 530-6 (r16981) - 2H Arms - Slightly Optimized
-                Spell.Cast("Execute", ret => G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => G.DeathSentenceAuraT16),
                 Spell.Cast("Heroic Strike", ret => Me.CurrentRage >= Me.MaxRage - 15 || (G.ColossusSmashAura && Me.CurrentRage >= Me.MaxRage - 40 && G.NormalPhase)),
                 Spell.Cast("Mortal Strike"),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (G.BloodbathAura || G.AvTalent || G.SbTalent) && !G.ColossusSmashAura && G.NormalPhase && (
@@ -353,7 +349,7 @@ namespace FuryUnleashed.Routines
                     (SG.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Colossus Smash", ret => !G.ColossusSmashAura || G.FadingCs(1000)),
-                Spell.Cast("Execute", ret => G.ColossusSmashAura || G.RecklessnessAura || Me.CurrentRage >= Me.MaxRage - 25 || G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => G.ColossusSmashAura || G.RecklessnessAura || Me.CurrentRage >= Me.MaxRage - 25 || G.DeathSentenceAuraT16),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && (((G.BloodbathAura || G.AvTalent || G.SbTalent) && G.NormalPhase) || (!G.ColossusSmashAura && G.ExecutePhase)) && (
                     (SG.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
@@ -362,7 +358,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast("Slam", ret => G.ColossusSmashAura && (G.FadingCs(1000) || G.RecklessnessAura) && G.NormalPhase),
                 Spell.Cast("Overpower", ret => G.TasteForBloodS3 && G.NormalPhase),
                 Spell.Cast("Slam", ret => G.ColossusSmashAura && G.FadingCs(2500) && G.NormalPhase),
-                Spell.Cast("Execute", ret => !G.SuddenExecAura || G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => !G.SuddenExecAura || G.DeathSentenceAuraT16),
                 Spell.Cast("Overpower", ret => G.NormalPhase || G.SuddenExecAura),
                 Spell.Cast("Slam", ret => Me.CurrentRage >= 40 && G.NormalPhase),
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Arms.ShoutSelection,
@@ -376,7 +372,7 @@ namespace FuryUnleashed.Routines
         internal static Composite ArmsMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Execute", ret => G.DeathScentenceAuraT16),
+                Spell.Cast("Execute", ret => G.DeathSentenceAuraT16),
                 Spell.Cast("Sweeping Strikes"),
                 Spell.Cast("Cleave", ret => Me.CurrentRage > 110),
                 Spell.Cast("Mortal Strike"),

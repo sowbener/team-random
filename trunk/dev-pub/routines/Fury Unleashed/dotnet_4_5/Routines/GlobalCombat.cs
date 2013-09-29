@@ -154,7 +154,7 @@ namespace FuryUnleashed.Routines
 
         #region Booleans & Doubles
 
-        // Fading Aura's
+        // Fading Target Aura's
         internal static bool FadingCs(int fadingtime)
         {
             if (!Me.GotTarget)
@@ -171,11 +171,20 @@ namespace FuryUnleashed.Routines
             return deepwounds != null && deepwounds.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
 
+        // Fading Self Aura's
+        internal static bool FadingDeathSentence(int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura deathsentence = Spell.CachedAuras.FirstOrDefault(a => a.SpellId == 144442 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return deathsentence != null && deathsentence.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
         internal static bool FadingEnrage(int fadingtime)
         {
             if (!Me.GotTarget)
                 return false;
-            WoWAura enrage = Spell.CachedTargetAuras.FirstOrDefault(a => (a.SpellId == 13046 || a.SpellId == 12880) && a.CreatorGuid == StyxWoW.Me.Guid);
+            WoWAura enrage = Spell.CachedAuras.FirstOrDefault(a => (a.SpellId == 13046 || a.SpellId == 12880) && a.CreatorGuid == StyxWoW.Me.Guid);
             return enrage != null && enrage.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
 
@@ -267,7 +276,7 @@ namespace FuryUnleashed.Routines
         internal static bool Tier16FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked
 
         // Tierset Item Procs
-        internal static bool DeathScentenceAuraT16  { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS
+        internal static bool DeathSentenceAuraT16  { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS
         internal static bool SkullBannerAuraT15     { get { return Me.HasAnyCachedAura(138127, 0); } }      // T15 4P DPS
         internal static bool VictoriousAuraT15      { get { return Me.HasCachedAura(138279, 0); } }         // T15 2P PROT
 
