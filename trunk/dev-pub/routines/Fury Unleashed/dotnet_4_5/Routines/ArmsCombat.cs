@@ -183,7 +183,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.MortalStrike),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added.
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
+                        Spell.Cast(SB.StormBolt, ret => G.ReadinessAura && G.CSCD >= 16000), // Added - When new one is ready in next CS window - With Eye of Galakras.
                         Spell.Cast(SB.Overpower),
                         Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Arms.CheckHeroicThrow),
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage), // Added - For the sake of supporting it.
@@ -235,7 +235,7 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_ArmsMt()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
+				Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
                         Spell.Cast(SB.ThunderClap, ret => SG.Instance.Arms.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...

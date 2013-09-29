@@ -163,16 +163,20 @@ namespace FuryUnleashed.Routines
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30),
-                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && G.ReadinessAura && Tier6AbilityUsage),
+
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4.
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Inside CS window.
+
                         Spell.Cast(SB.Bloodthirst),
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Major damage.
                         Spell.Cast(SB.RagingBlow),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura))),
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
+
                         Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4 - Waiting for CS window unless expires.
-                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage),
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added - Outside CS window.
+                        Spell.Cast(SB.StormBolt, ret => G.ReadinessAura && G.CSCD >= 16000), // Added - When new one is ready in next CS window - With Eye of Galakras.
+
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage > Me.MaxRage - 10 && G.CSCD >= 3000),
@@ -196,8 +200,9 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage))),
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
                         Spell.Cast(SB.Execute),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4 - Waiting for CS window unless expires.
@@ -216,7 +221,7 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_FuryMt()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
+				Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 5,
                     new PrioritySelector(
 
