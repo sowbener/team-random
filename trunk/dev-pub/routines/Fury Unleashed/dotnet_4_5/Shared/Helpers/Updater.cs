@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using Styx.Common;
 
 namespace FuryUnleashed.Shared.Helpers
 {
@@ -52,14 +53,29 @@ namespace FuryUnleashed.Shared.Helpers
             }
         }
 
+        //private static int GetRevision()
+        //{
+        //    var client = new WebClient();
+        //    var html = client.DownloadString(FuSvnUrl);
+        //    var pattern = new Regex(@" - Revision (?<rev>\d+):", RegexOptions.CultureInvariant);
+        //    Match match = pattern.Match(html);
+        //    if (match.Success && match.Groups["rev"].Success)
+        //        return int.Parse(match.Groups["rev"].Value);
+        //    throw new Exception("FU: Unable to retrieve revision.");
+        //}
+
         private static int GetRevision()
         {
-            var client = new WebClient();
-            var html = client.DownloadString(FuSvnUrl);
-            var pattern = new Regex(@" - Revision (?<rev>\d+):", RegexOptions.CultureInvariant);
-            Match match = pattern.Match(html);
-            if (match.Success && match.Groups["rev"].Success)
-                return int.Parse(match.Groups["rev"].Value);
+            try
+            {
+                var wc = new WebClient();
+                var versiondata = wc.DownloadString(FuSvnUrl + "version");
+                return int.Parse(versiondata);
+            }
+            catch (WebException e)
+            {
+                Logging.Write("FU: Error to retrieve version - {0}", e);
+            }
             throw new Exception("FU: Unable to retrieve revision.");
         }
 
