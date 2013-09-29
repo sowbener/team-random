@@ -66,17 +66,10 @@ namespace FuryUnleashed.Shared.Helpers
 
         private static int GetRevision()
         {
-            try
-            {
-                var wc = new WebClient();
-                var versiondata = wc.DownloadString(FuSvnUrl + "version");
-                return int.Parse(versiondata);
-            }
-            catch (WebException e)
-            {
-                Logging.Write("FU: Error to retrieve version - {0}", e);
-            }
-            throw new Exception("FU: Unable to retrieve revision.");
+            var wc = new WebClient();
+            var webData = wc.DownloadString(FuSvnUrl + "version");
+            return int.Parse(webData);
+            throw new Exception("Unable to retreive revision");
         }
 
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)
