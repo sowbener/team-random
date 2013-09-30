@@ -65,7 +65,7 @@ namespace Bullseye.Routines
         internal static Composite BeastmasterySt()
         {
             return new PrioritySelector(
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.General.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),

@@ -34,6 +34,14 @@ namespace Bullseye.Interfaces.Settings
         public bool CheckPotion { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("General")]
+        [DisplayName("Enable or Disable Trap Usage")]
+        [Description("This enables Trap Usage")]
+        public bool EnableTraps { get; set; }
+
+
+        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("General")]
         [DisplayName("Enable Wow ChatOutput")]
