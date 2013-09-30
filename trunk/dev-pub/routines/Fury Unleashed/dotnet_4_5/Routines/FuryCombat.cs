@@ -179,7 +179,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage > Me.MaxRage - 10 && G.CSCD >= 3000),
+                        Spell.Cast(SB.HeroicStrike, ret => G.CSCD >= 3000 && ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 5))),
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow2S && G.CSCD >= 3000),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura),
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow1S && G.CSCD >= 3000),
@@ -221,7 +221,9 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_FuryMt()
         {
             return new PrioritySelector(
-				Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added.
+
+                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window.
+
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 5,
                     new PrioritySelector(
 
@@ -270,7 +272,6 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.Execute, ret => G.ColossusSmashAura), // Added
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.ColossusSmash),
