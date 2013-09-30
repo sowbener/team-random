@@ -178,11 +178,11 @@ namespace Waldo.Routines
         internal static Composite AssaInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                     Spell.Cast("Kick")
                     ),
-                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.HasTalent(4) && Lua.PlayerComboPts > 2
-                    ));
+              new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.HasTalent(4) && Lua.PlayerComboPts > 2)));
         }
         #endregion
 
