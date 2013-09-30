@@ -102,6 +102,7 @@ namespace Pokehbuddyplug
 {
     partial class configForm
     {
+        string[] logictags = { "Unknown", "Simple Leveling", "Boost Leveling", "Max Lvl", "Ringer", "PVP", "Survival" };
         DataTable table = new DataTable();
         int initdone = 0;
         private void BlacklistSave()
@@ -317,6 +318,11 @@ namespace Pokehbuddyplug
             WhitelistLoad();
             MacroLoad();
             GetQuickSettings();
+            listView2.Items.Clear();
+            foreach (string s in logictags)
+            {
+                listView2.Items.Add(s);
+            }
 
             this.groupBox10.Location = new System.Drawing.Point(6, 287);
             this.groupBox16.Location = new System.Drawing.Point(3, 287);
@@ -328,6 +334,7 @@ namespace Pokehbuddyplug
             textBox5.Text = Pokehbuddy.MySettings.DisFormula;
             textBox6.Text = Pokehbuddy.MySettings.LevelFormula;
 
+            checkBox14.Checked = Pokehbuddy.MySettings.BPSEnabled;
             checkBox5.Checked = Pokehbuddy.MySettings.UseBlackList;
             checkBox6.Checked = Pokehbuddy.MySettings.UseWhiteList;
             
@@ -2406,44 +2413,9 @@ namespace Pokehbuddyplug
 
         private void button53_Click(object sender, System.EventArgs e)
         {
-            string[] skillz = textBox9.Text.Split('@');
-            string[] gotskills = { "", "", "" };
-
-            foreach (string alogic in skillz)
-            {
-                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY1(") == 0))
-                {
-                    int FirstChr = alogic.IndexOf("ASSIGNABILITY1(") + 15;
-                    int SecondChr = alogic.IndexOf(")", FirstChr);
-                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
-
-                    gotskills[0] = strTemp;
-                }
-                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY2(") == 0))
-                {
-                    int FirstChr = alogic.IndexOf("ASSIGNABILITY2(") + 15;
-                    int SecondChr = alogic.IndexOf(")", FirstChr);
-                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
-
-                    gotskills[1] = strTemp;
-                }
-                if ((String.Compare(alogic.Substring(0, 15), "ASSIGNABILITY3(") == 0))
-                {
-                    int FirstChr = alogic.IndexOf("ASSIGNABILITY3(") + 15;
-                    int SecondChr = alogic.IndexOf(")", FirstChr);
-                    string strTemp = alogic.Substring(FirstChr, SecondChr - FirstChr);
-
-                    gotskills[2] = strTemp;
-                }
-            }
-
-            Librarian.Librarian libje = new Librarian.Librarian();
-            string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 30";
-            dummy = dummy +"@" + libje.SearchLib(gotskills[2]).Replace("**sn**", "3");
-            dummy = dummy +"@" + libje.SearchLib(gotskills[1]).Replace("**sn**", "2");
-            dummy = dummy + "@" + libje.SearchLib(gotskills[0]).Replace("**sn**", "1");
-            textBox8.Text = dummy;
-            
+            Librarian.Librarian lib = new Librarian.Librarian();
+            textBox8.Text = lib.GenerateLogic(textBox9.Text);
+            textBox10.Text = "Auto generated";
             
 
 
@@ -2737,7 +2709,7 @@ namespace Pokehbuddyplug
         private void AddToList(string s)
         {
             listBox1.Items.Add(s);
-
+            return;
             int i = 0;
             
             while (s.TakeWhile(c => c == '$').Count() > table.Columns.Count - 3)

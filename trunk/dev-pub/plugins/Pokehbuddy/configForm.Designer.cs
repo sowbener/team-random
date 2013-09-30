@@ -84,6 +84,7 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label89 = new System.Windows.Forms.Label();
             this.button53 = new System.Windows.Forms.Button();
             this.button51 = new System.Windows.Forms.Button();
             this.button49 = new System.Windows.Forms.Button();
@@ -168,7 +169,6 @@
             this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button55 = new System.Windows.Forms.Button();
             this.button48 = new System.Windows.Forms.Button();
             this.label73 = new System.Windows.Forms.Label();
             this.button28 = new System.Windows.Forms.Button();
@@ -183,6 +183,7 @@
             this.label71 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.button60 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.button99 = new System.Windows.Forms.Button();
@@ -282,6 +283,7 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.checkBox14 = new System.Windows.Forms.CheckBox();
             this.button50 = new System.Windows.Forms.Button();
+            this.button55 = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.spell1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -324,8 +326,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.button60 = new System.Windows.Forms.Button();
-            this.label89 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -403,6 +403,7 @@
             // 
             // button59
             // 
+            this.button59.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button59.Location = new System.Drawing.Point(482, 223);
             this.button59.Name = "button59";
             this.button59.Size = new System.Drawing.Size(97, 159);
@@ -1174,6 +1175,17 @@
             this.tabPage4.Text = "Logic Manager";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
             // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label89.Location = new System.Drawing.Point(475, 343);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(216, 20);
+            this.label89.TabIndex = 68;
+            this.label89.Text = "Please set a default logic!";
+            this.label89.Visible = false;
+            // 
             // button53
             // 
             this.button53.Enabled = false;
@@ -1198,7 +1210,7 @@
             // button49
             // 
             this.button49.Enabled = false;
-            this.button49.Location = new System.Drawing.Point(634, 166);
+            this.button49.Location = new System.Drawing.Point(632, 260);
             this.button49.Name = "button49";
             this.button49.Size = new System.Drawing.Size(95, 32);
             this.button49.TabIndex = 65;
@@ -1212,7 +1224,7 @@
             this.groupBox16.Controls.Add(this.button58);
             this.groupBox16.Controls.Add(this.button57);
             this.groupBox16.Controls.Add(this.listView2);
-            this.groupBox16.Location = new System.Drawing.Point(383, 455);
+            this.groupBox16.Location = new System.Drawing.Point(268, 481);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(389, 231);
             this.groupBox16.TabIndex = 64;
@@ -1281,7 +1293,7 @@
             // button56
             // 
             this.button56.Enabled = false;
-            this.button56.Location = new System.Drawing.Point(634, 128);
+            this.button56.Location = new System.Drawing.Point(632, 222);
             this.button56.Name = "button56";
             this.button56.Size = new System.Drawing.Size(95, 32);
             this.button56.TabIndex = 60;
@@ -1292,7 +1304,7 @@
             // button47
             // 
             this.button47.Enabled = false;
-            this.button47.Location = new System.Drawing.Point(634, 249);
+            this.button47.Location = new System.Drawing.Point(632, 166);
             this.button47.Name = "button47";
             this.button47.Size = new System.Drawing.Size(95, 32);
             this.button47.TabIndex = 58;
@@ -1303,7 +1315,7 @@
             // button46
             // 
             this.button46.Enabled = false;
-            this.button46.Location = new System.Drawing.Point(634, 211);
+            this.button46.Location = new System.Drawing.Point(632, 128);
             this.button46.Name = "button46";
             this.button46.Size = new System.Drawing.Size(95, 32);
             this.button46.TabIndex = 57;
@@ -1711,7 +1723,7 @@
             // button32
             // 
             this.button32.Enabled = false;
-            this.button32.Location = new System.Drawing.Point(504, 287);
+            this.button32.Location = new System.Drawing.Point(479, 297);
             this.button32.Name = "button32";
             this.button32.Size = new System.Drawing.Size(122, 43);
             this.button32.TabIndex = 34;
@@ -1755,7 +1767,7 @@
             this.listView1.Location = new System.Drawing.Point(17, 20);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(609, 261);
+            this.listView1.Size = new System.Drawing.Size(609, 271);
             this.listView1.TabIndex = 31;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -1880,7 +1892,6 @@
             this.tabPage2.Controls.Add(this.button52);
             this.tabPage2.Controls.Add(this.comboBox18);
             this.tabPage2.Controls.Add(this.groupBox15);
-            this.tabPage2.Controls.Add(this.button55);
             this.tabPage2.Controls.Add(this.button48);
             this.tabPage2.Controls.Add(this.label73);
             this.tabPage2.Controls.Add(this.button28);
@@ -1910,7 +1921,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(634, 490);
+            this.dataGridView1.Location = new System.Drawing.Point(644, 490);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(534, 116);
             this.dataGridView1.TabIndex = 40;
@@ -2050,17 +2061,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button55
-            // 
-            this.button55.Location = new System.Drawing.Point(666, 10);
-            this.button55.Name = "button55";
-            this.button55.Size = new System.Drawing.Size(91, 39);
-            this.button55.TabIndex = 36;
-            this.button55.Text = "Rebuild Pet Database";
-            this.button55.UseVisualStyleBackColor = true;
-            this.button55.Visible = false;
-            this.button55.Click += new System.EventHandler(this.button55_Click);
             // 
             // button48
             // 
@@ -2214,6 +2214,16 @@
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "New Logic";
+            // 
+            // button60
+            // 
+            this.button60.Location = new System.Drawing.Point(490, 127);
+            this.button60.Name = "button60";
+            this.button60.Size = new System.Drawing.Size(109, 25);
+            this.button60.TabIndex = 17;
+            this.button60.Text = "Insert in selected";
+            this.button60.UseVisualStyleBackColor = true;
+            this.button60.Visible = false;
             // 
             // textBox2
             // 
@@ -2574,9 +2584,9 @@
             this.label64.AutoSize = true;
             this.label64.Location = new System.Drawing.Point(201, 48);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(47, 13);
+            this.label64.Size = new System.Drawing.Size(111, 13);
             this.label64.TabIndex = 28;
-            this.label64.Text = "Whitelist";
+            this.label64.Text = "Whitelist (Attack Only)";
             // 
             // listBox4
             // 
@@ -2621,9 +2631,9 @@
             this.label63.AutoSize = true;
             this.label63.Location = new System.Drawing.Point(15, 48);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(46, 13);
+            this.label63.Size = new System.Drawing.Size(118, 13);
             this.label63.TabIndex = 22;
-            this.label63.Text = "Blacklist";
+            this.label63.Text = "Blacklist (Attack Never)";
             // 
             // listBox3
             // 
@@ -3241,6 +3251,7 @@
             // 
             this.tabPage6.Controls.Add(this.checkBox14);
             this.tabPage6.Controls.Add(this.button50);
+            this.tabPage6.Controls.Add(this.button55);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
@@ -3269,6 +3280,17 @@
             this.button50.Text = "BattlePetSwapper settings";
             this.button50.UseVisualStyleBackColor = true;
             this.button50.Click += new System.EventHandler(this.button50_Click);
+            // 
+            // button55
+            // 
+            this.button55.Location = new System.Drawing.Point(780, 499);
+            this.button55.Name = "button55";
+            this.button55.Size = new System.Drawing.Size(91, 39);
+            this.button55.TabIndex = 36;
+            this.button55.Text = "Rebuild Pet Database";
+            this.button55.UseVisualStyleBackColor = true;
+            this.button55.Visible = false;
+            this.button55.Click += new System.EventHandler(this.button55_Click);
             // 
             // contextMenuStrip1
             // 
@@ -3610,27 +3632,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "XML Files|*.xml;";
-            // 
-            // button60
-            // 
-            this.button60.Location = new System.Drawing.Point(490, 127);
-            this.button60.Name = "button60";
-            this.button60.Size = new System.Drawing.Size(109, 25);
-            this.button60.TabIndex = 17;
-            this.button60.Text = "Insert in selected";
-            this.button60.UseVisualStyleBackColor = true;
-            this.button60.Visible = false;
-            // 
-            // label89
-            // 
-            this.label89.AutoSize = true;
-            this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label89.Location = new System.Drawing.Point(513, 338);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(216, 20);
-            this.label89.TabIndex = 68;
-            this.label89.Text = "Please set a default logic!";
-            this.label89.Visible = false;
             // 
             // configForm
             // 
