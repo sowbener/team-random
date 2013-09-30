@@ -74,21 +74,21 @@ namespace DeathVader.Core
         public static Composite UnholyUseItems()
         {
             return new PrioritySelector(
-                new Decorator(ret => (
+                new Decorator(ret => Me.CurrentTarget.IsWithinMeleeRange && (
                     (SG.Instance.Unholy.Trinket1 == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
                     (SG.Instance.Unholy.Trinket1 == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Unholy.Trinket1 == DvEnum.AbilityTrigger.Always)),
                     new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
-                new Decorator(ret => (
+                new Decorator(ret => Me.CurrentTarget.IsWithinMeleeRange && (
                     (SG.Instance.Unholy.Trinket1 == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
                     (SG.Instance.Unholy.Trinket1 == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Unholy.Trinket1 == DvEnum.AbilityTrigger.Always)),
                     new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
-                new Decorator(ret => (
+                new Decorator(ret => Me.CurrentTarget.IsWithinMeleeRange && (
                     (SG.Instance.Unholy.UseHands == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
                     (SG.Instance.Unholy.UseHands == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Unholy.UseHands == DvEnum.AbilityTrigger.Always)),
@@ -126,21 +126,21 @@ namespace DeathVader.Core
         public static Composite FrostUseItems()
         {
             return new PrioritySelector(
-                new Decorator(ret => G.PillarofFrost && (
+                new Decorator(ret => Me.CurrentTarget.IsWithinMeleeRange && G.PillarofFrost && (
                     (SG.Instance.Frost.Trinket1 == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
                     (SG.Instance.Frost.Trinket1 == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.Trinket1 == DvEnum.AbilityTrigger.Always)),
                     new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
-                new Decorator(ret => G.PillarofFrost && (
+                new Decorator(ret => Me.CurrentTarget.IsWithinMeleeRange && G.PillarofFrost && (
                     (SG.Instance.Frost.Trinket1 == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
                     (SG.Instance.Frost.Trinket1 == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.Trinket1 == DvEnum.AbilityTrigger.Always)),
                     new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
-                new Decorator(ret => G.PillarofFrost && (
+                new Decorator(ret => Me.CurrentTarget.IsWithinMeleeRange && G.PillarofFrost && (
                     (SG.Instance.Frost.UseHands == DvEnum.AbilityTrigger.OnBossDummy && DvUnit.IsTargetBoss) ||
                     (SG.Instance.Frost.UseHands == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.UseHands == DvEnum.AbilityTrigger.Always)),

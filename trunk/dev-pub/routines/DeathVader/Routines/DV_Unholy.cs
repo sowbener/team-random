@@ -165,7 +165,7 @@ namespace DeathVader.Routines
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                         Spell.Cast("Mind Freeze")));
             }
         }

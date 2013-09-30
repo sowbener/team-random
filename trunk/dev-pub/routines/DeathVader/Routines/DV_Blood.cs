@@ -169,7 +169,7 @@ namespace DeathVader.Routines
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                         Spell.Cast("Mind Freeze")));
             }
         }
@@ -207,15 +207,6 @@ namespace DeathVader.Routines
                             !Me.HasAura("Dancing Rune Weapon") &&
                             !Me.HasAura("Lichborne") &&
                             Spell.SpellOnCooldown(49998)) return true;
-                        break;
-
-                    case "DeathPact":
-                        if (!Me.HasAura("Bone Shield") &&
-                            !Me.HasAura("Vampiric Blood") &&
-                            !Me.HasAura("Icebound Fortitude") &&
-                            !Me.HasAura("Dancing Rune Weapon") &&
-                            !Me.HasAura("Lichborne") &&
-                           Spell.SpellOnCooldown(49998)) return true;
                         break;
 
                     case "DeathCoilHeal":
@@ -271,9 +262,9 @@ namespace DeathVader.Routines
 
         private static bool NeedDancingRuneWeapon { get { return UseDancingRuneWeapon && Me.HealthPercent < DancingRuneWeaponPercent && NoOtherCooldownActive("DancingRuneWeapon"); } }
 
-        private static bool NeedLichborne { get { return UseLichborne && Me.HealthPercent < LichbornePercent && Me.CurrentRunicPower >= 60 && NoOtherCooldownActive("DeathCoilHeal"); } }
+        private static bool NeedLichborne { get { return UseLichborne && Me.HealthPercent < LichbornePercent && Me.CurrentRunicPower >= 60; } }
 
-        private static bool NeedRaiseDead { get { return UsePetSacrifice && Me.HealthPercent < PetSacrificePercent && NoOtherCooldownActive("DeathPact"); } }
+        private static bool NeedRaiseDead { get { return UsePetSacrifice && Me.HealthPercent < PetSacrificePercent; } }
 
         private static bool NeedIceboundFortitude { get { return UseIceboundFortitude && Me.HealthPercent < IceboundFortitudePercent && NoOtherCooldownActive("IceboundFortitude"); } }
 
