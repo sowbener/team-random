@@ -76,10 +76,10 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Premeditation", ret => Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 3 || AnticipationStacks < 3)),
-                Spell.Cast("Ambush", ret => Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AntiCipation3Stacks)),
+                Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AntiCipation3Stacks)),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower >= 50 && Lua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
                 new Decorator(ret => AnticipationStacks < 4 && (G.SliceAndDiceSubGenerator || G.TargetHaveRupture4), ComboBuilders()),
-                new Decorator(ret => Lua.PlayerComboPts == 5 || AnticipationStacks > 3, Finishers()),
+                new Decorator(ret => Lua.PlayerComboPts == 5 || (Lua.PlayerComboPts > 2 && AnticipationStacks > 2), Finishers()),
                 new Decorator(ret => Lua.PlayerComboPts < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
 
@@ -94,7 +94,7 @@ namespace Waldo.Routines
             new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling || !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
-            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && !Me.HasAura("Shadow Dance")),
+            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Shadow Dance") || !Me.HasAura("Vanish"))),
             Pooling());
         }
         
