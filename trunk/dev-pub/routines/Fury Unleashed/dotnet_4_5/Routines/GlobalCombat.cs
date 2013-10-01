@@ -42,8 +42,6 @@ namespace FuryUnleashed.Routines
 
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Fury.CheckAoE && SG.Instance.Fury.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Fury.CheckRallyingCry,
@@ -96,10 +94,10 @@ namespace FuryUnleashed.Routines
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(750), RunStatus.Failure,
                     Spell.Cast("Pummel")
                     ),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(750), RunStatus.Failure,
                     Spell.Cast("Disrupting Shout", ret => DsTalent && (PUOC || Unit.InterruptableUnitsCount >= 1))
                     ));
         }
