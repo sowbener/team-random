@@ -248,8 +248,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam/*, ret => !G.WhirlwindViable*/),
-                        /*Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),*/
+                        Spell.Cast(SB.Slam, ret => !G.WhirlwindViable),
+                        Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NormalPhase,
                             Dev_ArmsSt()),
@@ -267,8 +267,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam/*, ret => !G.WhirlwindViable*/), 
-                        /*Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),*/
+                        Spell.Cast(SB.Slam, ret => !G.WhirlwindViable), 
+                        Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NormalPhase,
                             Dev_ArmsSt()),
