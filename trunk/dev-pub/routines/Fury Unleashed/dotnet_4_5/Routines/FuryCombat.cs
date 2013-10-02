@@ -290,7 +290,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast(SB.Bloodbath, ret => G.BbTalent && Tier6AbilityUsage),
                 Spell.Cast(SB.Recklessness, ret => RecklessnessUsage),
                 Spell.Cast(SB.Avatar, ret => G.AvTalent && RecklessnessSync && Tier6AbilityUsage),
-                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync)
+                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
                 );
         }
 
