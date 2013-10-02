@@ -78,7 +78,7 @@ namespace Waldo.Routines
                 Spell.Cast("Premeditation", ret => Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 3 || AnticipationStacks < 3)),
                 Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AnticipationStacks < 3)),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower >= 50 && Lua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
-                new Decorator(ret => Lua.PlayerComboPts == 5 || G.Anticipate4stacks, Finishers()),
+                new Decorator(ret => Lua.PlayerComboPts > 4 || G.Anticipate3stacks, Finishers()),
                 new Decorator(ret => AnticipationStacks < 4 && (G.SliceAndDiceSubGenerator || G.TargetHaveRupture4), ComboBuilders()),
                 new Decorator(ret => Lua.PlayerComboPts < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
