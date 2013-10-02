@@ -76,7 +76,7 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Premeditation", ret => Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 3 || AnticipationStacks < 3)),
-                Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AntiCipation3Stacks)),
+                Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AnticipationStacks < 3)),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower >= 50 && Lua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
                 new Decorator(ret => AnticipationStacks < 4 && (G.SliceAndDiceSubGenerator || G.TargetHaveRupture4), ComboBuilders()),
                 new Decorator(ret => Lua.PlayerComboPts == 5 || (Lua.PlayerComboPts > 2 && AnticipationStacks > 2), Finishers()),
@@ -103,8 +103,7 @@ namespace Waldo.Routines
             return new PrioritySelector(
             Spell.Cast("Slice and Dice", ret => G.SliceandDiceSub || !Me.HasAura("Slice and Dice")),
             Spell.Cast("Rupture", ret => G.TargetRuptureFalling || G.TargetNoRupture),
-            Spell.Cast("Eviscerate", ret => !G.TargetRuptureFalling && Me.HasAura("Slice and Dice")),
-            Pooling());
+            Spell.Cast("Eviscerate", ret => !G.TargetRuptureFalling && Me.HasAura("Slice and Dice")));
         }
 
         static Composite Pooling()
@@ -191,8 +190,6 @@ namespace Waldo.Routines
 
         #region BoolsChampion
 
-        private static bool AntiCipation3Stacks { get { return AnticipationStacks < 3 && Me.HasAura(115189); } }
-        private static bool AntiCipation4Stacks { get { return AnticipationStacks < 4 && Me.HasAura(115189); } }
 
         private static uint AnticipationStacks
         {
