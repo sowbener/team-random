@@ -175,7 +175,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4 - Waiting for CS window unless expires.
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage), // Added - Outside CS window.
-                        Spell.Cast(SB.StormBolt, ret => G.ReadinessAura && G.CSCD >= 16000), // Added - When new one is ready in next CS window - With Eye of Galakras.
+                        Spell.Cast(SB.StormBolt, ret => G.ReadinessAura && G.CSCD >= 16000 && Tier6AbilityUsage), // Added - When new one is ready in next CS window - With Eye of Galakras.
 
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
