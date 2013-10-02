@@ -169,6 +169,22 @@ namespace FuryUnleashed.Routines
             return deepwounds != null && deepwounds.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
 
+        internal static bool FadingSunder(int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura sunderArmor = Spell.CachedTargetAuras.FirstOrDefault(a => a.SpellId == 7386 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return sunderArmor != null && sunderArmor.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
+        internal static bool FadingWb(int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura weakenedBlows = Spell.CachedTargetAuras.FirstOrDefault(a => a.SpellId == 115798 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return weakenedBlows != null && weakenedBlows.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
         // Fading Self Aura's
         internal static bool FadingDeathSentence(int fadingtime)
         {
@@ -209,7 +225,7 @@ namespace FuryUnleashed.Routines
         internal static bool HotkeyMode             { get { return SH.Instance.ModeSelection == Enum.Mode.Hotkey || SH.Instance.ModeSelection == Enum.Mode.SemiHotkey; } }
         internal static bool NormalPhase            { get { return Me.CurrentTarget.HealthPercent > 20; } }
         internal static bool TargetNotNull          { get { return Me.CurrentTarget != null; } }
-        internal static bool TargettingMe           { get { return Me.CurrentTarget.IsTargetingMeOrPet; } }
+        internal static bool TargettingMe           { get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; } }
         internal static bool HasteAbilities         { get { return (AncientHysteriaAura || BloodLustAura || HeroismAura || TimeWarpAura); } }
         internal static bool WieldsTwoHandedWeapons { get { return Item.WieldsTwoHandedWeapons; } }
 
@@ -264,11 +280,11 @@ namespace FuryUnleashed.Routines
         // Tierset Aura Detection
         // Somehow doesnt work with ID
         internal static bool Tier15TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T15 DPS 2P Bonus"); } }               // Works - 138120
-        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }               // Does not work - Triggers SbT15P4Aura
+        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }               // Does not work - Triggers SkullBannerAuraT15
         internal static bool Tier15TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T15 Protection 2P Bonus"); } }        // Works - 138280
         internal static bool Tier15FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T15 Protection 4P Bonus"); } }        // Works - 138281
 
-        internal static bool Tier16TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T16 DPS 2P Bonus"); } }               // Unchecked
+        internal static bool Tier16TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T16 DPS 2P Bonus"); } }               // Checked - Works - 144436 is one of the ID's.
         internal static bool Tier16FourPieceBonus   { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Unchecked
         internal static bool Tier16TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T16 Protection 2P Bonus"); } }        // Unchecked
         internal static bool Tier16FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked
@@ -288,7 +304,7 @@ namespace FuryUnleashed.Routines
         internal static bool LastStandAura          { get { return Me.HasCachedAura(12975, 0); } }
         internal static bool MeatCleaverAura        { get { return Me.HasCachedAura(85739, 0); } }
         internal static bool RagingBlowAura         { get { return Me.HasCachedAura(131116, 0); } }
-        internal static bool ReadinessAura          { get { return Me.HasCachedAura("Readiness", 0); } } // Evil Eye of Galakras trinket Aura.
+        internal static bool ReadinessAura          { get { return Me.HasCachedAura("Readiness", 0); } } // Evil Eye of Galakras trinket Aura - Multi-ID ...
         internal static bool RecklessnessAura       { get { return Me.HasCachedAura(1719, 0); } }
         internal static bool RecklessnessAuraT      { get { return Me.HasCachedAura(1719, 0, 10000); } }
         internal static bool ShieldBarrierAura      { get { return Me.HasCachedAura(112048, 0); } }
@@ -304,6 +320,7 @@ namespace FuryUnleashed.Routines
         internal static bool ColossusSmashAuraT     { get { return Me.CurrentTarget.HasCachedAura(86346, 0, 5000); } }
         internal static bool DeepWoundsAura         { get { return Me.CurrentTarget.HasCachedAura(115767, 0); } }
         internal static bool HamstringAura          { get { return Me.CurrentTarget.HasAnyCachedAura(1715, 0); } }
+        internal static bool SunderArmorAura        { get { return Me.CurrentTarget.HasCachedAura(7386, 0); } }
         internal static bool WeakenedBlowsAura      { get { return Me.CurrentTarget.HasAnyCachedAura(115798, 0); } }
 
         // Cached Stacked Aura's - Can only be used with MY aura's (HasCachedAura).
@@ -315,6 +332,7 @@ namespace FuryUnleashed.Routines
         internal static bool TasteForBloodS3        { get { return Me.HasCachedAura(60503, 3); } }
         internal static bool TasteForBloodS4        { get { return Me.HasCachedAura(60503, 4); } }
         internal static bool TasteForBloodS5        { get { return Me.HasCachedAura(60503, 5); } }
+        internal static bool SunderArmorAura3S      { get { return Me.CurrentTarget.HasCachedAura(7386, 3); } }
 
         // Cached Aura's - Can be used with ANY aura's (HasAnyCachedAura).
         internal static bool AncientHysteriaAura    { get { return Me.HasAnyCachedAura(90355, 0); } }

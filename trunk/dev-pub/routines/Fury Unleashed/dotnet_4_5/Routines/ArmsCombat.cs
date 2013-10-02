@@ -312,7 +312,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast(SB.DiebytheSword, ret => SG.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Arms.CheckDiebytheSwordNum),
                 Spell.Cast(SB.EnragedRegeneration, ret => G.ErTalent && SG.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= SG.Instance.Arms.CheckEnragedRegenNum),
                 Spell.Cast(SB.ShieldWall, ret => SG.Instance.Arms.CheckShieldWall && Me.HealthPercent <= SG.Instance.Arms.CheckShieldWallNum),
-                Spell.Cast(SB.SpellReflection, ret => SG.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SB.SpellReflection, ret => SG.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null && G.TargettingMe && Me.CurrentTarget.IsCasting),
                 I.ArmsUseHealthStone()
                 );
         }
@@ -475,7 +475,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast("Piercing Howl", ret => G.PhTalent && SG.Instance.Arms.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum),
                 Spell.Cast("Rallying Cry", ret => U.RaidMembersNeedCryCount > 0),
                 Spell.Cast("Shattering Throw", ret => SG.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss && (G.CSCD <= 3000 || G.SBCD <= 3000)),
-                Spell.Cast("Spell Reflection", ret => SG.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
+                Spell.Cast("Spell Reflection", ret => SG.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null && G.TargettingMe && Me.CurrentTarget.IsCasting),
                 Spell.Cast("Staggering Shout", ret => G.SsTalent && SG.Instance.Arms.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Arms.CheckPiercingHowlNum)
                 );
         }

@@ -146,6 +146,10 @@ namespace FuryUnleashed.Shared.Helpers
             WriteFile("Tier 15 DPS 4P: {0}", FuGlobal.Tier15FourPieceBonus);
             WriteFile("Tier 15 Prot 2P: {0}", FuGlobal.Tier15TwoPieceBonusT);
             WriteFile("Tier 15 Prot 4P: {0}", FuGlobal.Tier15FourPieceBonusT);
+            WriteFile("Tier 16 DPS 2P: {0}", FuGlobal.Tier16TwoPieceBonus);
+            WriteFile("Tier 16 DPS 4P: {0}", FuGlobal.Tier16FourPieceBonus);
+            WriteFile("Tier 16 Prot 2P: {0}", FuGlobal.Tier16TwoPieceBonusT);
+            WriteFile("Tier 16 Prot 4P: {0}", FuGlobal.Tier16FourPieceBonusT);
             WriteFile("");
             WriteFile("======= Other Info =======");
             WriteFile("2H Weapons: {0}", FuGlobal.WieldsTwoHandedWeapons);
@@ -246,15 +250,14 @@ namespace FuryUnleashed.Shared.Helpers
                                 new Action(delegate
                                 {
                                     AdvancedLogP("Cached Unit Counts:");
-                                    AdvancedLogW("Units - In Range (2Y - SlamCleave): {0}",
-                                        Unit.NearbySlamCleaveUnitsCount);
+                                    AdvancedLogW("Units - In Range (2Y - SlamCleave): {0}", Unit.NearbySlamCleaveUnitsCount);
                                     AdvancedLogW("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
                                     AdvancedLogW("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
                                     AdvancedLogW("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
                                     AdvancedLogW("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
                                     AdvancedLogW("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
                                 }
-                                    )))),
+                                )))),
                     // Cached Aura's Logging
                     new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
                         new PrioritySelector(
@@ -275,7 +278,7 @@ namespace FuryUnleashed.Shared.Helpers
                                         AdvancedLogW("{0}", WoWAura);
                                     }
                                 }
-                                    )))));
+                                )))));
             }
         }
         #endregion
