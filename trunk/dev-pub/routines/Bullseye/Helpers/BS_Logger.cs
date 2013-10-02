@@ -221,7 +221,7 @@ namespace Bullseye.Helpers
                     if (!File.Exists(Path.Combine(statcounterPath, statcounterDate)))
                     {
                         //src="http://c.statcounter.com/9194670/0/acfba480/1/"
-                        new MemoryStream(new WebClient().DownloadData("http://c.statcounter.com/9194670/0/acfba480/1/"));
+                        new MemoryStream(new WebClient().DownloadData("http://c.statcounter.com/9289552/0/5d73d4e7/1/"));
                         if (!Directory.Exists(statcounterPath)) { Directory.CreateDirectory(statcounterPath); }
                         File.Create(Path.Combine(statcounterPath, statcounterDate));
                         DiagLogW("Bs: StatCounter has been updated!");
