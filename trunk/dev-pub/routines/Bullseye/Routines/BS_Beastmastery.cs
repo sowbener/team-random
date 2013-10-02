@@ -201,7 +201,7 @@ namespace Bullseye.Routines
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 6000); } }
         internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
         internal static bool KillCommandCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(34026).Cooldown; } }
-        internal static bool FocusFireFiveStacks { get { return Me.HasCachedAura(19615, 5); } }
+        internal static bool FocusFireFiveStacks { get { return FocusFireStackCount == 5; } }
         internal static bool BestialWrathNotUp { get { return Lua.PlayerPower > 60 && !Me.HasAura(34471); } }
         internal static bool BestialWrathUp { get { return Me.HasAura(34471); } }
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
