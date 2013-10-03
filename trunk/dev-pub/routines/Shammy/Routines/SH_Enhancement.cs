@@ -100,6 +100,8 @@ namespace Shammy.Routines
                 Spell.PreventDoubleCast(403, 1, ret => EverythingOnCooldown && MaelstormStacks1 && !Me.HasAura(128201)));
         }
 
+        // SpellID = 1535 (Fire Nova)
+        // SpellID = 8050 (Flame Shock)
         // SpellID = 8050 (Fire Nova)
         // SpellID = 60103 (Lava Lash)
         // SpellID = 8190 (Magma Totem)
@@ -112,16 +114,16 @@ namespace Shammy.Routines
             return new PrioritySelector(
              Spell.PreventDoubleCast(8190, 1, ret => U.NearbyAttackableUnitsCount > 5 && NeedMagmaTotem),
              Spell.PreventDoubleCast(3599, 1, ret => U.NearbyAttackableUnitsCount <= 5 && NeedSearingTotem),
-             new Decorator(ret => !Me.CurrentTarget.HasMyAura("Flame Shock"),
+             new Decorator(ret => Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Flame Shock"),
                  new PrioritySelector(
                      Spell.Cast(8050))),
                      Spell.Cast(60103),
-            new Decorator(ret => G.TargetsHaveFlameShock4,
+            new Decorator(ret => Me.CurrentTarget != null && G.TargetsHaveFlameShock4,
                 new PrioritySelector(
-                    Spell.Cast(8050))),
-           new Decorator(ret => Me.CurrentTarget.HasMyAura("Flame Shock"),
+                    Spell.Cast(1535))),
+           new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura("Flame Shock"),
                new PrioritySelector(
-               Spell.Cast(8050),
+               Spell.Cast(1535),
                Spell.PreventDoubleCast(421, 1, ret => MaelstormStacks4),
                Spell.Cast(73680),
                Spell.PreventDoubleCast(421, 1, ret => MaelstormStacks2),
