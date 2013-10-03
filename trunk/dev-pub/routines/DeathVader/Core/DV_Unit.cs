@@ -44,7 +44,7 @@ namespace DeathVader.Core
         // Check if we can interrupt
         internal static bool CanInterrupt
         {
-            get { return Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast; }
+            get { return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast; }
         }
         // Get UnitCount for Attackble Mobs.
         internal static IEnumerable<WoWUnit> AttackableUnits

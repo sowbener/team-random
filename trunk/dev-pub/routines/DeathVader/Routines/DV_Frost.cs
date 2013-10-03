@@ -103,7 +103,7 @@ namespace DeathVader.Routines
                 Spell.Cast("Frost Strike", ret => FSRP76),
                 Spell.Cast("Obliterate", ret => ObliterateRunes6),
                 Spell.Cast("Plague Leech", ret => G.CanCastPlagueLeech),
-                Spell.Cast("Outbreak", ret => NeedBothDisUpAoE && UnholyBlightCheck),
+                Spell.Cast("Outbreak", ret => NeedBothDisUp2H && UnholyBlightCheck),
                 Spell.Cast("Unholy Blight", ret => NeedBothDisUp),
                 Spell.Cast("Frost Strike", ret => RunicEmpowermentTalent && AllRunesDown),
                 Spell.Cast("Frost Strike", ret => BloodStacksunder10),
