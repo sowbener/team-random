@@ -78,7 +78,7 @@ namespace DeathVader.Routines
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
-                        Spell.Cast("Obliterate", ret => G.UnholyRuneSlotsActive > 0 && !Me.HasAura(51124)),
+                        Spell.Cast("Obliterate", ret => G.UnholyRuneSlotsActive > 0 && Me.DeathRuneCount < 1 && !Me.HasAura(51124)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
                         Spell.Cast("Frost Strike", ret => T.HasTalent(14) && G.FrostRuneSlotsActive == 0 || G.DeathRuneSlotsActive == 0),
@@ -103,7 +103,7 @@ namespace DeathVader.Routines
                 Spell.Cast("Frost Strike", ret => FSRP76),
                 Spell.Cast("Obliterate", ret => ObliterateRunes6),
                 Spell.Cast("Plague Leech", ret => G.CanCastPlagueLeech),
-                Spell.Cast("Outbreak", ret => NeedBothDisUp2H && UnholyBlightCheck),
+                Spell.Cast("Outbreak", ret => NeedBothDisUpAoE && UnholyBlightCheck),
                 Spell.Cast("Unholy Blight", ret => NeedBothDisUp),
                 Spell.Cast("Frost Strike", ret => RunicEmpowermentTalent && AllRunesDown),
                 Spell.Cast("Frost Strike", ret => BloodStacksunder10),
@@ -240,8 +240,8 @@ namespace DeathVader.Routines
         //HowlingBlastProc and ObliterateProc
         private const int KillingMachine = 51124;
 
-        private static bool HowlingBlastProc { get { return Me.ActiveAuras.ContainsKey("Freezing Fog"); } }
-        private static bool ObliterateProc { get { return Me.HasAura(51124); } }
+        private static bool HowlingBlastProc { get { return Me.HasAura(59052); } }
+        private static bool ObliterateProc { get { return Me.HasAura(KillingMachine); } }
         private static bool HornofWinterCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(57330).Cooldown; } }
         private static bool SoulReaperNotOnCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(130735).Cooldown; } }
 
