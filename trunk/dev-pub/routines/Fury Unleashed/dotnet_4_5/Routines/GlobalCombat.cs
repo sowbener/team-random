@@ -261,6 +261,17 @@ namespace FuryUnleashed.Routines
             }
         }
 
+        internal static bool SlamViable
+        {
+            get
+            {
+                var wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
+                var slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
+
+                return (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= Unit.NearbyAttackableUnitsFloat / wwcost;
+            }
+        }
+
         internal static bool WhirlwindViable
         {
             get
@@ -268,7 +279,7 @@ namespace FuryUnleashed.Routines
                 var wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
                 var slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
 
-                return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.3) / slamcost;
+                return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
             }
         }
 
@@ -290,7 +301,7 @@ namespace FuryUnleashed.Routines
         internal static bool Tier16FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked
 
         // Tierset Item Procs
-        internal static bool DeathSentenceAuraT16  { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS
+        internal static bool DeathSentenceAuraT16   { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS
         internal static bool SkullBannerAuraT15     { get { return Me.HasAnyCachedAura(138127, 0); } }      // T15 4P DPS
         internal static bool VictoriousAuraT15      { get { return Me.HasCachedAura(138279, 0); } }         // T15 2P PROT
 

@@ -243,7 +243,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAoE { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(2)]
+        [Styx.Helpers.DefaultValue(3)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Multi-Target (AoE) Units")]
         [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 3!")]

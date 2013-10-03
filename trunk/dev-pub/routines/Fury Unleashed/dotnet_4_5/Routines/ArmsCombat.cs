@@ -248,7 +248,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam, ret => !G.WhirlwindViable),
+                        Spell.Cast(SB.Slam, ret => G.SlamViable),
                         Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NormalPhase,
@@ -267,7 +267,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam, ret => !G.WhirlwindViable), 
+                        Spell.Cast(SB.Slam, ret => G.SlamViable), 
                         Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NormalPhase,
@@ -456,7 +456,7 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 Spell.Cast("Die by the Sword", ret => SG.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Arms.CheckDiebytheSwordNum),
                 Spell.Cast("Enraged Regeneration", ret => G.ErTalent && SG.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= SG.Instance.Arms.CheckEnragedRegenNum),
-                Spell.Cast("Lifeblood", ret => SG.Instance.Arms.CheckLifeblood && Me.HealthPercent <= SG.Instance.Arms.CheckLifebloodNum),
+                //Spell.Cast("Lifeblood", ret => SG.Instance.Arms.CheckLifeblood && Me.HealthPercent <= SG.Instance.Arms.CheckLifebloodNum),
                 Spell.Cast("Shield Wall", ret => SG.Instance.Arms.CheckShieldWall && Me.HealthPercent <= SG.Instance.Arms.CheckShieldWallNum),
                 I.ArmsUseHealthStone()
                 );

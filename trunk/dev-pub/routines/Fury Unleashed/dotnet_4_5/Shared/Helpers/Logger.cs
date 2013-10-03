@@ -5,6 +5,7 @@ using Styx;
 using Styx.Common;
 using Styx.Helpers;
 using Styx.TreeSharp;
+using Styx.WoWInternals;
 using System;
 using System.Globalization;
 using System.IO;
@@ -250,14 +251,17 @@ namespace FuryUnleashed.Shared.Helpers
                                 new Action(delegate
                                 {
                                     AdvancedLogP("Cached Unit Counts:");
-                                    AdvancedLogW("Units - In Range (2Y - SlamCleave): {0}", Unit.NearbySlamCleaveUnitsCount);
+                                    AdvancedLogW("Units - In Range (2Y - SlamCleave): {0}",
+                                        Unit.NearbySlamCleaveUnitsCount);
                                     AdvancedLogW("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
                                     AdvancedLogW("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
                                     AdvancedLogW("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
                                     AdvancedLogW("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
                                     AdvancedLogW("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
+                                    AdvancedLogP("Units - Slam Viable: {0}", FuGlobal.SlamViable);
+                                    AdvancedLogP("Units - Whirlwind viable: {0}", FuGlobal.WhirlwindViable);
                                 }
-                                )))),
+                                    )))),
                     // Cached Aura's Logging
                     new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
                         new PrioritySelector(
@@ -278,7 +282,20 @@ namespace FuryUnleashed.Shared.Helpers
                                         AdvancedLogW("{0}", WoWAura);
                                     }
                                 }
-                                )))));
+                                    )))),
+                    //Temporary Functions Logging
+                    new Decorator(ret => InternalSettings.Instance.General.CheckTestLogging,
+                        new PrioritySelector(
+                            new ThrottlePasses(1,
+                                TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
+                                RunStatus.Failure,
+                                new Action(delegate
+                                {
+                                    AdvancedLogP("Test Logging:");
+                                    AdvancedLogW("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
+                                    AdvancedLogW("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
+                                }
+                                    )))));
             }
         }
         #endregion

@@ -195,8 +195,8 @@ namespace FuryUnleashed.Core
         internal static bool CanInterrupt
         {
             get 
-            { 
-                return Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (
+            {
+                return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (
                 (TalentManager.CurrentSpec == WoWSpec.WarriorArms && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Arms.NumInterruptTimer) ||
                 (TalentManager.CurrentSpec == WoWSpec.WarriorFury && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Fury.NumInterruptTimer) ||
                 (TalentManager.CurrentSpec == WoWSpec.WarriorProtection && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Protection.NumInterruptTimer));
