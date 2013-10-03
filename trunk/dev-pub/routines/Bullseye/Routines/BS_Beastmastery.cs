@@ -43,7 +43,7 @@ namespace Bullseye.Routines
                                         BeastmasteryUtility(),
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive(),
-                                        new Decorator(ret => SG.Instance.Beastmastery.CheckAoE && (U.NearbyAttackableUnitsCount >= 2 || U.IsAoETarget), BeastmasteryMt()),
+                                        new Decorator(ret => SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount > 2, BeastmasteryMt()),
                                         BeastmasterySt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
