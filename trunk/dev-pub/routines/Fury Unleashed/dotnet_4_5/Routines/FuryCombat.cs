@@ -70,6 +70,7 @@ namespace FuryUnleashed.Routines
                                 Dev_FuryRacials(),
                                 Dev_FuryOffensive(),
                                 I.CreateItemBehaviour(),
+                                Dev_FuryRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
@@ -86,6 +87,7 @@ namespace FuryUnleashed.Routines
                                         Dev_FuryRacials(),
                                         Dev_FuryOffensive(),
                                         I.CreateItemBehaviour())),
+                                Dev_FuryRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
@@ -101,7 +103,8 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryRacials(),
                                         Dev_FuryOffensive(),
-                                        I.CreateItemBehaviour())), 
+                                        I.CreateItemBehaviour())),
+                                Dev_FuryRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
@@ -218,14 +221,19 @@ namespace FuryUnleashed.Routines
                         )));
         }
 
+        internal static Composite Dev_FuryRageDump()
+        {
+            return new PrioritySelector(
+                Spell.Cast(SB.HeroicStrike, ret => ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15)))
+                );
+        }
+
         internal static Composite Dev_FuryMt()
         {
             return new PrioritySelector(
-
-                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window.
-
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 5,
                     new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
@@ -238,6 +246,7 @@ namespace FuryUnleashed.Routines
                         )),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 4,
                     new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
@@ -252,6 +261,7 @@ namespace FuryUnleashed.Routines
                         )),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 3,
                     new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
@@ -266,6 +276,7 @@ namespace FuryUnleashed.Routines
                         )),
                 new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added

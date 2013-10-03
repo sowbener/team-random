@@ -290,12 +290,12 @@ namespace FuryUnleashed.Routines
 
         // Tierset Aura Detection
         // Somehow doesnt work with ID
-        internal static bool Tier15TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T15 DPS 2P Bonus"); } }               // Works - 138120
-        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }               // Does not work - Triggers SkullBannerAuraT15
-        internal static bool Tier15TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T15 Protection 2P Bonus"); } }        // Works - 138280
-        internal static bool Tier15FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T15 Protection 4P Bonus"); } }        // Works - 138281
+        internal static bool Tier15TwoPieceBonus    { get { return Me.HasCachedAura("Item - Warrior T15 DPS 2P Bonus", 0); } }              // Works - 138120
+        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }                       // Does not work - Triggers SkullBannerAuraT15
+        internal static bool Tier15TwoPieceBonusT   { get { return Me.HasCachedAura("Item - Warrior T15 Protection 2P Bonus", 0); } }       // Works - 138280
+        internal static bool Tier15FourPieceBonusT  { get { return Me.HasCachedAura("Item - Warrior T15 Protection 4P Bonus", 0); } }       // Works - 138281
 
-        internal static bool Tier16TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T16 DPS 2P Bonus"); } }               // Checked - Works - 144436 is one of the ID's.
+        internal static bool Tier16TwoPieceBonus    { get { return Me.HasCachedAura("Item - Warrior T16 DPS 2P Bonus", 0); } }      // Checked - Works - 144436 is one of the ID's.
         internal static bool Tier16FourPieceBonus   { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Unchecked
         internal static bool Tier16TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T16 Protection 2P Bonus"); } }        // Unchecked
         internal static bool Tier16FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked

@@ -70,6 +70,7 @@ namespace FuryUnleashed.Routines
                                 Dev_ArmsRacials(),
                                 Dev_ArmsOffensive(),
                                 I.CreateItemBehaviour(),
+                                Dev_ArmsRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ArmsGcdUtility(),
@@ -86,6 +87,7 @@ namespace FuryUnleashed.Routines
                                         Dev_ArmsRacials(),
                                         Dev_ArmsOffensive(),
                                         I.CreateItemBehaviour())),
+                                Dev_ArmsRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ArmsGcdUtility(),
@@ -102,6 +104,7 @@ namespace FuryUnleashed.Routines
                                         Dev_ArmsRacials(),
                                         Dev_ArmsOffensive(),
                                         I.CreateItemBehaviour())),
+                                Dev_ArmsRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ArmsGcdUtility(),
@@ -232,6 +235,13 @@ namespace FuryUnleashed.Routines
                 );
         }
 
+        internal static Composite Dev_ArmsRageDump()
+        {
+            return new PrioritySelector(
+                Spell.Cast(SB.HeroicStrike, ret => ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15)))
+                );
+        }
+
         internal static Composite Dev_ArmsMt()
         {
             return new PrioritySelector(
@@ -248,8 +258,13 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam, ret => G.SlamViable),
-                        Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),
+                        new Decorator(ret => SG.Instance.Arms.CheckExperimentalAoE,
+                            new PrioritySelector(
+                                Spell.Cast(SB.Slam, ret => G.SlamViable),
+                                Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable))),
+                        new Decorator(ret => !SG.Instance.Arms.CheckExperimentalAoE,
+                            new PrioritySelector(
+                                Spell.Cast(SB.Slam))),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NormalPhase,
                             Dev_ArmsSt()),
@@ -267,8 +282,13 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.SweepingStrikes),
                         Spell.Cast(SB.ColossusSmash), // Added.
                         Spell.Cast(SB.MortalStrike), // Added - Generate rage.
-                        Spell.Cast(SB.Slam, ret => G.SlamViable), 
-                        Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable),
+                        new Decorator(ret => SG.Instance.Arms.CheckExperimentalAoE,
+                            new PrioritySelector(
+                                Spell.Cast(SB.Slam, ret => G.SlamViable),
+                                Spell.Cast(SB.Whirlwind, ret => G.WhirlwindViable))),
+                        new Decorator(ret => !SG.Instance.Arms.CheckExperimentalAoE,
+                            new PrioritySelector(
+                                Spell.Cast(SB.Slam))),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => G.NormalPhase,
                             Dev_ArmsSt()),
