@@ -33,6 +33,7 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeBlood")),
                         new Decorator(ret => (DvHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),
+                        new Decorator(ret => DvHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null))),
                         new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
                         G.InitializeCaching(),
                         AutoGoreGrasp(),
@@ -68,7 +69,6 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
-                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && !NeedDeathStrike && HasCrimsonScourge && !Me.IsMoving),
                 Spell.Cast("Blood Boil", ret => (NeedEitherDis && EitherDisIsUp) || (!NeedDeathStrike && HasCrimsonScourge && DeathAndDecayCooldown) || (!NeedDeathStrike && HasCrimsonScourge && Me.IsMoving)),
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
                 Spell.Cast("Icy Touch", ret => NeedFrostFever),
@@ -91,7 +91,6 @@ namespace DeathVader.Routines
                 Spell.Cast("Plague Strike", ret => NeedBloodPlagueAoE && OutBreakOnCooldown),
                 Spell.Cast("Icy Touch", ret => NeedFrostFeverAoE && OutBreakOnCooldown),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
-                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null),
                 Spell.PreventDoubleCast("Blood Boil", 0.5, ret => ((Me.BloodRuneCount > 0 && OkToUseBloodRuneForDamage) || HasCrimsonScourge) && !NeedEitherDis),
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike));
         }
