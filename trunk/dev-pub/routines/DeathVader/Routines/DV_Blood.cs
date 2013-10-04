@@ -69,7 +69,7 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
-                Spell.Cast("Blood Boil", ret => (NeedEitherDis && EitherDisIsUp) || (!NeedDeathStrike && HasCrimsonScourge && DeathAndDecayCooldown) || (!NeedDeathStrike && HasCrimsonScourge && Me.IsMoving)),
+                Spell.Cast("Blood Boil", ret => (NeedEitherDis && EitherDisIsUp) || (!NeedDeathStrike && HasCrimsonScourge) || (!NeedDeathStrike && HasCrimsonScourge && Me.IsMoving)),
                 Spell.Cast("Plague Strike", ret => NeedBloodPlague),
                 Spell.Cast("Icy Touch", ret => NeedFrostFever),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
