@@ -804,28 +804,33 @@ namespace Pokehbuddyplug
                         }
                     }
                 }
-                if (dummy == "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")
-                {
-                    stm = "SELECT Logic FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
+                //if (dummy == "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")
+                //{
+                //    stm = "SELECT Logic FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
 
-                    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                    {
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                        {
-                            if (rdr.HasRows)
-                            {
-                                while (rdr.Read())
-                                {
-                                    string cel1 = rdr.GetString(0);
-                                    dummy = cel1;
-                                }
-                            }
-                        }
-                    }
+                //    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
+                //    {
+                //        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                //        {
+                //            if (rdr.HasRows)
+                //            {
+                //                while (rdr.Read())
+                //                {
+                //                    string cel1 = rdr.GetString(0);
+                //                    dummy = cel1;
+                //                }
+                //            }
+                //        }
+                //    }
 
-                }
+                //}
 
                 con.Close();
+            }
+            if (dummy == "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")
+            {
+                Librarian.Librarian lib = new Librarian.Librarian();
+                dummy= lib.GenerateLogic(GetEquippedOrDefaultSpellset(petID,speciesID));
             }
             return dummy;
         }
@@ -914,30 +919,30 @@ namespace Pokehbuddyplug
                         }
                     }
                     
-                    if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
-                    {
-                        stm = "SELECT Spellset FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
+                    //if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
+                    //{
+                    //    stm = "SELECT Spellset FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
 
-                        using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                        {
-                            using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                            {
-                                if (rdr.HasRows)
-                                {
-                                    while (rdr.Read())
-                                    {
-                                        string cel1 = rdr.GetString(0);
-                                        dummy = cel1;
-                                    }
-                                }
-                            }
-                        }
+                    //    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
+                    //    {
+                    //        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    //        {
+                    //            if (rdr.HasRows)
+                    //            {
+                    //                while (rdr.Read())
+                    //                {
+                    //                    string cel1 = rdr.GetString(0);
+                    //                    dummy = cel1;
+                    //                }
+                    //            }
+                    //        }
+                    //    }
                         
 
 
 
 
-                    }
+                    //}
 
                     con.Close();
                 }
@@ -945,6 +950,14 @@ namespace Pokehbuddyplug
             catch (Exception e)
             {
                 Logging.Write(e.ToString());
+            }
+            if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
+            {
+                List<string> cntskillz = Lua.GetReturnValues("for i=1,3 do local petID, ability1ID, ability2ID, ability3ID, locked = C_PetJournal.GetPetLoadOutInfo(i) if (tonumber(petID,16)==" +petID + ") then return ability1ID, ability2ID, ability3ID end end return 0,0,0");
+                string spelllayout = "ASSIGNABILITY1(" + cntskillz[0] + ")@" +
+                                     "ASSIGNABILITY2(" + cntskillz[1] + ")@" +
+                                     "ASSIGNABILITY3(" + cntskillz[2] + ")";
+                dummy = spelllayout;
             }
             
             return dummy;

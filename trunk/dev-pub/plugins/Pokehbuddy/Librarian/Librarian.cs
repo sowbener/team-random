@@ -99,10 +99,12 @@ namespace Pokehbuddyplug.Librarian
             if (!cel1.Contains(PetID)) final = cel1 + tussenstring + PetID;
             string qqq = @"UPDATE SkillLibrary 
             SET Pets = '" + final + @"' 
+            
             Where SkillID = '" + SkillID + "'";
             doNonQuery(qqq);
 
-
+            qqq = @"UPDATE SkillLibrary SET Prio = 0 WHERE Prio IS NULL";
+            doNonQuery(qqq);
 
 
         }
@@ -205,9 +207,41 @@ namespace Pokehbuddyplug.Librarian
 
             return "Error";
         }
+        public int GetSpellPrio(string SkillID)
+        {
+
+            string aqq = "SELECT Prio FROM SkillLibrary WHERE SkillID = '" + SkillID + "'";
+
+            string acs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
+
+            using (SQLiteConnection con = new SQLiteConnection(acs))
+            {
+                con.Open();
+
+
+
+                using (SQLiteCommand cmd = new SQLiteCommand(aqq, con))
+                {
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            return rdr.GetInt32(0);
+
+                        }
+                    }
+                }
+
+                con.Close();
+            }
+
+            return 0;
+        }
         private void button3_Click(object sender, EventArgs e)
         {
-            string qq = "SELECT SkillID FROM SkillLibrary WHERE 1 ORDER BY SkillID;";
+            listBox1.Items.Clear();
+            if (comboBox2.Text=="") comboBox2.Text="ORDER BY SkillID";
+            string qq = "SELECT SkillID FROM SkillLibrary WHERE 1 "+comboBox2.Text+";";
 
             string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
 
@@ -261,7 +295,35 @@ namespace Pokehbuddyplug.Librarian
                 }
 
                 con.Close();
-            } 
+            }
+            aqq = "SELECT Cooldown FROM SkillLibrary WHERE SkillID = '" + listBox1.SelectedItem.ToString() + "'";
+
+            acs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
+
+            using (SQLiteConnection con = new SQLiteConnection(acs))
+            {
+                con.Open();
+
+
+
+                using (SQLiteCommand cmd = new SQLiteCommand(aqq, con))
+                {
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            label5.Text = "Cooldown : " + rdr.GetInt32(0).ToString() + " turns"; ;
+
+                        }
+                    }
+                }
+
+                con.Close();
+            }
+            
+            numericUpDown1.Value = GetSpellPrio(listBox1.SelectedItem.ToString());
+
+   
             
             string qq = "SELECT Pets FROM SkillLibrary WHERE SkillID = '" + listBox1.SelectedItem.ToString() + "'";
 
@@ -328,22 +390,75 @@ namespace Pokehbuddyplug.Librarian
                 }
             }
             if (gotskills[0] == "0") return "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false";
+            int[] priolist = {0,0,0};
+            priolist[0] = GetSpellPrio(gotskills[0]);
+            priolist[1] = GetSpellPrio(gotskills[1]);
+            priolist[2] = GetSpellPrio(gotskills[2]);
 
             
-            string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 30";
-            dummy = dummy + "@" + SearchLib(gotskills[2]).Replace("**sn**", "3");
-            dummy = dummy + "@" + SearchLib(gotskills[1]).Replace("**sn**", "2");
-            dummy = dummy + "@" + SearchLib(gotskills[0]).Replace("**sn**", "1");
+            string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 25";
+            dummy = dummy + "@" + GenFromLib(gotskills, priolist).Replace(gotskills[2], "3").Replace(gotskills[1], "2").Replace(gotskills[0], "1");
+            dummy = dummy + "@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false@CASTSPELL(2) COOLDOWN(SKILL(2)) EQUALS false@CASTSPELL(3) COOLDOWN(SKILL(3)) EQUALS false";
             return dummy;
             
+        }
+        private string GenFromLib(string[] skills, int[] prio)
+        {
+            string blabla = "";
+            int i = 0;
+            foreach (string s in skills)
+            {
+                i++;
+                blabla = blabla + "SkillID = '" + s+"' ";
+                if (i < 3)
+                {
+                    blabla = blabla + "OR ";
+                }
+
+            }
+            string qq = "SELECT Logic, SkillID FROM SkillLibrary WHERE "+blabla+"ORDER BY Prio DESC";
+            string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
+            string petlist = "";
+            i = 0;
+            using (SQLiteConnection con = new SQLiteConnection(cs))
+            {
+                con.Open();
+
+
+
+                using (SQLiteCommand cmd = new SQLiteCommand(qq, con))
+                {
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            i++;
+                            string oldpetlist = petlist;
+                            petlist = petlist + rdr.GetString(0).Replace("**sn**", rdr.GetString(1));
+                            if (i < 3 && oldpetlist !=petlist) petlist = petlist + "@";
+
+                        }
+                    }
+                }
+
+                con.Close();
+            }
+            return petlist;
+
+
+
+
+            return "error";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int debuffnum = int.Parse(listBox1.SelectedItem.ToString())-1;
             textBox1.Text = textBox1.Text.TrimStart().TrimEnd().Replace("CASTSPELL(1)", "CASTSPELL(**sn**)").Replace("CASTSPELL(2)", "CASTSPELL(**sn**)").Replace("CASTSPELL(3)", "CASTSPELL(**sn**)")
                 .Replace("COOLDOWN(SKILL(1))", "COOLDOWN(SKILL(**sn**))")
                 .Replace("COOLDOWN(SKILL(2))", "COOLDOWN(SKILL(**sn**))")
-                .Replace("COOLDOWN(SKILL(3))", "COOLDOWN(SKILL(**sn**))");
+                .Replace("COOLDOWN(SKILL(3))", "COOLDOWN(SKILL(**sn**))")
+                .Replace("debuffnum", debuffnum.ToString());
             
             //textBox1.Text = textBox1.Text.Replace("CASTSPELL(1)", "CASTSPELL(**sn**)").Replace("CASTSPELL(2)", "CASTSPELL(**sn**)").Replace("CASTSPELL(3)", "CASTSPELL(**sn**)");
                 /*.Replace("MyPetLevel ISLESSTHAN 10", "MyPetLevel ISLESSTHAN **ln**")
@@ -355,10 +470,56 @@ namespace Pokehbuddyplug.Librarian
 
             
             string qqq = @"UPDATE SkillLibrary 
-            SET Logic = '" + textBox1.Text + @"' 
+            SET Logic = '" + textBox1.Text + @"', 
+            Prio = " + numericUpDown1.Value.ToString() + @" 
             Where SkillID = '" + listBox1.SelectedItem + "'";
             doNonQuery(qqq);
 
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            numericUpDown1.Value = comboBox1.SelectedIndex * 100;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //id, name, icon, maxCooldown, unparsedDescription, numTurns, petType, noStrongWeakHints = C_PetBattles.GetAbilityInfoByID(abilityID)
+            string qq = "SELECT SkillID FROM SkillLibrary WHERE 1";
+            string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
+            List<string> todo = new List<string>();
+            using (SQLiteConnection con = new SQLiteConnection(cs))
+            {
+                con.Open();
+
+
+
+                using (SQLiteCommand cmd = new SQLiteCommand(qq, con))
+                {
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            string dummy=rdr.GetString(0);
+                            string luastring = "id, name, icon, maxCooldown, unparsedDescription, numTurns, petType, noStrongWeakHints = C_PetBattles.GetAbilityInfoByID(" + dummy + ") return maxCooldown";
+                            List<string> cnt = Lua.GetReturnValues(luastring);
+                            string qqq = "UPDATE SkillLibrary SET Cooldown= '"+cnt[0]+"' WHERE SkillID='"+dummy+"';";
+                            todo.Add(qqq);
+                            
+                             
+                             
+                            
+
+                        }
+                    }
+                }
+
+                con.Close();
+            }
+            foreach (string s in todo)
+            {
+                doNonQuery(s);
+            }
         }
         
 

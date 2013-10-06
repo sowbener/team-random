@@ -1382,7 +1382,7 @@ namespace Pokehbuddyplug
             SET isDefault = 1 Where ID = " + listView1.SelectedItems[0].Text + "";
                 doNonQuery(q);
                 q = @"UPDATE Logics 
-            SET isDefault = 0 Where ID <> " + listView1.SelectedItems[0].Text + "";
+            SET isDefault = 0 Where SpeciesID = '"+label79.Text+"' AND ID <> " + listView1.SelectedItems[0].Text + "";
                 doNonQuery(q);
                 RefreshManager();
                 /*ListViewItem itm = ;
@@ -1749,6 +1749,8 @@ namespace Pokehbuddyplug
             button53.Enabled = true;
             button38.Enabled = true;
             button56.Enabled = true;
+            button36.Enabled = true;
+            button37.Enabled = true;
 
            
 
@@ -1771,7 +1773,8 @@ namespace Pokehbuddyplug
             button38.Enabled = false;
             button53.Enabled = false;
             button56.Enabled = false;
-
+            button36.Enabled = false;
+            button37.Enabled = false;
 
 
 
@@ -2042,12 +2045,64 @@ namespace Pokehbuddyplug
 
         private void button36_Click(object sender, System.EventArgs e)
         {
+            string exportstring = "[code]";
+            exportstring = exportstring + "[Logic]" + textBox8.Text + @"[/Logic]" + Environment.NewLine;
+            exportstring = exportstring + "[Spells]" + textBox9.Text + @"[/Spells]" + Environment.NewLine;
+            exportstring = exportstring + "[Author]" + label84.Text + @"[/Author]" + Environment.NewLine;
+            exportstring = exportstring + "[Notes]" + textBox10.Text + @"[/Notes]" + Environment.NewLine;
+            exportstring = exportstring + "[LogicType]" + textBox11.Text + @"[/LogicType]";
+            exportstring = exportstring + "[/code]";
+            DialogResult bla = InputBox("Export", "Copy & Paste this to the forum :", ref exportstring);
 
         }
 
         private void button37_Click(object sender, System.EventArgs e)
         {
+            string value = "";
+            if (InputBox("Import from Forum", "Paste here :", ref value) == DialogResult.OK)
+            {
+                if (value.IndexOf("[Logic]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[Logic]") + 8;
+                    int SecondChr = value.IndexOf("[/Logic]", FirstChr);
+                    textBox8.Text = value.Substring(FirstChr, SecondChr - FirstChr);
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
+                    
+                }
+                if (value.IndexOf("[Spells]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[Spells]") + 8;
+                    int SecondChr = value.IndexOf("[/Spells]", FirstChr);
+                    textBox9.Text = value.Substring(FirstChr, SecondChr - FirstChr);
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
 
+                }
+                if (value.IndexOf("[Author]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[Author]") + 8;
+                    int SecondChr = value.IndexOf("[/Author]", FirstChr);
+                    label84.Text = value.Substring(FirstChr, SecondChr - FirstChr);
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
+
+                }
+                if (value.IndexOf("[Notes]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[Notes]") + 8;
+                    int SecondChr = value.IndexOf("[/Notes]", FirstChr);
+                    textBox10.Text = value.Substring(FirstChr, SecondChr - FirstChr);
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
+
+                }
+                if (value.IndexOf("[LogicType]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[LogicType]") + 8;
+                    int SecondChr = value.IndexOf("[/LogicType]", FirstChr);
+                    textBox11.Text = value.Substring(FirstChr, SecondChr - FirstChr);
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
+
+                }
+
+            }
         }
 
         private void checkBox8_CheckedChanged(object sender, System.EventArgs e)
@@ -2413,8 +2468,14 @@ namespace Pokehbuddyplug
 
         private void button53_Click(object sender, System.EventArgs e)
         {
+            if (textBox9.Text.Contains("(0)"))
+            {
+                MessageBox.Show("Please select skills first");
+                return;
+            }
+
             Librarian.Librarian lib = new Librarian.Librarian();
-            textBox8.Text = lib.GenerateLogic(textBox9.Text);
+            textBox8.Text = lib.GenerateLogic(textBox9.Text).Replace("@@", "@").Replace("@@", "@");
             textBox10.Text = "Auto generated";
             
 
@@ -2425,6 +2486,20 @@ namespace Pokehbuddyplug
 
 
 
+        }
+
+        private void button61_Click(object sender, System.EventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                string q = @"UPDATE Logics 
+            SET isDefault = 0 Where SpeciesID = '" + label79.Text + "'";
+                doNonQuery(q);
+                RefreshManager();
+                /*ListViewItem itm = ;
+                textBox1.Text = itm.SubItems[0].Text;
+                textBox2.Text = itm.SubItems[1].Text;*/
+            }
         }
         
 

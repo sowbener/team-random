@@ -30,10 +30,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Unknown");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Simple leveling");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Boost leveling");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test3");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Unknown");
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Simple leveling");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Boost leveling");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("test3");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button59 = new System.Windows.Forms.Button();
@@ -84,8 +84,7 @@
             this.trackBar5 = new System.Windows.Forms.TrackBar();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.label89 = new System.Windows.Forms.Label();
-            this.button53 = new System.Windows.Forms.Button();
+            this.button61 = new System.Windows.Forms.Button();
             this.button51 = new System.Windows.Forms.Button();
             this.button49 = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
@@ -156,6 +155,8 @@
             this.label74 = new System.Windows.Forms.Label();
             this.label75 = new System.Windows.Forms.Label();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
+            this.button53 = new System.Windows.Forms.Button();
+            this.label89 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label86 = new System.Windows.Forms.Label();
@@ -460,6 +461,7 @@
             // checkBox13
             // 
             this.checkBox13.AutoSize = true;
+            this.checkBox13.Enabled = false;
             this.checkBox13.Location = new System.Drawing.Point(753, 297);
             this.checkBox13.Name = "checkBox13";
             this.checkBox13.Size = new System.Drawing.Size(118, 17);
@@ -1124,8 +1126,7 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage4.Controls.Add(this.label89);
-            this.tabPage4.Controls.Add(this.button53);
+            this.tabPage4.Controls.Add(this.button61);
             this.tabPage4.Controls.Add(this.button51);
             this.tabPage4.Controls.Add(this.button49);
             this.tabPage4.Controls.Add(this.groupBox16);
@@ -1167,6 +1168,8 @@
             this.tabPage4.Controls.Add(this.label74);
             this.tabPage4.Controls.Add(this.label75);
             this.tabPage4.Controls.Add(this.pictureBox10);
+            this.tabPage4.Controls.Add(this.button53);
+            this.tabPage4.Controls.Add(this.label89);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -1175,27 +1178,16 @@
             this.tabPage4.Text = "Logic Manager";
             this.tabPage4.Click += new System.EventHandler(this.tabPage4_Click);
             // 
-            // label89
+            // button61
             // 
-            this.label89.AutoSize = true;
-            this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label89.Location = new System.Drawing.Point(475, 343);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(216, 20);
-            this.label89.TabIndex = 68;
-            this.label89.Text = "Please set a default logic!";
-            this.label89.Visible = false;
-            // 
-            // button53
-            // 
-            this.button53.Enabled = false;
-            this.button53.Location = new System.Drawing.Point(380, 340);
-            this.button53.Name = "button53";
-            this.button53.Size = new System.Drawing.Size(64, 20);
-            this.button53.TabIndex = 67;
-            this.button53.Text = "Generate";
-            this.button53.UseVisualStyleBackColor = true;
-            this.button53.Click += new System.EventHandler(this.button53_Click);
+            this.button61.Enabled = false;
+            this.button61.Location = new System.Drawing.Point(605, 307);
+            this.button61.Name = "button61";
+            this.button61.Size = new System.Drawing.Size(122, 43);
+            this.button61.TabIndex = 69;
+            this.button61.Text = "Clear default\r\n";
+            this.button61.UseVisualStyleBackColor = true;
+            this.button61.Click += new System.EventHandler(this.button61_Click);
             // 
             // button51
             // 
@@ -1224,9 +1216,9 @@
             this.groupBox16.Controls.Add(this.button58);
             this.groupBox16.Controls.Add(this.button57);
             this.groupBox16.Controls.Add(this.listView2);
-            this.groupBox16.Location = new System.Drawing.Point(268, 481);
+            this.groupBox16.Location = new System.Drawing.Point(849, 392);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(389, 231);
+            this.groupBox16.Size = new System.Drawing.Size(696, 231);
             this.groupBox16.TabIndex = 64;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Logic Type";
@@ -1255,17 +1247,17 @@
             // listView2
             // 
             this.listView2.CheckBoxes = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.Checked = true;
-            listViewItem2.StateImageIndex = 1;
-            listViewItem3.StateImageIndex = 0;
-            listViewItem4.Checked = true;
-            listViewItem4.StateImageIndex = 1;
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.Checked = true;
+            listViewItem6.StateImageIndex = 1;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.Checked = true;
+            listViewItem8.StateImageIndex = 1;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4});
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8});
             this.listView2.Location = new System.Drawing.Point(6, 19);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(308, 197);
@@ -1330,9 +1322,9 @@
             this.groupBox10.Controls.Add(this.groupBox13);
             this.groupBox10.Controls.Add(this.groupBox14);
             this.groupBox10.Controls.Add(this.groupBox12);
-            this.groupBox10.Location = new System.Drawing.Point(18, 515);
+            this.groupBox10.Location = new System.Drawing.Point(17, 520);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(402, 238);
+            this.groupBox10.Size = new System.Drawing.Size(683, 240);
             this.groupBox10.TabIndex = 56;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Abilities";
@@ -1668,11 +1660,11 @@
             // button37
             // 
             this.button37.Enabled = false;
-            this.button37.Location = new System.Drawing.Point(824, 239);
+            this.button37.Location = new System.Drawing.Point(789, 283);
             this.button37.Name = "button37";
-            this.button37.Size = new System.Drawing.Size(47, 42);
+            this.button37.Size = new System.Drawing.Size(82, 42);
             this.button37.TabIndex = 39;
-            this.button37.Text = "Download";
+            this.button37.Text = "Import from Forum";
             this.button37.UseVisualStyleBackColor = true;
             this.button37.Visible = false;
             this.button37.Click += new System.EventHandler(this.button37_Click);
@@ -1680,11 +1672,11 @@
             // button36
             // 
             this.button36.Enabled = false;
-            this.button36.Location = new System.Drawing.Point(769, 239);
+            this.button36.Location = new System.Drawing.Point(789, 235);
             this.button36.Name = "button36";
-            this.button36.Size = new System.Drawing.Size(55, 42);
+            this.button36.Size = new System.Drawing.Size(82, 42);
             this.button36.TabIndex = 38;
-            this.button36.Text = "Share";
+            this.button36.Text = "Share to Forum";
             this.button36.UseVisualStyleBackColor = true;
             this.button36.Visible = false;
             this.button36.Click += new System.EventHandler(this.button36_Click);
@@ -1723,7 +1715,7 @@
             // button32
             // 
             this.button32.Enabled = false;
-            this.button32.Location = new System.Drawing.Point(479, 297);
+            this.button32.Location = new System.Drawing.Point(477, 307);
             this.button32.Name = "button32";
             this.button32.Size = new System.Drawing.Size(122, 43);
             this.button32.TabIndex = 34;
@@ -1883,6 +1875,29 @@
             this.pictureBox10.Size = new System.Drawing.Size(56, 56);
             this.pictureBox10.TabIndex = 22;
             this.pictureBox10.TabStop = false;
+            // 
+            // button53
+            // 
+            this.button53.Enabled = false;
+            this.button53.Location = new System.Drawing.Point(380, 340);
+            this.button53.Name = "button53";
+            this.button53.Size = new System.Drawing.Size(64, 20);
+            this.button53.TabIndex = 67;
+            this.button53.Text = "Generate";
+            this.toolTip1.SetToolTip(this.button53, "Very basic logic, edit to refine!!");
+            this.button53.UseVisualStyleBackColor = true;
+            this.button53.Click += new System.EventHandler(this.button53_Click);
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label89.Location = new System.Drawing.Point(473, 353);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(273, 40);
+            this.label89.TabIndex = 68;
+            this.label89.Text = "Please set a default logic!\r\n(Or not, and use auto generated)";
+            this.label89.Visible = false;
             // 
             // tabPage2
             // 
@@ -4021,6 +4036,7 @@
         private System.Windows.Forms.Button button53;
         private System.Windows.Forms.Label label89;
         private System.Windows.Forms.Button button60;
+        private System.Windows.Forms.Button button61;
 
     }
 
