@@ -70,7 +70,7 @@ namespace FuryUnleashed.Routines
                                 Dev_FuryRacials(),
                                 Dev_FuryOffensive(),
                                 I.CreateItemBehaviour(),
-                                Dev_FuryRageDump(),
+                                Dev_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
@@ -87,7 +87,7 @@ namespace FuryUnleashed.Routines
                                         Dev_FuryRacials(),
                                         Dev_FuryOffensive(),
                                         I.CreateItemBehaviour())),
-                                Dev_FuryRageDump(),
+                                Dev_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
@@ -104,7 +104,7 @@ namespace FuryUnleashed.Routines
                                         Dev_FuryRacials(),
                                         Dev_FuryOffensive(),
                                         I.CreateItemBehaviour())),
-                                Dev_FuryRageDump(),
+                                Dev_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
@@ -165,7 +165,7 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30), // Also in Dev_FuryHeroicStrike().
 
                         Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4.
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Inside CS window.
@@ -182,7 +182,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
-                        Spell.Cast(SB.HeroicStrike, ret => G.CSCD >= 3000 && ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 5))),
+                        Spell.Cast(SB.HeroicStrike, ret => G.CSCD >= 3000 && ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 5))), // Also in Dev_FuryHeroicStrike().
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow2S && G.CSCD >= 3000),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura),
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow1S && G.CSCD >= 3000),
@@ -192,7 +192,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage),
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
                         Spell.Cast(SB.WildStrike, ret => !G.BloodsurgeAura && G.CSCD >= 3000 && Me.CurrentRage >= 90),
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage), // Also in Dev_FuryHeroicStrike().
                         Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && SG.Instance.Fury.CheckRotImpVic), // Added for the sake of supporting it rotational.
                         Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Fury.CheckHeroicThrow) // Added for the sake of supporting it rotational.
                         )));
@@ -221,11 +221,16 @@ namespace FuryUnleashed.Routines
                         )));
         }
 
-        internal static Composite Dev_FuryRageDump()
+        internal static Composite Dev_FuryHeroicStrike()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.HeroicStrike, ret => ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15)))
-                );
+                new Decorator(ret => G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30))),
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.HeroicStrike, ret => G.CSCD >= 3000 && ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 5))))),
+                Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage));
         }
 
         internal static Composite Dev_FuryMt()
