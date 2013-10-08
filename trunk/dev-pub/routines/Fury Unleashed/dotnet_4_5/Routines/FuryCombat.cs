@@ -123,44 +123,106 @@ namespace FuryUnleashed.Routines
                     new Switch<Enum.Mode>(ctx => SH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, FuryDefensive()),
-                                FuryUtility(),
-                                FuryVictorious(),
+                                new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
+                                Rel_FuryNonGcdUtility(),
+                                Rel_FuryRacials(),
+                                Rel_FuryOffensive(),
                                 I.CreateItemBehaviour(),
-                                FuryRacials(),
-                                FuryOffensive(),
-                                new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, FuryMt()),
-                                FurySt())),
+                                Rel_FuryHeroicStrike(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Rel_FuryGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Rel_FuryMt()),
+                                        new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Rel_FurySt())
+                                        )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, FuryDefensive()),
-                                FuryUtility(),
-                                FuryVictorious(),
+                                new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
+                                Rel_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
-                                        FuryRacials(),
-                                        FuryOffensive())),
-                                new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, FuryMt()),
-                                FurySt())),
+                                        Rel_FuryRacials(),
+                                        Rel_FuryOffensive(),
+                                        I.CreateItemBehaviour())),
+                                Rel_FuryHeroicStrike(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Rel_FuryGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Rel_FuryMt()),
+                                        new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Rel_FurySt())
+                                        )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, FuryDefensive()),
-                                FuryUtility(),
-                                FuryVictorious(),
+                                new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
+                                Rel_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        I.CreateItemBehaviour(),
-                                        FuryRacials(),
-                                        FuryOffensive())),
-                                new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, FuryMt()),
-                                FurySt()))));
+                                        Rel_FuryRacials(),
+                                        Rel_FuryOffensive(),
+                                        I.CreateItemBehaviour())),
+                                Rel_FuryHeroicStrike(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Rel_FuryGcdUtility(),
+                                        new Decorator(ret => SG.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Rel_FuryMt()),
+                                        new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Rel_FurySt())
+                                        ))))));
             }
         }
         #endregion
 
         #region Development Rotations
         internal static Composite Dev_FurySt()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryExec()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryHeroicStrike()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryMt()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryOffensive()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryGcdUtility()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryRacials()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryDefensive()
+        {
+            return new PrioritySelector();
+        }
+
+        internal static Composite Dev_FuryNonGcdUtility()
+        {
+            return new PrioritySelector();
+        }
+        #endregion
+
+        #region Release Rotations
+        internal static Composite Rel_FurySt()
         {
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
@@ -198,7 +260,7 @@ namespace FuryUnleashed.Routines
                         )));
         }
 
-        internal static Composite Dev_FuryExec()
+        internal static Composite Rel_FuryExec()
         {
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
@@ -221,7 +283,7 @@ namespace FuryUnleashed.Routines
                         )));
         }
 
-        internal static Composite Dev_FuryHeroicStrike()
+        internal static Composite Rel_FuryHeroicStrike()
         {
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
@@ -233,7 +295,7 @@ namespace FuryUnleashed.Routines
                 Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage));
         }
 
-        internal static Composite Dev_FuryMt()
+        internal static Composite Rel_FuryMt()
         {
             return new PrioritySelector(
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 5,
@@ -245,7 +307,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SB.Bloodthirst), 
+                        Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.Whirlwind),
                         Spell.Cast(SB.RagingBlow, ret => Me.CurrentRage <= 60 && G.MeatCleaverAuraS3)
                         )),
@@ -299,7 +361,7 @@ namespace FuryUnleashed.Routines
                         )));
         }
 
-        internal static Composite Dev_FuryOffensive()
+        internal static Composite Rel_FuryOffensive()
         {
             return new PrioritySelector(
                 Spell.Cast(SB.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(500)) && G.BTOC && G.ColossusSmashAura && BerserkerRageUsage),
@@ -310,7 +372,7 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_FuryGcdUtility()
+        internal static Composite Rel_FuryGcdUtility()
         {
             return new PrioritySelector(
                 Spell.Cast(SB.ImpendingVictory, ret => !G.IVOC && G.IvTalent && SG.Instance.Fury.CheckImpVic && Me.HealthPercent <= SG.Instance.Fury.CheckImpVicNum),
@@ -320,7 +382,7 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_FuryRacials()
+        internal static Composite Rel_FuryRacials()
         {
             return new PrioritySelector(
                 new Decorator(ret => RacialUsage,
@@ -328,7 +390,7 @@ namespace FuryUnleashed.Routines
                     ));
         }
 
-        internal static Composite Dev_FuryDefensive()
+        internal static Composite Rel_FuryDefensive()
         {
             return new PrioritySelector(
                 Spell.Cast(SB.DiebytheSword, ret => SG.Instance.Fury.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Fury.CheckDiebytheSwordNum),
@@ -339,7 +401,7 @@ namespace FuryUnleashed.Routines
                 );
         }
 
-        internal static Composite Dev_FuryNonGcdUtility()
+        internal static Composite Rel_FuryNonGcdUtility()
         {
             return new PrioritySelector(
                 Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Fury.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
@@ -348,151 +410,6 @@ namespace FuryUnleashed.Routines
                 Spell.Cast(SB.PiercingHowl, ret => G.PhTalent && SG.Instance.Fury.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum),
                 Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
                 Spell.Cast(SB.StaggeringShout, ret => G.SsTalent && SG.Instance.Fury.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum)
-                );
-        }
-        #endregion
-
-        #region Release Rotations
-        internal static Composite FurySt()
-        {
-            return new PrioritySelector(
-                // SimulationCraft 530-6 (r16981) - 1H/2H Fury - Slightly Optimized.
-                Spell.Cast("Execute", ret => G.DeathSentenceAuraT16),
-                new Decorator(ret => G.AlmostDead,
-                        new PrioritySelector(
-                                Spell.Cast("Colossus Smash", ret => G.ColossusSmashAura),
-                                Spell.Cast("Execute"),
-                                Spell.Cast("Heroic Strike", ret => G.DumpAllRage && Me.CurrentRage > 60)
-                                )),
-                Spell.Cast("Heroic Strike", ret => Me.CurrentRage >= 110 || (G.NormalPhase && G.ColossusSmashAura && Me.CurrentRage >= 40)),
-                Spell.Cast("Raging Blow", ret => G.RagingBlow2S && G.ColossusSmashAura && G.NormalPhase),
-                Spell.Cast("Bloodthirst"),
-                Spell.Cast("Wild Strike", ret => G.BloodsurgeAura && G.NormalPhase && G.BTCD <= 1000),
-                Spell.Cast("Dragon Roar", ret => G.DrTalent && (G.BloodbathAura || G.AvTalent || G.SbTalent) && !G.ColossusSmashAura && Tier4AbilityUsage),
-                Spell.Cast("Colossus Smash"),
-                Spell.Cast("Execute", ret => G.ExecutePhase || G.DeathSentenceAuraT16),
-                Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage),
-                Spell.Cast("Raging Blow", ret => G.RagingBlow2S || (G.RagingBlowAura && (G.ColossusSmashAura || (G.BTCD >= 1000 && G.FadingRb(3000))))),
-                Spell.Cast("Wild Strike", ret => G.BloodsurgeAura),
-                Spell.Cast("Raging Blow", ret => G.RagingBlowAura && G.CSCD >= 3000),
-                Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
-                Spell.Cast("Heroic Throw", ret => SG.Instance.Fury.CheckHeroicThrow && !G.ColossusSmashAura),
-                new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage < 70 && !G.ColossusSmashAura)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage < 70 && !G.ColossusSmashAura))),
-                Spell.Cast("Wild Strike", ret => !G.WieldsTwoHandedWeapons && G.ColossusSmashAura && G.NormalPhase),
-                Spell.Cast("Whirlwind", ret => G.WieldsTwoHandedWeapons && G.ColossusSmashAura && G.NormalPhase),
-                Spell.Cast("Impending Victory", ret => !G.IVOC && G.IvTalent && G.NormalPhase && ((SG.Instance.Fury.CheckRotImpVic) || (SG.Instance.Fury.CheckImpVic && Me.HealthPercent <= SG.Instance.Fury.CheckImpVicNum))),
-                Spell.Cast("Wild Strike", ret => !G.WieldsTwoHandedWeapons && G.CSCD >= 2000 && Me.CurrentRage >= 80 && G.NormalPhase),
-                Spell.Cast("Whirlwind", ret => G.WieldsTwoHandedWeapons && G.CSCD >= 2000 && Me.CurrentRage >= 80 && G.NormalPhase),
-                new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage < 70)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage < 70)))
-                );
-        }
-
-        internal static Composite FuryMt()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Execute", ret => G.DeathSentenceAuraT16),
-                new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
-                    new PrioritySelector(
-                        Spell.Cast("Cleave", ret => Me.CurrentRage >= 110),
-                        Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && (G.BloodbathAura || G.AvTalent || G.SbTalent) && Tier4AbilityAoEUsage),
-                        Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                        Spell.Cast("Bladestorm", ret => G.BsTalent && Tier4AbilityAoEUsage),
-                        Spell.Cast("Execute", ret => G.ColossusSmashAura),
-                        Spell.Cast("Bloodthirst"),
-                        Spell.Cast("Colossus Smash"),
-                        Spell.Cast("Raging Blow", ret => G.MeatCleaverAuraS1),
-                        Spell.Cast("Whirlwind", ret => !G.MeatCleaverAuraS1),
-                        Spell.Cast("Raging Blow", ret => G.RagingBlow2S || (G.RagingBlowAura && (G.ColossusSmashAura || G.CSCD >= 3000 || G.FadingRb(3000)))),
-                        Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage),
-                        new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage < 70)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage < 70))),
-                        Spell.Cast("Heroic Throw", ret => SG.Instance.Fury.CheckHeroicThrow))),
-                new Decorator(ret => U.NearbyAttackableUnitsCount == 3,
-                    new PrioritySelector(
-                        Spell.Cast("Cleave", ret => Me.CurrentRage >= 110),
-                        Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && (G.BloodbathAura || G.AvTalent || G.SbTalent) && Tier4AbilityAoEUsage),
-                        Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                        Spell.Cast("Bladestorm", ret => G.BsTalent && G.EnrageAura && Tier4AbilityAoEUsage),
-                        Spell.Cast("Raging Blow", ret => G.FadingRb(2000) || G.MeatCleaverAuraS2),
-                        Spell.Cast("Bloodthirst"),
-                        Spell.Cast("Whirlwind"),
-                        Spell.Cast("Colossus Smash"),
-                        Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage),
-                        Spell.Cast("Raging Blow", ret => G.RagingBlow2S || (G.RagingBlowAura && (G.ColossusSmashAura || G.CSCD >= 3000 || G.FadingRb(3000)))),
-                        new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage < 70)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage < 70))),
-                        Spell.Cast("Heroic Throw", ret => SG.Instance.Fury.CheckHeroicThrow))),
-                new Decorator(ret => U.NearbyAttackableUnitsCount >= 4,
-                    new PrioritySelector(
-                        Spell.Cast("Cleave", ret => Me.CurrentRage >= 110),
-                        Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura && (G.BloodbathAura || G.AvTalent || G.SbTalent) && Tier4AbilityAoEUsage),
-                        Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                        Spell.Cast("Bladestorm", ret => G.BsTalent && G.EnrageAura && Tier4AbilityAoEUsage),
-                        Spell.Cast("Bloodthirst", ret => !G.EnrageAura),
-                        Spell.Cast("Colossus Smash"),
-                        Spell.Cast("Raging Blow", ret => G.MeatCleaverAuraS3),
-                        Spell.Cast("Whirlwind"),
-                        Spell.Cast("Storm Bolt", ret => G.SbTalent && Tier6AbilityUsage),
-                        new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage < 70)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage < 70))),
-                        Spell.Cast("Bloodthirst"))));
-        }
-
-        internal static Composite FuryVictorious()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Impending Victory", ret => !G.IVOC && G.IvTalent && SG.Instance.Fury.CheckImpVic && Me.HealthPercent <= SG.Instance.Fury.CheckImpVicNum),
-                Spell.Cast("Victory Rush", ret => !G.VROC && !G.IvTalent && G.VictoriousAura && SG.Instance.Fury.CheckVicRush && Me.HealthPercent <= SG.Instance.Fury.CheckVicRushNum)
-                );
-        }
-
-        internal static Composite FuryOffensive()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Bloodbath", ret => G.BbTalent && (G.CSCD < 2000 || G.ColossusSmashAuraT) && Tier6AbilityUsage),
-                Spell.Cast("Recklessness", ret => (G.ColossusSmashAuraT || G.CSCD <= 4000) && ((G.SbTalent) || (G.AvTalent && (G.AvatarAura || G.AVCD <= 3000)) || (G.BbTalent && (G.BloodbathAura || G.BBCD <= 3000))) && RecklessnessUsage),
-                Spell.Cast("Avatar", ret => G.AvTalent && (G.RecklessnessAura || G.RCCD >= 180000) && Tier6AbilityUsage),
-                Spell.Cast("Skull Banner", ret => (!G.SkullBannerAura && (G.RCCD >= 180000 || G.RecklessnessAura)) && SkullBannerUsage),
-                Spell.Cast("Berserker Rage", ret => (!G.EnrageAura || (G.RagingBlow2S && G.NormalPhase) || (G.RecklessnessAuraT && !G.RagingBlowAura)) && BerserkerRageUsage));
-        }
-
-        internal static Composite FuryRacials()
-        {
-            return new PrioritySelector(
-                new Decorator(ret => RacialUsage,
-                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
-                    ));
-        }
-
-        internal static Composite FuryDefensive()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Die by the Sword", ret => SG.Instance.Fury.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Fury.CheckDiebytheSwordNum),
-                Spell.Cast("Enraged Regeneration", ret => G.ErTalent && SG.Instance.Fury.CheckEnragedRegen && Me.HealthPercent <= SG.Instance.Fury.CheckEnragedRegenNum),
-                Spell.Cast("Shield Wall", ret => SG.Instance.Fury.CheckShieldWall && Me.HealthPercent <= SG.Instance.Fury.CheckShieldWallNum),
-                I.FuryUseHealthStone()
-                );
-        }
-
-        internal static Composite FuryUtility()
-        {
-            return new PrioritySelector(
-                Spell.CastOnGround("Demoralizing Banner", loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Fury.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
-                Spell.Cast("Hamstring", ret => !U.IsTargetBoss && !G.HamstringAura && (SG.Instance.Fury.HamString == Enum.Hamstring.Always || SG.Instance.Fury.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
-                Spell.Cast("Intimidating Shout", ret => SG.Instance.Fury.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
-                Spell.Cast("Mass Spell Reflection", ret => G.MrTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && MassSpellReflectionUsage),
-                Spell.Cast("Piercing Howl", ret => G.PhTalent && SG.Instance.Fury.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum),
-                Spell.Cast("Rallying Cry", ret => U.RaidMembersNeedCryCount > 0),
-                Spell.Cast("Shattering Throw", ret => SG.Instance.Fury.CheckShatteringThrow && U.IsTargetBoss && (G.CSCD <= 3000 || G.SBCD <= 3000)),
-                Spell.Cast("Spell Reflection", ret => SG.Instance.Fury.CheckSpellReflect && Me.CurrentTarget != null && G.TargettingMe && Me.CurrentTarget.IsCasting),
-                Spell.Cast("Staggering Shout", ret => G.SsTalent && SG.Instance.Fury.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum)
                 );
         }
         #endregion
