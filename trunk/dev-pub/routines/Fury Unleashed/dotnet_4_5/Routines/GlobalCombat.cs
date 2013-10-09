@@ -296,12 +296,12 @@ namespace FuryUnleashed.Routines
         internal static bool Tier15FourPieceBonusT  { get { return Me.HasCachedAura("Item - Warrior T15 Protection 4P Bonus", 0); } }       // Works - 138281
 
         internal static bool Tier16TwoPieceBonus    { get { return Me.HasCachedAura("Item - Warrior T16 DPS 2P Bonus", 0); } }      // Checked - Works - 144436 is one of the ID's.
-        internal static bool Tier16FourPieceBonus   { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Unchecked
+        internal static bool Tier16FourPieceBonus   { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Does not work - Triggers DeathSentenceAuraT16
         internal static bool Tier16TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T16 Protection 2P Bonus"); } }        // Unchecked
         internal static bool Tier16FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked
 
         // Tierset Item Procs
-        internal static bool DeathSentenceAuraT16   { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS
+        internal static bool DeathSentenceAuraT16   { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS - String is "Death Sentence"
         internal static bool SkullBannerAuraT15     { get { return Me.HasAnyCachedAura(138127, 0); } }      // T15 4P DPS
         internal static bool VictoriousAuraT15      { get { return Me.HasCachedAura(138279, 0); } }         // T15 2P PROT
 
