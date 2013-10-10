@@ -1,5 +1,6 @@
 ﻿using Styx.Helpers;
 using System.ComponentModel;
+using Bullseye.Helpers;
 
 namespace Bullseye.Interfaces.Settings
 {
@@ -39,6 +40,13 @@ namespace Bullseye.Interfaces.Settings
         [DisplayName("Enable or Disable Trap Usage")]
         [Description("This enables Trap Usage")]
         public bool EnableTraps { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(BsEnum.CallPet.Pet1)]
+        [Category("General")]
+        [DisplayName("Which Pet To Call?")]
+        [Description("Select the Pet you want to cast.")]
+        public BsEnum.CallPet CallPet { get; set; }
 
 
         [Setting]

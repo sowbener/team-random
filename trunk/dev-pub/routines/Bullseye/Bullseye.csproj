@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GreyMagic">
+      <HintPath>..\..\GreyMagic.dll</HintPath>
+    </Reference>
     <Reference Include="Honorbuddy, Version=2.5.7684.656, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Honorbuddy.exe</HintPath>
@@ -82,6 +85,7 @@
     <Compile Include="Interfaces\Settings\BS_Settings.cs" />
     <Compile Include="Interfaces\Settings\BS_Markmanship_Settings.cs" />
     <Compile Include="Interfaces\Settings\BS_Beastmastery_Settings.cs" />
+    <Compile Include="Managers\BS_PetManager.cs" />
     <Compile Include="Managers\BS_TalentManager.cs" />
     <Compile Include="Managers\BS_HotKeyManager.cs" />
     <Compile Include="Routines\BS_Markmanship.cs" />

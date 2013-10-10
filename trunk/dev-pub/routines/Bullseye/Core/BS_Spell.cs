@@ -171,6 +171,15 @@ namespace Bullseye.Core
 
         #region SpellCastingTime //Taken from PR?
 
+        /// <summary>
+        /// Allows waiting for SleepForLagDuration() but ending sooner if condition is met
+        /// </summary>
+        /// <param name="orUntil">if true will stop waiting sooner than lag maximum</param>
+        /// <returns></returns>
+        public static Composite CreateWaitForLagDuration(CanRunDecoratorDelegate orUntil = null)
+        {
+            return new WaitContinue(TimeSpan.FromMilliseconds((StyxWoW.WoWClient.Latency * 2) + 150), orUntil, new ActionAlwaysSucceed());
+        }
 
         public static bool HasAura(this WoWUnit unit, string aura, int stacks = 0, bool isMyAura = false, int msLeft = 0)
         {

@@ -124,6 +124,26 @@ namespace Bullseye.Interfaces.Settings
         [Description("Enables Pet Stuff (Auto Mend Pet)")]
         public bool EnablePetStuff { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Beastmastery - Selectable Options")]
+        [DisplayName("Enable Call Pet")]
+        [Description("Enables Call Pet")]
+        public bool EnableCallPet { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(BsEnum.CallPet.Pet1)]
+        [Category("Beastmastery - Selectable Options")]
+        [DisplayName("Which Pet To Call?")]
+        [Description("Select the Pet you want to cast.")]
+        public BsEnum.CallPet CallPet { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Beastmastery - Selectable Options")]
+        [DisplayName("Enable Revive Pet")]
+        [Description("Enables Auto Revive Pet")]
+        public bool EnableRevivePet { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

@@ -29,7 +29,8 @@ namespace Bullseye.Routines
             get
             {
                 return new PrioritySelector(
-                   new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()));
+                   new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
+                  new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet || SG.Instance.Survival.EnableCallPet, PetManager.CreateHunterCallPetBehavior()));
             }
         }
 

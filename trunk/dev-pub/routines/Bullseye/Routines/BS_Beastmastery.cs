@@ -32,6 +32,7 @@ namespace Bullseye.Routines
                         new Decorator(ret => (BsHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
+                        new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => BsHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Binding Shot", ret => BsTalentManager.HasTalent(4)))),
                         G.InitializeCaching(),
                         new Decorator(ret => SG.Instance.Beastmastery.EnablePetStuff, HandleCommon()),
@@ -100,6 +101,7 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryDefensive()
         {
             return new PrioritySelector(
+                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && (Me.Pet == null || (Me.Pet != null && !Me.Pet.IsAlive))), 
                 I.BeastmasteryUseHealthStone()
                 );
         }
@@ -108,7 +110,7 @@ namespace Bullseye.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Revive Pet", ret => !Me.Pet.IsAlive),
-                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40));
+                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40 && !Me.Pet.HasAura("Mend Pet")));
         }
 
         internal static Composite BeastmasteryOffensive()

@@ -32,6 +32,7 @@ namespace Bullseye.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, BsLogger.TreePerformance("InitializeSurvival")),
                         new Decorator(ret => (BsHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
+                        new Decorator(ret => SG.Instance.Survival.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => BsHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Binding Shot", ret => BsTalentManager.HasTalent(4)))),
                         G.InitializeCaching(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
@@ -102,13 +103,13 @@ namespace Bullseye.Routines
         internal static Composite HandleCommon()
         {
             return new PrioritySelector(
-                Spell.Cast("Revive Pet", ret => !Me.Pet.IsAlive),
                 Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40 && !Me.Pet.HasAura("Mend Pet")));
         }
 
         internal static Composite SurvivalDefensive()
         {
             return new PrioritySelector(
+                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Survival.EnableRevivePet && (Me.Pet == null || (Me.Pet != null && !Me.Pet.IsAlive))), 
                 I.SurvivalUseHealthStone()
                 );
         }
@@ -121,6 +122,7 @@ namespace Bullseye.Routines
                 //actions+=/lynx_rush,if=enabled&!dot.lynx_rush.ticking
                 //actions+=/rapid_fire,if=!buff.rapid_fire.up
                 //actions+=/stampede,if=buff.rapid_fire.up|buff.bloodlust.react|target.time_to_die<=25
+                //PetManager.CreateCastPetActionOn("Rabid", ret => Me, ret => PetSettings.Rabid && Lists.TargetIsBoss(Target)), 
                 Spell.Cast("A Murder of Crows", ret => MurderofCrows && (
                     (SG.Instance.Survival.MurderofCrows == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Survival.MurderofCrows == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
@@ -137,9 +139,14 @@ namespace Bullseye.Routines
                     (SG.Instance.Survival.RapidFire == BsEnum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
-                    (SG.Instance.Survival.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (SG.Instance.Survival.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
-                    (SG.Instance.Survival.Stampede == BsEnum.AbilityTrigger.Always)
+                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
+                    )),
+                    PetManager.CreateCastPetActionOn("Rabid", ret => Me, ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
+                    (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Survival.ClassRacials == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||

@@ -24,6 +24,18 @@ namespace Bullseye.Helpers
         }
         #endregion
 
+        #region PetStuff
+        public enum CallPet
+        {
+            None,
+            Pet1 = 1,
+            Pet2 = 2,
+            Pet3 = 3,
+            Pet4 = 4,
+            Pet5 = 5
+        }
+        #endregion
+
         #region Hotkey ENUMS
         [Flags]
         public enum KeyStates

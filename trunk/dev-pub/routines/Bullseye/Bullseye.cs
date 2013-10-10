@@ -57,6 +57,7 @@ namespace Bullseye
         internal static readonly Version Revision = new Version(1, 0, 8);
         internal static readonly string BsName = "Bullseye - IR " + Revision;
 
+
         public override string Name { get { return BsName; } }
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 

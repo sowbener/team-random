@@ -27,6 +27,13 @@ namespace Bullseye.Interfaces.Settings
         [DisplayName("Lynx Rush")]
         [Description("Select the usage of Lynx Rush.")]
         public BsEnum.AbilityTrigger LynxRush  { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(BsEnum.AbilityTrigger.Always)]
+        [Category("Survival - Ability Options")]
+        [DisplayName("Rabid")]
+        [Description("Select the usage of Rabid")]
+        public BsEnum.AbilityTrigger Rabid { get; set; }
        
         [Setting]
         [Styx.Helpers.DefaultValue(BsEnum.AbilityTrigger.Always)]
@@ -103,6 +110,28 @@ namespace Bullseye.Interfaces.Settings
         [DisplayName("NOT IN USE")]
         [Description("DO NOT ENABLE YET")]
         public bool CheckAMZ { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Survival - Selectable Options")]
+        [DisplayName("Enable Call Pet")]
+        [Description("Enables Call Pet")]
+        public bool EnableCallPet { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(BsEnum.CallPet.Pet1)]
+        [Category("Survival - Selectable Options")]
+        [DisplayName("Which Pet To Call?")]
+        [Description("Select the Pet you want to cast.")]
+        public BsEnum.CallPet CallPet { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Survival - Selectable Options")]
+        [DisplayName("Enable Revive Pet")]
+        [Description("Enables Auto Revive Pet")]
+        public bool EnableRevivePet { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
