@@ -48,6 +48,12 @@ namespace Bullseye.Interfaces.Settings
         [Description("Select the Pet you want to cast.")]
         public BsEnum.CallPet CallPet { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(40)]
+        [Category("General")]
+        [DisplayName("Mend Pet HP %")]
+        [Description("Chooose which HP in % to use Mend Pet. Default is 40%")]
+        public int MendPetHP { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
@@ -99,6 +105,7 @@ namespace Bullseye.Interfaces.Settings
         [DisplayName("Logging Throttle Time")]
         [Description("Time between aBsanced logs - Throttle.")]
         public int LoggingThrottleNum { get; set; }
+
 
         #endregion
     }

@@ -54,7 +54,7 @@ namespace Bullseye
         public static BsMain Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        internal static readonly Version Revision = new Version(1, 0, 8);
+        internal static readonly Version Revision = new Version(1, 1, 0);
         internal static readonly string BsName = "Bullseye - IR " + Revision;
 
 
