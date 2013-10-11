@@ -78,7 +78,9 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => ThrillProc || (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
+                //actions+=/arcane_shot,if=(buff.thrill_of_the_hunt.react&!buff.beast_within.up&cooldown.bestial_wrath.remains=0&focus>80)|(buff.thrill_of_the_hunt.react&buff.beast_within.up)
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
@@ -209,6 +211,7 @@ namespace Bullseye.Routines
         internal static bool MultiShotThrillProc { get { return Me.HasAura("Thrill of the Hunt") && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura("Thrill of the Hunt"); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
+        internal static bool BestialWrathIsNotOnCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(19574).Cooldown; } }
         internal static bool Focus60 { get { return Lua.PlayerPower < 64; } }
         internal static bool Focus61 { get { return Lua.PlayerPower >= 61; } }
 
