@@ -72,7 +72,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
-                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
+                Spell.Cast("Kill Command", ret => (BestialWrathNotUp && BWSpellCoolDown2Seconds) && Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
@@ -212,6 +212,7 @@ namespace Bullseye.Routines
         internal static bool ThrillProc { get { return Me.HasAura("Thrill of the Hunt"); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
         internal static bool BestialWrathIsNotOnCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(19574).Cooldown; } }
+        internal static bool BWSpellCoolDown2Seconds { get { return Styx.WoWInternals.WoWSpell.FromId(19574).CooldownTimeLeft.Milliseconds < 2050; } }
         internal static bool Focus60 { get { return Lua.PlayerPower < 64; } }
         internal static bool Focus61 { get { return Lua.PlayerPower >= 61; } }
 
