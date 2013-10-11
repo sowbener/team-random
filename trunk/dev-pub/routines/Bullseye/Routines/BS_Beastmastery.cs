@@ -72,11 +72,11 @@ namespace Bullseye.Routines
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
-                Spell.Cast("Kill Command", ret => (BestialWrathNotUp && BWSpellCoolDown2Seconds) && Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
+                Spell.Cast("Kill Command", ret => Lua.PlayerPower > 60 && Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
-                Spell.Cast("Barrage", ret => TalentBarrage),
+                Spell.Cast("Barrage", ret => TalentBarrage),    
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
                 //actions+=/arcane_shot,if=(buff.thrill_of_the_hunt.react&!buff.beast_within.up&cooldown.bestial_wrath.remains=0&focus>80)|(buff.thrill_of_the_hunt.react&buff.beast_within.up)
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
