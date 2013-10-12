@@ -1,5 +1,4 @@
-﻿// TODO: Bleeds!
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Interfaces.GUI;
 using FuryUnleashed.Shared.Helpers;
 using FuryUnleashed.Shared.Managers;
@@ -22,7 +21,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 2);
+        public static readonly Version Revision = new Version(1, 5, 3);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
