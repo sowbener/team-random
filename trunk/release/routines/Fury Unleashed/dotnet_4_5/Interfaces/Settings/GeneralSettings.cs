@@ -62,14 +62,14 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Rotational Settings
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Arms Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
         public Enum.WoWVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Fury Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
@@ -99,6 +99,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Cache Logging")]
         [Description("Enables advanced logging for cached functions - Requires Debug Logging enabled.")]
         public bool CheckCacheLogging { get; set; }
+
+		[Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Debug Logging")]
+        [DisplayName("Enable Test Logging")]
+        [Description("Enables advanced logging for test functions - Requires Debug Logging enabled.")]
+        public bool CheckTestLogging { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

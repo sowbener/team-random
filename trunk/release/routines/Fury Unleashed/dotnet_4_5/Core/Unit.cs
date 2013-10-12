@@ -79,19 +79,23 @@ namespace FuryUnleashed.Core
         }
 
         public static int NearbyAttackableUnitsCount;
+        public static float NearbyAttackableUnitsFloat;
         public static void GetNearbyAttackableUnitsCount()
         {
             using (new PerformanceLogger("GetNearbyAttackableUnitsCount"))
                 if (Me.CurrentTarget != null)
                     NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                    NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
         }
 
         public static int NearbySlamCleaveUnitsCount;
+        public static float NearbySlamCleaveUnitsFloat;
         public static void GetNearbySlamCleaveUnitsCount()
         {
             using (new PerformanceLogger("GetNearbySlamCleaveUnitsCount"))
                 if (Me.CurrentTarget != null)
                     NearbySlamCleaveUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
+                    NearbySlamCleaveUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
         }
 
         public static int NeedThunderclapUnitsCount;
@@ -191,8 +195,8 @@ namespace FuryUnleashed.Core
         internal static bool CanInterrupt
         {
             get 
-            { 
-                return Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (
+            {
+                return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (
                 (TalentManager.CurrentSpec == WoWSpec.WarriorArms && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Arms.NumInterruptTimer) ||
                 (TalentManager.CurrentSpec == WoWSpec.WarriorFury && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Fury.NumInterruptTimer) ||
                 (TalentManager.CurrentSpec == WoWSpec.WarriorProtection && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Protection.NumInterruptTimer));

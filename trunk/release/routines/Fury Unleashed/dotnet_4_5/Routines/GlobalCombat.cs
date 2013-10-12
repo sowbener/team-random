@@ -42,8 +42,6 @@ namespace FuryUnleashed.Routines
 
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Fury.CheckAoE && SG.Instance.Fury.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => SG.Instance.Fury.CheckRallyingCry,
@@ -96,10 +94,10 @@ namespace FuryUnleashed.Routines
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(750), RunStatus.Failure,
                     Spell.Cast("Pummel")
                     ),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(500), RunStatus.Failure,
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(750), RunStatus.Failure,
                     Spell.Cast("Disrupting Shout", ret => DsTalent && (PUOC || Unit.InterruptableUnitsCount >= 1))
                     ));
         }
@@ -154,7 +152,7 @@ namespace FuryUnleashed.Routines
 
         #region Booleans & Doubles
 
-        // Fading Aura's
+        // Fading Target Aura's
         internal static bool FadingCs(int fadingtime)
         {
             if (!Me.GotTarget)
@@ -171,11 +169,36 @@ namespace FuryUnleashed.Routines
             return deepwounds != null && deepwounds.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
 
+        internal static bool FadingSunder(int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura sunderArmor = Spell.CachedTargetAuras.FirstOrDefault(a => a.SpellId == 7386 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return sunderArmor != null && sunderArmor.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
+        internal static bool FadingWb(int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura weakenedBlows = Spell.CachedTargetAuras.FirstOrDefault(a => a.SpellId == 115798 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return weakenedBlows != null && weakenedBlows.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
+        // Fading Self Aura's
+        internal static bool FadingDeathSentence(int fadingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura deathsentence = Spell.CachedAuras.FirstOrDefault(a => a.SpellId == 144442 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return deathsentence != null && deathsentence.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+        }
+
         internal static bool FadingEnrage(int fadingtime)
         {
             if (!Me.GotTarget)
                 return false;
-            WoWAura enrage = Spell.CachedTargetAuras.FirstOrDefault(a => (a.SpellId == 13046 || a.SpellId == 12880) && a.CreatorGuid == StyxWoW.Me.Guid);
+            WoWAura enrage = Spell.CachedAuras.FirstOrDefault(a => (a.SpellId == 13046 || a.SpellId == 12880) && a.CreatorGuid == StyxWoW.Me.Guid);
             return enrage != null && enrage.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
 
@@ -198,11 +221,11 @@ namespace FuryUnleashed.Routines
         // Booleans for multiple use.
         internal static bool AlmostDead             { get { return Me.CurrentTarget.HealthPercent <= 10; } }
         internal static bool DumpAllRage            { get { return Me.CurrentTarget.HealthPercent <= 2.5; } }
-        internal static bool ExecuteCheck           { get { return Me.CurrentTarget.HealthPercent <= 20; } }
+        internal static bool ExecutePhase           { get { return Me.CurrentTarget.HealthPercent <= 20; } }
         internal static bool HotkeyMode             { get { return SH.Instance.ModeSelection == Enum.Mode.Hotkey || SH.Instance.ModeSelection == Enum.Mode.SemiHotkey; } }
-        internal static bool NonExecuteCheck        { get { return Me.CurrentTarget.HealthPercent >  20; } }
+        internal static bool NormalPhase            { get { return Me.CurrentTarget.HealthPercent > 20; } }
         internal static bool TargetNotNull          { get { return Me.CurrentTarget != null; } }
-        internal static bool TargettingMe           { get { return Me.CurrentTarget.IsTargetingMeOrPet; } }
+        internal static bool TargettingMe           { get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; } }
         internal static bool HasteAbilities         { get { return (AncientHysteriaAura || BloodLustAura || HeroismAura || TimeWarpAura); } }
         internal static bool WieldsTwoHandedWeapons { get { return Item.WieldsTwoHandedWeapons; } }
 
@@ -238,6 +261,28 @@ namespace FuryUnleashed.Routines
             }
         }
 
+        internal static bool SlamViable
+        {
+            get
+            {
+                var wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
+                var slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
+
+                return (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= Unit.NearbyAttackableUnitsFloat / wwcost;
+            }
+        }
+
+        internal static bool WhirlwindViable
+        {
+            get
+            {
+                var wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
+                var slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
+
+                return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
+            }
+        }
+
         // Specs
         internal static bool IsArmsSpec             { get { return TalentManager.CurrentSpec == WoWSpec.WarriorArms; } }
         internal static bool IsFurySpec             { get { return TalentManager.CurrentSpec == WoWSpec.WarriorFury; } }
@@ -245,18 +290,18 @@ namespace FuryUnleashed.Routines
 
         // Tierset Aura Detection
         // Somehow doesnt work with ID
-        internal static bool Tier15TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T15 DPS 2P Bonus"); } }               // Works - 138120
-        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }               // Does not work - Triggers SbT15P4Aura
-        internal static bool Tier15TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T15 Protection 2P Bonus"); } }        // Works - 138280
-        internal static bool Tier15FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T15 Protection 4P Bonus"); } }        // Works - 138281
+        internal static bool Tier15TwoPieceBonus    { get { return Me.HasCachedAura("Item - Warrior T15 DPS 2P Bonus", 0); } }              // Works - 138120
+        internal static bool Tier15FourPieceBonus   { get { return Me.HasAura("Item - Warrior T15 DPS 4P Bonus"); } }                       // Does not work - Triggers SkullBannerAuraT15
+        internal static bool Tier15TwoPieceBonusT   { get { return Me.HasCachedAura("Item - Warrior T15 Protection 2P Bonus", 0); } }       // Works - 138280
+        internal static bool Tier15FourPieceBonusT  { get { return Me.HasCachedAura("Item - Warrior T15 Protection 4P Bonus", 0); } }       // Works - 138281
 
-        internal static bool Tier16TwoPieceBonus    { get { return Me.HasAura("Item - Warrior T16 DPS 2P Bonus"); } }               // Unchecked
-        internal static bool Tier16FourPieceBonus   { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Unchecked
+        internal static bool Tier16TwoPieceBonus    { get { return Me.HasCachedAura("Item - Warrior T16 DPS 2P Bonus", 0); } }      // Checked - Works - 144436 is one of the ID's.
+        internal static bool Tier16FourPieceBonus   { get { return Me.HasAura("Item - Warrior T16 DPS 4P Bonus"); } }               // Does not work - Triggers DeathSentenceAuraT16
         internal static bool Tier16TwoPieceBonusT   { get { return Me.HasAura("Item - Warrior T16 Protection 2P Bonus"); } }        // Unchecked
         internal static bool Tier16FourPieceBonusT  { get { return Me.HasAura("Item - Warrior T16 Protection 4P Bonus"); } }        // Unchecked
 
         // Tierset Item Procs
-        internal static bool DeathScentenceAuraT16  { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS
+        internal static bool DeathSentenceAuraT16   { get { return Me.HasCachedAura(144442, 0); } }         // T16 4P DPS - String is "Death Sentence"
         internal static bool SkullBannerAuraT15     { get { return Me.HasAnyCachedAura(138127, 0); } }      // T15 4P DPS
         internal static bool VictoriousAuraT15      { get { return Me.HasCachedAura(138279, 0); } }         // T15 2P PROT
 
@@ -270,7 +315,7 @@ namespace FuryUnleashed.Routines
         internal static bool LastStandAura          { get { return Me.HasCachedAura(12975, 0); } }
         internal static bool MeatCleaverAura        { get { return Me.HasCachedAura(85739, 0); } }
         internal static bool RagingBlowAura         { get { return Me.HasCachedAura(131116, 0); } }
-        internal static bool ReadinessAura          { get { return Me.HasCachedAura(145955, 0); } } // Evil Eye of Galakras trinket Aura.
+        internal static bool ReadinessAura          { get { return Me.HasCachedAura("Readiness", 0); } } // Evil Eye of Galakras trinket Aura - Multi-ID ...
         internal static bool RecklessnessAura       { get { return Me.HasCachedAura(1719, 0); } }
         internal static bool RecklessnessAuraT      { get { return Me.HasCachedAura(1719, 0, 10000); } }
         internal static bool ShieldBarrierAura      { get { return Me.HasCachedAura(112048, 0); } }
@@ -286,6 +331,7 @@ namespace FuryUnleashed.Routines
         internal static bool ColossusSmashAuraT     { get { return Me.CurrentTarget.HasCachedAura(86346, 0, 5000); } }
         internal static bool DeepWoundsAura         { get { return Me.CurrentTarget.HasCachedAura(115767, 0); } }
         internal static bool HamstringAura          { get { return Me.CurrentTarget.HasAnyCachedAura(1715, 0); } }
+        internal static bool SunderArmorAura        { get { return Me.CurrentTarget.HasCachedAura(7386, 0); } }
         internal static bool WeakenedBlowsAura      { get { return Me.CurrentTarget.HasAnyCachedAura(115798, 0); } }
 
         // Cached Stacked Aura's - Can only be used with MY aura's (HasCachedAura).
@@ -297,6 +343,7 @@ namespace FuryUnleashed.Routines
         internal static bool TasteForBloodS3        { get { return Me.HasCachedAura(60503, 3); } }
         internal static bool TasteForBloodS4        { get { return Me.HasCachedAura(60503, 4); } }
         internal static bool TasteForBloodS5        { get { return Me.HasCachedAura(60503, 5); } }
+        internal static bool SunderArmorAura3S      { get { return Me.CurrentTarget.HasCachedAura(7386, 3); } }
 
         // Cached Aura's - Can be used with ANY aura's (HasAnyCachedAura).
         internal static bool AncientHysteriaAura    { get { return Me.HasAnyCachedAura(90355, 0); } }

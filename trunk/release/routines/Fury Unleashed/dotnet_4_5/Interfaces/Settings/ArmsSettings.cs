@@ -235,6 +235,13 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Selectable Options
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Arms - Selectable Options")]
+        [DisplayName("Enable Experimental AoE")]
+        [Description("Enables experimental AoE - Picks between WhirlWind and Slam which is the best - BETA!!!")]
+        public bool CheckExperimentalAoE { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Arms - Selectable Options")]
         [DisplayName("Enable Multi-Target (AoE)")]
@@ -263,25 +270,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckShatteringThrow { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Arms - Selectable Options")]
-        [DisplayName("Enable Lifeblood")]
-        [Description("Checked enables Lifeblood.")]
-        public bool CheckLifeblood { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Arms - Selectable Options")]
         [DisplayName("Enable Heroic Throw")]
         [Description("Enables Heroic Throw.")]
         public bool CheckHeroicThrow { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(10)]
-        [Category("Arms - Selectable Options")]
-        [DisplayName("Lifeblood %")]
-        [Description("Will use Lifeblood when health % is less than or equal to the set value.")]
-        public int CheckLifebloodNum { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]

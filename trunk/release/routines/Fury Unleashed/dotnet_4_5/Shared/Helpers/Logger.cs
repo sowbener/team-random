@@ -5,6 +5,7 @@ using Styx;
 using Styx.Common;
 using Styx.Helpers;
 using Styx.TreeSharp;
+using Styx.WoWInternals;
 using System;
 using System.Globalization;
 using System.IO;
@@ -72,7 +73,7 @@ namespace FuryUnleashed.Shared.Helpers
 
         public static void CombatLogO(string message, params object[] args)
         {
-            if (message == _lastCombatmsg) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
             Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
@@ -146,6 +147,10 @@ namespace FuryUnleashed.Shared.Helpers
             WriteFile("Tier 15 DPS 4P: {0}", FuGlobal.Tier15FourPieceBonus);
             WriteFile("Tier 15 Prot 2P: {0}", FuGlobal.Tier15TwoPieceBonusT);
             WriteFile("Tier 15 Prot 4P: {0}", FuGlobal.Tier15FourPieceBonusT);
+            WriteFile("Tier 16 DPS 2P: {0}", FuGlobal.Tier16TwoPieceBonus);
+            WriteFile("Tier 16 DPS 4P: {0}", FuGlobal.Tier16FourPieceBonus);
+            WriteFile("Tier 16 Prot 2P: {0}", FuGlobal.Tier16TwoPieceBonusT);
+            WriteFile("Tier 16 Prot 4P: {0}", FuGlobal.Tier16FourPieceBonusT);
             WriteFile("");
             WriteFile("======= Other Info =======");
             WriteFile("2H Weapons: {0}", FuGlobal.WieldsTwoHandedWeapons);
@@ -253,6 +258,8 @@ namespace FuryUnleashed.Shared.Helpers
                                     AdvancedLogW("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
                                     AdvancedLogW("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
                                     AdvancedLogW("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
+                                    AdvancedLogP("Units - Slam Viable: {0}", FuGlobal.SlamViable);
+                                    AdvancedLogP("Units - Whirlwind viable: {0}", FuGlobal.WhirlwindViable);
                                 }
                                     )))),
                     // Cached Aura's Logging
@@ -274,6 +281,19 @@ namespace FuryUnleashed.Shared.Helpers
                                     {
                                         AdvancedLogW("{0}", WoWAura);
                                     }
+                                }
+                                    )))),
+                    //Temporary Functions Logging
+                    new Decorator(ret => InternalSettings.Instance.General.CheckTestLogging,
+                        new PrioritySelector(
+                            new ThrottlePasses(1,
+                                TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
+                                RunStatus.Failure,
+                                new Action(delegate
+                                {
+                                    AdvancedLogP("Test Logging:");
+                                    AdvancedLogW("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
+                                    AdvancedLogW("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
                                 }
                                     )))));
             }

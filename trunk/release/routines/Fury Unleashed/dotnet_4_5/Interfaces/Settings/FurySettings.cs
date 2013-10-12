@@ -243,7 +243,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAoE { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(2)]
+        [Styx.Helpers.DefaultValue(3)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Multi-Target (AoE) Units")]
         [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 3!")]
@@ -277,12 +277,12 @@ namespace FuryUnleashed.Interfaces.Settings
         [Description("Checked enables Shattering Throw.")]
         public bool CheckShatteringThrow { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Fury - Selectable Options")]
-        [DisplayName("Enable Thunder Clap")]
-        [Description("Enables Thunder Clap to spread Deep Wounds in AoE - NeedThunderclapUnitsCount.")]
-        public bool CheckAoEThunderclap { get; set; }
+        // [Setting]
+        // [Styx.Helpers.DefaultValue(true)]
+        // [Category("Fury - Selectable Options")]
+        // [DisplayName("Enable Thunder Clap")]
+        // [Description("Enables Thunder Clap to spread Deep Wounds in AoE - NeedThunderclapUnitsCount.")]
+        // public bool CheckAoEThunderclap { get; set; }
         #endregion
 
         // ========================================================================================

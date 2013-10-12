@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace FuryUnleashed.Shared.Helpers
 {
     public abstract class SpellBook
@@ -24,6 +25,7 @@ namespace FuryUnleashed.Shared.Helpers
                             DeadlyCalm = 85730,
                             DefensiveStance = 71,
                             DemoralizingShout = 1160,
+                            Devastate = 20243,
                             SunderArmor = 7386,
                             Disarm = 676,
                             Execute = 5308,

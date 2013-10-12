@@ -12,11 +12,17 @@ namespace FuryUnleashed.Shared.Helpers
     /// <remarks>
     ///   Created 10/28/2012.
     /// </remarks>
+    // ReSharper disable FieldCanBeMadeReadOnly.Local
+    // ReSharper disable NotAccessedVariable
+    // ReSharper disable RedundantOverridenMember
+    // ReSharper disable RedundantAssignment
+    // ReSharper disable RedundantJumpStatement
     public class ThrottlePasses : Decorator
     {
         private DateTime _end;
         private int _count;
-        private readonly RunStatus _limitStatus;
+
+        private RunStatus _limitStatus;
 
         /// <summary>
         /// time span that Limit child Successes can occur
@@ -65,16 +71,18 @@ namespace FuryUnleashed.Shared.Helpers
         ///   otherwise returns result of child
         /// </summary>
         /// <param name = "limit">max number of occurrences</param>
-        /// <param name = "timeSeconds"></param>
+        /// <param name="timeSeconds"></param>
         /// <param name = "child">composite children to tick (run)</param>
         public ThrottlePasses(int limit, int timeSeconds, Composite child)
             : this(limit, TimeSpan.FromSeconds(timeSeconds), RunStatus.Failure, child)
         {
+
         }
 
         public ThrottlePasses(int limit, TimeSpan ts, Composite child)
             : this(limit, ts, RunStatus.Failure, child)
         {
+
         }
 
         /// <summary>
@@ -82,12 +90,22 @@ namespace FuryUnleashed.Shared.Helpers
         ///   will be run within a given time span.  Returns Failure if limit reached, otherwise
         ///   Returns result of child
         /// </summary>
-        /// <param name = "timeSeconds"></param>
+        /// <param name="timeSeconds"></param>
         /// <param name = "child">composite children to tick (run)</param>
         public ThrottlePasses(int timeSeconds, Composite child)
             : this(1, TimeSpan.FromSeconds(timeSeconds), RunStatus.Failure, child)
         {
 
+        }
+
+        public override void Start(object context)
+        {
+            base.Start(context);
+        }
+
+        public override void Stop(object context)
+        {
+            base.Stop(context);
         }
 
         protected override IEnumerable<RunStatus> Execute(object context)
@@ -100,7 +118,9 @@ namespace FuryUnleashed.Shared.Helpers
 
             DecoratedChild.Start(context);
 
-            while ((DecoratedChild.Tick(context)) == RunStatus.Running)
+
+            RunStatus childStatus;
+            while ((childStatus = DecoratedChild.Tick(context)) == RunStatus.Running)
             {
                 yield return RunStatus.Running;
             }
@@ -122,6 +142,8 @@ namespace FuryUnleashed.Shared.Helpers
             }
 
             yield return RunStatus.Success;
+
+            yield break;
         }
     }
 
@@ -187,7 +209,7 @@ namespace FuryUnleashed.Shared.Helpers
         ///   returns RunStatus.Success within a given time span.  Returns Failure if limit reached, 
         ///   otherwise returns result of child
         /// </summary>
-        /// <param name = "limit"></param>
+        /// <param name="limit"></param>
         /// <param name = "timeFrame">time span for occurrences</param>
         /// <param name = "child">composite children to tick (run)</param>
         public Throttle(int limit, TimeSpan timeFrame, Composite child)
@@ -201,12 +223,12 @@ namespace FuryUnleashed.Shared.Helpers
         ///   otherwise returns result of child
         /// </summary>
         /// <param name = "limit">max number of occurrences</param>
-        /// <param name = "timeSeconds"></param>
+        /// <param name="timeSeconds"></param>
         /// <param name = "child">composite children to tick (run)</param>
         public Throttle(int limit, int timeSeconds, Composite child)
             : this(limit, TimeSpan.FromSeconds(timeSeconds), RunStatus.Failure, child)
         {
-
+            
         }
 
         /// <summary>
@@ -214,12 +236,12 @@ namespace FuryUnleashed.Shared.Helpers
         ///   returns RunStatus.Success within a given time span.  Returns Failure if limit reached, 
         ///   otherwise returns result of child
         /// </summary>
-        /// <param name = "timeSeconds"></param>
+        /// <param name="timeSeconds"></param>
         /// <param name = "child">composite children to tick (run)</param>
         public Throttle(int timeSeconds, Composite child)
             : this(1, TimeSpan.FromSeconds(timeSeconds), RunStatus.Failure, child)
         {
-
+            
         }
 
         /// <summary>
@@ -232,6 +254,16 @@ namespace FuryUnleashed.Shared.Helpers
             : this(1, TimeSpan.FromMilliseconds(250), RunStatus.Failure, child)
         {
 
+        }
+
+        public override void Start(object context)
+        {
+            base.Start(context);
+        }
+
+        public override void Stop(object context)
+        {
+            base.Stop(context);
         }
 
         protected override IEnumerable<RunStatus> Execute(object context)
@@ -251,7 +283,8 @@ namespace FuryUnleashed.Shared.Helpers
 
             DecoratedChild.Start(context);
 
-            while ((DecoratedChild.Tick(context)) == RunStatus.Running)
+            RunStatus childStatus;
+            while ((childStatus = DecoratedChild.Tick(context)) == RunStatus.Running)
             {
                 yield return RunStatus.Running;
             }
@@ -273,8 +306,12 @@ namespace FuryUnleashed.Shared.Helpers
             _count++;
 
             yield return RunStatus.Success;
+            yield break;
         }
     }
-
-
+    // ReSharper restore FieldCanBeMadeReadOnly.Local
+    // ReSharper restore NotAccessedVariable
+    // ReSharper restore RedundantOverridenMember
+    // ReSharper restore RedundantAssignment
+    // ReSharper restore RedundantJumpStatement
 }
