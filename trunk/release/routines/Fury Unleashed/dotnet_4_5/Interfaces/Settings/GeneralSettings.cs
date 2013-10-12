@@ -30,7 +30,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Development)]
+        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
         [Category("General")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]
