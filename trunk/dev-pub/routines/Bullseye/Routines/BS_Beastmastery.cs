@@ -139,7 +139,7 @@ namespace Bullseye.Routines
                     (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.Always)
                     )),
-                    Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
+                    Spell.Cast("Stampede", ret => (Me.CurrentTarget != null && RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
@@ -199,7 +199,7 @@ namespace Bullseye.Routines
         internal static bool DireBeastEnabled { get { return BsTalentManager.HasTalent(11); } }
         internal static bool MurderofCrows { get { return BsTalentManager.HasTalent(13) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(131894, 0, 2000); } }
         internal static bool LynxRush { get { return BsTalentManager.HasTalent(15) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(120697, 0, 2000); } }
-        internal static bool RapidFireAura { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(3045, 0, 2000); } }
+        internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
         internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 2000); } }
         internal static bool SerpentStingAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(1978); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura("Serpent Sting", 0, 6000); } }
