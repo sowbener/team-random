@@ -75,7 +75,8 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                        Dev_FurySt()
+                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -91,7 +92,8 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                        Dev_FurySt()
+                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
@@ -107,7 +109,8 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => SG.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                        Dev_FurySt()
+                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
+                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
                                         ))))));
             }
         }
@@ -222,6 +225,19 @@ namespace FuryUnleashed.Routines
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
                 Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && G.NormalPhase && G.CSCD >= 2000 && SG.Instance.Fury.CheckRotImpVic)
                 );
+        }
+
+        internal static Composite Dev_FuryExec()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
+                        Spell.Cast(SB.Execute),
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Dev_FurySt())));
         }
 
         internal static Composite Dev_FuryHeroicStrike()
