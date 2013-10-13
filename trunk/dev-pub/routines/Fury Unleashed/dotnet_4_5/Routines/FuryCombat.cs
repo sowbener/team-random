@@ -236,7 +236,68 @@ namespace FuryUnleashed.Routines
 
         internal static Composite Dev_FuryMt()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                new Decorator(ret => U.NearbyAttackableUnitsCount >= 5,
+                    new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SB.Bloodthirst),
+                        Spell.Cast(SB.Whirlwind),
+                        Spell.Cast(SB.RagingBlow, ret => Me.CurrentRage <= 60 && G.MeatCleaverAuraS3)
+                        )),
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 4,
+                    new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS3),
+                        Spell.Cast(SB.Bloodthirst),
+                        Spell.Cast(SB.ColossusSmash),
+                        Spell.Cast(SB.RagingBlow, ret => G.MeatCleaverAuraS3),
+                        Spell.Cast(SB.Cleave, ret => Me.CurrentRage > Me.MaxRage - 10)
+                        )),
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 3,
+                    new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS2),
+                        Spell.Cast(SB.Bloodthirst),
+                        Spell.Cast(SB.ColossusSmash),
+                        Spell.Cast(SB.RagingBlow, ret => G.MeatCleaverAuraS2),
+                        Spell.Cast(SB.Cleave, ret => Me.CurrentRage > Me.MaxRage - 10)
+                        )),
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
+                    new PrioritySelector(
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 || G.ExecutePhase && G.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
+                        Spell.Cast(SB.Bloodthirst),
+                        Spell.Cast(SB.ColossusSmash),
+                        Spell.Cast(SB.RagingBlow, ret => G.MeatCleaverAuraS1),
+                        Spell.Cast(SB.Cleave, ret => Me.CurrentRage > Me.MaxRage - 10),
+                        new PrioritySelector(
+                            new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
+                            new Decorator(ret => G.NormalPhase, Rel_FurySt()))
+                        )));
         }
 
         internal static Composite Dev_FuryOffensive()
