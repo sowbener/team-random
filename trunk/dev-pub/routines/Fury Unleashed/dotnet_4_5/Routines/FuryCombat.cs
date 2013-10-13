@@ -175,6 +175,8 @@ namespace FuryUnleashed.Routines
         internal static Composite Dev_FurySt()
         {
             return new PrioritySelector(
+                //Added for Supporting it.
+                Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura || G.FadingDeathSentence(3000) && G.CSCD >= 1500), // Added T16 P4.
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
                 Spell.Cast(SB.StormBolt, ret => G.SbTalent && G.ReadinessAura && G.ColossusSmashAura && Tier6AbilityUsage),
                 //actions.single_target+=/raging_blow,if=buff.raging_blow.stack=2&debuff.colossus_smash.up&target.health.pct>=20
@@ -185,8 +187,6 @@ namespace FuryUnleashed.Routines
                 Spell.Cast(SB.Bloodthirst),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
                 Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura && G.NormalPhase && G.BTCD <= 1000),
-                //actions.single_target+=/wait,sec=cooldown.bloodthirst.remains,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)&cooldown.bloodthirst.remains<=1&cooldown.bloodthirst.remains
-                //new Decorator(ret => , new ActionAlwaysSucceed()),
                 //actions.single_target+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
                 Spell.Cast(SB.DragonRoar, ret => G.DrTalent && (!G.ColossusSmashAura && BloodbathSync) && Tier4AbilityUsage),
                 //actions.single_target+=/colossus_smash
@@ -217,8 +217,6 @@ namespace FuryUnleashed.Routines
                 new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me, ret => Me.CurrentRage < 70)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me, ret => Me.CurrentRage < 70))),     
-                //actions.single_target+=/shattering_throw,if=cooldown.colossus_smash.remains>5
-                Spell.Cast(SB.ShatteringThrow, ret => G.CSCD > 5000 && SG.Instance.Fury.CheckShatteringThrow),
                 //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
                 Spell.Cast(SB.WildStrike, ret => G.CSCD >= 2000 && Me.CurrentRage >= 70 && G.NormalPhase),
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
