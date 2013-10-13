@@ -75,8 +75,7 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
+                                        Dev_FurySt()
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -92,8 +91,7 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => SG.Instance.Fury.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
+                                        Dev_FurySt()
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
@@ -109,8 +107,7 @@ namespace FuryUnleashed.Routines
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => SG.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckAoENum, Dev_FuryMt()),
-                                        new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                                        new Decorator(ret => G.NormalPhase, Dev_FurySt())
+                                        Dev_FurySt()
                                         ))))));
             }
         }
@@ -177,17 +174,64 @@ namespace FuryUnleashed.Routines
         #region Development Rotations
         internal static Composite Dev_FurySt()
         {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_FuryExec()
-        {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
+                Spell.Cast(SB.StormBolt, ret => G.SbTalent && G.ReadinessAura && G.ColossusSmashAura && Tier6AbilityUsage),
+                //actions.single_target+=/raging_blow,if=buff.raging_blow.stack=2&debuff.colossus_smash.up&target.health.pct>=20
+                Spell.Cast(SB.RagingBlow, ret => G.RagingBlow2S && G.ColossusSmashAura && G.NormalPhase),
+                //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
+                Spell.Cast(SB.StormBolt, ret => G.SbTalent && !G.ReadinessAura && G.ColossusSmashAura && Tier6AbilityUsage),
+                //actions.single_target+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
+                Spell.Cast(SB.Bloodthirst),
+                //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
+                Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura && G.NormalPhase && G.BTCD <= 1000),
+                //actions.single_target+=/wait,sec=cooldown.bloodthirst.remains,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)&cooldown.bloodthirst.remains<=1&cooldown.bloodthirst.remains
+                //new Decorator(ret => , new ActionAlwaysSucceed()),
+                //actions.single_target+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
+                Spell.Cast(SB.DragonRoar, ret => G.DrTalent && (!G.ColossusSmashAura && BloodbathSync) && Tier4AbilityUsage),
+                //actions.single_target+=/colossus_smash
+                Spell.Cast(SB.ColossusSmash),
+                //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down
+                Spell.Cast(SB.StormBolt, ret => G.SbTalent && !G.ReadinessAura && Tier6AbilityUsage),
+                //actions.single_target+=/execute,if=debuff.colossus_smash.up|rage>70|target.time_to_die<12
+                Spell.Cast(SB.Execute, ret => G.ColossusSmashAura || Me.CurrentRage > 70),
+                //actions.single_target+=/raging_blow,if=target.health.pct<20|buff.raging_blow.stack=2|(debuff.colossus_smash.up|(cooldown.bloodthirst.remains>=1&buff.raging_blow.remains<=3))
+                Spell.Cast(SB.RagingBlow, ret => G.ExecutePhase || G.RagingBlow2S || (G.ColossusSmashAura || G.BTCD >= 1 && G.FadingRb(3000))),
+                //actions.single_target+=/wild_strike,if=buff.bloodsurge.up
+                Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura),
+                //actions.single_target+=/bladestorm,if=enabled&cooldown.bloodthirst.remains>2
+                Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.BTCD > 2000 && Tier4AbilityUsage),
+                //actions.single_target+=/raging_blow,if=cooldown.colossus_smash.remains>=3
+                Spell.Cast(SB.RagingBlow, ret => G.CSCD >= 3000),
+                //actions.single_target+=/shockwave,if=enabled
+                Spell.Cast(SB.Shockwave, ret => G.SwTalent && Tier4AbilityUsage),
+                //actions.single_target+=/heroic_throw,if=debuff.colossus_smash.down&rage<60
+                Spell.Cast(SB.HeroicThrow, ret => !G.ColossusSmashAura && Me.CurrentRage < 60 && SG.Instance.Fury.CheckHeroicThrow),
+                //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
+                new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me, ret => Me.CurrentRage < 70 && !G.ColossusSmashAura)),
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me, ret => Me.CurrentRage < 70 && !G.ColossusSmashAura))),                
+                //actions.single_target+=/wild_strike,if=debuff.colossus_smash.up&target.health.pct>=20
+                Spell.Cast(SB.WildStrike, ret => G.ColossusSmashAura && G.NormalPhase),
+                //actions.single_target+=/battle_shout,if=rage<70
+                new Switch<Enum.Shouts>(ctx => SG.Instance.Fury.ShoutSelection,
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me, ret => Me.CurrentRage < 70)),
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me, ret => Me.CurrentRage < 70))),     
+                //actions.single_target+=/shattering_throw,if=cooldown.colossus_smash.remains>5
+                Spell.Cast(SB.ShatteringThrow, ret => G.CSCD > 5000 && SG.Instance.Fury.CheckShatteringThrow),
+                //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
+                Spell.Cast(SB.WildStrike, ret => G.CSCD >= 2000 && Me.CurrentRage >= 70 && G.NormalPhase),
+                //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
+                Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && G.NormalPhase && G.CSCD >= 2000 && SG.Instance.Fury.CheckRotImpVic)
+                );
         }
 
         internal static Composite Dev_FuryHeroicStrike()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage), // Added to prevent ragecapping.
+                //actions.single_target+=/heroic_strike,if=((debuff.colossus_smash.up&rage>=40)&target.health.pct>=20)|rage>=100&buff.enrage.up
+                Spell.Cast(SB.HeroicStrike, ret => G.NormalPhase && Me.CurrentRage >= 40 && G.ColossusSmashAura || Me.CurrentRage >= Me.MaxRage - 20 && G.EnrageAura));
         }
 
         internal static Composite Dev_FuryMt()
@@ -197,27 +241,59 @@ namespace FuryUnleashed.Routines
 
         internal static Composite Dev_FuryOffensive()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
+                Spell.Cast(SB.Recklessness, ret => !G.SkullBannerAura && RecklessnessUsage),
+                //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
+                Spell.Cast(SB.Avatar, ret => G.AvTalent && G.RecklessnessAura && Tier6AbilityUsage),
+                //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
+                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && SkullBannerUsage && (G.RecklessnessAura || ((G.CSCD < 2000 || G.ColossusSmashAuraT) && G.ReadinessAura))),
+                //actions+=/berserker_rage,if=buff.enrage.remains<1&cooldown.bloodthirst.remains>1
+                Spell.Cast(SB.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(1000) && G.BTCD > 1000) && BerserkerRageUsage),
+                //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
+                Spell.Cast(SB.Bloodbath, ret => G.BbTalent && (G.CSCD < 2000 || G.ColossusSmashAuraT) && Tier6AbilityUsage)
+                );
         }
 
         internal static Composite Dev_FuryGcdUtility()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                Spell.Cast(SB.ImpendingVictory, ret => !G.IVOC && G.IvTalent && SG.Instance.Fury.CheckImpVic && Me.HealthPercent <= SG.Instance.Fury.CheckImpVicNum),
+                Spell.Cast(SB.VictoryRush, ret => !G.VROC && G.VictoriousAura && SG.Instance.Fury.CheckVicRush && Me.HealthPercent <= SG.Instance.Fury.CheckVicRushNum),
+                Spell.Cast(SB.IntimidatingShout, ret => SG.Instance.Fury.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
+                Spell.Cast(SB.ShatteringThrow, ret => SG.Instance.Fury.CheckShatteringThrow && U.IsTargetBoss && (G.CSCD <= 3000 || G.SBCD <= 3000))
+                );
         }
 
         internal static Composite Dev_FuryRacials()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                new Decorator(ret => RacialUsage,
+                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
+                    ));
         }
 
         internal static Composite Dev_FuryDefensive()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                Spell.Cast(SB.DiebytheSword, ret => SG.Instance.Fury.CheckDiebytheSword && Me.HealthPercent <= SG.Instance.Fury.CheckDiebytheSwordNum),
+                Spell.Cast(SB.EnragedRegeneration, ret => G.ErTalent && SG.Instance.Fury.CheckEnragedRegen && Me.HealthPercent <= SG.Instance.Fury.CheckEnragedRegenNum),
+                Spell.Cast(SB.ShieldWall, ret => SG.Instance.Fury.CheckShieldWall && Me.HealthPercent <= SG.Instance.Fury.CheckShieldWallNum),
+                Spell.Cast(SB.SpellReflection, ret => SG.Instance.Fury.CheckSpellReflect && Me.CurrentTarget != null && G.TargettingMe && Me.CurrentTarget.IsCasting),
+                I.FuryUseHealthStone()
+                );
         }
 
         internal static Composite Dev_FuryNonGcdUtility()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Fury.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
+                Spell.Cast(SB.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (SG.Instance.Fury.HamString == Enum.Hamstring.Always || SG.Instance.Fury.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
+                Spell.Cast(SB.MassSpellReflection, ret => G.MrTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && MassSpellReflectionUsage),
+                Spell.Cast(SB.PiercingHowl, ret => G.PhTalent && SG.Instance.Fury.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum),
+                Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
+                Spell.Cast(SB.StaggeringShout, ret => G.SsTalent && SG.Instance.Fury.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= SG.Instance.Fury.CheckPiercingHowlNum)
+                );
         }
         #endregion
 
@@ -227,7 +303,7 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30), // Also in Dev_FuryHeroicStrike().
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= 30), // Also in Rel_FuryHeroicStrike().
 
                         Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4.
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added - Inside CS window.
@@ -244,7 +320,7 @@ namespace FuryUnleashed.Routines
 
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
-                        Spell.Cast(SB.HeroicStrike, ret => G.CSCD >= 3000 && ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 5))), // Also in Dev_FuryHeroicStrike().
+                        Spell.Cast(SB.HeroicStrike, ret => G.CSCD >= 3000 && ((G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UrGlyph && Me.CurrentRage >= Me.MaxRage - 5))), // Also in Rel_FuryHeroicStrike().
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow2S && G.CSCD >= 3000),
                         Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura),
                         Spell.Cast(SB.RagingBlow, ret => G.RagingBlow1S && G.CSCD >= 3000),
@@ -254,7 +330,7 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CSCD >= 6000 && Tier4AbilityUsage),
                         Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
                         Spell.Cast(SB.WildStrike, ret => !G.BloodsurgeAura && G.CSCD >= 3000 && Me.CurrentRage >= 90),
-                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage), // Also in Dev_FuryHeroicStrike().
+                        Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage), // Also in Rel_FuryHeroicStrike().
                         Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IVOC && SG.Instance.Fury.CheckRotImpVic), // Added for the sake of supporting it rotational.
                         Spell.Cast(SB.HeroicThrow, ret => SG.Instance.Fury.CheckHeroicThrow) // Added for the sake of supporting it rotational.
                         )));
@@ -356,8 +432,8 @@ namespace FuryUnleashed.Routines
                         Spell.Cast(SB.RagingBlow, ret => G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Cleave, ret => Me.CurrentRage > Me.MaxRage - 10),
                         new PrioritySelector(
-                            new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
-                            new Decorator(ret => G.NormalPhase, Dev_FurySt()))
+                            new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
+                            new Decorator(ret => G.NormalPhase, Rel_FurySt()))
                         )));
         }
 
@@ -507,7 +583,7 @@ namespace FuryUnleashed.Routines
         {
             get
             {
-                return ((G.BloodbathAura || G.AvTalent || G.SbTalent) || (G.ReadinessAura));
+                return (G.BloodbathAura || !G.BbTalent || G.ReadinessAura);
             }
         }
         #endregion
