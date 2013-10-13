@@ -73,28 +73,28 @@ namespace FuryUnleashed.Shared.Helpers
 
         public static void CombatLogO(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
             Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogF(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
             Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogG(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
             Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogP(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
             Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
