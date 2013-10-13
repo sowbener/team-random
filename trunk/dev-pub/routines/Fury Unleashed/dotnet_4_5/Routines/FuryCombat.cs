@@ -306,7 +306,7 @@ namespace FuryUnleashed.Routines
                 //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
                 Spell.Cast(SB.Avatar, ret => G.AvTalent && G.RecklessnessAura && Tier6AbilityUsage),
                 //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
-                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && SkullBannerUsage && (G.RecklessnessAura || ((G.CSCD < 2000 || G.ColossusSmashAuraT) && G.ReadinessAura))),
+                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && SkullBannerUsage && (G.RecklessnessAura || ((G.CSCD < 2000 || G.ColossusSmashAura) && G.ReadinessAura))),
                 //actions+=/berserker_rage,if=buff.enrage.remains<1&cooldown.bloodthirst.remains>1
                 Spell.Cast(SB.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(1000) && G.BTCD > 1000) && BerserkerRageUsage),
                 //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
