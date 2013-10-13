@@ -235,9 +235,9 @@ namespace FuryUnleashed.Routines
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16), // Added T16 P4
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
                         Spell.Cast(SB.MortalStrike), // Trying this for rage.
                         Spell.Cast(SB.Slam),
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added.
                         Spell.Cast(SB.Overpower, ret => G.SLOC && G.MSOC),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
                 // Outside Colossus Smash window

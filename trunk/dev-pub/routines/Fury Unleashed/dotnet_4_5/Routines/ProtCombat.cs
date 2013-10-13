@@ -262,7 +262,7 @@ namespace FuryUnleashed.Routines
                 Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Protection.CheckDemoBannerNum),
                 Spell.Cast(SB.BerserkerRage, ret => !G.EnrageAura && BerserkerRageUsage),
                 Spell.Cast(SB.Taunt, ret => SG.Instance.Protection.CheckAutoTaunt && !G.TargettingMe),
-                Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura)
+                Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && SG.Instance.Protection.CheckRallyingCry)
                 );
         }
         #endregion
@@ -373,7 +373,7 @@ namespace FuryUnleashed.Routines
                     (SG.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (SG.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Rallying Cry", ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura),
+                Spell.Cast("Rallying Cry", ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && SG.Instance.Protection.CheckRallyingCry),
                 Spell.CastOnGround("Demoralizing Banner", loc => Me.Location, ret => SH.Instance.DemoBannerChoice == Keys.None && SG.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= SG.Instance.Protection.CheckDemoBannerNum && U.IsDoNotUseOnTgt)
                 );
         }
