@@ -61,7 +61,7 @@ namespace AntiAfk
                 {
                     if (!AntiAfkSettings.Instance.AntiAfkGinfo)
                     {
-                        AfkLogging("[AntiAFK] Time elapsed - Jumping!");
+                        AfkLogging("[AntiAFK] Time elapsed - Using key!");
                         KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
                         ReleaseTimer(50);
                     }
