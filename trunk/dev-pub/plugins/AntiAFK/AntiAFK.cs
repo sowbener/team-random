@@ -92,7 +92,7 @@ namespace AntiAfk
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            KeyboardManager.ReleaseKey((Char)Keys.Space);
+            KeyboardManager.ReleaseKey((Char)Settings.AntiAfkKey);
             AntiAfkStopwatch.Reset();
         }
 
