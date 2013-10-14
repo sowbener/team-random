@@ -26,7 +26,7 @@ namespace AntiAfk
         public override bool WantButton { get { return true; } }
 
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
-        private static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
+        public static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
         private static readonly AntiAfkSettings Settings = new AntiAfkSettings();
         private static Timer _antiafktimer;
 
@@ -43,6 +43,8 @@ namespace AntiAfk
         public override void Initialize()
         {
             AfkLogging("[AntiAFK] Loaded - Pulse every {0} miliseconds.", Settings.AntiAfkTime);
+            AfkLogging("[AntiAFK] Loaded - Selected key is {0}.", Settings.AntiAfkKey);
+            AfkLogging("[AntiAFK] Loaded - Using /GINFO is {0}.", Settings.AntiAfkGinfo);
         }
 
         public override void Pulse()
