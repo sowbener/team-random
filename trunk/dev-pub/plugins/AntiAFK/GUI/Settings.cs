@@ -29,5 +29,8 @@ namespace AntiAfk.GUI
 
         [Setting, DefaultValue(180000)]
         public int AntiAfkTime { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool AntiAfkGinfo { get; set; }
     }
 }

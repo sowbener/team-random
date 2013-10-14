@@ -34,7 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.savebutton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.ginfocheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.msnumeric)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,24 +109,23 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Or let the plugin type /ginfo";
             // 
-            // checkBox1
+            // ginfocheckbox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(15, 69);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(167, 20);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Use /GINFO instead of key";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.ginfocheckbox.AutoSize = true;
+            this.ginfocheckbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ginfocheckbox.Location = new System.Drawing.Point(15, 69);
+            this.ginfocheckbox.Name = "ginfocheckbox";
+            this.ginfocheckbox.Size = new System.Drawing.Size(167, 20);
+            this.ginfocheckbox.TabIndex = 6;
+            this.ginfocheckbox.Text = "Use /GINFO instead of key";
+            this.ginfocheckbox.UseVisualStyleBackColor = true;
             // 
             // AntiAfkGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(219, 186);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.ginfocheckbox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.savebutton);
             this.Controls.Add(this.label2);
@@ -149,6 +148,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button savebutton;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox ginfocheckbox;
     }
 }

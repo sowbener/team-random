@@ -3,12 +3,17 @@ using Styx;
 using Styx.Common;
 using Styx.Helpers;
 using Styx.Plugins;
+using Styx.TreeSharp;
+using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Action = Styx.TreeSharp.Action;
 using Timer = System.Timers.Timer;
 
 namespace AntiAfk
@@ -52,9 +57,18 @@ namespace AntiAfk
                 AntiAfkStopwatch.Start();
                 if (AntiAfkStopwatch.Elapsed.TotalMilliseconds > Settings.AntiAfkTime)
                 {
-                    AfkLogging("[AntiAFK] Time elapsed - Jumping!");
-                    KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
-                    ReleaseTimer(50);
+                    if (!AntiAfkSettings.Instance.AntiAfkGinfo)
+                    {
+                        AfkLogging("[AntiAFK] Time elapsed - Jumping!");
+                        KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
+                        ReleaseTimer(50);
+                    }
+                    else
+                    {
+                        AfkLogging("[AntiAFK] Time elapsed - Using /GINFO!");
+                        RunMacroText("/GINFO", ret => true);
+                        AntiAfkStopwatch.Reset();                   
+                    }
                 }
             }
             catch (Exception ex)
@@ -80,6 +94,20 @@ namespace AntiAfk
         {
             KeyboardManager.ReleaseKey((Char)Keys.Space);
             AntiAfkStopwatch.Reset();
+        }
+
+        public static string RealLuaEscape(string luastring)
+        {
+            var bytes = Encoding.UTF8.GetBytes(luastring);
+            return bytes.Aggregate(String.Empty, (current, b) => current + ("\\" + b));
+        }
+
+        public static Composite RunMacroText(string macro, CanRunDecoratorDelegate cond)
+        {
+            return new Decorator(
+                       cond,
+                       new PrioritySelector(
+                           new Action(a => Lua.DoString("RunMacroText(\"" + RealLuaEscape(macro) + "\")"))));
         }
     }
 }
