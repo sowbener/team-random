@@ -36,9 +36,20 @@ namespace AntiAfk
 
         public override void Initialize()
         {
-            AfkLogging("[AntiAFK] Loaded - Pulse every {0} miliseconds.", Settings.AntiAfkTime);
-            AfkLogging("[AntiAFK] Loaded - Selected key is {0}.", Settings.AntiAfkKey);
-            AfkLogging("[AntiAFK] Loaded - Using /GINFO is {0}.", Settings.AntiAfkGinfo);
+            try
+            {
+                AntiAfkSettings.Instance.Load();
+                GlobalSettings.Instance.LogoutForInactivity = false;
+
+                AfkLogging("[AntiAFK] Loaded - Pulse every {0} miliseconds.", Settings.AntiAfkTime);
+                AfkLogging("[AntiAFK] Loaded - Selected key is {0}.", Settings.AntiAfkKey);
+                AfkLogging("[AntiAFK] Loaded - Using /GINFO is {0}.", Settings.AntiAfkGinfo);
+            }
+            catch (Exception exinfo)
+            {
+                AfkLogging("[AntiAFK] Error - {0}", exinfo);
+            }
+
         }
 
         public override void Pulse()
