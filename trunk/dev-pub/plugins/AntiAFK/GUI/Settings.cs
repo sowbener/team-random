@@ -1,6 +1,7 @@
 ﻿using Styx;
 using Styx.Common;
 using Styx.Helpers;
+using System.Windows.Forms;
 
 namespace AntiAfk.GUI
 {
@@ -22,6 +23,9 @@ namespace AntiAfk.GUI
         {
             get { return _instance ?? (_instance = new AntiAfkSettings()); }
         }
+
+        [Setting, DefaultValue(Keys.Space)]
+        public Keys AntiAfkKey { get; set; }
 
         [Setting, DefaultValue(180000)]
         public int AntiAfkTime { get; set; }

@@ -32,7 +32,7 @@ namespace AntiAfk
 
         public override void OnButtonPress()
         {
-            new AntiAFKGui().ShowDialog();
+            new AntiAfkGui().ShowDialog();
         }
 
         public override void Initialize()
@@ -52,7 +52,8 @@ namespace AntiAfk
                 AntiAfkStopwatch.Start();
                 if (AntiAfkStopwatch.Elapsed.TotalMilliseconds > Settings.AntiAfkTime)
                 {
-                    KeyboardManager.PressKey((Char)Keys.Space);
+                    AfkLogging("[AntiAFK] Time elapsed - Jumping!");
+                    KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
                     ReleaseTimer(50);
                 }
             }
@@ -64,8 +65,6 @@ namespace AntiAfk
 
         public static void AfkLogging(string message, params object[] args)
         {
-            if (message == null) 
-                return;
             Logging.Write(Colors.Magenta, "{0}", String.Format(message, args));
         }
 
@@ -80,7 +79,6 @@ namespace AntiAfk
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             KeyboardManager.ReleaseKey((Char)Keys.Space);
-            AfkLogging("[AntiAFK] Time elapsed - I jumped!");
             AntiAfkStopwatch.Reset();
         }
     }
