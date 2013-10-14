@@ -34,7 +34,7 @@ namespace AntiAfk.GUI
                 return;
             }
             item = (CboItem)cb.Items[0];
-            AntiAfk.AfkLogging("Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
+            AntiAfk.AfkLogging("[AntiAFK] Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
                           cb.Name, e, item.E);
             cb.SelectedIndex = 0;
         }
@@ -51,8 +51,9 @@ namespace AntiAfk.GUI
             AntiAfkSettings.Instance.Load();
 
             keydropdown.Items.Add(new CboItem((int)Keys.Space, "Space"));
-            keydropdown.Items.Add(new CboItem((int)Keys.Enter, "Enter"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Enter, "Enter/Return"));
 
+            msnumeric.Value = new decimal(AntiAfkSettings.Instance.AntiAfkTime);
             SetComboBoxEnum(keydropdown, (int)AntiAfkSettings.Instance.AntiAfkKey);
         }
 
@@ -61,9 +62,16 @@ namespace AntiAfk.GUI
             AntiAfkSettings.Instance.AntiAfkKey = (Keys)GetComboBoxEnum(keydropdown);
         }
 
+        private void msnumeric_ValueChanged(object sender, EventArgs e)
+        {
+            AntiAfkSettings.Instance.AntiAfkTime = (int)msnumeric.Value;
+        }
+
         private void savebutton_Click(object sender, EventArgs e)
         {
             AntiAfkSettings.Instance.Save();
+            AntiAfk.AfkLogging("[AntiAFK] Settings are saved!");
+            Close();
         }
     }
 }
