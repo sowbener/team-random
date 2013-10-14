@@ -77,7 +77,6 @@ namespace AntiAfk.GUI
         {
             AntiAfkSettings.Instance.Save();
             AntiAfk.AfkLogging("[AntiAFK] Settings are saved!");
-            AntiAfk.AntiAfkStopwatch.Stop();
             Close();
         }
     }
