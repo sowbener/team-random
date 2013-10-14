@@ -66,7 +66,7 @@ namespace AntiAfk
                     else
                     {
                         AfkLogging("[AntiAFK] Time elapsed - Using /GINFO!");
-                        RunMacroText("/GINFO", ret => true);
+                        RunMacroText("/ginfo", ret => true);
                         AntiAfkStopwatch.Reset();                   
                     }
                 }
@@ -104,8 +104,7 @@ namespace AntiAfk
 
         public static Composite RunMacroText(string macro, CanRunDecoratorDelegate cond)
         {
-            return new Decorator(
-                       cond,
+            return new Decorator(cond,
                        new PrioritySelector(
                            new Action(a => Lua.DoString("RunMacroText(\"" + RealLuaEscape(macro) + "\")"))));
         }
