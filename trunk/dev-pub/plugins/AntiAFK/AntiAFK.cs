@@ -3,17 +3,11 @@ using Styx;
 using Styx.Common;
 using Styx.Helpers;
 using Styx.Plugins;
-using Styx.TreeSharp;
-using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Timers;
-using System.Windows.Forms;
 using System.Windows.Media;
-using Action = Styx.TreeSharp.Action;
 using Timer = System.Timers.Timer;
 
 namespace AntiAfk
@@ -68,7 +62,7 @@ namespace AntiAfk
                     else
                     {
                         AfkLogging("[AntiAFK] Time elapsed - Using /GINFO!");
-                        RunMacroText("/ginfo", ret => true);
+                        //TODO: Make this.
                         AntiAfkStopwatch.Reset();                   
                     }
                 }
@@ -96,19 +90,6 @@ namespace AntiAfk
         {
             KeyboardManager.ReleaseKey((Char)Settings.AntiAfkKey);
             AntiAfkStopwatch.Reset();
-        }
-
-        public static string RealLuaEscape(string luastring)
-        {
-            var bytes = Encoding.UTF8.GetBytes(luastring);
-            return bytes.Aggregate(String.Empty, (current, b) => current + ("\\" + b));
-        }
-
-        public static Composite RunMacroText(string macro, CanRunDecoratorDelegate cond)
-        {
-            return new Decorator(cond,
-                       new PrioritySelector(
-                           new Action(a => Lua.DoString("RunMacroText(\"" + RealLuaEscape(macro) + "\")"))));
         }
     }
 }
