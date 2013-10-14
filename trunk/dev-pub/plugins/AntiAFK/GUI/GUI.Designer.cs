@@ -119,6 +119,7 @@
             this.ginfocheckbox.TabIndex = 6;
             this.ginfocheckbox.Text = "Use /GINFO instead of key";
             this.ginfocheckbox.UseVisualStyleBackColor = true;
+            this.ginfocheckbox.CheckedChanged += new System.EventHandler(this.ginfocheckbox_CheckedChanged);
             // 
             // AntiAfkGui
             // 

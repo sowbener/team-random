@@ -53,13 +53,19 @@ namespace AntiAfk.GUI
             keydropdown.Items.Add(new CboItem((int)Keys.Space, "Space"));
             keydropdown.Items.Add(new CboItem((int)Keys.Enter, "Enter/Return"));
 
-            msnumeric.Value = new decimal(AntiAfkSettings.Instance.AntiAfkTime);
             SetComboBoxEnum(keydropdown, (int)AntiAfkSettings.Instance.AntiAfkKey);
+            ginfocheckbox.Checked = AntiAfkSettings.Instance.AntiAfkGinfo;
+            msnumeric.Value = new decimal(AntiAfkSettings.Instance.AntiAfkTime);
         }
 
         private void keydropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             AntiAfkSettings.Instance.AntiAfkKey = (Keys)GetComboBoxEnum(keydropdown);
+        }
+
+        private void ginfocheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AntiAfkSettings.Instance.AntiAfkGinfo = ginfocheckbox.Checked;
         }
 
         private void msnumeric_ValueChanged(object sender, EventArgs e)
