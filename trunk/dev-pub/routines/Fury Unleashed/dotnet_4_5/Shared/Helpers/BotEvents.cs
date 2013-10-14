@@ -12,7 +12,7 @@ namespace FuryUnleashed.Shared.Helpers
                 return;
             HotKeyManager.RegisterKeys();
             LuaClass.DisableClickToMove();
-            Logger.DiagLogW("Fury Unleashed: Started! (OnBotStarted)");
+            Logger.DiagLogPu("Fury Unleashed: Started! (OnBotStarted)");
         }
 
         public static void OnBotStopped(EventArgs args)
@@ -21,7 +21,7 @@ namespace FuryUnleashed.Shared.Helpers
                 return;
             HotKeyManager.RemoveAllKeys();
             LuaClass.EnableClickToMove();
-            Logger.DiagLogW("Fury Unleashed: Stopped! (OnBotStopped)");
+            Logger.DiagLogPu("Fury Unleashed: Stopped! (OnBotStopped)");
         }
 
         public static void OnBotChanged(EventArgs args)
@@ -30,7 +30,7 @@ namespace FuryUnleashed.Shared.Helpers
                 return;
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
-            Logger.DiagLogW("Fury Unleashed: Started! (OnBotChanged)");
+            Logger.DiagLogPu("Fury Unleashed: Started! (OnBotChanged)");
         }
     }
 }

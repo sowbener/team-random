@@ -73,21 +73,21 @@ namespace FuryUnleashed.Routines
                     {
                         SpellManager.Cast("Heroic Leap");
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
-                        Logger.CombatLogP("Casting: Heroic Leap - On Mousecursor Location");
+                        Logger.CombatLogPu("Casting: Heroic Leap - On Mousecursor Location");
                     })),
                 new Decorator(ret => HK.IsKeyDown(SH.Instance.DemoBannerChoice),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Demoralizing Banner");
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
-                        Logger.CombatLogP("Casting: Demoralizing Banner - On Mousecursor Location");
+                        Logger.CombatLogPu("Casting: Demoralizing Banner - On Mousecursor Location");
                     })),
                 new Decorator(ret => HK.IsKeyDown(SH.Instance.MockingBannerChoice),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Mocking Banner");
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
-                        Logger.CombatLogP("Casting: Mocking Banner - On Mousecursor Location");
+                        Logger.CombatLogPu("Casting: Mocking Banner - On Mousecursor Location");
                     })));
         }
 

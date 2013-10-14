@@ -19,7 +19,7 @@ namespace FuryUnleashed.Shared.Managers
 
         private static void LogKey(string kType, Keys kValue, ModifierKeys kModifier, bool kResult)
         {
-            Logger.DiagLogW("{0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
+            Logger.DiagLogPu("{0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
         }
 
         /* Keystates - One press with Spell Queueing */
@@ -97,7 +97,7 @@ namespace FuryUnleashed.Shared.Managers
                             : @"print('Shield Block \124cFF15E61C Enabled!')");
                 });
 
-                Logger.DiagLogP("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
+                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
@@ -112,7 +112,7 @@ namespace FuryUnleashed.Shared.Managers
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
             HotkeysManager.Unregister("Special");
-            Logger.DiagLogW("Fury Unleashed: Hotkeys removed!");
+            Logger.DiagLogPu("Fury Unleashed: Hotkeys removed!");
         }
     }
 }

@@ -21,7 +21,7 @@ namespace FuryUnleashed.Shared.Utilities
 
                 if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
-                    Helpers.Logger.AdvancedLogW("[TreePerformance] Elapsed Time to traverse Tree: {0} ms", TreePerformanceTimer.ElapsedMilliseconds);
+                    Helpers.Logger.CombatLogWh("[TreePerformance] Elapsed Time to traverse Tree: {0} ms", TreePerformanceTimer.ElapsedMilliseconds);
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
                 }
@@ -45,7 +45,7 @@ namespace FuryUnleashed.Shared.Utilities
                 new Action(delegate
                 {
                     CompositePerformanceTimer.Stop();
-                    Helpers.Logger.AdvancedLogW("[CompositePerformance] {0} took {1} ms", name, CompositePerformanceTimer.ElapsedMilliseconds);
+                    Helpers.Logger.CombatLogWh("[CompositePerformance] {0} took {1} ms", name, CompositePerformanceTimer.ElapsedMilliseconds);
                     return RunStatus.Success;
                 }));
         }

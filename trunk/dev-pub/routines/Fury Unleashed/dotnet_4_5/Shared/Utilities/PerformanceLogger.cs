@@ -34,7 +34,7 @@ namespace FuryUnleashed.Shared.Utilities
                     _stopwatch.Stop();
                     if (_stopwatch.Elapsed.TotalMilliseconds > 1)
                     {
-                        Helpers.Logger.InitLogF("[Performance] Execution of the block {0} took {1:00.00}ms.", _blockName,
+                        Helpers.Logger.CombatLogWh("[Performance] Execution of the block {0} took {1:00.00}ms.", _blockName,
                                       _stopwatch.Elapsed.TotalMilliseconds);
                     }
                 }

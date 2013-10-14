@@ -54,7 +54,7 @@ namespace FuryUnleashed
             }
             catch (Exception exception)
             {
-                Logger.AdvancedLogP("FU: Exception thrown at Initialize - {0}", new object[] { exception.ToString() });
+                Logger.DiagLogPu("FU: Exception thrown at Initialize - {0}", new object[] { exception.ToString() });
             }
         }
 
@@ -86,15 +86,15 @@ namespace FuryUnleashed
         #region Internals
         internal void Unleash()
         {
-            Logger.InitLogW("------------------------------------------");
-            Logger.InitLogF(Name + " by nomnomnom & alxaw.");
-            Logger.InitLogO("Internal Revision: " + Revision + ".");
-            Logger.InitLogO("Supported World of Warcraft version: " + WoWVersion + ".");
-            Logger.InitLogO("Support will be handled via the HB Forums.");
-            Logger.InitLogO("Thanks list is available in the topic!");
-            Logger.InitLogO("\r\n");
-            Logger.InitLogO("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
-            Logger.InitLogW("-------------------------------------------\r\n");
+            Logger.CombatLogWh("------------------------------------------");
+            Logger.CombatLogFb(Name + " by nomnomnom & alxaw.");
+            Logger.CombatLogOr("Internal Revision: " + Revision + ".");
+            Logger.CombatLogOr("Supported World of Warcraft version: " + WoWVersion + ".");
+            Logger.CombatLogOr("Support will be handled via the HB Forums.");
+            Logger.CombatLogOr("Thanks list is available in the topic!");
+            Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
+            Logger.CombatLogWh("-------------------------------------------\r\n");
 
             /* Update TalentManager */
             try { TalentManager.Update(); }
@@ -109,7 +109,7 @@ namespace FuryUnleashed
             PreBuffSelector();
             CombatSelector();
 
-            Logger.InitLogO("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
+            Logger.CombatLogOr("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
         }
 
         internal Composite PreBuffSelector()
@@ -130,7 +130,7 @@ namespace FuryUnleashed
 
         internal static void StopBot(string reason)
         {
-            Logger.InitLogW(reason);
+            Logger.CombatLogWh(reason);
             TreeRoot.Stop();
         }
         #endregion

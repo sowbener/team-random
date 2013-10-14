@@ -78,7 +78,7 @@
     <Compile Include="Interfaces\Settings\ProtSettings.cs" />
     <Compile Include="Interfaces\Settings\ArmsSettings.cs" />
     <Compile Include="Interfaces\Settings\FurySettings.cs" />
-    <Compile Include="Shared\Helpers\Updater.cs" />
+    <Compile Include="Shared\Managers\UpdateManager.cs" />
     <Compile Include="Shared\Managers\TalentManager.cs" />
     <Compile Include="Shared\Managers\HotKeyManager.cs" />
     <Compile Include="Routines\ArmsCombat.cs" />

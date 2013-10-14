@@ -70,7 +70,7 @@ namespace FuryUnleashed.Shared.Helpers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogW("FU: {0} - GetFps()", ex);
+                Logger.DiagLogWh("FU: {0} - GetFps()", ex);
             }
             return 0;
         }

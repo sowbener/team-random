@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using FuryUnleashed.Interfaces.Settings;
+﻿using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Shared.Helpers;
 using FuryUnleashed.Shared.Managers;
 using Styx;
@@ -43,7 +42,7 @@ namespace FuryUnleashed.Interfaces.GUI
                 return;
             }
             item = (Enum.FuCboItem)cb.Items[0];
-            Logger.DiagLogW("Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
+            Logger.DiagLogPu("Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
                           cb.Name, e, item.E);
             cb.SelectedIndex = 0;
         }
@@ -553,7 +552,7 @@ namespace FuryUnleashed.Interfaces.GUI
             {
                 ((Styx.Helpers.Settings)SpecGrid.SelectedObject).Save();
             }
-            Logger.InitLogO("Settings for Fury Unleashed saved!");
+            Logger.CombatLogOr("Settings for Fury Unleashed saved!");
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             Logger.LogTimer(2000);

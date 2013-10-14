@@ -21,82 +21,151 @@ namespace FuryUnleashed.Shared.Helpers
 {
     static class Logger
     {
-        public static void WriteFileLog(string message, params object[] args)
-        {
-            if (message == null) return;
-            WriteFile("{0}", String.Format(message, args));
-        }
+        private static string _lastCombatmsg;
 
-        public static void AdvancedLogP(string message, params object[] args)
+        // Combatlogging.
+        public static void CombatLogFb(string message, params object[] args)
         {
-            if (message == null) return;
-            Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
-        }
-
-        public static void AdvancedLogW(string message, params object[] args)
-        {
-            if (message == null) return;
-            Logging.Write(Colors.White, "{0}", String.Format(message, args));
-        }
-
-        public static void InitLogF(string message, params object[] args)
-        {
-            if (message == null) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
             Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
+            _lastCombatmsg = message;
         }
 
-        public static void InitLogO(string message, params object[] args)
+        public static void CombatLogLg(string message, params object[] args)
         {
-            if (message == null) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
+            _lastCombatmsg = message;
+        }
+
+        public static void CombatLogOr(string message, params object[] args)
+        {
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
             Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
+            _lastCombatmsg = message;
         }
 
-        public static void InitLogW(string message, params object[] args)
+        public static void CombatLogPu(string message, params object[] args)
         {
-            if (message == null) return;
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
+            _lastCombatmsg = message;
+        }
+
+        public static void CombatLogWh(string message, params object[] args)
+        {
+            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
             Logging.Write(Colors.White, "{0}", String.Format(message, args));
+            _lastCombatmsg = message;
         }
 
-        public static void DiagLogW(string message, params object[] args)
+        // Debuglogging.
+        public static void DiagLogFb(string message, params object[] args)
         {
             if (message == null) return;
-            Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
+            Logging.WriteDiagnostic(Colors.Firebrick, "{0}", String.Format(message, args));
         }
 
-        public static void DiagLogP(string message, params object[] args)
+        public static void DiagLogLg(string message, params object[] args)
+        {
+            if (message == null) return;
+            Logging.WriteDiagnostic(Colors.LimeGreen, "{0}", String.Format(message, args));
+        }
+
+        public static void DiagLogOr(string message, params object[] args)
+        {
+            if (message == null) return;
+            Logging.WriteDiagnostic(Colors.Orange, "{0}", String.Format(message, args));
+        }
+
+        public static void DiagLogPu(string message, params object[] args)
         {
             if (message == null) return;
             Logging.WriteDiagnostic(Colors.MediumPurple, "{0}", String.Format(message, args));
         }
 
-        private static string _lastCombatmsg;
-
-        public static void CombatLogO(string message, params object[] args)
+        public static void DiagLogWh(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-            Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
-            _lastCombatmsg = message;
+            if (message == null) return;
+            Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
         }
 
-        public static void CombatLogF(string message, params object[] args)
-        {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-            Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
-            _lastCombatmsg = message;
-        }
+        //public static void AdvancedLogP(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
+        //}
 
-        public static void CombatLogG(string message, params object[] args)
-        {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-            Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
-            _lastCombatmsg = message;
-        }
+        //public static void AdvancedLogW(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.Write(Colors.White, "{0}", String.Format(message, args));
+        //}
 
-        public static void CombatLogP(string message, params object[] args)
+        //public static void InitLogF(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
+        //}
+
+        //public static void InitLogO(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
+        //}
+
+        //public static void InitLogW(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.Write(Colors.White, "{0}", String.Format(message, args));
+        //}
+
+        //public static void DiagLogW(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
+        //}
+
+        //public static void DiagLogP(string message, params object[] args)
+        //{
+        //    if (message == null) return;
+        //    Logging.WriteDiagnostic(Colors.MediumPurple, "{0}", String.Format(message, args));
+        //}
+
+        //private static string _lastCombatmsg;
+
+        //public static void CombatLogO(string message, params object[] args)
+        //{
+        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
+        //    Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
+        //    _lastCombatmsg = message;
+        //}
+
+        //public static void CombatLogF(string message, params object[] args)
+        //{
+        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
+        //    Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
+        //    _lastCombatmsg = message;
+        //}
+
+        //public static void CombatLogG(string message, params object[] args)
+        //{
+        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
+        //    Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
+        //    _lastCombatmsg = message;
+        //}
+
+        //public static void CombatLogP(string message, params object[] args)
+        //{
+        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
+        //    Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
+        //    _lastCombatmsg = message;
+        //}
+
+        public static void WriteFileLog(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-            Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
-            _lastCombatmsg = message;
+            if (message == null) return;
+            WriteFile("{0}", String.Format(message, args));
         }
 
         public static void WriteInfoToLogFile()
@@ -180,7 +249,7 @@ namespace FuryUnleashed.Shared.Helpers
                 {
                     Parallel.Invoke(
                         () => new WebClient().DownloadData("http://c.statcounter.com/9163286/0/396c7d29/1/"),
-                        () => DiagLogW("FU: StatCounter has been updated!"));
+                        () => DiagLogWh("FU: StatCounter has been updated!"));
                     InternalSettings.Instance.General.LastStatCounted = statcounterDate;
                     InternalSettings.Instance.Save();
                 }
@@ -250,18 +319,17 @@ namespace FuryUnleashed.Shared.Helpers
                                 RunStatus.Failure,
                                 new Action(delegate
                                 {
-                                    AdvancedLogP("Cached Unit Counts:");
-                                    AdvancedLogW("Units - In Range (2Y - SlamCleave): {0}",
-                                        Unit.NearbySlamCleaveUnitsCount);
-                                    AdvancedLogW("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
-                                    AdvancedLogW("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
-                                    AdvancedLogW("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
-                                    AdvancedLogW("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
-                                    AdvancedLogW("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
-                                    AdvancedLogP("Units - Slam Viable: {0}", FuGlobal.SlamViable);
-                                    AdvancedLogP("Units - Whirlwind viable: {0}", FuGlobal.WhirlwindViable);
+                                    CombatLogPu("Cached Unit Counts:");
+                                    CombatLogWh("Units - In Range (2Y - SlamCleave): {0}",Unit.NearbySlamCleaveUnitsCount);
+                                    CombatLogWh("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
+                                    CombatLogWh("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
+                                    CombatLogWh("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
+                                    CombatLogWh("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
+                                    CombatLogWh("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
+                                    CombatLogPu("Units - Slam Viable: {0}", FuGlobal.SlamViable);
+                                    CombatLogPu("Units - Whirlwind viable: {0}", FuGlobal.WhirlwindViable);
                                 }
-                                    )))),
+                                )))),
                     // Cached Aura's Logging
                     new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
                         new PrioritySelector(
@@ -271,18 +339,18 @@ namespace FuryUnleashed.Shared.Helpers
                                 new Action(delegate
                                 {
                                     // ReSharper disable InconsistentNaming
-                                    AdvancedLogP("Cached Target Aura's:");
+                                    CombatLogPu("Cached Target Aura's:");
                                     foreach (var WoWAura in Spell.CachedTargetAuras)
                                     {
-                                        AdvancedLogW("{0}", WoWAura);
+                                        CombatLogWh("{0}", WoWAura);
                                     }
-                                    AdvancedLogP("Cached Self Aura's:");
+                                    CombatLogPu("Cached Self Aura's:");
                                     foreach (var WoWAura in Spell.CachedAuras)
                                     {
-                                        AdvancedLogW("{0}", WoWAura);
+                                        CombatLogWh("{0}", WoWAura);
                                     }
                                 }
-                                    )))),
+                                )))),
                     //Temporary Functions Logging
                     new Decorator(ret => InternalSettings.Instance.General.CheckTestLogging,
                         new PrioritySelector(
@@ -291,11 +359,11 @@ namespace FuryUnleashed.Shared.Helpers
                                 RunStatus.Failure,
                                 new Action(delegate
                                 {
-                                    AdvancedLogP("Test Logging:");
-                                    AdvancedLogW("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
-                                    AdvancedLogW("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
+                                    CombatLogPu("Test Logging:");
+                                    CombatLogWh("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
+                                    CombatLogWh("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
                                 }
-                                    )))));
+                                )))));
             }
         }
         #endregion
