@@ -77,7 +77,6 @@ namespace Waldo.Routines
         {
             get
             {
-                WaLogger.InfoLog("ComboPoints: {0}", Me.ComboPoints);
                 return StyxWoW.Me.ComboPoints;
             }
         }
