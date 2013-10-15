@@ -16,11 +16,13 @@ using SH = Waldo.Interfaces.Settings.WaSettingsH;
 using Spell = Waldo.Core.WaSpell;
 using T = Waldo.Managers.WaTalentManager;
 
+
 namespace Waldo.Routines
 {
     class WaGlobal
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        internal static int? _anticipationCount;
 
         #region Global Used Composites
         internal static Composite InitializePreBuff
@@ -32,21 +34,52 @@ namespace Waldo.Routines
                     new Decorator(ret => Me.Specialization == WoWSpec.RogueAssassination && WaUnit.DefaultBuffCheck,
                         new PrioritySelector(
                     new Decorator(ret => SG.Instance.Assassination.CheckPoison, Poisons.CreateApplyPoisonsAss()))),
+                    new Decorator(ret => Me.Specialization == WoWSpec.RogueSubtlety,
+                        new PrioritySelector(
+                            Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura("Vanish")))),
                     new Decorator(ret => Me.Specialization == WoWSpec.RogueCombat && WaUnit.DefaultBuffCheck,
                         new PrioritySelector(
-                   new Decorator(ret => SG.Instance.Combat.CheckPoison, Poisons.CreateApplyPoisonsCom()))),
-                   new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }));
+                   new Decorator(ret => SG.Instance.Combat.CheckPoison, Poisons.CreateApplyPoisonsCom()))));
             }
         }
 
         #endregion
 
-        internal static Composite InitializeCaching()
+        internal static int AnticipationCount
         {
-            return new PrioritySelector(
-                new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; })
-                );
+            get
+            {
+                if (_anticipationCount.HasValue)
+                {
+                    return _anticipationCount.Value;
+                }
+
+                if (!HasAnticipation)
+                {
+                    _anticipationCount = 0;
+                    return _anticipationCount.Value;
+                }
+
+                _anticipationCount = Me.HasAura(115189)
+                                         ? (int)Me.GetAuraById(115189).StackCount
+                                         : 0;
+
+                return _anticipationCount.Value;
+            }
+        }
+
+        internal static bool HasAnticipation
+        {
+            get { return WaTalentManager.HasTalent(18); }
+        }
+
+        internal static int ComboPointsActive
+        {
+            get
+            {
+                WaLogger.InfoLog("ComboPoints: {0}", Me.ComboPoints);
+                return StyxWoW.Me.ComboPoints;
+            }
         }
 
         #region KeyActions

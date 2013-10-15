@@ -35,7 +35,6 @@ namespace Waldo.Routines
                     new Decorator(ret => (WaHotKeyManager.IsPaused || !WaUnit.DefaultCheck), new ActionAlwaysSucceed()),
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                         G.InitializeOnKeyActions(),
-                        G.InitializeCaching(),
                         Movement.MovingFacingBehavior(),
                         Movement.CreateMoveToLosBehavior(),
                         LowLevel());

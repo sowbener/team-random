@@ -306,6 +306,10 @@ namespace Waldo.Interfaces.GUI
                 case WoWSpec.RogueCombat:
                     selectSpec = WaSettings.Combat;
                     break;
+
+                case WoWSpec.RogueSubtlety:
+                    selectSpec = WaSettings.Subtlety;
+                    break;
             }
 
             if (selectSpec != null)

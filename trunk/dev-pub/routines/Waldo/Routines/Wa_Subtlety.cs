@@ -33,9 +33,9 @@ namespace Waldo.Routines
                     new Decorator(ret => SG.Instance.General.CheckTreePerformance,
                         WaLogger.TreePerformance("InitializeSub")),
                     new Decorator(ret => (WaHotKeyManager.IsPaused || !WaUnit.DefaultCheck), new ActionAlwaysSucceed()),
-                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                         G.InitializeOnKeyActions(),
-                        G.InitializeCaching(),
+                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                        new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),     
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
                        new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
                        new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
@@ -75,12 +75,11 @@ namespace Waldo.Routines
         static Composite SubSt()
         {
             return new PrioritySelector(
-                Spell.Cast("Premeditation", ret => Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 3 || AnticipationStacks < 3)),
-                Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura(108208) || Lua.PlayerPower < 90 && (Lua.PlayerComboPts < 5 || AnticipationStacks < 3)),
-                Spell.Cast("Vanish", ret => Lua.PlayerPower >= 50 && Lua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
-                new Decorator(ret => Lua.PlayerComboPts > 4 || G.Anticipate3stacks, Finishers()),
-                new Decorator(ret => (Me.HasAura(115189) && AnticipationStacks < 4) && (G.SliceAndDiceSubGenerator || G.TargetHaveRupture4), ComboBuilders()),
-                new Decorator(ret => Lua.PlayerComboPts < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
+                Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && (G.ComboPointsActive < 3 || G.AnticipationCount < 3)),
+                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Me.CurrentEnergy < 90 && (G.ComboPointsActive < 5 || G.AnticipationCount < 3)),
+                Spell.Cast("Vanish", ret => Me.CurrentEnergy <= 75 && Me.ComboPoints <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),                  
+                new Decorator(ret => Me.ComboPoints > 4 || G.AnticipationCount > 4 || (Me.ComboPoints > 2 && G.AnticipationCount < 4), Finishers()),
+                new Decorator(ret => G.ComboPointsActive < 4 || Me.CurrentEnergy > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
 
           
@@ -91,10 +90,10 @@ namespace Waldo.Routines
         static Composite ComboBuilders()
         {
             return new PrioritySelector(
-            new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
+            new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Me.CurrentEnergy < 80 || Me.CurrentEnergy < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling || !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
-            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Shadow Dance") || !Me.HasAura("Vanish"))),
+            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Stealth") || !Me.HasAura("Shadow Dance"))),
             Pooling());
         }
         

@@ -31,10 +31,11 @@ namespace Waldo.Routines
                 return new PrioritySelector(
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, WaLogger.TreePerformance("InitializeCom")),
                         new Decorator(ret => (WaHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                        new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),     
                         Spell.Cast("Blade Flurry", ret => U.AttackableMeleeUnitsCount > 1),
                         new Decorator(a => U.AttackableMeleeUnitsCount < 8, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
                         new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
-                        G.InitializeCaching(),
                         new Decorator(ret => !SG.Instance.Combat.PvPRotationCheck && SH.Instance.ModeSelection == WaEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),

@@ -23,6 +23,7 @@ using S = Waldo.Routines.WaSubtlety;
 using G = Waldo.Routines.WaGlobal;
 using Movement = Waldo.Helpers.Movement;
 using Spell = Waldo.Core.WaSpell;
+using Waldo.Core;
 using System.Reflection;
 using System.Text;
 using System.IO;
@@ -81,6 +82,7 @@ namespace Waldo
             {
                 // Double cast shit
                 Spell.PulseDoubleCastEntries();
+
 
             }
             catch (Exception e)
