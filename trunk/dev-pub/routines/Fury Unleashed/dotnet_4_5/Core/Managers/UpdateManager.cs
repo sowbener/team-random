@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Shared.Helpers;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
-namespace FuryUnleashed.Shared.Managers
+namespace FuryUnleashed.Core.Managers
 {
     internal static class Updater
     {

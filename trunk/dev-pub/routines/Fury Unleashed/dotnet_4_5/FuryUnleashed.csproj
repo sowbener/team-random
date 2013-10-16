@@ -58,19 +58,19 @@
     <Compile Include="Core\Spell.cs" />
     <Compile Include="Core\Unit.cs" />
     <Compile Include="FuryUnleashed.cs" />
-    <Compile Include="Shared\Helpers\BotEvents.cs" />
-    <Compile Include="Shared\Helpers\SpellBook.cs" />
-    <Compile Include="Shared\Helpers\Throttle.cs" />
-    <Compile Include="Shared\Helpers\Enum.cs" />
-    <Compile Include="Shared\Helpers\Logger.cs" />
+    <Compile Include="Core\Helpers\BotEvents.cs" />
+    <Compile Include="Core\Helpers\SpellBook.cs" />
+    <Compile Include="Core\Helpers\Throttle.cs" />
+    <Compile Include="Core\Helpers\Enum.cs" />
+    <Compile Include="Core\Utilities\Logger.cs" />
     <Compile Include="Interfaces\GUI\Interface.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Interfaces\GUI\Interface.Designer.cs">
       <DependentUpon>Interface.cs</DependentUpon>
     </Compile>
-    <Compile Include="Shared\Helpers\Hashsets.cs" />
-    <Compile Include="Shared\Helpers\Lua.cs" />
+    <Compile Include="Core\Helpers\Hashsets.cs" />
+    <Compile Include="Core\Helpers\Lua.cs" />
     <Compile Include="Interfaces\GUI\GuiExtentions.cs" />
     <Compile Include="Interfaces\Settings\GeneralSettings.cs" />
     <Compile Include="Interfaces\Settings\HotkeysSettings.cs" />
@@ -78,15 +78,15 @@
     <Compile Include="Interfaces\Settings\ProtSettings.cs" />
     <Compile Include="Interfaces\Settings\ArmsSettings.cs" />
     <Compile Include="Interfaces\Settings\FurySettings.cs" />
-    <Compile Include="Shared\Managers\UpdateManager.cs" />
-    <Compile Include="Shared\Managers\TalentManager.cs" />
-    <Compile Include="Shared\Managers\HotKeyManager.cs" />
-    <Compile Include="Routines\ArmsCombat.cs" />
-    <Compile Include="Routines\FuryCombat.cs" />
-    <Compile Include="Routines\GlobalCombat.cs" />
-    <Compile Include="Routines\ProtCombat.cs" />
-    <Compile Include="Shared\Utilities\PerformanceLogger.cs" />
-    <Compile Include="Shared\Utilities\TreeSharp.cs" />
+    <Compile Include="Core\Managers\UpdateManager.cs" />
+    <Compile Include="Core\Managers\TalentManager.cs" />
+    <Compile Include="Core\Managers\HotKeyManager.cs" />
+    <Compile Include="Rotations\ArmsRotation.cs" />
+    <Compile Include="Rotations\FuryRotation.cs" />
+    <Compile Include="Rotations\Global.cs" />
+    <Compile Include="Rotations\ProtRotation.cs" />
+    <Compile Include="Core\Utilities\PerformanceLogger.cs" />
+    <Compile Include="Core\Utilities\TreeSharp.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interfaces\GUI\Interface.resx">

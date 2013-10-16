@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FuryUnleashed.Shared.Helpers
+﻿namespace FuryUnleashed.Core.Helpers
 {
     public abstract class SpellBook
     {

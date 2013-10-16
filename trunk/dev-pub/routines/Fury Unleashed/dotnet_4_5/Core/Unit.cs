@@ -1,7 +1,8 @@
-﻿using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Managers;
-using FuryUnleashed.Shared.Utilities;
+﻿using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations;
 using Styx;
 using Styx.CommonBot;
 using Styx.WoWInternals;
@@ -37,9 +38,9 @@ namespace FuryUnleashed.Core
             using (new PerformanceLogger("GetRaidMembersNeedCryCount"))
                 if (Me.CurrentTarget != null)
                     RaidMembersNeedCryCount = NearbyRaidMembers(StyxWoW.Me.Location, 30).Count(u => u.Combat && !u.HasAura(97462) && (
-                    (Routines.FuGlobal.IsArmsSpec && u.HealthPercent <= InternalSettings.Instance.Arms.CheckRallyingCryNum) ||
-                    (Routines.FuGlobal.IsFurySpec && u.HealthPercent <= InternalSettings.Instance.Fury.CheckRallyingCryNum) ||
-                    (Routines.FuGlobal.IsProtSpec && u.HealthPercent <= InternalSettings.Instance.Protection.CheckRallyingCryNum)
+                    (Global.IsArmsSpec && u.HealthPercent <= InternalSettings.Instance.Arms.CheckRallyingCryNum) ||
+                    (Global.IsFurySpec && u.HealthPercent <= InternalSettings.Instance.Fury.CheckRallyingCryNum) ||
+                    (Global.IsProtSpec && u.HealthPercent <= InternalSettings.Instance.Protection.CheckRallyingCryNum)
                     ));
         }
 

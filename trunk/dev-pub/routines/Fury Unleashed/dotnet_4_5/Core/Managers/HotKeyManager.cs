@@ -1,12 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Routines;
-using FuryUnleashed.Shared.Helpers;
+using FuryUnleashed.Rotations;
 using Styx.Common;
 using Styx.WoWInternals;
 
-namespace FuryUnleashed.Shared.Managers
+namespace FuryUnleashed.Core.Managers
 {
     internal static class HotKeyManager
     {
@@ -87,11 +88,11 @@ namespace FuryUnleashed.Shared.Managers
                 {
                     IsSpecial = !IsSpecial;
                     LogKey("Special", SettingsH.Instance.SpecialKeyChoice, SettingsH.Instance.ModKeyChoice, IsSpecial);
-                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && (FuGlobal.IsArmsSpec || FuGlobal.IsFurySpec))
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && (Global.IsArmsSpec || Global.IsFurySpec))
                         Lua.DoString(IsSpecial
                             ? @"print('Special \124cFF15E61C Enabled!')"
                             : @"print('Special \124cFFE61515 Disabled!')");
-                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && FuGlobal.IsProtSpec)
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && Global.IsProtSpec)
                         Lua.DoString(IsSpecial
                             ? @"print('Shield Barrier \124cFF15E61C Enabled!')"
                             : @"print('Shield Block \124cFF15E61C Enabled!')");

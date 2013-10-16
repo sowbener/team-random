@@ -1,4 +1,4 @@
-﻿using FuryUnleashed.Shared.Helpers;
+﻿using FuryUnleashed.Core.Helpers;
 using Styx.Helpers;
 using System.ComponentModel;
 

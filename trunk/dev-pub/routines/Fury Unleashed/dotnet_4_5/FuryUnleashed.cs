@@ -1,7 +1,7 @@
 ﻿using FuryUnleashed.Core;
+using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Managers;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
@@ -10,9 +10,9 @@ using Styx.CommonBot.Routines;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using A = FuryUnleashed.Routines.ArmsCombat;
-using F = FuryUnleashed.Routines.FuryCombat;
-using P = FuryUnleashed.Routines.ProtCombat;
+using A = FuryUnleashed.Rotations.ArmsRotation;
+using F = FuryUnleashed.Rotations.FuryRotation;
+using P = FuryUnleashed.Rotations.ProtRotation;
 
 namespace FuryUnleashed
 {
@@ -21,26 +21,30 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 3);
+        public static readonly Version Revision = new Version(1, 5, 4, 2);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
         public override string Name { get { return FuName; } }
         public override bool WantButton { get { return true; } }
-        public override WoWClass Class { get { return WoWClass.Warrior; } }
-
+        
         public override Composite CombatBehavior { get { return _combatBehavior ?? (_combatBehavior = CombatSelector()); } }
         public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreBuffSelector()); } }
 
         private Composite _combatBehavior, _preCombatBehavior;
 
         #region Publics
+        public override WoWClass Class
+        {
+            get { return Me.Class == WoWClass.Warrior ? WoWClass.Warrior : WoWClass.None; }
+        }
+
         public Root()
         {
             Instance = this;
-            Styx.CommonBot.BotEvents.OnBotStopped += Shared.Helpers.BotEvents.OnBotStopped;
-            Styx.CommonBot.BotEvents.OnBotStarted += Shared.Helpers.BotEvents.OnBotStarted;
-            Styx.CommonBot.BotEvents.OnBotChanged += Shared.Helpers.BotEvents.OnBotChanged;
+            BotEvents.OnBotStopped += Core.Helpers.BotEvents.OnBotStopped;
+            BotEvents.OnBotStarted += Core.Helpers.BotEvents.OnBotStarted;
+            BotEvents.OnBotChanged += Core.Helpers.BotEvents.OnBotChanged;
         }
 
         public override void Initialize()

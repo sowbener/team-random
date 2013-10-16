@@ -1,9 +1,8 @@
-﻿// ReSharper disable ImplicitlyCapturedClosure
+﻿using FuryUnleashed.Core.Utilities;
+// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 using CommonBehaviors.Actions;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Utilities;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;

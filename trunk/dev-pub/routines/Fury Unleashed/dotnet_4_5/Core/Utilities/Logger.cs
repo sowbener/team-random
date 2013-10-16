@@ -1,12 +1,4 @@
-﻿using FuryUnleashed.Core;
-using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Routines;
-using Styx;
-using Styx.Common;
-using Styx.Helpers;
-using Styx.TreeSharp;
-using Styx.WoWInternals;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -15,9 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media;
+using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations;
+using Styx;
+using Styx.Common;
+using Styx.Helpers;
+using Styx.TreeSharp;
+using Styx.WoWInternals;
 using Action = Styx.TreeSharp.Action;
 
-namespace FuryUnleashed.Shared.Helpers
+namespace FuryUnleashed.Core.Utilities
 {
     static class Logger
     {
@@ -184,45 +184,45 @@ namespace FuryUnleashed.Shared.Helpers
             WriteFile("");
             LogSettings("General Settings (SettingsG)", InternalSettings.Instance.General);
             LogSettings("Hotkey Settings (SettingsH)", SettingsH.Instance);
-            if (FuGlobal.IsArmsSpec)
+            if (Global.IsArmsSpec)
                 LogSettings("Arms Settings (SettingsA)", InternalSettings.Instance.Arms);
-            if (FuGlobal.IsFurySpec)
+            if (Global.IsFurySpec)
                 LogSettings("Fury Settings (SettingsF)", InternalSettings.Instance.Fury);
-            if (FuGlobal.IsProtSpec)
+            if (Global.IsProtSpec)
                 LogSettings("Protection Settings (SettingsP)", InternalSettings.Instance.Protection);
             WriteFile("");
             WriteFile("====== Talents ======");
-            WriteFile("Juggernaut Talent: {0}", FuGlobal.JnTalent);
-            WriteFile("Double Time Talent: {0}", FuGlobal.DtTalent);
-            WriteFile("Warbringer Talent: {0}", FuGlobal.WbTalent);
-            WriteFile("Enraged Regeneration Talent: {0}", FuGlobal.ErTalent);
-            WriteFile("Second Wind Talent: {0}", FuGlobal.ScTalent);
-            WriteFile("Impending Victory Talent: {0}", FuGlobal.IvTalent);
-            WriteFile("Staggering Shout Talent: {0}", FuGlobal.SsTalent);
-            WriteFile("Piercing Howl Talent: {0}", FuGlobal.PhTalent);
-            WriteFile("Disrupting Shout Talent: {0}", FuGlobal.DsTalent);
-            WriteFile("Bladestorm Talent: {0}", FuGlobal.BsTalent);
-            WriteFile("Shockwave Talent: {0}", FuGlobal.SwTalent);
-            WriteFile("Dragon Roar Talent: {0}", FuGlobal.DrTalent);
-            WriteFile("Mass Spell Reflection Talent: {0}", FuGlobal.MrTalent);
-            WriteFile("Safeguard Talent: {0}", FuGlobal.SgTalent);
-            WriteFile("Vigilance Talent: {0}", FuGlobal.VgTalent);
-            WriteFile("Avatar Talent: {0}", FuGlobal.AvTalent);
-            WriteFile("Bloodbath Talent: {0}", FuGlobal.BbTalent);
-            WriteFile("Storm Bolt Talent: {0}", FuGlobal.SbTalent);
+            WriteFile("Juggernaut Talent: {0}", Global.JnTalent);
+            WriteFile("Double Time Talent: {0}", Global.DtTalent);
+            WriteFile("Warbringer Talent: {0}", Global.WbTalent);
+            WriteFile("Enraged Regeneration Talent: {0}", Global.ErTalent);
+            WriteFile("Second Wind Talent: {0}", Global.ScTalent);
+            WriteFile("Impending Victory Talent: {0}", Global.IvTalent);
+            WriteFile("Staggering Shout Talent: {0}", Global.SsTalent);
+            WriteFile("Piercing Howl Talent: {0}", Global.PhTalent);
+            WriteFile("Disrupting Shout Talent: {0}", Global.DsTalent);
+            WriteFile("Bladestorm Talent: {0}", Global.BsTalent);
+            WriteFile("Shockwave Talent: {0}", Global.SwTalent);
+            WriteFile("Dragon Roar Talent: {0}", Global.DrTalent);
+            WriteFile("Mass Spell Reflection Talent: {0}", Global.MrTalent);
+            WriteFile("Safeguard Talent: {0}", Global.SgTalent);
+            WriteFile("Vigilance Talent: {0}", Global.VgTalent);
+            WriteFile("Avatar Talent: {0}", Global.AvTalent);
+            WriteFile("Bloodbath Talent: {0}", Global.BbTalent);
+            WriteFile("Storm Bolt Talent: {0}", Global.SbTalent);
             WriteFile("");
             WriteFile("====== Tier Bonuses ======");
-            WriteFile("Tier 15 DPS 2P: {0}", FuGlobal.Tier15TwoPieceBonus);
-            WriteFile("Tier 15 DPS 4P: {0}", FuGlobal.Tier15FourPieceBonus);
-            WriteFile("Tier 15 Prot 2P: {0}", FuGlobal.Tier15TwoPieceBonusT);
-            WriteFile("Tier 15 Prot 4P: {0}", FuGlobal.Tier15FourPieceBonusT);
-            WriteFile("Tier 16 DPS 2P: {0}", FuGlobal.Tier16TwoPieceBonus);
-            WriteFile("Tier 16 DPS 4P: {0}", FuGlobal.Tier16FourPieceBonus);
-            WriteFile("Tier 16 Prot 2P: {0}", FuGlobal.Tier16TwoPieceBonusT);
-            WriteFile("Tier 16 Prot 4P: {0}", FuGlobal.Tier16FourPieceBonusT);
+            WriteFile("Tier 15 DPS 2P: {0}", Global.Tier15TwoPieceBonus);
+            WriteFile("Tier 15 DPS 4P: {0}", Global.Tier15FourPieceBonus);
+            WriteFile("Tier 15 Prot 2P: {0}", Global.Tier15TwoPieceBonusT);
+            WriteFile("Tier 15 Prot 4P: {0}", Global.Tier15FourPieceBonusT);
+            WriteFile("Tier 16 DPS 2P: {0}", Global.Tier16TwoPieceBonus);
+            WriteFile("Tier 16 DPS 4P: {0}", Global.Tier16FourPieceBonus);
+            WriteFile("Tier 16 Prot 2P: {0}", Global.Tier16TwoPieceBonusT);
+            WriteFile("Tier 16 Prot 4P: {0}", Global.Tier16FourPieceBonusT);
             WriteFile("");
             WriteFile("======= Other Info =======");
-            WriteFile("2H Weapons: {0}", FuGlobal.WieldsTwoHandedWeapons);
+            WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
         }
 
         private static Timer _fuTimer;
@@ -326,8 +326,8 @@ namespace FuryUnleashed.Shared.Helpers
                                     CombatLogWh("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
                                     CombatLogWh("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
                                     CombatLogWh("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
-                                    CombatLogPu("Units - Slam Viable: {0}", FuGlobal.SlamViable);
-                                    CombatLogPu("Units - Whirlwind viable: {0}", FuGlobal.WhirlwindViable);
+                                    CombatLogPu("Units - Slam Viable: {0}", Global.SlamViable);
+                                    CombatLogPu("Units - Whirlwind viable: {0}", Global.WhirlwindViable);
                                 }
                                 )))),
                     // Cached Aura's Logging

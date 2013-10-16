@@ -1,8 +1,9 @@
 ﻿using System;
-using FuryUnleashed.Shared.Managers;
+using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
 using Styx.CommonBot.Routines;
 
-namespace FuryUnleashed.Shared.Helpers
+namespace FuryUnleashed.Core.Helpers
 {
     class BotEvents
     {

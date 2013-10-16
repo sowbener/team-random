@@ -1,6 +1,6 @@
-﻿using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Routines;
-using FuryUnleashed.Shared.Helpers;
+﻿using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
@@ -9,13 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core
 {
     internal static class Item
     {
-
         private static LocalPlayer Me { get { return StyxWoW.Me; } } 
 
         #region Equipped Item Usage Wrappers
@@ -37,7 +36,7 @@ namespace FuryUnleashed.Core
                 case Enum.AbilityTrigger.OnBossDummy:
                     return canUseTrinket && Unit.IsTargetBoss;
                 case Enum.AbilityTrigger.OnBlTwHr:
-                    return canUseTrinket && FuGlobal.HasteAbilities;
+                    return canUseTrinket && Global.HasteAbilities;
                 case Enum.AbilityTrigger.Always:
                     return canUseTrinket;
             }
@@ -53,7 +52,7 @@ namespace FuryUnleashed.Core
                 case Enum.AbilityTrigger.OnBossDummy:
                     return canUseHands && Unit.IsTargetBoss;
                 case Enum.AbilityTrigger.OnBlTwHr:
-                    return canUseHands && FuGlobal.HasteAbilities;
+                    return canUseHands && Global.HasteAbilities;
                 case Enum.AbilityTrigger.Always:
                     return canUseHands;
 
@@ -155,13 +154,13 @@ namespace FuryUnleashed.Core
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
-                    new Decorator(ret => (FuGlobal.BloodbathAura || !FuGlobal.BbTalent) && FuGlobal.ColossusSmashAura,
+                    new Decorator(ret => (Global.BloodbathAura || !Global.BbTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseArmsItems(); return RunStatus.Failure; } ))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
-                    new Decorator(ret => (FuGlobal.BloodbathAura || !FuGlobal.BbTalent) && FuGlobal.ColossusSmashAura,
+                    new Decorator(ret => (Global.BloodbathAura || !Global.BbTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseFuryItems(); return RunStatus.Failure; }))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
-                    new Decorator(ret => FuGlobal.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,
+                    new Decorator(ret => Global.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,
                         new Action(ret => { UseProtItems(); return RunStatus.Failure; }))));
         }
         #endregion

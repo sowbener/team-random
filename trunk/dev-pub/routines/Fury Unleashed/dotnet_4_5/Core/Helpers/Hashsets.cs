@@ -2,7 +2,7 @@
 using Styx;
 using Styx.WoWInternals.WoWObjects;
 
-namespace FuryUnleashed.Shared.Helpers
+namespace FuryUnleashed.Core.Helpers
 {
     public static class HashSets
     {

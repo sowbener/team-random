@@ -1,23 +1,21 @@
-﻿using FuryUnleashed.Core;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Managers;
+﻿using System;
+using System.Linq;
+using FuryUnleashed.Core;
+using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
-using System;
-using System.Linq;
 using Action = Styx.TreeSharp.Action;
-using HK = FuryUnleashed.Shared.Managers.HotKeyManager;
-using SG = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using SH = FuryUnleashed.Interfaces.Settings.SettingsH;
-using Spell = FuryUnleashed.Core.Spell;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
-namespace FuryUnleashed.Routines
+namespace FuryUnleashed.Rotations
 {
-    class FuGlobal
+    class Global
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
@@ -27,33 +25,33 @@ namespace FuryUnleashed.Routines
             return new PrioritySelector(
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
-                new Decorator(ret => SG.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
+                new Decorator(ret => InternalSettings.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
                 new Switch<WoWSpec>(ret => Me.Specialization,
 
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Arms.CheckAoE && SG.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Arms.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => InternalSettings.Instance.Arms.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Arms.CheckRallyingCry,
+                            new Decorator(ret => InternalSettings.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
                             new Action(delegate { Unit.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
 
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => InternalSettings.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Fury.CheckRallyingCry,
+                            new Decorator(ret => InternalSettings.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
 
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
-                            new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Protection.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                            new Decorator(ret => InternalSettings.Instance.Protection.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => SG.Instance.Protection.CheckRallyingCry,
+                            new Decorator(ret => InternalSettings.Instance.Protection.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
                                 ));
         }
@@ -61,28 +59,28 @@ namespace FuryUnleashed.Routines
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
-                new Decorator(ret => HK.IsKeyAsyncDown(SH.Instance.Tier4Choice),
+                new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast("Bladestorm", ret => BsTalent),
                         Spell.Cast("Dragon Roar", ret => DrTalent),
                         Spell.Cast("Shockwave", ret => SwTalent))),
-                new Decorator(ret => HK.IsKeyAsyncDown(SH.Instance.ShatteringThrowChoice),
+                new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.ShatteringThrowChoice),
                     Spell.Cast("Shattering Throw")),
-                new Decorator(ret => HK.IsKeyDown(SH.Instance.HeroicLeapChoice),
+                new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.HeroicLeapChoice),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Heroic Leap");
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Heroic Leap - On Mousecursor Location");
                     })),
-                new Decorator(ret => HK.IsKeyDown(SH.Instance.DemoBannerChoice),
+                new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.DemoBannerChoice),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Demoralizing Banner");
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Demoralizing Banner - On Mousecursor Location");
                     })),
-                new Decorator(ret => HK.IsKeyDown(SH.Instance.MockingBannerChoice),
+                new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.MockingBannerChoice),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Mocking Banner");
@@ -134,14 +132,14 @@ namespace FuryUnleashed.Routines
                     case "Stoneform": return IsSick;
                     case "Escape Artist": return Me.Rooted;
                     case "Every Man for Himself": return IsImpaired;
-                    case "Shadowmeld": return Targeting.GetAggroOnMeWithin(Me.Location, 15) >= 1 && Me.HealthPercent < SG.Instance.General.RacialNum && !Me.IsMoving;
-                    case "Gift of the Naaru": return Me.HealthPercent <= SG.Instance.General.RacialNum;
+                    case "Shadowmeld": return Targeting.GetAggroOnMeWithin(Me.Location, 15) >= 1 && Me.HealthPercent < InternalSettings.Instance.General.RacialNum && !Me.IsMoving;
+                    case "Gift of the Naaru": return Me.HealthPercent <= InternalSettings.Instance.General.RacialNum;
                     case "Darkflight": return Me.IsMoving;
                     case "Blood Fury": return true;
                     case "War Stomp": return Targeting.GetAggroOnMeWithin(StyxWoW.Me.Location, 8) >= 1;
                     case "Berserking": return !HasteAbilities;
                     case "Will of the Forsaken": return IsLazy;
-                    case "Arcane Torrent": return Me.ManaPercent < SG.Instance.General.RacialNum && Me.Class != WoWClass.DeathKnight;
+                    case "Arcane Torrent": return Me.ManaPercent < InternalSettings.Instance.General.RacialNum && Me.Class != WoWClass.DeathKnight;
                     case "Rocket Barrage": return true;
                     default: return false;
                 }
@@ -222,7 +220,7 @@ namespace FuryUnleashed.Routines
         internal static bool AlmostDead             { get { return Me.CurrentTarget.HealthPercent <= 10; } }
         internal static bool DumpAllRage            { get { return Me.CurrentTarget.HealthPercent <= 2.5; } }
         internal static bool ExecutePhase           { get { return Me.CurrentTarget.HealthPercent <= 20; } }
-        internal static bool HotkeyMode             { get { return SH.Instance.ModeSelection == Enum.Mode.Hotkey || SH.Instance.ModeSelection == Enum.Mode.SemiHotkey; } }
+        internal static bool HotkeyMode             { get { return SettingsH.Instance.ModeSelection == Enum.Mode.Hotkey || SettingsH.Instance.ModeSelection == Enum.Mode.SemiHotkey; } }
         internal static bool NormalPhase            { get { return Me.CurrentTarget.HealthPercent > 20; } }
         internal static bool TargetNotNull          { get { return Me.CurrentTarget != null; } }
         internal static bool TargettingMe           { get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; } }

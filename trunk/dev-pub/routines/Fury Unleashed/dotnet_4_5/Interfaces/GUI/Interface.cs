@@ -1,13 +1,13 @@
-﻿using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Managers;
+﻿using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.Common;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Interfaces.GUI
 {
