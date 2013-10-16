@@ -50,7 +50,9 @@ namespace AntiAfk.GUI
             InitializeComponent();
             AntiAfkSettings.Instance.Load();
 
-            keydropdown.Items.Add(new CboItem((int)Keys.Space, "Space"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Space, "Space (Jump)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.X, "X (Sit/Stand)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Z, "Z (Sheath/Unsheath Weapon)"));
             keydropdown.Items.Add(new CboItem((int)Keys.Enter, "Enter/Return"));
 
             SetComboBoxEnum(keydropdown, (int)AntiAfkSettings.Instance.AntiAfkKey);

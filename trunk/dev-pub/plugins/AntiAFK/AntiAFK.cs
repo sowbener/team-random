@@ -3,6 +3,7 @@ using Styx;
 using Styx.Common;
 using Styx.Helpers;
 using Styx.Plugins;
+using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Diagnostics;
@@ -14,24 +15,44 @@ namespace AntiAfk
 {
     public class AntiAfk : HBPlugin
     {
-        public override string Name { get { return "AntiAfk"; } }
-        public override string Author { get { return "nomnomnom"; } }
-        public override Version Version { get { return new Version(1, 0, 0); } }
-        public override bool WantButton { get { return true; } }
+        internal static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
+        internal static readonly AntiAfkSettings Settings = new AntiAfkSettings();
+        internal static Timer Antiafktimer;
 
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
-        private static readonly AntiAfkSettings Settings = new AntiAfkSettings();
-        private static Timer _antiafktimer;
+        public override string Name
+        {
+            get { return "AntiAfk"; }
+        }
+
+        public override string Author
+        {
+            get { return "nomnomnom"; }
+        }
+
+        public override Version Version
+        {
+            get { return new Version(1, 0, 0); }
+        }
+
+        public override bool WantButton
+        {
+            get { return true; }
+        }
+
+        private static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
 
         public override string ButtonText
         {
-            get { return "AntiAfk Settings"; }
+            get { return "AntiAFK Settings"; }
         }
 
         public override void OnButtonPress()
         {
             new AntiAfkGui().ShowDialog();
+            AfkLogging("[AntiAFK] GUI has been opened.");
         }
 
         public override void Initialize()
@@ -41,9 +62,12 @@ namespace AntiAfk
                 AntiAfkSettings.Instance.Load();
                 GlobalSettings.Instance.LogoutForInactivity = false;
 
+                AfkLogging("\r\n-------------------------------------------");
+                AfkLogging("This plugin is written by nomnomnom \r\n");
                 AfkLogging("[AntiAFK] Loaded - Pulse every {0} miliseconds.", Settings.AntiAfkTime);
                 AfkLogging("[AntiAFK] Loaded - Selected key is {0}.", Settings.AntiAfkKey);
                 AfkLogging("[AntiAFK] Loaded - Using /GINFO is {0}.", Settings.AntiAfkGinfo);
+                AfkLogging("-------------------------------------------\r\n");
             }
             catch (Exception exinfo)
             {
@@ -62,18 +86,19 @@ namespace AntiAfk
                 }
 
                 AntiAfkStopwatch.Start();
-                if (AntiAfkStopwatch.Elapsed.TotalMilliseconds > Settings.AntiAfkTime)
+
+                if (AntiAfkStopwatch.Elapsed.TotalMilliseconds >= Settings.AntiAfkTime)
                 {
                     if (!AntiAfkSettings.Instance.AntiAfkGinfo)
                     {
                         AfkLogging("[AntiAFK] Time elapsed - Using key!");
                         KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
-                        ReleaseTimer(50);
+                        ReleaseTimer(25);
                     }
                     else
                     {
                         AfkLogging("[AntiAFK] Time elapsed - Using /GINFO!");
-                        //TODO: Make this.
+                        Lua.DoString("RunMacroText(\"/ginfo\");");
                         AntiAfkStopwatch.Reset();                   
                     }
                 }
@@ -91,10 +116,10 @@ namespace AntiAfk
 
         public static void ReleaseTimer(int tickingtime)
         {
-            _antiafktimer = new Timer(tickingtime);
-            _antiafktimer.Elapsed += OnTimedEvent;
-            _antiafktimer.AutoReset = false;
-            _antiafktimer.Enabled = true;
+            Antiafktimer = new Timer(tickingtime);
+            Antiafktimer.Elapsed += OnTimedEvent;
+            Antiafktimer.AutoReset = false;
+            Antiafktimer.Enabled = true;
         }
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
