@@ -70,14 +70,14 @@ namespace Bullseye.Routines
             Spell.Cast("Fervor", ret => FervorReqs),
             Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
             Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
-            Spell.Cast("Serpent Sting", ret => !SerpentStingRefresh),
+            Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => !SerpentStingRefresh),
             Spell.Cast("Explosive Shot"),
             Spell.Cast("Kill Shot", ret => TargetSoonDead),
             Spell.Cast("Black Arrow"),
             Spell.Cast("Arcane Shot", ret => ThrillProc && BlackArrowIsOnCooldown),
             Spell.Cast("Dire Beast"),
             Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-            Spell.Cast("Arcane Shot", ret => Focus67),
+            Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67),
             Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
             Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
