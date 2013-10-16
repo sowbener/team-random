@@ -31,6 +31,7 @@ namespace Waldo.Routines
                 return new PrioritySelector(
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, WaLogger.TreePerformance("InitializeCom")),
                         new Decorator(ret => (WaHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                        new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                         new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),     
                         Spell.Cast("Blade Flurry", ret => U.AttackableMeleeUnitsCount > 1),
