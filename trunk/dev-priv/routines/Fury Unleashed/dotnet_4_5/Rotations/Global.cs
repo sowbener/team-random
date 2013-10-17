@@ -7,6 +7,7 @@ using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.CommonBot;
+using Styx.CommonBot.Inventory;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
@@ -149,6 +150,15 @@ namespace FuryUnleashed.Rotations
         #endregion
 
         #region Booleans & Doubles
+
+        // Remaining Target Aura's
+        internal static bool RemainingCs(int remainingtime)
+        {
+            if (!Me.GotTarget)
+                return false;
+            WoWAura colossusSmash = Spell.CachedTargetAuras.FirstOrDefault(a => a.SpellId == 86346 && a.CreatorGuid == StyxWoW.Me.Guid);
+            return colossusSmash != null && colossusSmash.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+        }
 
         // Fading Target Aura's
         internal static bool FadingCs(int fadingtime)
@@ -385,8 +395,10 @@ namespace FuryUnleashed.Rotations
 
         // Cooldown Tracker (Translate: Impending Victory On Cooldown)
         // ReSharper disable InconsistentNaming
+        internal static bool BROC { get { return Spell.SpellOnCooldown(18499); } }                        // Berserker Rage
         internal static bool BSOC { get { return Spell.SpellOnCooldown(46924); } }                        // Bladestorm
         internal static bool BTOC { get { return Spell.SpellOnCooldown(23881); } }                        // Bloodthirst
+        internal static bool CSOC { get { return Spell.SpellOnCooldown(86346); } }                        // Colossus Smash
         internal static bool DBOC { get { return Spell.SpellOnCooldown(114203); } }                       // Demoralizing Banner
         internal static bool DROC { get { return Spell.SpellOnCooldown(118000); } }                       // Dragon Roar
         internal static bool DSOC { get { return Spell.SpellOnCooldown(102060); } }                       // Disrupting Shout
@@ -394,7 +406,9 @@ namespace FuryUnleashed.Rotations
         internal static bool IVOC { get { return Spell.SpellOnCooldown(103840); } }                       // Impending Victory
         internal static bool MSOC { get { return Spell.SpellOnCooldown(12294); } }                        // Mortal Strike
         internal static bool PUOC { get { return Spell.SpellOnCooldown(6552); } }                         // Pummel
+        internal static bool RBOC { get { return Spell.SpellOnCooldown(85288); } }                        // Raging Blow
         internal static bool RVOC { get { return Spell.SpellOnCooldown(6572); } }                         // Revenge
+        internal static bool SBOC { get { return Spell.SpellOnCooldown(107570); } }                       // Storm Bolt
         internal static bool SLOC { get { return Spell.SpellOnCooldown(1464); } }                         // Slam
         internal static bool SSOC { get { return Spell.SpellOnCooldown(23922); } }                        // Shield Slam
         internal static bool SWOC { get { return Spell.SpellOnCooldown(46968); } }                        // Shockwave

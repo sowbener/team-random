@@ -80,6 +80,13 @@ namespace FuryUnleashed.Core.Helpers
             None
         }
 
+        public enum SunderStacks
+        {
+            OneStack,
+            TwoStacks,
+            ThreeStacks
+        }
+
         public enum SvnUrl
         {
             Release,
