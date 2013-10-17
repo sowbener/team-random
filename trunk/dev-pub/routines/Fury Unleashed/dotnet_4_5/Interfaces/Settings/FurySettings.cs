@@ -282,14 +282,14 @@ namespace FuryUnleashed.Interfaces.Settings
         [Category("Fury - Selectable Options")]
         [DisplayName("Enable Sunder Armor")]
         [Description("Select Sunder Armor usage - Also set the amount of stacks which needs to be applied!")]
-        public bool CheckSunderArmor { get; set; }
+        public Enum.SunderArmor CheckSunderArmor { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.SunderStacks.ThreeStacks)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Sunder Armor Stacks")]
         [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 3!")]
-        public int CheckSunderArmorNum { get; set; }
+        public Enum.SunderStacks CheckSunderArmorNum { get; set; }
 
         // [Setting]
         // [Styx.Helpers.DefaultValue(true)]
