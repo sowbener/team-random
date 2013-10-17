@@ -278,10 +278,10 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckShatteringThrow { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(Enum.SunderArmor.Always)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Enable Sunder Armor")]
-        [Description("Checked enables Sunder Armor - Also set the amount of stacks which needs to be applied!")]
+        [Description("Select Sunder Armor usage - Also set the amount of stacks which needs to be applied!")]
         public bool CheckSunderArmor { get; set; }
 
         [Setting]

@@ -10,6 +10,9 @@ using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 
+using G = FuryUnleashed.Rotations.Global;
+using SB = FuryUnleashed.Core.Helpers.SpellBook;
+
 namespace FuryUnleashed.Rotations
 {
     class FuryRotation
@@ -225,11 +228,15 @@ namespace FuryUnleashed.Rotations
         internal static Composite Dev_FuryExec()
         {
             return new PrioritySelector(
-                new Decorator(ret => Global.ColossusSmashAura,
+                new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.SbTalent && Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Execute),
-                        Spell.Cast(SpellBook.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
+                        Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16 && G.FadingDeathSentence(3000)),
+                        Spell.Cast(SB.StormBolt),
+                        Spell.Cast(SB.HeroicStrike, ret => G.Tier16TwoPieceBonus && Me.CurrentRage > 100 && G.RemainingCs(4500)),
+                        Spell.Cast(SB.Bloodthirst, ret => !G.EnrageAura && G.BROC),
+                        Spell.Cast(SB.Execute),
+                        Spell.Cast(SB.RagingBlow)
+                        )),
                 new Decorator(ret => !Global.ColossusSmashAura,
                     new PrioritySelector(
                         Dev_FurySt())));
