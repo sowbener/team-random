@@ -80,6 +80,13 @@ namespace FuryUnleashed.Core.Helpers
             None
         }
 
+        public enum SunderArmor
+        {
+            Never,
+            Always,
+            OnBossDummy
+        }
+
         public enum SunderStacks
         {
             OneStack,
