@@ -139,7 +139,7 @@ namespace Bullseye.Routines
                     (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.Rabid == BsEnum.AbilityTrigger.Always)
                     )),
-                    Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (
+                    Spell.Cast("Stampede", ret => (
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
