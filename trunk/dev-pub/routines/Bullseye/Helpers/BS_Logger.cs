@@ -262,7 +262,7 @@ namespace Bullseye.Helpers
 
                 if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
-                    DiagLogW("Unholy Unleased Performance Timer: Elapsed Time to traverse {0}: {1} ms ({2} ms client lag)", obj, TreePerformanceTimer.ElapsedMilliseconds, RealLag.TotalMilliseconds);
+                    DiagLogW("Bullseye Performance Timer: Elapsed Time to traverse {0}: {1} ms ({2} ms client lag)", obj, TreePerformanceTimer.ElapsedMilliseconds, RealLag.TotalMilliseconds);
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
                 }
@@ -292,7 +292,7 @@ namespace Bullseye.Helpers
                 new Action(delegate
                 {
                     CompositePerformanceTimer.Stop();
-                    DiagLogW("Unholy Unleased Composite Timer: {0} took {1} ms", name,
+                    DiagLogW("Bullseye Composite Timer: {0} took {1} ms", name,
                                    CompositePerformanceTimer.ElapsedMilliseconds);
                     return RunStatus.Success;
                 })

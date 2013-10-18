@@ -138,12 +138,12 @@ namespace Bullseye.Routines
                     (SG.Instance.Survival.RapidFire == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Survival.RapidFire == BsEnum.AbilityTrigger.Always)
                     )),
-                    Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
+                    Spell.Cast("Stampede", ret => Me.CurrentTarget != null && (
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
                     )),
-                    PetManager.CreateCastPetActionOn("Rabid", ret => Me, ret => Me.CurrentTarget != null && (RapidFireAura || G.SpeedBuffsAura || Me.CurrentTarget.HealthPercent <= 25) && (
+                    PetManager.CreateCastPetActionOn("Rabid", ret => Me, ret => Me.CurrentTarget != null && (
                     (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.Always)

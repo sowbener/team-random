@@ -3,25 +3,7 @@
 /*
  * Current Bugs & To-do's:
  * 
- * DONE - Rename entire routine including all namings / namespaces.
- * DONE - Create setting to enable AoE usage on Garalon & Twin Consorts.
- * DONE - Improve composites to dump close to all rage when enemyunit is almost dead.
- * DONE - Create de-sync option for trinkets/hands (Separate them from cooldowns).
- * DONE - Implement tierset detection.
- * DONE - Prot: Enable usage for VC/IV on T15 2P
- * DONE - Prot: When you have the T15 4P bonus. only cast demoshout when shield slam and maybe revenge arent on cd.
- * DONE - Support facing, targetting and movement via the I Want Movement plugin.
- * DONE - Re-do Unholy AoE for optimal DPS/Performance (More code but less checks, should perform better).
- * DONE - Prot: Create VC/ImpVic threshold - Also fixed T15-2P setbonus with settings.
- * DONE - Fix spell-queueing with On-Keypress hotkeys.
- * DONE - Finish Frost Spec with GUI.
- * DONE - Create option to disable pre-buffing shouts.
- * DONE - Fix AoE execute from PM --> tombot
- * Tweak the new GUI.
- * Create PvP check.
- * Investigate HP scan for all party members (Rallying Cry).
- * Do something with VC when aura is fading.
- * Fix tierdetection.
+
  * 
  */
 #endregion
@@ -54,7 +36,7 @@ namespace Bullseye
         public static BsMain Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        internal static readonly Version Revision = new Version(1, 1, 0);
+        internal static readonly Version Revision = new Version(1, 1, 1);
         internal static readonly string BsName = "Bullseye - IR " + Revision;
 
 
