@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using FuryUnleashed.Shared.Helpers;
+using FuryUnleashed.Core.Helpers;
 using Styx.Common;
 using Styx.Helpers;
 using System.ComponentModel;

@@ -1,4 +1,4 @@
-﻿using FuryUnleashed.Shared.Helpers;
+﻿using FuryUnleashed.Core.Helpers;
 using Styx.Helpers;
 using System.ComponentModel;
 
@@ -30,7 +30,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
+        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Development)]
         [Category("General")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]

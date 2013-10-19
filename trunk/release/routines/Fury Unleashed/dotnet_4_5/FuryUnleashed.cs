@@ -1,7 +1,7 @@
 ﻿using FuryUnleashed.Core;
+using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Managers;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
@@ -10,9 +10,9 @@ using Styx.CommonBot.Routines;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using A = FuryUnleashed.Routines.ArmsCombat;
-using F = FuryUnleashed.Routines.FuryCombat;
-using P = FuryUnleashed.Routines.ProtCombat;
+using A = FuryUnleashed.Rotations.ArmsRotation;
+using F = FuryUnleashed.Rotations.FuryRotation;
+using P = FuryUnleashed.Rotations.ProtRotation;
 
 namespace FuryUnleashed
 {
@@ -21,26 +21,30 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 3);
+        public static readonly Version Revision = new Version(1, 5, 4, 3);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
         public override string Name { get { return FuName; } }
         public override bool WantButton { get { return true; } }
-        public override WoWClass Class { get { return WoWClass.Warrior; } }
-
+        
         public override Composite CombatBehavior { get { return _combatBehavior ?? (_combatBehavior = CombatSelector()); } }
         public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreBuffSelector()); } }
 
         private Composite _combatBehavior, _preCombatBehavior;
 
         #region Publics
+        public override WoWClass Class
+        {
+            get { return Me.Class == WoWClass.Warrior ? WoWClass.Warrior : WoWClass.None; }
+        }
+
         public Root()
         {
             Instance = this;
-            Styx.CommonBot.BotEvents.OnBotStopped += Shared.Helpers.BotEvents.OnBotStopped;
-            Styx.CommonBot.BotEvents.OnBotStarted += Shared.Helpers.BotEvents.OnBotStarted;
-            Styx.CommonBot.BotEvents.OnBotChanged += Shared.Helpers.BotEvents.OnBotChanged;
+            BotEvents.OnBotStopped += Core.Helpers.BotEvents.OnBotStopped;
+            BotEvents.OnBotStarted += Core.Helpers.BotEvents.OnBotStarted;
+            BotEvents.OnBotChanged += Core.Helpers.BotEvents.OnBotChanged;
         }
 
         public override void Initialize()
@@ -54,7 +58,7 @@ namespace FuryUnleashed
             }
             catch (Exception exception)
             {
-                Logger.AdvancedLogP("FU: Exception thrown at Initialize - {0}", new object[] { exception.ToString() });
+                Logger.DiagLogPu("FU: Exception thrown at Initialize - {0}", new object[] { exception.ToString() });
             }
         }
 
@@ -86,15 +90,15 @@ namespace FuryUnleashed
         #region Internals
         internal void Unleash()
         {
-            Logger.InitLogW("------------------------------------------");
-            Logger.InitLogF(Name + " by nomnomnom & alxaw.");
-            Logger.InitLogO("Internal Revision: " + Revision + ".");
-            Logger.InitLogO("Supported World of Warcraft version: " + WoWVersion + ".");
-            Logger.InitLogO("Support will be handled via the HB Forums.");
-            Logger.InitLogO("Thanks list is available in the topic!");
-            Logger.InitLogO("\r\n");
-            Logger.InitLogO("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
-            Logger.InitLogW("-------------------------------------------\r\n");
+            Logger.CombatLogWh("------------------------------------------");
+            Logger.CombatLogFb(Name + " by nomnomnom & alxaw.");
+            Logger.CombatLogOr("Internal Revision: " + Revision + ".");
+            Logger.CombatLogOr("Supported World of Warcraft version: " + WoWVersion + ".");
+            Logger.CombatLogOr("Support will be handled via the HB Forums.");
+            Logger.CombatLogOr("Thanks list is available in the topic!");
+            Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
+            Logger.CombatLogWh("-------------------------------------------\r\n");
 
             /* Update TalentManager */
             try { TalentManager.Update(); }
@@ -109,7 +113,7 @@ namespace FuryUnleashed
             PreBuffSelector();
             CombatSelector();
 
-            Logger.InitLogO("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
+            Logger.CombatLogOr("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
         }
 
         internal Composite PreBuffSelector()
@@ -130,7 +134,7 @@ namespace FuryUnleashed
 
         internal static void StopBot(string reason)
         {
-            Logger.InitLogW(reason);
+            Logger.CombatLogWh(reason);
             TreeRoot.Stop();
         }
         #endregion

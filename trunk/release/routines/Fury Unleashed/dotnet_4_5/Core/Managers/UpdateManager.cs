@@ -1,14 +1,16 @@
 ﻿// Thanks to Highvoltz for the autoupdater!
 
-using FuryUnleashed.Interfaces.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
-namespace FuryUnleashed.Shared.Helpers
+namespace FuryUnleashed.Core.Managers
 {
     internal static class Updater
     {
@@ -26,42 +28,51 @@ namespace FuryUnleashed.Shared.Helpers
         {
             try
             {
-                Logger.InitLogO("\r\nChecking if the used revision is the latest, updates if not - Can be disabled in the GUI.");
+                Logger.CombatLogOr("\r\nChecking if the used revision is the latest, updates if not - Can be disabled in the GUI.");
                 var remoteRev = GetRevision();
 
                 if (InternalSettings.Instance.General.CurrentRevision != remoteRev)
                 {
                     var logwrt = InternalSettings.Instance.General.CheckAutoUpdate ? "Downloading Update - Please wait." : "Please update manually!";
-                    Logger.InitLogO("A new version was found. " + logwrt);
+                    Logger.CombatLogOr("A new version was found. " + logwrt);
                     if (!InternalSettings.Instance.General.CheckAutoUpdate && checkallow) return;
 
                     DownloadFilesFromSvn(new WebClient(), FuSvnUrl, path);
                     InternalSettings.Instance.General.CurrentRevision = remoteRev;
                     InternalSettings.Instance.General.Save();
 
-                    Logger.InitLogO("A new version of Fury Unleashed was installed. Please restart Honorbuddy.");
+                    Logger.CombatLogOr("A new version of Fury Unleashed was installed. Please restart Honorbuddy.");
                 }
                 else
                 {
-                    Logger.InitLogO("No updates found.");
+                    Logger.CombatLogOr("No updates found.");
                 }
             }
             catch (Exception ex)
             {
-                Logger.DiagLogW("{0}.", ex);
+                Logger.DiagLogPu("{0}.", ex);
             }
         }
 
         private static int GetRevision()
         {
-            var client = new WebClient();
-            var html = client.DownloadString(FuSvnUrl);
-            var pattern = new Regex(@" - Revision (?<rev>\d+):", RegexOptions.CultureInvariant);
-            Match match = pattern.Match(html);
-            if (match.Success && match.Groups["rev"].Success)
-                return int.Parse(match.Groups["rev"].Value);
-            throw new Exception("FU: Unable to retrieve revision.");
+            var wc = new WebClient();
+            var webData = wc.DownloadString(FuSvnUrl + "version");
+            Logger.DiagLogPu("Current SVN version: {0}", int.Parse(webData));
+            return int.Parse(webData);
+            //throw new Exception("FU: Unable to retrieve revision");
         }
+
+        //private static int GetRevision()
+        //{
+        //    var client = new WebClient();
+        //    var html = client.DownloadString(FuSvnUrl);
+        //    var pattern = new Regex(@" - Revision (?<rev>\d+):", RegexOptions.CultureInvariant);
+        //    Match match = pattern.Match(html);
+        //    if (match.Success && match.Groups["rev"].Success)
+        //        return int.Parse(match.Groups["rev"].Value);
+        //    throw new Exception("FU: Unable to retrieve revision.");
+        //}
 
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)
         {
@@ -94,18 +105,18 @@ namespace FuryUnleashed.Shared.Helpers
                         filePath = Path.Combine(path, file);
                     }
 
-                    Logger.DiagLogW("FU: Downloading {0}.", file);
+                    Logger.DiagLogPu("FU: Downloading {0}.", file);
 
                     try
                     {
                         if (!Directory.Exists(dirPath))
                             Directory.CreateDirectory(dirPath);
                         client.DownloadFile(newUrl, filePath);
-                        Logger.DiagLogW("FU: Download {0} done.", file);
+                        Logger.DiagLogPu("FU: Download {0} done.", file);
                     }
                     catch (Exception ex)
                     {
-                        Logger.DiagLogW("{0}.", ex);
+                        Logger.DiagLogPu("{0}.", ex);
                     }
                 }
             }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FuryUnleashed.Core.Utilities;
 using Styx;
 using Styx.Common.Helpers;
 using Styx.WoWInternals;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
-namespace FuryUnleashed.Shared.Managers
+namespace FuryUnleashed.Core.Managers
 {
     internal static class TalentManager
     {
@@ -80,20 +81,20 @@ namespace FuryUnleashed.Shared.Managers
             int[] oldTalent = TalentId;
             int[] oldGlyph = GlyphId;
 
-            Helpers.Logger.DiagLogP("{0} Event Fired!", args.EventName);
+            Logger.DiagLogPu("{0} Event Fired!", args.EventName);
 
             Update();
 
             if (args.EventName == "PLAYER_LEVEL_UP")
             {
                 RebuildNeeded = true;
-                Helpers.Logger.DiagLogP("FU TalentManager: Your character has leveled up! Now level {0}", args.Args[0]);
+                Logger.DiagLogPu("FU TalentManager: Your character has leveled up! Now level {0}", args.Args[0]);
             }
 
             if (CurrentSpec != oldSpec)
             {
                 RebuildNeeded = true;
-                Helpers.Logger.DiagLogP("FU TalentManager: Your spec has been changed.");
+                Logger.DiagLogPu("FU TalentManager: Your spec has been changed.");
             }
 
             int i;
@@ -102,7 +103,7 @@ namespace FuryUnleashed.Shared.Managers
                 if (oldTalent[i] != TalentId[i])
                 {
                     RebuildNeeded = true;
-                    Helpers.Logger.DiagLogP("FU TalentManager: Your talents have changed.");
+                    Logger.DiagLogPu("FU TalentManager: Your talents have changed.");
                     break;
                 }
             }
@@ -112,7 +113,7 @@ namespace FuryUnleashed.Shared.Managers
                 if (oldGlyph[i] != GlyphId[i])
                 {
                     RebuildNeeded = true;
-                    Helpers.Logger.DiagLogP("FU TalentManager: Your glyphs have changed.");
+                    Logger.DiagLogPu("FU TalentManager: Your glyphs have changed.");
                     break;
                 }
             }
@@ -163,7 +164,7 @@ namespace FuryUnleashed.Shared.Managers
             if (EventRebuildTimer.IsFinished && RebuildNeeded)
             {
                 RebuildNeeded = false;
-                Helpers.Logger.DiagLogP("FU TalentManager: Rebuilding behaviors due to changes detected.");
+                Logger.DiagLogPu("FU TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
                 Root.Instance.PreBuffSelector();
                 Root.Instance.CombatSelector();

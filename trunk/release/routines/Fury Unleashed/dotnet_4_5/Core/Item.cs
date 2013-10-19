@@ -1,6 +1,6 @@
-﻿using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Routines;
-using FuryUnleashed.Shared.Helpers;
+﻿using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
@@ -9,13 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core
 {
     internal static class Item
     {
-
         private static LocalPlayer Me { get { return StyxWoW.Me; } } 
 
         #region Equipped Item Usage Wrappers
@@ -37,7 +36,7 @@ namespace FuryUnleashed.Core
                 case Enum.AbilityTrigger.OnBossDummy:
                     return canUseTrinket && Unit.IsTargetBoss;
                 case Enum.AbilityTrigger.OnBlTwHr:
-                    return canUseTrinket && FuGlobal.HasteAbilities;
+                    return canUseTrinket && Global.HasteAbilities;
                 case Enum.AbilityTrigger.Always:
                     return canUseTrinket;
             }
@@ -53,7 +52,7 @@ namespace FuryUnleashed.Core
                 case Enum.AbilityTrigger.OnBossDummy:
                     return canUseHands && Unit.IsTargetBoss;
                 case Enum.AbilityTrigger.OnBlTwHr:
-                    return canUseHands && FuGlobal.HasteAbilities;
+                    return canUseHands && Global.HasteAbilities;
                 case Enum.AbilityTrigger.Always:
                     return canUseHands;
 
@@ -75,19 +74,19 @@ namespace FuryUnleashed.Core
             if (CanUseTrinket(InternalSettings.Instance.Arms.Trinket1, firstTrinket))
             {
                 firstTrinket.Use();
-                Logger.CombatLogF("Using: Slot 1 trinket is used.");
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
             }
 
             if (CanUseTrinket(InternalSettings.Instance.Arms.Trinket2, secondTrinket))
             {
                 secondTrinket.Use();
-                Logger.CombatLogF("Using: Slot 2 trinket is used.");
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
             }
 
             if (CanUseHands(InternalSettings.Instance.Arms.UseHands, hands))
             {
                 hands.Use();
-                Logger.CombatLogF("Using: Engineering hands are used.");
+                Logger.CombatLogFb("Using: Engineering hands are used.");
             }
         }
 
@@ -105,19 +104,19 @@ namespace FuryUnleashed.Core
             if (CanUseTrinket(InternalSettings.Instance.Fury.Trinket1, firstTrinket))
             {
                 firstTrinket.Use();
-                Logger.CombatLogF("Using: Slot 1 trinket is used.");
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
             }
 
             if (CanUseTrinket(InternalSettings.Instance.Fury.Trinket2, secondTrinket))
             {
                 secondTrinket.Use();
-                Logger.CombatLogF("Using: Slot 2 trinket is used.");
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
             }
 
             if (CanUseHands(InternalSettings.Instance.Fury.UseHands, hands))
             {
                 hands.Use();
-                Logger.CombatLogF("Using: Engineering hands are used.");
+                Logger.CombatLogFb("Using: Engineering hands are used.");
             }
         }
 
@@ -135,19 +134,19 @@ namespace FuryUnleashed.Core
             if (CanUseTrinket(InternalSettings.Instance.Protection.Trinket1, firstTrinket))
             {
                 firstTrinket.Use();
-                Logger.CombatLogF("Using: Slot 1 trinket is used.");
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
             }
 
             if (CanUseTrinket(InternalSettings.Instance.Protection.Trinket2, secondTrinket))
             {
                 secondTrinket.Use();
-                Logger.CombatLogF("Using: Slot 2 trinket is used.");
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
             }
 
             if (CanUseHands(InternalSettings.Instance.Protection.UseHands, hands))
             {
                 hands.Use();
-                Logger.CombatLogF("Using: Engineering hands are used.");
+                Logger.CombatLogFb("Using: Engineering hands are used.");
             }
         }
 
@@ -155,13 +154,13 @@ namespace FuryUnleashed.Core
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
-                    new Decorator(ret => (FuGlobal.BloodbathAura || !FuGlobal.BbTalent) && FuGlobal.ColossusSmashAura,
+                    new Decorator(ret => (Global.BloodbathAura || !Global.BbTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseArmsItems(); return RunStatus.Failure; } ))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
-                    new Decorator(ret => (FuGlobal.BloodbathAura || !FuGlobal.BbTalent) && FuGlobal.ColossusSmashAura,
+                    new Decorator(ret => (Global.BloodbathAura || !Global.BbTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseFuryItems(); return RunStatus.Failure; }))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
-                    new Decorator(ret => FuGlobal.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,
+                    new Decorator(ret => Global.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,
                         new Action(ret => { UseProtItems(); return RunStatus.Failure; }))));
         }
         #endregion
@@ -189,7 +188,7 @@ namespace FuryUnleashed.Core
                             new Action(ret =>
                             {
                                 ((WoWItem)ret).UseContainerItem();
-                                Logger.CombatLogG("Using {0}", ((WoWItem)ret).Name);
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
                             })))));
         }
 
@@ -202,7 +201,7 @@ namespace FuryUnleashed.Core
                             new Action(ret =>
                             {
                                 ((WoWItem)ret).UseContainerItem();
-                                Logger.CombatLogG("Using {0}", ((WoWItem)ret).Name);
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
                             })))));
         }
 
@@ -215,7 +214,7 @@ namespace FuryUnleashed.Core
                             new Action(ret =>
                             {
                                 ((WoWItem)ret).UseContainerItem();
-                                Logger.CombatLogG("Using {0}", ((WoWItem)ret).Name);
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
                             })))));
         }
         #endregion
@@ -240,7 +239,7 @@ namespace FuryUnleashed.Core
                 }
                 catch (Exception ex)
                 {
-                    Logger.DiagLogP("Wielding TwoHander: {0}", ex);
+                    Logger.DiagLogPu("Wielding TwoHander: {0}", ex);
                 }
                 return false;
             }

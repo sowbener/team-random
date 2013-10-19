@@ -1,9 +1,8 @@
-﻿// ReSharper disable ImplicitlyCapturedClosure
+﻿using FuryUnleashed.Core.Utilities;
+// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 using CommonBehaviors.Actions;
-using FuryUnleashed.Shared.Helpers;
-using FuryUnleashed.Shared.Utilities;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
@@ -45,7 +44,7 @@ namespace FuryUnleashed.Core
                         {
                             SpellManager.Cast(spell, onUnit(ret));
                             CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
+                            Logger.CombatLogOr("Casting: " + spell + " on " + onUnit(ret).SafeName);
                         }));
         }
 
@@ -63,7 +62,7 @@ namespace FuryUnleashed.Core
                         {
                             SpellManager.Cast(spell, onUnit(ret));
                             CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogO("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
+                            Logger.CombatLogOr("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
                         }));
         }
         
@@ -87,7 +86,7 @@ namespace FuryUnleashed.Core
                             {
                                 SpellManager.ClickRemoteLocation(onLocation(ret));
                                 CooldownTracker.SpellUsed(spell);
-                                Logger.CombatLogO("Casting: " + spell);
+                                Logger.CombatLogOr("Casting: " + spell);
                             }
                         )));
         }
@@ -112,7 +111,7 @@ namespace FuryUnleashed.Core
                         {
                             SpellManager.ClickRemoteLocation(onLocation(ret));
                             CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogO("Casting: " + spell);
+                            Logger.CombatLogOr("Casting: " + spell);
                         }
                         )));
         }
@@ -552,7 +551,7 @@ namespace FuryUnleashed.Core
         {
             if (GetGlobalCooldownSpell != null)
             {
-                Logger.DiagLogW("FU: GCD Spell is set to {0}", GetGlobalCooldownSpell);
+                Logger.DiagLogWh("FU: GCD Spell is set to {0}", GetGlobalCooldownSpell);
                 GcdSpell = GetGlobalCooldownSpell;
             }
         }

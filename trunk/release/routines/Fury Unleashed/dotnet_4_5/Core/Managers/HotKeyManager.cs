@@ -1,12 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Routines;
-using FuryUnleashed.Shared.Helpers;
+using FuryUnleashed.Rotations;
 using Styx.Common;
 using Styx.WoWInternals;
 
-namespace FuryUnleashed.Shared.Managers
+namespace FuryUnleashed.Core.Managers
 {
     internal static class HotKeyManager
     {
@@ -19,7 +20,7 @@ namespace FuryUnleashed.Shared.Managers
 
         private static void LogKey(string kType, Keys kValue, ModifierKeys kModifier, bool kResult)
         {
-            Logger.DiagLogW("{0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
+            Logger.DiagLogPu("{0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
         }
 
         /* Keystates - One press with Spell Queueing */
@@ -87,17 +88,17 @@ namespace FuryUnleashed.Shared.Managers
                 {
                     IsSpecial = !IsSpecial;
                     LogKey("Special", SettingsH.Instance.SpecialKeyChoice, SettingsH.Instance.ModKeyChoice, IsSpecial);
-                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && (FuGlobal.IsArmsSpec || FuGlobal.IsFurySpec))
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && (Global.IsArmsSpec || Global.IsFurySpec))
                         Lua.DoString(IsSpecial
                             ? @"print('Special \124cFF15E61C Enabled!')"
                             : @"print('Special \124cFFE61515 Disabled!')");
-                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && FuGlobal.IsProtSpec)
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused && Global.IsProtSpec)
                         Lua.DoString(IsSpecial
                             ? @"print('Shield Barrier \124cFF15E61C Enabled!')"
                             : @"print('Shield Block \124cFF15E61C Enabled!')");
                 });
 
-                Logger.DiagLogP("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
+                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
@@ -112,7 +113,7 @@ namespace FuryUnleashed.Shared.Managers
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
             HotkeysManager.Unregister("Special");
-            Logger.DiagLogW("Fury Unleashed: Hotkeys removed!");
+            Logger.DiagLogPu("Fury Unleashed: Hotkeys removed!");
         }
     }
 }

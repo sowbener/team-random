@@ -1,4 +1,4 @@
-﻿using FuryUnleashed.Shared.Helpers;
+﻿using FuryUnleashed.Core.Helpers;
 using Styx.Helpers;
 using System.ComponentModel;
 
@@ -276,6 +276,20 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Shattering Throw")]
         [Description("Checked enables Shattering Throw.")]
         public bool CheckShatteringThrow { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.SunderArmor.Always)]
+        [Category("Fury - Selectable Options")]
+        [DisplayName("Enable Sunder Armor")]
+        [Description("Select Sunder Armor usage - Also set the amount of stacks which needs to be applied!")]
+        public Enum.SunderArmor CheckSunderArmor { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.SunderStacks.ThreeStacks)]
+        [Category("Fury - Selectable Options")]
+        [DisplayName("Sunder Armor Stacks")]
+        [Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 3!")]
+        public Enum.SunderStacks CheckSunderArmorNum { get; set; }
 
         // [Setting]
         // [Styx.Helpers.DefaultValue(true)]

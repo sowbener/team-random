@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using FuryUnleashed.Interfaces.Settings;
-using Enum = FuryUnleashed.Shared.Helpers.Enum;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
-namespace FuryUnleashed.Shared.Utilities
+namespace FuryUnleashed.Core.Utilities
 {
     // CREDIT TO unifiedtrinity && Wulf
     [DebuggerStepThrough]
@@ -34,7 +34,7 @@ namespace FuryUnleashed.Shared.Utilities
                     _stopwatch.Stop();
                     if (_stopwatch.Elapsed.TotalMilliseconds > 1)
                     {
-                        Helpers.Logger.InitLogF("[Performance] Execution of the block {0} took {1:00.00}ms.", _blockName,
+                        Logger.CombatLogWh("[Performance] Execution of the block {0} took {1:00.00}ms.", _blockName,
                                       _stopwatch.Elapsed.TotalMilliseconds);
                     }
                 }

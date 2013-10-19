@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuryUnleashed.Shared.Helpers
+namespace FuryUnleashed.Core.Helpers
 {
     internal static class Enum
     {
@@ -80,6 +80,20 @@ namespace FuryUnleashed.Shared.Helpers
             None
         }
 
+        public enum SunderArmor
+        {
+            Never,
+            Always,
+            OnBossDummy
+        }
+
+        public enum SunderStacks
+        {
+            OneStack,
+            TwoStacks,
+            ThreeStacks
+        }
+
         public enum SvnUrl
         {
             Release,
@@ -119,6 +133,7 @@ namespace FuryUnleashed.Shared.Helpers
         public enum WoWVersion
         {
             Development,
+            SimCraft,
             Release
         }
         #endregion

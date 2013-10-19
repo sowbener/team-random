@@ -1,8 +1,7 @@
-﻿using Styx.TreeSharp;
-using System.Diagnostics;
-using Action = Styx.TreeSharp.Action;
+﻿using System.Diagnostics;
+using Styx.TreeSharp;
 
-namespace FuryUnleashed.Shared.Utilities
+namespace FuryUnleashed.Core.Utilities
 {
     public class TreeSharp
     {
@@ -21,7 +20,7 @@ namespace FuryUnleashed.Shared.Utilities
 
                 if (TreePerformanceTimer.ElapsedMilliseconds > 0)
                 {
-                    Helpers.Logger.AdvancedLogW("[TreePerformance] Elapsed Time to traverse Tree: {0} ms", TreePerformanceTimer.ElapsedMilliseconds);
+                    Logger.CombatLogWh("[TreePerformance] Elapsed Time to traverse Tree: {0} ms", TreePerformanceTimer.ElapsedMilliseconds);
                     TreePerformanceTimer.Stop();
                     TreePerformanceTimer.Reset();
                 }
@@ -45,7 +44,7 @@ namespace FuryUnleashed.Shared.Utilities
                 new Action(delegate
                 {
                     CompositePerformanceTimer.Stop();
-                    Helpers.Logger.AdvancedLogW("[CompositePerformance] {0} took {1} ms", name, CompositePerformanceTimer.ElapsedMilliseconds);
+                    Logger.CombatLogWh("[CompositePerformance] {0} took {1} ms", name, CompositePerformanceTimer.ElapsedMilliseconds);
                     return RunStatus.Success;
                 }));
         }

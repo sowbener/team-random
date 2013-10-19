@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using FuryUnleashed.Shared.Helpers;
+using FuryUnleashed.Core.Helpers;
 using Styx.Helpers;
 
 namespace FuryUnleashed.Interfaces.Settings

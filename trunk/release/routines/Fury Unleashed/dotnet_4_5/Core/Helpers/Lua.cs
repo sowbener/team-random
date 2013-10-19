@@ -1,14 +1,15 @@
-﻿using FuryUnleashed.Interfaces.Settings;
-using Styx;
-using Styx.TreeSharp;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
+using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
+using Styx;
+using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Action = Styx.TreeSharp.Action;
 
 // Credits for this code go out to the PureRotation Team!
-namespace FuryUnleashed.Shared.Helpers
+namespace FuryUnleashed.Core.Helpers
 {
     internal static class LuaClass
     {
@@ -70,7 +71,7 @@ namespace FuryUnleashed.Shared.Helpers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogW("FU: {0} - GetFps()", ex);
+                Logger.DiagLogWh("FU: {0} - GetFps()", ex);
             }
             return 0;
         }
