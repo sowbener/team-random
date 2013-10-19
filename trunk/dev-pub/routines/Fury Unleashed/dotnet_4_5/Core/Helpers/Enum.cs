@@ -133,6 +133,7 @@ namespace FuryUnleashed.Core.Helpers
         public enum WoWVersion
         {
             Development,
+            SimCraft,
             Release
         }
         #endregion

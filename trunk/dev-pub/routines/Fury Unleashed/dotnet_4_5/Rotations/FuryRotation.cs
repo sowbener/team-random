@@ -51,6 +51,7 @@ namespace FuryUnleashed.Rotations
                     new Decorator(ret => InternalSettings.Instance.Fury.CheckInterrupts && Unit.CanInterrupt, Global.InitializeInterrupts()),
                     new Switch<Enum.WoWVersion>(ctx => InternalSettings.Instance.General.CrFuryRotVersion,
                         new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, DevFuryCombat),
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.SimCraft, SimcFuryCombat),
                         new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, RelFuryCombat)));
             }
         }
@@ -109,6 +110,64 @@ namespace FuryUnleashed.Rotations
                                         new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => Global.ExecutePhase, Dev_FuryExec()),
                                         new Decorator(ret => Global.NormalPhase, Dev_FurySt())
+                                        ))))));
+            }
+        }
+
+        internal static Composite SimcFuryCombat
+        {
+            get
+            {
+                return new PrioritySelector(
+                    new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
+                            new PrioritySelector(
+                                new Decorator(ret => Me.HealthPercent < 100, Sim_FuryDefensive()),
+                                Sim_FuryNonGcdUtility(),
+                                Sim_FuryRacials(),
+                                Sim_FuryOffensive(),
+                                Item.CreateItemBehaviour(),
+                                Sim_FuryHeroicStrike(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Sim_FuryGcdUtility(),
+                                        new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Sim_FuryMt()),
+                                        new Decorator(ret => Global.ExecutePhase, Sim_FuryExec()),
+                                        new Decorator(ret => Global.NormalPhase, Sim_FurySt())
+                                        )))),
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
+                            new PrioritySelector(
+                                new Decorator(ret => Me.HealthPercent < 100, Sim_FuryDefensive()),
+                                Sim_FuryNonGcdUtility(),
+                                new Decorator(ret => HotKeyManager.IsCooldown,
+                                    new PrioritySelector(
+                                        Sim_FuryRacials(),
+                                        Sim_FuryOffensive(),
+                                        Item.CreateItemBehaviour())),
+                                Sim_FuryHeroicStrike(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Sim_FuryGcdUtility(),
+                                        new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Sim_FuryMt()),
+                                        new Decorator(ret => Global.ExecutePhase, Sim_FuryExec()),
+                                        new Decorator(ret => Global.NormalPhase, Sim_FurySt())
+                                        )))),
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
+                            new PrioritySelector(
+                                new Decorator(ret => Me.HealthPercent < 100, Sim_FuryDefensive()),
+                                Sim_FuryNonGcdUtility(),
+                                new Decorator(ret => HotKeyManager.IsCooldown,
+                                    new PrioritySelector(
+                                        Sim_FuryRacials(),
+                                        Sim_FuryOffensive(),
+                                        Item.CreateItemBehaviour())),
+                                Sim_FuryHeroicStrike(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Sim_FuryGcdUtility(),
+                                        new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Sim_FuryMt()),
+                                        new Decorator(ret => Global.ExecutePhase, Sim_FuryExec()),
+                                        new Decorator(ret => Global.NormalPhase, Sim_FurySt())
                                         ))))));
             }
         }
@@ -176,6 +235,62 @@ namespace FuryUnleashed.Rotations
         internal static Composite Dev_FurySt()
         {
             return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryExec()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryHeroicStrike()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryMt()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryOffensive()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryGcdUtility()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryRacials()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryDefensive()
+        {
+            return new PrioritySelector(
+                );
+        }
+
+        internal static Composite Dev_FuryNonGcdUtility()
+        {
+            return new PrioritySelector(
+                );
+        }
+        #endregion
+
+        #region SimCraft Rotations
+        internal static Composite Sim_FurySt()
+        {
+            return new PrioritySelector(
                 //Added for Supporting it.
                 Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.ColossusSmashAura || Global.FadingDeathSentence(3000) && Global.CSCD >= 1500), // Added T16 P4.
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
@@ -211,13 +326,13 @@ namespace FuryUnleashed.Rotations
                 //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 70 && !Global.ColossusSmashAura)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 70 && !Global.ColossusSmashAura))),                
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 70 && !Global.ColossusSmashAura))),
                 //actions.single_target+=/wild_strike,if=debuff.colossus_smash.up&target.health.pct>=20
                 Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashAura && Global.NormalPhase),
                 //actions.single_target+=/battle_shout,if=rage<70
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 70)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 70))),     
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 70))),
                 //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
                 Spell.Cast(SpellBook.WildStrike, ret => Global.CSCD >= 2000 && Me.CurrentRage >= 70 && Global.NormalPhase),
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
@@ -225,7 +340,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Dev_FuryExec()
+        internal static Composite Sim_FuryExec()
         {
             return new PrioritySelector(
                 new Decorator(ret => G.ColossusSmashAura,
@@ -239,10 +354,10 @@ namespace FuryUnleashed.Rotations
                         )),
                 new Decorator(ret => !Global.ColossusSmashAura,
                     new PrioritySelector(
-                        Dev_FurySt())));
+                        Sim_FurySt())));
         }
 
-        internal static Composite Dev_FuryHeroicStrike()
+        internal static Composite Sim_FuryHeroicStrike()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage), // Added to prevent ragecapping.
@@ -250,7 +365,7 @@ namespace FuryUnleashed.Rotations
                 Spell.Cast(SpellBook.HeroicStrike, ret => Global.NormalPhase && Me.CurrentRage >= 40 && Global.ColossusSmashAura || Me.CurrentRage >= Me.MaxRage - 20 && Global.EnrageAura));
         }
 
-        internal static Composite Dev_FuryMt()
+        internal static Composite Sim_FuryMt()
         {
             return new PrioritySelector(
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 5,
@@ -316,7 +431,7 @@ namespace FuryUnleashed.Rotations
                         )));
         }
 
-        internal static Composite Dev_FuryOffensive()
+        internal static Composite Sim_FuryOffensive()
         {
             return new PrioritySelector(
                 //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
@@ -332,7 +447,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Dev_FuryGcdUtility()
+        internal static Composite Sim_FuryGcdUtility()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.ImpendingVictory, ret => !Global.IVOC && Global.IvTalent && InternalSettings.Instance.Fury.CheckImpVic && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckImpVicNum),
@@ -342,7 +457,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Dev_FuryRacials()
+        internal static Composite Sim_FuryRacials()
         {
             return new PrioritySelector(
                 new Decorator(ret => RacialUsage,
@@ -350,7 +465,7 @@ namespace FuryUnleashed.Rotations
                     ));
         }
 
-        internal static Composite Dev_FuryDefensive()
+        internal static Composite Sim_FuryDefensive()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.DiebytheSword, ret => InternalSettings.Instance.Fury.CheckDiebytheSword && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckDiebytheSwordNum),
@@ -361,7 +476,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Dev_FuryNonGcdUtility()
+        internal static Composite Sim_FuryNonGcdUtility()
         {
             return new PrioritySelector(
                 Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckDemoBannerNum && Unit.IsDoNotUseOnTgt),
