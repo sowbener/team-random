@@ -352,6 +352,9 @@ namespace FuryUnleashed.Rotations
         internal static bool TasteForBloodS4        { get { return Me.HasCachedAura(60503, 4); } }
         internal static bool TasteForBloodS5        { get { return Me.HasCachedAura(60503, 5); } }
         internal static bool SunderArmorAura3S      { get { return Me.CurrentTarget.HasCachedAura(7386, 3); } }
+		internal static bool WeakenedArmor1S        { get { return Me.CurrentTarget.HasCachedAura(113746, 1); } }
+        internal static bool WeakenedArmor2S        { get { return Me.CurrentTarget.HasCachedAura(113746, 2); } }
+        internal static bool WeakenedArmor3S        { get { return Me.CurrentTarget.HasCachedAura(113746, 3); } }
 
         // Cached Aura's - Can be used with ANY aura's (HasAnyCachedAura).
         internal static bool AncientHysteriaAura    { get { return Me.HasAnyCachedAura(90355, 0); } }
