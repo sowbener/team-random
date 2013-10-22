@@ -51,6 +51,8 @@ namespace Waldo.Routines
                                 I.SubUseItems(),
                                 SubOffensive(),
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SubMt()),
+                                new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
+                                SubShadowDance(),
                                     SubSt())),
                         new Decorator(ret => !Spell.GlobalCooldown() && SH.Instance.ModeSelection == WaEnum.Mode.Hotkey,
                             new PrioritySelector(
@@ -61,11 +63,14 @@ namespace Waldo.Routines
                                 new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts && WaUnit.CanInterrupt,
                                     SubInterrupts()),
                                 SubUtility(),
+                                new Decorator(ret => StyxWoW.Me.CurrentEnergy < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
                                 new Decorator(ret => WaHotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                         I.SubUseItems(),
                                         SubOffensive())),
                                 new Decorator(ret => WaHotKeyManager.IsAoe, SubMt()),
+                                new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
+                                new Decorator(ret => WaHotKeyManager.IsCooldown, SubShadowDance()),
                                 new Decorator(ret => !WaHotKeyManager.IsAoe, SubSt()))));
             }
         }
@@ -76,10 +81,10 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && (G.ComboPointsActive < 3 || G.AnticipationCount < 3)),
-                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Me.CurrentEnergy < 90 && (G.ComboPointsActive < 5 || G.AnticipationCount < 3)),
-                Spell.Cast("Vanish", ret => Me.CurrentEnergy <= 75 && Me.ComboPoints <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),                  
-                new Decorator(ret => Me.ComboPoints > 4 || G.AnticipationCount > 4 || (Me.ComboPoints > 2 && G.AnticipationCount < 4), Finishers()),
-                new Decorator(ret => G.ComboPointsActive < 4 || Me.CurrentEnergy > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
+                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && (G.ComboPointsActive < 5 || G.AnticipationCount < 3)),
+                Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && Me.ComboPoints <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),                  
+                new Decorator(ret => Me.ComboPoints > 4 || G.AnticipationCount < 4 || (Me.ComboPoints > 2 && G.AnticipationCount < 4), Finishers()),
+                new Decorator(ret => G.ComboPointsActive < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
 
           
@@ -90,7 +95,7 @@ namespace Waldo.Routines
         static Composite ComboBuilders()
         {
             return new PrioritySelector(
-            new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Me.CurrentEnergy < 80 || Me.CurrentEnergy < 60), Pooling()),
+            new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling || !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
             Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Stealth") || !Me.HasAura("Shadow Dance"))),
@@ -134,6 +139,17 @@ namespace Waldo.Routines
                 );
         }
 
+
+        static Composite SubShadowDance()
+        {
+            return new PrioritySelector(
+                   Spell.Cast("Shadow Dance", ret => Lua.PlayerPower > 74 && !Me.HasAura("Stealth") && !Me.HasAura("Vanish") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (
+                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
+                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.Always)
+                    )));
+        }
+
         static Composite SubOffensive()
         {
             return new PrioritySelector(
@@ -141,11 +157,6 @@ namespace Waldo.Routines
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowBlades == WaEnum.AbilityTrigger.Always)
-                    )),
-                Spell.Cast("Shadow Dance", ret => !Me.HasAura("Stealth") && !Me.HasAura("Vanish") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (
-                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
-                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
-                    (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
                     (SG.Instance.Subtlety.ClassRacials == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||

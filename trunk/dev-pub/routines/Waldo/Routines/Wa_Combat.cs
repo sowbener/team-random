@@ -126,12 +126,12 @@ namespace Waldo.Routines
         internal static Composite ComOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Killing Spree", ret => (Me.CurrentEnergy < 35 && WaSpell.HasCachedAura(Me, 5171, 0, 4000) && !Me.HasAura(13750)) && (
+                Spell.Cast("Killing Spree", ret => (Lua.PlayerPower < 35 && WaSpell.HasCachedAura(Me, 5171, 0, 4000) && !Me.HasAura(13750)) && (
                    (SG.Instance.Combat.KillingSpree == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Combat.KillingSpree == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Combat.KillingSpree == WaEnum.AbilityTrigger.Always)
                    )),
-                Spell.Cast("Adrenaline Rush", ret => (Me.CurrentEnergy < 35 || Me.HasAura(121471)) && (
+                Spell.Cast("Adrenaline Rush", ret => (Lua.PlayerPower < 35 || Me.HasAura(121471)) && (
                     (SG.Instance.Combat.AdrenalineRush == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Combat.AdrenalineRush == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                    (SG.Instance.Combat.AdrenalineRush == WaEnum.AbilityTrigger.Always)
