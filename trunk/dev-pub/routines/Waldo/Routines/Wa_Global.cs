@@ -73,13 +73,7 @@ namespace Waldo.Routines
             get { return WaTalentManager.HasTalent(18); }
         }
 
-        internal static int ComboPointsActive
-        {
-            get
-            {
-                return StyxWoW.Me.ComboPoints;
-            }
-        }
+
 
         #region KeyActions
         internal static Composite InitializeOnKeyActions()

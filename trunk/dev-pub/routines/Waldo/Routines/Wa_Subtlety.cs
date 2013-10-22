@@ -80,11 +80,11 @@ namespace Waldo.Routines
         static Composite SubSt()
         {
             return new PrioritySelector(
-                Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && (G.ComboPointsActive < 3 || G.AnticipationCount < 3)),
-                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && (G.ComboPointsActive < 5 || G.AnticipationCount < 3)),
-                Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && Me.ComboPoints <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),                  
-                new Decorator(ret => Me.ComboPoints > 4 || G.AnticipationCount < 4 || (Me.ComboPoints > 2 && G.AnticipationCount < 4), Finishers()),
-                new Decorator(ret => G.ComboPointsActive < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
+                Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && (WaLua.PlayerComboPts < 3 || G.AnticipationCount < 3)),
+                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && (WaLua.PlayerComboPts < 5 || G.AnticipationCount < 3)),
+                Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
+                new Decorator(ret => WaLua.PlayerComboPts > 4 || G.AnticipationCount < 4 || (WaLua.PlayerComboPts > 2 && G.AnticipationCount < 4), Finishers()),
+                new Decorator(ret => WaLua.PlayerComboPts < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
 
           
@@ -126,7 +126,7 @@ namespace Waldo.Routines
               Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 5),
               Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 1 && G.TargetRuptureFalling),
               Spell.Cast("Envenom", ret => Lua.PlayerComboPts > 4),
-              Spell.Cast("Slice and Dice", ret => Me.ComboPoints > 1 && G.FucknoSND)
+              Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 1 && G.FucknoSND)
                 )));
         }
 
