@@ -232,6 +232,14 @@ namespace Bullseye.Helpers
             }
             return 0;
         }
+
+        public static double SpellInRange(string spell)
+        {
+            return Lua.GetReturnVal<int>("return IsSpellInRange(\"  " + spell + "\", \"  " + StyxWoW.Me.CurrentTarget + "\");", 0);
+        }
+
+       
+
         #endregion
     }
 }

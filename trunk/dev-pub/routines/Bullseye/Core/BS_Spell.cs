@@ -40,7 +40,7 @@ namespace Bullseye.Core
         // Casting by Name
         public static Composite Cast(string spell, Selection<bool> reqs = null)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs);
+            return Cast(spell, ret => Me.CurrentTarget, reqs);
         }
 
         public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
@@ -53,6 +53,22 @@ namespace Bullseye.Core
                             CooldownTracker.SpellUsed(spell);
                             BsLogger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
                         }));
+        }
+
+        public static float SpellDistance(this WoWUnit unit, WoWUnit other = null)
+        {
+            // abort if mob null
+            if (unit == null)
+                return 0;
+
+            // optional arg implying Me, then make sure not Mob also
+            if (other == null)
+                other = StyxWoW.Me;
+
+            // pvp, then keep it close
+            float dist = other.Location.Distance(unit.Location);
+            dist -= other.CombatReach + unit.CombatReach;
+            return Math.Max(0, dist);
         }
 
         // Casting by Integer
@@ -72,6 +88,8 @@ namespace Bullseye.Core
                             BsLogger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
                         }));
         }
+
+       
 
         // Casting on Ground by String
         public static Composite CastOnGround(string spell, LocationRetriever onLocation)

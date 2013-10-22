@@ -72,7 +72,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
-                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.Pet.CurrentTarget.Location) < 25f),
+                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.SpellDistance(Me.Pet.CurrentTarget) < 25f),
                 new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),

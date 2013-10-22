@@ -138,7 +138,7 @@ namespace Bullseye.Routines
                     (SG.Instance.Survival.RapidFire == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Survival.RapidFire == BsEnum.AbilityTrigger.Always)
                     )),
-                    Spell.Cast("Stampede", ret => (
+                    Spell.Cast("Stampede", ret => ( 
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
