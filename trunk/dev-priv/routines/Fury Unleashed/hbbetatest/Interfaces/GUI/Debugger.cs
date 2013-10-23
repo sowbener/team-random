@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
+using FuryUnleashed.Core.Utilities;
 using Styx;
 
 namespace FuryUnleashed.Interfaces.GUI
@@ -82,6 +83,16 @@ namespace FuryUnleashed.Interfaces.GUI
         private void targetcachedaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateTargetCachedAuras();
+        }
+
+        private void myauraslogfilebutton_Click(object sender, EventArgs e)
+        {
+            Logger.WriteFile(myaurasdatagrid.DataSource.ToString());
+        }
+
+        private void mytargetauraslogfilebutton_Click(object sender, EventArgs e)
+        {
+            Logger.WriteFile(mytargetaurasdatagrid.DataSource.ToString());
         }
     }
 }
