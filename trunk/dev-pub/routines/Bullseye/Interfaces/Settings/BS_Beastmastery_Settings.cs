@@ -56,6 +56,13 @@ namespace Bullseye.Interfaces.Settings
         [Description("Select the usage of your class racials - Only DPS abilities (Buffs & Attacks).")]
         public BsEnum.AbilityTrigger ClassRacials { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Beastmastery - Ability Options")]
+        [DisplayName("Cleave Number")]
+        [Description("Select amount of units to use the cleave rotation for 3-4 targets")]
+        public int AoEMultiShotCount { get; set; }
+
         #endregion
 
         #region Item Options

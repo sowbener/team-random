@@ -44,8 +44,9 @@ namespace Bullseye.Routines
                                         BeastmasteryUtility(),
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive(),
-                                        new Decorator(ret => SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount > 2, BeastmasteryMt()),
-                                        BeastmasterySt())),
+                                        new Decorator(ret => SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount > 4, BeastmasteryMt()),
+                                        new Decorator(ret => UseQuasiAoE, BeastmasteryCleave()),
+                                        new Decorator(ret => !UseQuasiAoE,BeastmasterySt()))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckAutoAttack, Lua.StartAutoAttack),
@@ -57,7 +58,8 @@ namespace Bullseye.Routines
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive())),
                                         new Decorator(ret => BsHotKeyManager.IsAoe, BeastmasteryMt()),
-                                        BeastmasterySt())));
+                                        new Decorator(ret => UseQuasiAoE, BeastmasteryCleave()),
+                                        new Decorator(ret => !UseQuasiAoE,BeastmasterySt()))));
             }
         }
         #endregion
@@ -73,11 +75,36 @@ namespace Bullseye.Routines
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.SpellDistance(Me.Pet.CurrentTarget) < 25f),
-                new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()),
+                new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()), 
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),    
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
+                //actions+=/arcane_shot,if=(buff.thrill_of_the_hunt.react&!buff.beast_within.up&cooldown.bestial_wrath.remains=0&focus>80)|(buff.thrill_of_the_hunt.react&buff.beast_within.up)
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+        }
+
+
+        internal static Composite BeastmasteryCleave()
+        {
+            return new PrioritySelector(
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.General.EnableTraps),
+                Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
+                Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => !SerpentStingRefresh),
+                Spell.Cast("Fervor", ret => FervorReqs),
+                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
+                Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.SpellDistance(Me.Pet.CurrentTarget) < 25f),
+                new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()),
+                Spell.PreventDoubleCast("Multi Shot", 1, ret => Lua.PlayerPower > 40),
+                Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
+                Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
+                Spell.Cast("Powershot", ret => TalentPowershot),
+                Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
                 //actions+=/arcane_shot,if=(buff.thrill_of_the_hunt.react&!buff.beast_within.up&cooldown.bestial_wrath.remains=0&focus>80)|(buff.thrill_of_the_hunt.react&buff.beast_within.up)
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
@@ -197,6 +224,7 @@ namespace Bullseye.Routines
         internal static bool TalentPowershot { get { return BsTalentManager.HasTalent(17); } }
         internal static bool TalentBarrage { get { return BsTalentManager.HasTalent(18); } }
         internal static bool DireBeastEnabled { get { return BsTalentManager.HasTalent(11); } }
+        internal static bool UseQuasiAoE { get { return SG.Instance.Beastmastery.CheckAoE && SG.Instance.Beastmastery.AoEMultiShotCount != 0 && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoEMultiShotCount; } }
         internal static bool MurderofCrows { get { return BsTalentManager.HasTalent(13) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(131894, 0, 2000); } }
         internal static bool LynxRush { get { return BsTalentManager.HasTalent(15) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(120697, 0, 2000); } }
         internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
