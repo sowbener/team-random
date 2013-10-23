@@ -23,7 +23,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public int RacialNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("General")]
         [DisplayName("Enable Automatic Updates")]
         [Description("Enables the automatic updater in this CC - Updates from RELEASE.")]
