@@ -94,7 +94,6 @@ namespace Bullseye.Routines
             return new PrioritySelector(
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.General.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
-                Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
@@ -117,7 +116,6 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Serpent Sting", ret => !G.HasSerpentSting),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
