@@ -75,7 +75,7 @@ namespace DeathVader.Helpers
             if (
                 !Styx.WoWInternals.Lua.Events.AddFilter(
                     "COMBAT_LOG_EVENT_UNFILTERED",
-                    "return args[2] == 'SWING_DAMAGE' or args[2] == 'RANGE_DAMAGE' or args[2] == 'SPELL_DAMAGE'"))
+                    "return args[2] == 'SWING_DAMAGE' or args[2] == 'RANGE_DAMAGE' or args[8] == UnitGUID('player') or args[2] == 'SPELL_DAMAGE'"))
             {
                 Logger.InfoLog(
                     "ERROR: Could not add combat log event filter! - Performance may be horrible, and things may not work properly!");
@@ -204,8 +204,8 @@ namespace DeathVader.Helpers
 
                 //Logger.DebugLog("DSTracker: Total Damage [{0}]", damageOverFiveSeconds);
 
-                scentBloodStacks = StyxWoW.Me.HasCachedStack("Scent of Blood");
-                bloodChargeStacks = StyxWoW.Me.HasCachedStack("Blood Charge");
+                scentBloodStacks = StyxWoW.Me.AuraStackCount("Scent of Blood");
+                bloodChargeStacks = StyxWoW.Me.AuraStackCount("Blood Charge");
                 var healthDeficit = (StyxWoW.Me.MaxHealth - StyxWoW.Me.CurrentHealth);
 
                 // This should return the predicted shield over the last 5 seconds
@@ -248,21 +248,21 @@ namespace DeathVader.Helpers
                 double vbHealingInc = 0.0;
                 double gsHealModifier = 0.0;
                 double luckOfTheDrawAmt = 0.0;
-                uint lotDStackcount = 0;
+                int lotDStackcount = 0;
 
                 // Vampiric Blood
                 double vbHealingIncModified = DvTalentManager.HasGlyph("Vampiric Blood") ? vbGlyphedHealingInc : vbUnglyphedHealingInc;
-                if (StyxWoW.Me.HasCachedAura("Vampiric Blood", 0)) vbHealingInc = vbHealingIncModified;
+                if (StyxWoW.Me.HasAura("Vampiric Blood")) vbHealingInc = vbHealingIncModified;
 
                 // Luck of the Draw - MoP Dungeon bonus
-                if (StyxWoW.Me.HasCachedAura("Luck of the Draw", 0))
+                if (StyxWoW.Me.HasAura("Luck of the Draw"))
                 {
-                    lotDStackcount = StyxWoW.Me.HasCachedStack("Luck of the Draw");
+                    lotDStackcount = StyxWoW.Me.AuraStackCount("Luck of the Draw");
                 }
                 luckOfTheDrawAmt = LUCK_OF_THE_DRAW_MOD * lotDStackcount;
 
                 // Guardian Spirit - from priest
-                if (StyxWoW.Me.HasCachedAura("Guardian Spirit", 0)) gsHealModifier = guardianSpiritHealBuff;
+                if (StyxWoW.Me.HasAura("Guardian Spirit")) gsHealModifier = guardianSpiritHealBuff;
 
                 // Logger.DebugLog("DSTracker: Vampiric Blood = [{0}]  Guardian Spirit = [{1}] Glyph of Vampiric Blood = [{2}]", StyxWoW.Me.HasAura("Vampiric Blood"), StyxWoW.Me.HasAura("Guardian Spirit"), TalentManager.HasGlyph("Vampiric Blood"));
                 // Logger.DebugLog("DSTracker: (1 + vbHealingInc) = [{0}] * (1 + gsHealModifier) = [{1}] * (1 + luckOfTheDrawAmt) = [{2}]", (1 + vbHealingInc), (1 + gsHealModifier), (1 + luckOfTheDrawAmt));

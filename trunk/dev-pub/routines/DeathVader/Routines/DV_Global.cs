@@ -35,13 +35,6 @@ namespace DeathVader.Routines
             }
         }
 
-        internal static Composite InitializeCaching()
-        {
-            return new PrioritySelector(
-                new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { DvUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; })
-                );
-        }
 
         internal static bool SpeedBuffsAura { get { return Me.HasAura(2825) || Me.HasAura(80353) || Me.HasAura(32182) || Me.HasAura(90355); } }
 
@@ -56,14 +49,14 @@ namespace DeathVader.Routines
 
         internal static int DeathRuneSlotsActive
         {
-            get {  return Me.GetRuneCount(0) + Me.GetRuneCount(1); }
+            get {  return Me.DeathRuneCount; }
         }
 
         internal static int BloodRuneSlotsActive
         {
             get
             {
-                DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
+             //   DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
                 return StyxWoW.Me.BloodRuneCount;
             }
         }
@@ -72,7 +65,7 @@ namespace DeathVader.Routines
         {
             get
             {
-                DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
+             //   DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
                 return StyxWoW.Me.FrostRuneCount;
             }
         }
@@ -88,7 +81,7 @@ namespace DeathVader.Routines
         {
             get
             {
-                DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
+              //  DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
                 return StyxWoW.Me.UnholyRuneCount;
             }
         }

@@ -33,6 +33,8 @@ using JetBrains.Annotations;
 using Styx;
 using Styx.CommonBot;
 using Styx.CommonBot.Routines;
+using DeathVader.Helpers;
+using DeathVader.Core;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
@@ -90,7 +92,6 @@ namespace DeathVader
         public override Composite PreCombatBuffBehavior { get { return _preCombatBuffBehavior; } }
         #endregion
 
-
         #region Pulse
         public override void Pulse()
         {
@@ -104,6 +105,10 @@ namespace DeathVader
                 {
                     return;
                 }
+
+                /*Update Units*/
+                DvUnit.GetNearbyAttackableUnitsCount();
+                Spell.GetCachedAuras();
 
                 //DotTTracker
                 if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
@@ -146,6 +151,8 @@ namespace DeathVader
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
                 DeathStrikeTracker.Initialize();
 
+            DvUnit.GetNearbyAttackableUnitsCount();
+
             /* Start Combat */
             PreBuffSelector();
             CombatSelector();
@@ -172,24 +179,6 @@ namespace DeathVader
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, U.InitializeUnholy));
         }
 
-        #endregion
-
-        #region Forced LockSelector
-        [UsedImplicitly]
-        private class LockSelector : PrioritySelector
-        {
-            public LockSelector(params Composite[] children)
-                : base(children)
-            {
-            }
-            public override RunStatus Tick(object context)
-            {
-                using (StyxWoW.Memory.AcquireFrame())
-                {
-                    return base.Tick(context);
-                }
-            }
-        }
         #endregion
     }
 }

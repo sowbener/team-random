@@ -50,6 +50,17 @@ namespace DeathVader.Interfaces.Settings
           [Setting]
           [Styx.Helpers.DefaultValue(true)]
           [Category("Blood")]
+          [DisplayName("Death and Decay usage")]
+          [Description("Will use Death and Decay on targets during combat.")]
+          public bool EnableDeathAndDecayAuto
+          {
+              get;
+              set;
+          }
+
+          [Setting]
+          [Styx.Helpers.DefaultValue(true)]
+          [Category("Blood")]
           [DisplayName("Enable Self-healing")]
           [Description("Will use Self-Healing Abilities during combat.")]
           public bool EnableSelfHealing

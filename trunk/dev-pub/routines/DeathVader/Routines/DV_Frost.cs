@@ -32,7 +32,6 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeFrost")),
                         new Decorator(ret => (DvHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),   
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),                     
-                        G.InitializeCaching(),
                          G.InitializeOnKeyActions(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
                                 new PrioritySelector(

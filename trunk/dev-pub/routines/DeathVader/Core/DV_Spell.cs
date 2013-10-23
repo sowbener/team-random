@@ -701,7 +701,20 @@ namespace DeathVader.Core
                 return 0;
             }
         }
-        
+
+        public static bool IsSpellInRange(int SpellID)
+        {
+            return Lua.GetReturnVal<double>(
+                    "local n=GetSpellInfo(" + SpellID + ");return IsSpellInRange(n" + ",\"target\");", 0) == 1;
+        }
+
+        public static int AuraStackCount(this WoWUnit unit, string aura)
+        {
+            return !unit.HasAura(aura) ? 0 : (int)unit.Auras[aura].StackCount;
+        }
+
+        //Thanks Fpsware
+
         //this WoWUnit unit, string aura, bool fromMyAura = false, int expiry = 1000
 
         public static bool HasCachedAura(this WoWUnit unit, int aura, int stacks, int msuLeft = 0)

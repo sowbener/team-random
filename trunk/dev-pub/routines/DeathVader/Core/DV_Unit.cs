@@ -46,6 +46,14 @@ namespace DeathVader.Core
         {
             get { return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast; }
         }
+
+        private static bool IsStandingInGroundEffect()
+        {
+            {
+                return
+                    ObjectManager.GetObjectsOfType<WoWDynamicObject>().Where(obj => obj.Distance <= obj.Radius).Any(obj => obj.Caster.IsHostile);
+            }
+        }
         // Get UnitCount for Attackble Mobs.
         internal static IEnumerable<WoWUnit> AttackableUnits
         {
@@ -79,7 +87,7 @@ namespace DeathVader.Core
                 NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count();
         }
 
-        internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Blood Plague")) >= 2; } }
+        internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Blood Plague")) > 2; } }
 
         // Get GroupCount for friendly players in raid.
         internal static IEnumerable<WoWPlayer> RaidMembers

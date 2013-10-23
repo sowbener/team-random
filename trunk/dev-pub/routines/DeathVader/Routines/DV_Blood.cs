@@ -35,7 +35,6 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),
                         new Decorator(ret => DvHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null))),
                         new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
-                        G.InitializeCaching(),
                         AutoGoreGrasp(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
                                 new PrioritySelector(
@@ -75,7 +74,7 @@ namespace DeathVader.Routines
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike),
                 //Spell.PreventDoubleCast("Blood Boil", 0.5, ret => HasCrimsonScourge), // get rid of the Proc
-                //new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector(Spell.PreventDoubleCast("Necrotic Strike", ThrottleTime, ret => NeedNecroticStrike))),
+                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && DeathKnightSettings.EnableDeathAndDecayAuto),
                 Spell.Cast("Soul Reaper", ret => NeedSoulReaper && OkToUseBloodRuneForDamage),  // Never use Soul Reaping if you have no Blood runes, as this will cause Heart Strike to consume a Death rune, which should be saved for Death Strike.
                 Spell.Cast(55050, ret => Me.BloodRuneCount > 0 && OkToUseBloodRuneForDamage));
           //      Spell.Cast("Death Coil", ret => Me.CurrentTarget != null && !Me.CurrentTarget.IsWithinMeleeRange && Me.CurrentRunicPower >= 90));
@@ -86,10 +85,11 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                 Spell.Cast("Blood Boil", ret => HasCrimsonScourge), // get rid of the Proc
-                Spell.Cast("Unholy Blight", ret => NeedEitherAoE && DeathKnightSettings.EnableUnholyBlight),
-                Spell.Cast("Outbreak", ret => NeedEitherAoE && !DvTalentManager.HasTalent(1)),
-                Spell.Cast("Plague Strike", ret => NeedBloodPlagueAoE && OutBreakOnCooldown),
-                Spell.Cast("Icy Touch", ret => NeedFrostFeverAoE && OutBreakOnCooldown),
+                Spell.Cast("Unholy Blight", ret => NeedEither && DeathKnightSettings.EnableUnholyBlight),
+                Spell.Cast("Outbreak", ret => NeedEither && !DvTalentManager.HasTalent(1)),
+                Spell.Cast("Plague Strike", ret => NeedBloodPlague && OutBreakOnCooldown),
+                Spell.Cast("Icy Touch", ret => NeedFrostFever && OutBreakOnCooldown),
+                Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null && DeathKnightSettings.EnableDeathAndDecayAuto),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
                 Spell.PreventDoubleCast("Blood Boil", 0.5, ret => ((Me.BloodRuneCount > 0 && OkToUseBloodRuneForDamage) || HasCrimsonScourge) && !NeedEitherDis),
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike));
@@ -119,8 +119,6 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.Cast("Anti-Magic Shell", on => Me, ret => NeedAntiMagicShell),
                 Spell.Cast("Bone Shield", on => Me, ret => NeedBoneShield),
-                new Decorator(ret => Me.HealthPercent < 100 && DeathKnightSettings.EnableSelfHealing,
-                              new PrioritySelector(
                                   Spell.Cast("Rune Tap", on => Me, ret => NeedRuneTapWoTn), // Instant
                                   Spell.Cast("Rune Tap", ret => Me, ret => NeedRuneTap), // 30 sec cooldown - default 90 percentHP
                                   Spell.Cast("Death Pact", on => Me, ret => NeedDeathPact), // 2 min cooldown  - default 50 percentHP
@@ -132,7 +130,7 @@ namespace DeathVader.Routines
                                   Spell.Cast("Dancing Rune Weapon", ret => NeedDancingRuneWeapon), // 1.5 min cooldown - default 80 percentHP
                                   Spell.Cast("Empower Rune Weapon", on => Me, ret => NeedEmpowerRuneWeapon), // 5 min cooldown
                 I.BloodUseHealthStone()
-                )));
+                );
         }
 
 
@@ -244,13 +242,15 @@ namespace DeathVader.Routines
             }
         }
 
-        private static bool NeedBloodTap { get { return BloodTapStackCount > 5 && Me.DeathRuneCount > 0; } }
+        private static bool NeedBloodTap { get { return DvTalentManager.HasTalent(13) && Me.AuraStackCount("Blood Charge") > 4 && (G.DeathRuneSlotsActive < 1 || G.BloodRuneSlotsActive < 1); } }
 
         private static bool NeedBoneShield { get { return !Me.HasAura("Bone Shield"); } }
 
         private static bool NeedDeathPact { get { return UsePetSacrifice && Me.HealthPercent < PetSacrificePercent; } }
 
         private static bool NeedRuneTapWoTn { get { return UseRuneTapWoTn && Me.HealthPercent < RuneTapWoTnPercent && Me.HasAura("Will of the Necropolis"); } }
+
+        private static bool CanBloodTap { get { return DvTalentManager.HasTalent(13) && (Lua.GetRuneCooldown(1) <= 1 || Lua.GetRuneCooldown(2) <= 1 || Lua.GetRuneCooldown(3) <= 1 || Lua.GetRuneCooldown(4) <= 1 || Lua.GetRuneCooldown(5) <= 1 || Lua.GetRuneCooldown(6) <= 1); } }
 
         private static bool NeedRuneTap { get { return UseRuneTap && Me.HealthPercent <= RuneTapPercent && Me.BloodRuneCount > 0 && !Spell.SpellOnCooldown(48982); } }
 
@@ -286,14 +286,6 @@ namespace DeathVader.Routines
             }
         }
 
-        private static uint BloodTapStackCount
-        {
-            get
-            {
-                return Spell.GetAuraStackCount(114851);
-            }
-        }
-
         private static bool NeedRuneStrike { get { return (Me.CurrentRunicPower >= RuneStrikePercent || Me.HealthPercent > 90) && Me.CurrentRunicPower >= 30 || (Me.CurrentRunicPower >= Me.MaxRunicPower); } }
 
         private static bool NeedSoulReaper { get { return Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && OkToUseBloodRuneForDamage && Me.BloodRuneCount > 0 && Me.CurrentTarget.HealthPercent < 35; } }
@@ -313,16 +305,12 @@ namespace DeathVader.Routines
 
         private static bool BloodPlagueUp { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAura(55078, 0, 2000); } }
 
-        private static bool NeedFrostFeverAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Frost Fever"); } }
+        private static bool NeedFrostFever { get { return Me.CurrentTarget != null && (!Me.CurrentTarget.HasMyAura("Frost Fever") || Spell.GetMyAuraTimeLeft("Frost Fever", Me.CurrentTarget) < 2); } }
 
-        private static bool NeedBloodPlagueAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Blood Plague"); } }
+        private static bool NeedBloodPlague { get { return Me.CurrentTarget != null && (!Me.CurrentTarget.HasMyAura("Blood Plague") || Spell.GetMyAuraTimeLeft("Blood Plague", Me.CurrentTarget) < 2); } }
 
-        private static bool NeedEitherAoE { get { return NeedBloodPlagueAoE || NeedFrostFeverAoE; } }
+        private static bool NeedEither { get { return NeedBloodPlague || NeedFrostFever; } }
 
-
-        private static bool NeedFrostFever { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(55095, 0, 2000); } }
-
-        private static bool NeedBloodPlague { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(55078, 0, 2000); } }
 
         #endregion booleans
 
