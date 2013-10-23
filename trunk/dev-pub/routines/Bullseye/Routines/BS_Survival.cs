@@ -85,7 +85,6 @@ namespace Bullseye.Routines
         internal static Composite SurvivalMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Serpent Sting", ret => !G.HasSerpentSting),
                 Spell.Cast("Glaive Toss"),
                 Spell.Cast("Powershot"),
                 Spell.Cast("Barrage"),
