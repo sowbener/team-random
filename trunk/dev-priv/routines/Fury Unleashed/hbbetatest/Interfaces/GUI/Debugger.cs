@@ -23,7 +23,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                dgwMyAuras.DataSource = StyxWoW.Me.Auras.Values.OrderBy(a => a.Name).ToList();
+                myaurasdatagrid.DataSource = StyxWoW.Me.Auras.Values.OrderBy(a => a.Name).ToList();
             }
         }
 
@@ -31,13 +31,34 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
             {
-                dgwTargetAuras.DataSource = StyxWoW.Me.CurrentTarget.Auras.Values.OrderBy(a => a.Name).ToList();
+                mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.Auras.Values.OrderBy(a => a.Name).ToList();
+            }
+        }
+
+        private void UpdateMyCachedAuras()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                myaurasdatagrid.DataSource = StyxWoW.Me.Auras.Values.OrderBy(a => a.Name).ToList();
+            }
+        }
+
+        private void UpdateTargetCachedAuras()
+        {
+            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            {
+                mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.Auras.Values.OrderBy(a => a.Name).ToList();
             }
         }
         #endregion
 
         #region Errors
-        private void dgwMyAuras_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void myaurasdatagrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.ThrowException = false;
+        }
+
+        private void mytargetaurasdatagrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             e.ThrowException = false;
         }
@@ -51,6 +72,16 @@ namespace FuryUnleashed.Interfaces.GUI
         private void targetaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateTargetAuras();
+        }
+
+        private void mycachedaurasbutton_Click(object sender, EventArgs e)
+        {
+            UpdateMyCachedAuras();
+        }
+
+        private void targetcachedaurasbutton_Click(object sender, EventArgs e)
+        {
+            UpdateTargetCachedAuras();
         }
     }
 }
