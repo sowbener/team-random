@@ -90,6 +90,13 @@ namespace FuryUnleashed.Core.Utilities
             Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
         }
 
+        // Specific Loggers
+        public static void CooldownTrackerLog(string message, params object[] args)
+        {
+            if (message == null || InternalSettings.Instance.General.CheckCooldownTrackerLogging == false) return;
+            Logging.WriteDiagnostic(Colors.Crimson, "{0}", String.Format(message, args));
+        }
+
         //public static void AdvancedLogP(string message, params object[] args)
         //{
         //    if (message == null) return;

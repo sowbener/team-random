@@ -87,18 +87,25 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Advanced
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Debug Logging")]
+        [DisplayName("CooldownTracker Logging")]
+        [Description("Enables the logging for the Cooldown Tracker - Requires diagnostic loglevel.")]
+        public bool CheckCooldownTrackerLogging { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Debug Logging")]
+        [DisplayName("Enable TreeSharp Timer")]
+        [Description("Enables the timer to measure the amount of MS for a composite traverse - Requires diagnostic loglevel.")]
+        public bool CheckTreePerformance { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.LogCategory.None)]
         [Category("Debug Logging")]
         [DisplayName("Performance Logging")]
         [Description("Performance = on, None = off.")]
         public Enum.LogCategory PerformanceLogging { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Debug Timers")]
-        [DisplayName("Enable TreeSharp Timer")]
-        [Description("Enables the timer to measure the amount of MS for a composite traverse - Requires diagnostic loglevel.")]
-        public bool CheckTreePerformance { get; set; }
         #endregion
 
         // ========================================================================================

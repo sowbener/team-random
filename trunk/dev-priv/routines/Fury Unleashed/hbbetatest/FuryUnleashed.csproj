@@ -97,6 +97,9 @@
     <Compile Include="Core\Utilities\TreeSharp.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Interfaces\GUI\Debugger.resx">
+      <DependentUpon>Debugger.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\GUI\Interface.resx">
       <DependentUpon>Interface.cs</DependentUpon>
     </EmbeddedResource>

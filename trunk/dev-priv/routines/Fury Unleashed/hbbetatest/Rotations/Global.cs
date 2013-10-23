@@ -27,9 +27,9 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeCaching()
         {
             return new PrioritySelector(
+                new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Switch<WoWSpec>(ret => Me.Specialization,
-
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
                             new Decorator(ret => IS.Instance.Arms.CheckAoE && IS.Instance.Arms.CheckAoEThunderclap && U.NearbyAttackableUnitsCount > 1,
@@ -39,14 +39,12 @@ namespace FuryUnleashed.Rotations
                             new Decorator(ret => IS.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
                             new Action(delegate { U.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
-
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
                             new Decorator(ret => IS.Instance.Fury.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => IS.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
-
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
                             new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount > 1,
@@ -220,142 +218,111 @@ namespace FuryUnleashed.Rotations
         }
         #endregion
 
-        #region HasAura - (wowunit, spellid, self(true) or any(false))
-        // Needs checking
-        internal static bool ReadinessAura
-        {
-            get { return Me.ActiveAuras.ContainsKey("Readiness"); } // Evil Eye of Galakras trinket Aura - Multi-ID
-        }
-
-        internal static bool Tier15TwoPieceBonus
-        {
-            get { return Me.ActiveAuras.ContainsKey("Item - Warrior T15 DPS 2P Bonus"); } // Works - 138120
-        }
-
-        internal static bool Tier15TwoPieceBonusT
-        {
-            get { return Me.ActiveAuras.ContainsKey("Item - Warrior T15 Protection 2P Bonus"); } // Works - 138280
-        }
-
-        internal static bool Tier15FourPieceBonusT
-        {
-            get { return Me.ActiveAuras.ContainsKey("Item - Warrior T15 Protection 4P Bonus"); } // Works - 138281
-        }
-
-        internal static bool Tier16TwoPieceBonus
-        {
-            get { return Me.ActiveAuras.ContainsKey("Item - Warrior T16 DPS 2P Bonus"); } // Checked - Works - 144436 is one of the ID's.
-        }
-
-        internal static bool Tier16TwoPieceBonusT
-        {
-            get { return Me.ActiveAuras.ContainsKey("Item - Warrior T16 Protection 2P Bonus"); } // Unchecked
-        }
-
-        internal static bool Tier16FourPieceBonusT
-        {
-            get { return Me.ActiveAuras.ContainsKey("Item - Warrior T16 Protection 4P Bonus"); } // Unchecked
-        }
-
-        // StyxWoW.Me
+        #region HasAura
+        // StyxWoW.Me - (WoWUnit unit, int auraId, int stacks, int msuLeft = 0, bool isFromMe = true, bool cached = true)
         internal static bool AncientHysteriaAura
         {
-            get { return Spell.HasAura(Me, AB.AncientHysteria); }
+            get { return Spell.HasAura(Me, AB.AncientHysteria, 0, 0, false); }
         }
 
         internal static bool AvatarAura
         {
-            get { return Spell.HasAura(Me, AB.Avatar, true); }
+            get { return Spell.HasAura(Me, AB.Avatar); }
         }
 
         internal static bool BattleShoutAura
         {
-            get { return Spell.HasAura(Me, AB.BattleShout); }
+            get { return Spell.HasAura(Me, AB.BattleShout, 0, 0, false); }
         }
 
         internal static bool BattleStanceAura
         {
-            get { return Spell.HasAura(Me, AB.BattleStance, true); }
+            get { return Spell.HasAura(Me, AB.BattleStance); }
         }
 
         internal static bool BerserkerStanceAura
         {
-            get { return Spell.HasAura(Me, AB.BerserkerStance, true); }
+            get { return Spell.HasAura(Me, AB.BerserkerStance); }
         }
 
         internal static bool BloodbathAura
         {
-            get { return Spell.HasAura(Me, AB.Bloodbath, true); }
+            get { return Spell.HasAura(Me, AB.Bloodbath); }
         }
 
         internal static bool BloodLustAura
         {
-            get { return Spell.HasAura(Me, AB.Bloodlust); }
+            get { return Spell.HasAura(Me, AB.Bloodlust, 0, 0, false); }
         }
 
         internal static bool BloodsurgeAura
         {
-            get { return Spell.HasAura(Me, AB.Bloodsurge, true); }
+            get { return Spell.HasAura(Me, AB.Bloodsurge); }
         }
 
         internal static bool CommandingShoutAura
         {
-            get { return Spell.HasAura(Me, AB.CommandingShout); }
+            get { return Spell.HasAura(Me, AB.CommandingShout, 0, 0, false); }
         }
 
         internal static bool DeathSentenceAuraT16
         {
-            get { return Spell.HasAura(Me, AB.DeathSentence, true); }
+            get { return Spell.HasAura(Me, AB.DeathSentence); }
         }
 
         internal static bool EnrageAura
         {
-            get { return Spell.HasAura(Me, AB.Enrage1, true) || Spell.HasAura(Me, AB.Enrage2, true); }
+            get { return Spell.HasAura(Me, AB.Enrage1) || Spell.HasAura(Me, AB.Enrage2); }
         }
 
         internal static bool HeroismAura
         {
-            get { return Spell.HasAura(Me, AB.Heroism); }
+            get { return Spell.HasAura(Me, AB.Heroism, 0, 0, false); }
         }
 
         internal static bool LastStandAura
         {
-            get { return Spell.HasAura(Me, AB.LastStand, true); }
+            get { return Spell.HasAura(Me, AB.LastStand); }
         }
 
         internal static bool MeatCleaverAura
         {
-            get { return Spell.HasAura(Me, AB.MeatCleaver, true); }
+            get { return Spell.HasAura(Me, AB.MeatCleaver); }
         }
 
         internal static bool RagingBlowAura
         {
-            get { return Spell.HasAura(Me, AB.RagingBlow, true); }
+            get { return Spell.HasAura(Me, AB.RagingBlow); }
         }
 
         internal static bool RallyingCryAura
         {
-            get { return Spell.HasAura(Me, AB.RallyingCry); }
+            get { return Spell.HasAura(Me, AB.RallyingCry, 0, 0, false); }
+        }
+
+        internal static bool ReadinessAura
+        {
+            get { return Spell.HasAura(Me, "Readiness"); } // Evil Eye of Galakras trinket Aura - Multi-ID
         }
 
         internal static bool RecklessnessAura
         {
-            get { return Spell.HasAura(Me, AB.Recklessness, true); }
+            get { return Spell.HasAura(Me, AB.Recklessness); }
         }
 
         internal static bool ShieldBarrierAura
         {
-            get { return Spell.HasAura(Me, AB.ShieldBarrier, true); }
+            get { return Spell.HasAura(Me, AB.ShieldBarrier); }
         }
 
         internal static bool ShieldBlockAura
         {
-            get { return Spell.HasAura(Me, AB.ShieldBlock, true); }
+            get { return Spell.HasAura(Me, AB.ShieldBlock); }
         }
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AB.SkullBanner1) || Spell.HasAura(Me, AB.SkullBanner2); }
+            get { return Spell.HasAura(Me, AB.SkullBanner1) || Spell.HasAura(Me, AB.SkullBanner2, 0, 0, false); }
         }
 
         internal static bool SkullBannerAuraT15
@@ -365,135 +332,104 @@ namespace FuryUnleashed.Rotations
 
         internal static bool SweepingStrikesAura
         {
-            get { return Spell.HasAura(Me, AB.SweepingStrikes, true); }
+            get { return Spell.HasAura(Me, AB.SweepingStrikes); }
         }
 
         internal static bool SuddenExecAura
         {
-            get { return Spell.HasAura(Me, AB.SuddenExecute, true); }
+            get { return Spell.HasAura(Me, AB.SuddenExecute); }
         }
 
         internal static bool TasteforBloodAura
         {
-            get { return Spell.HasAura(Me, AB.TasteforBlood, true); }
+            get { return Spell.HasAura(Me, AB.TasteforBlood); }
+        }
+
+        internal static bool Tier15TwoPieceBonus
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T15 DPS 2P Bonus"); } // Works - 138120
+        }
+
+        internal static bool Tier15TwoPieceBonusT
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T15 Protection 2P Bonus"); } // Works - 138280
+        }
+
+        internal static bool Tier15FourPieceBonusT
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T15 Protection 4P Bonus"); } // Works - 138281
+        }
+
+        internal static bool Tier16TwoPieceBonus
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T16 DPS 2P Bonus"); } // Checked - Works - 144436 is one of the ID's.
+        }
+
+        internal static bool Tier16TwoPieceBonusT
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T16 Protection 2P Bonus"); } // Unchecked
+        }
+
+        internal static bool Tier16FourPieceBonusT
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T16 Protection 4P Bonus"); } // Unchecked
         }
 
         internal static bool TimeWarpAura
         {
-            get { return Spell.HasAura(Me, AB.Timewarp); }
+            get { return Spell.HasAura(Me, AB.Timewarp, 0, 0, false); }
         }
 
         internal static bool UltimatumAura
         {
-            get { return Spell.HasAura(Me, AB.Ultimatum, true); }
+            get { return Spell.HasAura(Me, AB.Ultimatum); }
         }
 
         internal static bool VictoriousAura
         {
-            get { return Spell.HasAura(Me, AB.Victorious, true) || Spell.HasAura(Me, AB.VictoriousT15, true); }
+            get { return Spell.HasAura(Me, AB.Victorious) || Spell.HasAura(Me, AB.VictoriousT15); }
         }
 
         internal static bool VictoriousAuraT15
         {
-            get { return Spell.HasAura(Me, AB.VictoriousT15, true); }
+            get { return Spell.HasAura(Me, AB.VictoriousT15); }
         }
 
         // StyxWoW.Me.CurrentTarget
         internal static bool ColossusSmashAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.ColossusSmash, true); }
+            get { return Spell.HasAura(Me.CurrentTarget, AB.ColossusSmash); }
         }
 
         internal static bool DeepWoundsAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.DeepWounds, true); }
+            get { return Spell.HasAura(Me.CurrentTarget, AB.DeepWounds); }
         }
 
         internal static bool HamstringAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.Hamstring); }
+            get { return Spell.HasAura(Me.CurrentTarget, AB.Hamstring, 0, 0, false); }
         }
 
         internal static bool SunderArmorAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor); }
+            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 0, 0, false); }
         }
 
         internal static bool WeakenedBlowsAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.WeakenedBlows); }
+            get { return Spell.HasAura(Me.CurrentTarget, AB.WeakenedBlows, 0, 0, false); }
         }
         #endregion
 
-        #region StackCount  - (wowunit, spellid, self(true) or any(false))
-        // StyxWoW.Me.CurrentTarget
-        internal static bool WeakenedArmor1S
-        {
-            get { return Spell.StackCount(Me.CurrentTarget, AB.SunderArmor, false) == 1; }
-        }
-
-        internal static bool WeakenedArmor2S
-        {
-            get { return Spell.StackCount(Me.CurrentTarget, AB.SunderArmor, false) == 2; }
-        }
-
-        internal static bool WeakenedArmor3S
-        {
-            get { return Spell.StackCount(Me.CurrentTarget, AB.SunderArmor, false) == 3; }
-        }
-
-        // StyxWoW.Me
-        internal static bool MeatCleaverAuraS1
-        {
-            get { return Spell.StackCount(Me, AB.MeatCleaver) == 1; }
-        }
-
-        internal static bool MeatCleaverAuraS2
-        {
-            get { return Spell.StackCount(Me, AB.MeatCleaver) == 2; }
-        }
-
-        internal static bool MeatCleaverAuraS3
-        {
-            get { return Spell.StackCount(Me, AB.MeatCleaver) >= 3; }
-        }
-
-        internal static bool RagingBlow1S
-        {
-            get { return Spell.StackCount(Me, AB.RagingBlow) == 1; }
-        }
-
-        internal static bool RagingBlow2S
-        {
-            get { return Spell.StackCount(Me, AB.RagingBlow) >= 2; }
-        }
-
-        internal static bool TasteForBloodS3
-        {
-            get { return Spell.StackCount(Me, AB.TasteForBlood) == 3; }
-        }
-
-        internal static bool TasteForBloodS4
-        {
-            get { return Spell.StackCount(Me, AB.TasteForBlood) == 4; }
-        }
-
-        internal static bool TasteForBloodS5
-        {
-            get { return Spell.StackCount(Me, AB.TasteForBlood) >= 5; }
-        }
-        #endregion
-
-        #region Remaining Aura's (int remainingtime)
-        // StyxWoW.Me.CurrentTarget
+        #region Remaining & Fading Aura's
+        // StyxWoW.Me.CurrentTarget - Remaining
         internal static bool RemainingCs(int remainingtime)
         {
             return Spell.RemainingAura(Me.CurrentTarget, AB.ColossusSmash, remainingtime);
         }
-        #endregion
 
-        #region Fading Aura's (int fadingtime)
-        // StyxWoW.Me.CurrentTarget
+        // StyxWoW.Me.CurrentTarget - Fading
         internal static bool FadingCs(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AB.ColossusSmash, fadingtime);
@@ -514,7 +450,7 @@ namespace FuryUnleashed.Rotations
             return Spell.FadingAura(Me.CurrentTarget, AB.WeakenedBlows, fadingtime);
         }
 
-        // StyxWoW.Me
+        // StyxWoW.Me - Fading
         internal static bool FadingDeathSentence(int fadingtime)
         {
             return Spell.FadingAura(Me, AB.DeathSentence, fadingtime);
@@ -533,6 +469,65 @@ namespace FuryUnleashed.Rotations
         internal static bool FadingVc(int fadingtime)
         {
             return Spell.FadingAura(Me, AB.Victorious, fadingtime) || Spell.FadingAura(Me, AB.VictoriousT15, fadingtime);
+        }
+        #endregion
+
+        #region StackCounts
+        // StyxWoW.Me.CurrentTarget
+        internal static bool WeakenedArmor1S
+        {
+            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 1); }
+        }
+
+        internal static bool WeakenedArmor2S
+        {
+            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 2); }
+        }
+
+        internal static bool WeakenedArmor3S
+        {
+            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 3); }
+        }
+
+        // StyxWoW.Me
+        internal static bool MeatCleaverAuraS1
+        {
+            get { return Spell.HasAura(Me, AB.MeatCleaver, 1); }
+        }
+
+        internal static bool MeatCleaverAuraS2
+        {
+            get { return Spell.HasAura(Me, AB.MeatCleaver, 2); }
+        }
+
+        internal static bool MeatCleaverAuraS3
+        {
+            get { return Spell.HasAura(Me, AB.MeatCleaver, 3); }
+        }
+
+        internal static bool RagingBlow1S
+        {
+            get { return Spell.HasAura(Me, AB.RagingBlow, 1); }
+        }
+
+        internal static bool RagingBlow2S
+        {
+            get { return Spell.HasAura(Me, AB.RagingBlow, 2); }
+        }
+
+        internal static bool TasteForBloodS3
+        {
+            get { return Spell.HasAura(Me, AB.TasteForBlood, 3); }
+        }
+
+        internal static bool TasteForBloodS4
+        {
+            get { return Spell.HasAura(Me, AB.TasteForBlood, 4); }
+        }
+
+        internal static bool TasteForBloodS5
+        {
+            get { return Spell.HasAura(Me, AB.TasteForBlood, 5); }
         }
         #endregion
 

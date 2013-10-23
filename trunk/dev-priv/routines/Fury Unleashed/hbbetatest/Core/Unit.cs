@@ -210,6 +210,11 @@ namespace FuryUnleashed.Core
             using (new PerformanceLogger("ObjManager Update"))
                 ObjectManager.Update();
         }
+
+        public static bool IsViable(WoWObject wowObject)
+        {
+            return (wowObject != null) && wowObject.IsValid;
+        }
         #endregion
     }
 }

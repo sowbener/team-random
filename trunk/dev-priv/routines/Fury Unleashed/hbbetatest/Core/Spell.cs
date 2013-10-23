@@ -151,89 +151,197 @@ namespace FuryUnleashed.Core
         };
         #endregion GCD
 
-        #region Aura Functions
-        public static bool FadingAura(WoWUnit onUnit, int auraId, int fadingtime, bool isFromMe = true)
+        #region Cached & Non-Cached Aura Functions
+        public static IEnumerable<WoWAura> CachedAuras = new List<WoWAura>();
+        public static IEnumerable<WoWAura> CachedTargetAuras = new List<WoWAura>();
+
+        /// <summary>
+        /// Gets aura's on StyxWoW.Me and StyxWoW.Me.CurrentTarget and adds them to CachedAuras & CachedTargetAuras lists for one traverse.
+        /// </summary>
+        public static void GetCachedAuras()
         {
-            using (new PerformanceLogger("FadingAura"))
+            using (new PerformanceLogger("GetCachedAuras"))
             {
                 try
                 {
-                    if (onUnit == null) return false;
-                    WoWAura aura = isFromMe ? onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                    return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    if (Unit.IsViable(Me)) { CachedAuras = Me.GetAllAuras(); }
+                    if (Unit.IsViable(Me.CurrentTarget)) { CachedTargetAuras = Me.CurrentTarget.GetAllAuras(); }
                 }
-                catch (Exception) { return false; }
-            }
-        }
-
-        public static double GetAuraTimeLeft(WoWUnit onUnit, int auraId, bool isFromMe = true)
-        {
-            using (new PerformanceLogger("GetAuraTimeLeft"))
-            {
-                try
+                catch (Exception getcachedauraException)
                 {
-                    if (onUnit == null) return 0;
-                    WoWAura aura = isFromMe ? onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                    return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    Logger.DiagLogFb("FU: Failed to retrieve aura's - {0}", getcachedauraException);
                 }
-                catch { return 0; }
             }
         }
 
-        public static bool HasAura(WoWUnit onUnit, int auraId, bool isFromMe = false)
+        /// <summary>
+        /// HasAura extention - String
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
+        /// <param name="auraname">Full Auraname</param>
+        /// <param name="stacks">Amount of Stacks on the Aura</param>
+        /// <param name="msuLeft">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool HasAura(WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
         {
             using (new PerformanceLogger("HasAura"))
             {
                 try
                 {
-                    if (onUnit == null) return false;
-                    WoWAura aura = isFromMe ? onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                    return aura != null;
+                    if (!Unit.IsViable(unit)) return false;
+
+                    WoWAura auraresult = null;
+
+                    if (!cached)
+                    {
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                    }
+
+                    if (auraresult == null) return false;
+
+                    if (auraresult.TimeLeft.TotalMilliseconds > msuLeft)
+                        return auraresult.StackCount >= stacks;
                 }
                 catch (Exception) { return false; }
             }
+            return false;
         }
 
-        public static bool HasAnyAura(WoWUnit onUnit, bool isFromMe = true, params int[] auraIDs)
+        /// <summary>
+        /// HasAura extention - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="stacks">Amount of Stacks on the Aura</param>
+        /// <param name="msuLeft">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool HasAura(WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
         {
-            using (new PerformanceLogger("HasAnyAura"))
+            using (new PerformanceLogger("HasAura"))
             {
                 try
                 {
-                    if (onUnit == null) return false;
-                    WoWAura aura = isFromMe ? onUnit.GetAllAuras().FirstOrDefault(a => auraIDs.Contains(a.SpellId) && a.CreatorGuid == Me.Guid) : onUnit.GetAllAuras().FirstOrDefault(a => auraIDs.Contains(a.SpellId));
-                    return aura != null;
+                    if (!Unit.IsViable(unit)) return false;
+
+                    WoWAura auraresult = null;
+
+                    if (!cached)
+                    {
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                    }
+
+                    if (auraresult == null) return false;
+
+                    if (auraresult.TimeLeft.TotalMilliseconds > msuLeft)
+                        return auraresult.StackCount >= stacks;
                 }
                 catch (Exception) { return false; }
             }
+            return false;
         }
 
-        public static bool RemainingAura(WoWUnit onUnit, int auraId, int remainingtime, bool isFromMe = true)
+        /// <summary>
+        /// Gets fading aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="fadingtime">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool FadingAura(WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("FadingAura"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);                        
+                    }
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets remaining aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="remainingtime">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool RemainingAura(WoWUnit unit, int auraId, int remainingtime, bool isFromMe = true, bool cached = true)
         {
             using (new PerformanceLogger("RemainingAura"))
             {
                 try
                 {
-                    if (onUnit == null) return false;
-                    WoWAura aura = isFromMe ? onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                    return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    if (!Unit.IsViable(unit)) return false;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    }
                 }
                 catch (Exception) { return false; }
             }
-        }
-
-        public static uint StackCount(WoWUnit onUnit, int auraId, bool isFromMe = true)
-        {
-            using (new PerformanceLogger("StackCount"))
-            {
-                try
-                {
-                    if (onUnit == null) return 0;
-                    WoWAura aura = isFromMe ? onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                    return aura != null ? aura.StackCount : 0;
-                }
-                catch { return 0; }
-            }
+            return false;
         }
         #endregion
     }

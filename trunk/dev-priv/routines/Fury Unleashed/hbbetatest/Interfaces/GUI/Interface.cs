@@ -543,6 +543,11 @@ namespace FuryUnleashed.Interfaces.GUI
         #endregion
 
         #region Buttons
+        private void debuggerpanel_Click(object sender, EventArgs e)
+        {
+            new DebuggerGui().Show();
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             InternalSettings.Instance.Save();
