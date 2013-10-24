@@ -65,6 +65,13 @@ namespace Waldo.Interfaces.Settings
         [Description("Select to Enable or Disable Rupture")]
         public bool CheckRupture { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(WaEnum.AbilityTrigger.OnBossDummy)]
+        [Category("Combat - Ability Options")]
+        [DisplayName("Rupture")]
+        [Description("Select the usage of Rupture")]
+        public WaEnum.AbilityTrigger Rupture { get; set; }
+
         #endregion
 
         #region Item Options

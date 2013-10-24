@@ -73,7 +73,10 @@ namespace Waldo.Routines
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
                 Spell.Cast("Revealing Strike", ret => WaLua.PlayerComboPts < 5 && !G.RevealingStrike),
                 Spell.Cast("Sinister Strike", ret => WaLua.PlayerComboPts < 5),
-                Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && !Me.HasAura("Blade Flurry") &&  WaLua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)),
+                Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  WaLua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
+                   (SG.Instance.Combat.Rupture == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                   (SG.Instance.Combat.Rupture == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
+                   (SG.Instance.Combat.Rupture == WaEnum.AbilityTrigger.Always))),
                 Spell.Cast("Eviscerate", ret => WaLua.PlayerComboPts > 4 && Me.HasAura("Slice and Dice")),
                 Spell.Cast("Slice and Dice", ret => !G.SliceAndDiceEnevenom));
         }
