@@ -61,6 +61,13 @@ namespace Waldo.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Combat - Ability Options")]
+        [DisplayName("Blade Flurry")]
+        [Description("Select to Enable or Disable Automated Blade Flurry.")]
+        public bool AutoTurnOffBladeFlurry { get; set; } 
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Combat - Ability Options")]
         [DisplayName("Rupture")]
         [Description("Select to Enable or Disable Rupture")]
         public bool CheckRupture { get; set; }

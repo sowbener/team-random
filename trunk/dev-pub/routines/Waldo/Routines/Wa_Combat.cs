@@ -33,9 +33,9 @@ namespace Waldo.Routines
                         new Decorator(ret => (WaHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                        new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),     
-                        Spell.Cast("Blade Flurry", ret => U.AttackableMeleeUnitsCount > 1),
-                        new Decorator(a => U.AttackableMeleeUnitsCount < 8, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
+                        new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                        Spell.Cast("Blade Flurry", ret => U.NearbyAttackableUnitsCount <= 8 && SG.Instance.Combat.AutoTurnOffBladeFlurry),
+                        new Decorator(a => U.NearbyAttackableUnitsCount > 7 && SG.Instance.Combat.AutoTurnOffBladeFlurry, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
                         new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
                         new Decorator(ret => !SG.Instance.Combat.PvPRotationCheck && SH.Instance.ModeSelection == WaEnum.Mode.Auto,
                                 new PrioritySelector(
