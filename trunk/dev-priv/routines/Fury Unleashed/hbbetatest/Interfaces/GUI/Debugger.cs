@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
-using FuryUnleashed.Core.Utilities;
 using Styx;
 
 namespace FuryUnleashed.Interfaces.GUI
@@ -40,7 +39,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                myaurasdatagrid.DataSource = StyxWoW.Me.Auras.Values.OrderBy(a => a.Name).ToList();
+                mycachedaurasdatagrid.DataSource = Spell.CachedAuras.OrderBy(a => a.Name).ToList();
             }
         }
 
@@ -48,7 +47,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
             {
-                mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.Auras.Values.OrderBy(a => a.Name).ToList();
+                mytargetcachedaurasdatagrid.DataSource = Spell.CachedTargetAuras.OrderBy(a => a.Name).ToList();
             }
         }
         #endregion
@@ -65,6 +64,7 @@ namespace FuryUnleashed.Interfaces.GUI
         }
         #endregion
 
+        // Update Buttons
         private void myaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateMyAuras();
@@ -85,14 +85,25 @@ namespace FuryUnleashed.Interfaces.GUI
             UpdateTargetCachedAuras();
         }
 
+        // Logger Buttons
         private void myauraslogfilebutton_Click(object sender, EventArgs e)
         {
-            Logger.WriteFile(myaurasdatagrid.DataSource.ToString());
+
         }
 
         private void mytargetauraslogfilebutton_Click(object sender, EventArgs e)
         {
-            Logger.WriteFile(mytargetaurasdatagrid.DataSource.ToString());
+
+        }
+
+        private void mycachedauraslogfilebutton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mytargetcachedauraslogfilebutton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

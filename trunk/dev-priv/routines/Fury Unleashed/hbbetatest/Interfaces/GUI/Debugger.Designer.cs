@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.debuggertabcontrol = new System.Windows.Forms.TabControl();
+            this.Tabs = new System.Windows.Forms.TabControl();
             this.myaurastab = new System.Windows.Forms.TabPage();
+            this.myauraslogfilebutton = new System.Windows.Forms.Button();
             this.myaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.spellIdDataGridViewTextBoxColumnMyAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,6 +49,7 @@
             this.cancellableDataGridViewCheckBoxColumnMyAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.myaurasbutton = new System.Windows.Forms.Button();
             this.targetaurastab = new System.Windows.Forms.TabPage();
+            this.mytargetauraslogfilebutton = new System.Windows.Forms.Button();
             this.mytargetaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.spellIdDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,36 +68,37 @@
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.targetaurasbutton = new System.Windows.Forms.Button();
             this.mycachedaurastab = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.mycachedaurasbutton = new System.Windows.Forms.Button();
+            this.mycachedaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.targetcachedaurastab = new System.Windows.Forms.TabPage();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.targetcachedaurasbutton = new System.Windows.Forms.Button();
+            this.mytargetcachedaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.myauraslogfilebutton = new System.Windows.Forms.Button();
-            this.mytargetauraslogfilebutton = new System.Windows.Forms.Button();
-            this.debuggertabcontrol.SuspendLayout();
+            this.mycachedaurasbutton = new System.Windows.Forms.Button();
+            this.targetcachedaurasbutton = new System.Windows.Forms.Button();
+            this.mycachedauraslogfilebutton = new System.Windows.Forms.Button();
+            this.mytargetcachedauraslogfilebutton = new System.Windows.Forms.Button();
+            this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
             this.targetaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mytargetaurasdatagrid)).BeginInit();
             this.mycachedaurastab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).BeginInit();
             this.targetcachedaurastab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).BeginInit();
             this.SuspendLayout();
             // 
-            // debuggertabcontrol
+            // Tabs
             // 
-            this.debuggertabcontrol.Controls.Add(this.myaurastab);
-            this.debuggertabcontrol.Controls.Add(this.targetaurastab);
-            this.debuggertabcontrol.Controls.Add(this.mycachedaurastab);
-            this.debuggertabcontrol.Controls.Add(this.targetcachedaurastab);
-            this.debuggertabcontrol.Location = new System.Drawing.Point(12, 12);
-            this.debuggertabcontrol.Name = "debuggertabcontrol";
-            this.debuggertabcontrol.SelectedIndex = 0;
-            this.debuggertabcontrol.Size = new System.Drawing.Size(1179, 464);
-            this.debuggertabcontrol.TabIndex = 0;
+            this.Tabs.Controls.Add(this.myaurastab);
+            this.Tabs.Controls.Add(this.targetaurastab);
+            this.Tabs.Controls.Add(this.mycachedaurastab);
+            this.Tabs.Controls.Add(this.targetcachedaurastab);
+            this.Tabs.Enabled = false;
+            this.Tabs.Location = new System.Drawing.Point(12, 12);
+            this.Tabs.Name = "Tabs";
+            this.Tabs.SelectedIndex = 0;
+            this.Tabs.Size = new System.Drawing.Size(1179, 464);
+            this.Tabs.TabIndex = 0;
             // 
             // myaurastab
             // 
@@ -109,6 +112,17 @@
             this.myaurastab.TabIndex = 0;
             this.myaurastab.Text = "My Aura\'s";
             this.myaurastab.UseVisualStyleBackColor = true;
+            // 
+            // myauraslogfilebutton
+            // 
+            this.myauraslogfilebutton.Enabled = false;
+            this.myauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
+            this.myauraslogfilebutton.Name = "myauraslogfilebutton";
+            this.myauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
+            this.myauraslogfilebutton.TabIndex = 2;
+            this.myauraslogfilebutton.Text = "Write to Logfile";
+            this.myauraslogfilebutton.UseVisualStyleBackColor = true;
+            this.myauraslogfilebutton.Click += new System.EventHandler(this.myauraslogfilebutton_Click);
             // 
             // myaurasdatagrid
             // 
@@ -272,6 +286,16 @@
             this.targetaurastab.Text = "Target Aura\'s";
             this.targetaurastab.UseVisualStyleBackColor = true;
             // 
+            // mytargetauraslogfilebutton
+            // 
+            this.mytargetauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
+            this.mytargetauraslogfilebutton.Name = "mytargetauraslogfilebutton";
+            this.mytargetauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
+            this.mytargetauraslogfilebutton.TabIndex = 3;
+            this.mytargetauraslogfilebutton.Text = "Write to Logfile";
+            this.mytargetauraslogfilebutton.UseVisualStyleBackColor = true;
+            this.mytargetauraslogfilebutton.Click += new System.EventHandler(this.mytargetauraslogfilebutton_Click);
+            // 
             // mytargetaurasdatagrid
             // 
             this.mytargetaurasdatagrid.BackgroundColor = System.Drawing.Color.White;
@@ -423,8 +447,9 @@
             // 
             // mycachedaurastab
             // 
-            this.mycachedaurastab.Controls.Add(this.dataGridView1);
+            this.mycachedaurastab.Controls.Add(this.mycachedauraslogfilebutton);
             this.mycachedaurastab.Controls.Add(this.mycachedaurasbutton);
+            this.mycachedaurastab.Controls.Add(this.mycachedaurasdatagrid);
             this.mycachedaurastab.Location = new System.Drawing.Point(4, 22);
             this.mycachedaurastab.Name = "mycachedaurastab";
             this.mycachedaurastab.Padding = new System.Windows.Forms.Padding(3);
@@ -433,29 +458,20 @@
             this.mycachedaurastab.Text = "My Cached Aura\'s";
             this.mycachedaurastab.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // mycachedaurasdatagrid
             // 
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 35);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1159, 397);
-            this.dataGridView1.TabIndex = 2;
-            // 
-            // mycachedaurasbutton
-            // 
-            this.mycachedaurasbutton.Location = new System.Drawing.Point(3, 6);
-            this.mycachedaurasbutton.Name = "mycachedaurasbutton";
-            this.mycachedaurasbutton.Size = new System.Drawing.Size(1162, 23);
-            this.mycachedaurasbutton.TabIndex = 1;
-            this.mycachedaurasbutton.Text = "Update my Cached Aura\'s";
-            this.mycachedaurasbutton.UseVisualStyleBackColor = true;
-            this.mycachedaurasbutton.Click += new System.EventHandler(this.mycachedaurasbutton_Click);
+            this.mycachedaurasdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.mycachedaurasdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.mycachedaurasdatagrid.Location = new System.Drawing.Point(6, 35);
+            this.mycachedaurasdatagrid.Name = "mycachedaurasdatagrid";
+            this.mycachedaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
+            this.mycachedaurasdatagrid.TabIndex = 2;
             // 
             // targetcachedaurastab
             // 
-            this.targetcachedaurastab.Controls.Add(this.dataGridView2);
+            this.targetcachedaurastab.Controls.Add(this.mytargetcachedauraslogfilebutton);
             this.targetcachedaurastab.Controls.Add(this.targetcachedaurasbutton);
+            this.targetcachedaurastab.Controls.Add(this.mytargetcachedaurasdatagrid);
             this.targetcachedaurastab.Location = new System.Drawing.Point(4, 22);
             this.targetcachedaurastab.Name = "targetcachedaurastab";
             this.targetcachedaurastab.Padding = new System.Windows.Forms.Padding(3);
@@ -464,70 +480,82 @@
             this.targetcachedaurastab.Text = "Target Cached Aura\'s";
             this.targetcachedaurastab.UseVisualStyleBackColor = true;
             // 
-            // dataGridView2
+            // mytargetcachedaurasdatagrid
             // 
-            this.dataGridView2.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(6, 35);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(1159, 397);
-            this.dataGridView2.TabIndex = 2;
+            this.mytargetcachedaurasdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.mytargetcachedaurasdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.mytargetcachedaurasdatagrid.Location = new System.Drawing.Point(6, 35);
+            this.mytargetcachedaurasdatagrid.Name = "mytargetcachedaurasdatagrid";
+            this.mytargetcachedaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
+            this.mytargetcachedaurasdatagrid.TabIndex = 2;
+            // 
+            // mycachedaurasbutton
+            // 
+            this.mycachedaurasbutton.Location = new System.Drawing.Point(6, 6);
+            this.mycachedaurasbutton.Name = "mycachedaurasbutton";
+            this.mycachedaurasbutton.Size = new System.Drawing.Size(300, 23);
+            this.mycachedaurasbutton.TabIndex = 3;
+            this.mycachedaurasbutton.Text = "Update my Aura\'s";
+            this.mycachedaurasbutton.UseVisualStyleBackColor = true;
+            this.mycachedaurasbutton.Click += new System.EventHandler(this.mycachedaurasbutton_Click);
             // 
             // targetcachedaurasbutton
             // 
             this.targetcachedaurasbutton.Location = new System.Drawing.Point(6, 6);
             this.targetcachedaurasbutton.Name = "targetcachedaurasbutton";
-            this.targetcachedaurasbutton.Size = new System.Drawing.Size(1162, 23);
-            this.targetcachedaurasbutton.TabIndex = 1;
-            this.targetcachedaurasbutton.Text = "Update my Target\'s Cached Aura\'s";
+            this.targetcachedaurasbutton.Size = new System.Drawing.Size(300, 23);
+            this.targetcachedaurasbutton.TabIndex = 3;
+            this.targetcachedaurasbutton.Text = "Update my Aura\'s";
             this.targetcachedaurasbutton.UseVisualStyleBackColor = true;
             this.targetcachedaurasbutton.Click += new System.EventHandler(this.targetcachedaurasbutton_Click);
             // 
-            // myauraslogfilebutton
+            // mycachedauraslogfilebutton
             // 
-            this.myauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
-            this.myauraslogfilebutton.Name = "myauraslogfilebutton";
-            this.myauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
-            this.myauraslogfilebutton.TabIndex = 2;
-            this.myauraslogfilebutton.Text = "Write to Logfile";
-            this.myauraslogfilebutton.UseVisualStyleBackColor = true;
-            this.myauraslogfilebutton.Click += new System.EventHandler(this.myauraslogfilebutton_Click);
+            this.mycachedauraslogfilebutton.Enabled = false;
+            this.mycachedauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
+            this.mycachedauraslogfilebutton.Name = "mycachedauraslogfilebutton";
+            this.mycachedauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
+            this.mycachedauraslogfilebutton.TabIndex = 4;
+            this.mycachedauraslogfilebutton.Text = "Write to Logfile";
+            this.mycachedauraslogfilebutton.UseVisualStyleBackColor = true;
+            this.mycachedauraslogfilebutton.Click += new System.EventHandler(this.mycachedauraslogfilebutton_Click);
             // 
-            // mytargetauraslogfilebutton
+            // mytargetcachedauraslogfilebutton
             // 
-            this.mytargetauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
-            this.mytargetauraslogfilebutton.Name = "mytargetauraslogfilebutton";
-            this.mytargetauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
-            this.mytargetauraslogfilebutton.TabIndex = 3;
-            this.mytargetauraslogfilebutton.Text = "Write to Logfile";
-            this.mytargetauraslogfilebutton.UseVisualStyleBackColor = true;
-            this.mytargetauraslogfilebutton.Click += new System.EventHandler(this.mytargetauraslogfilebutton_Click);
+            this.mytargetcachedauraslogfilebutton.Enabled = false;
+            this.mytargetcachedauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
+            this.mytargetcachedauraslogfilebutton.Name = "mytargetcachedauraslogfilebutton";
+            this.mytargetcachedauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
+            this.mytargetcachedauraslogfilebutton.TabIndex = 4;
+            this.mytargetcachedauraslogfilebutton.Text = "Write to Logfile";
+            this.mytargetcachedauraslogfilebutton.UseVisualStyleBackColor = true;
+            this.mytargetcachedauraslogfilebutton.Click += new System.EventHandler(this.mytargetcachedauraslogfilebutton_Click);
             // 
             // DebuggerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1203, 488);
-            this.Controls.Add(this.debuggertabcontrol);
+            this.Controls.Add(this.Tabs);
             this.Name = "DebuggerGui";
             this.Text = "Fury Unleashed - Debugger - Made by nomnomnom";
             this.Load += new System.EventHandler(this.Debugger_Load);
-            this.debuggertabcontrol.ResumeLayout(false);
+            this.Tabs.ResumeLayout(false);
             this.myaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).EndInit();
             this.targetaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mytargetaurasdatagrid)).EndInit();
             this.mycachedaurastab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).EndInit();
             this.targetcachedaurastab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl debuggertabcontrol;
+        private System.Windows.Forms.TabControl Tabs;
         private System.Windows.Forms.TabPage targetaurastab;
         private System.Windows.Forms.TabPage myaurastab;
         private System.Windows.Forms.Button myaurasbutton;
@@ -537,10 +565,8 @@
         private System.Windows.Forms.DataGridView mytargetaurasdatagrid;
         private System.Windows.Forms.TabPage mycachedaurastab;
         private System.Windows.Forms.TabPage targetcachedaurastab;
-        private System.Windows.Forms.Button mycachedaurasbutton;
-        private System.Windows.Forms.Button targetcachedaurasbutton;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView mycachedaurasdatagrid;
+        private System.Windows.Forms.DataGridView mytargetcachedaurasdatagrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumnMyAuras;
         private System.Windows.Forms.DataGridViewTextBoxColumn spellIdDataGridViewTextBoxColumnMyAuras;
         private System.Windows.Forms.DataGridViewTextBoxColumn spellDataGridViewTextBoxColumnMyAuras;
@@ -573,5 +599,9 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn cancellableDataGridViewCheckBoxColumnMyTargetAuras;
         private System.Windows.Forms.Button myauraslogfilebutton;
         private System.Windows.Forms.Button mytargetauraslogfilebutton;
+        private System.Windows.Forms.Button mycachedaurasbutton;
+        private System.Windows.Forms.Button targetcachedaurasbutton;
+        private System.Windows.Forms.Button mycachedauraslogfilebutton;
+        private System.Windows.Forms.Button mytargetcachedauraslogfilebutton;
     }
 }
