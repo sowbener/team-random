@@ -66,7 +66,7 @@ namespace Bullseye.Core
         public static void GetNearbyAttackableUnitsCount()
         {
             if (Me.CurrentTarget != null)
-                NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 20).Count();
+                NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 25).Count();
         }
 
         internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Blood Plague")) >= 3; } }
