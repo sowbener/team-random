@@ -62,6 +62,16 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             e.ThrowException = false;
         }
+
+        private void mycachedaurasdatagrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.ThrowException = false;
+        }
+
+        private void mytargetcachedaurasdatagrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.ThrowException = false;
+        }
         #endregion
 
         // Update Buttons
