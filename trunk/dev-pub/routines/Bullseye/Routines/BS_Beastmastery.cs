@@ -129,7 +129,7 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryDefensive()
         {
             return new PrioritySelector(
-                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && (Me.Pet == null || (Me.Pet != null && !Me.Pet.IsAlive))), 
+                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && Me.Pet != null && !Me.Pet.IsAlive), 
                 I.BeastmasteryUseHealthStone()
                 );
         }
@@ -222,7 +222,7 @@ namespace Bullseye.Routines
         internal static bool TalentPowershot { get { return BsTalentManager.HasTalent(17); } }
         internal static bool TalentBarrage { get { return BsTalentManager.HasTalent(18); } }
         internal static bool DireBeastEnabled { get { return BsTalentManager.HasTalent(11); } }
-        internal static bool UseQuasiAoE { get { return SG.Instance.Beastmastery.CheckAoE && SG.Instance.Beastmastery.AoEMultiShotCount != 0 && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoEMultiShotCount; } }
+        internal static bool UseQuasiAoE { get { return SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoEMultiShotCount; } }
         internal static bool MurderofCrows { get { return BsTalentManager.HasTalent(13) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(131894, 0, 2000); } }
         internal static bool LynxRush { get { return BsTalentManager.HasTalent(15) && Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura(120697, 0, 2000); } }
         internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
