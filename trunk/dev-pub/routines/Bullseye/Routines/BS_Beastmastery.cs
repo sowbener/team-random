@@ -58,7 +58,7 @@ namespace Bullseye.Routines
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive())),
                                         new Decorator(ret => BsHotKeyManager.IsAoe, BeastmasteryMt()),
-                                        new Decorator(ret => UseQuasiAoE, BeastmasteryCleave()),
+                                        new Decorator(ret => BsHotKeyManager.IsAoe && UseQuasiAoE, BeastmasteryCleave()),
                                         new Decorator(ret => !UseQuasiAoE,BeastmasterySt()))));
             }
         }
