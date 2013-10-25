@@ -82,6 +82,7 @@ namespace Bullseye.Routines
             Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
+
         internal static Composite SurvivalMt()
         {
             return new PrioritySelector(
