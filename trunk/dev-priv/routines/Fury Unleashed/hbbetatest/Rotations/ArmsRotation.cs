@@ -326,7 +326,7 @@ namespace FuryUnleashed.Rotations
                 Spell.Cast("Bladestorm", ret => G.BsTalent && (G.BloodbathAura || !G.BbTalent)),
                 Spell.Cast("Dragon Roar", ret => G.DrTalent && !G.ColossusSmashAura),
                 Spell.Cast("Colossus Smash", ret => !G.ColossusSmashAura),
-                Spell.Cast("Thunder Clap", ret => U.AoEDeepWounds),
+                Spell.Cast("Thunder Clap", ret => U.NeedThunderclapUnitsCount > 1),
                 Spell.Cast("Mortal Strike", ret => U.NearbyAttackableUnitsCount == 2 || Lua.PlayerPower < 50),
                 Spell.Cast("Execute", ret => !G.SuddenExecAura && U.NearbyAttackableUnitsCount == 2),
                 Spell.Cast("Slam", ret => G.SweepingStrikesAura && G.ColossusSmashAura),
