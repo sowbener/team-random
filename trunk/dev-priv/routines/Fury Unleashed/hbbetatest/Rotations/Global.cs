@@ -302,7 +302,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool ReadinessAura
         {
-            get { return Spell.HasAura(Me, "Readiness"); } // Evil Eye of Galakras trinket Aura - Multi-ID
+            get { return Spell.HasAura(Me, AB.ReadinessNormal) || Spell.HasAura(Me, "Readiness"); }
         }
 
         internal static bool RecklessnessAura
@@ -322,7 +322,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AB.SkullBanner1) || Spell.HasAura(Me, AB.SkullBanner2, 0, 0, false); }
+            get { return Spell.HasAura(Me, AB.SkullBanner, 0, 0, false); }
         }
 
         internal static bool SkullBannerAuraT15
