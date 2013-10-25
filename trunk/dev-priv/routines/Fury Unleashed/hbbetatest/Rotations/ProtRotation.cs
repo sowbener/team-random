@@ -185,7 +185,7 @@ namespace FuryUnleashed.Rotations
 
                 Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
                 Spell.Cast(SB.DragonRoar, ret => G.DrTalent && Tier4AbilityAoEUsage), // Added
-                Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+          //      Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
                 Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
 
                 Spell.Cast(SB.ShieldSlam),
@@ -304,11 +304,11 @@ namespace FuryUnleashed.Rotations
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && U.NearbyAttackableUnitsCount >= 3 && (
-                    (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                    (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
-                    )),
+             //   Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && U.NearbyAttackableUnitsCount >= 3 && (
+             //       (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+            //        (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+            //        (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
+           //         )),
                 Spell.Cast("Bladestorm", ret => G.BsTalent && (
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||

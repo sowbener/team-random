@@ -158,6 +158,10 @@ namespace FuryUnleashed.Core
         }
         #endregion
 
+        #region DeepWounds
+        internal static bool AoEDeepWounds { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasAura("Deep Wounds")) > 1; } }
+        #endregion
+
         #region Self Functions
         // Using CombatReach - Range test
         public static float CalculatedMeleeRange
