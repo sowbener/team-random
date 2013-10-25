@@ -46,7 +46,7 @@ namespace Bullseye.Routines
                                         BeastmasteryOffensive(),
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount > 4 && !UseQuasiAoE, BeastmasteryMt()),
                                         new Decorator(ret => UseQuasiAoE, BeastmasteryCleave()),
-                                        BeastmasterySt())),
+                                       new Decorator(ret => !UseQuasiAoE, BeastmasterySt()))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckAutoAttack, Lua.StartAutoAttack),
@@ -59,7 +59,7 @@ namespace Bullseye.Routines
                                         BeastmasteryOffensive())),
                                         new Decorator(ret => BsHotKeyManager.IsAoe && !UseQuasiAoE, BeastmasteryMt()),
                                         new Decorator(ret => BsHotKeyManager.IsAoe && UseQuasiAoE, BeastmasteryCleave()),
-                                        BeastmasterySt())));
+                                        new Decorator(ret => !BsHotKeyManager.IsAoe, BeastmasterySt()))));
             }
         }
         #endregion
