@@ -314,6 +314,8 @@ namespace FuryUnleashed.Rotations
                 Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura && G.NormalPhase && G.BtCd <= 1000),
                 //actions.single_target+=/wait,sec=cooldown.bloodthirst.remains,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)&cooldown.bloodthirst.remains<=1&cooldown.bloodthirst.remains
                 new Decorator(ret => (G.NormalPhase || !G.ColossusSmashAura || (Me.CurrentRage < 30 && !G.EnrageAura)) && G.BtCd <= 1000, new ActionAlwaysSucceed()),
+                //or alxaw's version:
+                //actions.single_target+=/wait,sec=cooldown.bloodthirst.remains,if=(debuff.colossus_smash.up&buff.enrage.up&rage>=30)|(!debuff.colossus_smash.up&buff.enrage.down&rage>=30&cooldown.berserker_rage.remains>1)&cooldown.bloodthirst.remains<=1&cooldown.bloodthirst.remains
                 //actions.single_target+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
                 Spell.Cast(SB.DragonRoar, ret => G.DrTalent && !G.ColossusSmashAura && BloodbathSync && Tier4AbilityUsage),
                 //actions.single_target+=/colossus_smash
