@@ -6,13 +6,12 @@ using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
-using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using G = FuryUnleashed.Rotations.Global;
-using U = FuryUnleashed.Core.Unit;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations
 {
@@ -332,7 +331,7 @@ namespace FuryUnleashed.Rotations
                 //actions.single_target+=/raging_blow,if=cooldown.colossus_smash.remains>=3
                 Spell.Cast(SB.RagingBlow, ret => G.RemainingCs(3000)),
                 //actions.single_target+=/shockwave,if=enabled
-           //     Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
                 //actions.single_target+=/heroic_throw,if=debuff.colossus_smash.down&rage<60
                 Spell.Cast(SB.HeroicThrow, ret => !G.ColossusSmashAura && Me.CurrentRage < 60 && IS.Instance.Fury.CheckHeroicThrow),
                 //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
@@ -509,7 +508,7 @@ namespace FuryUnleashed.Rotations
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me, ret => Me.CurrentRage < 70)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me, ret => Me.CurrentRage < 70))),
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CsCd >= 6000 && Tier4AbilityUsage),
-                     //   Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
                         Spell.Cast(SB.WildStrike, ret => !G.BloodsurgeAura && G.CsCd >= 3000 && Me.CurrentRage >= 90),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage), // Also in Rel_FuryHeroicStrike().
                         Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && !G.IvOc && IS.Instance.Fury.CheckRotImpVic), // Added for the sake of supporting it rotational.
@@ -535,7 +534,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.RagingBlow),
                         Spell.Cast(SB.Execute, ret => Me.CurrentRage == Me.MaxRage - 10),
                         Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage),
-                    //    Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.BtCd >= 2000 && G.CsCd >= 6000 && Tier4AbilityUsage) // Added
                         )));
         }
@@ -562,7 +561,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-                      //  Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.Whirlwind),
@@ -575,7 +574,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-                     //   Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS3),
                         Spell.Cast(SB.Bloodthirst),
@@ -590,7 +589,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-                  //      Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS2),
                         Spell.Cast(SB.Bloodthirst),
@@ -605,7 +604,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-                  //      Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SB.Whirlwind, ret => !G.MeatCleaverAuraS1),
                         Spell.Cast(SB.Bloodthirst),

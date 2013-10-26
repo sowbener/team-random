@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using CommonBehaviors.Actions;
+﻿using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
@@ -7,13 +6,13 @@ using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
-using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
+using System.Windows.Forms;
 using G = FuryUnleashed.Rotations.Global;
-using U = FuryUnleashed.Core.Unit;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using SB = FuryUnleashed.Core.Helpers.SpellBook;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;
+using SB = FuryUnleashed.Core.Helpers.SpellBook;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations
 {
@@ -428,7 +427,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.Overpower),
                         Spell.Cast(SB.HeroicThrow, ret => IS.Instance.Arms.CheckHeroicThrow),
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CsCd >= 6000 && Tier4AbilityUsage), // Added - For the sake of supporting it.
-                     //   Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me))),
@@ -465,7 +464,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.HeroicThrow, ret => IS.Instance.Arms.CheckHeroicThrow),
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && G.CsCd >= 6000 && Tier4AbilityUsage), // Added - For the sake of supporting it.
-                     //   Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage), // Added - For the sake of supporting it.
 
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me)),
@@ -490,7 +489,7 @@ namespace FuryUnleashed.Rotations
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
-                    //    Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
 
                         Spell.Cast(SB.SweepingStrikes),
@@ -514,7 +513,7 @@ namespace FuryUnleashed.Rotations
 
                         Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityAoEUsage),
-                    //    Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
+                        Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
                         Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
 
                         Spell.Cast(SB.SweepingStrikes),

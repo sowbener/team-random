@@ -104,9 +104,8 @@ namespace FuryUnleashed.Core
         {
             using (new PerformanceLogger("GetNeedThunderclapUnitsCount"))
                 if (Me.CurrentTarget != null)
-                    NeedThunderclapUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count(u => !u.HasAura(115767));
+                    NeedThunderclapUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count(u => !u.HasAura(AuraBook.DeepWounds));
         }
-
         #endregion
 
         #region Unit Booleans
