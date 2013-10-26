@@ -14,8 +14,8 @@
                             CommandingShout = 469,
                             DeathSentence = 144442,
                             DeepWounds = 115767,
-                            Enrage1 = 13046, // Needs Checking
-                            Enrage2 = 12880, // Needs Checking
+                            EnrageUnknown = 13046, // Uknown where this comes from.
+                            EnrageNormal = 12880, // Non-Tier Enrage Aura - Normal Enrage
                             Hamstring = 1715,
                             Heroism = 32182,
                             LastStand = 12975,
@@ -26,8 +26,8 @@
                             Recklessness = 1719,
                             ShieldBarrier = 112048,
                             ShieldBlock = 2565,
-                            SkullBanner1 = 138127, // Needs Checking
-                            SkullBanner = 114206, // Needs Checking
+                            SkullBannerT15 = 138127, // T15 Skull Banner proc Aura.
+                            SkullBannerNormal = 114206, // This is the normal unmodified skull banner.
                             SweepingStrikes = 12328,
                             SuddenExecute = 139958,
                             SunderArmor = 113746,
@@ -38,6 +38,7 @@
                             Ultimatum = 122510,
                             Victorious = 32216,
                             VictoriousT15 = 138279,
+                            WeakenedArmor = 113746,
                             WeakenedBlows = 115798;
     }
 }

@@ -272,7 +272,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool EnrageAura
         {
-            get { return Spell.HasAura(Me, AB.Enrage1) || Spell.HasAura(Me, AB.Enrage2); }
+            get { return Spell.HasAura(Me, AB.EnrageUnknown) || Spell.HasAura(Me, AB.EnrageNormal); }
         }
 
         internal static bool HeroismAura
@@ -322,12 +322,12 @@ namespace FuryUnleashed.Rotations
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AB.SkullBanner, 0, 0, false); }
+            get { return Spell.HasAura(Me, AB.SkullBannerNormal, 0, 0, false); }
         }
 
         internal static bool SkullBannerAuraT15
         {
-            get { return Spell.HasAura(Me, AB.SkullBanner1); }
+            get { return Spell.HasAura(Me, AB.SkullBannerT15); }
         }
 
         internal static bool SweepingStrikesAura
@@ -458,7 +458,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool FadingEnrage(int fadingtime)
         {
-            return Spell.FadingAura(Me, AB.Enrage1, fadingtime) || Spell.FadingAura(Me, AB.Enrage2, fadingtime);
+            return Spell.FadingAura(Me, AB.EnrageUnknown, fadingtime) || Spell.FadingAura(Me, AB.EnrageNormal, fadingtime);
         }
 
         internal static bool FadingRb(int fadingtime)
