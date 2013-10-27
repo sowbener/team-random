@@ -32,5 +32,8 @@ namespace AntiAFK.GUI
 
         [Setting, DefaultValue(true)]
         public bool AntiAfkPlugins { get; set; }
+
+        [Setting, DefaultValue("")]
+        public string LastStatCounted { get; set; }
     }
 }

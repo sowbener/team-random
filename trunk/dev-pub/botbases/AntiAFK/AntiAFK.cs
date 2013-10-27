@@ -1,4 +1,7 @@
-﻿using AntiAFK.GUI;
+﻿using System.Globalization;
+using System.Net;
+using System.Threading.Tasks;
+using AntiAFK.GUI;
 using CommonBehaviors.Actions;
 using Styx;
 using Styx.Common;
@@ -44,6 +47,7 @@ namespace AntiAFK
         {
             try
             {
+                StatCounter();
                 AntiAFKSettings.Instance.Load();
 
                 if (GlobalSettings.Instance.LogoutForInactivity)
@@ -108,6 +112,11 @@ namespace AntiAFK
         {
             get { return _pulseFlags; }
         }
+
+        public override Composite Root
+        {
+            get { return _root ?? (_root = CreateRoot()); }
+        }
         #endregion
 
         #region Others
@@ -145,14 +154,27 @@ namespace AntiAFK
                 AfkLogging("[AntiAFK] Plugins are disabled!");
             }
         }
+
+        internal static void StatCounter()
+        {
+            try
+            {
+                var statcounterDate = DateTime.Now.DayOfYear.ToString(CultureInfo.InvariantCulture);
+                if (!statcounterDate.Equals(AntiAFKSettings.Instance.LastStatCounted))
+                {
+                    Parallel.Invoke(
+                        () => new WebClient().DownloadData("http://c.statcounter.com/9363381/0/e4308450/1/"),
+                        () => Logging.WriteDiagnostic(Colors.Magenta, "[AntiAFK] StatCounter has been updated!"));
+                    AntiAFKSettings.Instance.LastStatCounted = statcounterDate;
+                    AntiAFKSettings.Instance.Save();
+                }
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+            catch { /* Catch all errors */ }
+        }
         #endregion
 
         #region Obsolete
-        public override Composite Root
-        {
-            get { return _root ?? (_root = CreateRoot()); }
-        }
-
         private static PrioritySelector CreateRoot()
         {
             return new PrioritySelector(
