@@ -1,5 +1,6 @@
 ﻿using Styx.Common;
 using Styx.CommonBot;
+using Styx.Helpers;
 using Styx.WoWInternals;
 using System;
 using System.Globalization;
@@ -29,13 +30,19 @@ namespace Tyrael.Shared
                 IsTyraelPaused = !IsTyraelPaused;
                 if (IsTyraelPaused)
                 {
-                    Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
-                    TreeRoot.TicksPerSecond = 5;
+                    if (TyraelSettings.Instance.ChatOutput)
+                    {
+                        Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
+                    }
+                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
                 }
                 else
                 {
-                    Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
-                    TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
+                    if (TyraelSettings.Instance.ChatOutput)
+                    {
+                        Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
+                    }
+                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
                 }
             });
         }
