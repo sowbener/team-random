@@ -66,13 +66,13 @@
             this.TPSTrackBar.BackColor = System.Drawing.Color.White;
             this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.TPSTrackBar.Location = new System.Drawing.Point(24, 2);
-            this.TPSTrackBar.Maximum = 200;
-            this.TPSTrackBar.Minimum = 15;
+            this.TPSTrackBar.Maximum = 100;
+            this.TPSTrackBar.Minimum = 5;
             this.TPSTrackBar.Name = "TPSTrackBar";
             this.TPSTrackBar.Size = new System.Drawing.Size(449, 45);
             this.TPSTrackBar.SmallChange = 10;
             this.TPSTrackBar.TabIndex = 0;
-            this.TPSTrackBar.TickFrequency = 10;
+            this.TPSTrackBar.TickFrequency = 5;
             this.TPSTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.TPSTrackBar.Value = 30;
             this.TPSTrackBar.Scroll += new System.EventHandler(this.TPSTrackBar_Scroll);

@@ -31,12 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GreyMagic">
-      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Beta\GreyMagic.dll</HintPath>
-    </Reference>
-    <Reference Include="Honorbuddy, Version=2.5.7861.660, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
+    <Reference Include="GreyMagic, Version=2.5.8064.689, Culture=neutral, PublicKeyToken=21abf97dae8a6e9c, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Beta\Honorbuddy.exe</HintPath>
+      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Release\GreyMagic.dll</HintPath>
+    </Reference>
+    <Reference Include="Honorbuddy, Version=2.5.8064.689, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Release\Honorbuddy.exe</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -50,7 +51,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tripper.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c40611ce03f849a2, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Beta\Tripper.Tools.dll</HintPath>
+      <HintPath>..\..\..\..\..\Fury Unleashed Premium\branches\References\Release\Tripper.Tools.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
