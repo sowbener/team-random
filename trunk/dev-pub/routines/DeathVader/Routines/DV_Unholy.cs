@@ -76,7 +76,7 @@ namespace DeathVader.Routines
                Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => G.UnholyRuneSlotsActive > 1),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && G.UnholyRuneSlotsActive == 2 && DeathAndDecayComingOffCooldown),
                Spell.Cast("Scourge Strike", ret => G.UnholyRuneSlotsActive > 1),
-               Spell.Cast("Festering Strike", ret => G.DeathRuneSlotsActiveFesterReal && G.FrostRuneSlotsActive > 1),
+               Spell.Cast("Festering Strike", ret =>  G.DeathRuneSlotsActiveFesterReal && G.FrostRuneSlotsActive > 1),
                Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => G.UnholyRuneSlotsActive > 0),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && DeathAndDecayComingOffCooldown),
                Spell.PreventDoubleCast("Death Coil", 0.5, ret => Spell.IsSpellInRange(47541) && (SuddenDoomProc || (TimmyDoesntHaveBuff && G.UnholyRuneSlotsActive < 1))),
