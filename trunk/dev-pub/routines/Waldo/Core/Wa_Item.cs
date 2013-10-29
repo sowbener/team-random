@@ -154,7 +154,7 @@ namespace Waldo.Core
         public static Composite ComUseHealthStone()
         {
             return new PrioritySelector(
-                new Decorator(ret => SG.Instance.Combat.CheckHealthStone && Me.HealthPercent < SG.Instance.Combat.CheckHealthStoneNum,
+                new Decorator(ret => SG.Instance.Combat.CheckHealthStone && !Me.GetAllAuras().Any(a => G.DoNotUseHealing.Contains(a.SpellId)) && Me.HealthPercent < SG.Instance.Combat.CheckHealthStoneNum,
                     new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
                         new Decorator(ret => ret != null,
                             new Action(ret =>
@@ -168,7 +168,7 @@ namespace Waldo.Core
         public static Composite AssaUseHealthStone()
         {
             return new PrioritySelector(
-                new Decorator(ret => SG.Instance.Assassination.CheckHealthStone && Me.HealthPercent < SG.Instance.Assassination.CheckHealthStoneNum,
+                new Decorator(ret => SG.Instance.Assassination.CheckHealthStone && !Me.GetAllAuras().Any(a => G.DoNotUseHealing.Contains(a.SpellId)) && Me.HealthPercent < SG.Instance.Assassination.CheckHealthStoneNum,
                     new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
                         new Decorator(ret => ret != null,
                             new Action(ret =>
@@ -183,7 +183,7 @@ namespace Waldo.Core
         public static Composite SubUseHealthStone()
         {
             return new PrioritySelector(
-                new Decorator(ret => SG.Instance.Subtlety.CheckHealthStone && Me.HealthPercent < SG.Instance.Subtlety.CheckHealthStoneNum,
+                new Decorator(ret => SG.Instance.Subtlety.CheckHealthStone && !Me.GetAllAuras().Any(a => G.DoNotUseHealing.Contains(a.SpellId)) && Me.HealthPercent < SG.Instance.Subtlety.CheckHealthStoneNum,
                     new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
                         new Decorator(ret => ret != null,
                             new Action(ret =>

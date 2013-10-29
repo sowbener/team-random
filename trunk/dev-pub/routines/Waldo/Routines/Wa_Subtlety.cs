@@ -83,7 +83,7 @@ namespace Waldo.Routines
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && (WaLua.PlayerComboPts < 3 || G.AnticipationCount < 3)),
                 Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && (WaLua.PlayerComboPts < 5 || G.AnticipationCount < 3)),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
-                new Decorator(ret => WaLua.PlayerComboPts == 5 || (WaLua.PlayerComboPts < 5 && G.AnticipationCount > 1) || G.AnticipationCount < 4, Finishers()),
+                new Decorator(ret => WaLua.PlayerComboPts > 4 || G.AnticipationCount < 4, Finishers()),
                 new Decorator(ret => WaLua.PlayerComboPts < 4 || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18), ComboBuilders())
                         );
 

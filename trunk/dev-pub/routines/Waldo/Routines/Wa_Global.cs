@@ -143,7 +143,15 @@ namespace Waldo.Routines
             -717,  // 502 ilvl
         };
 
-        public static bool Has4PcTier15 { get { return Tier15Ids.Any(Has4PcTeirBonus); } }
+        internal static readonly HashSet<int> DoNotUseHealing = new HashSet<int>
+        {
+            142863, //  Red Weak Ancient Barrier
+            142862, // Ancient Barrier
+            142864, // Orange Ancient Barrier 
+            142865,  // Green  Strong Ancient Barrier
+        };
+
+     
 
         public static bool Has2PcTier15 { get { return Tier15Ids.Any(Has2PcTeirBonus); } }
 
