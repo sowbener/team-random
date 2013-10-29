@@ -131,8 +131,8 @@ namespace FuryUnleashed.Rotations
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Sim_ArmsGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Simc_ArmsAoE()),
-                                        Simc_ArmsSt()
+                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Sim_ArmsAoE()),
+                                        Sim_ArmsSt()
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -146,8 +146,8 @@ namespace FuryUnleashed.Rotations
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Sim_ArmsGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Simc_ArmsAoE()),
-                                        Simc_ArmsSt()
+                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Sim_ArmsAoE()),
+                                        Sim_ArmsSt()
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
@@ -161,8 +161,8 @@ namespace FuryUnleashed.Rotations
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Sim_ArmsGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Simc_ArmsAoE()),
-                                        Simc_ArmsSt()
+                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Sim_ArmsAoE()),
+                                        Sim_ArmsSt()
                                         ))))));
             }
         }
@@ -274,8 +274,7 @@ namespace FuryUnleashed.Rotations
         #endregion
 
         #region SimCraft Rotations
-
-        internal static Composite Simc_ArmsSt()
+        internal static Composite Sim_ArmsSt()
         {
             return new PrioritySelector(
                 //actions.single_target=heroic_strike,if=rage>115|(debuff.colossus_smash.up&rage>60&set_bonus.tier16_2pc_melee)
@@ -305,7 +304,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Simc_ArmsAoE()
+        internal static Composite Sim_ArmsAoE()
         {
             return new PrioritySelector(
                 //actions.aoe=sweeping_strikes

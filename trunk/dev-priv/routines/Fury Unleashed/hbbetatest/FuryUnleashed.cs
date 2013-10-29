@@ -7,6 +7,7 @@ using Styx;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.CommonBot.Routines;
+using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
@@ -98,6 +99,8 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Thanks list is available in the topic!");
             Logger.CombatLogOr("\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
+            if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS!"); }
+            else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
             /* Update TalentManager */

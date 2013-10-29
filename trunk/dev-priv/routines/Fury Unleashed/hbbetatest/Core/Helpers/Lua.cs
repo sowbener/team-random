@@ -45,7 +45,7 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region PlayerPower Rage
-        public static double PlayerPower
+        public static uint PlayerPower
         {
             get
             {
@@ -53,14 +53,14 @@ namespace FuryUnleashed.Core.Helpers
                 {
                     using (StyxWoW.Memory.AcquireFrame())
                     {
-                        return Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitPower(\"player\");", 0);
+                        return Lua.GetReturnVal<int>("return UnitPower(\"player\");", 0);
                     }
                 }
                 catch { Logger.DiagLogPu(" Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
             }
         }
 
-        public static double PlayerPowerMax
+        public static uint PlayerPowerMax
         {
             get
             {
