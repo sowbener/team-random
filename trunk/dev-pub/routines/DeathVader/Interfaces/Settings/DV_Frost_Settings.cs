@@ -21,6 +21,7 @@ namespace DeathVader.Interfaces.Settings
         [Description("Select the usage of Pillar of Frost.")]
         public DvEnum.AbilityTrigger PillarofFrost { get; set; }
 
+        [Setting]
         [Styx.Helpers.DefaultValue(DvEnum.AbilityTrigger.Always)]
         [Category("Frost - Ability Options")]
         [DisplayName("Empower Rune Weapon")]
