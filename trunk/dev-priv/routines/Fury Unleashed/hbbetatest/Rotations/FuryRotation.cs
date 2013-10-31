@@ -395,7 +395,19 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SB.RagingBlow))),
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage))));
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && !G.ReadinessAura && Tier6AbilityUsage),
+                        Spell.Cast(SB.DragonRoar, ret => G.DrTalent && BloodbathSync && Tier4AbilityUsage),
+                        Spell.Cast(SB.ColossusSmash),
+                        Spell.Cast(SB.Bloodthirst),
+                        Spell.Cast(SB.RagingBlow, ret => G.RagingBlow2S),
+                        Spell.Cast(SB.Execute, ret => G.BtOc && G.CsOc && G.RagingBlow1S && Me.CurrentRage > 80),
+                        Spell.Cast(SB.RagingBlow, ret => G.RagingBlow1S && Me.CurrentRage < 60),
+                        Spell.Cast(SB.WildStrike, ret => G.BloodsurgeAura),
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout, on => Me, ret => Lua.PlayerPower < 50)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout, on => Me, ret => Lua.PlayerPower < 50))),
+                        Spell.Cast(SB.HeroicThrow, ret => IS.Instance.Fury.CheckHeroicThrow)
+                        )));
         }
 
         internal static Composite Sim_FuryMt()
