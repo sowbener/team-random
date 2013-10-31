@@ -199,8 +199,8 @@ namespace FuryUnleashed.Rotations
         {
             get
             {
-                var wwcost = WoWSpell.FromId(SB.Whirlwind).PowerCost;
-                var slamcost = WoWSpell.FromId(SB.Slam).PowerCost;
+                double wwcost = WoWSpell.FromId(SB.Whirlwind).PowerCost;
+                double slamcost = WoWSpell.FromId(SB.Slam).PowerCost;
 
                 return (U.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= U.NearbyAttackableUnitsFloat / wwcost;
             }
@@ -210,8 +210,8 @@ namespace FuryUnleashed.Rotations
         {
             get
             {
-                var wwcost = WoWSpell.FromId(SB.Whirlwind).PowerCost;
-                var slamcost = WoWSpell.FromId(SB.Slam).PowerCost;
+                double wwcost = WoWSpell.FromId(SB.Whirlwind).PowerCost;
+                double slamcost = WoWSpell.FromId(SB.Slam).PowerCost;
 
                 return U.NearbyAttackableUnitsFloat / wwcost >= (U.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
             }
