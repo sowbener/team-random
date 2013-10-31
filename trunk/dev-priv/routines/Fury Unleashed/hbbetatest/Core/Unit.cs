@@ -43,6 +43,18 @@ namespace FuryUnleashed.Core
                     (Global.IsProtSpec && u.HealthPercent <= InternalSettings.Instance.Protection.CheckRallyingCryNum)
                     ));
         }
+        internal static IEnumerable<WoWUnit> FriendlyUnits
+        {
+            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
+        }
+
+        // NearbyAttackableUnits IEnumerable
+        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius)
+        {
+            var friendly = FriendlyUnits;
+            var maxDistance = radius * radius;
+            return friendly.Where(x => x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
 
         #endregion
 
@@ -60,6 +72,30 @@ namespace FuryUnleashed.Core
             var hostile = AttackableUnits;
             var maxDistance = radius * radius;
             return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        // NearbyAttackableUnits IEnumerable
+        internal static IEnumerable<WoWUnit> NearbyCastingUnits(WoWPoint fromLocation, double radius)
+        {
+            var hostile = AttackableUnits;
+            var maxDistance = radius * radius;
+            return
+                hostile.Where(
+                    x =>
+                        !x.IsFriendly && (x.IsCasting || x.IsChanneling) && (x.IsTargetingPet || x.IsTargetingMyPartyMember || x.IsTargetingMyRaidMember) &&
+                        x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        // NearbyAttackableUnits IEnumerable
+        internal static IEnumerable<WoWUnit> NearbyCastingUnitsTargetingMe(WoWPoint fromLocation, double radius)
+        {
+            var hostile = AttackableUnits;
+            var maxDistance = radius * radius;
+            return
+                hostile.Where(
+                    x =>
+                        !x.IsFriendly && (x.IsCasting || x.IsChanneling) && x.IsTargetingPet &&
+                        x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
         }
 
         // Counts

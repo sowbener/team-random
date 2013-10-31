@@ -14,13 +14,16 @@
                             CommandingShout = 469,
                             DeathSentence = 144442,
                             DeepWounds = 115767,
+                            Determination = 146250, // Thok trinket Aura - Multi-ID ...
                             EnrageUnknown = 13046, // Uknown where this comes from.
                             EnrageNormal = 12880, // Non-Tier Enrage Aura - Normal Enrage
                             Hamstring = 1715,
                             Heroism = 32182,
                             LastStand = 12975,
                             MeatCleaver = 85739,
+                            Outrage = 146245, // Evil Eye of Galakras trinket Aura - Multi-ID ...
                             RagingBlow = 131116,
+                            RagingWind = 115317,
                             RallyingCry = 97462,
                             ReadinessNormal = 145991, // Confirmed
                             Recklessness = 1719,

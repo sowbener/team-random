@@ -32,36 +32,53 @@ namespace FuryUnleashed.Core
 
         #region Casting Methods
         // Casting by Name
-        public static Composite Cast(string spell, Selection<bool> reqs = null)
+        public static Composite Cast(string spell, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs);
+            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
 
-        public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
+        public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spell, onUnit(ret))),
+            return
+                new Decorator(
+                    ret =>
+                        (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) &&
+                         SpellManager.CanCast(spell, onUnit(ret))),
                     new Action(ret =>
+                    {
+                        if (SpellManager.Cast(spell, onUnit(ret)))
                         {
-                            SpellManager.Cast(spell, onUnit(ret));
                             CooldownTracker.SpellUsed(spell);
                             Logger.CombatLogOr("Casting: " + spell + " on " + onUnit(ret).SafeName);
-                        }));
+                            if (!failThrough)
+                                return RunStatus.Success;
+                        }
+                        return RunStatus.Failure;
+                    }));
         }
 
         // Casting by Integer
-        public static Composite Cast(int spell, Selection<bool> reqs = null)
+        public static Composite Cast(int spell, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs);
+            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
-
-        public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
+        public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spell, onUnit(ret))),
+            return
+                new Decorator(
+                    ret =>
+                        ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null &&
+                        SpellManager.CanCast(spell, onUnit(ret)),
                     new Action(ret =>
                     {
-                        SpellManager.Cast(spell, onUnit(ret));
-                        CooldownTracker.SpellUsed(spell);
-                        Logger.CombatLogOr("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
+                        if (SpellManager.Cast(spell, onUnit(ret)))
+                        {
+                            CooldownTracker.SpellUsed(spell);
+                            Logger.CombatLogOr("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
+                            if (!failThrough)
+                                return RunStatus.Success;
+                        }
+                        return RunStatus.Failure;
                     }));
         }
         

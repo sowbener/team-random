@@ -270,6 +270,11 @@ namespace FuryUnleashed.Rotations
             get { return Spell.HasAura(Me, AB.DeathSentence); }
         }
 
+        internal static bool DeterminationAura
+        {
+            get { return Spell.HasAura(Me, AB.Determination); }
+        }
+
         internal static bool EnrageAura
         {
             get { return Spell.HasAura(Me, AB.EnrageUnknown) || Spell.HasAura(Me, AB.EnrageNormal); }
@@ -290,9 +295,19 @@ namespace FuryUnleashed.Rotations
             get { return Spell.HasAura(Me, AB.MeatCleaver); }
         }
 
+        internal static bool OutrageAura
+        {
+            get { return Spell.HasAura(Me, AB.Outrage); }
+        }
+
         internal static bool RagingBlowAura
         {
             get { return Spell.HasAura(Me, AB.RagingBlow); }
+        }
+
+        internal static bool RagingWindAura
+        {
+            get { return Spell.HasAura(Me, 115317); }
         }
 
         internal static bool RallyingCryAura
@@ -711,6 +726,11 @@ namespace FuryUnleashed.Rotations
         internal static double BbCd
         {
             get { return CooldownTracker.GetSpellCooldown(SB.Bloodbath).TotalMilliseconds; } // Bloodbath
+        }
+
+        internal static double BrCd
+        {
+            get { return CooldownTracker.GetSpellCooldown(SB.BerserkerRage).TotalMilliseconds; }
         }
 
         internal static double BtCd
