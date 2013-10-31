@@ -51,7 +51,7 @@ namespace FuryUnleashed.Rotations
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
                     new Switch<Enum.WoWVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, DevFuryCombat),
+                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, SimFuryCombat /* DevFuryCombat */),
                         new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.SimCraft, SimFuryCombat),
                         new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, RelFuryCombat)));
             }
