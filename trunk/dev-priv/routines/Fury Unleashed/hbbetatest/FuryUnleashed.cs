@@ -14,7 +14,7 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using A = FuryUnleashed.Rotations.ArmsRotation;
 using BotEvents = Styx.CommonBot.BotEvents;
-using F = FuryUnleashed.Rotations.FuryRotation;
+using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using P = FuryUnleashed.Rotations.ProtRotation;
 
 namespace FuryUnleashed
