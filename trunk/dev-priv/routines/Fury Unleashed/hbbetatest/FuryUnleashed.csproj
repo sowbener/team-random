@@ -56,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Helpers\AuraBook.cs" />
+    <Compile Include="Core\Helpers\CombatLogHandler.cs" />
     <Compile Include="Core\Helpers\CooldownTracker.cs" />
+    <Compile Include="Core\Helpers\ProtTracker.cs" />
     <Compile Include="Core\Item.cs" />
     <Compile Include="Core\Spell.cs" />
     <Compile Include="Core\Unit.cs" />

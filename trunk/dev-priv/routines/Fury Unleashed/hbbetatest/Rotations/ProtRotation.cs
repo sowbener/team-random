@@ -11,6 +11,7 @@ using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using G = FuryUnleashed.Rotations.Global;
 using U = FuryUnleashed.Core.Unit;
+using L = FuryUnleashed.Core.Helpers.LuaClass;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
 
@@ -69,6 +70,7 @@ namespace FuryUnleashed.Rotations
                                 Dev_ProtRacials(),
                                 Dev_ProtOffensive(),
                                 Item.CreateItemBehaviour(),
+                                Dev_ProtRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ProtGcdUtility(),
@@ -84,6 +86,7 @@ namespace FuryUnleashed.Rotations
                                         Dev_ProtRacials(),
                                         Dev_ProtOffensive(),
                                         Item.CreateItemBehaviour())),
+                                Dev_ProtRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ProtGcdUtility(),
@@ -99,6 +102,7 @@ namespace FuryUnleashed.Rotations
                                         Dev_ProtRacials(),
                                         Dev_ProtOffensive(),
                                         Item.CreateItemBehaviour())),
+                                Dev_ProtRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ProtGcdUtility(),
@@ -158,23 +162,28 @@ namespace FuryUnleashed.Rotations
         #endregion
 
         #region Development Rotations
+        internal static Composite Dev_ProtRageDump()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum,
+                    Spell.Cast(SB.HeroicStrike, ret => L.PlayerPower >= L.PlayerPowerMax - 10 && G.NormalPhase)),
+                new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum,
+                    Spell.Cast(SB.Cleave))
+                );
+        }
+
         internal static Composite Dev_ProtSt()
         {
             return new PrioritySelector(
-
-                Spell.Cast(SB.Execute, ret => G.ExecutePhase && Me.CurrentRage > 75), // Added
-                Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-                Spell.Cast(SB.DragonRoar, ret => G.DrTalent && Tier4AbilityUsage), // Added
+                Spell.Cast(SB.Devastate, ret => !G.WeakenedArmor3S),
 
                 Spell.Cast(SB.ShieldSlam),
-                Spell.Cast(SB.HeroicStrike, ret => G.UltimatumAura),
-                Spell.Cast(SB.Revenge, ret => Me.CurrentRage != Me.MaxRage),
-                Spell.Cast(SB.Devastate, ret => !G.WeakenedArmor3S || G.FadingSunder(1500)),
+                Spell.Cast(SB.Revenge, ret => L.PlayerPower != L.PlayerPowerMax),
+                Spell.Cast(SB.Devastate),
                 Spell.Cast(SB.ThunderClap, ret => !G.WeakenedBlowsAura || G.FadingWb(1500)),
                 new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout))),
-                Spell.Cast(SB.HeroicStrike, ret => Me.CurrentRage >= Me.MaxRage - 10 && G.NormalPhase)
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout)))
                 );
         }
 
@@ -182,86 +191,37 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 Spell.Cast(SB.ThunderClap),
-
-                Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage), // Added
-                Spell.Cast(SB.DragonRoar, ret => G.DrTalent && Tier4AbilityAoEUsage), // Added
-                Spell.Cast(SB.Shockwave, ret => G.SwTalent && Me.IsFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage), // Added
-                Spell.Cast(SB.Bladestorm, ret => G.BsTalent && Tier4AbilityAoEUsage), // Added
-
-                Spell.Cast(SB.ShieldSlam),
-                Spell.Cast(SB.Cleave, ret => G.UltimatumAura),
-                Spell.Cast(SB.Revenge, ret => Me.CurrentRage != Me.MaxRage),
-                Spell.Cast(SB.Devastate, ret => !G.WeakenedArmor3S || G.FadingSunder(1500)),
-                new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout))),
-                Spell.Cast(SB.Cleave, ret => Me.CurrentRage >= Me.MaxRage - 10 && G.NormalPhase)
+                Dev_ProtSt()
                 );
         }
 
         internal static Composite Dev_ProtDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.DemoralizingShout, ret => G.TargettingMe && Me.HealthPercent <= IS.Instance.Protection.DemoShoutNum && DemoralizingShoutUsage),
-                Spell.Cast(SB.EnragedRegeneration, ret => G.ErTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
-                Spell.Cast(SB.LastStand, ret => IS.Instance.Protection.CheckLastStand && Me.HealthPercent <= IS.Instance.Protection.CheckLastStandNum),
-                Spell.Cast(SB.MassSpellReflection, ret => G.MrTalent && IS.Instance.Protection.CheckSpellReflect && G.SrCd > 0 && G.TargetNotNull && G.TargettingMe && Me.CurrentTarget.IsCasting),
-                Spell.Cast(SB.ShieldWall, ret => IS.Instance.Protection.CheckShieldWall && Me.HealthPercent <= IS.Instance.Protection.CheckShieldWallNum),
-                Spell.Cast(SB.SpellReflection, ret => IS.Instance.Protection.CheckSpellReflect && G.TargetNotNull && G.TargettingMe && Me.CurrentTarget.IsCasting),
-                Item.ProtUseHealthStone(),
-
-                // Needs rework!
-                new Decorator(ret => HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock, 
-                    new PrioritySelector(
-                        Spell.Cast(SB.ShieldBarrier))),
-                new Decorator(ret => !HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock, 
-                    new PrioritySelector(
-                        Spell.Cast(SB.ShieldBlock))),
-
-                Spell.Cast(SB.ShieldBlock, ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock),
-                Spell.Cast(SB.ShieldBarrier, ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && Me.CurrentRage >= 60 && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier)
                 );
         }
 
         internal static Composite Dev_ProtGcdUtility()
         {
             return new PrioritySelector(
-                //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
-                //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
-                Spell.Cast(SB.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss),
-                Spell.Cast(SB.ImpendingVictory, ret => G.IvTalent && (Me.HealthPercent <= IS.Instance.Protection.ImpendingVictoryNum || G.FadingVc(2000)) && ImpendingVictoryUsage),
-                Spell.Cast(SB.PiercingHowl, ret => G.PhTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum),
-                Spell.Cast(SB.ShatteringThrow, ret => ShatteringThrowUsage),
-                Spell.Cast(SB.StaggeringShout, ret => G.SsTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum),
-                Spell.Cast(SB.VictoryRush, ret => !G.IvTalent && (Me.HealthPercent <= IS.Instance.Protection.VictoryRushNum || G.FadingVc(2000)) && VictoryRushUsage)
                 );
         }
 
         internal static Composite Dev_ProtRacials()
         {
             return new PrioritySelector(
-                new Decorator(ret => RacialUsage,
-                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
-                    ));
+                );
         }
 
         internal static Composite Dev_ProtOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.Avatar, ret => G.AvTalent && Tier6AbilityUsage),
-                Spell.Cast(SB.Bloodbath, ret => G.BbTalent && Tier6AbilityUsage),
-                Spell.Cast(SB.Recklessness, ret => G.TargetNotNull && RecklessnessUsage),
-                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && SkullBannerUsage)
                 );
         }
 
         internal static Composite Dev_ProtNonGcdUtility()
         {
             return new PrioritySelector(
-                Spell.CastOnGround(SB.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && IS.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= IS.Instance.Protection.CheckDemoBannerNum),
-                Spell.Cast(SB.BerserkerRage, ret => !G.EnrageAura && BerserkerRageUsage),
-                Spell.Cast(SB.Taunt, ret => IS.Instance.Protection.CheckAutoTaunt && !G.TargettingMe),
-                Spell.Cast(SB.RallyingCry, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry)
                 );
         }
         #endregion

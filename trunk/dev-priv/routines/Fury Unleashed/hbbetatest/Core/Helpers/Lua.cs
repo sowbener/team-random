@@ -53,10 +53,10 @@ namespace FuryUnleashed.Core.Helpers
                 {
                     using (StyxWoW.Memory.AcquireFrame())
                     {
-                        return Lua.GetReturnVal<int>("return UnitPower(\"player\");", 0);
+                        return Lua.GetReturnVal<uint>("return UnitPower(\"player\");", 0);
                     }
                 }
-                catch { Logger.DiagLogPu(" Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
+                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
             }
         }
 
@@ -68,12 +68,12 @@ namespace FuryUnleashed.Core.Helpers
                 {
                     using (StyxWoW.Memory.AcquireFrame())
                     {
-                        return Lua.GetReturnVal<int>("return UnitPowerMax(\"player\",1);", 0);
+                        return Lua.GetReturnVal<uint>("return UnitPowerMax(\"player\",1);", 0);
                     }
                 }
                 catch
                 {
-                    Logger.DiagLogPu("Bs: Lua Failed in PlayerPowerMax"); return 0;
+                    Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return 0;
                 }
             }
         }

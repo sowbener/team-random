@@ -1,4 +1,5 @@
 ﻿using FuryUnleashed.Core;
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
@@ -12,6 +13,7 @@ using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using A = FuryUnleashed.Rotations.ArmsRotation;
+using BotEvents = Styx.CommonBot.BotEvents;
 using F = FuryUnleashed.Rotations.FuryRotation;
 using P = FuryUnleashed.Rotations.ProtRotation;
 
@@ -113,6 +115,7 @@ namespace FuryUnleashed
 
             /* Start Combat */
             Spell.InitGcdSpell();
+            ProtTracker();
             PreBuffSelector();
             CombatSelector();
 
@@ -138,7 +141,16 @@ namespace FuryUnleashed
         internal static void StopBot(string reason)
         {
             Logger.CombatLogWh(reason);
+            CombatLogHandler.Shutdown();
             TreeRoot.Stop();
+        }
+
+        internal static void ProtTracker()
+        {
+            if (Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                Core.Helpers.ProtTracker.Initialize();
+            }
         }
         #endregion
 

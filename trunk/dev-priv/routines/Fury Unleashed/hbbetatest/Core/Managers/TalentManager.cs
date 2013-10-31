@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
 using Styx;
 using Styx.Common.Helpers;
@@ -166,6 +167,8 @@ namespace FuryUnleashed.Core.Managers
                 RebuildNeeded = false;
                 Logger.DiagLogPu("FU TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
+                CombatLogHandler.Shutdown();
+                Root.ProtTracker();
                 Root.Instance.PreBuffSelector();
                 Root.Instance.CombatSelector();
                 return true;

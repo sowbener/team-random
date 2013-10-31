@@ -296,10 +296,16 @@ namespace FuryUnleashed.Rotations
         internal static Composite Sim_FuryHeroicStrike()
         {
             return new PrioritySelector(
+                new Decorator(ret => G.NormalPhase,
+                    new PrioritySelector(
+                        //actions.single_target+=/heroic_strike,if=((debuff.colossus_smash.up&rage>=40)&target.health.pct>=20)|rage>=100&buff.enrage.up
+                        Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower >= Me.MaxRage - 20 && G.EnrageAura || G.NormalPhase && Lua.PlayerPower >= 40 && G.ColossusSmashAura))),
+                new Decorator(ret => G.ExecutePhase,
+                    new PrioritySelector(
+                        // Execute Phase - Colossus Smash
+                        Spell.Cast(SB.HeroicStrike, ret => G.Tier16TwoPieceBonus && G.ColossusSmashAura && Me.CurrentRage >= Me.MaxRage - 30))),
                 //Added to prevent ragecapping
-                Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage),
-                //actions.single_target+=/heroic_strike,if=((debuff.colossus_smash.up&rage>=40)&target.health.pct>=20)|rage>=100&buff.enrage.up
-                Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower >= 100 && G.EnrageAura || G.NormalPhase && Lua.PlayerPower >= 40 && G.ColossusSmashAura)
+                Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower >= Me.MaxRage - 5)
                 );
         }
 
@@ -376,20 +382,27 @@ namespace FuryUnleashed.Rotations
         }
 
         // TODO: Make execute from http://www.icy-veins.com/fury-warrior-wow-pve-dps-rotation-cooldowns-abilities#advanced-rotation
+        // This is not SimC as SimC doesn't sim execute range.
         internal static Composite Sim_FuryExec()
         {
             return new PrioritySelector(
-                new Decorator(ret => true,
-                    new PrioritySelector()),
-                new Decorator(ret => true,
-                    new PrioritySelector()));
+                new Decorator(ret => G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage),
+
+                        Spell.Cast(SB.Bloodthirst, ret => !G.EnrageAura && G.BrOc),
+                        Spell.Cast(SB.Execute),
+                        Spell.Cast(SB.RagingBlow))),
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityUsage))));
         }
 
         internal static Composite Sim_FuryMt()
         {
             return new PrioritySelector(
                 // Added for supporting it.
-                Spell.Cast(SB.StormBolt, ret => Tier6AbilityAoEUsage),
+                Spell.Cast(SB.StormBolt, ret => G.SbTalent && Tier6AbilityAoEUsage),
                 // Added for supporting it.
                 Spell.Cast(SB.Execute, ret => G.DeathSentenceAuraT16),
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 4,
