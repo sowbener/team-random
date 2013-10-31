@@ -8,6 +8,7 @@ namespace FuryUnleashed.Core.Helpers
 {
     internal static class CooldownTracker
     {
+        // ReSharper disable once InconsistentNaming
         internal static Dictionary<WoWSpell, DateTime> cooldowns = new Dictionary<WoWSpell, DateTime>();
 
         // Adding casted spells to dictionary with datetime

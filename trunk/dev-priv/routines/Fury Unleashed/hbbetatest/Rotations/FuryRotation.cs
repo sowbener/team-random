@@ -28,7 +28,6 @@ namespace FuryUnleashed.Rotations
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                        //new Decorator(ret => IS.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
                         new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
                     new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
@@ -46,7 +45,6 @@ namespace FuryUnleashed.Rotations
                 return new PrioritySelector(
                     new Decorator(ret => IS.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
-                    //new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
