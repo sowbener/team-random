@@ -5,15 +5,14 @@ using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
-using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
+using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
 using U = FuryUnleashed.Core.Unit;
-using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations
 {
@@ -29,7 +28,6 @@ namespace FuryUnleashed.Rotations
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                    //new Decorator(ret => IS.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
                         new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
                     new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
@@ -47,7 +45,6 @@ namespace FuryUnleashed.Rotations
                 return new PrioritySelector(
                     new Decorator(ret => IS.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
-                    //new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
@@ -207,7 +204,6 @@ namespace FuryUnleashed.Rotations
                                     new PrioritySelector(
                                         Rel_FuryRacials(),
                                         Item.CreateItemBehaviour())),
-                                Rel_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Rel_FuryGcdUtility(),
@@ -223,7 +219,6 @@ namespace FuryUnleashed.Rotations
                                     new PrioritySelector(
                                         Rel_FuryRacials(),
                                         Item.CreateItemBehaviour())),
-                                Rel_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Rel_FuryGcdUtility(),
@@ -660,17 +655,17 @@ namespace FuryUnleashed.Rotations
                         )));
         }
 
-        internal static Composite Rel_FuryHeroicStrike()
-        {
-            return new PrioritySelector(
-                new Decorator(ret => G.ColossusSmashAura && G.NormalPhase,
-                    new PrioritySelector(
-                        Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower >= 30))),
-                new Decorator(ret => !G.ColossusSmashAura && G.NormalPhase,
-                    new PrioritySelector(
-                        Spell.Cast(SB.HeroicStrike, ret => G.CsCd >= 3000 && ((G.UrGlyph && Lua.PlayerPower >= Me.MaxRage - 15) || (!G.UrGlyph && Lua.PlayerPower >= Me.MaxRage - 5))))),
-                Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage));
-        }
+        //internal static Composite Rel_FuryHeroicStrike()
+        //{
+        //    return new PrioritySelector(
+        //        new Decorator(ret => G.ColossusSmashAura && G.NormalPhase,
+        //            new PrioritySelector(
+        //                Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower >= 30))),
+        //        new Decorator(ret => !G.ColossusSmashAura && G.NormalPhase,
+        //            new PrioritySelector(
+        //                Spell.Cast(SB.HeroicStrike, ret => G.CsCd >= 3000 && ((G.UrGlyph && Lua.PlayerPower >= Me.MaxRage - 15) || (!G.UrGlyph && Lua.PlayerPower >= Me.MaxRage - 5))))),
+        //        Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage));
+        //}
 
         internal static Composite Rel_FuryMt()
         {
