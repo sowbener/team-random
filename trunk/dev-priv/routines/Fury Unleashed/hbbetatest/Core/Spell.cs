@@ -439,7 +439,7 @@ namespace FuryUnleashed.Core
                     Logger.DiagLogWh("FU: CastOrChanneledSpell Error - {0}", ex);
                 }
             }
-			return 0;
+            return WoWSpell.FromId(0);
         }
 
         internal static int CurrentCastOrChannelId(this WoWUnit unit)
