@@ -22,6 +22,7 @@ namespace FuryUnleashed.Rotations
     class Global
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static Random _random = new Random();
 
         #region Global Used Composites
         internal static Composite InitializeCaching()
@@ -92,13 +93,24 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast(SB.Pummel)
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
+                    Spell.Cast(SB.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DsTalent && (PuOc || U.InterruptableUnitsCount > 1))
                     ),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast(SB.DisruptingShout, ret => DsTalent && (PuOc || U.InterruptableUnitsCount >= 1))
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
+                    Spell.Cast(SB.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
                     ));
         }
+
+        //internal static Composite InitializeInterrupts()
+        //{
+        //    return new PrioritySelector(
+        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+        //            Spell.Cast(SB.Pummel)
+        //            ),
+        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+        //            Spell.Cast(SB.DisruptingShout, ret => DsTalent && (PuOc || U.InterruptableUnitsCount >= 1))
+        //            ));
+        //}
         #endregion
 
         #region Racials

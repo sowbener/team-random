@@ -423,5 +423,40 @@ namespace FuryUnleashed.Core
             return false;
         }
         #endregion
+
+        #region Interrupts
+        internal static WoWSpell CastOrChanneledSpell(this WoWUnit unit)
+        {
+            using (new PerformanceLogger("CastOrChanneledSpell"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return WoWSpell.FromId(0);
+                    return unit.CastingSpell ?? (unit.ChanneledSpell);
+                }
+                catch (Exception ex)
+                {
+                    Logger.DiagLogWh("FU: CastOrChanneledSpell Error - {0}", ex);
+                }
+            }
+        }
+
+        internal static int CurrentCastOrChannelId(this WoWUnit unit)
+        {
+            using (new PerformanceLogger("CurrentCastOrChannelId"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return 0;
+                    return unit.IsCasting ? unit.CastingSpellId : (unit.IsChanneling ? unit.ChanneledCastingSpellId : 0);   
+                }
+                catch (Exception ex)
+                {
+                    Logger.DiagLogWh("FU: CurrentCastOrChannelId Error - {0}", ex);
+                }
+            }
+            return 0;
+        }
+        #endregion
     }
 }
