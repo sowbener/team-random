@@ -28,7 +28,7 @@ namespace FuryUnleashed.Core.Managers
             Lua.Events.AttachEvent("PLAYER_LEVEL_UP", UpdateTalentManager);
             Lua.Events.AttachEvent("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("GLYPH_UPDATED", UpdateTalentManager);
-            Lua.Events.AttachEvent("ACTIVE_TALENT_GROUP_CHANGED", UpdateTalentManager);
+            Lua.Events.AttachEvent("ACTIVE_Talent_GROUP_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("PLAYER_SPECIALIZATION_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("LEARNED_SPELL_IN_TAB", UpdateTalentManager);
         }
@@ -104,7 +104,7 @@ namespace FuryUnleashed.Core.Managers
                 if (oldTalent[i] != TalentId[i])
                 {
                     RebuildNeeded = true;
-                    Logger.DiagLogPu("FU TalentManager: Your talents have changed.");
+                    Logger.DiagLogPu("FU TalentManager: Your Talents have changed.");
                     break;
                 }
             }

@@ -62,9 +62,9 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
-                        Spell.Cast(SB.Bladestorm, ret => BsTalent),
-                        Spell.Cast(SB.DragonRoar, ret => DrTalent),
-                        Spell.Cast(SB.Shockwave, ret => SwTalent))),
+                        Spell.Cast(SB.Bladestorm, ret => BladestormTalent),
+                        Spell.Cast(SB.DragonRoar, ret => DragonRoarTalent),
+                        Spell.Cast(SB.Shockwave, ret => ShockwaveTalent))),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.ShatteringThrowChoice),
                     Spell.Cast(SB.ShatteringThrow)),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.HeroicLeapChoice),
@@ -94,7 +94,7 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-                    Spell.Cast(SB.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DsTalent && (PuOc || U.InterruptableUnitsCount > 1))
+                    Spell.Cast(SB.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount > 1))
                     ),
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
                     Spell.Cast(SB.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
@@ -108,7 +108,7 @@ namespace FuryUnleashed.Rotations
         //            Spell.Cast(SB.Pummel)
         //            ),
         //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-        //            Spell.Cast(SB.DisruptingShout, ret => DsTalent && (PuOc || U.InterruptableUnitsCount >= 1))
+        //            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))
         //            ));
         //}
         #endregion
@@ -594,22 +594,22 @@ namespace FuryUnleashed.Rotations
 
         #region TalentManager Functions
         // Talentmanager - HasGlyphs
-        internal static bool CsGlyph
+        internal static bool ColossusSmashGlyph
         {
             get { return TalentManager.HasGlyph("Colossus Smash"); }
         }
 
-        internal static bool HsGlyph
+        internal static bool HinderingStrikesGlyph
         {
             get { return TalentManager.HasGlyph("Hindering Strikes"); }
         }
 
-        internal static bool UrGlyph
+        internal static bool UnendingRageGlyph
         {
             get { return TalentManager.HasGlyph("Unending Rage"); }
         }
 
-        internal static bool IsGlyph
+        internal static bool IntimidatingShoutGlyph
         {
             get { return TalentManager.HasGlyph("Intimidating Shout"); }
         }
@@ -632,97 +632,97 @@ namespace FuryUnleashed.Rotations
 
         // Talentmanager - HasTalents
         // Tier 1 Talents
-        internal static bool JnTalent
+        internal static bool JuggernautTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Juggernaut); }
         }
 
-        internal static bool DtTalent
+        internal static bool DoubleTimeTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.DoubleTime); }
         }
 
-        internal static bool WbTalent
+        internal static bool WarbringerTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Warbringer); }
         }
 
         // Tier 2 Talents
-        internal static bool ErTalent
+        internal static bool EnragedRegenerationTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.EnragedRegeneration); }
         }
 
-        internal static bool ScTalent
+        internal static bool SecondWindTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.SecondWind); }
         }
 
-        internal static bool IvTalent
+        internal static bool ImpendingVictoryTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.ImpendingVictory); }
         }
 
         // Tier 3 Talents
-        internal static bool SsTalent
+        internal static bool StaggeringShoutTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.StaggeringShout); }
         }
 
-        internal static bool PhTalent
+        internal static bool PiercingHowlTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.PiercingHowl); }
         }
 
-        internal static bool DsTalent
+        internal static bool DisruptingShoutTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.DisruptingShout); }
         }
 
         // Tier 4 Talents
-        internal static bool BsTalent
+        internal static bool BladestormTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Bladestorm); }
         }
 
-        internal static bool SwTalent
+        internal static bool ShockwaveTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Shockwave); }
         }
 
-        internal static bool DrTalent
+        internal static bool DragonRoarTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.DragonRoar); }
         }
 
         // Tier 5 Talents
-        internal static bool MrTalent
+        internal static bool MassSpellReflectionTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.MassSpellReflection); }
         }
 
-        internal static bool SgTalent
+        internal static bool SafeguardTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Safeguard); }
         }
 
-        internal static bool VgTalent
+        internal static bool VigilanceTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Vigilance); }
         }
 
         // Tier 6 Talents
-        internal static bool AvTalent
+        internal static bool AvatarTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Avatar); }
         }
 
-        internal static bool BbTalent
+        internal static bool BloodbathTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.Bloodbath); }
         }
 
-        internal static bool SbTalent
+        internal static bool StormBoltTalent
         {
             get { return TalentManager.HasTalent(Enum.WarriorTalents.StormBolt); }
         }
@@ -730,143 +730,143 @@ namespace FuryUnleashed.Rotations
 
         #region Cooldowntracker
         // Cooldowntracker - Timeleft in TotalMilliseconds
-        internal static double AvCd
+        internal static double AvatarSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.Avatar).TotalMilliseconds; } // Avatar
         }
 
-        internal static double BbCd
+        internal static double BloodbathSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.Bloodbath).TotalMilliseconds; } // Bloodbath
         }
 
-        internal static double BrCd
+        internal static double BerserkerRageSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.BerserkerRage).TotalMilliseconds; }
         }
 
-        internal static double BtCd
+        internal static double BloodthirstSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.Bloodthirst).TotalMilliseconds; } // Bloodthirst
         }
 
-        internal static double CsCd
+        internal static double ColossusSmashSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.ColossusSmash).TotalMilliseconds; } // Colossus Smash
         }
 
-        internal static double PuCd
+        internal static double PummelSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.Pummel).TotalMilliseconds; } // Pummel
         }
 
-        internal static double SsCd
+        internal static double ShieldSlamSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.ShieldSlam).TotalMilliseconds; } // Shield Slam
         }
 
-        internal static double SbCd
+        internal static double SkullBannerSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.SkullBanner).TotalMilliseconds; } // Skull Banner
         }
 
-        internal static double SrCd
+        internal static double SpellReflectionSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.SpellReflection).TotalMilliseconds; } // Spell Reflection
         }
 
-        internal static double RcCd
+        internal static double RecklessnessSpellCooldown
         {
             get { return CooldownTracker.GetSpellCooldown(SB.Recklessness).TotalMilliseconds; } // Recklessness
         }
  
         // Spells on Cooldown
-        internal static bool BrOc
+        internal static bool BereserkerRageOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.BerserkerRage); } // Berserker Rage
         }
 
-        internal static bool BsOc
+        internal static bool BladeStormOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.Bladestorm); } // Bladestorm
         }
 
-        internal static bool BtOc
+        internal static bool BloodThirstOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.Bloodthirst); } // Bloodthirst
         }
 
-        internal static bool CsOc
+        internal static bool ColossusSmashOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.ColossusSmash); } // Colossus Smash
         }
 
-        internal static bool DbOc
+        internal static bool DemoralizingBannerOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.DemoralizingBanner); } // Demoralizing Banner
         } 
 
-        internal static bool DrOc
+        internal static bool DragonRoarOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.DragonRoar); } // Dragon Roar
         }
 
-        internal static bool DsOc
+        internal static bool DisruptingShoutOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.DisruptingShout); } // Disrupting Shout
         }
 
-        internal static bool HlOc
+        internal static bool HeroicLeapOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.HeroicLeap); } // Heroic Leap
         }
 
-        internal static bool IvOc
+        internal static bool ImpendingVictoryOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.ImpendingVictory); } // Impending Victory
         }
 
-        internal static bool MsOc
+        internal static bool MortalStrikeOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.MortalStrike); } // Mortal Strike
         }
 
-        internal static bool PuOc
+        internal static bool PummelOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.Pummel); } // Pummel
         }
 
-        internal static bool RbOc
+        internal static bool RagingBlowOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.RagingBlow); } // Raging Blow
         }
 
-        internal static bool RvOc
+        internal static bool RevengeOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.Revenge); } // Revenge
         }
 
-        internal static bool SbOc
+        internal static bool StormBoltOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.StormBolt); } // Storm Bolt
         }
 
-        internal static bool SlOc
+        internal static bool SlamOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.Slam); } // Slam
         }
 
-        internal static bool SsOc
+        internal static bool ShieldSlamOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.ShieldSlam); }// Shield Slam
         }
 
-        internal static bool SwOc
+        internal static bool ShockwaveOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.Shockwave); } // Shockwave
         }
 
-        internal static bool VrOc
+        internal static bool VictoryRushOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SB.VictoryRush); } // Victory Rush
         }

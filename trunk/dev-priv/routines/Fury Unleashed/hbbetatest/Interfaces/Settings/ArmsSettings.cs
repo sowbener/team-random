@@ -333,7 +333,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(false)]
         [Category("Arms - Interrupts & Stuns")]
         [DisplayName("Enable Piercing Howl")]
-        [Description("Checked enables Piercing Howl (If talented).")]
+        [Description("Checked enables Piercing Howl (If Talented).")]
         public bool CheckPiercingHowl { get; set; }
 
         [Setting]
@@ -347,7 +347,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(false)]
         [Category("Arms - Interrupts & Stuns")]
         [DisplayName("Enable Staggering Shout")]
-        [Description("Checked enables Staggering Shout (If talented).")]
+        [Description("Checked enables Staggering Shout (If Talented).")]
         public bool CheckStaggeringShout { get; set; }
 
         [Setting]

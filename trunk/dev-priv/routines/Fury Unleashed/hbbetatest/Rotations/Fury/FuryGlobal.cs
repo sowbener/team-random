@@ -67,7 +67,7 @@ namespace FuryUnleashed.Rotations.Fury
             get
             {
                 return ((IS.Instance.Fury.MassSpellReflection == Enum.MsrTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Fury.MassSpellReflection == Enum.MsrTrigger.Always && G.PuOc && G.DsOc));
+                        (IS.Instance.Fury.MassSpellReflection == Enum.MsrTrigger.Always && G.PummelOnCooldown && G.DisruptingShoutOnCooldown));
             }
         }
 
@@ -153,7 +153,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return (G.BloodbathAura || !G.BbTalent || G.ReadinessAura);
+                return (G.BloodbathAura || !G.BloodbathTalent || G.ReadinessAura);
             }
         }
     }

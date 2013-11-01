@@ -175,7 +175,7 @@ namespace FuryUnleashed.Rotations.Protection
         {
             get
             {
-                return ((G.BloodbathAura || G.AvTalent || G.SbTalent) || (G.ReadinessAura));
+                return ((G.BloodbathAura || G.AvatarTalent || G.StormBoltTalent) || (G.ReadinessAura));
             }
         }
     }

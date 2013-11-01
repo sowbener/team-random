@@ -81,12 +81,12 @@ namespace FuryUnleashed.Rotations.Protection
                 new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage <= 100)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage <= 100))),
-                Spell.Cast("Storm Bolt", ret => G.SbTalent && (
+                Spell.Cast("Storm Bolt", ret => G.StormBoltTalent && (
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Dragon Roar", ret => G.DrTalent && (
+                Spell.Cast("Dragon Roar", ret => G.DragonRoarTalent && (
                     (IS.Instance.Protection.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4Abilities == Enum.AbilityTrigger.Always)
@@ -101,17 +101,17 @@ namespace FuryUnleashed.Rotations.Protection
             return new PrioritySelector(
                 Spell.Cast("Cleave", ret => G.UltimatumAura || (Me.CurrentRage >= Me.MaxRage - 10 && !G.TargettingMe)),
                 Spell.Cast("Thunder Clap"),
-                Spell.Cast("Dragon Roar", ret => G.DrTalent && (
+                Spell.Cast("Dragon Roar", ret => G.DragonRoarTalent && (
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Shockwave", ret => G.SwTalent && Me.IsFacing(Me.CurrentTarget) && U.NearbyAttackableUnitsCount >= 3 && (
+                Spell.Cast("Shockwave", ret => G.ShockwaveTalent && Me.IsFacing(Me.CurrentTarget) && U.NearbyAttackableUnitsCount >= 3 && (
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Bladestorm", ret => G.BsTalent && (
+                Spell.Cast("Bladestorm", ret => G.BladestormTalent && (
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
@@ -122,7 +122,7 @@ namespace FuryUnleashed.Rotations.Protection
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage <= 100)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage <= 100))),
                 Spell.Cast("Devastate"),
-                Spell.Cast("Intimidating Shout", ret => IS.Instance.Protection.CheckIntimidatingShout && G.IsGlyph && !U.IsTargetBoss)
+                Spell.Cast("Intimidating Shout", ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss)
                 );
         }
 
@@ -139,9 +139,9 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast("Shield Block", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock),
                 Spell.Cast("Shield Barrier", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && Me.CurrentRage >= 80 && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier),
                 Spell.Cast("Shield Wall", ret => IS.Instance.Protection.CheckShieldWall && Me.HealthPercent <= IS.Instance.Protection.CheckShieldWallNum),
-                Spell.Cast("Enraged Regeneration", ret => G.ErTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
+                Spell.Cast("Enraged Regeneration", ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
                 Spell.Cast("Spell Reflection", ret => IS.Instance.Protection.CheckSpellReflect && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
-                Spell.Cast("Mass Spell Reflection", ret => IS.Instance.Protection.CheckSpellReflect && G.SrCd > 0 && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
+                Spell.Cast("Mass Spell Reflection", ret => IS.Instance.Protection.CheckSpellReflect && G.SpellReflectionSpellCooldown > 0 && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
                 Item.ProtUseHealthStone()
                 );
         }
@@ -151,11 +151,11 @@ namespace FuryUnleashed.Rotations.Protection
             return new PrioritySelector(
                 //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
                 //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
-                Spell.Cast("Impending Victory", ret => G.IvTalent && (Me.HealthPercent <= IS.Instance.Protection.ImpendingVictoryNum || G.FadingVc(2000)) && (
+                Spell.Cast("Impending Victory", ret => G.ImpendingVictoryTalent && (Me.HealthPercent <= IS.Instance.Protection.ImpendingVictoryNum || G.FadingVc(2000)) && (
                     (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
                     (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
                     (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15))),
-                Spell.Cast("Victory Rush", ret => !G.IvTalent && (Me.HealthPercent <= IS.Instance.Protection.VictoryRushNum || G.FadingVc(2000)) && (
+                Spell.Cast("Victory Rush", ret => !G.ImpendingVictoryTalent && (Me.HealthPercent <= IS.Instance.Protection.VictoryRushNum || G.FadingVc(2000)) && (
                     (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
                     (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
                     (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15)))
@@ -166,10 +166,10 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 Spell.Cast("Hamstring", ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
-                Spell.Cast("Staggering Shout", ret => G.SsTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum),
-                Spell.Cast("Piercing Howl", ret => G.PhTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum),
+                Spell.Cast("Staggering Shout", ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum),
+                Spell.Cast("Piercing Howl", ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum),
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                Spell.Cast("Demoralizing Shout", ret => G.TargettingMe && Me.HealthPercent <= IS.Instance.Protection.DemoShoutNum && (!G.Tier15FourPieceBonusT || (G.Tier15FourPieceBonusT && (!G.SsOc || G.SsCd <= 1000))) && (
+                Spell.Cast("Demoralizing Shout", ret => G.TargettingMe && Me.HealthPercent <= IS.Instance.Protection.DemoShoutNum && (!G.Tier15FourPieceBonusT || (G.Tier15FourPieceBonusT && (!G.ShieldSlamOnCooldown || G.ShieldSlamSpellCooldown <= 1000))) && (
                     (IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.Always)
@@ -198,7 +198,7 @@ namespace FuryUnleashed.Rotations.Protection
                     (IS.Instance.Protection.SkullBanner == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.SkullBanner == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Avatar", ret => G.AvTalent && (
+                Spell.Cast("Avatar", ret => G.AvatarTalent && (
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.Always)
@@ -208,7 +208,7 @@ namespace FuryUnleashed.Rotations.Protection
                     (IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Bloodbath", ret => G.BbTalent && (
+                Spell.Cast("Bloodbath", ret => G.BloodbathTalent && (
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.Always)
