@@ -94,7 +94,9 @@
     <Compile Include="Rotations\Fury\FuryGlobal.cs" />
     <Compile Include="Rotations\Fury\FuryRel.cs" />
     <Compile Include="Rotations\Global.cs" />
-    <Compile Include="Rotations\ProtRotation.cs" />
+    <Compile Include="Rotations\Protection\ProtDev.cs" />
+    <Compile Include="Rotations\Protection\ProtGlobal.cs" />
+    <Compile Include="Rotations\Protection\ProtRel.cs" />
     <Compile Include="Core\Utilities\PerformanceLogger.cs" />
     <Compile Include="Core\Utilities\TreeSharp.cs" />
   </ItemGroup>

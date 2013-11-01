@@ -15,102 +15,11 @@ using L = FuryUnleashed.Core.Helpers.LuaClass;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
 
-namespace FuryUnleashed.Rotations
+namespace FuryUnleashed.Rotations.Protection
 {
-    class ProtRotation
+    class ProtRel
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
-
-        #region Initialize Rotations
-        internal static Composite InitializeProtPreCombat
-        {
-            get
-            {
-                return new PrioritySelector(
-                    new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                        //new Decorator(ret => IS.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
-                        new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
-                    new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
-                        new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, 
-                                Spell.Cast(SB.BattleShout, on => Me, ret => !G.BattleShoutAura)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, 
-                                Spell.Cast(SB.CommandingShout, on => Me, ret => !G.CommandingShoutAura)))));
-            }
-        }
-
-        internal static Composite InitializeProtCombat
-        {
-            get
-            {
-                return new PrioritySelector(
-                    new Decorator(ret => IS.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
-                    new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
-                    //new Action(delegate { ObjectManager.Update(); return RunStatus.Failure; }),
-                    G.InitializeCaching(),
-                    G.InitializeOnKeyActions(),
-                    new Decorator(ret => IS.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.WoWVersion>(ctx => IS.Instance.General.CrProtRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, DevProtCombat),
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, RelProtCombat)));
-            }
-        }
-
-        internal static Composite DevProtCombat
-        {
-            get
-            {
-                return new PrioritySelector(
-                    new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
-                        new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
-                            new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
-                                Dev_ProtNonGcdUtility(),
-                                Dev_ProtRacials(),
-                                Dev_ProtOffensive(),
-                                Item.CreateItemBehaviour(),
-                                Dev_ProtRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Dev_ProtMt()),
-                                        Dev_ProtSt()
-                                        )))),
-                        new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
-                            new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
-                                Dev_ProtNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Dev_ProtRacials(),
-                                        Dev_ProtOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Dev_ProtRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Dev_ProtMt()),
-                                        Dev_ProtSt()
-                                        )))),
-                        new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
-                            new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
-                                Dev_ProtNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Dev_ProtRacials(),
-                                        Dev_ProtOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Dev_ProtRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Dev_ProtMt()),
-                                        Dev_ProtSt()
-                                        ))))));
-            }
-        }
 
         internal static Composite RelProtCombat
         {
@@ -159,74 +68,7 @@ namespace FuryUnleashed.Rotations
                                         ProtSt())));
             }
         }
-        #endregion
 
-        #region Development Rotations
-        internal static Composite Dev_ProtRageDump()
-        {
-            return new PrioritySelector(
-                new Decorator(ret => U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SB.HeroicStrike, ret => L.PlayerPower >= L.PlayerPowerMax - 10 && G.NormalPhase)),
-                new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SB.Cleave))
-                );
-        }
-
-        internal static Composite Dev_ProtSt()
-        {
-            return new PrioritySelector(
-                Spell.Cast(SB.Devastate, ret => !G.WeakenedArmor3S),
-
-                Spell.Cast(SB.ShieldSlam),
-                Spell.Cast(SB.Revenge, ret => L.PlayerPower != L.PlayerPowerMax),
-                Spell.Cast(SB.Devastate),
-                Spell.Cast(SB.ThunderClap, ret => !G.WeakenedBlowsAura || G.FadingWb(1500)),
-                new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout)))
-                );
-        }
-
-        internal static Composite Dev_ProtMt()
-        {
-            return new PrioritySelector(
-                Spell.Cast(SB.ThunderClap),
-                Dev_ProtSt()
-                );
-        }
-
-        internal static Composite Dev_ProtDefensive()
-        {
-            return new PrioritySelector(
-                );
-        }
-
-        internal static Composite Dev_ProtGcdUtility()
-        {
-            return new PrioritySelector(
-                );
-        }
-
-        internal static Composite Dev_ProtRacials()
-        {
-            return new PrioritySelector(
-                );
-        }
-
-        internal static Composite Dev_ProtOffensive()
-        {
-            return new PrioritySelector(
-                );
-        }
-
-        internal static Composite Dev_ProtNonGcdUtility()
-        {
-            return new PrioritySelector(
-                );
-        }
-        #endregion
-
-        #region Release Rotations
         internal static Composite ProtSt()
         {
             return new PrioritySelector(
@@ -239,7 +81,7 @@ namespace FuryUnleashed.Rotations
                 new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast("Battle Shout", on => Me, ret => Me.CurrentRage <= 100)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast("Commanding Shout", on => Me, ret => Me.CurrentRage <= 100))),
-                Spell.Cast("Storm Bolt", ret => G.SbTalent&& (
+                Spell.Cast("Storm Bolt", ret => G.SbTalent && (
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.Always)
@@ -288,10 +130,10 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 Spell.Cast("Last Stand", ret => IS.Instance.Protection.CheckLastStand && Me.HealthPercent <= IS.Instance.Protection.CheckLastStandNum),
-                new Decorator(ret => HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock, 
+                new Decorator(ret => HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock,
                     new PrioritySelector(
                         Spell.Cast("Shield Barrier"))),
-                new Decorator(ret => !HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock, 
+                new Decorator(ret => !HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock,
                     new PrioritySelector(
                         Spell.Cast("Shield Block"))),
                 Spell.Cast("Shield Block", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock),
@@ -382,144 +224,5 @@ namespace FuryUnleashed.Rotations
                     (IS.Instance.Protection.ShatteringThrow == Enum.AbilityTrigger.Always)
                     )));
         }
-        #endregion
-
-        #region Booleans
-
-        internal static bool BerserkerRageUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool DemoralizingShoutUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        //internal static bool MassSpellReflectionUsage
-        //{
-        //    get
-        //    {
-        //        return ((SG.Instance.Protection.MassSpellReflection == Enum.MsrTrigger.OnBossDummy && U.IsTargetBoss) ||
-        //                (SG.Instance.Protection.MassSpellReflection == Enum.MsrTrigger.Always && G.PUOC && G.DSOC));
-        //    }
-        //}
-
-        internal static bool RacialUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.ClassRacials == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool RecklessnessUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.Recklessness == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.Recklessness == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.Recklessness == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool ShatteringThrowUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.ShatteringThrow == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.ShatteringThrow == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.ShatteringThrow == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool SkullBannerUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.SkullBanner == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.SkullBanner == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.SkullBanner == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool Tier4AbilityUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.Tier4Abilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool Tier6AbilityUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool Tier4AbilityAoEUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                        (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
-                        (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool ImpendingVictoryUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
-                        (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                        (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15));
-            }
-        }
-
-        internal static bool VictoryRushUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.VictoryRush == Enum.VcTrigger.Always &&(G.VictoriousAura || G.VictoriousAuraT15)) ||
-                        (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                        (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15));
-            }
-        }
-
-        internal static bool RecklessnessSync
-        {
-            get
-            {
-                return ((G.RecklessnessAura) || (G.ReadinessAura));
-            }
-        }
-
-        internal static bool BloodbathSync
-        {
-            get
-            {
-                return ((G.BloodbathAura || G.AvTalent || G.SbTalent) || (G.ReadinessAura));
-            }
-        }
-        #endregion
     }
 }
