@@ -43,23 +43,31 @@ namespace FuryUnleashed.Rotations
                             Spell.GetCachedAuras();
                             return RunStatus.Failure;
                         }),
-                        new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null && StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly && StyxWoW.Me.CurrentTarget.Distance > 12 &&
-                                StyxWoW.Me.CurrentTarget.Distance < 30,
+                        new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
+                                             StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
+                                             StyxWoW.Me.CurrentTarget.Distance > 12 &&
+                                             StyxWoW.Me.CurrentTarget.Distance < 30,
                             new PrioritySelector(
-                                Spell.Cast(SpellBook.Charge))),
-                    //HeroicLeap(StyxWoW.Me.CurrentTarget))),
-                        //new Decorator(ret => InternalSettings.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
-                        new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk,
-                            Global.InitializeOnKeyActions())),
-                    new Decorator(
-                        ret =>
-                            Unit.DefaultBuffCheck &&
-                            ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
-                                Spell.Cast(SpellBook.BattleShout, on => Me, ret => !Global.BattleShoutAura)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
-                                Spell.Cast(SpellBook.CommandingShout, on => Me, ret => !Global.CommandingShoutAura)))));
+                                Spell.Cast(SpellBook.Charge),
+                                Spell.CastOnGround(SpellBook.HeroicLeap, ret => StyxWoW.Me.CurrentTarget),
+                                //new Decorator(ret => InternalSettings.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
+                                new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk,
+                                    Global.InitializeOnKeyActions()),
+                                new Decorator(
+                                    ret =>
+                                        Unit.DefaultBuffCheck &&
+                                        ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) ||
+                                         Me.Combat),
+                                    new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
+                                        new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
+                                            Spell.Cast(SpellBook.BattleShout, on => Me, ret => !Global.BattleShoutAura)),
+                                        new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
+                                            Spell.Cast(SpellBook.CommandingShout, on => Me,
+                                                ret => !Global.CommandingShoutAura))))
+                                )
+                            )
+                        )
+                    );
             }
         }
 
@@ -451,24 +459,25 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
 
-                new Decorator(
-                    ret =>
-                        !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
-                        StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
-                        StyxWoW.Me.CurrentTarget.Distance > 12 &&
-                        StyxWoW.Me.CurrentTarget.Distance < 30,
+                new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
+                                     StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
+                                     StyxWoW.Me.CurrentTarget.Distance > 12 &&
+                                     StyxWoW.Me.CurrentTarget.Distance < 30,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.Charge))),
-                //HeroicLeap(StyxWoW.Me.CurrentTarget))),
-                Spell.Cast(SpellBook.BerserkerRage,
-                    ret =>
-                        (!Global.EnrageAura || Global.FadingEnrage(500)) && Global.ColossusSmashAura &&
-                        BerserkerRageUsage),
-                Spell.Cast(SpellBook.Bloodbath, ret => Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.Charge),
+                        Spell.CastOnGround(SpellBook.HeroicLeap, ret => StyxWoW.Me.CurrentTarget),
+                        Spell.Cast(SpellBook.BerserkerRage,
+                            ret =>
+                                (!Global.EnrageAura || Global.FadingEnrage(500)) && Global.ColossusSmashAura &&
+                                BerserkerRageUsage),
+                        Spell.Cast(SpellBook.Bloodbath, ret => Tier4AbilityUsage),
 
-                Spell.Cast(SpellBook.Recklessness, ret => RecklessnessUsage),
-                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && RecklessnessSync && SkullBannerUsage),
-                Spell.Cast(SpellBook.Avatar, ret => Global.AvTalent && RecklessnessSync && Tier6AbilityUsage)
+                        Spell.Cast(SpellBook.Recklessness, ret => RecklessnessUsage),
+                        Spell.Cast(SpellBook.SkullBanner,
+                            ret => !Global.SkullBannerAura && RecklessnessSync && SkullBannerUsage),
+                        Spell.Cast(SpellBook.Avatar, ret => Global.AvTalent && RecklessnessSync && Tier6AbilityUsage)
+                        )
+                    )
                 );
         }
 
@@ -512,12 +521,13 @@ namespace FuryUnleashed.Rotations
                         StyxWoW.Me.CurrentTarget.IsChanneling,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Pummel, ret => StyxWoW.Me.CurrentTarget.Distance < 6),
+                        Spell.Cast(SpellBook.DisruptingShout, ret => StyxWoW.Me.CurrentTarget.Distance < 6),
                         Spell.Cast(SpellBook.IntimidatingShout, ret => StyxWoW.Me.CurrentTarget.Distance < 6),
                         Spell.Cast(SpellBook.Charge,
                             ret => StyxWoW.Me.CurrentTarget.Distance < 25 && StyxWoW.Me.CurrentTarget.Distance > 12))),
                 Spell.Cast(SpellBook.Avatar, ret => Global.AvTalent && IsSnaredOrRootedOrDazed(StyxWoW.Me)),
                 Spell.Cast(SpellBook.BerserkerRage, ret => NeedBerserkerRage()),
-                new Decorator(ret => Me.HealthPercent < 65 && !StyxWoW.Me.IsInInstance,
+                new Decorator(ret => Me.HealthPercent < 25 && StyxWoW.Me.CurrentTarget.IsPlayer && StyxWoW.Me.CurrentTarget.IsHostile,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.IntimidatingShout,
                             ret =>
@@ -527,22 +537,25 @@ namespace FuryUnleashed.Rotations
                             Spell.Cast(SpellBook.Intervene,
                                 ret =>
                                     Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 25)
-                                        .Where(x => x.Distance > 12 && x.Distance < 35)
+                                        .Where(x => x.Distance > 12 && x.Distance < 35 && x.InLineOfSpellSight)
                                         .OrderByDescending(x => x.Distance)
                                         .FirstOrDefault(),
                                 ret => NeedBerserkerRage())
+                            ),
+                        new PrioritySelector(
+                            ctx => Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 35)
+                                .OrderByDescending(x => x.Distance)
+                                .FirstOrDefault(x => x.Distance > 12 && x.InLineOfSpellSight),
+                            new Decorator(ctx => ctx != null,
+                                Spell.CastOnGround(SpellBook.HeroicLeap, ctx => (WoWUnit) ctx))
+                            ),
+                        new PrioritySelector(
+                            ctx => Unit.NearbyAttackableUnits(StyxWoW.Me.Location, 35)
+                                .OrderByDescending(x => x.Distance)
+                                .FirstOrDefault(x => x.Distance > 12 && x.InLineOfSpellSight),
+                            new Decorator(ctx => ctx != null,
+                                Spell.CastOnGround(SpellBook.HeroicLeap, ctx => (WoWUnit) ctx))
                             )
-                /*
-            new Decorator(ret => Unit.NearbyAttackableUnits(StyxWoW.Me.Location, 35)
-                        .Where(x => x.Distance > 12 && x.Distance < 35)
-                        .OrderByDescending(x => x.Distance).Any(),
-                HeroicLeap(
-                    Unit.NearbyAttackableUnits(StyxWoW.Me.Location, 35)
-                        .Where(x => x.Distance > 12 && x.Distance < 35)
-                        .OrderByDescending(x => x.Distance)
-                        .FirstOrDefault())
-                )
-                 */
                         )
                     ),
                 Spell.Cast(SpellBook.DiebytheSword,
@@ -623,24 +636,6 @@ namespace FuryUnleashed.Rotations
 
         }
 
-        private static Composite HeroicLeap(WoWUnit unit)
-        {
-            var closestpoint = WoWMathHelper.CalculatePointFrom(unit.Location,
-                StyxWoW.Me.Location, 35);
-            return
-                new Decorator(
-                    ret =>
-                        SpellManager.CanCast("Heroic Leap") && !unit.HasAura("Charge Stun") &&
-                        unit.Distance > 12 && unit.Distance < 37,
-                    new PrioritySelector(
-                        new Decorator(ret => unit.Distance < 37,
-                            Spell.CastOnGround(SpellBook.HeroicLeap, ret => unit.Location)),
-                        new Decorator(ret => unit.Distance >= 37,
-                            Spell.CastOnGround(SpellBook.HeroicLeap, ret => closestpoint))
-                        )
-                    );
-        }
-
         #endregion
 
         #region Booleans
@@ -680,11 +675,10 @@ namespace FuryUnleashed.Rotations
 
             return auras.Any(a =>
                 a.IsHarmful && (
-                    a.Spell.Mechanic == WoWSpellMechanic.Horrified ||
+                    a.Spell.Mechanic == WoWSpellMechanic.Fleeing ||
                     a.Spell.Mechanic == WoWSpellMechanic.Sapped ||
                     a.Spell.Mechanic == WoWSpellMechanic.Incapacitated ||
-                    a.Spell.Mechanic == WoWSpellMechanic.Frozen ||
-                    a.Spell.Mechanic == WoWSpellMechanic.Asleep));
+                    a.Spell.Mechanic == WoWSpellMechanic.Turned));
         }
 
         internal static bool IsCrowdControlled(WoWUnit unit)

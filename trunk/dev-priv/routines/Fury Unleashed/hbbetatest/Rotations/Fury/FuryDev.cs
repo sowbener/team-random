@@ -130,9 +130,9 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.StormBolt,
                             ret =>
                                 (Global.DeterminationAura &&
-                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Determination) < Global.CsCd + 2000 ||
+                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Determination) > Global.CsCd + 2000 ||
                                  Global.OutrageAura &&
-                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Outrage) < Global.CsCd + 2000 ||
+                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Outrage) > Global.CsCd + 2000 ||
                                  Global.CsCd >= 15000) && Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Shockwave,
                             ret => Global.SwTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),

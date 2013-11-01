@@ -108,6 +108,30 @@ namespace FuryUnleashed.Core
         }
 
         // Casting on Ground by Int
+        public static Composite CastOnGround(int spell, UnitSelectionDelegate onUnit)
+        {
+            return CastOnGround(spell, onUnit, ret => true);
+        }
+
+        public static Composite CastOnGround(int spell, UnitSelectionDelegate onUnit, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        {
+            return
+                new Decorator(ret => onUnit != null && requirements(ret) && SpellManager.CanCast(spell) && (StyxWoW.Me.Location.Distance(onUnit(ret).Location) <= WoWSpell.FromId(spell).MaxRange || WoWSpell.FromId(spell).MaxRange == 0),
+                    new Sequence(
+                       new Action(ret => SpellManager.Cast(spell)),
+                        new DecoratorContinue(ctx => waitForSpell,
+                            new WaitContinue(1, ret =>
+                                StyxWoW.Me.CurrentPendingCursorSpell != null &&
+                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spell, new ActionAlwaysSucceed())),
+                        new Action(ret =>
+                        {
+                            SpellManager.ClickRemoteLocation(onUnit(ret).Location);
+                            CooldownTracker.SpellUsed(spell);
+                            Logger.CombatLogOr("Casting: " + spell);
+                        }
+                        )));
+        }
+
         public static Composite CastOnGround(int spell, LocationRetriever onLocation)
         {
             return CastOnGround(spell, onLocation, ret => true);
@@ -281,6 +305,44 @@ namespace FuryUnleashed.Core
             return false;
         }
 
+        /// <summary>
+        /// Gets fading aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static double AuraTimeLeft(WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("AuraTimeLeft"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return 0;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+                    return 0;
+                }
+                catch (Exception) { return 0; }
+            }
+        }
         /// <summary>
         /// Gets fading aura timeleft  - ID
         /// </summary>
