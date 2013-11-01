@@ -141,6 +141,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Defensive Options")]
+        [DisplayName("Adv Logics Block/Barrier")]
+        [Description("Checked enables Shield Block or Barrier's advanced logics.")]
+        public bool CheckShieldBbAdvancedLogics { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Defensive Options")]
         [DisplayName("Shield Block/Barrier")]
         [Description("Checked enables Shield Block or Barrier - Use Hotkeys to switch block/barrier.")]
         public bool CheckShieldBlock { get; set; }

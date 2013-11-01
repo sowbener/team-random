@@ -1,6 +1,5 @@
 ﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
@@ -10,12 +9,15 @@ using U = FuryUnleashed.Core.Unit;
 using L = FuryUnleashed.Core.Helpers.LuaClass;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
+using PG = FuryUnleashed.Rotations.Protection.ProtGlobal;
 
 namespace FuryUnleashed.Rotations.Protection
 {
     class ProtDev
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
+
+        // TODO: Add Execute Support
 
         internal static Composite DevProtCombat
         {
@@ -41,7 +43,7 @@ namespace FuryUnleashed.Rotations.Protection
                 new Decorator(ret => U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum,
                     Spell.Cast(SB.HeroicStrike, ret => L.PlayerPower >= L.PlayerPowerMax - 10 && G.NormalPhase)),
                 new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SB.Cleave))
+                    Spell.Cast(SB.Cleave, ret => L.PlayerPower >= L.PlayerPowerMax - 10 && G.NormalPhase))
                 );
         }
 
@@ -71,7 +73,13 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtDefensive()
         {
             return new PrioritySelector(
-                );
+                new Decorator(ret => IS.Instance.Protection.CheckShieldBbAdvancedLogics,
+                    new PrioritySelector(
+                        Spell.Cast(SB.ShieldBarrier, ret => 
+                            (ProtTracker.CalculateEstimatedAbsorbValue() > ProtTracker.CalculateEstimatedBlockValue()) ||
+                            (Me.CurrentRage > 90 && Me.HealthPercent < 100)),
+                        Spell.Cast(SB.ShieldBlock, ret => 
+                            ProtTracker.CalculateEstimatedAbsorbValue() <= ProtTracker.CalculateEstimatedBlockValue()))));
         }
 
         internal static Composite Dev_ProtGcdUtility()
@@ -80,19 +88,21 @@ namespace FuryUnleashed.Rotations.Protection
                 );
         }
 
+        internal static Composite Dev_ProtNonGcdUtility()
+        {
+            return new PrioritySelector(
+                );
+        }
+
         internal static Composite Dev_ProtRacials()
         {
             return new PrioritySelector(
-                );
+                new Decorator(ret => PG.RacialUsage,
+                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
+                    ));
         }
 
         internal static Composite Dev_ProtOffensive()
-        {
-            return new PrioritySelector(
-                );
-        }
-
-        internal static Composite Dev_ProtNonGcdUtility()
         {
             return new PrioritySelector(
                 );

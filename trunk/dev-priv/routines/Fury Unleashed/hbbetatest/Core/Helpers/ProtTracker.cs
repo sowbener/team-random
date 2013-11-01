@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using FuryUnleashed.Core.Utilities;
 using Styx;
 
@@ -133,36 +134,58 @@ namespace FuryUnleashed.Core.Helpers
         #region Calculates
         public static double CalculateEstimatedAbsorbValue()
         {
-            double sumstam;
+            using (new PerformanceLogger("CalculateEstimatedAbsorbValue"))
+            {
+                try
+                {
+                    double sumstam;
 
-            var attackpower = StyxWoW.Me.AttackPower;
-            var strength = StyxWoW.Me.Strength;
-            var stamina = StyxWoW.Me.Stamina;
+                    var attackpower = StyxWoW.Me.AttackPower;
+                    var strength = StyxWoW.Me.Strength;
+                    var stamina = StyxWoW.Me.Stamina;
 
-            var sumrage = StyxWoW.Me.CurrentRage > 60 ? 60 : StyxWoW.Me.CurrentRage;
+                    var sumrage = StyxWoW.Me.CurrentRage > 60 ? 60 : StyxWoW.Me.CurrentRage;
 
-            if (sumrage < 20) sumrage = 20;
+                    if (sumrage < 20) sumrage = 20;
 
-            var ragemultiplier = sumrage / 60.0;
+                    var ragemultiplier = sumrage / 60.0;
 
-            if (2*(attackpower - 2*strength) > stamina*2.5) { sumstam = 2*(attackpower - 2*strength); }
-            else sumstam = stamina*2.5;
+                    if (2 * (attackpower - 2 * strength) > stamina * 2.5) { sumstam = 2 * (attackpower - 2 * strength); }
+                    else sumstam = stamina * 2.5;
 
-            var barrierresult = sumstam*ragemultiplier;
+                    var barrierresult = sumstam * ragemultiplier;
 
-            Logger.DiagLogWh("FU: Shield Barrier Size is {0} with SpellID {1}", barrierresult, ShieldBarrierSpellId);
-            return barrierresult;
+                    Logger.DiagLogWh("FU: Shield Barrier Size is {0} with SpellID {1}", barrierresult, ShieldBarrierSpellId);
+                    return barrierresult;
+                }
+                catch (Exception exabsorbcalc)
+                {
+                    Logger.DiagLogFb("FU: Failed CalculateEstimatedAbsorbValue - {0}", exabsorbcalc);
+                }
+            }
+            return 0;
         }
 
         public static double CalculateEstimatedBlockValue()
         {
-            var damageoversixseconds = GetDamageTaken(DateTime.Now);
-            var mastery = StyxWoW.Me.Mastery;
-            var criticalBlockChance = (mastery*2.2)/100;
-            var blockresult = damageoversixseconds * criticalBlockChance * 0.6 + damageoversixseconds * (1 - criticalBlockChance) * 0.3;
+            using (new PerformanceLogger("CalculateEstimatedBlockValue"))
+            {
+                try
+                {
+                    var damageoversixseconds = GetDamageTaken(DateTime.Now);
+                    var mastery = StyxWoW.Me.Mastery;
+                    var criticalBlockChance = (mastery * 2.2) / 100;
+                    var blockresult = damageoversixseconds * criticalBlockChance * 0.6 + damageoversixseconds * (1 - criticalBlockChance) * 0.3;
 
-            Logger.DiagLogWh("FU: Shield Block Size is {0} with SpellID {1}", blockresult, ShieldBlockSpellId);
-            return blockresult;
+                    Logger.DiagLogWh("FU: Shield Block Size is {0} with SpellID {1}", blockresult, ShieldBlockSpellId);
+                    return blockresult;
+                }
+                catch (Exception exblockcalc)
+                {
+                    Logger.DiagLogFb("FU: Failed CalculateEstimatedBlockValue - {0}", exblockcalc);
+                }
+            }
+            return 0;
         }
         #endregion
         
