@@ -25,50 +25,13 @@ namespace FuryUnleashed.Rotations.Protection
                     new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
-                                Dev_ProtNonGcdUtility(),
-                                Dev_ProtRacials(),
-                                Dev_ProtOffensive(),
-                                Item.CreateItemBehaviour(),
-                                Dev_ProtRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Dev_ProtMt()),
-                                        Dev_ProtSt()
-                                        )))),
+                                )),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
-                                Dev_ProtNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Dev_ProtRacials(),
-                                        Dev_ProtOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Dev_ProtRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Dev_ProtMt()),
-                                        Dev_ProtSt()
-                                        )))),
+                                )),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ProtDefensive()),
-                                Dev_ProtNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Dev_ProtRacials(),
-                                        Dev_ProtOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Dev_ProtRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Dev_ProtMt()),
-                                        Dev_ProtSt()
-                                        ))))));
+                                ))));
             }
         }
 
