@@ -48,6 +48,12 @@ namespace DeathVader.Helpers
             OnBlTwHr
         }
 
+        public enum InterruptList
+        {
+            MoP,
+            NextExpensionPack
+        }
+
         public enum VcTrigger
         {
             Never,

@@ -37,7 +37,7 @@ namespace DeathVader.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Frost.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, FrostDefensive()),
-                                        new Decorator(ret => SG.Instance.Frost.CheckInterrupts && U.CanInterrupt, FrostInterrupts()),
+                                        new Decorator(ret => SG.Instance.Frost.CheckInterrupts, FrostInterrupts()),
                                         FrostUtility(),
                                         I.FrostUseItems(),
                                         FrostOffensive(),
@@ -48,7 +48,7 @@ namespace DeathVader.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Frost.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, FrostDefensive()),
-                                        new Decorator(ret => SG.Instance.Frost.CheckInterrupts && U.CanInterrupt, FrostInterrupts()),
+                                        new Decorator(ret => SG.Instance.Frost.CheckInterrupts, FrostInterrupts()),
                                         FrostUtility(),
                                         new Decorator(ret => DvHotKeyManager.IsCooldown, 
                                         new PrioritySelector(
@@ -183,14 +183,14 @@ namespace DeathVader.Routines
 
         internal static Composite FrostInterrupts()
         {
-            return new PrioritySelector(
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast("Mind Freeze")
-                      ),
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast("Strangulate", ret => !Spell.SpellOnCooldown("Strangulate") && !Spell.SpellOnCooldown("Asphyxiate") && Spell.SpellOnCooldown("Mind Freeze")
-                    )));
+            {
+                return new PrioritySelector(
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Mind Freeze", ret => (SG.Instance.General.InterruptList == DvEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == DvEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))));
+            }
         }
+              
         #endregion
 
         #region Booleans

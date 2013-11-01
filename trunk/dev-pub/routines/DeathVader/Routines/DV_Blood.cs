@@ -17,6 +17,7 @@ using Spell = DeathVader.Core.DvSpell;
 using U = DeathVader.Core.DvUnit;
 using PureRotation.Classes;
 using Styx.CommonBot;
+using System;
 
 namespace DeathVader.Routines
 {
@@ -40,7 +41,7 @@ namespace DeathVader.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Blood.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, BloodDefensive()),
-                                        new Decorator(ret => SG.Instance.Blood.CheckInterrupts && U.CanInterrupt, BloodInterrupts()),
+                                        new Decorator(ret => SG.Instance.Blood.CheckInterrupts, BloodInterrupts()),
                                         BloodUtility(),
                                         I.BloodUseItems(),
                                         BloodOffensive(),
@@ -50,7 +51,7 @@ namespace DeathVader.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Blood.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, BloodDefensive()),
-                                        new Decorator(ret => SG.Instance.Blood.CheckInterrupts && U.CanInterrupt, BloodInterrupts()),
+                                        new Decorator(ret => SG.Instance.Blood.CheckInterrupts, BloodInterrupts()),
                                         BloodUtility(),
                                         new Decorator(ret => DvHotKeyManager.IsCooldown,
                                                 new PrioritySelector(
@@ -160,13 +161,15 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 );
         }
+      
 
         internal static Composite BloodInterrupts()
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                        Spell.Cast("Mind Freeze")));
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Mind Freeze", ret => (SG.Instance.General.InterruptList == DvEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == DvEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))));
             }
         }
         #endregion

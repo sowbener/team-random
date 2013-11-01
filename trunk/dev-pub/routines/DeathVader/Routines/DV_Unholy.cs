@@ -36,7 +36,7 @@ namespace DeathVader.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Unholy.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, UnholyDefensive()),
-                                        new Decorator(ret => SG.Instance.Unholy.CheckInterrupts && U.CanInterrupt, UnholyInterrupts()),
+                                        new Decorator(ret => SG.Instance.Unholy.CheckInterrupts, UnholyInterrupts()),
                                         UnholyUtility(),
                                         I.UnholyUseItems(),
                                         UnholyOffensive(),
@@ -46,7 +46,7 @@ namespace DeathVader.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Unholy.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, UnholyDefensive()),
-                                        new Decorator(ret => SG.Instance.Unholy.CheckInterrupts && U.CanInterrupt, UnholyInterrupts()),
+                                        new Decorator(ret => SG.Instance.Unholy.CheckInterrupts, UnholyInterrupts()),
                                         UnholyUtility(),
                                         new Decorator(ret => DvHotKeyManager.IsCooldown,
                                                 new PrioritySelector(
@@ -160,12 +160,14 @@ namespace DeathVader.Routines
                 );
         }
 
+
         internal static Composite UnholyInterrupts()
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                        Spell.Cast("Mind Freeze")));
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Mind Freeze", ret => (SG.Instance.General.InterruptList == DvEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == DvEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))));
             }
         }
         #endregion

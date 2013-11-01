@@ -1,5 +1,8 @@
 ﻿using Styx.Helpers;
 using System.ComponentModel;
+using DeathVader.Helpers;
+
+
 
 namespace DeathVader.Interfaces.Settings
 {
@@ -32,6 +35,13 @@ namespace DeathVader.Interfaces.Settings
         [DisplayName("Enable or Disable Potion Usage")]
         [Description("This Enables Potion During BloodLust or similar")]
         public bool CheckPotion { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(DvEnum.InterruptList.MoP)]
+        [Category("General")]
+        [DisplayName("Interrupt List")]
+        [Description("Select list over interrupts (Expension Pack).")]
+        public DvEnum.InterruptList InterruptList { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

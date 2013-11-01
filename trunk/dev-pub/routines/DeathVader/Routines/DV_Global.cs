@@ -237,6 +237,47 @@ namespace DeathVader.Routines
 
         #endregion Diseases
 
+        #region InterruptList
+
+        internal static Random _random = new Random();
+
+        internal static readonly HashSet<int> InterruptListMoP = new HashSet<int>
+       {
+           136797, // Dino-Mending (ToT)
+           136587, // Venom Bolt Volley (ToT)
+           61909, // Fireball (ToT)
+           136189, // Sandbolt (ToT)
+           144583, // Wulf Healing (SoO)
+           144649, // Hurl Corruption (SoO)
+           143473, // Empowered Chain Heal (SoO)
+           145555, // Empowered Chain Heal (SoO)
+           143432, // Arcane Shock (SoO)
+           143431, // Magistrike (SoO)
+           145230, // Forbidden Magic (SoO)
+           144922, // Harden Flesh
+           144923, // Earthen Shard
+           144379, // Mocking Blast (Manifestation of Pride)
+           144468, // Inspiring Song (Chi Ji Timeless Isle)
+           146728, // Chain-Heal (SoO)
+           146757, // Chain-Heal (SoO)
+           143423, // Sha Sear
+           123654, // Ming (5man HC instance)
+           121284, // Wing Leader (5man HC instance)
+           117833, // Crazy Thought (MSV)
+           117628, // Shadow Blast (MSV)
+           125877, // Dispatch (HoF)
+           124077, // Dispatch (HoF)
+
+
+       };
+
+        internal static readonly HashSet<int> InterruptListTBA = new HashSet<int>
+        {
+
+        };
+
+#endregion
+
         #region Misc
 
         internal static bool CanEmpowerRuneWeapon
