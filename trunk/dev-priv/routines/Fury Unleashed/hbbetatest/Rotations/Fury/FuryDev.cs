@@ -6,7 +6,6 @@ using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
-using FG = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;

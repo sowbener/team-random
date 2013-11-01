@@ -61,29 +61,29 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
-                        Spell.Cast("Bladestorm", ret => BsTalent),
-                        Spell.Cast("Dragon Roar", ret => DrTalent),
-                        Spell.Cast("Shockwave", ret => SwTalent))),
+                        Spell.Cast(SB.Bladestorm, ret => BsTalent),
+                        Spell.Cast(SB.DragonRoar, ret => DrTalent),
+                        Spell.Cast(SB.Shockwave, ret => SwTalent))),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.ShatteringThrowChoice),
-                    Spell.Cast("Shattering Throw")),
+                    Spell.Cast(SB.ShatteringThrow)),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.HeroicLeapChoice),
                     new Action(ret =>
                     {
-                        SpellManager.Cast("Heroic Leap");
+                        SpellManager.Cast(SB.HeroicLeap);
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Heroic Leap - On Mousecursor Location");
                     })),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.DemoBannerChoice),
                     new Action(ret =>
                     {
-                        SpellManager.Cast("Demoralizing Banner");
+                        SpellManager.Cast(SB.DemoralizingBanner);
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Demoralizing Banner - On Mousecursor Location");
                     })),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.MockingBannerChoice),
                     new Action(ret =>
                     {
-                        SpellManager.Cast("Mocking Banner");
+                        SpellManager.Cast(SB.MockingBanner);
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Mocking Banner - On Mousecursor Location");
                     })));
@@ -92,11 +92,11 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(750), RunStatus.Failure,
-                    Spell.Cast("Pummel")
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                    Spell.Cast(SB.Pummel)
                     ),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(750), RunStatus.Failure,
-                    Spell.Cast("Disrupting Shout", ret => DsTalent && (PuOc || U.InterruptableUnitsCount >= 1))
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                    Spell.Cast(SB.DisruptingShout, ret => DsTalent && (PuOc || U.InterruptableUnitsCount >= 1))
                     ));
         }
         #endregion
