@@ -41,7 +41,7 @@ namespace Waldo.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, ComDefensive()),
-                                        new Decorator(ret => SG.Instance.Combat.CheckInterrupts && U.CanInterrupt, ComInterrupts()),
+                                        new Decorator(ret => SG.Instance.Combat.CheckInterrupts, ComInterrupts()),
                                         ComUtility(),
                                         I.ComUseItems(),
                                         ComOffensive(),
@@ -51,7 +51,7 @@ namespace Waldo.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, ComDefensive()),
-                                        new Decorator(ret => SG.Instance.Combat.CheckInterrupts && U.CanInterrupt, ComInterrupts()),
+                                        new Decorator(ret => SG.Instance.Combat.CheckInterrupts, ComInterrupts()),
                                         ComUtility(),
                                          new Decorator(ret => WaHotKeyManager.IsCooldown,
                                          new PrioritySelector(
@@ -92,10 +92,13 @@ namespace Waldo.Routines
         internal static Composite ComInterrupts()
         {
             return new PrioritySelector(
-                   new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
-                    Spell.Cast("Kick")
-                    ),
-                    Spell.Cast("Deadly Throw", ret => G.Kick && WaTalentManager.HasTalent(4) && Lua.PlayerComboPts > 2
+                   new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Kick", ret => (SG.Instance.General.InterruptList == WaEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == WaEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))),
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Deadly Throw", ret => G.Kick && WaTalentManager.HasTalent(4) && Lua.PlayerComboPts > 2 && (
+                    (SG.Instance.General.InterruptList == WaEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == WaEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
                     ));
         }  
 

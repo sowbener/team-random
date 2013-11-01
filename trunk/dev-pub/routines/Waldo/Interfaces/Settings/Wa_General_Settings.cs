@@ -1,5 +1,6 @@
 ﻿using Styx.Helpers;
 using System.ComponentModel;
+using Waldo.Helpers;
 
 namespace Waldo.Interfaces.Settings
 {
@@ -25,6 +26,14 @@ namespace Waldo.Interfaces.Settings
         [DisplayName("Enable or Disable Potion Usage")]
         [Description("This Enables Potion During BloodLust or similar")]
         public bool CheckPotion { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(WaEnum.InterruptList.MoP)]
+        [Category("General")]
+        [DisplayName("Interrupt List")]
+        [Description("Select list over interrupts (Expension Pack).")]
+        public WaEnum.InterruptList InterruptList { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

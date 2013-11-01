@@ -55,6 +55,12 @@ namespace Waldo.Helpers
             OnBossAndVanishCooldown
         }
 
+        public enum InterruptList
+        {
+            MoP,
+            NextExpensionPack
+        }
+
         public enum PoisonM
         {
             Deadly,

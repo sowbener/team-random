@@ -45,7 +45,7 @@ namespace Waldo.Routines
                                     Lua.StartAutoAttack),
                                 new Decorator(ret => Me.HealthPercent < 100,
                                     SubDefensive()),
-                                new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts && WaUnit.CanInterrupt,
+                                new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts,
                                     SubInterrupts()),
                                 SubUtility(),
                                 I.SubUseItems(),
@@ -60,7 +60,7 @@ namespace Waldo.Routines
                                     Lua.StartAutoAttack),
                                 new Decorator(ret => Me.HealthPercent < 100,
                                     SubDefensive()),
-                                new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts && WaUnit.CanInterrupt,
+                                new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts,
                                     SubInterrupts()),
                                 SubUtility(),
                                 new Decorator(ret => StyxWoW.Me.CurrentEnergy < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
@@ -190,12 +190,15 @@ namespace Waldo.Routines
         internal static Composite SubInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
-                    Spell.Cast("Kick")
-                    ),
-                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.HasTalent(4) && Lua.PlayerComboPts > 2
+                   new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Kick", ret => (SG.Instance.General.InterruptList == WaEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == WaEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))),
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Deadly Throw", ret => G.Kick && WaTalentManager.HasTalent(4) && Lua.PlayerComboPts > 2 && (
+                    (SG.Instance.General.InterruptList == WaEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == WaEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
                     ));
-        }
+        }  
         #endregion
 
         #region BoolsChampion
