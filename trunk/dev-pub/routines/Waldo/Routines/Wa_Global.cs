@@ -169,6 +169,8 @@ namespace Waldo.Routines
            143431, // Magistrike (SoO)
            145230, // Forbidden Magic (SoO)
            144922, // Harden Flesh
+           143958, // Corruption Shock
+           145631, // Corruption Chain
            144923, // Earthen Shard
            144379, // Mocking Blast (Manifestation of Pride)
            144468, // Inspiring Song (Chi Ji Timeless Isle)
