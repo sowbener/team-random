@@ -67,6 +67,12 @@ namespace Bullseye.Helpers
             OnT15Proc
         }
 
+        public enum InterruptList
+        {
+            MoP,
+            NextExpensionPack
+        }
+
         public enum Shouts
         {
             BattleShout,

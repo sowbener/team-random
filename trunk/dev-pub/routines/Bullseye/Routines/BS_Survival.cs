@@ -39,7 +39,7 @@ namespace Bullseye.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Survival.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, SurvivalDefensive()),
-                                        new Decorator(ret => SG.Instance.Survival.CheckInterrupts && U.CanInterrupt, SurvivalInterrupts()),
+                                        new Decorator(ret => SG.Instance.Survival.CheckInterrupts, SurvivalInterrupts()),
                                         SurvivalUtility(),
                                         I.SurvivalUseItems(),
                                         SurvivalOffensive(),
@@ -49,7 +49,7 @@ namespace Bullseye.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Survival.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, SurvivalDefensive()),
-                                        new Decorator(ret => SG.Instance.Survival.CheckInterrupts && U.CanInterrupt, SurvivalInterrupts()),
+                                        new Decorator(ret => SG.Instance.Survival.CheckInterrupts, SurvivalInterrupts()),
                                         SurvivalUtility(),
                                         new Decorator(ret => BsHotKeyManager.IsCooldown,
                                                 new PrioritySelector(
@@ -176,9 +176,10 @@ namespace Bullseye.Routines
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                        Spell.Cast("Counter Shot")
-                          ));
+                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                    Spell.Cast("Counter Shot", ret => (SG.Instance.General.InterruptList == BsEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == BsEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
+                      );
             }
         }
 

@@ -35,6 +35,13 @@ namespace Bullseye.Interfaces.Settings
         public bool CheckPotion { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(BsEnum.InterruptList.MoP)]
+        [Category("General")]
+        [DisplayName("Interrupt List")]
+        [Description("Select list over interrupts (Expension Pack).")]
+        public BsEnum.InterruptList InterruptList { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("General")]
         [DisplayName("Enable or Disable Trap Usage")]

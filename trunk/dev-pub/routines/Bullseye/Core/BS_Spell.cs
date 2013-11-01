@@ -507,6 +507,21 @@ namespace Bullseye.Core
         }
         #endregion
 
+        #region InterruptShitet
+        internal static WoWSpell CastOrChanneledSpell(this WoWUnit u)
+        {
+            if (u == null) return WoWSpell.FromId(0);
+            return u.CastingSpell ?? (u.ChanneledSpell);
+        }
+
+        internal static int CurrentCastorChannelId(this WoWUnit u)
+        {
+            if (u == null) return 0;
+
+            return u.IsCasting ? u.CastingSpellId : (u.IsChanneling ? u.ChanneledCastingSpellId : 0);
+        }
+        #endregion
+
         #region Cooldown Tracker
         // Actual tracker for the cooldowns.
         public static class CooldownTracker
