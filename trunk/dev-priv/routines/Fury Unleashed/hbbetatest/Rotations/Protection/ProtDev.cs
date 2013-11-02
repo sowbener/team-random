@@ -27,7 +27,17 @@ namespace FuryUnleashed.Rotations.Protection
                     new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                )),
+                                Dev_ProtDefensive(),
+                                Dev_ProtOffensive(),
+                                Dev_ProtRacials(),
+                                Dev_ProtNonGcdUtility(),
+                                Dev_ProtRageDump(),
+                                new Decorator(ret => !Spell.IsGlobalCooldown(),
+                                    new PrioritySelector(
+                                        Dev_ProtGcdUtility(),
+                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, Dev_ProtMt()),
+                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, Dev_ProtSt())
+                                )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 )),
