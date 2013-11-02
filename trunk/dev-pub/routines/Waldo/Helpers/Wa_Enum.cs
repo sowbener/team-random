@@ -77,6 +77,7 @@ namespace Waldo.Helpers
             Wound,
             Leeching,
             Crippling,
+            Paralytic,
             Mindnumbing
 
         }

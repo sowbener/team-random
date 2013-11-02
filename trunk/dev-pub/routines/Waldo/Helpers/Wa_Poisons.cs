@@ -35,7 +35,7 @@ namespace Waldo.Helpers {
                     case WaEnum.PoisonM.Mindnumbing:
                         return 5761;
                     case WaEnum.PoisonM.Wound:
-                        return 108215;
+                        return 108215;                   
                     case WaEnum.PoisonM.Leeching:
                         return 108211;
                     default:
@@ -56,6 +56,8 @@ namespace Waldo.Helpers {
                         return 108215;
                     case WaEnum.PoisonO.Leeching:
                         return 108211;
+                    case WaEnum.PoisonO.Paralytic:
+                        return 108215;
                     case WaEnum.PoisonO.Deadly:
                         return 2823;
                     default:
@@ -101,6 +103,8 @@ namespace Waldo.Helpers {
                         return 108215;
                     case WaEnum.PoisonO.Leeching:
                         return 108211;
+                    case WaEnum.PoisonO.Paralytic:
+                        return 108215;
                     case WaEnum.PoisonO.Deadly:
                         return 2823;
                     default:
