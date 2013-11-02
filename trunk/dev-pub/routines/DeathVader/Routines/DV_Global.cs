@@ -248,6 +248,7 @@ namespace DeathVader.Routines
            61909, // Fireball (ToT)
            136189, // Sandbolt (ToT)
            144583, // Wulf Healing (SoO)
+           144018, // Corruption (SoO)
            144649, // Hurl Corruption (SoO)
            143473, // Empowered Chain Heal (SoO)
            145555, // Empowered Chain Heal (SoO)
@@ -255,6 +256,8 @@ namespace DeathVader.Routines
            143431, // Magistrike (SoO)
            145230, // Forbidden Magic (SoO)
            144922, // Harden Flesh
+           143958, // Corruption Shock
+           145631, // Corruption Chain
            144923, // Earthen Shard
            144379, // Mocking Blast (Manifestation of Pride)
            144468, // Inspiring Song (Chi Ji Timeless Isle)
@@ -270,6 +273,7 @@ namespace DeathVader.Routines
 
 
        };
+
 
         internal static readonly HashSet<int> InterruptListTBA = new HashSet<int>
         {
