@@ -162,6 +162,7 @@ namespace Waldo.Routines
            61909, // Fireball (ToT)
            136189, // Sandbolt (ToT)
            144583, // Wulf Healing (SoO)
+           144018, // Corruption (SoO)
            144649, // Hurl Corruption (SoO)
            143473, // Empowered Chain Heal (SoO)
            145555, // Empowered Chain Heal (SoO)
