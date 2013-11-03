@@ -29,31 +29,31 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Switch<WoWSpec>(ret => Me.Specialization,
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
-                            new Decorator(ret => IS.Instance.Arms.CheckAoE && IS.Instance.Arms.CheckAoEThunderclap && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => IS.Instance.Arms.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => IS.Instance.Arms.CheckRallyingCry,
-                                new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
-                            new Action(delegate { U.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
+                            new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => InternalSettings.Instance.Arms.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => InternalSettings.Instance.Arms.CheckRallyingCry,
+                                new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
+                            new Action(delegate { Unit.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
-                            new Decorator(ret => IS.Instance.Fury.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => IS.Instance.Fury.CheckRallyingCry,
-                                new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
+                            new Decorator(ret => InternalSettings.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => InternalSettings.Instance.Fury.CheckRallyingCry,
+                                new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
-                            new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => IS.Instance.Protection.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => IS.Instance.Protection.CheckRallyingCry,
-                                new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
+                            new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => InternalSettings.Instance.Protection.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => InternalSettings.Instance.Protection.CheckRallyingCry,
+                                new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
                                 ));
         }
 
@@ -62,29 +62,29 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
-                        Spell.Cast(SB.Bladestorm, ret => BladestormTalent),
-                        Spell.Cast(SB.DragonRoar, ret => DragonRoarTalent),
-                        Spell.Cast(SB.Shockwave, ret => ShockwaveTalent))),
+                        Spell.Cast(SpellBook.Bladestorm, ret => BladestormTalent),
+                        Spell.Cast(SpellBook.DragonRoar, ret => DragonRoarTalent),
+                        Spell.Cast(SpellBook.Shockwave, ret => ShockwaveTalent))),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.ShatteringThrowChoice),
-                    Spell.Cast(SB.ShatteringThrow)),
+                    Spell.Cast(SpellBook.ShatteringThrow)),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.HeroicLeapChoice),
                     new Action(ret =>
                     {
-                        SpellManager.Cast(SB.HeroicLeap);
+                        SpellManager.Cast(SpellBook.HeroicLeap);
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Heroic Leap - On Mousecursor Location");
                     })),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.DemoBannerChoice),
                     new Action(ret =>
                     {
-                        SpellManager.Cast(SB.DemoralizingBanner);
+                        SpellManager.Cast(SpellBook.DemoralizingBanner);
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Demoralizing Banner - On Mousecursor Location");
                     })),
                 new Decorator(ret => HotKeyManager.IsKeyDown(SettingsH.Instance.MockingBannerChoice),
                     new Action(ret =>
                     {
-                        SpellManager.Cast(SB.MockingBanner);
+                        SpellManager.Cast(SpellBook.MockingBanner);
                         Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         Logger.CombatLogPu("Casting: Mocking Banner - On Mousecursor Location");
                     })));
@@ -94,10 +94,10 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-                    Spell.Cast(SB.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount > 1))
+                    Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
                     ),
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-                    Spell.Cast(SB.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
+                    Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
                     ));
         }
 
@@ -144,14 +144,14 @@ namespace FuryUnleashed.Rotations
                     case "Stoneform": return IsSick;
                     case "Escape Artist": return Me.Rooted;
                     case "Every Man for Himself": return IsImpaired;
-                    case "Shadowmeld": return Targeting.GetAggroOnMeWithin(Me.Location, 15) >= 1 && Me.HealthPercent < IS.Instance.General.RacialNum && !Me.IsMoving;
-                    case "Gift of the Naaru": return Me.HealthPercent <= IS.Instance.General.RacialNum;
+                    case "Shadowmeld": return Targeting.GetAggroOnMeWithin(Me.Location, 15) >= 1 && Me.HealthPercent < InternalSettings.Instance.General.RacialNum && !Me.IsMoving;
+                    case "Gift of the Naaru": return Me.HealthPercent <= InternalSettings.Instance.General.RacialNum;
                     case "Darkflight": return Me.IsMoving;
                     case "Blood Fury": return true;
                     case "War Stomp": return Targeting.GetAggroOnMeWithin(StyxWoW.Me.Location, 8) >= 1;
                     case "Berserking": return !HasteAbilities;
                     case "Will of the Forsaken": return IsLazy;
-                    case "Arcane Torrent": return Me.ManaPercent < IS.Instance.General.RacialNum && Me.Class != WoWClass.DeathKnight;
+                    case "Arcane Torrent": return Me.ManaPercent < InternalSettings.Instance.General.RacialNum && Me.Class != WoWClass.DeathKnight;
                     case "Rocket Barrage": return true;
                     default: return false;
                 }
@@ -211,10 +211,10 @@ namespace FuryUnleashed.Rotations
         {
             get
             {
-                double wwcost = WoWSpell.FromId(SB.Whirlwind).PowerCost;
-                double slamcost = WoWSpell.FromId(SB.Slam).PowerCost;
+                double wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
+                double slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
 
-                return (U.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= U.NearbyAttackableUnitsFloat / wwcost;
+                return (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= Unit.NearbyAttackableUnitsFloat / wwcost;
             }
         }
 
@@ -222,99 +222,128 @@ namespace FuryUnleashed.Rotations
         {
             get
             {
-                double wwcost = WoWSpell.FromId(SB.Whirlwind).PowerCost;
-                double slamcost = WoWSpell.FromId(SB.Slam).PowerCost;
+                double wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
+                double slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
 
-                return U.NearbyAttackableUnitsFloat / wwcost >= (U.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
+                return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
             }
         }
+        // Major CD Variables
+        internal static bool ColossusSmashTracker
+        {
+            get
+            {
+                return ColossusSmashAura && Spell.AuraTimeLeft(StyxWoW.Me.CurrentTarget, AuraBook.ColossusSmash) > 4500 || !ColossusSmashOnCooldown;
+            }
+        }
+
+        internal static bool FadingOffensiveCooldowns
+        {
+            get
+            {
+                return (RecklessnessOnCooldown && RecklessnessSpellCooldown < 20) ||
+                       (SkullBannerOnCooldown && SkullBannerSpellCooldown < 20) ||
+                       (AvatarOnCooldown && AvatarSpellCooldown < 20);
+            }
+        }
+
+        internal static bool RunningOffensiveCoolDowns
+        {
+            get
+            {
+                return (AvatarAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Avatar) > 5000) ||
+                       (RecklessnessAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Recklessness) > 5000) ||
+                       (SkullBannerAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.SkullBannerNormal) > 5000);
+            }
+        }
+
         #endregion
 
         #region HasAura
         // StyxWoW.Me - (WoWUnit unit, int auraId, int stacks, int msuLeft = 0, bool isFromMe = true, bool cached = true)
         internal static bool AncientHysteriaAura
         {
-            get { return Spell.HasAura(Me, AB.AncientHysteria, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.AncientHysteria, 0, 0, false); }
         }
 
         internal static bool AvatarAura
         {
-            get { return Spell.HasAura(Me, AB.Avatar); }
+            get { return Spell.HasAura(Me, AuraBook.Avatar); }
         }
 
         internal static bool BattleShoutAura
         {
-            get { return Spell.HasAura(Me, AB.BattleShout, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.BattleShout, 0, 0, false); }
         }
 
         internal static bool BattleStanceAura
         {
-            get { return Spell.HasAura(Me, AB.BattleStance); }
+            get { return Spell.HasAura(Me, AuraBook.BattleStance); }
         }
 
         internal static bool BerserkerStanceAura
         {
-            get { return Spell.HasAura(Me, AB.BerserkerStance); }
+            get { return Spell.HasAura(Me, AuraBook.BerserkerStance); }
         }
 
         internal static bool BloodbathAura
         {
-            get { return Spell.HasAura(Me, AB.Bloodbath); }
+            get { return Spell.HasAura(Me, AuraBook.Bloodbath); }
         }
 
         internal static bool BloodLustAura
         {
-            get { return Spell.HasAura(Me, AB.Bloodlust, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.Bloodlust, 0, 0, false); }
         }
 
         internal static bool BloodsurgeAura
         {
-            get { return Spell.HasAura(Me, AB.Bloodsurge); }
+            get { return Spell.HasAura(Me, AuraBook.Bloodsurge); }
         }
 
         internal static bool CommandingShoutAura
         {
-            get { return Spell.HasAura(Me, AB.CommandingShout, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.CommandingShout, 0, 0, false); }
         }
 
         internal static bool DeathSentenceAuraT16
         {
-            get { return Spell.HasAura(Me, AB.DeathSentence); }
+            get { return Spell.HasAura(Me, AuraBook.DeathSentence); }
         }
 
         internal static bool DeterminationAura
         {
-            get { return Spell.HasAura(Me, AB.Determination); }
+            get { return Spell.HasAura(Me, AuraBook.Determination); }
         }
 
         internal static bool EnrageAura
         {
-            get { return Spell.HasAura(Me, AB.EnrageUnknown) || Spell.HasAura(Me, AB.EnrageNormal); }
+            get { return Spell.HasAura(Me, AuraBook.EnrageUnknown) || Spell.HasAura(Me, AuraBook.EnrageNormal); }
         }
 
         internal static bool HeroismAura
         {
-            get { return Spell.HasAura(Me, AB.Heroism, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.Heroism, 0, 0, false); }
         }
 
         internal static bool LastStandAura
         {
-            get { return Spell.HasAura(Me, AB.LastStand); }
+            get { return Spell.HasAura(Me, AuraBook.LastStand); }
         }
 
         internal static bool MeatCleaverAura
         {
-            get { return Spell.HasAura(Me, AB.MeatCleaver); }
+            get { return Spell.HasAura(Me, AuraBook.MeatCleaver); }
         }
 
         internal static bool OutrageAura
         {
-            get { return Spell.HasAura(Me, AB.Outrage); }
+            get { return Spell.HasAura(Me, AuraBook.Outrage); }
         }
 
         internal static bool RagingBlowAura
         {
-            get { return Spell.HasAura(Me, AB.RagingBlow); }
+            get { return Spell.HasAura(Me, AuraBook.RagingBlow); }
         }
 
         internal static bool RagingWindAura
@@ -324,52 +353,52 @@ namespace FuryUnleashed.Rotations
 
         internal static bool RallyingCryAura
         {
-            get { return Spell.HasAura(Me, AB.RallyingCry, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.RallyingCry, 0, 0, false); }
         }
 
         internal static bool ReadinessAura
         {
-            get { return Spell.HasAura(Me, AB.ReadinessNormal) || Spell.HasAura(Me, "Readiness"); }
+            get { return Spell.HasAura(Me, AuraBook.ReadinessNormal) || Spell.HasAura(Me, "Readiness"); }
         }
 
         internal static bool RecklessnessAura
         {
-            get { return Spell.HasAura(Me, AB.Recklessness); }
+            get { return Spell.HasAura(Me, AuraBook.Recklessness); }
         }
 
         internal static bool ShieldBarrierAura
         {
-            get { return Spell.HasAura(Me, AB.ShieldBarrier); }
+            get { return Spell.HasAura(Me, AuraBook.ShieldBarrier); }
         }
 
         internal static bool ShieldBlockAura
         {
-            get { return Spell.HasAura(Me, AB.ShieldBlock); }
+            get { return Spell.HasAura(Me, AuraBook.ShieldBlock); }
         }
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AB.SkullBannerNormal, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal, 0, 0, false); }
         }
 
         internal static bool SkullBannerAuraT15
         {
-            get { return Spell.HasAura(Me, AB.SkullBannerT15); }
+            get { return Spell.HasAura(Me, AuraBook.SkullBannerT15); }
         }
 
         internal static bool SweepingStrikesAura
         {
-            get { return Spell.HasAura(Me, AB.SweepingStrikes); }
+            get { return Spell.HasAura(Me, AuraBook.SweepingStrikes); }
         }
 
         internal static bool SuddenExecAura
         {
-            get { return Spell.HasAura(Me, AB.SuddenExecute); }
+            get { return Spell.HasAura(Me, AuraBook.SuddenExecute); }
         }
 
         internal static bool TasteforBloodAura
         {
-            get { return Spell.HasAura(Me, AB.TasteforBlood); }
+            get { return Spell.HasAura(Me, AuraBook.TasteforBlood); }
         }
 
         internal static bool Tier15TwoPieceBonus
@@ -404,48 +433,48 @@ namespace FuryUnleashed.Rotations
 
         internal static bool TimeWarpAura
         {
-            get { return Spell.HasAura(Me, AB.Timewarp, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.Timewarp, 0, 0, false); }
         }
 
         internal static bool UltimatumAura
         {
-            get { return Spell.HasAura(Me, AB.Ultimatum); }
+            get { return Spell.HasAura(Me, AuraBook.Ultimatum); }
         }
 
         internal static bool VictoriousAura
         {
-            get { return Spell.HasAura(Me, AB.Victorious) || Spell.HasAura(Me, AB.VictoriousT15); }
+            get { return Spell.HasAura(Me, AuraBook.Victorious) || Spell.HasAura(Me, AuraBook.VictoriousT15); }
         }
 
         internal static bool VictoriousAuraT15
         {
-            get { return Spell.HasAura(Me, AB.VictoriousT15); }
+            get { return Spell.HasAura(Me, AuraBook.VictoriousT15); }
         }
 
         // StyxWoW.Me.CurrentTarget
         internal static bool ColossusSmashAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.ColossusSmash); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.ColossusSmash); }
         }
 
         internal static bool DeepWoundsAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.DeepWounds); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.DeepWounds); }
         }
 
         internal static bool HamstringAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.Hamstring, 0, 0, false); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.Hamstring, 0, 0, false); }
         }
 
         internal static bool SunderArmorAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 0, 0, false); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.SunderArmor, 0, 0, false); }
         }
 
         internal static bool WeakenedBlowsAura
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.WeakenedBlows, 0, 0, false); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedBlows, 0, 0, false); }
         }
         #endregion
 
@@ -453,49 +482,49 @@ namespace FuryUnleashed.Rotations
         // StyxWoW.Me.CurrentTarget - Remaining
         internal static bool RemainingCs(int remainingtime)
         {
-            return Spell.RemainingAura(Me.CurrentTarget, AB.ColossusSmash, remainingtime);
+            return Spell.RemainingAura(Me.CurrentTarget, AuraBook.ColossusSmash, remainingtime);
         }
 
         // StyxWoW.Me.CurrentTarget - Fading
         internal static bool FadingCs(int fadingtime)
         {
-            return Spell.FadingAura(Me.CurrentTarget, AB.ColossusSmash, fadingtime);
+            return Spell.FadingAura(Me.CurrentTarget, AuraBook.ColossusSmash, fadingtime);
         }
 
         internal static bool FadingDw(int fadingtime)
         {
-            return Spell.FadingAura(Me.CurrentTarget, AB.DeepWounds, fadingtime);
+            return Spell.FadingAura(Me.CurrentTarget, AuraBook.DeepWounds, fadingtime);
         }
 
         internal static bool FadingSunder(int fadingtime)
         {
-            return Spell.FadingAura(Me.CurrentTarget, AB.SunderArmor, fadingtime);
+            return Spell.FadingAura(Me.CurrentTarget, AuraBook.SunderArmor, fadingtime);
         }
 
         internal static bool FadingWb(int fadingtime)
         {
-            return Spell.FadingAura(Me.CurrentTarget, AB.WeakenedBlows, fadingtime);
+            return Spell.FadingAura(Me.CurrentTarget, AuraBook.WeakenedBlows, fadingtime);
         }
 
         // StyxWoW.Me - Fading
         internal static bool FadingDeathSentence(int fadingtime)
         {
-            return Spell.FadingAura(Me, AB.DeathSentence, fadingtime);
+            return Spell.FadingAura(Me, AuraBook.DeathSentence, fadingtime);
         }
 
         internal static bool FadingEnrage(int fadingtime)
         {
-            return Spell.FadingAura(Me, AB.EnrageUnknown, fadingtime) || Spell.FadingAura(Me, AB.EnrageNormal, fadingtime);
+            return Spell.FadingAura(Me, AuraBook.EnrageUnknown, fadingtime) || Spell.FadingAura(Me, AuraBook.EnrageNormal, fadingtime);
         }
 
         internal static bool FadingRb(int fadingtime)
         {
-            return Spell.FadingAura(Me, AB.RagingBlow, fadingtime);
+            return Spell.FadingAura(Me, AuraBook.RagingBlow, fadingtime);
         }
 
         internal static bool FadingVc(int fadingtime)
         {
-            return Spell.FadingAura(Me, AB.Victorious, fadingtime) || Spell.FadingAura(Me, AB.VictoriousT15, fadingtime);
+            return Spell.FadingAura(Me, AuraBook.Victorious, fadingtime) || Spell.FadingAura(Me, AuraBook.VictoriousT15, fadingtime);
         }
         #endregion
 
@@ -503,58 +532,58 @@ namespace FuryUnleashed.Rotations
         // StyxWoW.Me.CurrentTarget
         internal static bool WeakenedArmor1S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 1); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.SunderArmor, 1); }
         }
 
         internal static bool WeakenedArmor2S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 2); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.SunderArmor, 2); }
         }
 
         internal static bool WeakenedArmor3S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AB.SunderArmor, 3); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.SunderArmor, 3); }
         }
 
         // StyxWoW.Me
         internal static bool MeatCleaverAuraS1
         {
-            get { return Spell.HasAura(Me, AB.MeatCleaver, 1); }
+            get { return Spell.HasAura(Me, AuraBook.MeatCleaver, 1); }
         }
 
         internal static bool MeatCleaverAuraS2
         {
-            get { return Spell.HasAura(Me, AB.MeatCleaver, 2); }
+            get { return Spell.HasAura(Me, AuraBook.MeatCleaver, 2); }
         }
 
         internal static bool MeatCleaverAuraS3
         {
-            get { return Spell.HasAura(Me, AB.MeatCleaver, 3); }
+            get { return Spell.HasAura(Me, AuraBook.MeatCleaver, 3); }
         }
 
         internal static bool RagingBlow1S
         {
-            get { return Spell.HasAura(Me, AB.RagingBlow, 1); }
+            get { return Spell.HasAura(Me, AuraBook.RagingBlow, 1); }
         }
 
         internal static bool RagingBlow2S
         {
-            get { return Spell.HasAura(Me, AB.RagingBlow, 2); }
+            get { return Spell.HasAura(Me, AuraBook.RagingBlow, 2); }
         }
 
         internal static bool TasteForBloodS3
         {
-            get { return Spell.HasAura(Me, AB.TasteForBlood, 3); }
+            get { return Spell.HasAura(Me, AuraBook.TasteForBlood, 3); }
         }
 
         internal static bool TasteForBloodS4
         {
-            get { return Spell.HasAura(Me, AB.TasteForBlood, 4); }
+            get { return Spell.HasAura(Me, AuraBook.TasteForBlood, 4); }
         }
 
         internal static bool TasteForBloodS5
         {
-            get { return Spell.HasAura(Me, AB.TasteForBlood, 5); }
+            get { return Spell.HasAura(Me, AuraBook.TasteForBlood, 5); }
         }
         #endregion
 
@@ -732,143 +761,157 @@ namespace FuryUnleashed.Rotations
         // Cooldowntracker - Timeleft in TotalMilliseconds
         internal static double AvatarSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.Avatar).TotalMilliseconds; } // Avatar
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.Avatar).TotalMilliseconds; } // Avatar
         }
 
         internal static double BloodbathSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.Bloodbath).TotalMilliseconds; } // Bloodbath
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.Bloodbath).TotalMilliseconds; } // Bloodbath
         }
 
         internal static double BerserkerRageSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.BerserkerRage).TotalMilliseconds; }
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.BerserkerRage).TotalMilliseconds; }
         }
 
         internal static double BloodthirstSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.Bloodthirst).TotalMilliseconds; } // Bloodthirst
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.Bloodthirst).TotalMilliseconds; } // Bloodthirst
         }
 
         internal static double ColossusSmashSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.ColossusSmash).TotalMilliseconds; } // Colossus Smash
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.ColossusSmash).TotalMilliseconds; } // Colossus Smash
         }
 
         internal static double PummelSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.Pummel).TotalMilliseconds; } // Pummel
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.Pummel).TotalMilliseconds; } // Pummel
         }
 
         internal static double ShieldSlamSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.ShieldSlam).TotalMilliseconds; } // Shield Slam
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.ShieldSlam).TotalMilliseconds; } // Shield Slam
         }
 
         internal static double SkullBannerSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.SkullBanner).TotalMilliseconds; } // Skull Banner
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.SkullBanner).TotalMilliseconds; } // Skull Banner
         }
 
         internal static double SpellReflectionSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.SpellReflection).TotalMilliseconds; } // Spell Reflection
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.SpellReflection).TotalMilliseconds; } // Spell Reflection
         }
 
         internal static double RecklessnessSpellCooldown
         {
-            get { return CooldownTracker.GetSpellCooldown(SB.Recklessness).TotalMilliseconds; } // Recklessness
+            get { return CooldownTracker.GetSpellCooldown(SpellBook.Recklessness).TotalMilliseconds; } // Recklessness
         }
- 
+
         // Spells on Cooldown
+        internal static bool AvatarOnCooldown
+        {
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Avatar); } // Berserker Rage
+        }
         internal static bool BereserkerRageOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.BerserkerRage); } // Berserker Rage
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.BerserkerRage); } // Berserker Rage
         }
 
         internal static bool BladeStormOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.Bladestorm); } // Bladestorm
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Bladestorm); } // Bladestorm
         }
 
         internal static bool BloodThirstOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.Bloodthirst); } // Bloodthirst
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Bloodthirst); } // Bloodthirst
         }
 
         internal static bool ColossusSmashOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.ColossusSmash); } // Colossus Smash
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.ColossusSmash); } // Colossus Smash
         }
 
         internal static bool DemoralizingBannerOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.DemoralizingBanner); } // Demoralizing Banner
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.DemoralizingBanner); } // Demoralizing Banner
         } 
 
         internal static bool DragonRoarOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.DragonRoar); } // Dragon Roar
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.DragonRoar); } // Dragon Roar
         }
 
         internal static bool DisruptingShoutOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.DisruptingShout); } // Disrupting Shout
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.DisruptingShout); } // Disrupting Shout
         }
 
         internal static bool HeroicLeapOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.HeroicLeap); } // Heroic Leap
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.HeroicLeap); } // Heroic Leap
         }
 
         internal static bool ImpendingVictoryOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.ImpendingVictory); } // Impending Victory
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.ImpendingVictory); } // Impending Victory
         }
 
         internal static bool MortalStrikeOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.MortalStrike); } // Mortal Strike
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.MortalStrike); } // Mortal Strike
         }
 
         internal static bool PummelOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.Pummel); } // Pummel
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Pummel); } // Pummel
         }
 
         internal static bool RagingBlowOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.RagingBlow); } // Raging Blow
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.RagingBlow); } // Raging Blow
+        }
+
+        internal static bool RecklessnessOnCooldown
+        {
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Recklessness); } // Revenge
         }
 
         internal static bool RevengeOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.Revenge); } // Revenge
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Revenge); } // Revenge
         }
+
+        internal static bool SkullBannerOnCooldown
+        {
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.SkullBanner); } // Demoralizing Banner
+        } 
 
         internal static bool StormBoltOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.StormBolt); } // Storm Bolt
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.StormBolt); } // Storm Bolt
         }
 
         internal static bool SlamOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.Slam); } // Slam
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Slam); } // Slam
         }
 
         internal static bool ShieldSlamOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.ShieldSlam); }// Shield Slam
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.ShieldSlam); }// Shield Slam
         }
 
         internal static bool ShockwaveOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.Shockwave); } // Shockwave
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.Shockwave); } // Shockwave
         }
 
         internal static bool VictoryRushOnCooldown
         {
-            get { return CooldownTracker.SpellOnCooldown(SB.VictoryRush); } // Victory Rush
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.VictoryRush); } // Victory Rush
         }
         #endregion
     }

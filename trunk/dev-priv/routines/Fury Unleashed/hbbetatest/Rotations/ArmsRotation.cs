@@ -290,6 +290,7 @@ namespace FuryUnleashed.Rotations
         // http://www.mmo-champion.com/threads/1340569-5-4-Guide-Arms-PVE
         // http://us.battle.net/wow/en/forum/topic/8087999196?page=1 (Not much, mostly the other link)
         // http://www.icy-veins.com/arms-warrior-wow-pve-dps-rotation-cooldowns-abilities (Not much, mostly the other link)
+        // http://www.noxxic.com/wow/pve/warrior/fury/dps-rotation-and-cooldowns
 
         // TODO: Thunderclap is fine on MT, would be nice to check Deepwounds Strength on the other Units (to apply stronger DW to the other units on STR procs or something like this).
         internal static Composite Rel_ArmsSt()

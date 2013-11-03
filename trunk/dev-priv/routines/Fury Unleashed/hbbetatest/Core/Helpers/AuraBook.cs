@@ -7,6 +7,7 @@
                             BattleShout = 6673,
                             BattleStance = 2457,
                             BerserkerStance = 2458,
+                            BerserkerRage = 18499,
                             Bloodbath = 12292,
                             Bloodlust = 2825,
                             Bloodsurge = 46916,

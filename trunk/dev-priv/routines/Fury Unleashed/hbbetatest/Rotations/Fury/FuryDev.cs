@@ -213,26 +213,31 @@ namespace FuryUnleashed.Rotations.Fury
 
         internal static Composite Dev_FuryOffensive()
         {
+            //Spells
             return new PrioritySelector(
                 Spell.Cast(SpellBook.BerserkerRage,
                     ret =>
-                        BerserkerRageUsage && (Global.ColossusSmashAura &&
-                        (!Global.RagingBlow2S || (!Global.FadingCs(2500) && Global.RagingBlow1S) ||
-                         (!Global.RagingBlow2S && !Global.RagingBlow1S)) || !Global.ColossusSmashOnCooldown && !Global.RagingBlow2S && !Global.RagingBlow1S), true),
-                Spell.Cast(SpellBook.Bloodbath,
-                    ret =>
-                        Global.BloodbathTalent && Tier6AbilityUsage && !Global.ColossusSmashOnCooldown &&
-                        (Global.RagingBlow1S || Global.RagingBlow2S), true),
+                        BerserkerRageUsage &&
+                        (Global.ColossusSmashAura &&
+                         (!Global.RagingBlow2S || (!Global.FadingCs(2500) && Global.RagingBlow1S) ||
+                         (!Global.RagingBlow2S && !Global.RagingBlow1S)) ||
+                         !Global.ColossusSmashOnCooldown && !Global.RagingBlow2S &&
+                         !Global.RagingBlow1S), true),
                 Spell.Cast(SpellBook.Recklessness,
-                    ret => RecklessnessUsage && !Global.ColossusSmashOnCooldown && (Global.RagingBlow1S || Global.RagingBlow2S), true),
-                Spell.Cast(SpellBook.Avatar,
                     ret =>
-                        Global.AvatarTalent && RecklessnessSync && Tier6AbilityUsage && !Global.ColossusSmashOnCooldown &&
-                        (Global.RagingBlow1S || Global.RagingBlow2S), true),
+                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns || Global.RunningOffensiveCoolDowns), true),
                 Spell.Cast(SpellBook.SkullBanner,
                     ret =>
-                        !Global.SkullBannerAura && RecklessnessSync && SkullBannerUsage && !Global.ColossusSmashOnCooldown &&
-                        (Global.RagingBlow1S || Global.RagingBlow2S), true)
+                        !Global.SkullBannerAura && SkullBannerUsage && Global.ColossusSmashTracker &&
+                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true),
+                //Talents
+                Spell.Cast(SpellBook.Bloodbath,
+                    ret =>
+                        Global.BloodbathTalent && Tier6AbilityUsage && (Global.ColossusSmashTracker || RecklessnessSync)),
+                Spell.Cast(SpellBook.Avatar,
+                    ret =>
+                        Global.AvatarTalent && Tier6AbilityUsage && Global.ColossusSmashTracker &&
+                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true)
                 );
         }
 
@@ -338,9 +343,7 @@ namespace FuryUnleashed.Rotations.Fury
                     Global.BloodthirstSpellCooldown < 1500)
                     return true;
             }
-            if (Global.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 30)
-                return true;
-            return !Global.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 20;
+            return Me.CurrentRage >= Me.MaxRage - 20;
         }
 
         internal static bool UseHeroicStrike(bool hasSmashAura)
@@ -354,17 +357,7 @@ namespace FuryUnleashed.Rotations.Fury
                 if (Global.FadingCs(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
                     return true;
             }
-            else
-            {
-                if (Global.ColossusSmashSpellCooldown >= 4500 && StyxWoW.Me.CurrentRage > 90)
-                    return true;
-                if (Global.ColossusSmashSpellCooldown >= 6500 && Global.BloodthirstSpellCooldown < 1500 && !Global.RagingBlow1S && !Global.RagingBlow2S &&
-                    Me.CurrentRage >= 70)
-                    return true;
-            }
-            if (Global.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 20)
-                return true;
-            return !Global.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 10;
+            return Me.CurrentRage >= Me.MaxRage - 10;
         }
 
         internal static bool BerserkerRageUsage
@@ -460,7 +453,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return ((Global.RecklessnessAura) || (Global.DeterminationAura || Global.OutrageAura));
+                return (Global.RecklessnessAura);
             }
         }
 
@@ -468,7 +461,15 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return (Global.BloodbathAura || !Global.BloodbathTalent || (Global.DeterminationAura || Global.OutrageAura));
+                return (Global.BloodbathAura);
+            }
+        }
+
+        internal static bool TrinketProc
+        {
+            get
+            {
+                return Global.DeterminationAura || Global.OutrageAura;
             }
         }
 

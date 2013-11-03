@@ -1,6 +1,7 @@
 ﻿using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
+using FuryUnleashed.Rotations.Fury;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
@@ -83,7 +84,8 @@ namespace FuryUnleashed.Core
                 Logger.CombatLogFb("Using: Slot 2 trinket is used.");
             }
 
-            if (CanUseHands(InternalSettings.Instance.Arms.UseHands, hands))
+            if (CanUseHands(InternalSettings.Instance.Arms.UseHands, hands) && Global.ColossusSmashTracker &&
+                        !Global.FadingOffensiveCooldowns)
             {
                 hands.Use();
                 Logger.CombatLogFb("Using: Engineering hands are used.");
