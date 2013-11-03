@@ -1,8 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using FuryUnleashed.Core.Utilities;
+﻿using FuryUnleashed.Core.Utilities;
 using Styx;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace FuryUnleashed.Core.Helpers
@@ -134,6 +134,24 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region Calculates
+        public static string PrintBarrierSize
+        {
+            get
+            {
+                var shieldbarriersize = CalculateEstimatedAbsorbValue();
+                return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        public static string PrintBlockSize
+        {
+            get
+            {
+                var shieldblocksize = CalculateEstimatedBlockValue();
+                return shieldblocksize.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
         public static double CalculateEstimatedAbsorbValue()
         {
             using (new PerformanceLogger("CalculateEstimatedAbsorbValue"))
@@ -157,7 +175,6 @@ namespace FuryUnleashed.Core.Helpers
 
                     var barrierresult = sumstam * ragemultiplier;
 
-                    Logger.DiagLogWh("FU: Shield Barrier Size is {0} with SpellID {1}", barrierresult, ShieldBarrierSpellId);
                     return barrierresult;
                 }
                 catch (Exception exabsorbcalc)
@@ -179,8 +196,6 @@ namespace FuryUnleashed.Core.Helpers
                     var criticalBlockChance = (mastery * 2.2) / 100;
                     var blockresult = damageoversixseconds * criticalBlockChance * 0.6 + damageoversixseconds * (1 - criticalBlockChance) * 0.3;
 
-                    Logger.DiagLogWh("FU: Damage taken over 6 seconds is: {0}", damageoversixseconds);
-                    Logger.DiagLogWh("FU: Shield Block Size is {0} with SpellID {1}", blockresult, ShieldBlockSpellId);
                     return blockresult;
                 }
                 catch (Exception exblockcalc)

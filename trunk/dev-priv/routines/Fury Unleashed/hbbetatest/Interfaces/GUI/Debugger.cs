@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
 using Styx;
-using Styx.Helpers;
 
 namespace FuryUnleashed.Interfaces.GUI
 {
@@ -56,7 +55,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                shieldbarrierdatagrid.DataSource = Core.Helpers.ProtTracker.CalculateEstimatedAbsorbValue();
+                shieldbarrierdatagrid.DataSource = Core.Helpers.ProtTracker.PrintBarrierSize;
             }
         }
 
@@ -64,7 +63,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                shieldblockdatagrid.DataSource = Core.Helpers.ProtTracker.CalculateEstimatedBlockValue();
+                shieldblockdatagrid.DataSource = Core.Helpers.ProtTracker.PrintBlockSize;
             }
         }
         #endregion

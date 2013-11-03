@@ -115,10 +115,7 @@ namespace FuryUnleashed
             catch (Exception e) { StopBot(e.ToString()); }
 
             /* Initialize ProtTracker */
-            if (Me.Specialization == WoWSpec.WarriorProtection)
-            {
-                Core.Helpers.ProtTracker.Initialize();
-            }
+            ProtTracker();
 
             /* Gather required information */
             Logger.StatCounter();
@@ -153,6 +150,14 @@ namespace FuryUnleashed
             Logger.CombatLogWh(reason);
             CombatLogHandler.Shutdown();
             TreeRoot.Stop();
+        }
+
+        internal static void ProtTracker()
+        {
+            if (Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                Core.Helpers.ProtTracker.Initialize();
+            }
         }
         #endregion
 
