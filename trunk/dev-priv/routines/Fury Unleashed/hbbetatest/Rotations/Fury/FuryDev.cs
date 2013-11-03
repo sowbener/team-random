@@ -222,11 +222,11 @@ namespace FuryUnleashed.Rotations.Fury
                 
                 Spell.Cast(SpellBook.Recklessness,
                     ret =>
-                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || Global.RunningOffensiveCoolDowns), true),
+                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns || Global.RunningOffensiveCoolDowns), true),
                 Spell.Cast(SpellBook.SkullBanner,
                     ret =>
                         !Global.SkullBannerAura && SkullBannerUsage && Global.ColossusSmashTracker &&
-                        (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true),
+                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true),
                 //Talents
                 Spell.Cast(SpellBook.Bloodbath,
                     ret =>
@@ -234,7 +234,7 @@ namespace FuryUnleashed.Rotations.Fury
                 Spell.Cast(SpellBook.Avatar,
                     ret =>
                         Global.AvatarTalent && Tier6AbilityUsage && Global.ColossusSmashTracker &&
-                        (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true)
+                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true)
                         /*
                 Spell.Cast(SB.Bloodbath, ret => G.BloodbathTalent && Tier6AbilityUsage),
                 Spell.Cast(SB.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
