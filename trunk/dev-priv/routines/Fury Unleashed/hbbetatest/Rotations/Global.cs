@@ -241,9 +241,9 @@ namespace FuryUnleashed.Rotations
         {
             get
             {
-                return (RecklessnessOnCooldown && RecklessnessSpellCooldown < 20) ||
-                       (SkullBannerOnCooldown && SkullBannerSpellCooldown < 20) ||
-                       (AvatarOnCooldown && AvatarSpellCooldown < 20);
+                return (RecklessnessOnCooldown && RecklessnessSpellCooldown < 60) ||
+                       (SkullBannerOnCooldown && SkullBannerSpellCooldown < 60) ||
+                       (AvatarOnCooldown && AvatarSpellCooldown < 60);
             }
         }
 
