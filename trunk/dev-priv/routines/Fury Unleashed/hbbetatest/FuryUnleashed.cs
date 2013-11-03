@@ -72,6 +72,11 @@ namespace FuryUnleashed
                 return;
             }
 
+            if (Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                Core.Helpers.ProtTracker.Pulse();
+            }
+
             if (TalentManager.Pulse())
 			{
                 // ReSharper disable once RedundantJumpStatement
@@ -109,13 +114,18 @@ namespace FuryUnleashed
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
 
+            /* Initialize ProtTracker */
+            if (Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                Core.Helpers.ProtTracker.Initialize();
+            }
+
             /* Gather required information */
             Logger.StatCounter();
             Logger.LogTimer(500);
 
             /* Start Combat */
             Spell.InitGcdSpell();
-            ProtTracker();
             PreBuffSelector();
             CombatSelector();
 
@@ -143,14 +153,6 @@ namespace FuryUnleashed
             Logger.CombatLogWh(reason);
             CombatLogHandler.Shutdown();
             TreeRoot.Stop();
-        }
-
-        internal static void ProtTracker()
-        {
-            if (Me.Specialization == WoWSpec.WarriorProtection)
-            {
-                Core.Helpers.ProtTracker.Initialize();
-            }
         }
         #endregion
 

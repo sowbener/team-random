@@ -6,6 +6,7 @@ using System.Text;
 using FuryUnleashed.Core.Utilities;
 using JetBrains.Annotations;
 using Styx;
+using Styx.Common;
 using Styx.WoWInternals;
 
 namespace FuryUnleashed.Core.Helpers
@@ -13,10 +14,13 @@ namespace FuryUnleashed.Core.Helpers
     [UsedImplicitly]
     internal class CombatLogHandler
     {
+        /*
+         thanks to wulf for fixing the broken stuff
+         */
         internal static void Initialize()
         {
             Lua.Events.AttachEvent("COMBAT_LOG_EVENT_UNFILTERED", HandleCombatLogEvent);
-            Logger.DiagLogWh("FU: CombatLogHandler attached");
+            Logger.DiagLogFb("CombatLogHandler attached");
         }
 
         public delegate void CombatLogEventHandler(CombatLogEventArgs args);
@@ -204,7 +208,7 @@ namespace FuryUnleashed.Core.Helpers
 
                                 // Something we don't know about! Duh oh!
                                 default:
-                                    Logger.DiagLogWh("FU: Unknown combat log event: " + a.Event);
+                                    Logging.WriteDiagnostic("Unknown combat log event: " + a.Event);
                                     break;
                             }
                             break;
@@ -234,15 +238,15 @@ namespace FuryUnleashed.Core.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Logger.DiagLogWh("{0}", ex);
+                            Logger.DiagLogFb("{0}", ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.DiagLogWh(args.Args[1] + ", Index: " + index);
-                Logger.DiagLogWh("{0}", ex);
+                Logger.DiagLogFb(args.Args[1] + ", Index: " + index);
+                Logger.DiagLogFb("{0}", ex);
             }
         }
 

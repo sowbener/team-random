@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core.Utilities;
+﻿using System.Runtime.InteropServices;
+using FuryUnleashed.Core.Utilities;
 using Styx;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,6 @@ namespace FuryUnleashed.Core.Helpers
         {
             _damageTaken = new Dictionary<DateTime, double>();
             AttachCombatLogEvent();
-        }
-
-        public static void Stop()
-        {
-            CombatLogHandler.Shutdown();
         }
 
         public static void Pulse()
@@ -55,7 +51,11 @@ namespace FuryUnleashed.Core.Helpers
                     if (args.DestGuid == StyxWoW.Me.Guid)
                     {
                         object damage = args.Amount;
+                        //string school = args.SpellSchool.ToString();
+                        //string spellname = args.SpellName;
 
+                        // Do not count damage from no source or maybe this is just particular items like Shannox's Jagged Tear?
+                        // Do not count Spirit Link damage since it doesn't affect DS.
                         bool countDamage = args.SourceName != null ||
                                            (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
@@ -72,8 +72,8 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (RemovingDamageTaken) 
-                    return;
+                if (RemovingDamageTaken) return;
+
                 AddingDamageTaken = true;
                 _damageTaken[timestamp] = damage;
                 AddingDamageTaken = false;
@@ -82,25 +82,28 @@ namespace FuryUnleashed.Core.Helpers
             {
                 _damageTaken[timestamp] = _damageTaken.ContainsKey(timestamp) ? damage : 0;
                 AddingDamageTaken = false;
-                Logger.DiagLogWh("FU: AddDamageTaken - {0}", ex);
+
+                Logger.DiagLogWh("AddDamageTaken : {0}", ex);
             }
         }
 
         private static void RemoveDamageTaken(DateTime timestamp)
         {
             TimeSpan lastSeconds = TimeSpan.FromSeconds(6);
+
             try
             {
-                if (AddingDamageTaken)
-                    return;
+                if (AddingDamageTaken) return;
+
                 RemovingDamageTaken = true;
                 Dictionary<DateTime, double> removeList = new Dictionary<DateTime, double>();
 
-                // Remove any data older than lastSeconds
+                // Remove any data older than lastSeconds + 3
                 foreach (var entry in _damageTaken.Where(entry => timestamp - entry.Key > lastSeconds + TimeSpan.FromSeconds(3)))
                 {
                     removeList.Add(entry.Key, entry.Value);
                 }
+
                 foreach (var entry in removeList)
                 {
                     _damageTaken.Remove(entry.Key);
@@ -109,7 +112,7 @@ namespace FuryUnleashed.Core.Helpers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogWh("FU: RemovingDamageTaken - {0}", ex);
+                Logger.DiagLogWh("RemovingDamageTaken : {0}", ex);
             }
         }
 
@@ -176,7 +179,7 @@ namespace FuryUnleashed.Core.Helpers
                     var criticalBlockChance = (mastery * 2.2) / 100;
                     var blockresult = damageoversixseconds * criticalBlockChance * 0.6 + damageoversixseconds * (1 - criticalBlockChance) * 0.3;
 
-                    Logger.DiagLogWh("FU: Damage taken over 6 seconds is: {0}", GetDamageTaken());
+                    Logger.DiagLogWh("FU: Damage taken over 6 seconds is: {0}", damageoversixseconds);
                     Logger.DiagLogWh("FU: Shield Block Size is {0} with SpellID {1}", blockresult, ShieldBlockSpellId);
                     return blockresult;
                 }
