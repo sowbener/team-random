@@ -94,7 +94,6 @@ namespace FuryUnleashed.Rotations.Fury
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
                                 Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 60)))
-                        //Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(Global.ColossusSmashAura))
                         )
                     ),
                 new Decorator(ret => !Global.ColossusSmashAura,
@@ -117,17 +116,14 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.RagingBlow,
                             ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3500),
-                        //Spell.Cast(SpellBook.Whirlwind, ret => Global.RagingWindAura),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60 && Global.FadingCs(1500))),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
                                 Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 60 && Global.FadingCs(1500)))),
                         Spell.Cast(SpellBook.WildStrike, ret => FuryGlobal.UseWildStrike(!Global.ColossusSmashAura)),
-                        // Also in Dev_FuryHeroicStrike().
                         Spell.Cast(SpellBook.ImpendingVictory,
                             ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && InternalSettings.Instance.Fury.CheckRotImpVic),
-                        // Added for the sake of supporting it rotational.
                         Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Fury.CheckHeroicThrow)
                         )
                     )
@@ -202,12 +198,6 @@ namespace FuryUnleashed.Rotations.Fury
                     ret => Global.BloodbathTalent && FuryGlobal.Tier6AbilityUsage && (Global.ColossusSmashTracker || RecklessnessSync)),
                 Spell.Cast(SpellBook.Avatar,
                     ret => Global.AvatarTalent && FuryGlobal.Tier6AbilityUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true)
-                /*
-        Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && Tier6AbilityUsage),
-        Spell.Cast(SpellBook.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
-        Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && RecklessnessSync && Tier6AbilityUsage),
-        Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
-         * */
                 );
         }
 
