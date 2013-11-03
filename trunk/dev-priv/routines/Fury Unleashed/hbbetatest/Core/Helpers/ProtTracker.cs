@@ -19,6 +19,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             _damageTaken = new Dictionary<DateTime, double>();
             AttachCombatLogEvent();
+            Logger.CombatLogFb("FU: ProtTracker Initialized.");
         }
 
         public static void Pulse()
