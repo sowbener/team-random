@@ -106,8 +106,11 @@ namespace FuryUnleashed.Rotations.Fury
                                 !(Global.RagingBlow1S &&
                                   (Global.FadingCs(4500) || Global.ColossusSmashSpellCooldown > 18000))),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && Tier4AbilityUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                            ret =>
+                                Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) &&
+                                Tier4AbilityUsage),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60)),
