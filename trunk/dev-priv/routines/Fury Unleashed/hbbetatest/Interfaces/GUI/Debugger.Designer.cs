@@ -102,9 +102,13 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.shieldblockdatagrid = new System.Windows.Forms.DataGridView();
+            this.shieldbarrierdatagrid = new System.Windows.Forms.DataGridView();
             this.updateshieldblockbutton = new System.Windows.Forms.Button();
             this.updateshieldbarrierbutton = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.SBarrierSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -115,6 +119,8 @@
             this.targetcachedaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).BeginInit();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldblockdatagrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldbarrierdatagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // Tabs
@@ -780,6 +786,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.shieldblockdatagrid);
+            this.tabPage1.Controls.Add(this.shieldbarrierdatagrid);
             this.tabPage1.Controls.Add(this.updateshieldblockbutton);
             this.tabPage1.Controls.Add(this.updateshieldbarrierbutton);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
@@ -789,6 +797,36 @@
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Other Options";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // shieldblockdatagrid
+            // 
+            this.shieldblockdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.shieldblockdatagrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.shieldblockdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shieldblockdatagrid.ColumnHeadersVisible = false;
+            this.shieldblockdatagrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1});
+            this.shieldblockdatagrid.EnableHeadersVisualStyles = false;
+            this.shieldblockdatagrid.Location = new System.Drawing.Point(184, 35);
+            this.shieldblockdatagrid.Name = "shieldblockdatagrid";
+            this.shieldblockdatagrid.RowHeadersVisible = false;
+            this.shieldblockdatagrid.Size = new System.Drawing.Size(255, 23);
+            this.shieldblockdatagrid.TabIndex = 3;
+            // 
+            // shieldbarrierdatagrid
+            // 
+            this.shieldbarrierdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.shieldbarrierdatagrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.shieldbarrierdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shieldbarrierdatagrid.ColumnHeadersVisible = false;
+            this.shieldbarrierdatagrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.SBarrierSize});
+            this.shieldbarrierdatagrid.EnableHeadersVisualStyles = false;
+            this.shieldbarrierdatagrid.Location = new System.Drawing.Point(184, 6);
+            this.shieldbarrierdatagrid.Name = "shieldbarrierdatagrid";
+            this.shieldbarrierdatagrid.RowHeadersVisible = false;
+            this.shieldbarrierdatagrid.Size = new System.Drawing.Size(255, 23);
+            this.shieldbarrierdatagrid.TabIndex = 2;
             // 
             // updateshieldblockbutton
             // 
@@ -810,6 +848,22 @@
             this.updateshieldbarrierbutton.UseVisualStyleBackColor = true;
             this.updateshieldbarrierbutton.Click += new System.EventHandler(this.updateshieldbarrierbutton_Click);
             // 
+            // SBarrierSize
+            // 
+            this.SBarrierSize.DataPropertyName = "shieldbarriersize";
+            this.SBarrierSize.HeaderText = "Shield Barrier Size";
+            this.SBarrierSize.Name = "SBarrierSize";
+            this.SBarrierSize.ReadOnly = true;
+            this.SBarrierSize.Width = 250;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "shieldblocksize";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Shield Barrier Size";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 250;
+            // 
             // DebuggerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -829,6 +883,8 @@
             this.targetcachedaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).EndInit();
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.shieldblockdatagrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldbarrierdatagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -914,7 +970,11 @@
         private System.Windows.Forms.Button mycachedaurasbutton;
         private System.Windows.Forms.Button targetcachedaurasbutton;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView shieldbarrierdatagrid;
         private System.Windows.Forms.Button updateshieldblockbutton;
         private System.Windows.Forms.Button updateshieldbarrierbutton;
+        private System.Windows.Forms.DataGridView shieldblockdatagrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SBarrierSize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
     }
 }

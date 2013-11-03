@@ -139,6 +139,7 @@ namespace FuryUnleashed.Core.Helpers
             get
             {
                 var shieldbarriersize = CalculateEstimatedAbsorbValue();
+                Logger.CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, ShieldBarrierSpellId);
                 return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -148,6 +149,7 @@ namespace FuryUnleashed.Core.Helpers
             get
             {
                 var shieldblocksize = CalculateEstimatedBlockValue();
+                Logger.CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, ShieldBlockSpellId);
                 return shieldblocksize.ToString(CultureInfo.InvariantCulture);
             }
         }
