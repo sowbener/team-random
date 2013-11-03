@@ -52,6 +52,36 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
+        #region Booleans
+        internal static bool UseWildStrike(bool hasSmashAura)
+        {
+            if (hasSmashAura)
+            {
+                if ((Global.BloodthirstSpellCooldown < 1500 || Global.FadingCs(1250)) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 70)
+                    return true;
+            }
+            else
+            {
+                if (Global.ColossusSmashSpellCooldown >= 8000 && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
+                    return true;
+            }
+            return Me.CurrentRage >= Me.MaxRage - 20;
+        }
+
+        internal static bool UseHeroicStrike(bool hasSmashAura)
+        {
+            if (hasSmashAura)
+            {
+                if ((Global.RagingBlow1S || Global.RagingBlow2S) && Me.CurrentRage >= 40)
+                    return true;
+                if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
+                    return true;
+                if (Global.FadingCs(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
+                    return true;
+            }
+            return Me.CurrentRage >= Me.MaxRage - 10;
+        }
+
         internal static bool BerserkerRageUsage
         {
             get
@@ -59,6 +89,15 @@ namespace FuryUnleashed.Rotations.Fury
                 return ((IS.Instance.Fury.BerserkerRage == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Fury.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Fury.BerserkerRage == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool HamstringUsage
+        {
+            get
+            {
+                return ((IS.Instance.Fury.HamString == Enum.Hamstring.Always) ||
+                        (IS.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget));
             }
         }
 
@@ -156,5 +195,14 @@ namespace FuryUnleashed.Rotations.Fury
                 return (G.BloodbathAura || !G.BloodbathTalent || G.ReadinessAura);
             }
         }
+
+        internal static bool TrinketProc
+        {
+            get
+            {
+                return Global.DeterminationAura || Global.OutrageAura;
+            }
+        }
+        #endregion
     }
 }
