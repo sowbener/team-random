@@ -316,13 +316,6 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckInterruptsAoE { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(500)]
-        [Category("Arms - Interrupts & Stuns")]
-        [DisplayName("Interrupt at MS left")]
-        [Description("Set the amount of cast-time left in order to interrupt - Milliseconds (1000 is 1 second).")]
-        public int NumInterruptTimer { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Arms - Interrupts & Stuns")]
         [DisplayName("Enable Intimidating Shout")]
