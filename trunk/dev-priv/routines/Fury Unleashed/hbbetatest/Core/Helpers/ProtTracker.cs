@@ -176,6 +176,7 @@ namespace FuryUnleashed.Core.Helpers
                     var criticalBlockChance = (mastery * 2.2) / 100;
                     var blockresult = damageoversixseconds * criticalBlockChance * 0.6 + damageoversixseconds * (1 - criticalBlockChance) * 0.3;
 
+                    Logger.DiagLogWh("FU: Damage taken over 6 seconds is: {0}", GetDamageTaken());
                     Logger.DiagLogWh("FU: Shield Block Size is {0} with SpellID {1}", blockresult, ShieldBlockSpellId);
                     return blockresult;
                 }

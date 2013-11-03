@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
 using Styx;
+using Styx.Helpers;
 
 namespace FuryUnleashed.Interfaces.GUI
 {

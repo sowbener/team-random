@@ -106,8 +106,8 @@
             this.updateshieldbarrierbutton = new System.Windows.Forms.Button();
             this.updateshieldblockbutton = new System.Windows.Forms.Button();
             this.shieldbarrierdatagrid = new System.Windows.Forms.DataGridView();
-            this.SBarrierSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shieldblockdatagrid = new System.Windows.Forms.DataGridView();
+            this.SBarrierSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
@@ -833,13 +833,6 @@
             this.shieldbarrierdatagrid.Size = new System.Drawing.Size(255, 23);
             this.shieldbarrierdatagrid.TabIndex = 2;
             // 
-            // SBarrierSize
-            // 
-            this.SBarrierSize.HeaderText = "Shield Barrier Size";
-            this.SBarrierSize.Name = "SBarrierSize";
-            this.SBarrierSize.ReadOnly = true;
-            this.SBarrierSize.Width = 250;
-            // 
             // shieldblockdatagrid
             // 
             this.shieldblockdatagrid.BackgroundColor = System.Drawing.Color.White;
@@ -855,8 +848,17 @@
             this.shieldblockdatagrid.Size = new System.Drawing.Size(255, 23);
             this.shieldblockdatagrid.TabIndex = 3;
             // 
+            // SBarrierSize
+            // 
+            this.SBarrierSize.DataPropertyName = "barrierresult";
+            this.SBarrierSize.HeaderText = "Shield Barrier Size";
+            this.SBarrierSize.Name = "SBarrierSize";
+            this.SBarrierSize.ReadOnly = true;
+            this.SBarrierSize.Width = 250;
+            // 
             // dataGridViewTextBoxColumn1
             // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "blockresult";
             this.dataGridViewTextBoxColumn1.HeaderText = "Shield Barrier Size";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -972,7 +974,7 @@
         private System.Windows.Forms.Button updateshieldblockbutton;
         private System.Windows.Forms.Button updateshieldbarrierbutton;
         private System.Windows.Forms.DataGridView shieldblockdatagrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn SBarrierSize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
     }
 }
