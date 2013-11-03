@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
@@ -55,7 +56,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                shieldbarrierdatagrid.DataSource = Core.Helpers.ProtTracker.PrintBarrierSize;
+                shieldbarriersizetextbox.Text = Core.Utilities.Logger.PrintBarrierSize;
             }
         }
 
@@ -63,7 +64,15 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                shieldblockdatagrid.DataSource = Core.Helpers.ProtTracker.PrintBlockSize;
+                shieldblocksizetextbox.Text = Core.Utilities.Logger.PrintBlockSize;
+            }
+        }
+
+        private void UpdateDamageTaken()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                damagetakentextbox.Text = Core.Utilities.Logger.PrintDamageTaken;
             }
         }
         #endregion
@@ -119,6 +128,11 @@ namespace FuryUnleashed.Interfaces.GUI
         private void updateshieldblockbutton_Click(object sender, EventArgs e)
         {
             UpdateShieldBlockSize();
+        }
+
+        private void updatedamagetakenbutton_Click(object sender, EventArgs e)
+        {
+            UpdateDamageTaken();
         }
     }
 }

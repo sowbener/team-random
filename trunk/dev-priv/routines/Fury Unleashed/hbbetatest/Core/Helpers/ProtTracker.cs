@@ -2,7 +2,6 @@
 using Styx;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace FuryUnleashed.Core.Helpers
@@ -116,7 +115,7 @@ namespace FuryUnleashed.Core.Helpers
             }
         }
 
-        private static double GetDamageTaken(DateTime timestamp = default(DateTime))
+        internal static double GetDamageTaken(DateTime timestamp = default(DateTime))
         {
             DateTime current = timestamp;
             TimeSpan lastSeconds = TimeSpan.FromSeconds(6);
@@ -129,31 +128,11 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region VARs
-        private const int ShieldBarrierSpellId = 112048;
-        private const int ShieldBlockSpellId = 132404;
+        internal const int ShieldBarrierSpellId = 112048;
+        internal const int ShieldBlockSpellId = 132404;
         #endregion
 
         #region Calculates
-        public static string PrintBarrierSize
-        {
-            get
-            {
-                var shieldbarriersize = CalculateEstimatedAbsorbValue();
-                Logger.CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, ShieldBarrierSpellId);
-                return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
-            }
-        }
-
-        public static string PrintBlockSize
-        {
-            get
-            {
-                var shieldblocksize = CalculateEstimatedBlockValue();
-                Logger.CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, ShieldBlockSpellId);
-                return shieldblocksize.ToString(CultureInfo.InvariantCulture);
-            }
-        }
-
         public static double CalculateEstimatedAbsorbValue()
         {
             using (new PerformanceLogger("CalculateEstimatedAbsorbValue"))
@@ -205,7 +184,7 @@ namespace FuryUnleashed.Core.Helpers
                     Logger.DiagLogFb("FU: Failed CalculateEstimatedBlockValue - {0}", exblockcalc);
                 }
             }
-            return 0;
+            return 1;
         }
         #endregion
         

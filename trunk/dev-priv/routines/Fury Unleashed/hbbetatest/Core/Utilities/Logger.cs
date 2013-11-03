@@ -1,4 +1,10 @@
-﻿using System;
+﻿using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations;
+using Styx;
+using Styx.Common;
+using Styx.Helpers;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -7,15 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media;
-using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Rotations;
-using Styx;
-using Styx.Common;
-using Styx.Helpers;
-using Styx.TreeSharp;
-using Styx.WoWInternals;
-using Action = Styx.TreeSharp.Action;
 
 namespace FuryUnleashed.Core.Utilities
 {
@@ -97,77 +94,54 @@ namespace FuryUnleashed.Core.Utilities
             Logging.WriteDiagnostic(Colors.Crimson, "{0}", String.Format(message, args));
         }
 
-        //public static void AdvancedLogP(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
-        //}
+        // Debug Logging
+        public static string PrintBarrierSize
+        {
+            get
+            {
+                var shieldbarriersize = ProtTracker.CalculateEstimatedAbsorbValue();
 
-        //public static void AdvancedLogW(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.White, "{0}", String.Format(message, args));
-        //}
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                {
+                    return "Use Protection Spec!";
+                }
 
-        //public static void InitLogF(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
-        //}
+                CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, ProtTracker.ShieldBarrierSpellId);
+                return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
-        //public static void InitLogO(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
-        //}
+        public static string PrintBlockSize
+        {
+            get
+            {
+                var shieldblocksize = ProtTracker.CalculateEstimatedBlockValue();
 
-        //public static void InitLogW(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.White, "{0}", String.Format(message, args));
-        //}
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                {
+                    return "Use Protection Spec!";
+                }
 
-        //public static void DiagLogW(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
-        //}
+                CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, ProtTracker.ShieldBlockSpellId);
+                return shieldblocksize.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
-        //public static void DiagLogP(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.WriteDiagnostic(Colors.MediumPurple, "{0}", String.Format(message, args));
-        //}
+        public static string PrintDamageTaken
+        {
+            get
+            {
+                var damagetaken = ProtTracker.GetDamageTaken(DateTime.Now);
 
-        //private static string _lastCombatmsg;
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                {
+                    return "Use Protection Spec!";
+                }
 
-        //public static void CombatLogO(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
-
-        //public static void CombatLogF(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
-
-        //public static void CombatLogG(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
-
-        //public static void CombatLogP(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
+                CombatLogLg("FU: Damage taken is {0}", damagetaken);
+                return damagetaken.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
         public static void WriteFileLog(string message, params object[] args)
         {
