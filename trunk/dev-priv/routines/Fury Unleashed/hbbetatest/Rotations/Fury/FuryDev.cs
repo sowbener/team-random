@@ -100,7 +100,10 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16), // Added T16 P4.
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage),
                         Spell.Cast(SpellBook.RagingBlow),
-                        Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.Cast(SpellBook.Bloodthirst,
+                            ret =>
+                                !Global.RagingBlow2S ||
+                                !(Global.RagingBlow1S && (Global.FadingCs(4500) || Global.ColossusSmashSpellCooldown > 18000))),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.Shockwave,
                             ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
@@ -123,11 +126,11 @@ namespace FuryUnleashed.Rotations.Fury
                                 ((Global.ColossusSmashSpellCooldown + 1000) > Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.RagingBlow) ||
                                 (Global.RagingBlow2S && Global.BloodthirstSpellCooldown < 2500)) && Global.ColossusSmashSpellCooldown >= 3000),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
                         Spell.Cast(SpellBook.StormBolt,
                             ret =>
-                                (Global.DeterminationAura || Global.OutrageAura) && Global.ColossusSmashSpellCooldown >= 15000 && Tier6AbilityUsage),
+                                (Global.DeterminationAura || Global.OutrageAura) && Global.ColossusSmashSpellCooldown >= 10000 && Tier6AbilityUsage),
+                        Spell.Cast(SpellBook.Shockwave,
+                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3500),
@@ -216,18 +219,14 @@ namespace FuryUnleashed.Rotations.Fury
                          (!Global.RagingBlow2S && !Global.RagingBlow1S)) ||
                          !Global.ColossusSmashOnCooldown && !Global.RagingBlow2S &&
                          !Global.RagingBlow1S), true),
-                Spell.Cast(SB.Bloodbath, ret => G.BloodbathTalent && Tier6AbilityUsage),
-                Spell.Cast(SB.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
-                Spell.Cast(SB.Avatar, ret => G.AvatarTalent && RecklessnessSync && Tier6AbilityUsage),
-                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
-                /*
+                
                 Spell.Cast(SpellBook.Recklessness,
                     ret =>
-                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns || Global.RunningOffensiveCoolDowns), true),
+                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || Global.RunningOffensiveCoolDowns), true),
                 Spell.Cast(SpellBook.SkullBanner,
                     ret =>
                         !Global.SkullBannerAura && SkullBannerUsage && Global.ColossusSmashTracker &&
-                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true),
+                        (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true),
                 //Talents
                 Spell.Cast(SpellBook.Bloodbath,
                     ret =>
@@ -235,7 +234,12 @@ namespace FuryUnleashed.Rotations.Fury
                 Spell.Cast(SpellBook.Avatar,
                     ret =>
                         Global.AvatarTalent && Tier6AbilityUsage && Global.ColossusSmashTracker &&
-                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true)
+                        (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true)
+                        /*
+                Spell.Cast(SB.Bloodbath, ret => G.BloodbathTalent && Tier6AbilityUsage),
+                Spell.Cast(SB.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
+                Spell.Cast(SB.Avatar, ret => G.AvatarTalent && RecklessnessSync && Tier6AbilityUsage),
+                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
                  * */
                 );
         }
@@ -338,7 +342,7 @@ namespace FuryUnleashed.Rotations.Fury
             }
             else
             {
-                if (Global.ColossusSmashSpellCooldown >= 6500 && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 80 &&
+                if (Global.ColossusSmashSpellCooldown >= 8000 && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 80 &&
                     Global.BloodthirstSpellCooldown < 1500)
                     return true;
             }
