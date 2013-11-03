@@ -89,7 +89,7 @@ namespace Shammy.Routines
                 Spell.Cast("Elemental Blast", ret => T.HasTalent(18) && !FlameShock5),
                 Spell.Cast("Earth Shock", ret => LightningShield7Stacks && !FlameShock5),
                 Spell.PreventDoubleCast("Searing Totem", 1, ret => NeedSearingTotem),
-                Spell.PreventDoubleCast("Lightning Bolt", 1, target => Me.CurrentTarget, ret => !FlameShock5 && (Spell.SpellOnCooldown("Lava Burst") || !Me.ActiveAuras.ContainsKey("Lava Surge") || Me.CurrentTarget.HasAura("Flame Shock")), true));
+                Spell.PreventDoubleCast("Lightning Bolt", 1, target => Me.CurrentTarget, ret => !FlameShock5 && (ElementalBlastAndLavaBurstIsOnCoolDown || !Me.ActiveAuras.ContainsKey("Lava Surge") || Me.CurrentTarget.HasAura("Flame Shock")), true));
         }
       
 
@@ -264,6 +264,7 @@ namespace Shammy.Routines
 
         private static bool LightningShield7Stacks { get { return Me.HasAura("Lightning Shield") && Spell.GetAuraStack(Me, 324) == 7; } }
         private static bool LightningShield4Stacks { get { return Me.HasAura("Lightning Shield") && Spell.GetAuraStack(Me, 324) > 3; } }
+        internal static bool ElementalBlastAndLavaBurstIsOnCoolDown { get { return Styx.WoWInternals.WoWSpell.FromId(51505).Cooldown || (T.HasTalent(18) && Styx.WoWInternals.WoWSpell.FromId(117014).Cooldown); } }
         private static bool FireElementalOnCooldown { get { return Spell.SpellOnCooldown("Fire Elemental Totem"); } }
         private static bool EarthShockOnCooldown { get { return Spell.SpellOnCooldown("Earth Shock"); } }
         private static bool ChannelingLightingBolt { get { return ((Me.CurrentCastEndTime - Me.CurrentCastStartTime).TotalMilliseconds / 2) <= Me.CurrentCastTimeLeft.TotalMilliseconds && Me.CastingSpellId == 403 && Me.ActiveAuras.ContainsKey("Lava Surge"); } }
