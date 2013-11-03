@@ -85,7 +85,7 @@ namespace FuryUnleashed.Core
             }
 
             if (CanUseHands(InternalSettings.Instance.Arms.UseHands, hands) && Global.ColossusSmashTracker &&
-                        !Global.FadingOffensiveCooldowns)
+                        !Global.FadingOffensiveCooldowns(10000))
             {
                 hands.Use();
                 Logger.CombatLogFb("Using: Engineering hands are used.");

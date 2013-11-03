@@ -237,14 +237,11 @@ namespace FuryUnleashed.Rotations
             }
         }
 
-        internal static bool FadingOffensiveCooldowns
+        internal static bool FadingOffensiveCooldowns(int timeLeft = 50000)
         {
-            get
-            {
-                return (RecklessnessOnCooldown && RecklessnessSpellCooldown < 60) ||
-                       (SkullBannerOnCooldown && SkullBannerSpellCooldown < 60) ||
-                       (AvatarOnCooldown && AvatarSpellCooldown < 60);
-            }
+            return (RecklessnessOnCooldown && RecklessnessSpellCooldown < timeLeft) ||
+                       (SkullBannerOnCooldown && SkullBannerSpellCooldown < timeLeft) ||
+                       (AvatarOnCooldown && AvatarSpellCooldown < timeLeft);
         }
 
         internal static bool RunningOffensiveCoolDowns
@@ -253,7 +250,8 @@ namespace FuryUnleashed.Rotations
             {
                 return (AvatarAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Avatar) > 5000) ||
                        (RecklessnessAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Recklessness) > 5000) ||
-                       (SkullBannerAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.SkullBannerNormal) > 5000);
+                       (SkullBannerAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.SkullBannerNormal) > 5000 ||
+                       (SkullBannerAura && Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.SkullBannerT15) > 5000));
             }
         }
 

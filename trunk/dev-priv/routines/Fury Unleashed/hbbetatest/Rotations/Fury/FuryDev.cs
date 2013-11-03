@@ -112,7 +112,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
                                 Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 60)))
-                        //Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(Global.ColossusSmashAura))
+                //Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(Global.ColossusSmashAura))
                         )
                     ),
                 new Decorator(ret => !Global.ColossusSmashAura,
@@ -134,7 +134,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3500),
-                        //Spell.Cast(SpellBook.Whirlwind, ret => Global.RagingWindAura),
+                //Spell.Cast(SpellBook.Whirlwind, ret => Global.RagingWindAura),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me,
@@ -143,12 +143,12 @@ namespace FuryUnleashed.Rotations.Fury
                                 Spell.Cast(SpellBook.CommandingShout, on => Me,
                                     ret => Me.CurrentRage < 60 && Global.FadingCs(1500)))),
                         Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(!Global.ColossusSmashAura)),
-                        // Also in Dev_FuryHeroicStrike().
+                // Also in Dev_FuryHeroicStrike().
                         Spell.Cast(SpellBook.ImpendingVictory,
                             ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && InternalSettings.Instance.Fury.CheckRotImpVic),
-                        // Added for the sake of supporting it rotational.
+                // Added for the sake of supporting it rotational.
                         Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Fury.CheckHeroicThrow)
-                        // Added for the sake of supporting it rotational.
+                // Added for the sake of supporting it rotational.
                         )
                     )
                 );
@@ -165,7 +165,7 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SB.Execute, ret => G.FadingDeathSentence(3000) && G.ColossusSmashSpellCooldown >= 1500),
-                        // Added T16 P4 - Waiting for CS window unless expires.
+                // Added T16 P4 - Waiting for CS window unless expires.
                         Spell.Cast(SB.ColossusSmash),
                         Spell.Cast(SB.Bloodthirst),
                         Spell.Cast(SB.DragonRoar, ret => G.DragonRoarTalent && BloodbathSync && Tier4AbilityUsage), // Added
@@ -174,7 +174,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SB.Execute, ret => Lua.PlayerPower == Me.MaxRage - 10),
                         Spell.Cast(SB.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage),
                         Spell.Cast(SB.Shockwave, ret => G.ShockwaveTalent && Me.IsFacing(Me.CurrentTarget) && Tier4AbilityUsage),
-                        // Added
+                // Added
                         Spell.Cast(SB.Bladestorm,
                             ret => G.BladestormTalent && G.BloodthirstSpellCooldown >= 2000 && G.ColossusSmashSpellCooldown >= 6000 && Tier4AbilityUsage) // Added
                         )));
@@ -219,14 +219,14 @@ namespace FuryUnleashed.Rotations.Fury
                          (!Global.RagingBlow2S && !Global.RagingBlow1S)) ||
                          !Global.ColossusSmashOnCooldown && !Global.RagingBlow2S &&
                          !Global.RagingBlow1S), true),
-                
+
                 Spell.Cast(SpellBook.Recklessness,
                     ret =>
-                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns || Global.RunningOffensiveCoolDowns), true),
+                        RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || Global.RunningOffensiveCoolDowns), true),
                 Spell.Cast(SpellBook.SkullBanner,
                     ret =>
                         !Global.SkullBannerAura && SkullBannerUsage && Global.ColossusSmashTracker &&
-                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true),
+                        (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true),
                 //Talents
                 Spell.Cast(SpellBook.Bloodbath,
                     ret =>
@@ -234,13 +234,13 @@ namespace FuryUnleashed.Rotations.Fury
                 Spell.Cast(SpellBook.Avatar,
                     ret =>
                         Global.AvatarTalent && Tier6AbilityUsage && Global.ColossusSmashTracker &&
-                        (!Global.FadingOffensiveCooldowns || RecklessnessSync), true)
-                        /*
-                Spell.Cast(SB.Bloodbath, ret => G.BloodbathTalent && Tier6AbilityUsage),
-                Spell.Cast(SB.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
-                Spell.Cast(SB.Avatar, ret => G.AvatarTalent && RecklessnessSync && Tier6AbilityUsage),
-                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
-                 * */
+                        (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true)
+                /*
+        Spell.Cast(SB.Bloodbath, ret => G.BloodbathTalent && Tier6AbilityUsage),
+        Spell.Cast(SB.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
+        Spell.Cast(SB.Avatar, ret => G.AvatarTalent && RecklessnessSync && Tier6AbilityUsage),
+        Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
+         * */
                 );
         }
 
