@@ -103,7 +103,8 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bloodthirst,
                             ret =>
                                 !Global.RagingBlow2S ||
-                                !(Global.RagingBlow1S && (Global.FadingCs(4500) || Global.ColossusSmashSpellCooldown > 18000))),
+                                !(Global.RagingBlow1S &&
+                                  (Global.FadingCs(4500) || Global.ColossusSmashSpellCooldown > 18000))),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.Shockwave,
                             ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
@@ -112,7 +113,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
                                 Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 60)))
-                //Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(Global.ColossusSmashAura))
+                        //Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(Global.ColossusSmashAura))
                         )
                     ),
                 new Decorator(ret => !Global.ColossusSmashAura,
@@ -120,21 +121,34 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.ColossusSmash,
                             ret =>
                                 Global.RagingBlow2S || Global.RagingBlow1S || Global.BloodthirstSpellCooldown > 3000),
-                        Spell.Cast(SpellBook.Execute, ret => Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500),
+                        Spell.Cast(SpellBook.Execute,
+                            ret => Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500),
                         Spell.Cast(SpellBook.RagingBlow,
                             ret =>
-                                ((Global.ColossusSmashSpellCooldown + 1000) > Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.RagingBlow) ||
-                                (Global.RagingBlow2S && Global.BloodthirstSpellCooldown < 2500)) && Global.ColossusSmashSpellCooldown >= 3000),
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.StormBolt,
+                                ((Global.ColossusSmashSpellCooldown + 1000) >
+                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.RagingBlow) ||
+                                 (Global.RagingBlow2S && Global.BloodthirstSpellCooldown < 2500)) &&
+                                Global.ColossusSmashSpellCooldown >= 3000),
+                        new Decorator(
                             ret =>
-                                (Global.DeterminationAura || Global.OutrageAura) && Global.ColossusSmashSpellCooldown >= 10000 && Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                                (Global.DeterminationAura || Global.OutrageAura) &&
+                                Global.ColossusSmashSpellCooldown >= 10000 && Tier6AbilityUsage,
+                            new PrioritySelector(
+                                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage),
+                                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && Tier4AbilityUsage),
+                                Spell.Cast(SpellBook.Shockwave,
+                                    ret =>
+                                        Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) &&
+                                        Tier4AbilityUsage)
+                                )
+                            ),
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
-                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3500),
-                //Spell.Cast(SpellBook.Whirlwind, ret => Global.RagingWindAura),
+                        Spell.Cast(SpellBook.RagingBlow,
+                            ret =>
+                                Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 &&
+                                Global.ColossusSmashSpellCooldown >= 3500),
+                        //Spell.Cast(SpellBook.Whirlwind, ret => Global.RagingWindAura),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me,
@@ -143,12 +157,14 @@ namespace FuryUnleashed.Rotations.Fury
                                 Spell.Cast(SpellBook.CommandingShout, on => Me,
                                     ret => Me.CurrentRage < 60 && Global.FadingCs(1500)))),
                         Spell.Cast(SpellBook.WildStrike, ret => UseWildStrike(!Global.ColossusSmashAura)),
-                // Also in Dev_FuryHeroicStrike().
+                        // Also in Dev_FuryHeroicStrike().
                         Spell.Cast(SpellBook.ImpendingVictory,
-                            ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && InternalSettings.Instance.Fury.CheckRotImpVic),
-                // Added for the sake of supporting it rotational.
+                            ret =>
+                                Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown &&
+                                InternalSettings.Instance.Fury.CheckRotImpVic),
+                        // Added for the sake of supporting it rotational.
                         Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Fury.CheckHeroicThrow)
-                // Added for the sake of supporting it rotational.
+                        // Added for the sake of supporting it rotational.
                         )
                     )
                 );
