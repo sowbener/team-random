@@ -3,6 +3,7 @@ using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
+using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
@@ -97,16 +98,12 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => Global.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16), // Added T16 P4.
-                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S || Global.RagingBlow1S && (Global.FadingCs(2500) || Global.ColossusSmashSpellCooldown > 18000)),
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage),
+                        Spell.Cast(SpellBook.RagingBlow),
+                        Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.Shockwave,
                             ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Bloodthirst,
-                            ret =>
-                                !Global.RagingBlow2S ||
-                                !(Global.RagingBlow1S && (Global.FadingCs(4500) || Global.ColossusSmashSpellCooldown > 18000))),
-                        Spell.Cast(SpellBook.RagingBlow),
-                        Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60)),
@@ -126,18 +123,14 @@ namespace FuryUnleashed.Rotations.Fury
                                 ((Global.ColossusSmashSpellCooldown + 1000) > Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.RagingBlow) ||
                                 (Global.RagingBlow2S && Global.BloodthirstSpellCooldown < 2500)) && Global.ColossusSmashSpellCooldown >= 3000),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.StormBolt,
-                            ret =>
-                                (Global.DeterminationAura &&
-                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Determination) < Global.ColossusSmashSpellCooldown + 2000 ||
-                                 Global.OutrageAura &&
-                                 Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.Outrage) < Global.ColossusSmashSpellCooldown + 2000 ||
-                                 Global.ColossusSmashSpellCooldown >= 15000) && Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Shockwave,
                             ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.StormBolt,
+                            ret =>
+                                (Global.DeterminationAura || Global.OutrageAura) && Global.ColossusSmashSpellCooldown >= 15000 && Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
-                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3000),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3500),
                         //Spell.Cast(SpellBook.Whirlwind, ret => Global.RagingWindAura),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
@@ -223,6 +216,11 @@ namespace FuryUnleashed.Rotations.Fury
                          (!Global.RagingBlow2S && !Global.RagingBlow1S)) ||
                          !Global.ColossusSmashOnCooldown && !Global.RagingBlow2S &&
                          !Global.RagingBlow1S), true),
+                Spell.Cast(SB.Bloodbath, ret => G.BloodbathTalent && Tier6AbilityUsage),
+                Spell.Cast(SB.Recklessness, ret => RecklessnessUsage && SpellManager.CanCast(SpellBook.ColossusSmash)),
+                Spell.Cast(SB.Avatar, ret => G.AvatarTalent && RecklessnessSync && Tier6AbilityUsage),
+                Spell.Cast(SB.SkullBanner, ret => !G.SkullBannerAura && RecklessnessSync && SkullBannerUsage)
+                /*
                 Spell.Cast(SpellBook.Recklessness,
                     ret =>
                         RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns || Global.RunningOffensiveCoolDowns), true),
@@ -238,6 +236,7 @@ namespace FuryUnleashed.Rotations.Fury
                     ret =>
                         Global.AvatarTalent && Tier6AbilityUsage && Global.ColossusSmashTracker &&
                         (!Global.FadingOffensiveCooldowns || RecklessnessSync), true)
+                 * */
                 );
         }
 
