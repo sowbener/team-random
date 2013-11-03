@@ -30,7 +30,6 @@
         {
             this.Tabs = new System.Windows.Forms.TabControl();
             this.myaurastab = new System.Windows.Forms.TabPage();
-            this.myauraslogfilebutton = new System.Windows.Forms.Button();
             this.myaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.spellIdDataGridViewTextBoxColumnMyAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,7 +48,6 @@
             this.cancellableDataGridViewCheckBoxColumnMyAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.myaurasbutton = new System.Windows.Forms.Button();
             this.targetaurastab = new System.Windows.Forms.TabPage();
-            this.mytargetauraslogfilebutton = new System.Windows.Forms.Button();
             this.mytargetaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.spellIdDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -68,7 +66,6 @@
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.targetaurasbutton = new System.Windows.Forms.Button();
             this.mycachedaurastab = new System.Windows.Forms.TabPage();
-            this.mycachedauraslogfilebutton = new System.Windows.Forms.Button();
             this.mycachedaurasbutton = new System.Windows.Forms.Button();
             this.mycachedaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyCachedAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -87,7 +84,6 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.targetcachedaurastab = new System.Windows.Forms.TabPage();
-            this.mytargetcachedauraslogfilebutton = new System.Windows.Forms.Button();
             this.targetcachedaurasbutton = new System.Windows.Forms.Button();
             this.mytargetcachedaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -106,6 +102,13 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.updateshieldbarrierbutton = new System.Windows.Forms.Button();
+            this.updateshieldblockbutton = new System.Windows.Forms.Button();
+            this.shieldbarrierdatagrid = new System.Windows.Forms.DataGridView();
+            this.SBarrierSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shieldblockdatagrid = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -115,6 +118,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).BeginInit();
             this.targetcachedaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldbarrierdatagrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldblockdatagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // Tabs
@@ -123,6 +129,7 @@
             this.Tabs.Controls.Add(this.targetaurastab);
             this.Tabs.Controls.Add(this.mycachedaurastab);
             this.Tabs.Controls.Add(this.targetcachedaurastab);
+            this.Tabs.Controls.Add(this.tabPage1);
             this.Tabs.Location = new System.Drawing.Point(12, 12);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
@@ -131,7 +138,6 @@
             // 
             // myaurastab
             // 
-            this.myaurastab.Controls.Add(this.myauraslogfilebutton);
             this.myaurastab.Controls.Add(this.myaurasdatagrid);
             this.myaurastab.Controls.Add(this.myaurasbutton);
             this.myaurastab.Location = new System.Drawing.Point(4, 22);
@@ -141,17 +147,6 @@
             this.myaurastab.TabIndex = 0;
             this.myaurastab.Text = "My Aura\'s";
             this.myaurastab.UseVisualStyleBackColor = true;
-            // 
-            // myauraslogfilebutton
-            // 
-            this.myauraslogfilebutton.Enabled = false;
-            this.myauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
-            this.myauraslogfilebutton.Name = "myauraslogfilebutton";
-            this.myauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
-            this.myauraslogfilebutton.TabIndex = 2;
-            this.myauraslogfilebutton.Text = "Write to Logfile";
-            this.myauraslogfilebutton.UseVisualStyleBackColor = true;
-            this.myauraslogfilebutton.Click += new System.EventHandler(this.myauraslogfilebutton_Click);
             // 
             // myaurasdatagrid
             // 
@@ -173,6 +168,7 @@
             this.ısActiveDataGridViewCheckBoxColumnMyAuras,
             this.ısPassiveDataGridViewCheckBoxColumnMyAuras,
             this.cancellableDataGridViewCheckBoxColumnMyAuras});
+            this.myaurasdatagrid.EnableHeadersVisualStyles = false;
             this.myaurasdatagrid.Location = new System.Drawing.Point(6, 35);
             this.myaurasdatagrid.Name = "myaurasdatagrid";
             this.myaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
@@ -304,7 +300,6 @@
             // 
             // targetaurastab
             // 
-            this.targetaurastab.Controls.Add(this.mytargetauraslogfilebutton);
             this.targetaurastab.Controls.Add(this.mytargetaurasdatagrid);
             this.targetaurastab.Controls.Add(this.targetaurasbutton);
             this.targetaurastab.Location = new System.Drawing.Point(4, 22);
@@ -314,16 +309,6 @@
             this.targetaurastab.TabIndex = 1;
             this.targetaurastab.Text = "Target Aura\'s";
             this.targetaurastab.UseVisualStyleBackColor = true;
-            // 
-            // mytargetauraslogfilebutton
-            // 
-            this.mytargetauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
-            this.mytargetauraslogfilebutton.Name = "mytargetauraslogfilebutton";
-            this.mytargetauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
-            this.mytargetauraslogfilebutton.TabIndex = 3;
-            this.mytargetauraslogfilebutton.Text = "Write to Logfile";
-            this.mytargetauraslogfilebutton.UseVisualStyleBackColor = true;
-            this.mytargetauraslogfilebutton.Click += new System.EventHandler(this.mytargetauraslogfilebutton_Click);
             // 
             // mytargetaurasdatagrid
             // 
@@ -345,6 +330,7 @@
             this.ısActiveDataGridViewCheckBoxColumnMyTargetAuras,
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetAuras,
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras});
+            this.mytargetaurasdatagrid.EnableHeadersVisualStyles = false;
             this.mytargetaurasdatagrid.Location = new System.Drawing.Point(6, 35);
             this.mytargetaurasdatagrid.Name = "mytargetaurasdatagrid";
             this.mytargetaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
@@ -476,7 +462,6 @@
             // 
             // mycachedaurastab
             // 
-            this.mycachedaurastab.Controls.Add(this.mycachedauraslogfilebutton);
             this.mycachedaurastab.Controls.Add(this.mycachedaurasbutton);
             this.mycachedaurastab.Controls.Add(this.mycachedaurasdatagrid);
             this.mycachedaurastab.Location = new System.Drawing.Point(4, 22);
@@ -486,17 +471,6 @@
             this.mycachedaurastab.TabIndex = 2;
             this.mycachedaurastab.Text = "My Cached Aura\'s";
             this.mycachedaurastab.UseVisualStyleBackColor = true;
-            // 
-            // mycachedauraslogfilebutton
-            // 
-            this.mycachedauraslogfilebutton.Enabled = false;
-            this.mycachedauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
-            this.mycachedauraslogfilebutton.Name = "mycachedauraslogfilebutton";
-            this.mycachedauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
-            this.mycachedauraslogfilebutton.TabIndex = 4;
-            this.mycachedauraslogfilebutton.Text = "Write to Logfile";
-            this.mycachedauraslogfilebutton.UseVisualStyleBackColor = true;
-            this.mycachedauraslogfilebutton.Click += new System.EventHandler(this.mycachedauraslogfilebutton_Click);
             // 
             // mycachedaurasbutton
             // 
@@ -528,6 +502,7 @@
             this.ısActiveDataGridViewCheckBoxColumnMyCachedAuras,
             this.ısPassiveDataGridViewCheckBoxColumnMyCachedAuras,
             this.cancellableDataGridViewCheckBoxColumnMyCachedAuras});
+            this.mycachedaurasdatagrid.EnableHeadersVisualStyles = false;
             this.mycachedaurasdatagrid.Location = new System.Drawing.Point(6, 35);
             this.mycachedaurasdatagrid.Name = "mycachedaurasdatagrid";
             this.mycachedaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
@@ -649,7 +624,6 @@
             // 
             // targetcachedaurastab
             // 
-            this.targetcachedaurastab.Controls.Add(this.mytargetcachedauraslogfilebutton);
             this.targetcachedaurastab.Controls.Add(this.targetcachedaurasbutton);
             this.targetcachedaurastab.Controls.Add(this.mytargetcachedaurasdatagrid);
             this.targetcachedaurastab.Location = new System.Drawing.Point(4, 22);
@@ -659,17 +633,6 @@
             this.targetcachedaurastab.TabIndex = 3;
             this.targetcachedaurastab.Text = "Target Cached Aura\'s";
             this.targetcachedaurastab.UseVisualStyleBackColor = true;
-            // 
-            // mytargetcachedauraslogfilebutton
-            // 
-            this.mytargetcachedauraslogfilebutton.Enabled = false;
-            this.mytargetcachedauraslogfilebutton.Location = new System.Drawing.Point(865, 6);
-            this.mytargetcachedauraslogfilebutton.Name = "mytargetcachedauraslogfilebutton";
-            this.mytargetcachedauraslogfilebutton.Size = new System.Drawing.Size(300, 23);
-            this.mytargetcachedauraslogfilebutton.TabIndex = 4;
-            this.mytargetcachedauraslogfilebutton.Text = "Write to Logfile";
-            this.mytargetcachedauraslogfilebutton.UseVisualStyleBackColor = true;
-            this.mytargetcachedauraslogfilebutton.Click += new System.EventHandler(this.mytargetcachedauraslogfilebutton_Click);
             // 
             // targetcachedaurasbutton
             // 
@@ -701,6 +664,7 @@
             this.ısActiveDataGridViewCheckBoxColumnMyTargetCachedAuras,
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras,
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras});
+            this.mytargetcachedaurasdatagrid.EnableHeadersVisualStyles = false;
             this.mytargetcachedaurasdatagrid.Location = new System.Drawing.Point(6, 35);
             this.mytargetcachedaurasdatagrid.Name = "mytargetcachedaurasdatagrid";
             this.mytargetcachedaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
@@ -820,6 +784,84 @@
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.shieldblockdatagrid);
+            this.tabPage1.Controls.Add(this.shieldbarrierdatagrid);
+            this.tabPage1.Controls.Add(this.updateshieldblockbutton);
+            this.tabPage1.Controls.Add(this.updateshieldbarrierbutton);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1171, 438);
+            this.tabPage1.TabIndex = 4;
+            this.tabPage1.Text = "Other Options";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // updateshieldbarrierbutton
+            // 
+            this.updateshieldbarrierbutton.Location = new System.Drawing.Point(6, 6);
+            this.updateshieldbarrierbutton.Name = "updateshieldbarrierbutton";
+            this.updateshieldbarrierbutton.Size = new System.Drawing.Size(172, 23);
+            this.updateshieldbarrierbutton.TabIndex = 0;
+            this.updateshieldbarrierbutton.Text = "Update - Shield Barrier Size";
+            this.updateshieldbarrierbutton.UseVisualStyleBackColor = true;
+            this.updateshieldbarrierbutton.Click += new System.EventHandler(this.updateshieldbarrierbutton_Click);
+            // 
+            // updateshieldblockbutton
+            // 
+            this.updateshieldblockbutton.Location = new System.Drawing.Point(6, 35);
+            this.updateshieldblockbutton.Name = "updateshieldblockbutton";
+            this.updateshieldblockbutton.Size = new System.Drawing.Size(172, 23);
+            this.updateshieldblockbutton.TabIndex = 1;
+            this.updateshieldblockbutton.Text = "Update - Shield Block Size";
+            this.updateshieldblockbutton.UseVisualStyleBackColor = true;
+            this.updateshieldblockbutton.Click += new System.EventHandler(this.updateshieldblockbutton_Click);
+            // 
+            // shieldbarrierdatagrid
+            // 
+            this.shieldbarrierdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.shieldbarrierdatagrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.shieldbarrierdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shieldbarrierdatagrid.ColumnHeadersVisible = false;
+            this.shieldbarrierdatagrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.SBarrierSize});
+            this.shieldbarrierdatagrid.EnableHeadersVisualStyles = false;
+            this.shieldbarrierdatagrid.Location = new System.Drawing.Point(184, 6);
+            this.shieldbarrierdatagrid.Name = "shieldbarrierdatagrid";
+            this.shieldbarrierdatagrid.RowHeadersVisible = false;
+            this.shieldbarrierdatagrid.Size = new System.Drawing.Size(255, 23);
+            this.shieldbarrierdatagrid.TabIndex = 2;
+            // 
+            // SBarrierSize
+            // 
+            this.SBarrierSize.HeaderText = "Shield Barrier Size";
+            this.SBarrierSize.Name = "SBarrierSize";
+            this.SBarrierSize.ReadOnly = true;
+            this.SBarrierSize.Width = 250;
+            // 
+            // shieldblockdatagrid
+            // 
+            this.shieldblockdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.shieldblockdatagrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.shieldblockdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shieldblockdatagrid.ColumnHeadersVisible = false;
+            this.shieldblockdatagrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1});
+            this.shieldblockdatagrid.EnableHeadersVisualStyles = false;
+            this.shieldblockdatagrid.Location = new System.Drawing.Point(184, 35);
+            this.shieldblockdatagrid.Name = "shieldblockdatagrid";
+            this.shieldblockdatagrid.RowHeadersVisible = false;
+            this.shieldblockdatagrid.Size = new System.Drawing.Size(255, 23);
+            this.shieldblockdatagrid.TabIndex = 3;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Shield Barrier Size";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 250;
+            // 
             // DebuggerGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -838,6 +880,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).EndInit();
             this.targetcachedaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.shieldbarrierdatagrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldblockdatagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -920,12 +965,14 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ısActiveDataGridViewCheckBoxColumnMyTargetCachedAuras;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras;
         private System.Windows.Forms.DataGridViewCheckBoxColumn cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras;
-
-        private System.Windows.Forms.Button myauraslogfilebutton;
-        private System.Windows.Forms.Button mytargetauraslogfilebutton;
         private System.Windows.Forms.Button mycachedaurasbutton;
         private System.Windows.Forms.Button targetcachedaurasbutton;
-        private System.Windows.Forms.Button mycachedauraslogfilebutton;
-        private System.Windows.Forms.Button mytargetcachedauraslogfilebutton;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView shieldbarrierdatagrid;
+        private System.Windows.Forms.Button updateshieldblockbutton;
+        private System.Windows.Forms.Button updateshieldbarrierbutton;
+        private System.Windows.Forms.DataGridView shieldblockdatagrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SBarrierSize;
     }
 }

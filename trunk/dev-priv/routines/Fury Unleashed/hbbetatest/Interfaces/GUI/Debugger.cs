@@ -50,6 +50,22 @@ namespace FuryUnleashed.Interfaces.GUI
                 mytargetcachedaurasdatagrid.DataSource = Spell.CachedTargetAuras.OrderBy(a => a.Name).ToList();
             }
         }
+
+        private void UpdateShieldBarrierSize()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                shieldbarrierdatagrid.DataSource = Core.Helpers.ProtTracker.CalculateEstimatedAbsorbValue();
+            }
+        }
+
+        private void UpdateShieldBlockSize()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                shieldblockdatagrid.DataSource = Core.Helpers.ProtTracker.CalculateEstimatedBlockValue();
+            }
+        }
         #endregion
 
         #region Errors
@@ -95,25 +111,14 @@ namespace FuryUnleashed.Interfaces.GUI
             UpdateTargetCachedAuras();
         }
 
-        // Logger Buttons
-        private void myauraslogfilebutton_Click(object sender, EventArgs e)
+        private void updateshieldbarrierbutton_Click(object sender, EventArgs e)
         {
-
+            UpdateShieldBarrierSize();
         }
 
-        private void mytargetauraslogfilebutton_Click(object sender, EventArgs e)
+        private void updateshieldblockbutton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void mycachedauraslogfilebutton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void mytargetcachedauraslogfilebutton_Click(object sender, EventArgs e)
-        {
-
+            UpdateShieldBlockSize();
         }
     }
 }
