@@ -12,7 +12,7 @@ using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using A = FuryUnleashed.Rotations.ArmsRotation;
+using A = FuryUnleashed.Rotations.Arms.ArmsGlobal;
 using BotEvents = Styx.CommonBot.BotEvents;
 using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using P = FuryUnleashed.Rotations.Protection.ProtGlobal;

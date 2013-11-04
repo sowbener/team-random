@@ -89,7 +89,6 @@
     <Compile Include="Core\Managers\UpdateManager.cs" />
     <Compile Include="Core\Managers\TalentManager.cs" />
     <Compile Include="Core\Managers\HotKeyManager.cs" />
-    <Compile Include="Rotations\ArmsRotation.cs" />
     <Compile Include="Rotations\Arms\ArmsDev.cs" />
     <Compile Include="Rotations\Arms\ArmsGlobal.cs" />
     <Compile Include="Rotations\Arms\ArmsPvP.cs" />
