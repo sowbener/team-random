@@ -1,5 +1,4 @@
 ﻿using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -10,7 +9,6 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SG = FuryUnleashed.Interfaces.Settings.InternalSettings;
 
 namespace FuryUnleashed.Core
 {
@@ -232,10 +230,7 @@ namespace FuryUnleashed.Core
         {
             get 
             {
-                return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (
-                (TalentManager.CurrentSpec == WoWSpec.WarriorArms && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Arms.NumInterruptTimer) ||
-                (TalentManager.CurrentSpec == WoWSpec.WarriorFury && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Fury.NumInterruptTimer) ||
-                (TalentManager.CurrentSpec == WoWSpec.WarriorProtection && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= SG.Instance.Protection.NumInterruptTimer));
+                return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast;
             }
         }
 
