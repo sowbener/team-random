@@ -13,6 +13,7 @@ namespace Waldo.Managers
     {
         public static bool IsPaused { get; private set; }
         public static bool IsCooldown { get; private set; }
+        public static bool IsTricks { get; private set; }
         public static bool IsAoe { get; private set; }
         public static bool IsSpecialKey { get; private set; }
 
@@ -102,6 +103,16 @@ namespace Waldo.Managers
                                                      : @"print('Cooldowns \124cFFE61515 Disabled!')");
                             });
 
+                            HotkeysManager.Register("Tricks", WaSettingsH.Instance.Tricks, WaSettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                IsTricks = !IsTricks;
+                                LogKey("Tricks", WaSettingsH.Instance.Tricks, WaSettingsH.Instance.ModKeyChoice, IsTricks);
+                                if (WaSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Tricks of the Trade \124cFF15E61C Enabled!')"
+                                                     : @"print('Tricks of the Trade \124cFFE61515 Disabled!')");
+                            });
+
                             HotkeysManager.Register("AoE", WaSettingsH.Instance.MultiTgtKeyChoice, WaSettingsH.Instance.ModKeyChoice, hk =>
                             {
                                 IsAoe = !IsAoe;
@@ -121,12 +132,13 @@ namespace Waldo.Managers
                                                      ? @"print('Special \124cFF15E61C Enabled!')"
                                                      : @"print('Special \124cFFE61515 Disabled!')");
                             });
-                            WaLogger.DiagLogW("Waldo: Hotkeys registered with individual values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}",
+                            WaLogger.DiagLogW("Waldo: Hotkeys registered with individual values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}, TricksKey {5}",
                                 WaSettingsH.Instance.ModKeyChoice,
                                 WaSettingsH.Instance.PauseKeyChoice,
                                 WaSettingsH.Instance.CooldownKeyChoice,
                                 WaSettingsH.Instance.MultiTgtKeyChoice,
-                                WaSettingsH.Instance.SpecialKeyChoice);
+                                WaSettingsH.Instance.SpecialKeyChoice,
+                                WaSettingsH.Instance.Tricks);
                             break;
                         default:
                             HotkeysManager.Register("Pause", WaSettingsH.Instance.PauseKeyChoice, ModifierKeys.Alt, hk =>
@@ -159,6 +171,16 @@ namespace Waldo.Managers
                                                      : @"print('Aoe \124cFFE61515 Disabled!')");
                             });
 
+                            HotkeysManager.Register("Tricks", WaSettingsH.Instance.Tricks, WaSettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                IsTricks = !IsTricks;
+                                LogKey("Tricks", WaSettingsH.Instance.Tricks, ModifierKeys.Alt, IsTricks);
+                                if (WaSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Tricks of the Trade \124cFF15E61C Enabled!')"
+                                                     : @"print('Tricks of the Trade \124cFFE61515 Disabled!')");
+                            });
+
                             HotkeysManager.Register("Special", WaSettingsH.Instance.SpecialKeyChoice, ModifierKeys.Alt, hk =>
                             {
                                 IsSpecialKey = !IsSpecialKey;
@@ -168,12 +190,13 @@ namespace Waldo.Managers
                                                      ? @"print('Special \124cFF15E61C Enabled!')"
                                                      : @"print('Special \124cFFE61515 Disabled!')");
                             });
-                            WaLogger.DiagLogW("Waldo: Hotkeys registered with default values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}",
+                            WaLogger.DiagLogW("Waldo: Hotkeys registered with default values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}, TricksKey: {5}",
                                 WaSettingsH.Instance.ModKeyChoice,
                                 WaSettingsH.Instance.PauseKeyChoice,
                                 WaSettingsH.Instance.CooldownKeyChoice,
                                 WaSettingsH.Instance.MultiTgtKeyChoice,
-                                WaSettingsH.Instance.SpecialKeyChoice);
+                                WaSettingsH.Instance.SpecialKeyChoice,
+                                WaSettingsH.Instance.Tricks);
                             break;
                     }
                     break;
@@ -187,6 +210,7 @@ namespace Waldo.Managers
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
             HotkeysManager.Unregister("Special");
+            HotkeysManager.Unregister("Tricks");
             WaLogger.DiagLogW("Waldo: Hotkeys removed!");
         }
     }

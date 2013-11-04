@@ -79,9 +79,9 @@ namespace Waldo.Routines
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
-                new Decorator(ret => WaHotKeyManager.KeyboardPolling.IsKeyAsyncDown(SH.Instance.Tricks),
+                new Decorator(ret => WaHotKeyManager.IsTricks,
                     new PrioritySelector(
-                        Spell.Cast("Tricks of the Trade", ret => TricksTarget))));
+                        Spell.Cast("Tricks of the Trade", ret => BestTricksTarget))));
         }
 
         private static WoWUnit TricksTarget
