@@ -90,18 +90,6 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        //private static Random _random = new Random();
-        //internal static Composite InitializeInterrupts()
-        //{
-        //    return new PrioritySelector(
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-        //            Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
-        //            ),
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-        //            Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
-        //            ));
-        //}
-
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
@@ -118,6 +106,18 @@ namespace FuryUnleashed.Rotations
                         new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                             Spell.Cast(SB.Pummel)))));
         }
+
+        //private static Random _random = new Random();
+        //internal static Composite InitializeInterrupts()
+        //{
+        //    return new PrioritySelector(
+        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
+        //            Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
+        //            ),
+        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
+        //            Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
+        //            ));
+        //}
 
         //internal static Composite InitializeInterrupts()
         //{

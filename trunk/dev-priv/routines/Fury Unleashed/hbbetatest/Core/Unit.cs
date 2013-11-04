@@ -1,5 +1,4 @@
 ﻿using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -10,7 +9,6 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core
 {
@@ -233,13 +231,11 @@ namespace FuryUnleashed.Core
             }
         }
 
-        private static Random _random = new Random();
         internal static bool CanInterrupt
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) &&
-                    Me.CurrentTarget.CanInterruptCurrentSpellCast;
+                return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast;
             }
         }
 
