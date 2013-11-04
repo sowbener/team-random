@@ -278,7 +278,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return (Global.BloodbathAura);
+                return (Global.BloodbathAura || !Global.BloodbathTalent);
             }
         }
         #endregion

@@ -1,5 +1,4 @@
-﻿using CommonBehaviors.Actions;
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -11,7 +10,6 @@ using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Linq;
-using AB = FuryUnleashed.Core.Helpers.AuraBook;
 using Action = Styx.TreeSharp.Action;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
@@ -23,7 +21,7 @@ namespace FuryUnleashed.Rotations
     class Global
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
-        private static Random _random = new Random();
+        private static readonly Random Random = new Random(DateTime.Now.Millisecond);
 
         #region Global Used Composites
         internal static Composite InitializeCaching()
@@ -94,14 +92,14 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new Decorator(ret => IS.Instance.General.InterruptMode == Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= _random.Next(250, 1500),
+                new Decorator(ret => IS.Instance.General.InterruptMode == Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500),
                     new PrioritySelector(
-                        new Action(ret => Logger.DiagLogWh("FU: Random Interrupt Time: {0}", _random)),
+                        new Action(ret => Logger.DiagLogWh("FU: Random Interrupt Time: {0}", Random)),
                         Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1)),
                         Spell.Cast(SB.Pummel))),
                 new Decorator(ret =>IS.Instance.General.InterruptMode == Enum.Interrupts.Instant,
                     new PrioritySelector(
-                        new Action(ret => Logger.DiagLogWh("FU: Random Interrupt Time: {0}", _random)),
+                        new Action(ret => Logger.DiagLogWh("FU: Random Interrupt Time: {0}", Random)),
                         Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1)),
                         Spell.Cast(SB.Pummel))));
         }
