@@ -9,6 +9,7 @@ using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations.Arms;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
@@ -23,77 +24,14 @@ using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Rotations
 {
-    internal class ArmsRotation
+    internal class ArmsPvP
     {
         private static LocalPlayer Me
         {
             get { return StyxWoW.Me; }
         }
 
-        #region Initialize Rotations
-
-        internal static Composite InitializeArmsPreCombat
-        {
-            get
-            {
-                return new PrioritySelector(
-                    new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate
-                        {
-                            Spell.GetCachedAuras();
-                            return RunStatus.Failure;
-                        }),
-                        new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
-                                             StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
-                                             StyxWoW.Me.CurrentTarget.Distance > 12 &&
-                                             StyxWoW.Me.CurrentTarget.Distance < 30,
-                            new PrioritySelector(
-                                Spell.Cast(SpellBook.Charge),
-                                Spell.CastOnGround(SpellBook.HeroicLeap, ret => StyxWoW.Me.CurrentTarget),
-                                //new Decorator(ret => InternalSettings.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
-                                new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk,
-                                    Global.InitializeOnKeyActions()),
-                                new Decorator(
-                                    ret =>
-                                        Unit.DefaultBuffCheck &&
-                                        ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) ||
-                                         Me.Combat),
-                                    new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
-                                        new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
-                                            Spell.Cast(SpellBook.BattleShout, on => Me, ret => !Global.BattleShoutAura)),
-                                        new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
-                                            Spell.Cast(SpellBook.CommandingShout, on => Me,
-                                                ret => !Global.CommandingShoutAura))))
-                                )
-                            )
-                        )
-                    );
-            }
-        }
-
-        internal static Composite InitializeArmsCombat
-        {
-            get
-            {
-                return new PrioritySelector(
-                    new Decorator(ret => InternalSettings.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
-                    new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
-                    new Action(delegate
-                    {
-                        ObjectManager.Update();
-                        return RunStatus.Failure;
-                    }),
-                    Global.InitializeCaching(),
-                    Global.InitializeOnKeyActions(),
-                    new Decorator(ret => InternalSettings.Instance.Arms.CheckInterrupts && Unit.CanInterrupt,
-                        Global.InitializeInterrupts()),
-                    new Switch<Enum.WoWVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, DevArmsCombat),
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, RelArmsCombat)));
-            }
-        }
-
-        internal static Composite DevArmsCombat
+        internal static Composite PvPArmsCombat
         {
             get
             {
@@ -101,188 +39,67 @@ namespace FuryUnleashed.Rotations
                     new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsNonGcdUtility(),
-                                Dev_ArmsRacials(),
-                                Dev_ArmsOffensive(),
+                                new Decorator(ret => Me.HealthPercent < 100, PvP_ArmsDefensive()),
+                                PvP_ArmsNonGcdUtility(),
+                                PvP_ArmsRacials(),
+                                PvP_ArmsOffensive(),
                                 Item.CreateItemBehaviour(),
-                                Dev_ArmsRageDump(),
+                                PvP_ArmsRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
-                                        Dev_ArmsGcdUtility(),
+                                        PvP_ArmsGcdUtility(),
                                         new Decorator(
                                             ret =>
                                                 InternalSettings.Instance.Arms.CheckAoE &&
                                                 Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
+                                                InternalSettings.Instance.Arms.CheckAoENum, PvP_ArmsMt()),
+                                        new Decorator(ret => Global.ExecutePhase, PvP_ArmsExecute()),
+                                        new Decorator(ret => Global.NormalPhase, PvP_ArmsSingleTarget())
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsNonGcdUtility(),
+                                new Decorator(ret => Me.HealthPercent < 100, PvP_ArmsDefensive()),
+                                PvP_ArmsNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        Dev_ArmsRacials(),
-                                        Dev_ArmsOffensive(),
+                                        PvP_ArmsRacials(),
+                                        PvP_ArmsOffensive(),
                                         Item.CreateItemBehaviour())),
-                                Dev_ArmsRageDump(),
+                                PvP_ArmsRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
-                                        Dev_ArmsGcdUtility(),
+                                        PvP_ArmsGcdUtility(),
                                         new Decorator(
                                             ret =>
                                                 InternalSettings.Instance.Arms.CheckAoE &&
                                                 Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
+                                                InternalSettings.Instance.Arms.CheckAoENum, PvP_ArmsMt()),
+                                        new Decorator(ret => Global.ExecutePhase, PvP_ArmsExecute()),
+                                        new Decorator(ret => Global.NormalPhase, PvP_ArmsSingleTarget())
                                         )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsNonGcdUtility(),
+                                new Decorator(ret => Me.HealthPercent < 100, PvP_ArmsDefensive()),
+                                PvP_ArmsNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                                        Dev_ArmsRacials(),
-                                        Dev_ArmsOffensive(),
+                                        PvP_ArmsRacials(),
+                                        PvP_ArmsOffensive(),
                                         Item.CreateItemBehaviour())),
-                                Dev_ArmsRageDump(),
+                                PvP_ArmsRageDump(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
-                                        Dev_ArmsGcdUtility(),
+                                        PvP_ArmsGcdUtility(),
                                         new Decorator(
                                             ret =>
                                                 InternalSettings.Instance.Arms.CheckAoE && HotKeyManager.IsAoe &&
                                                 Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
+                                                InternalSettings.Instance.Arms.CheckAoENum, PvP_ArmsMt()),
+                                        new Decorator(ret => Global.ExecutePhase, PvP_ArmsExecute()),
+                                        new Decorator(ret => Global.NormalPhase, PvP_ArmsSingleTarget())
                                         ))))));
             }
         }
-
-        internal static Composite RelArmsCombat
-        {
-            get
-            {
-                return new PrioritySelector(
-                    new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
-                        new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
-                            new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Rel_ArmsDefensive()),
-                                Rel_ArmsNonGcdUtility(),
-                                Rel_ArmsRacials(),
-                                Rel_ArmsOffensive(),
-                                Item.CreateItemBehaviour(),
-                                Rel_ArmsRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Rel_ArmsGcdUtility(),
-                                        new Decorator(
-                                            ret =>
-                                                InternalSettings.Instance.Arms.CheckAoE &&
-                                                Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Rel_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Rel_ArmsSt())
-                                        )))),
-                        new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
-                            new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Rel_ArmsDefensive()),
-                                Rel_ArmsNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Rel_ArmsRacials(),
-                                        Rel_ArmsOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Rel_ArmsRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Rel_ArmsGcdUtility(),
-                                        new Decorator(
-                                            ret =>
-                                                InternalSettings.Instance.Arms.CheckAoE &&
-                                                Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Rel_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Rel_ArmsSt())
-                                        )))),
-                        new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
-                            new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Rel_ArmsDefensive()),
-                                Rel_ArmsNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Rel_ArmsRacials(),
-                                        Rel_ArmsOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Rel_ArmsRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Rel_ArmsGcdUtility(),
-                                        new Decorator(
-                                            ret =>
-                                                InternalSettings.Instance.Arms.CheckAoE && HotKeyManager.IsAoe &&
-                                                Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Rel_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Rel_ArmsSt())
-                                        ))))));
-            }
-        }
-
-        #endregion
-
-        #region Development Rotations
-
-        internal static Composite Dev_ArmsSt()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsExec()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsRageDump()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsMt()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsOffensive()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsGcdUtility()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsRacials()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsDefensive()
-        {
-            return new PrioritySelector();
-        }
-
-        internal static Composite Dev_ArmsNonGcdUtility()
-        {
-            return new PrioritySelector();
-        }
-
-        #endregion
 
         #region Release Rotations
 
@@ -293,14 +110,14 @@ namespace FuryUnleashed.Rotations
         // http://www.noxxic.com/wow/pve/warrior/fury/dps-rotation-and-cooldowns
 
         // TODO: Thunderclap is fine on MT, would be nice to check Deepwounds Strength on the other Units (to apply stronger DW to the other units on STR procs or something like this).
-        internal static Composite Rel_ArmsSt()
+        internal static Composite PvP_ArmsSingleTarget()
         {
             return new PrioritySelector(
                 // Inside Colossus Smash window
                 new Decorator(ret => Global.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16), // Added T16 P4
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage), // Added.
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Trying this for rage.
                         Spell.Cast(SpellBook.Slam),
                         Spell.Cast(SpellBook.Overpower, ret => Global.SlamOnCooldown && Global.MortalStrikeOnCooldown),
@@ -314,18 +131,18 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.Cast(SpellBook.MortalStrike),
                         Spell.Cast(SpellBook.DragonRoar,
-                            ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityUsage), // Added.
-                // Also in Rel_FuryHeroicStrike().
+                            ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityUsage), // Added.
+                // Also in PvP_FuryHeroicStrike().
                         Spell.Cast(SpellBook.StormBolt,
-                            ret => Global.DeterminationAura || Global.OutrageAura || Global.ColossusSmashSpellCooldown >= 14000 && Tier6AbilityUsage),
+                            ret => Global.DeterminationAura || Global.OutrageAura || Global.ColossusSmashSpellCooldown >= 14000 && ArmsGlobal.Tier6AbilityUsage),
                 // Added - When new one is ready in next CS window - With Eye of Galakras.
                         Spell.Cast(SpellBook.Overpower),
                         Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Arms.CheckHeroicThrow),
                         Spell.Cast(SpellBook.Bladestorm,
-                            ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && Tier4AbilityUsage),
+                            ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
@@ -341,7 +158,7 @@ namespace FuryUnleashed.Rotations
                         )));
         }
 
-        internal static Composite Rel_ArmsExec()
+        internal static Composite PvP_ArmsExecute()
         {
             return new PrioritySelector(
                 // Inside Colossus Smash window
@@ -350,7 +167,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SpellBook.Execute),
                         Spell.Cast(SpellBook.MortalStrike),
 
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage), // Added.
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage), // Added.
 
                         Spell.Cast(SpellBook.Overpower),
                         Spell.Cast(SpellBook.HeroicStrike, ret => Me.CurrentRage == Me.MaxRage))),
@@ -361,9 +178,9 @@ namespace FuryUnleashed.Rotations
                             ret => Me.CurrentRage >= 80 || (Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500)),
                 // Added T16 P4 - Waiting for CS window unless expires.
 
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityUsage),
                 // Added.
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage), // Added.
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage), // Added.
 
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.Cast(SpellBook.MortalStrike),
@@ -371,10 +188,10 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Arms.CheckHeroicThrow),
 
                         Spell.Cast(SpellBook.Bladestorm,
-                            ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && Tier4AbilityUsage),
+                            ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityUsage),
+                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
 
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
@@ -385,7 +202,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Rel_ArmsRageDump()
+        internal static Composite PvP_ArmsRageDump()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.HeroicStrike,
@@ -395,7 +212,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Rel_ArmsMt()
+        internal static Composite PvP_ArmsMt()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16), // Added.
@@ -406,11 +223,11 @@ namespace FuryUnleashed.Rotations
                                 InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NeedThunderclapUnitsCount > 0),
                 // Should be MultiDot Mortal Strike ...
 
-                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ArmsGlobal.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage),
+                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage),
 
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
@@ -424,20 +241,20 @@ namespace FuryUnleashed.Rotations
                                 Spell.Cast(SpellBook.Slam))),
                         Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => Global.NormalPhase,
-                            Rel_ArmsSt()),
+                            PvP_ArmsSingleTarget()),
                         new Decorator(ret => Global.ExecutePhase,
-                            Rel_ArmsExec()))),
+                            PvP_ArmsExecute()))),
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 3,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.ThunderClap,
                             ret =>
                                 InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NeedThunderclapUnitsCount > 0),
 
-                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ArmsGlobal.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Tier6AbilityUsage),
+                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage),
 
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
@@ -451,12 +268,12 @@ namespace FuryUnleashed.Rotations
                                 Spell.Cast(SpellBook.Slam))),
                         Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage),
                         new Decorator(ret => Global.NormalPhase,
-                            Rel_ArmsSt()),
+                            PvP_ArmsSingleTarget()),
                         new Decorator(ret => Global.ExecutePhase,
-                            Rel_ArmsExec()))));
+                            PvP_ArmsExecute()))));
         }
 
-        internal static Composite Rel_ArmsOffensive()
+        internal static Composite PvP_ArmsOffensive()
         {
             return new PrioritySelector(
 
@@ -470,19 +287,19 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SpellBook.BerserkerRage,
                             ret =>
                                 (!Global.EnrageAura || Global.FadingEnrage(500)) && Global.ColossusSmashAura &&
-                                BerserkerRageUsage),
-                        Spell.Cast(SpellBook.Bloodbath, ret => Tier4AbilityUsage),
+                                ArmsGlobal.BerserkerRageUsage),
+                        Spell.Cast(SpellBook.Bloodbath, ret => ArmsGlobal.Tier4AbilityUsage),
 
-                        Spell.Cast(SpellBook.Recklessness, ret => RecklessnessUsage),
+                        Spell.Cast(SpellBook.Recklessness, ret => ArmsGlobal.RecklessnessUsage),
                         Spell.Cast(SpellBook.SkullBanner,
-                            ret => !Global.SkullBannerAura && RecklessnessSync && SkullBannerUsage),
-                        Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && RecklessnessSync && Tier6AbilityUsage)
+                            ret => !Global.SkullBannerAura && ArmsGlobal.RecklessnessSync && ArmsGlobal.SkullBannerUsage),
+                        Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && ArmsGlobal.RecklessnessSync && ArmsGlobal.Tier6AbilityUsage)
                         )
                     )
                 );
         }
 
-        internal static Composite Rel_ArmsGcdUtility()
+        internal static Composite PvP_ArmsGcdUtility()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.ImpendingVictory,
@@ -500,10 +317,10 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Rel_ArmsRacials()
+        internal static Composite PvP_ArmsRacials()
         {
             return new PrioritySelector(
-                new Decorator(ret => RacialUsage,
+                new Decorator(ret => ArmsGlobal.RacialUsage,
                     Spell.Cast(Global.SelectRacialSpell(),
                         ret =>
                             Global.SelectRacialSpell() != null &&
@@ -511,7 +328,7 @@ namespace FuryUnleashed.Rotations
                     ));
         }
 
-        internal static Composite Rel_ArmsDefensive()
+        internal static Composite PvP_ArmsDefensive()
         {
             return new PrioritySelector(
                 // Interrupts
@@ -548,14 +365,14 @@ namespace FuryUnleashed.Rotations
                                 .OrderByDescending(x => x.Distance)
                                 .FirstOrDefault(x => x.Distance > 12 && x.InLineOfSpellSight),
                             new Decorator(ctx => ctx != null,
-                                Spell.CastOnGround(SpellBook.HeroicLeap, ctx => (WoWUnit) ctx))
+                                Spell.CastOnGround(SpellBook.HeroicLeap, ctx => (WoWUnit)ctx))
                             ),
                         new PrioritySelector(
                             ctx => Unit.NearbyAttackableUnits(StyxWoW.Me.Location, 35)
                                 .OrderByDescending(x => x.Distance)
                                 .FirstOrDefault(x => x.Distance > 12 && x.InLineOfSpellSight),
                             new Decorator(ctx => ctx != null,
-                                Spell.CastOnGround(SpellBook.HeroicLeap, ctx => (WoWUnit) ctx))
+                                Spell.CastOnGround(SpellBook.HeroicLeap, ctx => (WoWUnit)ctx))
                             )
                         )
                     ),
@@ -580,7 +397,7 @@ namespace FuryUnleashed.Rotations
                 );
         }
 
-        internal static Composite Rel_ArmsNonGcdUtility()
+        internal static Composite PvP_ArmsNonGcdUtility()
         {
             return new PrioritySelector(
                 EquipTwoHander(),
@@ -598,7 +415,7 @@ namespace FuryUnleashed.Rotations
                 Spell.Cast(SpellBook.MassSpellReflection,
                     ret =>
                         Global.MassSpellReflectionTalent && Me.CurrentTarget != null && Me.CurrentTarget.IsCasting &&
-                        MassSpellReflectionUsage),
+                        ArmsGlobal.MassSpellReflectionUsage),
                 Spell.Cast(SpellBook.PiercingHowl,
                     ret =>
                         Global.PiercingHowlTalent && InternalSettings.Instance.Arms.CheckStaggeringShout &&
@@ -708,118 +525,6 @@ namespace FuryUnleashed.Rotations
                         a.Spell.Name == "Hex"));
             }
             return false;
-        }
-
-        internal static bool BerserkerRageUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool MassSpellReflectionUsage
-        {
-            get
-            {
-                return ((Unit.NearbyCastingUnits(StyxWoW.Me.Location, 45)) != null ||
-                        (InternalSettings.Instance.Arms.MassSpellReflection == Enum.MsrTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.MassSpellReflection == Enum.MsrTrigger.Always && Global.PummelOnCooldown &&
-                         Global.DisruptingShoutOnCooldown));
-            }
-        }
-
-        internal static bool RacialUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.ClassRacials == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool RecklessnessUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.Recklessness == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Recklessness == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Recklessness == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool SkullBannerUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.SkullBanner == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool Tier4AbilityUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool Tier6AbilityUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool Tier4AbilityAoEUsage
-        {
-            get
-            {
-                return ((InternalSettings.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy &&
-                         Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr &&
-                         Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool RecklessnessSync
-        {
-            get
-            {
-                return ((Global.RecklessnessAura) || (Global.DeterminationAura || Global.OutrageAura));
-            }
-        }
-
-        internal static bool BloodbathSync
-        {
-            get
-            {
-                return ((Global.BloodbathAura || Global.AvatarTalent || Global.StormBoltTalent) || (Global.DeterminationAura || Global.OutrageAura));
-            }
         }
 
         #endregion
