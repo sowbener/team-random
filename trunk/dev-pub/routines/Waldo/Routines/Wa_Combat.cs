@@ -33,6 +33,7 @@ namespace Waldo.Routines
                         new Decorator(ret => (WaHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                        G.InitializeOnKeyActions(),
                         new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                         Spell.Cast("Blade Flurry", ret => U.NearbyAttackableUnitsCount > 1 && U.NearbyAttackableUnitsCount <= 8 && SG.Instance.Combat.AutoTurnOffBladeFlurry),
                         new Decorator(a => U.NearbyAttackableUnitsCount > 7 && SG.Instance.Combat.AutoTurnOffBladeFlurry, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
@@ -67,7 +68,6 @@ namespace Waldo.Routines
        internal static Composite ComSt()
         {
             return new PrioritySelector(
-                new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Tricks of the Trade", u => TricksTarget, ret => TricksTarget != null))),
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
@@ -81,13 +81,6 @@ namespace Waldo.Routines
                 Spell.Cast("Slice and Dice", ret => !G.SliceAndDiceEnevenom));
         }
 
-        private static WoWUnit TricksTarget
-        {
-            get
-            {
-                return G.BestTricksTarget;
-            }
-        }
 
         internal static Composite ComInterrupts()
         {
