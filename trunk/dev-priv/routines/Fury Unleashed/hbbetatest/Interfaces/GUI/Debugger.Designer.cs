@@ -102,17 +102,19 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.shieldblocksizetextbox = new System.Windows.Forms.TextBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.shieldbarriersizetextbox = new System.Windows.Forms.TextBox();
-            this.updateshieldblockbutton = new System.Windows.Forms.Button();
-            this.updateshieldbarrierbutton = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.armstab = new System.Windows.Forms.TabPage();
-            this.furytab = new System.Windows.Forms.TabPage();
-            this.protectiontab = new System.Windows.Forms.TabPage();
-            this.updatedamagetakenbutton = new System.Windows.Forms.Button();
+            this.shieldblocksizetextbox = new System.Windows.Forms.TextBox();
             this.damagetakentextbox = new System.Windows.Forms.TextBox();
+            this.updatedamagetakenbutton = new System.Windows.Forms.Button();
+            this.updateshieldbarrierbutton = new System.Windows.Forms.Button();
+            this.updateshieldblockbutton = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -123,8 +125,9 @@
             this.targetcachedaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).BeginInit();
             this.tabPage1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.protectiontab.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -134,20 +137,22 @@
             this.Tabs.Controls.Add(this.mycachedaurastab);
             this.Tabs.Controls.Add(this.targetcachedaurastab);
             this.Tabs.Controls.Add(this.tabPage1);
-            this.Tabs.Location = new System.Drawing.Point(12, 12);
+            this.Tabs.Location = new System.Drawing.Point(14, 15);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(1179, 464);
+            this.Tabs.Size = new System.Drawing.Size(1375, 571);
             this.Tabs.TabIndex = 0;
             // 
             // myaurastab
             // 
             this.myaurastab.Controls.Add(this.myaurasdatagrid);
             this.myaurastab.Controls.Add(this.myaurasbutton);
-            this.myaurastab.Location = new System.Drawing.Point(4, 22);
+            this.myaurastab.Location = new System.Drawing.Point(4, 25);
+            this.myaurastab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.myaurastab.Name = "myaurastab";
-            this.myaurastab.Padding = new System.Windows.Forms.Padding(3);
-            this.myaurastab.Size = new System.Drawing.Size(1171, 438);
+            this.myaurastab.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.myaurastab.Size = new System.Drawing.Size(1367, 542);
             this.myaurastab.TabIndex = 0;
             this.myaurastab.Text = "My Aura\'s";
             this.myaurastab.UseVisualStyleBackColor = true;
@@ -173,9 +178,10 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyAuras,
             this.cancellableDataGridViewCheckBoxColumnMyAuras});
             this.myaurasdatagrid.EnableHeadersVisualStyles = false;
-            this.myaurasdatagrid.Location = new System.Drawing.Point(6, 35);
+            this.myaurasdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.myaurasdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.myaurasdatagrid.Name = "myaurasdatagrid";
-            this.myaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
+            this.myaurasdatagrid.Size = new System.Drawing.Size(1352, 489);
             this.myaurasdatagrid.TabIndex = 1;
             this.myaurasdatagrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.myaurasdatagrid_DataError);
             // 
@@ -294,9 +300,10 @@
             // 
             // myaurasbutton
             // 
-            this.myaurasbutton.Location = new System.Drawing.Point(6, 6);
+            this.myaurasbutton.Location = new System.Drawing.Point(7, 7);
+            this.myaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.myaurasbutton.Name = "myaurasbutton";
-            this.myaurasbutton.Size = new System.Drawing.Size(300, 23);
+            this.myaurasbutton.Size = new System.Drawing.Size(350, 28);
             this.myaurasbutton.TabIndex = 0;
             this.myaurasbutton.Text = "Update my Aura\'s";
             this.myaurasbutton.UseVisualStyleBackColor = true;
@@ -306,10 +313,11 @@
             // 
             this.targetaurastab.Controls.Add(this.mytargetaurasdatagrid);
             this.targetaurastab.Controls.Add(this.targetaurasbutton);
-            this.targetaurastab.Location = new System.Drawing.Point(4, 22);
+            this.targetaurastab.Location = new System.Drawing.Point(4, 25);
+            this.targetaurastab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.targetaurastab.Name = "targetaurastab";
-            this.targetaurastab.Padding = new System.Windows.Forms.Padding(3);
-            this.targetaurastab.Size = new System.Drawing.Size(1171, 438);
+            this.targetaurastab.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.targetaurastab.Size = new System.Drawing.Size(1367, 542);
             this.targetaurastab.TabIndex = 1;
             this.targetaurastab.Text = "Target Aura\'s";
             this.targetaurastab.UseVisualStyleBackColor = true;
@@ -335,9 +343,10 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetAuras,
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras});
             this.mytargetaurasdatagrid.EnableHeadersVisualStyles = false;
-            this.mytargetaurasdatagrid.Location = new System.Drawing.Point(6, 35);
+            this.mytargetaurasdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.mytargetaurasdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mytargetaurasdatagrid.Name = "mytargetaurasdatagrid";
-            this.mytargetaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
+            this.mytargetaurasdatagrid.Size = new System.Drawing.Size(1352, 489);
             this.mytargetaurasdatagrid.TabIndex = 2;
             this.mytargetaurasdatagrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.mytargetaurasdatagrid_DataError);
             // 
@@ -456,9 +465,10 @@
             // 
             // targetaurasbutton
             // 
-            this.targetaurasbutton.Location = new System.Drawing.Point(6, 6);
+            this.targetaurasbutton.Location = new System.Drawing.Point(7, 7);
+            this.targetaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.targetaurasbutton.Name = "targetaurasbutton";
-            this.targetaurasbutton.Size = new System.Drawing.Size(300, 23);
+            this.targetaurasbutton.Size = new System.Drawing.Size(350, 28);
             this.targetaurasbutton.TabIndex = 1;
             this.targetaurasbutton.Text = "Update my Target\'s Aura\'s";
             this.targetaurasbutton.UseVisualStyleBackColor = true;
@@ -468,19 +478,21 @@
             // 
             this.mycachedaurastab.Controls.Add(this.mycachedaurasbutton);
             this.mycachedaurastab.Controls.Add(this.mycachedaurasdatagrid);
-            this.mycachedaurastab.Location = new System.Drawing.Point(4, 22);
+            this.mycachedaurastab.Location = new System.Drawing.Point(4, 25);
+            this.mycachedaurastab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mycachedaurastab.Name = "mycachedaurastab";
-            this.mycachedaurastab.Padding = new System.Windows.Forms.Padding(3);
-            this.mycachedaurastab.Size = new System.Drawing.Size(1171, 438);
+            this.mycachedaurastab.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.mycachedaurastab.Size = new System.Drawing.Size(1367, 542);
             this.mycachedaurastab.TabIndex = 2;
             this.mycachedaurastab.Text = "My Cached Aura\'s";
             this.mycachedaurastab.UseVisualStyleBackColor = true;
             // 
             // mycachedaurasbutton
             // 
-            this.mycachedaurasbutton.Location = new System.Drawing.Point(6, 6);
+            this.mycachedaurasbutton.Location = new System.Drawing.Point(7, 7);
+            this.mycachedaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mycachedaurasbutton.Name = "mycachedaurasbutton";
-            this.mycachedaurasbutton.Size = new System.Drawing.Size(300, 23);
+            this.mycachedaurasbutton.Size = new System.Drawing.Size(350, 28);
             this.mycachedaurasbutton.TabIndex = 3;
             this.mycachedaurasbutton.Text = "Update my Cached Aura\'s";
             this.mycachedaurasbutton.UseVisualStyleBackColor = true;
@@ -507,9 +519,10 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyCachedAuras,
             this.cancellableDataGridViewCheckBoxColumnMyCachedAuras});
             this.mycachedaurasdatagrid.EnableHeadersVisualStyles = false;
-            this.mycachedaurasdatagrid.Location = new System.Drawing.Point(6, 35);
+            this.mycachedaurasdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.mycachedaurasdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mycachedaurasdatagrid.Name = "mycachedaurasdatagrid";
-            this.mycachedaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
+            this.mycachedaurasdatagrid.Size = new System.Drawing.Size(1352, 489);
             this.mycachedaurasdatagrid.TabIndex = 2;
             this.mycachedaurasdatagrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.mycachedaurasdatagrid_DataError);
             // 
@@ -630,19 +643,21 @@
             // 
             this.targetcachedaurastab.Controls.Add(this.targetcachedaurasbutton);
             this.targetcachedaurastab.Controls.Add(this.mytargetcachedaurasdatagrid);
-            this.targetcachedaurastab.Location = new System.Drawing.Point(4, 22);
+            this.targetcachedaurastab.Location = new System.Drawing.Point(4, 25);
+            this.targetcachedaurastab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.targetcachedaurastab.Name = "targetcachedaurastab";
-            this.targetcachedaurastab.Padding = new System.Windows.Forms.Padding(3);
-            this.targetcachedaurastab.Size = new System.Drawing.Size(1171, 438);
+            this.targetcachedaurastab.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.targetcachedaurastab.Size = new System.Drawing.Size(1367, 542);
             this.targetcachedaurastab.TabIndex = 3;
             this.targetcachedaurastab.Text = "Target Cached Aura\'s";
             this.targetcachedaurastab.UseVisualStyleBackColor = true;
             // 
             // targetcachedaurasbutton
             // 
-            this.targetcachedaurasbutton.Location = new System.Drawing.Point(6, 6);
+            this.targetcachedaurasbutton.Location = new System.Drawing.Point(7, 7);
+            this.targetcachedaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.targetcachedaurasbutton.Name = "targetcachedaurasbutton";
-            this.targetcachedaurasbutton.Size = new System.Drawing.Size(300, 23);
+            this.targetcachedaurasbutton.Size = new System.Drawing.Size(350, 28);
             this.targetcachedaurasbutton.TabIndex = 3;
             this.targetcachedaurasbutton.Text = "Update my Target\'s Cached Aura\'s";
             this.targetcachedaurasbutton.UseVisualStyleBackColor = true;
@@ -669,9 +684,10 @@
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras,
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras});
             this.mytargetcachedaurasdatagrid.EnableHeadersVisualStyles = false;
-            this.mytargetcachedaurasdatagrid.Location = new System.Drawing.Point(6, 35);
+            this.mytargetcachedaurasdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.mytargetcachedaurasdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mytargetcachedaurasdatagrid.Name = "mytargetcachedaurasdatagrid";
-            this.mytargetcachedaurasdatagrid.Size = new System.Drawing.Size(1159, 397);
+            this.mytargetcachedaurasdatagrid.Size = new System.Drawing.Size(1352, 489);
             this.mytargetcachedaurasdatagrid.TabIndex = 2;
             this.mytargetcachedaurasdatagrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.mytargetcachedaurasdatagrid_DataError);
             // 
@@ -790,126 +806,159 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.tabControl1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Controls.Add(this.panel3);
+            this.tabPage1.Controls.Add(this.panel2);
+            this.tabPage1.Controls.Add(this.panel1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1171, 438);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage1.Size = new System.Drawing.Size(1367, 542);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Other Options";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.label2);
+            this.panel3.Location = new System.Drawing.Point(460, 7);
+            this.panel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(443, 524);
+            this.panel3.TabIndex = 7;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(3, 2);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 19);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Fury";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.shieldbarriersizetextbox);
+            this.panel2.Controls.Add(this.shieldblocksizetextbox);
+            this.panel2.Controls.Add(this.damagetakentextbox);
+            this.panel2.Controls.Add(this.updatedamagetakenbutton);
+            this.panel2.Controls.Add(this.updateshieldbarrierbutton);
+            this.panel2.Controls.Add(this.updateshieldblockbutton);
+            this.panel2.Location = new System.Drawing.Point(916, 7);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(443, 524);
+            this.panel2.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(3, 2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(85, 19);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Protection";
+            // 
+            // shieldbarriersizetextbox
+            // 
+            this.shieldbarriersizetextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.shieldbarriersizetextbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shieldbarriersizetextbox.Location = new System.Drawing.Point(211, 32);
+            this.shieldbarriersizetextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.shieldbarriersizetextbox.Name = "shieldbarriersizetextbox";
+            this.shieldbarriersizetextbox.ReadOnly = true;
+            this.shieldbarriersizetextbox.Size = new System.Drawing.Size(171, 21);
+            this.shieldbarriersizetextbox.TabIndex = 2;
             // 
             // shieldblocksizetextbox
             // 
             this.shieldblocksizetextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.shieldblocksizetextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.shieldblocksizetextbox.Location = new System.Drawing.Point(184, 37);
+            this.shieldblocksizetextbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.shieldblocksizetextbox.Location = new System.Drawing.Point(211, 68);
+            this.shieldblocksizetextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.shieldblocksizetextbox.Name = "shieldblocksizetextbox";
             this.shieldblocksizetextbox.ReadOnly = true;
-            this.shieldblocksizetextbox.Size = new System.Drawing.Size(147, 20);
+            this.shieldblocksizetextbox.Size = new System.Drawing.Size(171, 21);
             this.shieldblocksizetextbox.TabIndex = 3;
             // 
-            // shieldbarriersizetextbox
+            // damagetakentextbox
             // 
-            this.shieldbarriersizetextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.shieldbarriersizetextbox.Location = new System.Drawing.Point(184, 8);
-            this.shieldbarriersizetextbox.Name = "shieldbarriersizetextbox";
-            this.shieldbarriersizetextbox.ReadOnly = true;
-            this.shieldbarriersizetextbox.Size = new System.Drawing.Size(147, 20);
-            this.shieldbarriersizetextbox.TabIndex = 2;
-            // 
-            // updateshieldblockbutton
-            // 
-            this.updateshieldblockbutton.Location = new System.Drawing.Point(6, 35);
-            this.updateshieldblockbutton.Name = "updateshieldblockbutton";
-            this.updateshieldblockbutton.Size = new System.Drawing.Size(172, 23);
-            this.updateshieldblockbutton.TabIndex = 1;
-            this.updateshieldblockbutton.Text = "Update Shield Block Size";
-            this.updateshieldblockbutton.UseVisualStyleBackColor = true;
-            this.updateshieldblockbutton.Click += new System.EventHandler(this.updateshieldblockbutton_Click);
-            // 
-            // updateshieldbarrierbutton
-            // 
-            this.updateshieldbarrierbutton.Location = new System.Drawing.Point(6, 6);
-            this.updateshieldbarrierbutton.Name = "updateshieldbarrierbutton";
-            this.updateshieldbarrierbutton.Size = new System.Drawing.Size(172, 23);
-            this.updateshieldbarrierbutton.TabIndex = 0;
-            this.updateshieldbarrierbutton.Text = "Update Shield Barrier Size";
-            this.updateshieldbarrierbutton.UseVisualStyleBackColor = true;
-            this.updateshieldbarrierbutton.Click += new System.EventHandler(this.updateshieldbarrierbutton_Click);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.armstab);
-            this.tabControl1.Controls.Add(this.furytab);
-            this.tabControl1.Controls.Add(this.protectiontab);
-            this.tabControl1.Location = new System.Drawing.Point(6, 6);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1159, 426);
-            this.tabControl1.TabIndex = 4;
-            // 
-            // armstab
-            // 
-            this.armstab.Location = new System.Drawing.Point(4, 22);
-            this.armstab.Name = "armstab";
-            this.armstab.Padding = new System.Windows.Forms.Padding(3);
-            this.armstab.Size = new System.Drawing.Size(192, 74);
-            this.armstab.TabIndex = 0;
-            this.armstab.Text = "Arms";
-            this.armstab.UseVisualStyleBackColor = true;
-            // 
-            // furytab
-            // 
-            this.furytab.Location = new System.Drawing.Point(4, 22);
-            this.furytab.Name = "furytab";
-            this.furytab.Padding = new System.Windows.Forms.Padding(3);
-            this.furytab.Size = new System.Drawing.Size(192, 74);
-            this.furytab.TabIndex = 1;
-            this.furytab.Text = "Fury";
-            this.furytab.UseVisualStyleBackColor = true;
-            // 
-            // protectiontab
-            // 
-            this.protectiontab.Controls.Add(this.damagetakentextbox);
-            this.protectiontab.Controls.Add(this.updatedamagetakenbutton);
-            this.protectiontab.Controls.Add(this.updateshieldblockbutton);
-            this.protectiontab.Controls.Add(this.shieldbarriersizetextbox);
-            this.protectiontab.Controls.Add(this.shieldblocksizetextbox);
-            this.protectiontab.Controls.Add(this.updateshieldbarrierbutton);
-            this.protectiontab.Location = new System.Drawing.Point(4, 22);
-            this.protectiontab.Name = "protectiontab";
-            this.protectiontab.Padding = new System.Windows.Forms.Padding(3);
-            this.protectiontab.Size = new System.Drawing.Size(1151, 400);
-            this.protectiontab.TabIndex = 2;
-            this.protectiontab.Text = "Protection";
-            this.protectiontab.UseVisualStyleBackColor = true;
+            this.damagetakentextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.damagetakentextbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.damagetakentextbox.Location = new System.Drawing.Point(211, 103);
+            this.damagetakentextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.damagetakentextbox.Name = "damagetakentextbox";
+            this.damagetakentextbox.ReadOnly = true;
+            this.damagetakentextbox.Size = new System.Drawing.Size(171, 21);
+            this.damagetakentextbox.TabIndex = 5;
             // 
             // updatedamagetakenbutton
             // 
-            this.updatedamagetakenbutton.Location = new System.Drawing.Point(6, 92);
+            this.updatedamagetakenbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updatedamagetakenbutton.Location = new System.Drawing.Point(3, 101);
+            this.updatedamagetakenbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.updatedamagetakenbutton.Name = "updatedamagetakenbutton";
-            this.updatedamagetakenbutton.Size = new System.Drawing.Size(172, 23);
+            this.updatedamagetakenbutton.Size = new System.Drawing.Size(201, 28);
             this.updatedamagetakenbutton.TabIndex = 4;
             this.updatedamagetakenbutton.Text = "Update Damage Taken (6 Secs)";
             this.updatedamagetakenbutton.UseVisualStyleBackColor = true;
             this.updatedamagetakenbutton.Click += new System.EventHandler(this.updatedamagetakenbutton_Click);
             // 
-            // damagetakentextbox
+            // updateshieldbarrierbutton
             // 
-            this.damagetakentextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.damagetakentextbox.Location = new System.Drawing.Point(184, 94);
-            this.damagetakentextbox.Name = "damagetakentextbox";
-            this.damagetakentextbox.ReadOnly = true;
-            this.damagetakentextbox.Size = new System.Drawing.Size(147, 20);
-            this.damagetakentextbox.TabIndex = 5;
+            this.updateshieldbarrierbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateshieldbarrierbutton.Location = new System.Drawing.Point(3, 30);
+            this.updateshieldbarrierbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.updateshieldbarrierbutton.Name = "updateshieldbarrierbutton";
+            this.updateshieldbarrierbutton.Size = new System.Drawing.Size(201, 28);
+            this.updateshieldbarrierbutton.TabIndex = 0;
+            this.updateshieldbarrierbutton.Text = "Update Shield Barrier Size";
+            this.updateshieldbarrierbutton.UseVisualStyleBackColor = true;
+            this.updateshieldbarrierbutton.Click += new System.EventHandler(this.updateshieldbarrierbutton_Click);
+            // 
+            // updateshieldblockbutton
+            // 
+            this.updateshieldblockbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateshieldblockbutton.Location = new System.Drawing.Point(3, 65);
+            this.updateshieldblockbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.updateshieldblockbutton.Name = "updateshieldblockbutton";
+            this.updateshieldblockbutton.Size = new System.Drawing.Size(201, 28);
+            this.updateshieldblockbutton.TabIndex = 1;
+            this.updateshieldblockbutton.Text = "Update Shield Block Size";
+            this.updateshieldblockbutton.UseVisualStyleBackColor = true;
+            this.updateshieldblockbutton.Click += new System.EventHandler(this.updateshieldblockbutton_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Location = new System.Drawing.Point(5, 7);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(443, 524);
+            this.panel1.TabIndex = 6;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(3, 2);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 19);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Arms";
             // 
             // DebuggerGui
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1203, 488);
+            this.ClientSize = new System.Drawing.Size(1403, 601);
             this.Controls.Add(this.Tabs);
+            this.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "DebuggerGui";
             this.Text = "Fury Unleashed - Debugger - Made by nomnomnom";
             this.Load += new System.EventHandler(this.Debugger_Load);
@@ -923,9 +972,12 @@
             this.targetcachedaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).EndInit();
             this.tabPage1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.protectiontab.ResumeLayout(false);
-            this.protectiontab.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1015,11 +1067,13 @@
         private System.Windows.Forms.Button updateshieldbarrierbutton;
         private System.Windows.Forms.TextBox shieldbarriersizetextbox;
         private System.Windows.Forms.TextBox shieldblocksizetextbox;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage armstab;
-        private System.Windows.Forms.TabPage furytab;
-        private System.Windows.Forms.TabPage protectiontab;
         private System.Windows.Forms.TextBox damagetakentextbox;
         private System.Windows.Forms.Button updatedamagetakenbutton;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
