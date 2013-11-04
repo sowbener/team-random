@@ -108,7 +108,7 @@ namespace Waldo.Managers
                                 IsTricks = !IsTricks;
                                 LogKey("Tricks", WaSettingsH.Instance.Tricks, WaSettingsH.Instance.ModKeyChoice, IsTricks);
                                 if (WaSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(IsTricks
                                                      ? @"print('Tricks of the Trade \124cFF15E61C Enabled!')"
                                                      : @"print('Tricks of the Trade \124cFFE61515 Disabled!')");
                             });
@@ -176,7 +176,7 @@ namespace Waldo.Managers
                                 IsTricks = !IsTricks;
                                 LogKey("Tricks", WaSettingsH.Instance.Tricks, ModifierKeys.Alt, IsTricks);
                                 if (WaSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(IsTricks
                                                      ? @"print('Tricks of the Trade \124cFF15E61C Enabled!')"
                                                      : @"print('Tricks of the Trade \124cFFE61515 Disabled!')");
                             });
