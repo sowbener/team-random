@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using FuryUnleashed.Core.Utilities;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
@@ -14,13 +13,13 @@ namespace FuryUnleashed.Core.Helpers
     [UsedImplicitly]
     internal class CombatLogHandler
     {
-        /*
-         thanks to wulf for fixing the broken stuff
-         */
+        // Credits to Apoc and Wulf for this class!!!
+
+        //public static BossEncounter CurrentBossEncounter { get; set; }
+
         internal static void Initialize()
         {
             Lua.Events.AttachEvent("COMBAT_LOG_EVENT_UNFILTERED", HandleCombatLogEvent);
-            Logger.DiagLogFb("CombatLogHandler attached");
         }
 
         public delegate void CombatLogEventHandler(CombatLogEventArgs args);
@@ -43,25 +42,37 @@ namespace FuryUnleashed.Core.Helpers
                 // ReSharper restore UseObjectOrCollectionInitializer
 
                 // These are common to EVERY combat log event.
-                a.TimeStamp = args.FireTimeStamp;
-                a.Event = args.Args[1].ToString();
+                if (index < args.Args.Length) a.TimeStamp = args.FireTimeStamp;
+                if (index < args.Args.Length) a.Event = args.Args[1].ToString();
+
+                //Logger.Output(a.Event);
 
                 // Kinda unused. No real reason to bother with it.
-                a.HideCaster = args.Args[2].ToString() == "true";
+                if (index < args.Args.Length) a.HideCaster = args.Args[2].ToString() == "true";
 
-                if (!string.IsNullOrEmpty(args.Args[3].ToString()))
-                    a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
-                a.SourceName = args.Args[4].ToString();
+                if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()))
+                {
+                    if (index < args.Args.Length) a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
+                }
+
+                if (args.Args[4] != null && index < args.Args.Length)
+                {
+                    a.SourceName = args.Args[4].ToString();
+                }
+
                 // Double cast is required here!
-                a.SourceFlags = (SourceFlags)(double)args.Args[5];
-                a.SourceRaidFlags = (SourceFlags)(double)args.Args[6];
+                if (index < args.Args.Length) a.SourceFlags = (SourceFlags)(double)args.Args[5];
+                if (index < args.Args.Length) a.SourceRaidFlags = (SourceFlags)(double)args.Args[6];
 
-                if (!string.IsNullOrEmpty(args.Args[7].ToString()))
+                if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length)
+                {
                     a.DestGuid = ulong.Parse(args.Args[7].ToString().Remove(0, 2), NumberStyles.HexNumber);
-                a.DestName = args.Args[8].ToString();
+                }
+
+                if (index < args.Args.Length) a.DestName = args.Args[8].ToString();
                 // Double cast is required here!
-                a.DestFlags = (SourceFlags)(double)args.Args[9];
-                a.DestRaidFlags = (SourceFlags)(double)args.Args[10];
+                if (index < args.Args.Length) a.DestFlags = (SourceFlags)(double)args.Args[9];
+                if (index < args.Args.Length) a.DestRaidFlags = (SourceFlags)(double)args.Args[10];
 
                 // Do some stuff to fill the rest of the args...
                 string prefix = a.Event.Split('_').FirstOrDefault();
@@ -82,15 +93,13 @@ namespace FuryUnleashed.Core.Helpers
                     case "SPELL":
                         // All SPELL prefixes have the same 3 args to start with.
                         // The suffixes change though!
-                        a.SpellId = (int)(double)args.Args[index++];
-                        a.SpellName = args.Args[index++].ToString();
-                        a.SpellSchool = (WoWSpellSchool)(double)args.Args[index++];
+                        if (index < args.Args.Length) a.SpellId = (int)(double)args.Args[index++];
+                        if (index < args.Args.Length) a.SpellName = args.Args[index++].ToString();
+                        if (index < args.Args.Length) a.SpellSchool = (WoWSpellSchool)(double)args.Args[index++];
                         break;
 
                     case "ENVIRONMENTAL":
-                        a.EnvironmentalType =
-                            (EnvironmentalType)
-                            System.Enum.Parse(typeof(EnvironmentalType), args.Args[index++].ToString(), true);
+                        if (index < args.Args.Length) a.EnvironmentalType = (EnvironmentalType)System.Enum.Parse(typeof(EnvironmentalType), args.Args[index++].ToString(), true);
                         break;
                 }
 
@@ -102,79 +111,79 @@ namespace FuryUnleashed.Core.Helpers
                         case "DAMAGE":
                         case "SHIELD": // DAMAGE_SHIELD
                         case "SPLIT": // DAMAGE_SPLIT
-                            a.Amount = (int)(double)args.Args[index++];
-                            a.Overhealing = (int)(double)args.Args[index++];
-                            a.School = (WoWSpellSchool)(double)args.Args[index++];
-                            a.Resisted = (int)(double)args.Args[index++];
-                            a.Blocked = (int)(double)args.Args[index++];
-                            a.Absorbed = (int)(double)args.Args[index++];
-                            a.Critical = Convert.ToBoolean(args.Args[index++]);
-                            a.Glancing = Convert.ToBoolean(args.Args[index++]);
-                            a.Crushing = Convert.ToBoolean(args.Args[index++]);
+                            if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Overhealing = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.School = (WoWSpellSchool)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Resisted = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Blocked = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Absorbed = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Critical = Convert.ToBoolean(args.Args[index++]);
+                            if (index < args.Args.Length) a.Glancing = Convert.ToBoolean(args.Args[index++]);
+                            if (index < args.Args.Length) a.Crushing = Convert.ToBoolean(args.Args[index++]);
                             break;
 
                         case "SHIELD_MISSED": // DAMAGE_SHIELD_MISSED
                         case "MISSED":
-                            a.MissType = (MissType)System.Enum.Parse(typeof(MissType), args.Args[index++].ToString(), true);
-                            a.IsOffHand = Convert.ToBoolean(args.Args[index++]);
+                            if (index < args.Args.Length) a.MissType = (MissType)System.Enum.Parse(typeof(MissType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.IsOffHand = Convert.ToBoolean(args.Args[index++]);
                             // AmountMissed (probably not there)
                             break;
 
                         case "HEAL":
-                            a.Amount = (int)(double)args.Args[index++];
-                            a.Overhealing = (int)(double)args.Args[index++];
-                            a.Absorbed = (int)(double)args.Args[index++];
-                            a.Critical = Convert.ToBoolean(args.Args[index++]);
+                            if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Overhealing = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Absorbed = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Critical = Convert.ToBoolean(args.Args[index++]);
                             break;
 
                         // +mana/energy type gains.
                         case "ENERGIZE":
-                            a.Amount = (int)(double)args.Args[index++];
-                            a.PowerType = (WoWPowerType)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.PowerType = (WoWPowerType)(double)args.Args[index++];
                             break;
 
                         case "DRAIN":
                         case "LEECH":
-                            a.Amount = (int)(double)args.Args[index++];
-                            a.PowerType = (WoWPowerType)(double)args.Args[index++];
-                            a.ExtraAmount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.PowerType = (WoWPowerType)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.ExtraAmount = (int)(double)args.Args[index++];
                             break;
 
                         case "INTERRUPT":
                         case "DISPEL_FAILED":
-                            a.ExtraSpellId = (int)(double)args.Args[index++];
-                            a.ExtraSpellName = args.Args[index++].ToString();
-                            a.ExtraSchool = (WoWSpellSchool)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.ExtraSpellId = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.ExtraSpellName = args.Args[index++].ToString();
+                            if (index < args.Args.Length) a.ExtraSchool = (WoWSpellSchool)(double)args.Args[index++];
                             break;
 
                         case "DISPEL":
                         case "STOLEN":
                         case "AURA_BROKEN_SPELL":
-                            a.ExtraSpellId = (int)(double)args.Args[index++];
-                            a.ExtraSpellName = args.Args[index++].ToString();
-                            a.ExtraSchool = (WoWSpellSchool)(double)args.Args[index++];
-                            a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.ExtraSpellId = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.ExtraSpellName = args.Args[index++].ToString();
+                            if (index < args.Args.Length) a.ExtraSchool = (WoWSpellSchool)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             break;
 
                         case "EXTRA_ATTACKS":
-                            a.Amount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
                             break;
 
                         case "AURA_APPLIED":
                         case "AURA_REMOVED":
                         case "AURA_REFRESH":
                         case "AURA_BROKEN":
-                            a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             break;
 
                         case "AURA_APPLIED_DOSE":
                         case "AURA_REMOVED_DOSE":
-                            a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
-                            a.Amount = (int)(double)args.Args[index++];
+                            if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
                             break;
 
                         case "CAST_FAILED":
-                            a.FailedType = args.Args[index++].ToString();
+                            if (index < args.Args.Length) a.FailedType = args.Args[index++].ToString();
                             break;
 
                         case "CAST_START":
@@ -196,9 +205,9 @@ namespace FuryUnleashed.Core.Helpers
                             {
                                 case "ENCHANT_APPLIED":
                                 case "ENCHANT_REMOVED":
-                                    a.SpellName = args.Args[index++].ToString();
-                                    a.ItemId = (int)(double)args.Args[index++];
-                                    a.ItemName = args.Args[index++].ToString();
+                                    if (index < args.Args.Length) a.SpellName = args.Args[index++].ToString();
+                                    if (index < args.Args.Length) a.ItemId = (int)(double)args.Args[index++];
+                                    if (index < args.Args.Length) a.ItemName = args.Args[index++].ToString();
                                     break;
 
                                 case "PARTY_KILL":
@@ -222,8 +231,8 @@ namespace FuryUnleashed.Core.Helpers
                     // to ensure the optional params are there.
                     // So just leave this at an empty catch. Unavailable params will just have default values. :)
                 }
-                // TODO: Change this so it's easier on modules.
-                //CurrentModule.HandleCombatLogEvent(a);
+
+                //if (CurrentBossEncounter != null) CurrentBossEncounter.HandleCombatLogEvent(a);
 
                 //Logger.Output(a.ToString());
 
@@ -238,15 +247,15 @@ namespace FuryUnleashed.Core.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Logger.DiagLogFb("{0}", ex);
+                            Utilities.Logger.DiagLogWh("{0}", ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.DiagLogFb(args.Args[1] + ", Index: " + index);
-                Logger.DiagLogFb("{0}", ex);
+                Utilities.Logger.DiagLogWh(args.Args[1] + ", Index: " + index);
+                Utilities.Logger.DiagLogWh("{0}", ex);
             }
         }
 
@@ -302,6 +311,32 @@ namespace FuryUnleashed.Core.Helpers
             else
             {
                 handlers.Add(handler);
+            }
+        }
+
+        public static void Remove(string combatLogEventName)
+        {
+            List<CombatLogEventHandler> handlers;
+
+            if (EventHandlers.TryGetValue(combatLogEventName, out handlers))
+            {
+                EventHandlers.Remove(combatLogEventName);
+
+                // Remove the old filter.
+                Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
+
+                var sb = new StringBuilder();
+                sb.Append("return ");
+                foreach (string eh in EventHandlers.Keys)
+                {
+                    sb.Append("args[2] == '" + eh + "' or ");
+                }
+                // Trim the " or" at the end. Cuz we're lazu! The evolved form of lazy!
+
+                // Pop in our new one. This avoids a shitload of events being thrown at us, that we really don't care about.
+                Lua.Events.AddFilter("COMBAT_LOG_EVENT_UNFILTERED", sb.ToString().TrimEnd(" or ".ToArray()));
+
+                Utilities.Logger.DiagLogWh(" Removed combat filter:  {0}", combatLogEventName);
             }
         }
     }
@@ -498,6 +533,5 @@ namespace FuryUnleashed.Core.Helpers
                     ItemId,
                     ItemName);
         }
-
     }
 }

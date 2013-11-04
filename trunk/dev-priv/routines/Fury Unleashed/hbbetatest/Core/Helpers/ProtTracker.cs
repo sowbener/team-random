@@ -3,6 +3,7 @@ using Styx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Styx.Common;
 
 namespace FuryUnleashed.Core.Helpers
 {
@@ -18,6 +19,7 @@ namespace FuryUnleashed.Core.Helpers
         public static void Initialize()
         {
             _damageTaken = new Dictionary<DateTime, double>();
+            CombatLogHandler.Initialize();
             AttachCombatLogEvent();
             Logger.CombatLogFb("FU: ProtTracker Initialized.");
         }
@@ -51,8 +53,6 @@ namespace FuryUnleashed.Core.Helpers
                     if (args.DestGuid == StyxWoW.Me.Guid)
                     {
                         object damage = args.Amount;
-                        //string school = args.SpellSchool.ToString();
-                        //string spellname = args.SpellName;
 
                         // Do not count damage from no source or maybe this is just particular items like Shannox's Jagged Tear?
                         // Do not count Spirit Link damage since it doesn't affect DS.
@@ -77,6 +77,7 @@ namespace FuryUnleashed.Core.Helpers
                 AddingDamageTaken = true;
                 _damageTaken[timestamp] = damage;
                 AddingDamageTaken = false;
+                Logging.WriteDiagnostic(" Adding Damage amount {0}", damage);
             }
             catch (Exception ex)
             {
