@@ -56,6 +56,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.Interrupts.RandomTimed)]
+        [Category("General")]
+        [DisplayName("Interrupt Mode")]
+        [Description("Select the interrupt mode - Instant or after a random casttime - RANDOM IS RECOMMENDED!")]
+        public Enum.Interrupts InterruptMode { get; set; }
         #endregion
 
         // ========================================================================================

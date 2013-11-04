@@ -1,4 +1,5 @@
 ﻿using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -9,6 +10,7 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core
 {
@@ -215,22 +217,29 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Simple Booleans
-
         internal static bool DefaultCheck
         {
-            get { return Me.CurrentTarget != null && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange; }
+            get
+            {
+                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
+            }
         }
 
         internal static bool DefaultBuffCheck
         {
-            get { return !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink"); }
+            get
+            {
+                return IsViable(Me) && !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink");
+            }
         }
 
+        private static Random _random = new Random();
         internal static bool CanInterrupt
         {
-            get 
+            get
             {
-                return Me.CurrentTarget != null && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast;
+                return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) &&
+                    Me.CurrentTarget.CanInterruptCurrentSpellCast;
             }
         }
 

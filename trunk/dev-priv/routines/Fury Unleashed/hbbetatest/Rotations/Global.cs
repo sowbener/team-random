@@ -90,25 +90,43 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
+        //private static Random _random = new Random();
+        //internal static Composite InitializeInterrupts()
+        //{
+        //    return new PrioritySelector(
+        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
+        //            Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
+        //            ),
+        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
+        //            Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
+        //            ));
+        //}
+
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-                    Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
-                    ),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-                    Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
-                    ));
+                new Decorator(ret => IS.Instance.General.InterruptMode == Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= _random.Next(250, 1500),
+                    new PrioritySelector(
+                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
+                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                            Spell.Cast(SB.Pummel)))),
+                new Decorator(ret =>IS.Instance.General.InterruptMode == Enum.Interrupts.Instant,
+                    new PrioritySelector(
+                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
+                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                            Spell.Cast(SB.Pummel)))));
         }
 
         //internal static Composite InitializeInterrupts()
         //{
         //    return new PrioritySelector(
         //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-        //            Spell.Cast(SB.Pummel)
+        //            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))
         //            ),
         //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-        //            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))
+        //            Spell.Cast(SB.Pummel)
         //            ));
         //}
         #endregion

@@ -38,6 +38,12 @@ namespace FuryUnleashed.Core.Helpers
             ShieldBarrier
         }
 
+        public enum Interrupts
+        {
+            Instant,
+            RandomTimed
+        }
+
         public enum Hamstring
         {
             Never,
