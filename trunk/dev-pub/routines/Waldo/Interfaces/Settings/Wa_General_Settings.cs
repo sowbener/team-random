@@ -36,11 +36,21 @@ namespace Waldo.Interfaces.Settings
         public WaEnum.InterruptList InterruptList { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(700)]
         [Category("General")]
-        [DisplayName("Enable or Disable Movement")]
-        [Description("This Enables Movement!! BETA")]
-        public bool EnableMovement { get; set; }
+        [DisplayName("Interrupt Start")]
+        [Description("Select the interrupt start timer, DO NOT USE BELOW 700 MS.")]
+        public int InterruptStart { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1800)]
+        [Category("General")]
+        [DisplayName("Interrupt End")]
+        [Description("Select the interrupt end timer.")]
+        public int InterruptEnd { get; set; }
+
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(65)]
