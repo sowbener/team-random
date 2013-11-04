@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core;
+﻿using CommonBehaviors.Actions;
+using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -95,16 +96,14 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Decorator(ret => IS.Instance.General.InterruptMode == Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= _random.Next(250, 1500),
                     new PrioritySelector(
-                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
-                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                            Spell.Cast(SB.Pummel)))),
+                        new Action(ret => Logger.DiagLogWh("FU: Random Interrupt Time: {0}", _random)),
+                        Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1)),
+                        Spell.Cast(SB.Pummel))),
                 new Decorator(ret =>IS.Instance.General.InterruptMode == Enum.Interrupts.Instant,
                     new PrioritySelector(
-                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
-                        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                            Spell.Cast(SB.Pummel)))));
+                        new Action(ret => Logger.DiagLogWh("FU: Random Interrupt Time: {0}", _random)),
+                        Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1)),
+                        Spell.Cast(SB.Pummel))));
         }
 
         //private static Random _random = new Random();
