@@ -231,11 +231,15 @@ namespace FuryUnleashed.Core
             }
         }
 
+        private static readonly Random Random = new Random();
+
         internal static bool CanInterrupt
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast;
+                return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast && 
+                    ((InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
+                    (InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.Instant));
             }
         }
 
