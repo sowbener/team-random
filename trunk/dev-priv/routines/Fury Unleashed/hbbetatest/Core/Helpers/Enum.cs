@@ -40,7 +40,7 @@ namespace FuryUnleashed.Core.Helpers
 
         public enum Interrupts
         {
-            Instant,
+            Constant,
             RandomTimed
         }
 

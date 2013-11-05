@@ -14,6 +14,24 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
+        #region Global Interrupt Settings
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.Interrupts.RandomTimed)]
+        [Category("Global Interrupt Settings")]
+        [DisplayName("Interrupt Mode")]
+        [Description("Select the interrupt mode - Constant or after a random casttime - RANDOM IS RECOMMENDED!")]
+        public Enum.Interrupts InterruptMode { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1000)]
+        [Category("Global Interrupt Settings")]
+        [DisplayName("Constant Interrupt Value")]
+        [Description("Select a value in milliseconds, when units casttime gets below this numer it will be interrupted.")]
+        public int InterruptNum { get; set; }
+        #endregion
+
+        // ========================================================================================
+
         #region General
         [Setting]
         [Styx.Helpers.DefaultValue(60)]
@@ -56,13 +74,6 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.Interrupts.RandomTimed)]
-        [Category("General")]
-        [DisplayName("Interrupt Mode")]
-        [Description("Select the interrupt mode - Instant or after a random casttime - RANDOM IS RECOMMENDED!")]
-        public Enum.Interrupts InterruptMode { get; set; }
         #endregion
 
         // ========================================================================================

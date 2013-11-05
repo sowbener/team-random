@@ -239,7 +239,7 @@ namespace FuryUnleashed.Core
             {
                 return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast && 
                     ((InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
-                    (InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.Instant));
+                    (InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.Constant && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= InternalSettings.Instance.General.InterruptNum));
             }
         }
 
