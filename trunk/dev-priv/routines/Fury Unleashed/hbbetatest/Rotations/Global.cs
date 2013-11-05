@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core;
+﻿using System;
+using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -86,14 +87,6 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        internal static Composite InitializeInterrupts()
-        {
-            return new PrioritySelector(
-                    new PrioritySelector(
-                        Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1)),
-                        Spell.Cast(SB.Pummel)));
-        }
-
         //private static Random _random = new Random();
         //internal static Composite InitializeInterrupts()
         //{
@@ -106,16 +99,16 @@ namespace FuryUnleashed.Rotations
         //            ));
         //}
 
-        //internal static Composite InitializeInterrupts()
-        //{
-        //    return new PrioritySelector(
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-        //            Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))
-        //            ),
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-        //            Spell.Cast(SB.Pummel)
-        //            ));
-        //}
+        internal static Composite InitializeInterrupts()
+        {
+            return new PrioritySelector(
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                    Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))
+                    ),
+                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                    Spell.Cast(SB.Pummel)
+                    ));
+        }
         #endregion
 
         #region Racials
