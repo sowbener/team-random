@@ -15,6 +15,7 @@ namespace FuryUnleashed.Core
     internal static class Unit
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static readonly Random Random = new Random();
 
         #region Caching RaidMembers Functions
         // RaidMembers IEnumerable
@@ -144,10 +145,10 @@ namespace FuryUnleashed.Core
 
         #region Unit Booleans
         // Checks if unit is Valid - Not used yet - Need to update IsInRange.
-        public static bool IsValid(this WoWUnit unit)
-        {
-            return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
-        }
+        //public static bool IsValid(this WoWUnit unit)
+        //{
+        //    return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
+        //}
 
         public static bool IsInRange(this WoWUnit unit, string spell)
         {
@@ -231,15 +232,17 @@ namespace FuryUnleashed.Core
             }
         }
 
-        private static readonly Random Random = new Random();
-
         internal static bool CanInterrupt
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast && 
-                    ((InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
-                    (InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.Constant && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= InternalSettings.Instance.General.InterruptNum));
+                using (new PerformanceLogger("CanInterrupt"))
+                {
+                    return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast &&
+                            ((InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
+                            (InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.Constant && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= InternalSettings.Instance.General.InterruptNum)
+                            );
+                }
             }
         }
 
