@@ -107,7 +107,7 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
             Spell.Cast("Slice and Dice", ret => G.SliceandDiceSub || !Me.HasAura("Slice and Dice")),
-            Spell.Cast("Rupture", ret => G.TargetRuptureFalling || G.TargetNoRupture),
+            Spell.Cast("Rupture", ret => !Me.HasAura(124271) && (G.TargetRuptureFalling || G.TargetNoRupture)),
             Spell.Cast("Eviscerate", ret => G.TargetHaveRupture && Me.HasAura("Slice and Dice")));
         }
 
