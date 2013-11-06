@@ -80,6 +80,7 @@ namespace Waldo.Routines
         static Composite SubSt()
         {
             return new PrioritySelector(
+                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0),
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && WaLua.PlayerComboPts < 3),
                 Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && WaLua.PlayerComboPts < 5),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
@@ -121,6 +122,7 @@ namespace Waldo.Routines
         static Composite SubMt()
         {
             return new PrioritySelector(
+              Spell.Cast("Redirect", ret => Me.RawComboPoints > 0),
               new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
               new Decorator(ret => U.NearbyAttackableUnitsCount < 4, SubSt()),
               new Decorator(ret => WaLua.PlayerComboPts < 4 && U.NearbyAttackableUnitsCount > 3 && U.NearbyAttackableUnitsCount < 7, new PrioritySelector(
