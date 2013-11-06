@@ -99,7 +99,7 @@ namespace Waldo.Routines
             new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
-            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Stealth") || !Me.HasAura("Shadow Dance"))),
+            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Stealth") || !Me.HasAura("Vanish") || !Me.HasAura("Shadow Dance"))),
             Pooling());
         }
         
@@ -107,7 +107,7 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
             Spell.Cast("Slice and Dice", ret => G.SliceandDiceSub || !Me.HasAura("Slice and Dice")),
-            Spell.Cast("Rupture", ret => !Me.HasAura(124271) && (G.TargetRuptureFalling || G.TargetNoRupture)),
+            Spell.Cast("Rupture", ret => Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(703) && (G.TargetRuptureFalling || G.TargetNoRupture)),
             Spell.Cast("Eviscerate", ret => G.TargetHaveRupture && Me.HasAura("Slice and Dice")));
         }
 
@@ -122,12 +122,18 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
               new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
-              new Decorator(ret => U.NearbyAttackableUnitsCount > 2,
-              new PrioritySelector(
-              Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 5),
-              Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 1 && G.TargetRuptureFalling),
-              Spell.Cast("Envenom", ret => Lua.PlayerComboPts > 4),
-              Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 1 && G.FucknoSND)
+              new Decorator(ret => U.NearbyAttackableUnitsCount < 4, SubSt()),
+              new Decorator(ret => WaLua.PlayerComboPts < 4 && U.NearbyAttackableUnitsCount > 3 && U.NearbyAttackableUnitsCount < 7, new PrioritySelector(
+              new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast, ComboBuilders()),
+              Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && WaLua.PlayerComboPts < 5),
+              Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
+              Spell.Cast("Crimson Tempest", ret => (G.CrimsonTempestNotUp && WaLua.PlayerComboPts < 1) || (WaLua.PlayerComboPts > 4 && !G.FucknoSND && G.CrimsonTempestNotUp)),
+              Spell.Cast("Eviscerate", ret => Lua.PlayerComboPts > 4 && !G.FucknoSND && !G.CrimsonTempestNotUp),
+              Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 4 && G.FucknoSND))),
+              new Decorator(ret => U.NearbyAttackableUnitsCount > 6, new PrioritySelector(
+                Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 4),
+                 Spell.Cast("Crimson Tempest", ret => (G.CrimsonTempestNotUp && WaLua.PlayerComboPts < 1) || (WaLua.PlayerComboPts > 4 && !G.FucknoSND && G.CrimsonTempestNotUp)),
+                 Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 4 && G.FucknoSND)
                 )));
         }
 

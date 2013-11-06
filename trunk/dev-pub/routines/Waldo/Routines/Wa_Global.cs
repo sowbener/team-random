@@ -112,6 +112,7 @@ namespace Waldo.Routines
         internal static bool TargetRuptureFalling { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAuraDown("Rupture", 0, 2000); } }
         internal static bool HemorrhageDebuffFalling { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Hemorrhage"); } }
         internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasCachedAuraDown("Rupture", 0, 3000); } }
+        internal static bool CrimsonTempestNotUp { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(121411); } }
         internal static bool Anticipate4stacks { get { return Me.HasCachedAura(115189, 4); } }
         internal static bool Anticipate1stacks { get { return Me.HasCachedAura(115189, 1); } }
         internal static bool Anticipate2stacks { get { return Me.HasCachedAura(115189, 2); } }
