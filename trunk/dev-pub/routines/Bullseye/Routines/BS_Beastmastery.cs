@@ -137,7 +137,7 @@ namespace Bullseye.Routines
         internal static Composite HandleCommon()
         {
             return new PrioritySelector(
-                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= SG.Instance.General.MendPetHP && !Me.Pet.HasAura("Mend Pet")));
+                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= SG.Instance.General.MendPetHP && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
         }
 
         internal static Composite BeastmasteryOffensive()
