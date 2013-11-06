@@ -15,6 +15,11 @@ namespace DeathVader.Managers
         public static bool IsCooldown { get; private set; }
         public static bool IsAoe { get; private set; }
         public static bool IsSpecialKey { get; private set; }
+        public static bool RaiseAllyKey { get; private set; }
+        public static bool Tier6AbilitiesKey { get; private set; }
+        public static bool ArmyofTheDeadKey { get; private set; }
+        public static bool AMZKey { get; private set; }
+
 
         public delegate T Selection<out T>(object context);
 
@@ -102,6 +107,48 @@ namespace DeathVader.Managers
                                                      : @"print('Cooldowns \124cFFE61515 Disabled!')");
                             });
 
+                            HotkeysManager.Register("Tier6AbilitiesKey", DvSettingsH.Instance.Tier6, DvSettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                Tier6AbilitiesKey = !Tier6AbilitiesKey;
+                                LogKey("Tier6", DvSettingsH.Instance.Tier6, DvSettingsH.Instance.ModKeyChoice, Tier6AbilitiesKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Tier 6 Ability \124cFF15E61C Enabled!')"
+                                                     : @"print('Tier 6 Ability \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, DvSettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                ArmyofTheDeadKey = !ArmyofTheDeadKey;
+                                LogKey("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, DvSettingsH.Instance.ModKeyChoice, ArmyofTheDeadKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Army of the Dead \124cFF15E61C Enabled!')"
+                                                     : @"print('Army of the Dead \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, DvSettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                RaiseAllyKey = !RaiseAllyKey;
+                                LogKey("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, DvSettingsH.Instance.ModKeyChoice, RaiseAllyKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Raise Ally \124cFF15E61C Enabled!')"
+                                                     : @"print('Raise Ally \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("AMZKey", DvSettingsH.Instance.AMZ, DvSettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                AMZKey = !AMZKey;
+                                LogKey("AMZKey", DvSettingsH.Instance.AMZ, DvSettingsH.Instance.ModKeyChoice, AMZKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('AMZ \124cFF15E61C Enabled!')"
+                                                     : @"print('AMZ \124cFFE61515 Disabled!')");
+                            });
+ 
+ 
+
                             HotkeysManager.Register("AoE", DvSettingsH.Instance.MultiTgtKeyChoice, DvSettingsH.Instance.ModKeyChoice, hk =>
                             {
                                 IsAoe = !IsAoe;
@@ -121,12 +168,16 @@ namespace DeathVader.Managers
                                                      ? @"print('Special \124cFF15E61C Enabled!')"
                                                      : @"print('Special \124cFFE61515 Disabled!')");
                             });
-                            DvLogger.DiagLogW("Death Vader: Hotkeys registered with individual values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}",
+                            DvLogger.DiagLogW("Death Vader: Hotkeys registered with individual values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}, AMZ {5}, ArmyofTheDead {6}, Raise Ally {7}, Tier6 {8}",
                                 DvSettingsH.Instance.ModKeyChoice,
                                 DvSettingsH.Instance.PauseKeyChoice,
                                 DvSettingsH.Instance.CooldownKeyChoice,
                                 DvSettingsH.Instance.MultiTgtKeyChoice,
-                                DvSettingsH.Instance.SpecialKeyChoice);
+                                DvSettingsH.Instance.SpecialKeyChoice,
+                                DvSettingsH.Instance.AMZ,
+                                DvSettingsH.Instance.ArmyofTheDeadKey,
+                                DvSettingsH.Instance.RaiseAlly,
+                                DvSettingsH.Instance.Tier6);
                             break;
                         default:
                             HotkeysManager.Register("Pause", DvSettingsH.Instance.PauseKeyChoice, ModifierKeys.Alt, hk =>
@@ -149,6 +200,47 @@ namespace DeathVader.Managers
                                                      : @"print('Cooldowns \124cFFE61515 Disabled!')");
                             });
 
+
+                            HotkeysManager.Register("Tier6AbilitiesKey", DvSettingsH.Instance.Tier6, ModifierKeys.Alt, hk =>
+                            {
+                                Tier6AbilitiesKey = !Tier6AbilitiesKey;
+                                LogKey("Tier6", DvSettingsH.Instance.Tier6, ModifierKeys.Alt, Tier6AbilitiesKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Tier 6 Ability \124cFF15E61C Enabled!')"
+                                                     : @"print('Tier 6 Ability \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, ModifierKeys.Alt, hk =>
+                            {
+                                ArmyofTheDeadKey = !ArmyofTheDeadKey;
+                                LogKey("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, ModifierKeys.Alt, ArmyofTheDeadKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Army of the Dead \124cFF15E61C Enabled!')"
+                                                     : @"print('Army of the Dead \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, ModifierKeys.Alt, hk =>
+                            {
+                                RaiseAllyKey = !RaiseAllyKey;
+                                LogKey("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, ModifierKeys.Alt, RaiseAllyKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('Raise Ally \124cFF15E61C Enabled!')"
+                                                     : @"print('Raise Ally \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("AMZKey", DvSettingsH.Instance.AMZ, ModifierKeys.Alt, hk =>
+                            {
+                                AMZKey = !AMZKey;
+                                LogKey("AMZKey", DvSettingsH.Instance.AMZ, ModifierKeys.Alt, AMZKey);
+                                if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? @"print('AMZ \124cFF15E61C Enabled!')"
+                                                     : @"print('AMZ \124cFFE61515 Disabled!')");
+                            });
+
                             HotkeysManager.Register("AoE", DvSettingsH.Instance.MultiTgtKeyChoice, ModifierKeys.Alt, hk =>
                             {
                                 IsAoe = !IsAoe;
@@ -168,12 +260,16 @@ namespace DeathVader.Managers
                                                      ? @"print('Special \124cFF15E61C Enabled!')"
                                                      : @"print('Special \124cFFE61515 Disabled!')");
                             });
-                            DvLogger.DiagLogW("Death Vader: Hotkeys registered with default values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}",
+                            DvLogger.DiagLogW("Death Vader: Hotkeys registered with default values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}, AMZ {5}, ArmyofTheDead {6}, Raise Ally {7}, Tier6 {8}",
                                 DvSettingsH.Instance.ModKeyChoice,
                                 DvSettingsH.Instance.PauseKeyChoice,
                                 DvSettingsH.Instance.CooldownKeyChoice,
                                 DvSettingsH.Instance.MultiTgtKeyChoice,
-                                DvSettingsH.Instance.SpecialKeyChoice);
+                                DvSettingsH.Instance.SpecialKeyChoice,
+                                DvSettingsH.Instance.AMZ,
+                                DvSettingsH.Instance.ArmyofTheDeadKey,
+                                DvSettingsH.Instance.RaiseAlly,
+                                DvSettingsH.Instance.Tier6);
                             break;
                     }
                     break;
@@ -187,6 +283,10 @@ namespace DeathVader.Managers
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
             HotkeysManager.Unregister("Special");
+            HotkeysManager.Unregister("AMZKey");
+            HotkeysManager.Unregister("RaiseAllyKey");
+            HotkeysManager.Unregister("ArmyofTheDeadKey");
+            HotkeysManager.Unregister("Tier6");
             DvLogger.DiagLogW("Death Vader: Hotkeys removed!");
         }
     }

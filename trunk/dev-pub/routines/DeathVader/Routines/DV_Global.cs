@@ -306,24 +306,20 @@ namespace DeathVader.Routines
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
-                new Decorator(ret => DvHotKeyManager.KeyboardPolling.IsKeyDown(SH.Instance.AMZ) && SpellManager.CanCast("Anti-Magic Zone"),
+                new Decorator(ret => DvHotKeyManager.AMZKey && SpellManager.CanCast("Anti-Magic Zone"),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Anti-Magic Zone");
                         Styx.WoWInternals.Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                         DvLogger.CombatLogP("Casting: Anti-Magic Zone - On Mouse Location");
                     })),
-                new Decorator(ret => DvHotKeyManager.KeyboardPolling.IsKeyDown(SH.Instance.RaiseAlly) && SpellManager.CanCast("Raise Ally"),
-                    new Action(ret =>
-                    {
-                        SpellManager.Cast("Raise Ally");
-                        Styx.WoWInternals.Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
-                        DvLogger.CombatLogP("Casting: Raise Ally - On Mouse Location");
-                    })),
-                new Decorator(ret => DvHotKeyManager.KeyboardPolling.IsKeyAsyncDown(SH.Instance.ArmyofTheDeadKey),
+                new Decorator(ret => DvHotKeyManager.RaiseAllyKey,
+                    new PrioritySelector(
+                        Spell.Cast("Raise Ally", ret => Me.FocusedUnit))),
+                new Decorator(ret => DvHotKeyManager.ArmyofTheDeadKey,
                     new PrioritySelector(
                         Spell.Cast("Army of the Dead"))),
-                new Decorator(ret => DvHotKeyManager.KeyboardPolling.IsKeyAsyncDown(SH.Instance.Tier6),
+                new Decorator(ret => DvHotKeyManager.Tier6AbilitiesKey,
                     new PrioritySelector(
                         Spell.Cast("Gorefiend's Grasp", ret => T.HasTalent(16)),
                         Spell.Cast("Remorseless Winter", ret => T.HasTalent(17)),
