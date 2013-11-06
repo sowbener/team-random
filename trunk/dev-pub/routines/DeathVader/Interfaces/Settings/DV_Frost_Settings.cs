@@ -42,6 +42,12 @@ namespace DeathVader.Interfaces.Settings
         [Description("Select the usage of Raise Dead.")]
         public DvEnum.AbilityTrigger RaiseDead { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Frost - Ability Options")]
+        [DisplayName("Mastersimple Rotation")]
+        [Description("Select the usage of Mastersimple Rotation.")]
+        public bool MasterSimple { get; set; }
         
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

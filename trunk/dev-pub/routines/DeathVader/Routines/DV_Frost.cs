@@ -77,12 +77,15 @@ namespace DeathVader.Routines
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
-                        Spell.Cast("Obliterate", ret => G.UnholyRuneSlotsActive > 0 && Me.DeathRuneCount < 1 && !Me.HasAura(51124)),
+                        Spell.Cast("Obliterate", ret => !SG.Instance.Frost.MasterSimple && G.UnholyRuneSlotsActive > 0 && Me.DeathRuneCount < 1 && !Me.HasAura(51124)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
                         Spell.Cast("Frost Strike", ret => T.HasTalent(14) && G.FrostRuneSlotsActive == 0 || G.DeathRuneSlotsActive == 0),
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapThirdCheckDW),
                         Spell.Cast("Plague Leech", ret => G.CanCastPlagueLeechDW),
+                        Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => G.UnholyRuneSlotsActive > 0 && !Me.HasAura("Pillar of Frost") && SG.Instance.Frost.MasterSimple),
+                        Spell.Cast("Plague Strike", ret => G.UnholyRuneSlotsActive > 0 && SG.Instance.Frost.MasterSimple),
+                         //actions.single_target+=/plague_strike,if=unholy>0
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 40));
         }
 
