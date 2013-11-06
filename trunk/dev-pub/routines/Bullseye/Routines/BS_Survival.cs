@@ -103,7 +103,7 @@ namespace Bullseye.Routines
         internal static Composite HandleCommon()
         {
             return new PrioritySelector(
-                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= 40 && && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
+                Spell.Cast("Mend Pet", ret => Me.Pet != null && Me.Pet.HealthPercent <= 40 && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
         }
 
         internal static Composite SurvivalDefensive()
