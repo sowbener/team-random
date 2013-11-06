@@ -80,7 +80,7 @@ namespace Waldo.Routines
         static Composite SubSt()
         {
             return new PrioritySelector(
-                Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && (WaLua.PlayerComboPts < 3 || G.AnticipationCount < 3)),
+                Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && WaLua.PlayerComboPts < 3),
                 Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && WaLua.PlayerComboPts < 5),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
