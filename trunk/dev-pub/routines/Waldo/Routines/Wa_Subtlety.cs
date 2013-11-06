@@ -50,7 +50,7 @@ namespace Waldo.Routines
                                 SubUtility(),
                                 I.SubUseItems(),
                                 SubOffensive(),
-                                new Decorator(ret => SG.Instance.Subtlety.CheckAoE && U.NearbyAttackableUnitsCount >= 2, SubMt()),
+                                new Decorator(ret => SG.Instance.Subtlety.CheckAoE && U.NearbyAttackableUnitsCount > 4, SubMt()),
                                 new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
                                 SubShadowDance(),
                                     SubSt())),
