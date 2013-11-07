@@ -86,7 +86,7 @@ namespace Waldo.Routines
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
                 new Decorator(ret => WaLua.PlayerComboPts > 4 || (WaLua.PlayerComboPts > 1 && G.AnticipationCount < 4), Finishers()),
-                new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && (WaLua.PlayerComboPts < 4  || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18)), ComboBuilders())
+                new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && !Me.HasAura("Vanish") && (WaLua.PlayerComboPts < 4  || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18)), ComboBuilders())
                         );
 
           
@@ -100,7 +100,7 @@ namespace Waldo.Routines
             new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
-            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura(1784) && !Me.HasAura("Shadow Dance")) || (!Me.HasAura("Vanish"))),
+            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && !Me.HasAura("Shadow Dance")),
             Pooling());
         }
         
