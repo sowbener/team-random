@@ -63,13 +63,12 @@ namespace Waldo.Routines
                                 new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts,
                                     SubInterrupts()),
                                 SubUtility(),
-                                new Decorator(ret => StyxWoW.Me.CurrentEnergy < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
+                                 new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
                                 new Decorator(ret => WaHotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                         I.SubUseItems(),
                                         SubOffensive())),
                                 new Decorator(ret => WaHotKeyManager.IsAoe, SubMt()),
-                                new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
                                 new Decorator(ret => WaHotKeyManager.IsCooldown, SubShadowDance()),
                                 new Decorator(ret => !WaHotKeyManager.IsAoe, SubSt()))));
             }
