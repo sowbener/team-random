@@ -85,7 +85,7 @@ namespace Waldo.Routines
                 Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || WaLua.PlayerComboPts < 5 || (Me.HasAura(115189) && G.AnticipationCount < 3)),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
-                new Decorator(ret => WaLua.PlayerComboPts > 4 || G.AnticipationCount > 4, Finishers()),
+                new Decorator(ret => WaLua.PlayerComboPts > 4 || G.AnticipationCount < 4, Finishers()),
                 new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && (WaLua.PlayerComboPts < 4  || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18)), ComboBuilders())
                         );
 
