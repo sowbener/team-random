@@ -77,16 +77,16 @@ namespace Waldo.Routines
             return new PrioritySelector(
                 new Decorator(ret => G.FucknoSND,
                     new PrioritySelector(
-                        Spell.Cast("Mutilate", ret => Me.ComboPoints < 2),
-                        Spell.Cast("Slice and Dice", ret => Me.ComboPoints > 1 && G.FucknoSND)
+                        Spell.Cast("Mutilate", ret => WaLua.PlayerComboPts < 2),
+                        Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 1 && G.FucknoSND)
                         )),
                 new Decorator(ret => G.TargetNoRupture && G.IloveyouSND,
                 new PrioritySelector(
-                    Spell.Cast("Mutilate", ret => Me.ComboPoints < 5),
-                    Spell.Cast("Dispatch", ret => Me.ComboPoints < 5 && G.DispatchProc),
-                    Spell.Cast("Rupture", ret => Me.ComboPoints > 4)
+                    Spell.Cast("Mutilate", ret => WaLua.PlayerComboPts < 5),
+                    Spell.Cast("Dispatch", ret => WaLua.PlayerComboPts < 5 && G.DispatchProc),
+                    Spell.Cast("Rupture", ret => WaLua.PlayerComboPts > 4)
                     )),
-                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Me.ComboPoints < 1),
+                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
                 Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
                     (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
@@ -120,7 +120,7 @@ namespace Waldo.Routines
               Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 5),
               Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 1 && G.TargetRuptureFalling),
               Spell.Cast("Envenom", ret => Lua.PlayerComboPts > 4),
-              Spell.Cast("Slice and Dice", ret => Me.ComboPoints > 1 && G.FucknoSND)
+              Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 1 && G.FucknoSND)
                 )));
         }
 

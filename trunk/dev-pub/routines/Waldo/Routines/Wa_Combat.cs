@@ -98,8 +98,8 @@ namespace Waldo.Routines
         internal static Composite ComMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Fan of Knives", ret => Me.IsWithinMeleeRange && Me.ComboPoints <= 4),
-                Spell.Cast("Crimson Tempest", ret => Me.ComboPoints > 4)
+                Spell.Cast("Fan of Knives", ret => Me.IsWithinMeleeRange && WaLua.PlayerComboPts <= 4),
+                Spell.Cast("Crimson Tempest", ret => WaLua.PlayerComboPts > 4)
                 );
         }
 

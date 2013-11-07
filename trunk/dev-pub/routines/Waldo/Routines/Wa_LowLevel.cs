@@ -48,7 +48,7 @@ namespace Waldo.Routines
         static Composite LowLevel()
         {
             return new PrioritySelector(
-                Spell.Cast("Eviscerate", ret => Me.ComboPoints > 4),
+                Spell.Cast("Eviscerate", ret => WaLua.PlayerComboPts > 4),
                 Spell.Cast("Sinister Strike"));
 
       
