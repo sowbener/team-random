@@ -100,7 +100,7 @@ namespace Waldo.Routines
             new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
-            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Stealth") || !Me.HasAura("Vanish") || !Me.HasAura("Shadow Dance"))),
+            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (!Me.HasAura("Stealth") || !Me.HasAura("Vanish") || !Me.HasAura(51713))),
             Pooling());
         }
         
