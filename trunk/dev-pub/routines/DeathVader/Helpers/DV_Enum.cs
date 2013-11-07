@@ -35,7 +35,8 @@ namespace DeathVader.Helpers
         public enum Mode
         {
             Auto,
-            Hotkey
+            Hotkey,
+            Abilities
         }
         #endregion
 

@@ -26,7 +26,7 @@ namespace DeathVader.Managers
         public static void BotEvents_OnBotStarted(EventArgs args)
         {
             if (RoutineManager.Current.Name != DvMain.DvName) return;
-            if (DvSettingsH.Instance.ModeSelection == DvEnum.Mode.Hotkey)
+            if (DvSettingsH.Instance.ModeSelection == DvEnum.Mode.Abilities || DvSettingsH.Instance.ModeSelection == DvEnum.Mode.Hotkey)
                 RegisterKeys();
             DvLua.DisableClickToMove();
         }
@@ -78,15 +78,10 @@ namespace DeathVader.Managers
 
         public static void RegisterKeys()
         {
-            switch (DvSettingsH.Instance.ModeSelection)
-            {
-                case DvEnum.Mode.Hotkey:
-                    switch (DvSettingsH.Instance.ModKeyChoice)
-                    {
-                        case ModifierKeys.Alt:
-                        case ModifierKeys.Control:
-                        case ModifierKeys.Shift:
-                        case ModifierKeys.Win:
+
+            if (DvSettingsH.Instance.ModeSelection == DvEnum.Mode.Abilities || DvSettingsH.Instance.ModeSelection == DvEnum.Mode.Hotkey)
+            {           
+                            
                             HotkeysManager.Register("Pause", DvSettingsH.Instance.PauseKeyChoice, DvSettingsH.Instance.ModKeyChoice, hk =>
                             {
                                 IsPaused = !IsPaused;
@@ -178,8 +173,6 @@ namespace DeathVader.Managers
                                 DvSettingsH.Instance.ArmyofTheDeadKey,
                                 DvSettingsH.Instance.RaiseAlly,
                                 DvSettingsH.Instance.Tier6);
-                            break;
-                        default:
                             HotkeysManager.Register("Pause", DvSettingsH.Instance.PauseKeyChoice, ModifierKeys.Alt, hk =>
                             {
                                 IsPaused = !IsPaused;
@@ -269,13 +262,10 @@ namespace DeathVader.Managers
                                 DvSettingsH.Instance.AMZ,
                                 DvSettingsH.Instance.ArmyofTheDeadKey,
                                 DvSettingsH.Instance.RaiseAlly,
-                                DvSettingsH.Instance.Tier6);
-                            break;
+                                DvSettingsH.Instance.Tier6);                         
                     }
-                    break;
             }
-            DvLogger.DiagLogW("Death Vader: Hotkeys registered!");
-        }
+            //DvLogger.DiagLogW("Death Vader: Hotkeys registered!");      
 
         public static void RemoveAllKeys()
         {
