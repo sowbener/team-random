@@ -2,6 +2,7 @@
 using Styx.Common;
 using Styx.Helpers;
 using Styx.TreeSharp;
+using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,10 +11,13 @@ using System.Net;
 using System.Reflection;
 using System.Timers;
 using System.Windows.Media;
+using Logger = Waldo.Helpers.WaLogger;
 using Action = Styx.TreeSharp.Action;
 using G = Waldo.Routines.WaGlobal;
 using SG = Waldo.Interfaces.Settings.WaSettings;
 using SH = Waldo.Interfaces.Settings.WaSettingsH;
+using System.Collections.Generic;
+using Styx.WoWInternals;
 
 namespace Waldo.Helpers
 {
@@ -35,6 +39,83 @@ namespace Waldo.Helpers
             WriteToLogFile();
         }
         #endregion
+
+        public static void DumpAuraTables(WoWUnit target)
+        {
+            using (StyxWoW.Memory.AcquireFrame())
+            {
+                WaLogger.CombatLog("----------- Buffs ------------");
+                using (var timer1 = new PerformanceTimer("Buffs"))
+                {
+                    timer1.Start();
+                    foreach (KeyValuePair<string, WoWAura> aura in target.Buffs)
+                    {
+                        Logger.CombatLog("{0}", aura.Key);
+                    }
+
+                    Logger.CombatLog("Buffs: {0}ms", timer1.ElapsedMilliseconds);
+                }
+
+                Logger.CombatLog("----------- Debuffs ------------");
+                using (var timer2 = new PerformanceTimer("Debuffs"))
+                {
+                    timer2.Start();
+                    foreach (KeyValuePair<string, WoWAura> aura in target.Debuffs)
+                    {
+                        Logger.CombatLog("{0}", aura.Key);
+                    }
+
+                    Logger.CombatLog("Debuffs: {0}ms", timer2.ElapsedMilliseconds);
+                }
+
+                Logger.CombatLog("----------- ActiveAuras ------------");
+                using (var timer3 = new PerformanceTimer("ActiveAuras"))
+                {
+                    timer3.Start();
+                    foreach (KeyValuePair<string, WoWAura> aura in target.ActiveAuras)
+                    {
+                        Logger.CombatLog("{0}", aura.Key);
+                    }
+
+                    Logger.CombatLog("ActiveAuras: {0}ms", timer3.ElapsedMilliseconds);
+                }
+
+                Logger.CombatLog("----------- PassiveAuras ------------");
+                using (var timer4 = new PerformanceTimer("PassiveAuras"))
+                {
+                    timer4.Start();
+                    foreach (KeyValuePair<string, WoWAura> aura in target.PassiveAuras)
+                    {
+                        Logger.CombatLog("{0}", aura.Key);
+                    }
+
+                    Logger.CombatLog("PassiveAuras: {0}ms", timer4.ElapsedMilliseconds);
+                }
+
+                Logger.CombatLog("----------- Auras ------------");
+                using (var timer5 = new PerformanceTimer("PassiveAuras"))
+                {
+                    timer5.Start();
+                    foreach (KeyValuePair<string, WoWAura> aura in target.Auras)
+                    {
+                        Logger.CombatLog("{0}", aura.Key);
+                    }
+
+                    Logger.CombatLog("Auras: {0}ms", timer5.ElapsedMilliseconds);
+                }
+                Logger.CombatLog("----------- GetAllAuras ------------");
+                using (var timer6 = new PerformanceTimer("GetAllAuras"))
+                {
+                    timer6.Start();
+                    foreach (WoWAura aura in target.GetAllAuras())
+                    {
+                        Logger.CombatLog("{0}", aura.Name);
+                    }
+
+                    Logger.CombatLog("GetAllAuras: {0}ms", timer6.ElapsedMilliseconds);
+                }
+            }
+        }
 
         #region AWaanced Logging
         // 1, TimeSpan.FromMilliseconds(SG.Instance.NumAWaLogThrottleTime), RunStatus.Failure
@@ -339,7 +420,7 @@ namespace Waldo.Helpers
         }
          #endregion
 
-                #region Logging
+       #region Logging
         private static readonly CapacityQueue<string> LogQueue = new CapacityQueue<string>(5);
 
         static void Output(LogLevel level, Color color, string format, params object[] args)

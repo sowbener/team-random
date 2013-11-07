@@ -34,6 +34,7 @@ namespace Waldo.Routines
                         WaLogger.TreePerformance("InitializeSub")),
                     new Decorator(ret => (WaHotKeyManager.IsPaused || !WaUnit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeOnKeyActions(),
+                        new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                         new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),     
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
