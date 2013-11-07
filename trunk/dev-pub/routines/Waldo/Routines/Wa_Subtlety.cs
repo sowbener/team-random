@@ -34,7 +34,7 @@ namespace Waldo.Routines
                         WaLogger.TreePerformance("InitializeSub")),
                     new Decorator(ret => (WaHotKeyManager.IsPaused || !WaUnit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeOnKeyActions(),
-                        new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),
+                        //new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),
                         new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                         new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),     
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
@@ -100,7 +100,7 @@ namespace Waldo.Routines
             new Decorator(ret => !Me.HasAura("Master of Subtlety") && !Me.HasAura("Shadow Dance") && !Me.CurrentTarget.HasMyAura("Find Weakness") && (Lua.PlayerPower < 80 || Lua.PlayerPower < 60), Pooling()),
             Spell.Cast("Hemorrhage", ret => !StyxWoW.Me.CurrentTarget.MeIsBehind),
                 //  Spell.Cast("Shuriken Toss", ret => ShurikenTossEnabled && Lua.PlayerPower < 65),
-            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && !Me.HasAura(1784) || !Me.HasAura(51713)),
+            Spell.Cast("Backstab", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && !Me.HasAura(1784) || !Me.HasAura("Shadow Dance")),
             Pooling());
         }
         
