@@ -73,7 +73,7 @@ namespace Waldo.Routines
             get { return WaTalentManager.HasTalent(18); }
         }
 
-
+            
 
         #region KeyActions
         internal static Composite InitializeOnKeyActions()
