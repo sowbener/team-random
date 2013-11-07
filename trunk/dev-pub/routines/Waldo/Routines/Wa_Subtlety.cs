@@ -82,11 +82,11 @@ namespace Waldo.Routines
             return new PrioritySelector(
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && WaLua.PlayerComboPts < 3),
-                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || WaLua.PlayerComboPts < 5 || (WaLua.PlayerComboPts + G.AnticipationCount < 4)),
+                Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || WaLua.PlayerComboPts < 5 || G.AnticipationCount < 3 || (WaLua.PlayerComboPts + G.AnticipationCount < 3)),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
                 new Decorator(ret => WaLua.PlayerComboPts > 4 || (WaLua.PlayerComboPts + G.AnticipationCount > 4), Finishers()),
-                new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && !Me.HasAura("Vanish") && ((WaLua.PlayerComboPts < 4 || (WaLua.PlayerComboPts + G.AnticipationCount < 4)) || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18)), ComboBuilders())
+                new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && !Me.HasAura("Vanish") && ((WaLua.PlayerComboPts < 4 || G.AnticipationCount < 3 || (WaLua.PlayerComboPts + G.AnticipationCount < 3)) || Lua.PlayerPower > 80 || WaTalentManager.HasTalent(18)), ComboBuilders())
                         );
 
           
