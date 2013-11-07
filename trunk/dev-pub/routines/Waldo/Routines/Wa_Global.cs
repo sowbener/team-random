@@ -128,6 +128,7 @@ namespace Waldo.Routines
         internal static bool MeHasShadowFocus { get { return Me.HasCachedAura(108209, 0); } }
         internal static bool Vanishisoncooldown { get { return WaSpell.SpellOnCooldown(1856); } }
         internal static bool ShadowDanceOnline { get { return !Styx.WoWInternals.WoWSpell.FromId(51713).Cooldown; } }
+        internal static bool VanishIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(1856).Cooldown; } }
         internal static bool Kick { get { return WaSpell.SpellOnCooldown("Kick"); } }
 
         private static readonly HashSet<int> Tier14Ids = new HashSet<int>

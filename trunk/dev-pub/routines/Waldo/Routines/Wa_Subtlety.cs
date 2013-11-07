@@ -115,7 +115,7 @@ namespace Waldo.Routines
         static Composite Pooling()
         {
             return new PrioritySelector(
-                Spell.Cast("Preparation", ret => !Me.HasAura("Vanish") && Spell.GetSpellCooldown("Vanish").Seconds > 60));
+                Spell.Cast("Preparation", ret => !Me.HasAura("Vanish") && G.VanishIsOnCooldown));
         }
 
 
