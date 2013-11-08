@@ -29,7 +29,7 @@ namespace DeathVader.Routines
             get
             {
                 return new PrioritySelector(
-                    new Decorator(ret => Me.Specialization == WoWSpec.DeathKnightUnholy && DvUnit.DefaultBuffCheck && ((SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                    new Decorator(ret => (Me.Specialization == WoWSpec.DeathKnightUnholy && DvUnit.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new PrioritySelector(
                             Spell.Cast("Raise Dead", ret => Me, ret => SG.Instance.Unholy.PrebuffPet && !Me.GotAlivePet))));
             }
@@ -319,7 +319,7 @@ namespace DeathVader.Routines
                 new Decorator(ret => DvHotKeyManager.ArmyofTheDeadKey,
                     new PrioritySelector(
                         Spell.Cast("Army of the Dead"))),
-                new Decorator(ret => DvHotKeyManager.Tier6AbilitiesKey,
+                new Decorator(ret => Me.CurrentTarget != null && DvHotKeyManager.Tier6AbilitiesKey,
                     new PrioritySelector(
                         Spell.Cast("Gorefiend's Grasp", ret => T.HasTalent(16)),
                         Spell.Cast("Remorseless Winter", ret => T.HasTalent(17)),

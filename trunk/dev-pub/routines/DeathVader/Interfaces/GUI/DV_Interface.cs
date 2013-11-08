@@ -105,6 +105,7 @@ namespace DeathVader.Interfaces.GUI
 
             // Hotkey Mode Choice
             ComboHkMode.Items.Add(new DvEnum.DvCboItem((int)DvEnum.Mode.Auto, "Automatic Mode"));
+            ComboHkMode.Items.Add(new DvEnum.DvCboItem((int)DvEnum.Mode.Abilities, "Abilities Mode"));
             ComboHkMode.Items.Add(new DvEnum.DvCboItem((int)DvEnum.Mode.Hotkey, "Hotkey Mode"));
 
             // Hotkey Modifier Key
