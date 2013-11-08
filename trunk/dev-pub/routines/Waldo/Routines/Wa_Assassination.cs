@@ -86,7 +86,7 @@ namespace Waldo.Routines
                     Spell.Cast("Dispatch", ret => WaLua.PlayerComboPts < 5 && G.DispatchProc),
                     Spell.Cast("Rupture", ret => WaLua.PlayerComboPts > 4)
                     )),
-                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
+                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts > 1),
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
                 Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
                     (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||

@@ -80,7 +80,7 @@ namespace Waldo.Routines
         static Composite SubSt()
         {
             return new PrioritySelector(
-                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
+                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts > 1),
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && WaLua.PlayerComboPts < 3),
                 Spell.Cast("Ambush", ret => WaLua.PlayerComboPts < 5 || G._anticipationCount < 3),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),

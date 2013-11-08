@@ -69,7 +69,7 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
-                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
+                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts > 1),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
                 Spell.Cast("Revealing Strike", ret => WaLua.PlayerComboPts < 5 && !G.RevealingStrike),
                 Spell.Cast("Sinister Strike", ret => WaLua.PlayerComboPts < 5),
