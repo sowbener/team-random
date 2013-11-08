@@ -68,6 +68,7 @@ namespace DeathVader
             Instance = this;
             BotEvents.OnBotStopped += DvHotKeyManager.BotEvents_OnBotStopped;
             BotEvents.OnBotStarted += DvHotKeyManager.BotEvents_OnBotStarted;
+            Styx.CommonBot.BotEvents.OnBotChanged += DvHotKeyManager.OnBotChanged;
         }
 
         private static void StopBot(string reason)

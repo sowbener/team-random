@@ -39,6 +39,15 @@ namespace DeathVader.Managers
             DvLogger.DiagLogW("Death Vader: stopped!");
         }
 
+        public static void OnBotChanged(EventArgs args)
+        {
+            if (RoutineManager.Current.Name != DvMain.DvName)
+                return;
+            DvHotKeyManager.RemoveAllKeys();
+            DvHotKeyManager.RegisterKeys();
+            DvLogger.DiagLogW("Death Vader: Started! (OnBotChanged)");
+        }
+
         private static void LogKey(string kType, Keys kValue, ModifierKeys kModifier, bool kResult)
         {
             DvLogger.DiagLogW("{0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
@@ -262,7 +271,8 @@ namespace DeathVader.Managers
                                 DvSettingsH.Instance.AMZ,
                                 DvSettingsH.Instance.ArmyofTheDeadKey,
                                 DvSettingsH.Instance.RaiseAlly,
-                                DvSettingsH.Instance.Tier6);                         
+                                DvSettingsH.Instance.Tier6);
+                                  
                     }
             }
             //DvLogger.DiagLogW("Death Vader: Hotkeys registered!");      
