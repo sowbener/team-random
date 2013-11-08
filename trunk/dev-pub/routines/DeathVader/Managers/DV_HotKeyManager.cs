@@ -116,9 +116,9 @@ namespace DeathVader.Managers
                                 Tier6AbilitiesKey = !Tier6AbilitiesKey;
                                 LogKey("Tier6", DvSettingsH.Instance.Tier6, DvSettingsH.Instance.ModKeyChoice, Tier6AbilitiesKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
-                                                     ? @"print('Tier 6 Ability \124cFF15E61C Enabled!')"
-                                                     : @"print('Tier 6 Ability \124cFFE61515 Disabled!')");
+                                    Lua.DoString(Tier6AbilitiesKey
+                                                     ? @"print('Tier6Ability \124cFF15E61C Enabled!')"
+                                                     : @"print('Tier6Ability \124cFFE61515 Disabled!')");
                             });
 
                             HotkeysManager.Register("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, DvSettingsH.Instance.ModKeyChoice, hk =>
@@ -126,9 +126,9 @@ namespace DeathVader.Managers
                                 ArmyofTheDeadKey = !ArmyofTheDeadKey;
                                 LogKey("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, DvSettingsH.Instance.ModKeyChoice, ArmyofTheDeadKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
-                                                     ? @"print('Army of the Dead \124cFF15E61C Enabled!')"
-                                                     : @"print('Army of the Dead \124cFFE61515 Disabled!')");
+                                    Lua.DoString(ArmyofTheDeadKey
+                                                     ? @"print('ArmyoftheDead \124cFF15E61C Enabled!')"
+                                                     : @"print('ArmyoftheDead \124cFFE61515 Disabled!')");
                             });
 
                             HotkeysManager.Register("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, DvSettingsH.Instance.ModKeyChoice, hk =>
@@ -136,9 +136,9 @@ namespace DeathVader.Managers
                                 RaiseAllyKey = !RaiseAllyKey;
                                 LogKey("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, DvSettingsH.Instance.ModKeyChoice, RaiseAllyKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
-                                                     ? @"print('Raise Ally \124cFF15E61C Enabled!')"
-                                                     : @"print('Raise Ally \124cFFE61515 Disabled!')");
+                                    Lua.DoString(RaiseAllyKey
+                                                     ? @"print('RaiseAlly \124cFF15E61C Enabled!')"
+                                                     : @"print('RaiseAlly \124cFFE61515 Disabled!')");
                             });
 
                             HotkeysManager.Register("AMZKey", DvSettingsH.Instance.AMZ, DvSettingsH.Instance.ModKeyChoice, hk =>
@@ -146,7 +146,7 @@ namespace DeathVader.Managers
                                 AMZKey = !AMZKey;
                                 LogKey("AMZKey", DvSettingsH.Instance.AMZ, DvSettingsH.Instance.ModKeyChoice, AMZKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(AMZKey
                                                      ? @"print('AMZ \124cFF15E61C Enabled!')"
                                                      : @"print('AMZ \124cFFE61515 Disabled!')");
                             });
@@ -208,7 +208,7 @@ namespace DeathVader.Managers
                                 Tier6AbilitiesKey = !Tier6AbilitiesKey;
                                 LogKey("Tier6", DvSettingsH.Instance.Tier6, ModifierKeys.Alt, Tier6AbilitiesKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(Tier6AbilitiesKey
                                                      ? @"print('Tier 6 Ability \124cFF15E61C Enabled!')"
                                                      : @"print('Tier 6 Ability \124cFFE61515 Disabled!')");
                             });
@@ -218,7 +218,7 @@ namespace DeathVader.Managers
                                 ArmyofTheDeadKey = !ArmyofTheDeadKey;
                                 LogKey("ArmyofTheDeadKey", DvSettingsH.Instance.ArmyofTheDeadKey, ModifierKeys.Alt, ArmyofTheDeadKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(ArmyofTheDeadKey
                                                      ? @"print('Army of the Dead \124cFF15E61C Enabled!')"
                                                      : @"print('Army of the Dead \124cFFE61515 Disabled!')");
                             });
@@ -228,7 +228,7 @@ namespace DeathVader.Managers
                                 RaiseAllyKey = !RaiseAllyKey;
                                 LogKey("RaiseAllyKey", DvSettingsH.Instance.RaiseAlly, ModifierKeys.Alt, RaiseAllyKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(RaiseAllyKey
                                                      ? @"print('Raise Ally \124cFF15E61C Enabled!')"
                                                      : @"print('Raise Ally \124cFFE61515 Disabled!')");
                             });
@@ -238,7 +238,7 @@ namespace DeathVader.Managers
                                 AMZKey = !AMZKey;
                                 LogKey("AMZKey", DvSettingsH.Instance.AMZ, ModifierKeys.Alt, AMZKey);
                                 if (DvSettings.Instance.General.EnableWoWChatOutput && !IsPaused)
-                                    Lua.DoString(IsCooldown
+                                    Lua.DoString(AMZKey
                                                      ? @"print('AMZ \124cFF15E61C Enabled!')"
                                                      : @"print('AMZ \124cFFE61515 Disabled!')");
                             });
