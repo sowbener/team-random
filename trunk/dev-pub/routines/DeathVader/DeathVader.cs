@@ -113,6 +113,9 @@ namespace DeathVader
 
                 //DotTTracker
                 if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
+
+                if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
+                    DeathStrikeTracker.Initialize();
             }
 
             catch (Exception e)
@@ -148,9 +151,6 @@ namespace DeathVader
             /* Gather required information */
             DvLogger.StatCounter();
             DvLogger.LogTimer(500);
-
-            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
-                DeathStrikeTracker.Initialize();
 
             DvUnit.GetNearbyAttackableUnitsCount();
 
