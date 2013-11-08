@@ -65,12 +65,14 @@ namespace Waldo.Routines
                                     SubInterrupts()),
                                 SubUtility(),
                                  new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
-                                new Decorator(ret => WaHotKeyManager.IsCooldown,
+                                 new Decorator(ret => WaHotKeyManager.IsCooldown, SubShadowDance()),
+                                 new Decorator(ret => Lua.PlayerPower < 59 && G.ShadowDanceOffline && G.VanishIsNotOnCooldown && !Me.CurrentTarget.HasMyAura(91021) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713), new ActionAlwaysSucceed()), 
+                                 Spell.Cast("Vanish", ret => G.ShadowDanceOffline && G.PremeditationOnline && WaLua.PlayerComboPts < 5 && !Me.CurrentTarget.HasMyAura(91021) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713) && Me.IsFacing(Me.CurrentTarget)),
+                                 new Decorator(ret => WaHotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                         I.SubUseItems(),
                                         SubOffensive())),
                                 new Decorator(ret => WaHotKeyManager.IsAoe, SubMt()),
-                                new Decorator(ret => WaHotKeyManager.IsCooldown, SubShadowDance()),
                                 new Decorator(ret => !WaHotKeyManager.IsAoe, SubSt()))));
             }
         }
