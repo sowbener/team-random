@@ -10,6 +10,7 @@
 using Waldo.Helpers;
 using Waldo.Interfaces.GUI;
 using Waldo.Managers;
+using Waldo.Core;
 using JetBrains.Annotations;
 using Styx;
 using Styx.CommonBot;
@@ -113,6 +114,10 @@ namespace Waldo
 
             /* Movement Test Shit */
             //     PullnShit();
+
+            //Cooldownwatcher
+            CooldownWatcher.Initialize();
+           
 
             //if (_combatBehavior != null) _combatBehavior = new Sequence(new DecoratorContinue(x => Movement.EnableMovement && (!Me.IsCasting || !Movement.PlayerIsChanneling), Movement.MovingFacingBehavior());
             /* Gather required information */

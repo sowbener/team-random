@@ -51,6 +51,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Wa_CombatLogHandler.cs" />
     <Compile Include="Core\Wa_CooldownWatcher.cs" />
     <Compile Include="Core\Wa_Item.cs" />
     <Compile Include="Core\Wa_Spell.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Helpers\Wa_Logger.cs" />
     <Compile Include="Helpers\Wa_Lua.cs" />
     <Compile Include="Helpers\Wa_Movement.cs" />
+    <Compile Include="Helpers\Wa_PerformenceLogger.cs" />
     <Compile Include="Helpers\Wa_Poisons.cs" />
     <Compile Include="Helpers\Wa_Throttle.cs" />
     <Compile Include="Interfaces\GUI\Wa_Interface.cs">

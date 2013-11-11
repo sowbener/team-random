@@ -82,6 +82,14 @@ namespace Waldo.Interfaces.Settings
         public bool CheckPreCombatBuff { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(LogCategory.None)]
+        [Category("Logging")]
+        [DisplayName("Performance Logging")]
+        [Description("Performance = on, None = off.")]
+        public LogCategory PerformanceLogging { get; set; }
+
+
+        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("General")]
         [DisplayName("Enable Specific AoE")]

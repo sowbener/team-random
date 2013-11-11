@@ -18,6 +18,7 @@ using SG = Waldo.Interfaces.Settings.WaSettings;
 using SH = Waldo.Interfaces.Settings.WaSettingsH;
 using System.Collections.Generic;
 using Styx.WoWInternals;
+using Waldo.Interfaces.Settings;
 
 namespace Waldo.Helpers
 {
@@ -39,6 +40,20 @@ namespace Waldo.Helpers
             WriteToLogFile();
         }
         #endregion
+
+        public static void Performance(string format, params object[] args)
+        {
+            if (WaSettings.Instance.General.PerformanceLogging == LogCategory.Performance)
+                Write(LogLevel.Normal, Colors.HotPink, format, args);
+        }
+
+        private static void Write(LogLevel level, Color color, string format, params object[] args)
+        {
+            if (LogQueue.Contains(string.Format(format, args))) return;
+            LogQueue.Enqueue(string.Format(format, args));
+
+            Styx.Common.Logging.Write(level, color, string.Format("[{0}]: {1}", Waldo.WaMain.WaName, format), args);
+        }
 
         public static void DumpAuraTables(WoWUnit target)
         {
@@ -67,6 +82,7 @@ namespace Waldo.Helpers
 
                     Logger.CombatLog("Debuffs: {0}ms", timer2.ElapsedMilliseconds);
                 }
+
 
                 Logger.CombatLog("----------- ActiveAuras ------------");
                 using (var timer3 = new PerformanceTimer("ActiveAuras"))
