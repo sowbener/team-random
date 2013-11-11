@@ -524,6 +524,8 @@ namespace Waldo.Core
 
         #endregion MultiDotting
 
+        
+
         #region Cooldown Tracker
         // Actual tracker for the cooldowns.
         public static class CooldownTracker
