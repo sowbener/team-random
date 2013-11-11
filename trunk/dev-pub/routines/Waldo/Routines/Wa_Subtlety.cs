@@ -88,7 +88,7 @@ namespace Waldo.Routines
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                // Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura("Shadow Dance") && !Me.HasAura("Master of Subtlety") && !Me.CurrentTarget.HasMyAura("Find Weakness")),
                 new Decorator(ret => WaLua.PlayerComboPts > 4, Finishers()),
-                new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && !Me.HasAura(11327) && !Me.HasAura(1784) && WaLua.PlayerComboPts < 5, ComboBuilders())
+                new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast && (!Me.HasAura(115191) || !Me.HasAura(115193)) && WaLua.PlayerComboPts < 5, ComboBuilders())
                         );
 
           
