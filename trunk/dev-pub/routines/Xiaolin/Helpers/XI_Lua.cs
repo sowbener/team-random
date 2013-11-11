@@ -131,6 +131,29 @@ namespace Xiaolin.Helpers
             }
         }
 
+        public static double PlayerChi
+        {
+            get
+            {
+                //return Me.CurrentChi;
+                try
+                {
+                  // return Me.CurrentChi;
+                    //using (Memory.AcquireFrame())
+                   {
+                        return Lua.GetReturnVal<int>("return UnitPower(\"player\", SPELL_POWER_CHI);", 0);
+                    }
+                }
+                catch
+                {   
+                    XILogger.DebugLog("Failed in Me.CurrentChi");
+                    return 0;
+                }
+            }
+        }
+
+
+
         public static double PlayerPowerMax
         {
             get
@@ -163,6 +186,34 @@ namespace Xiaolin.Helpers
                     });
             }
         }
+        #endregion
+
+        #region Taken From SuperBad //YouKnowILoveYouNavi <3
+
+        public static double LuaGetComboPoints()
+        {
+            return Lua.GetReturnVal<int>("return GetComboPoints(\"player\",\"target\");", 0);
+        }
+
+        public static double LuaGetEnergyRegen()
+        {
+            return Lua.GetReturnVal<float>("return GetPowerRegen()", 1);
+        }
+
+        public static double TimeToEnergyCap()
+        {
+
+            double timetoEnergyCap;
+            double playerEnergy;
+            double ER_Rate;
+
+            playerEnergy = XILua.PlayerPower; // current Energy 
+            ER_Rate = XILua.LuaGetEnergyRegen();
+            timetoEnergyCap = (100 - playerEnergy) * (1.0 / ER_Rate); // math 
+
+            return timetoEnergyCap;
+        }
+
         #endregion
 
         #region Run Macro text

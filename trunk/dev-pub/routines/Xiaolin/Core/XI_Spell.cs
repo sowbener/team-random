@@ -663,7 +663,7 @@ namespace Xiaolin.Core
             Logger.DebugLog("FixGlobalCooldownInitialize: using Singular GCD");
             switch (StyxWoW.Me.Class)
             {
-                case WoWClass.Hunter:
+                case WoWClass.Monk:
                     FixGlobalCooldownCheckSpell = "Hunter's Mark";
                     break;
             }
@@ -673,7 +673,7 @@ namespace Xiaolin.Core
 
             switch (StyxWoW.Me.Class)
             {
-                case WoWClass.Hunter:
+                case WoWClass.Monk:
                     FixGlobalCooldownCheckSpell = "Arcane Shot";
                     break;
             }

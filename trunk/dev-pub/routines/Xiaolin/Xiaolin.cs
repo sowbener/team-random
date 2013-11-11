@@ -53,11 +53,12 @@ namespace Xiaolin
         public static XIMain Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        internal static readonly Version Revision = new Version(1, 0, 0);
+        internal static readonly Version Revision = new Version(1, 0, 9);
+
         internal static readonly string XIName = "Xiaolin - IR " + Revision;
 
         public override string Name { get { return XIName; } }
-        public override WoWClass Class { get { return WoWClass.Hunter; } }
+        public override WoWClass Class { get { return WoWClass.Monk; } }
 
         #region BotEvents
         public XIMain()
@@ -83,9 +84,9 @@ namespace Xiaolin
         #endregion
 
         #region Behaviors
-        private Composite _combatBehavior, _preCombatBuffBehavior;
+        private Composite _combat, _combatBehavior, _preCombatBuffBehavior;
 
-        public override Composite CombatBehavior        { get { return _combatBehavior; } }
+        public override Composite CombatBehavior { get { return _combatBehavior ?? (_combatBehavior = CreateCombat()); } }
         public override Composite PreCombatBuffBehavior { get { return _preCombatBuffBehavior; } }
         #endregion
 
@@ -133,7 +134,7 @@ namespace Xiaolin
 
             /* Start Combat */
             PreBuffSelector();
-            RotationSelector();
+            CreateCombat();
         }
         #endregion
 
@@ -148,45 +149,14 @@ namespace Xiaolin
             return null;
         }
 
-        internal Composite RotationSelector()
+        internal static Composite CreateCombat()
         {
-            if (_combatBehavior == null)
-            {
-                XILogger.InitLogF("Initializing combat behaviours.");
-                _combatBehavior = null;
-            }
-            switch (Me.Specialization)
-            {
-                    case WoWSpec.HunterBeastMastery:
-                        if (_combatBehavior == null) { _combatBehavior = BM.InitializeBrewmaster; XILogger.InitLogO("Brewmaster combat behaviour is initialized."); }
-                        break;
-                    case WoWSpec.HunterMarksmanship:
-                        if (_combatBehavior == null) { _combatBehavior = WW.InitializeWindwalker ; XILogger.InitLogO("Windwalker combat behaviour is initialized."); }
-                        break;
-                    default:
-                        StopBot("Current class or specialization is not supported! Stopping HonorBuddy.");
-                    break;
-            }
-            return null;
+            return new Switch<WoWSpec>(ret => Me.Specialization,
+                new SwitchArgument<WoWSpec>(WoWSpec.MonkWindwalker, WW.InitializeWindwalker),
+                new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, BM.InitializeBrewmaster));
         }
         #endregion
 
-        #region Forced LockSelector
-        [UsedImplicitly]
-        private class LockSelector : PrioritySelector
-        {
-            public LockSelector(params Composite[] children)
-                : base(children)
-            {
-            }
-            public override RunStatus Tick(object context)
-            {
-                using (StyxWoW.Memory.AcquireFrame())
-                {
-                    return base.Tick(context);
-                }
-            }
-        }
-        #endregion
+        
     }
 }
