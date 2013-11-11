@@ -144,12 +144,6 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Unit Booleans
-        // Checks if unit is Valid - Not used yet - Need to update IsInRange.
-        //public static bool IsValid(this WoWUnit unit)
-        //{
-        //    return unit != null && unit.IsValid && unit.Attackable && unit.IsInRange("Heroic Strike");
-        //}
-
         public static bool IsInRange(this WoWUnit unit, string spell)
         {
             SpellFindResults results;
