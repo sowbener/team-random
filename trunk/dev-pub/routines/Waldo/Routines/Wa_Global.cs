@@ -129,6 +129,7 @@ namespace Waldo.Routines
         internal static bool Vanishisoncooldown { get { return CooldownWatcher.OnCooldown(1856); } }
         internal static bool ShadowDanceOnline { get { return !CooldownWatcher.OnCooldown(51713); } }
         internal static double FindWeakness { get { return Spell.GetMyAuraTimeLeft(91021, Me.CurrentTarget); } }
+        internal static bool FindWeaknessOff { get { return !Spell.HasMyAura(Me.CurrentTarget, 91021); } }
         internal static bool PremeditationOnline { get { return !CooldownWatcher.OnCooldown(14183); } }
         internal static bool ShadowDanceOffline { get { return CooldownWatcher.OnCooldown(51713); } }
         internal static bool VanishIsOnCooldown { get { return CooldownWatcher.OnCooldown(1856); } }
