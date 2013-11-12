@@ -67,7 +67,7 @@ namespace Xiaolin.Routines
 
         internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307, Me); } }
 
-        internal static bool CanApplyShuffle { get { return (!Me.HasAura(115307) || ShuffleSetting < SG.Instance.Brewmaster.ShuffleSetting); } }
+        internal static bool CanApplyShuffle { get { return (!Me.HasAura(115307) || ShuffleSetting > SG.Instance.Brewmaster.ShuffleSetting); } }
 
         internal static bool CanUsePurifyingBrew { get { return (Me.HasAura("Moderate Stagger") && ShuffleSetting > 9) || (ShuffleSetting > 6 && Me.HasAura("Heavy Stagger")); } }
 
