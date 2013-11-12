@@ -17,7 +17,7 @@ namespace Waldo.Core
             get
             {
                 return !Me.Mounted && Me.CurrentTarget != null && Me.CurrentTarget.Attackable &&
-                       !Me.CurrentTarget.IsDead;
+                       !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
             }
         }
 
