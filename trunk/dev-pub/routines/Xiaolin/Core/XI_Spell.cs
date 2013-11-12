@@ -440,6 +440,16 @@ namespace Xiaolin.Core
 
             return false;
         }
+
+        public static uint GetAuraStack(WoWUnit unit, int spellId)
+        {
+            if (unit != null)
+            {
+                var wantedAura = Me.GetAllAuras().FirstOrDefault(a => a.SpellId == spellId && a.StackCount > 0 && a.CreatorGuid == Me.Guid);
+                return wantedAura != null ? wantedAura.StackCount : 0;
+            }
+            return 0;
+        }
         #endregion
 
         #region Cooldown Tracker

@@ -18,57 +18,97 @@ namespace Xiaolin.Interfaces.Settings
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Set Black Ox Statue")]
         public bool SummonBlackOxStatue { get; set; }
-        
-        
-        //old ones?
-        [Setting]
-        [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.Always)]
-        [Category("Unholy - Ability Options")]
-        [DisplayName("Summon Gargoyle")]
-        [Description("Select the usage of Gargoyle.")]
-        public XIEnum.AbilityTrigger SummonGargoyle { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Unholy - Ability Options")]
-        [DisplayName("Summon Gargoyle AoE")]
-        [Description("Select the usage of Gargoyle in AoE.")]
-        public bool UseGargoyleInAoE { get; set; }
+        [Styx.Helpers.DefaultValue(6)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Shuffle Timer")]
+        [Description("Changes the timer to use Shuffle")]
+        public int ShuffleSetting { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Unholy - Ability Options")]
-        [DisplayName("Override Dots with More Powerful ones")]
-        [Description("Select the usage of Override Dots With More Powerful Ones")]
-        public bool EnablePowerDots { get; set; }
+        [Styx.Helpers.DefaultValue(90)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Guard HP Percent")]
+        [Description("Changes the HP Percent to use Guard")]
+        public int GuardHPPercent { get; set; }
+
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Unholy - Ability Options")]
-        [DisplayName("Raise Dead")]
-        [Description("Select the usage of Auto-Raise Dead")]
-        public bool PrebuffPet { get; set; }
+        [Styx.Helpers.DefaultValue(50)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Dampen Harm HP Percent")]
+        [Description("Changes the HP Percent to use Dampen Harm")]
+        public int DampenHarmPercent { get; set; }
 
 
-        [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.Always)]
-        [Category("Unholy - Ability Options")]
-        [DisplayName("Empower Rune Weapon")]
-        [Description("Select the usage of Empower Rune Weapon.")]
-        public XIEnum.AbilityTrigger EmpowerRuneWeapon { get; set; }
+        [Setting]
+        [Styx.Helpers.DefaultValue(60)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Fortifying Brew HP %")]
+        [Description("Changes the HP % to use Fortifying Brew")]
+        public int FortifyingBrewPercent { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(30)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Zen Meditation HP %")]
+        [Description("Changes the HP % to use Zen Meditation")]
+        public int ZenMeditationPercent { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(10)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Elusive Brew Count")]
+        [Description("Uses Elusive Brew at this Count")]
+        public int ElusiveBrew { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(50)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Elusive Brew HP %")]
+        [Description("Changes the HP % to use Elusive Brew")]
+        public int ElusiveBrewHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(60)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Zen Sphere")]
+        [Description("Changes the Zen Sphere")]
+        public int BrewWithZenSphere { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(99)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Chi Wave HP %")]
+        [Description("Changes the HP % to use Chi Wave")]
+        public int ChiWavePercent { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(4)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Spinning Crane AoE Count")]
+        [Description("Changes the Count to use Spinning Crane Kick")]
+        public int SpinningCraneKickCount { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(6)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Healing Sphere HP %")]
+        [Description("Changes the HP % to use Healing Sphere")]
+        public int HealingSpherePercent { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.OnBossDummy)]
-        [Category("Unholy - Ability Options")]
+        [Category("Brewmaster - Ability Options")]
         [DisplayName("Class Racials")]
         [Description("Select the usage of your class racials - Only DPS abilities (Buffs & Attacks).")]
         public XIEnum.AbilityTrigger ClassRacials { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.OnBossDummy)]
-        [Category("Unholy - Ability Options")]
-        [DisplayName("Unholy Frenzy")]
-        [Description("Select the usage of Unholy Frenzy.")]
-        public XIEnum.AbilityTrigger UnholyFrenzy { get; set; }
+
+        
         #endregion
 
         #region Item Options
@@ -123,26 +163,6 @@ namespace Xiaolin.Interfaces.Settings
         [Description("Enables auto attack, persistent combat while tabbing units.")]
         public bool CheckAutoAttack { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(35)]
-        [Category("Unholy - Selectable Options")]
-        [DisplayName("Soul Reaper %")]
-        [Description("Select the use-on HP for Soul Reaper usage.")]
-        public int SoulReaperHP { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(3000)]
-        [Category("Unholy - Selectable Options")]
-        [DisplayName("Attack Power Required")]
-        [Description("Attack Power Required to Override CurrentDot.")]
-        public int AttackPowerDot { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(80)]
-        [Category("Unholy - Selectable Options")]
-        [DisplayName("Death Siphon %")]
-        [Description("Uses Death Siphon if specced at % of HP")]
-        public int DeathSiphonHP { get; set; }
        
 
 

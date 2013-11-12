@@ -2,6 +2,8 @@
 using Xiaolin.Core;
 using Xiaolin.Helpers;
 using Xiaolin.Managers;
+using Xiaolin.Interfaces;
+using System.Linq;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
@@ -15,6 +17,7 @@ using SH = Xiaolin.Interfaces.Settings.XISettingsH;
 using Spell = Xiaolin.Core.XISpell;
 using U = Xiaolin.Core.XIUnit;
 using Styx.CommonBot;
+using Xiaolin.Interfaces.Settings;
 
 namespace Xiaolin.Routines
 {
@@ -58,10 +61,80 @@ namespace Xiaolin.Routines
         }
         #endregion
 
+        #region BoolsTemp
+
+        private static XISettingsBM MonkSettings { get { return SG.Instance.Brewmaster; } }
+
+        internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307, Me); } }
+
+        internal static bool CanApplyShuffle { get { return (!Me.HasAura(115307) || ShuffleSetting < SG.Instance.Brewmaster.ShuffleSetting); } }
+
+        internal static bool CanUsePurifyingBrew { get { return (Me.HasAura("Moderate Stagger") && ShuffleSetting > 9) || (ShuffleSetting > 6 && Me.HasAura("Heavy Stagger")); } }
+
+        internal static bool CanApplyDizzyingHaze { get { return XIUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 8).Any(x => !x.HasAura("Dizzying Haze") && !x.IsBoss && !x.IsFlying) && Me.HasAura("Shuffle"); } }
+
+        internal static bool CanApplyBreathofFire { get { return XIUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 12).Any(x => !x.HasAura("Breath of Fire") && Me.IsSafelyFacing(x)); } }
+
+        internal static bool CanPlaceBlackOxStatue { get { return SG.Instance.Brewmaster.SummonBlackOxStatue && Me.CurrentTarget != null && !Me.HasAura("Sanctuary of the Ox") && !Me.CurrentTarget.IsFlying && !Me.IsOnTransport; } }
+
+
+        public static int MaxChi { get { return XITalentManager.HasTalent(8) ? 5 : 4; } } // 
+        
+        
+        private static bool NeedGuard { get { return Me.HasAura("Power Guard") && Me.HasAura("Shuffle") && Me.HealthPercent <= MonkSettings.GuardHPPercent; } }
+
+        private static bool NeedDampenHarm { get { return XITalentManager.HasTalent(14) && Me.HealthPercent <= MonkSettings.DampenHarmPercent && !Me.HasAura("Fortifying Brew"); } }
+
+        private static bool NeedFortifyingBrew { get { return Me.HealthPercent <= MonkSettings.FortifyingBrewPercent && !Me.HasAura("Fortifying Brew") && !Me.HasAura("Dampen Harm"); } }
+
+        private static bool NeedZenMeditation { get { return Me.HealthPercent <= MonkSettings.ZenMeditationPercent; } }
+
+        private static bool NeedElusiveBrew { get { return Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
+
+        private static bool NeedBuildStacksForGaurd { get { return (!Me.HasAura("Power Guard") || !Me.HasAura("Tiger Power")) && Me.HasAura("Shuffle"); } }
+
+        private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && XITalentManager.HasTalent(16); } }
+
+        private static bool NeedBlackoutKick { get { return CanApplyShuffle; } }
+
+        private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || XITalentManager.HasGlyph("Touch of Death")); } }
+
+        private static bool NeedDizzyingHaze { get { return Lua.PlayerPower >= 40 && CanApplyDizzyingHaze; } }
+
+        private static bool NeedSpinningCraneKick { get { return XIUnit.NearbyAttackableUnitsCount >= MonkSettings.SpinningCraneKickCount && ShuffleSetting > 4; } }
+
+        private static bool CanJab { get { return Styx.WoWInternals.WoWSpell.FromId(121253).Cooldown; } }
+
+        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && Me.HasAura("Shuffle"); } }
+
+        private static bool NeedChiWave { get { return XITalentManager.HasTalent(4) && Me.HealthPercent <= MonkSettings.ChiWavePercent; } }
+
+        private static bool NeedHealingSphere { get { return Lua.PlayerPower >= 60 && Me.HealthPercent <= MonkSettings.HealingSpherePercent; } }
+
+        private static bool NeedZenSphere { get { return XITalentManager.HasTalent(5) && Me.HealthPercent <= MonkSettings.BrewWithZenSphere; } }
+
+
+
+        #endregion
+
         #region Rotations
+
+        internal static Composite ChiBuilder()
+        {
+            return new PrioritySelector(
+            Spell.Cast("Keg Smash"),
+            Spell.Cast("Expel Harm", ret => Me.CurrentHealth <= 35),
+            Spell.Cast("Jab")
+                );
+
+        }
         internal static Composite BrewmasterSt()
         {
             return new PrioritySelector(
+            Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
+            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply Shuffle if not active or MaxChi
+            Spell.PreventDoubleCast("Tiger Palm", 0.5, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
+            new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
 
         }
@@ -76,9 +149,16 @@ namespace Xiaolin.Routines
 
         internal static Composite BrewmasterDefensive()
         {
-            return new PrioritySelector(
-                I.BrewmasterUseHealthStone()
-                );
+                        return new PrioritySelector(
+                     Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
+                     Spell.PreventDoubleCast("Guard", 0.5, ret => NeedGuard), // Debating..if we dont check for shuffle it steals Chi from Blackout Kick
+                     Spell.PreventDoubleCast("Dampen Harm", 0.5, ret => NeedDampenHarm),
+                     Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
+                     Spell.PreventDoubleCast("Chi Wave", 0.5, ret => NeedChiWave),
+                     Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
+                     I.BrewmasterUseHealthStone(),
+                     Spell.Cast("Zen Meditation", ret => NeedZenMeditation), // yeah yeah..its channeled..but it’ll reduce that one melee hit by 90%, which might save our life.
+                     Spell.Cast("Elusive Brew", ret => NeedElusiveBrew));
         }
 
 
@@ -123,7 +203,6 @@ namespace Xiaolin.Routines
 
         #region Booleans
         //thanks PR
-        internal static bool CanPlaceBlackOxStatue { get { return SG.Instance.Brewmaster.SummonBlackOxStatue && Me.CurrentTarget != null && !Me.HasAura("Sanctuary of the Ox") && !Me.CurrentTarget.IsFlying && !Me.IsOnTransport; } }
         internal static bool UnitIsFleeing { get { return Me.CurrentTarget != null && ((Me.CurrentTarget.IsPlayer || Me.CurrentTarget.Fleeing) && Me.CurrentTarget.MovementInfo.RunSpeed > 3.5); } }
         #endregion Booleans
 
