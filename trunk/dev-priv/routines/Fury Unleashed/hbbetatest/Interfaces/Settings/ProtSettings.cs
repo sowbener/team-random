@@ -321,6 +321,20 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Shattering Throw")]
         [Description("Select the usage of Shattering Throw.")]
         public Enum.AbilityTrigger ShatteringThrow { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Vigilance")]
+        [Description("Select the usage of Vigilance.")]
+        public Enum.VigilanceTrigger Vigilance { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(15)]
+        [Category("Protection - Ability Options")]
+        [DisplayName(" Vigilance %")]
+        [Description("Select the use-on HP for Vigilance usage.")]
+        public int VigilanceNum { get; set; }
         #endregion
 
         // ========================================================================================

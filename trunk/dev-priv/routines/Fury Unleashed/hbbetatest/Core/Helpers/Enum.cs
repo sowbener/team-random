@@ -115,6 +115,13 @@ namespace FuryUnleashed.Core.Helpers
             OnT15Proc,
         }
 
+        public enum VigilanceTrigger
+        {
+            Never,
+            OnTank,
+            OnPartyMember
+        }
+
         public enum WarriorTalents
         {
             Juggernaut = 1,

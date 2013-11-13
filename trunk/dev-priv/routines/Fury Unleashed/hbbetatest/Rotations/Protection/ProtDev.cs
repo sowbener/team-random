@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Interfaces.Settings;
@@ -47,9 +48,9 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase)),
+                    Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase, true)),
                 new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase))
+                    Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase, true))
                 );
         }
 
@@ -122,6 +123,7 @@ namespace FuryUnleashed.Rotations.Protection
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe),
                 Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry)
+                //Spell.Cast(SpellBook.Vigilance, on => Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(p => Unit.IsViable(p)), ret => ProtGlobal.VigilanceUsage)
                 );
         }
 
@@ -136,11 +138,11 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && ProtGlobal.Tier6AbilityUsage),
-                Spell.Cast(SpellBook.BerserkerRage, ret => !Global.EnrageAura && ProtGlobal.BerserkerRageUsage),
-                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && ProtGlobal.Tier6AbilityUsage),
-                Spell.Cast(SpellBook.Recklessness, ret => ProtGlobal.RecklessnessUsage),
-                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && ProtGlobal.SkullBannerUsage)
+                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && ProtGlobal.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.BerserkerRage, ret => !Global.EnrageAura && ProtGlobal.BerserkerRageUsage, true),
+                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && ProtGlobal.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.Recklessness, ret => ProtGlobal.RecklessnessUsage, true),
+                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && ProtGlobal.SkullBannerUsage, true)
                 );
         }
     }

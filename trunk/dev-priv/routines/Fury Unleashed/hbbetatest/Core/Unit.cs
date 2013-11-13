@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core.Helpers;
+﻿
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -42,6 +43,7 @@ namespace FuryUnleashed.Core
                     (Global.IsProtSpec && u.HealthPercent <= InternalSettings.Instance.Protection.CheckRallyingCryNum)
                     ));
         }
+
         internal static IEnumerable<WoWUnit> FriendlyUnits
         {
             get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
@@ -144,6 +146,39 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Unit Booleans
+        public static List<WoWPlayer> Dps
+        {
+            get
+            {
+                if (!StyxWoW.Me.GroupInfo.IsInParty)
+                    return new List<WoWPlayer>();
+
+                return StyxWoW.Me.GroupInfo.RaidMembers.Where(p => !p.HasRole(WoWPartyMember.GroupRole.Tank) && !p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(p => p != null).ToList();
+            }
+        }
+
+        public static List<WoWPlayer> Healers
+        {
+            get
+            {
+                if (!StyxWoW.Me.GroupInfo.IsInParty)
+                    return new List<WoWPlayer>();
+
+                return StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(p => p != null).ToList();
+            }
+        }
+
+        public static List<WoWPlayer> Tanks
+        {
+            get
+            {
+                if (!StyxWoW.Me.GroupInfo.IsInParty)
+                    return new List<WoWPlayer>();
+
+                return StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(p => p != null).ToList();
+            }
+        }
+
         public static bool IsInRange(this WoWUnit unit, string spell)
         {
             SpellFindResults results;
