@@ -98,7 +98,6 @@
     <Compile Include="Rotations\Arms\ArmsRel.cs" />
     <Compile Include="Rotations\Fury\FuryDev.cs" />
     <Compile Include="Rotations\Fury\FuryGlobal.cs" />
-    <Compile Include="Rotations\Fury\FuryPvP.cs" />
     <Compile Include="Rotations\Fury\FuryRel.cs" />
     <Compile Include="Rotations\Global.cs" />
     <Compile Include="Rotations\Protection\ProtDev.cs" />
