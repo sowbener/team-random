@@ -195,8 +195,8 @@ namespace FuryUnleashed.Rotations.Protection
         {
             get
             {
-                return ((IS.Instance.Protection.Vigilance == Enum.VigilanceTrigger.OnPartyMember) ||
-                        (IS.Instance.Protection.Vigilance == Enum.VigilanceTrigger.OnTank));
+                return ((IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnPartyMember) ||
+                        (IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
             }
         }
 

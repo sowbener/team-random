@@ -173,6 +173,15 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
+        internal static bool VigilanceUsage
+        {
+            get
+            {
+                return ((InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnPartyMember) ||
+                        (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
+            }
+        }
+
         internal static bool RecklessnessSync
         {
             get

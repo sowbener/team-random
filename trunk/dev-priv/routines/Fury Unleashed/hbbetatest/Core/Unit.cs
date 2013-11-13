@@ -10,6 +10,7 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core
 {
@@ -146,36 +147,27 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Unit Booleans
-        public static List<WoWPlayer> Dps
+        public static WoWPlayer VigilanceResult;
+        public static WoWPlayer VigilanceUsage
         {
             get
             {
-                if (!StyxWoW.Me.GroupInfo.IsInParty)
-                    return new List<WoWPlayer>();
+                using (new PerformanceLogger("VigilanceUsage"))
+                {
+                    VigilanceResult = null;
+                    if (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank)
+                    {
+                        VigilanceResult = RaidMembers.FirstOrDefault(p => !p.IsMe && p.IsAlive && p.Combat && p.HealthPercent <= InternalSettings.Instance.General.VigilanceNum && p.Distance <= 40);
+                        return VigilanceResult;
+                    }
 
-                return StyxWoW.Me.GroupInfo.RaidMembers.Where(p => !p.HasRole(WoWPartyMember.GroupRole.Tank) && !p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(p => p != null).ToList();
-            }
-        }
-
-        public static List<WoWPlayer> Healers
-        {
-            get
-            {
-                if (!StyxWoW.Me.GroupInfo.IsInParty)
-                    return new List<WoWPlayer>();
-
-                return StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(p => p != null).ToList();
-            }
-        }
-
-        public static List<WoWPlayer> Tanks
-        {
-            get
-            {
-                if (!StyxWoW.Me.GroupInfo.IsInParty)
-                    return new List<WoWPlayer>();
-
-                return StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(p => p != null).ToList();
+                    if (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnPartyMember)
+                    {
+                        VigilanceResult = RaidMembers.FirstOrDefault(p => !p.IsMe && p.IsAlive && p.Combat && p.HealthPercent <= InternalSettings.Instance.General.VigilanceNum && p.Distance <= 40);
+                        return VigilanceResult;
+                    }
+                }
+                return null;
             }
         }
 
@@ -268,8 +260,8 @@ namespace FuryUnleashed.Core
                 using (new PerformanceLogger("CanInterrupt"))
                 {
                     return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && Me.CurrentTarget.CanInterruptCurrentSpellCast &&
-                            ((InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
-                            (InternalSettings.Instance.General.InterruptMode == Helpers.Enum.Interrupts.Constant && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= InternalSettings.Instance.General.InterruptNum)
+                            ((InternalSettings.Instance.General.InterruptMode == Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
+                            (InternalSettings.Instance.General.InterruptMode == Enum.Interrupts.Constant && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= InternalSettings.Instance.General.InterruptNum)
                             );
                 }
             }

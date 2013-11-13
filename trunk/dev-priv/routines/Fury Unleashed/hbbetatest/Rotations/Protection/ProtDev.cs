@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Windows.Forms;
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
+using System.Windows.Forms;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations.Protection
@@ -122,8 +121,8 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe),
-                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry)
-                //Spell.Cast(SpellBook.Vigilance, on => Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(p => Unit.IsViable(p)), ret => ProtGlobal.VigilanceUsage)
+                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry),
+                Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceResult, ret => Unit.VigilanceUsage != null)
                 );
         }
 

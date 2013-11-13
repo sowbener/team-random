@@ -74,6 +74,20 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
+        [Category("General")]
+        [DisplayName("Vigilance")]
+        [Description("Select the usage of Vigilance.")]
+        public Enum.VigilanceTrigger Vigilance { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(15)]
+        [Category("General")]
+        [DisplayName("Vigilance %")]
+        [Description("Select the use-on HP for Vigilance usage.")]
+        public int VigilanceNum { get; set; }
         #endregion
 
         // ========================================================================================
