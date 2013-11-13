@@ -60,6 +60,7 @@ namespace Xiaolin.Routines
 
         #region BoolsTemp
 
+        internal static bool TalentChiBrewEnabled { get { return XITalentManager.HasTalent(9); } }
         internal static bool RisingSunKickReady { get { return !Styx.WoWInternals.WoWSpell.FromId(107428).Cooldown; } }
         internal static bool EnergizingBrewDown { get { return !Me.HasAura(115288); } }
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
@@ -77,6 +78,8 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
                Spell.Cast("Tigereye Brew", ret => TigerEyeUseDown && Spell.GetSpellCooldown(107428).TotalSeconds < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1),
               // actions+=/energizing_brew,if=energy.time_to_max>5
+                //actions+=/chi_brew,if=talent.chi_brew.enabled&chi=0
+                Spell.Cast("Chi Brew", ret => TalentChiBrewEnabled && Lua.PlayerChi == 0),
               Spell.Cast("Energizing Brew", ret => Lua.TimeToEnergyCap() > 5),
               Spell.Cast("Invoke Xuen, the White Tiger"),
                Spell.Cast("Tiger Palm", ret => TigerPowerRemains <= 3),
