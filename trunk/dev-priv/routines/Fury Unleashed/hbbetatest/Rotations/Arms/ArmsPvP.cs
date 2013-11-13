@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
-using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Rotations.Arms;
-using JetBrains.Annotations;
 using Styx;
-using Styx.Common;
-using Styx.CommonBot;
-using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
-using Action = Styx.TreeSharp.Action;
-using BotEvents = Styx.CommonBot.BotEvents;
-using Enum = FuryUnleashed.Core.Helpers.Enum;
 
-namespace FuryUnleashed.Rotations
+namespace FuryUnleashed.Rotations.Arms
 {
     internal class ArmsPvP
     {
@@ -142,7 +130,7 @@ namespace FuryUnleashed.Rotations
                             ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
@@ -191,7 +179,7 @@ namespace FuryUnleashed.Rotations
                             ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
 
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
@@ -226,7 +214,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityAoEUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage),
 
                         Spell.Cast(SpellBook.SweepingStrikes),
@@ -253,7 +241,7 @@ namespace FuryUnleashed.Rotations
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityAoEUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage),
 
                         Spell.Cast(SpellBook.SweepingStrikes),

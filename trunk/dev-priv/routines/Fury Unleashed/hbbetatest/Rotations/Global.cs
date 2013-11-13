@@ -189,9 +189,9 @@ namespace FuryUnleashed.Rotations
             get { return Me.CurrentTarget.HealthPercent > 20; }
         }
 
-        internal static bool TargetNotNull
+        internal static bool ShockwaveFacing
         {
-            get { return Me.CurrentTarget != null; }
+            get { return Me.IsSafelyFacing(Me.CurrentTarget); }
         }
 
         internal static bool TargettingMe

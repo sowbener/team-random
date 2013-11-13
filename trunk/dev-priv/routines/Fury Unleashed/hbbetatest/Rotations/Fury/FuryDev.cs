@@ -107,7 +107,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/raging_blow,if=cooldown.colossus_smash.remains>=3
                 Spell.Cast(SpellBook.RagingBlow, ret => Global.ColossusSmashSpellCooldown >= 3000),
                 //actions.single_target+=/shockwave,if=enabled
-                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && FuryGlobal.Tier4AbilityUsage),
+                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
                 //actions.single_target+=/heroic_throw,if=debuff.colossus_smash.down&rage<60
                 Spell.Cast(SpellBook.HeroicThrow, ret => !Global.ColossusSmashAura && Lua.PlayerPower < 60 && InternalSettings.Instance.Fury.CheckHeroicThrow),
                 //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
@@ -162,7 +162,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.Whirlwind),
@@ -175,7 +175,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS3),
                         Spell.Cast(SpellBook.Bloodthirst),
@@ -190,7 +190,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS2),
                         Spell.Cast(SpellBook.Bloodthirst),
@@ -205,7 +205,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
 
                         Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS1),
                         Spell.Cast(SpellBook.Bloodthirst),

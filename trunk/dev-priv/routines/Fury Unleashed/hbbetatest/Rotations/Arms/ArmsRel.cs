@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
@@ -10,9 +6,7 @@ using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
-using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
-using Action = System.Action;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Rotations.Arms
@@ -25,8 +19,8 @@ namespace FuryUnleashed.Rotations.Arms
             get
             {
                 return new PrioritySelector(
-                    new Switch<Core.Helpers.Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
-                        new SwitchArgument<Core.Helpers.Enum.Mode>(Core.Helpers.Enum.Mode.Auto,
+                    new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_ArmsDefensive()),
                                 Rel_ArmsNonGcdUtility(),
@@ -45,7 +39,7 @@ namespace FuryUnleashed.Rotations.Arms
                                         new Decorator(ret => Global.ExecutePhase, Rel_ArmsExec()),
                                         new Decorator(ret => Global.NormalPhase, Rel_ArmsSt())
                                         )))),
-                        new SwitchArgument<Core.Helpers.Enum.Mode>(Core.Helpers.Enum.Mode.SemiHotkey,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_ArmsDefensive()),
                                 Rel_ArmsNonGcdUtility(),
@@ -66,7 +60,7 @@ namespace FuryUnleashed.Rotations.Arms
                                         new Decorator(ret => Global.ExecutePhase, Rel_ArmsExec()),
                                         new Decorator(ret => Global.NormalPhase, Rel_ArmsSt())
                                         )))),
-                        new SwitchArgument<Core.Helpers.Enum.Mode>(Core.Helpers.Enum.Mode.Hotkey,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_ArmsDefensive()),
                                 Rel_ArmsNonGcdUtility(),
@@ -129,12 +123,12 @@ namespace FuryUnleashed.Rotations.Arms
                             ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
-                        new Switch<Core.Helpers.Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
-                            new SwitchArgument<Core.Helpers.Enum.Shouts>(Core.Helpers.Enum.Shouts.BattleShout,
+                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me)),
-                            new SwitchArgument<Core.Helpers.Enum.Shouts>(Core.Helpers.Enum.Shouts.CommandingShout,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
                                 Spell.Cast(SpellBook.CommandingShout, on => Me))),
                         Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16),
                         Spell.Cast(SpellBook.Slam, ret => Me.CurrentRage >= 90 && !Global.DeathSentenceAuraT16),
@@ -178,13 +172,13 @@ namespace FuryUnleashed.Rotations.Arms
                             ret => Global.BladestormTalent && Global.ColossusSmashSpellCooldown >= 6000 && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityUsage),
                 // Added - For the sake of supporting it.
 
-                        new Switch<Core.Helpers.Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
-                            new SwitchArgument<Core.Helpers.Enum.Shouts>(Core.Helpers.Enum.Shouts.BattleShout,
+                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me)),
-                            new SwitchArgument<Core.Helpers.Enum.Shouts>(Core.Helpers.Enum.Shouts.CommandingShout,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
                                 Spell.Cast(SpellBook.CommandingShout, on => Me)))))
                 );
         }
@@ -213,7 +207,7 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityAoEUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage),
 
                         Spell.Cast(SpellBook.SweepingStrikes),
@@ -240,7 +234,7 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ArmsGlobal.BloodbathSync && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Shockwave,
-                            ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && ArmsGlobal.Tier4AbilityAoEUsage),
+                            ret => Global.ShockwaveTalent && Global.ShockwaveFacing && ArmsGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ArmsGlobal.Tier6AbilityUsage),
 
                         Spell.Cast(SpellBook.SweepingStrikes),
@@ -350,7 +344,7 @@ namespace FuryUnleashed.Rotations.Arms
                 Spell.Cast(SpellBook.Hamstring,
                     ret =>
                         !Unit.IsTargetBoss && !Global.HamstringAura &&
-                        (InternalSettings.Instance.Arms.HamString == Core.Helpers.Enum.Hamstring.Always ||
+                        (InternalSettings.Instance.Arms.HamString == Enum.Hamstring.Always ||
                          InternalSettings.Instance.Arms.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
                 Spell.Cast(SpellBook.PiercingHowl,
                     ret =>

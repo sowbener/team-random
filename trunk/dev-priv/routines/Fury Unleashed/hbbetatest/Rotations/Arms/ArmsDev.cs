@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
@@ -21,8 +16,8 @@ namespace FuryUnleashed.Rotations.Arms
             get
             {
                 return new PrioritySelector(
-                    new Switch<Core.Helpers.Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
-                        new SwitchArgument<Core.Helpers.Enum.Mode>(Core.Helpers.Enum.Mode.Auto,
+                    new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
                                 Dev_ArmsNonGcdUtility(),
@@ -41,7 +36,7 @@ namespace FuryUnleashed.Rotations.Arms
                                         new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
                                         new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
                                         )))),
-                        new SwitchArgument<Core.Helpers.Enum.Mode>(Core.Helpers.Enum.Mode.SemiHotkey,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
                                 Dev_ArmsNonGcdUtility(),
@@ -62,7 +57,7 @@ namespace FuryUnleashed.Rotations.Arms
                                         new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
                                         new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
                                         )))),
-                        new SwitchArgument<Core.Helpers.Enum.Mode>(Enum.Mode.Hotkey,
+                        new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
                                 Dev_ArmsNonGcdUtility(),
@@ -85,6 +80,7 @@ namespace FuryUnleashed.Rotations.Arms
                                         ))))));
             }
         }
+
         #region Development Rotations
 
         internal static Composite Dev_ArmsSt()

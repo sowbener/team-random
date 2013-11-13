@@ -86,7 +86,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Bloodthirst, ret => !Global.RagingBlow2S || !(Global.RagingBlow1S && (Global.FadingCs(4500) || Global.ColossusSmashSpellCooldown > 18000))),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 60)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 60)))
@@ -100,7 +100,7 @@ namespace FuryUnleashed.Rotations.Fury
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
                                 Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
-                                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityUsage)
+                                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage)
                                 )),
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
@@ -133,7 +133,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.RagingBlow),
                         Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower == Me.MaxRage - 10),
                         Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage),
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Global.BloodthirstSpellCooldown >= 2000 && Global.ColossusSmashSpellCooldown >= 6000 && FuryGlobal.Tier4AbilityUsage) // Added
                         )));
         }
@@ -155,7 +155,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 40, true),
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.Cast(SpellBook.Whirlwind),

@@ -106,7 +106,7 @@ namespace FuryUnleashed.Rotations.Protection
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Shockwave", ret => G.ShockwaveTalent && Me.IsFacing(Me.CurrentTarget) && U.NearbyAttackableUnitsCount >= 3 && (
+                Spell.Cast("Shockwave", ret => G.ShockwaveTalent && Global.ShockwaveFacing && U.NearbyAttackableUnitsCount >= 3 && (
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always)
@@ -213,7 +213,7 @@ namespace FuryUnleashed.Rotations.Protection
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Recklessness", ret => G.TargetNotNull && (
+                Spell.Cast("Recklessness", ret => Unit.IsViable(Me.CurrentTarget) && (
                     (IS.Instance.Protection.Recklessness == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (IS.Instance.Protection.Recklessness == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                     (IS.Instance.Protection.Recklessness == Enum.AbilityTrigger.Always)
