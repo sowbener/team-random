@@ -80,25 +80,25 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Rotational Settings
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Arms Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.WoWVersion CrArmsRotVersion { get; set; }
+        public Enum.RotationVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Development)]
+        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Development)]
         [Category("Rotational Settings")]
         [DisplayName("Fury Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.WoWVersion CrFuryRotVersion { get; set; }
+        public Enum.RotationVersion CrFuryRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Prot Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.WoWVersion CrProtRotVersion { get; set; }
+        public Enum.RotationVersion CrProtRotVersion { get; set; }
         #endregion
 
         // ========================================================================================

@@ -46,9 +46,9 @@ namespace FuryUnleashed.Rotations.Fury
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.WoWVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Development, FuryDev.DevFuryCombat),
-                        new SwitchArgument<Enum.WoWVersion>(Enum.WoWVersion.Release, FuryRel.RelFuryCombat)));
+                    new Switch<Enum.RotationVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
+                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Development, FuryDev.DevFuryCombat),
+                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Release, FuryRel.RelFuryCombat)));
             }
         }
 

@@ -136,7 +136,7 @@ namespace FuryUnleashed.Core.Helpers
             StormBolt
         }
 
-        public enum WoWVersion
+        public enum RotationVersion
         {
             Development,
             PvP,

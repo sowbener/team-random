@@ -471,21 +471,21 @@ namespace FuryUnleashed.Interfaces.GUI
             switch (StyxWoW.Me.Specialization)
             {
                 case WoWSpec.WarriorArms:
-                    if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.WoWVersion.PvP)
+                    if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.RotationVersion.PvP)
                     { selectSpec = internalSettings.PvPArms; }
                     else
                     { selectSpec = internalSettings.Arms; }
                     break;
 
                 case WoWSpec.WarriorFury:
-                    if (InternalSettings.Instance.General.CrFuryRotVersion == Enum.WoWVersion.PvP)
+                    if (InternalSettings.Instance.General.CrFuryRotVersion == Enum.RotationVersion.PvP)
                     { selectSpec = internalSettings.PvPFury; }
                     else
                     { selectSpec = internalSettings.Fury; }
                     break;
 
                 case WoWSpec.WarriorProtection:
-                    if (InternalSettings.Instance.General.CrProtRotVersion == Enum.WoWVersion.PvP)
+                    if (InternalSettings.Instance.General.CrProtRotVersion == Enum.RotationVersion.PvP)
                     { selectSpec = internalSettings.PvPProtection; }
                     else
                     { selectSpec = internalSettings.Protection; }

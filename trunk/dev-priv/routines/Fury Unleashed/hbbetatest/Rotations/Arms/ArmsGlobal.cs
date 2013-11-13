@@ -76,10 +76,10 @@ namespace FuryUnleashed.Rotations.Arms
                     Global.InitializeOnKeyActions(),
                     new Decorator(ret => InternalSettings.Instance.Arms.CheckInterrupts && Unit.CanInterrupt,
                         Global.InitializeInterrupts()),
-                    new Switch<Core.Helpers.Enum.WoWVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
-                        new SwitchArgument<Core.Helpers.Enum.WoWVersion>(Core.Helpers.Enum.WoWVersion.Development, ArmsDev.DevArmsCombat),
-                        new SwitchArgument<Core.Helpers.Enum.WoWVersion>(Core.Helpers.Enum.WoWVersion.PvP, ArmsPvP.PvPArmsCombat),
-                        new SwitchArgument<Core.Helpers.Enum.WoWVersion>(Core.Helpers.Enum.WoWVersion.Release, ArmsRel.RelArmsCombat)));
+                    new Switch<Core.Helpers.Enum.RotationVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
+                        new SwitchArgument<Core.Helpers.Enum.RotationVersion>(Core.Helpers.Enum.RotationVersion.Development, ArmsDev.DevArmsCombat),
+                        new SwitchArgument<Core.Helpers.Enum.RotationVersion>(Core.Helpers.Enum.RotationVersion.PvP, ArmsPvP.PvPArmsCombat),
+                        new SwitchArgument<Core.Helpers.Enum.RotationVersion>(Core.Helpers.Enum.RotationVersion.Release, ArmsRel.RelArmsCombat)));
             }
         }
 
