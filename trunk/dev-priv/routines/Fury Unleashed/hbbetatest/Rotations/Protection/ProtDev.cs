@@ -120,7 +120,8 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtNonGcdUtility()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe)
+                Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe),
+                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry)
                 );
         }
 
@@ -135,6 +136,11 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtOffensive()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && ProtGlobal.Tier6AbilityUsage),
+                Spell.Cast(SpellBook.BerserkerRage, ret => !Global.EnrageAura && ProtGlobal.BerserkerRageUsage),
+                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && ProtGlobal.Tier6AbilityUsage),
+                Spell.Cast(SpellBook.Recklessness, ret => ProtGlobal.RecklessnessUsage),
+                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && ProtGlobal.SkullBannerUsage)
                 );
         }
     }
