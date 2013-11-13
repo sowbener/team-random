@@ -130,18 +130,18 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 Spell.Cast("Last Stand", ret => IS.Instance.Protection.CheckLastStand && Me.HealthPercent <= IS.Instance.Protection.CheckLastStandNum),
-                new Decorator(ret => HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock,
+                new Decorator(ret => HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBarrierBlock,
                     new PrioritySelector(
                         Spell.Cast("Shield Barrier"))),
-                new Decorator(ret => !HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock,
+                new Decorator(ret => !HotKeyManager.IsSpecial && G.HotkeyMode && IS.Instance.Protection.CheckShieldBarrierBlock,
                     new PrioritySelector(
                         Spell.Cast("Shield Block"))),
-                Spell.Cast("Shield Block", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock),
-                Spell.Cast("Shield Barrier", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBlock && Me.CurrentRage >= 80 && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier),
+                Spell.Cast("Shield Block", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBarrierBlock && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock),
+                Spell.Cast("Shield Barrier", ret => !G.HotkeyMode && IS.Instance.Protection.CheckShieldBarrierBlock && Me.CurrentRage >= 80 && IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier),
                 Spell.Cast("Shield Wall", ret => IS.Instance.Protection.CheckShieldWall && Me.HealthPercent <= IS.Instance.Protection.CheckShieldWallNum),
                 Spell.Cast("Enraged Regeneration", ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
-                Spell.Cast("Spell Reflection", ret => IS.Instance.Protection.CheckSpellReflect && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
-                Spell.Cast("Mass Spell Reflection", ret => IS.Instance.Protection.CheckSpellReflect && G.SpellReflectionSpellCooldown > 0 && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
+                Spell.Cast("Spell Reflection", ret => ProtGlobal.SpellReflectionUsage && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
+                Spell.Cast("Mass Spell Reflection", ret => ProtGlobal.MassSpellReflectionUsage && G.SpellReflectionSpellCooldown > 0 && Me.CurrentTarget != null && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting),
                 Item.ProtUseHealthStone()
                 );
         }

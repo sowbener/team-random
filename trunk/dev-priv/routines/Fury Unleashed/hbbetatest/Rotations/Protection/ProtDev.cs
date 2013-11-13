@@ -1,15 +1,11 @@
-﻿using FuryUnleashed.Core;
+﻿using System.Windows.Forms;
+using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using G = FuryUnleashed.Rotations.Global;
-using U = FuryUnleashed.Core.Unit;
-using L = FuryUnleashed.Core.Helpers.LuaClass;
-using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using SB = FuryUnleashed.Core.Helpers.SpellBook;
-using PG = FuryUnleashed.Rotations.Protection.ProtGlobal;
+using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations.Protection
 {
@@ -35,8 +31,8 @@ namespace FuryUnleashed.Rotations.Protection
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_ProtGcdUtility(),
-                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, Dev_ProtMt()),
-                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, Dev_ProtSt())
+                                        new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckAoENum, Dev_ProtMt()),
+                                        new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Protection.CheckAoENum, Dev_ProtSt())
                                 )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -50,32 +46,40 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtRageDump()
         {
             return new PrioritySelector(
-                new Decorator(ret => U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SB.HeroicStrike, ret => L.PlayerPower >= L.PlayerPowerMax - 10 && G.NormalPhase)),
-                new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SB.Cleave, ret => L.PlayerPower >= L.PlayerPowerMax - 10 && G.NormalPhase))
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Protection.CheckAoENum,
+                    Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase)),
+                new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckAoENum,
+                    Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase))
                 );
         }
 
         internal static Composite Dev_ProtSt()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.Devastate, ret => !G.WeakenedArmor3S),
+                Spell.Cast(SpellBook.Devastate, ret => !Global.WeakenedArmor3S),
 
-                Spell.Cast(SB.ShieldSlam),
-                Spell.Cast(SB.Revenge, ret => L.PlayerPower != L.PlayerPowerMax),
-                Spell.Cast(SB.Devastate),
-                Spell.Cast(SB.ThunderClap, ret => !G.WeakenedBlowsAura || G.FadingWb(1500)),
-                new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SB.BattleShout)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SB.CommandingShout)))
+                Spell.Cast(SpellBook.ShieldSlam),
+                Spell.Cast(SpellBook.Revenge, ret => Lua.PlayerPower != Lua.PlayerPowerMax),
+                Spell.Cast(SpellBook.Devastate),
+                Spell.Cast(SpellBook.ThunderClap, ret => !Global.WeakenedBlowsAura || Global.FadingWb(1500)),
+                new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout)),
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout))),
+
+                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ProtGlobal.Tier4AbilityUsage),
+                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ProtGlobal.Tier6AbilityUsage)
                 );
         }
 
         internal static Composite Dev_ProtMt()
         {
             return new PrioritySelector(
-                Spell.Cast(SB.ThunderClap),
+                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && ProtGlobal.Tier4AbilityAoEUsage),
+                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ProtGlobal.Tier4AbilityAoEUsage),
+                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && ProtGlobal.Tier4AbilityAoEUsage),
+                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ProtGlobal.Tier6AbilityAoEUsage),
+
+                Spell.Cast(SpellBook.ThunderClap),
                 Dev_ProtSt()
                 );
         }
@@ -83,13 +87,28 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtDefensive()
         {
             return new PrioritySelector(
-                new Decorator(ret => IS.Instance.Protection.CheckShieldBbAdvancedLogics,
+                // HP Regeneration
+                Spell.Cast(SpellBook.EnragedRegeneration, ret => Global.EnragedRegenerationTalent && InternalSettings.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckEnragedRegenNum),
+                Item.ProtUseHealthStone(),
+
+                // Defensive
+                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckDemoBannerNum),
+                Spell.Cast(SpellBook.DemoralizingShout, ret => ProtGlobal.DemoralizingShoutUsage && Me.HealthPercent <= InternalSettings.Instance.Protection.DemoShoutNum),
+                Spell.Cast(SpellBook.LastStand, ret => InternalSettings.Instance.Protection.CheckLastStand && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckLastStandNum),
+                Spell.Cast(SpellBook.ShieldWall, ret => InternalSettings.Instance.Protection.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckShieldWallNum),
+
+                Spell.Cast(SpellBook.SpellReflection, ret => ProtGlobal.SpellReflectionUsage && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SpellBook.MassSpellReflection, ret => ProtGlobal.MassSpellReflectionUsage && Global.SpellReflectionSpellCooldown > 0 && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
+
+                new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && !InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics,
                     new PrioritySelector(
-                        Spell.Cast(SB.ShieldBarrier, ret => 
-                            (ProtTracker.CalculateEstimatedAbsorbValue() > ProtTracker.CalculateEstimatedBlockValue()) ||
-                            (Me.CurrentRage > 90 && Me.HealthPercent < 100)),
-                        Spell.Cast(SB.ShieldBlock, ret => 
-                            ProtTracker.CalculateEstimatedAbsorbValue() <= ProtTracker.CalculateEstimatedBlockValue()))));
+                        Spell.Cast(SpellBook.ShieldBarrier, ret => Me.CurrentRage >= 60 && InternalSettings.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier),
+                        Spell.Cast(SpellBook.ShieldBlock, ret => Me.CurrentRage >= 60 && InternalSettings.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock))),
+
+                new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.ShieldBarrier, ret => (ProtTracker.CalculateEstimatedAbsorbValue() > ProtTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100)),
+                        Spell.Cast(SpellBook.ShieldBlock, ret => ProtTracker.CalculateEstimatedAbsorbValue() <= ProtTracker.CalculateEstimatedBlockValue()))));
         }
 
         internal static Composite Dev_ProtGcdUtility()
@@ -101,14 +120,15 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtNonGcdUtility()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe)
                 );
         }
 
         internal static Composite Dev_ProtRacials()
         {
             return new PrioritySelector(
-                new Decorator(ret => PG.RacialUsage,
-                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
+                new Decorator(ret => ProtGlobal.RacialUsage,
+                    Spell.Cast(Global.SelectRacialSpell(), ret => Global.SelectRacialSpell() != null && Global.RacialUsageSatisfied(Global.SelectRacialSpell()))
                     ));
         }
 

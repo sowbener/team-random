@@ -34,6 +34,7 @@ namespace FuryUnleashed.Core.Helpers
 
         public enum BarrierBlock
         {
+            None,
             ShieldBlock,
             ShieldBarrier
         }

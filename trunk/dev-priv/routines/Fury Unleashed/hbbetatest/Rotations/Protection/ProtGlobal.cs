@@ -73,6 +73,24 @@ namespace FuryUnleashed.Rotations.Protection
             }
         }
 
+        internal static bool MassSpellReflectionUsage
+        {
+            get
+            {
+                return ((IS.Instance.Protection.MassSpellReflection == Enum.MsrTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Protection.MassSpellReflection == Enum.MsrTrigger.Always && G.PummelOnCooldown && G.DisruptingShoutOnCooldown));
+            }
+        }
+
+        internal static bool SpellReflectionUsage
+        {
+            get
+            {
+                return ((IS.Instance.Protection.SpellReflection == Enum.MsrTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Protection.SpellReflection == Enum.MsrTrigger.Always && G.PummelOnCooldown && G.DisruptingShoutOnCooldown));
+            }
+        }
+
         internal static bool RacialUsage
         {
             get
@@ -140,6 +158,16 @@ namespace FuryUnleashed.Rotations.Protection
                 return ((IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Protection.Tier4AoeAbilities == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool Tier6AbilityAoEUsage
+        {
+            get
+            {
+                return ((IS.Instance.Protection.Tier6AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Protection.Tier6AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Protection.Tier6AoeAbilities == Enum.AbilityTrigger.Always));
             }
         }
 

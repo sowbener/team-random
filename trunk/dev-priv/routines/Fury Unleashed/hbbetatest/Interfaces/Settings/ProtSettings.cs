@@ -30,11 +30,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger ClassRacials { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(Enum.MsrTrigger.Never)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Enable (Mass) Spell Reflection")]
-        [Description("Checked enables (Mass) Spell Reflection.")]
-        public bool CheckSpellReflect { get; set; }
+        [DisplayName("Mass Spell Reflection")]
+        [Description("Select the usage of Mass Spell Reflection.")]
+        public Enum.MsrTrigger MassSpellReflection { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
@@ -72,11 +72,43 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger Tier6Abilities { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Tier 6 Abilities - AoE")]
+        [Description("Select the usage of Tier 6 - Usage of Bloodbath during AoE.")]
+        public Enum.AbilityTrigger Tier6AoeAbilities { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.Shouts.CommandingShout)]
         [Category("Protection - Ability Options")]
         [DisplayName("Warrior Shout Selector")]
         [Description("Choose preferred Warrior Shout.")]
         public Enum.Shouts ShoutSelection { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region Shield Block & Barrier
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Enable Block/Barrier")]
+        [Description("Checked enables the usage of Shield Block and Barrier - See further options!")]
+        public bool CheckShieldBarrierBlock { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Advanced Logics")]
+        [Description("Checked enables Shield Block or Barrier's advanced logics - Calculates which is best to use!")]
+        public bool CheckShieldBbAdvancedLogics { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.BarrierBlock.None)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Select Block/Barrier")]
+        [Description("Manually select which is used - Will not work with advanced logics enabled!")]
+        public Enum.BarrierBlock BarrierBlockSelection { get; set; }
         #endregion
 
         // ========================================================================================
@@ -139,27 +171,6 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckRallyingCryNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Protection - Defensive Options")]
-        [DisplayName("Adv Logics Block/Barrier")]
-        [Description("Checked enables Shield Block or Barrier's advanced logics.")]
-        public bool CheckShieldBbAdvancedLogics { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Protection - Defensive Options")]
-        [DisplayName("Shield Block/Barrier")]
-        [Description("Checked enables Shield Block or Barrier - Use Hotkeys to switch block/barrier.")]
-        public bool CheckShieldBlock { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.BarrierBlock.ShieldBlock)]
-        [Category("Protection - Defensive Options")]
-        [DisplayName("Select Block/Barrier")]
-        [Description("Select which ability should be used - Suggested is to use the Hotkey mode (Will ignore this setting at hotkey mode)!")]
-        public Enum.BarrierBlock BarrierBlockSelection { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Defensive Options")]
         [DisplayName("Enable Shield Wall")]
@@ -172,6 +183,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Shield Wall %")]
         [Description("Will use Shield Wall when health % is less than or equal to the set value.")]
         public int CheckShieldWallNum { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.MsrTrigger.Never)]
+        [Category("Protection - Defensive Options")]
+        [DisplayName("Mass Spell Reflection")]
+        [Description("Select the usage of Mass Spell Reflection.")]
+        public Enum.MsrTrigger SpellReflection { get; set; }
         #endregion
 
         // ========================================================================================
