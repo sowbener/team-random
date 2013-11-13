@@ -23,35 +23,35 @@ namespace FuryUnleashed.Core.Utilities
         // Combatlogging.
         public static void CombatLogFb(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogLg(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogOr(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return; 
             Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogPu(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogWh(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.White, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }

@@ -40,10 +40,7 @@ namespace FuryUnleashed.Core
         public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return
-                new Decorator(
-                    ret =>
-                        (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) &&
-                         SpellManager.CanCast(spell, onUnit(ret))),
+                new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spell, onUnit(ret))),
                     new Action(ret =>
                     {
                         if (SpellManager.Cast(spell, onUnit(ret)))
@@ -66,10 +63,7 @@ namespace FuryUnleashed.Core
         public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return
-                new Decorator(
-                    ret =>
-                        ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null &&
-                        SpellManager.CanCast(spell, onUnit(ret)),
+                new Decorator(ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && SpellManager.CanCast(spell, onUnit(ret)),
                     new Action(ret =>
                     {
                         if (SpellManager.Cast(spell, onUnit(ret)))
