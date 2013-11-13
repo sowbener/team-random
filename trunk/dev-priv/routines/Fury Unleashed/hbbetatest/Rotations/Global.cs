@@ -810,7 +810,7 @@ namespace FuryUnleashed.Rotations
         {
             get { return CooldownTracker.SpellOnCooldown(SpellBook.Avatar); } // Berserker Rage
         }
-        internal static bool BereserkerRageOnCooldown
+        internal static bool BerserkerRageOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SpellBook.BerserkerRage); } // Berserker Rage
         }
