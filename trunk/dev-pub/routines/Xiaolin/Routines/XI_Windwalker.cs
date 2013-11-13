@@ -77,11 +77,9 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
                Spell.Cast("Tigereye Brew", ret => TigerEyeUseDown && Spell.GetSpellCooldown(107428).TotalSeconds < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1),
-              // actions+=/energizing_brew,if=energy.time_to_max>5
-                //actions+=/chi_brew,if=talent.chi_brew.enabled&chi=0
-                Spell.Cast("Chi Brew", ret => TalentChiBrewEnabled && Lua.PlayerChi == 0),
-              Spell.Cast("Energizing Brew", ret => Lua.TimeToEnergyCap() > 5),
-              Spell.Cast("Invoke Xuen, the White Tiger"),
+               Spell.Cast("Chi Brew", ret => TalentChiBrewEnabled && Lua.PlayerChi == 0),
+               Spell.Cast("Energizing Brew", ret => Lua.TimeToEnergyCap() > 5),
+               Spell.Cast("Invoke Xuen, the White Tiger"),
                Spell.Cast("Tiger Palm", ret => TigerPowerRemains <= 3),
                Spell.Cast("Rising Sun Kick"),
               //  new Decorator(ret => RisingSunKickReady, new ActionAlwaysSucceed()),
@@ -90,8 +88,8 @@ namespace Xiaolin.Routines
                 Spell.Cast("Chi Wave", ret => Lua.TimeToEnergyCap() > 2),
                 Spell.Cast("Blackout Kick", ret => ComboBreakerBoKUp),
                 Spell.Cast("Tiger Palm", ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
-                Spell.Cast("Jab", ret => Lua.PlayerChi < 3),
-         //       Spell.PreventDoubleCast("Jab", 0.5, ret => !TalentAscensionEnabled && Lua.PlayerChi <= 2),
+                Spell.Cast("Jab", ret => Lua.PlayerChi < 3 && TalentAscensionEnabled),
+                Spell.Cast("Jab", ret => !TalentAscensionEnabled && Lua.PlayerChi <= 2),
                 Spell.Cast("Blackout Kick", ret => !RisingSunKickReady));
 
         }
