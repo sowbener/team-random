@@ -80,8 +80,11 @@
     <Compile Include="Core\Helpers\Hashsets.cs" />
     <Compile Include="Core\Helpers\Lua.cs" />
     <Compile Include="Interfaces\GUI\GuiExtentions.cs" />
+    <Compile Include="Interfaces\Settings\ArmsPvPSettings.cs" />
+    <Compile Include="Interfaces\Settings\FuryPvPSettings.cs" />
     <Compile Include="Interfaces\Settings\GeneralSettings.cs" />
     <Compile Include="Interfaces\Settings\HotkeysSettings.cs" />
+    <Compile Include="Interfaces\Settings\ProtPvPSettings.cs" />
     <Compile Include="Interfaces\Settings\Settings.cs" />
     <Compile Include="Interfaces\Settings\ProtSettings.cs" />
     <Compile Include="Interfaces\Settings\ArmsSettings.cs" />
