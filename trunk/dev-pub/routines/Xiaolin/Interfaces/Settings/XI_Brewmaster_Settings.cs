@@ -20,6 +20,12 @@ namespace Xiaolin.Interfaces.Settings
         public bool SummonBlackOxStatue { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Use Elusive Brew")]
+        public bool UseElusiveBrew { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(6)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Shuffle Timer")]

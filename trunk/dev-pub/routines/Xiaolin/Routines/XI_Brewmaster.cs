@@ -87,7 +87,7 @@ namespace Xiaolin.Routines
 
         private static bool NeedZenMeditation { get { return Me.HealthPercent <= MonkSettings.ZenMeditationPercent; } }
 
-        private static bool NeedElusiveBrew { get { return Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
+        private static bool NeedElusiveBrew { get { return MonkSettings.UseElusiveBrew && Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
 
         private static bool NeedBuildStacksForGaurd { get { return !Me.HasAura(118636) || !Me.HasAura(125359) || Lua.PlayerPower <= 30; } }
 
@@ -151,10 +151,10 @@ namespace Xiaolin.Routines
         {
                         return new PrioritySelector(
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
-                     Spell.PreventDoubleCast("Guard", 0.5, ret => NeedGuard), // Debating..if we dont check for shuffle it steals Chi from Blackout Kick
-                     Spell.PreventDoubleCast("Dampen Harm", 0.5, ret => NeedDampenHarm),
+                     Spell.Cast("Guard", ret => NeedGuard), // Debating..if we dont check for shuffle it steals Chi from Blackout Kick
+                     Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
-                     Spell.PreventDoubleCast("Chi Wave", 0.5, ret => NeedChiWave),
+                     Spell.Cast("Chi Wave", ret => NeedChiWave),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
                      I.BrewmasterUseHealthStone(),
                      Spell.Cast("Zen Meditation", ret => NeedZenMeditation), // yeah yeah..its channeled..but it’ll reduce that one melee hit by 90%, which might save our life.
