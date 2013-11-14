@@ -131,7 +131,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry),
                 Spell.Cast(SpellBook.StaggeringShout, ret => Global.StaggeringShoutTalent && InternalSettings.Instance.Protection.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckStaggeringShoutNum),
                 Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && InternalSettings.Instance.Protection.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckPiercingHowlNum),
-                new Decorator(ret => Unit.GetVigilanceTarget() && Unit.VigilanceTarget != null,
+                new Decorator(ret => Unit.VigilanceTarget != null,
                     Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
                 );
         }

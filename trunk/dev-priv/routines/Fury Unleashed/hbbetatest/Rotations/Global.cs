@@ -27,6 +27,7 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
                 new Switch<WoWSpec>(ret => Me.Specialization,
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
