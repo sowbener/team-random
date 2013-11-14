@@ -121,9 +121,9 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
             Spell.Cast("Keg Smash", ret => Lua.PlayerPower >= 40),
+            Spell.Cast("Expel Harm", ret => (Lua.PlayerPower >= 40 && Me.HealthPercent <= 99) || (Me.HealthPercent <= 35)),
             Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30),
-            Spell.PreventDoubleCast("Tiger Palm", 0.7, ret => Lua.JabOK() < 30),
-            Spell.Cast("Expel Harm", ret => (Lua.PlayerPower >= 40 && Me.HealthPercent <= 86) || (Me.HealthPercent <= 35))
+            Spell.Cast("Tiger Palm", ret => Lua.JabOK() < 30)            
                 );
 
         }
@@ -131,9 +131,9 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
-            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply Shuffle if not active or MaxChi
-            Spell.PreventDoubleCast("Tiger Palm", 0.7, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
-            new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder())
+            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
+            Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd) // Build PG and TP for Guard
                 );
 
         }
