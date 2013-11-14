@@ -151,6 +151,11 @@ namespace FuryUnleashed.Core.Utilities
 
                 var vigilancetarget = Unit.VigilanceTarget;
 
+                if (vigilancetarget == null)
+                {
+                    return "No Suitable Target";
+                }
+
                 CombatLogLg("FU: Vigilance target is {0}", vigilancetarget);
                 return vigilancetarget.ToString();
             }
