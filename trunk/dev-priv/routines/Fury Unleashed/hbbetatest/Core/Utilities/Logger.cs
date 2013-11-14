@@ -147,17 +147,21 @@ namespace FuryUnleashed.Core.Utilities
         {
             get
             {
-                Unit.GetVigilanceTarget();
-
-                var vigilancetarget = Unit.VigilanceTarget;
-
-                if (vigilancetarget == null)
+                if (StyxWoW.Me.GroupInfo.IsInParty || StyxWoW.Me.GroupInfo.IsInRaid)
                 {
-                    return "No Suitable Target";
-                }
+                    Unit.GetVigilanceTarget();
 
-                CombatLogLg("FU: Vigilance target is {0}", vigilancetarget);
-                return vigilancetarget.ToString();
+                    var vigilancetarget = Unit.VigilanceTarget;
+
+                    if (vigilancetarget == null)
+                    {
+                        return "No Suitable Target";
+                    }
+
+                    CombatLogLg("FU: Vigilance target is {0}", vigilancetarget);
+                    return vigilancetarget.ToString();
+                }
+                return "No Suitable Target";
             }
         }
 

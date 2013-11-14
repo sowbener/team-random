@@ -169,7 +169,7 @@ namespace FuryUnleashed.Core
                             where unit.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
                             select unit).FirstOrDefault();
                             
-                    return VigilanceTarget != null;
+                    return VigilanceTarget == null;
                 }
             }
         }
