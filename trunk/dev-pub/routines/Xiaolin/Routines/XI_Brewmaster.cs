@@ -93,7 +93,7 @@ namespace Xiaolin.Routines
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && XITalentManager.HasTalent(16); } }
 
-        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 3; } }
+        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 4; } }
 
         private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || XITalentManager.HasGlyph("Touch of Death")); } }
 
@@ -121,7 +121,7 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
             Spell.Cast("Keg Smash", ret => Lua.PlayerPower >= 40),
-            Spell.Cast("Expel Harm", ret => (Lua.PlayerPower >= 40 && Me.HealthPercent <= 99) || (Me.HealthPercent <= 35)),
+            Spell.Cast("Expel Harm", ret => (Lua.PlayerPower >= 40 && Me.HealthPercent <= 90) || (Me.HealthPercent <= 35)),
             Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30),
             Spell.Cast("Tiger Palm", ret => Lua.JabOK() < 30)            
                 );
@@ -132,6 +132,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
             new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd) // Build PG and TP for Guard
                 );
