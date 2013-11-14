@@ -39,7 +39,7 @@ namespace FuryUnleashed.Core
         public static void GetRaidMembersNeedCryCount()
         {
             using (new PerformanceLogger("GetRaidMembersNeedCryCount"))
-                if (Me.CurrentTarget != null)
+                if (IsViable(Me.CurrentTarget))
                     RaidMembersNeedCryCount = NearbyRaidMembers(StyxWoW.Me.Location, 30).Count(u => u.Combat && !u.HasAura(97462) && (
                     (Global.IsArmsSpec && u.HealthPercent <= InternalSettings.Instance.Arms.CheckRallyingCryNum) ||
                     (Global.IsFurySpec && u.HealthPercent <= InternalSettings.Instance.Fury.CheckRallyingCryNum) ||
@@ -107,7 +107,7 @@ namespace FuryUnleashed.Core
         public static void GetAttackableMeleeUnitsCount()
         {
             using (new PerformanceLogger("GetAttackableMeleeUnitsCount"))
-                if (Me.CurrentTarget != null)
+                if (IsViable(Me.CurrentTarget))
                     AttackableMeleeUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 5).Count();
         }
 
@@ -115,7 +115,7 @@ namespace FuryUnleashed.Core
         public static void GetInterruptableUnitsCount()
         {
             using (new PerformanceLogger("GetInterruptableUnitsCount"))
-                if (Me.CurrentTarget != null)
+                if (IsViable(Me.CurrentTarget))
                     InterruptableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
         }
 
@@ -124,7 +124,7 @@ namespace FuryUnleashed.Core
         public static void GetNearbyAttackableUnitsCount()
         {
             using (new PerformanceLogger("GetNearbyAttackableUnitsCount"))
-                if (Me.CurrentTarget != null)
+                if (IsViable(Me.CurrentTarget))
                     NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
                     NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
         }
@@ -134,7 +134,7 @@ namespace FuryUnleashed.Core
         public static void GetNearbySlamCleaveUnitsCount()
         {
             using (new PerformanceLogger("GetNearbySlamCleaveUnitsCount"))
-                if (Me.CurrentTarget != null)
+                if (IsViable(Me.CurrentTarget))
                     NearbySlamCleaveUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
                     NearbySlamCleaveUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
         }
@@ -143,7 +143,7 @@ namespace FuryUnleashed.Core
         public static void GetNeedThunderclapUnitsCount()
         {
             using (new PerformanceLogger("GetNeedThunderclapUnitsCount"))
-                if (Me.CurrentTarget != null)
+                if (IsViable(Me.CurrentTarget))
                     NeedThunderclapUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count(u => !u.HasAura(AuraBook.DeepWounds));
         }
         #endregion
@@ -197,22 +197,22 @@ namespace FuryUnleashed.Core
 
         public static bool IsHamstringTarget
         {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.HamstringUnitsList(); }
+            get { return IsViable(Me.CurrentTarget) && Me.CurrentTarget.HamstringUnitsList(); }
         }
 
         public static bool IsTargetRare
         {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.RareUnitsList(); }
+            get { return IsViable(Me.CurrentTarget) && Me.CurrentTarget.RareUnitsList(); }
         }
 
         public static bool IsTargetBoss
         {
-            get { return StyxWoW.Me.CurrentTarget != null && Me.CurrentTarget.TargetIsBoss(); }
+            get { return IsViable(Me.CurrentTarget) && Me.CurrentTarget.TargetIsBoss(); }
         }
 
         public static bool IsDoNotUseOnTgt
         {
-            get { return StyxWoW.Me.CurrentTarget != null && !Me.CurrentTarget.DoNotUseOnTgtList(); }
+            get { return IsViable(Me.CurrentTarget) && !Me.CurrentTarget.DoNotUseOnTgtList(); }
         }
         #endregion
 
@@ -230,12 +230,12 @@ namespace FuryUnleashed.Core
 		
 		public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
         {
-            return Math.Abs(spell.MaxRange) < 1 ? 0 : (unit != null ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
+            return Math.Abs(spell.MaxRange) < 1 ? 0 : (IsViable(unit) ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
         }
 
         public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
         {
-            return Math.Abs(spell.MinRange) < 1 ? 0 : (unit != null ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
+            return Math.Abs(spell.MinRange) < 1 ? 0 : (IsViable(unit) ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
         }
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
-using FuryUnleashed.Rotations.Fury;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
