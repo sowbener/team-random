@@ -109,6 +109,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Select Block/Barrier")]
         [Description("Manually select which is used - Will not work with advanced logics enabled!")]
         public Enum.BarrierBlock BarrierBlockSelection { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(55)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Use Above Rage %")]
+        [Description("Select the amount of rage required before the Shield Block and Barrier logic kicks in.")]
+        public int ShieldBarrierBlockNum { get; set; }
         #endregion
 
         // ========================================================================================
