@@ -53,11 +53,14 @@ namespace FuryUnleashed.Core
         }
 
         // NearbyAttackableUnits IEnumerable
-        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius)
+        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius, bool isinmyraid)
         {
             var friendly = FriendlyUnits;
             var maxDistance = radius * radius;
-            return friendly.Where(x => x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance);
+
+            return isinmyraid == false ? 
+                friendly.Where(x => x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance) : 
+                friendly.Where(x => x.IsFriendly && (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty) && x.Location.DistanceSqr(fromLocation) < maxDistance) ;
         }
 
         #endregion
@@ -162,7 +165,7 @@ namespace FuryUnleashed.Core
                     case Enum.VigilanceTrigger.Never:
                         return false;
                     default:
-                        VigilanceTarget = (from unit in NearbyFriendlyUnits(StyxWoW.Me.Location, 30)
+                        VigilanceTarget = (from unit in NearbyFriendlyUnits(StyxWoW.Me.Location, 30, true)
                             where unit.IsValid
                             where unit.Guid != Me.Guid
                             where !tankOnly || unit.HasAura("Vengeance")
