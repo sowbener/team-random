@@ -51,7 +51,7 @@ namespace Xiaolin.Core
 
         private static bool CanUseItem(WoWItem item)
         {
-            return item != null && item.Usable && item.CooldownTimeLeft.TotalMilliseconds <= 0;
+            return item != null && item.Usable && item.Cooldown <= 0;
         }
 
 
