@@ -49,7 +49,7 @@ namespace FuryUnleashed.Core
 
         internal static IEnumerable<WoWUnit> FriendlyUnits
         {
-            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
+            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.IsValid && u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
         }
 
         // NearbyAttackableUnits IEnumerable
@@ -59,8 +59,13 @@ namespace FuryUnleashed.Core
             var maxDistance = radius * radius;
 
             return isinmyraid == false ? 
-                friendly.Where(x => x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance) : 
-                friendly.Where(x => x.IsFriendly && (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty) && x.Location.DistanceSqr(fromLocation) < maxDistance) ;
+                friendly.Where(x => x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance) :
+                friendly.Where(x => x.IsFriendly && IsInMyGroup && x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        public static bool IsInMyGroup
+        {
+            get { return (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty); }
         }
 
         #endregion
