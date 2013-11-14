@@ -98,7 +98,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.ShieldWall, ret => InternalSettings.Instance.Protection.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckShieldWallNum),
 
                 Spell.Cast(SpellBook.SpellReflection, ret => ProtGlobal.SpellReflectionUsage && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
-                Spell.Cast(SpellBook.MassSpellReflection, ret => ProtGlobal.MassSpellReflectionUsage && Global.SpellReflectionSpellCooldown > 0 && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && ProtGlobal.MassSpellReflectionUsage && Global.SpellReflectionSpellCooldown > 0 && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
 
                 new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && !InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics,
                     new PrioritySelector(
@@ -114,14 +114,23 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtGcdUtility()
         {
             return new PrioritySelector(
+                //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
+                //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
+                Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && Me.HealthPercent <= InternalSettings.Instance.Protection.ImpendingVictoryNum),
+                Spell.Cast(SpellBook.VictoryRush, ret => Me.HealthPercent <= InternalSettings.Instance.Protection.VictoryRushNum)
                 );
         }
 
         internal static Composite Dev_ProtNonGcdUtility()
         {
             return new PrioritySelector(
+                // Need to improve hamstring method
+                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !Global.HamstringAura && (InternalSettings.Instance.Protection.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Protection.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
+                Spell.Cast(SpellBook.IntimidatingShout, ret => InternalSettings.Instance.Protection.CheckIntimidatingShout && Global.IntimidatingShoutGlyph && !Unit.IsTargetBoss),
                 Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe),
                 Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry),
+                Spell.Cast(SpellBook.StaggeringShout, ret => Global.StaggeringShoutTalent && InternalSettings.Instance.Protection.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckStaggeringShoutNum),
+                Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && InternalSettings.Instance.Protection.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckPiercingHowlNum),
                 new Decorator(ret => Unit.GetVigilanceTarget() && Unit.VigilanceTarget != null,
                     Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
                 );
@@ -139,7 +148,7 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && ProtGlobal.Tier6AbilityUsage, true),
-                Spell.Cast(SpellBook.BerserkerRage, ret => !Global.EnrageAura && ProtGlobal.BerserkerRageUsage, true),
+                Spell.Cast(SpellBook.BerserkerRage, ret => (!Global.EnrageAura || Global.FadingEnrage(1500)) && ProtGlobal.BerserkerRageUsage, true),
                 Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && ProtGlobal.Tier6AbilityUsage, true),
                 Spell.Cast(SpellBook.Recklessness, ret => ProtGlobal.RecklessnessUsage, true),
                 Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && ProtGlobal.SkullBannerUsage, true)
