@@ -100,15 +100,15 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.SpellReflection, ret => ProtGlobal.SpellReflectionUsage && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
                 Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && ProtGlobal.MassSpellReflectionUsage && Global.SpellReflectionSpellCooldown > 0 && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
 
-                new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && !InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics,
+                new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && !InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower > 50,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ShieldBarrier, ret => Me.CurrentRage >= 60 && InternalSettings.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier),
-                        Spell.Cast(SpellBook.ShieldBlock, ret => Me.CurrentRage >= 60 && InternalSettings.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock))),
+                        Spell.Cast(SpellBook.ShieldBarrier, ret => Me.CurrentRage >= 60 && InternalSettings.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier, true),
+                        Spell.Cast(SpellBook.ShieldBlock, ret => Me.CurrentRage >= 60 && InternalSettings.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock, true))),
 
-                new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics,
+                new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower > 50,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ShieldBarrier, ret => (ProtTracker.CalculateEstimatedAbsorbValue() > ProtTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100)),
-                        Spell.Cast(SpellBook.ShieldBlock, ret => ProtTracker.CalculateEstimatedAbsorbValue() <= ProtTracker.CalculateEstimatedBlockValue()))));
+                        Spell.Cast(SpellBook.ShieldBarrier, ret => (ProtTracker.CalculateEstimatedAbsorbValue() > ProtTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
+                        Spell.Cast(SpellBook.ShieldBlock, ret => ProtTracker.CalculateEstimatedAbsorbValue() <= ProtTracker.CalculateEstimatedBlockValue(), true))));
         }
 
         internal static Composite Dev_ProtGcdUtility()
