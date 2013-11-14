@@ -67,9 +67,7 @@ namespace Xiaolin.Routines
 
         internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307, Me); } }
 
-        internal static bool CanApplyShuffle { get { return (!Me.HasAura(115307) || ShuffleSetting > SG.Instance.Brewmaster.ShuffleSetting); } }
-
-        internal static bool CanUsePurifyingBrew { get { return (Me.HasAura("Moderate Stagger") && ShuffleSetting > 9) || (ShuffleSetting > 6 && Me.HasAura("Heavy Stagger")); } }
+        internal static bool CanUsePurifyingBrew { get { return ((Lua.PlayerChi >= 3 || Me.HasAura(138237)) && Me.HasAura(124273)) || (Me.HasAura(124274) && (ShuffleSetting > 4 || Lua.PlayerChi > 3)) || (Me.HasAura(124275) && (ShuffleSetting > 10 || Lua.PlayerChi > 3)); } }
 
         internal static bool CanApplyDizzyingHaze { get { return XIUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 8).Any(x => !x.HasAura("Dizzying Haze") && !x.IsBoss && !x.IsFlying) && Me.HasAura("Shuffle"); } }
 
@@ -91,11 +89,11 @@ namespace Xiaolin.Routines
 
         private static bool NeedElusiveBrew { get { return Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
 
-        private static bool NeedBuildStacksForGaurd { get { return (!Me.HasAura("Power Guard") || !Me.HasAura("Tiger Power")) && Me.HasAura("Shuffle"); } }
+        private static bool NeedBuildStacksForGaurd { get { return !Me.HasAura(118636) || !Me.HasAura(125359) || Lua.PlayerPower <= 30; } }
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && XITalentManager.HasTalent(16); } }
 
-        private static bool NeedBlackoutKick { get { return CanApplyShuffle; } }
+        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 4; } }
 
         private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || XITalentManager.HasGlyph("Touch of Death")); } }
 
@@ -122,9 +120,10 @@ namespace Xiaolin.Routines
         internal static Composite ChiBuilder()
         {
             return new PrioritySelector(
-            Spell.Cast("Keg Smash"),
-            Spell.Cast("Expel Harm", ret => Me.CurrentHealth <= 35),
-            Spell.Cast("Jab")
+            Spell.Cast("Keg Smash", ret => Lua.PlayerPower >= 40),
+            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30),
+            Spell.Cast("Tiger Palm", ret => Lua.JabOK() < 30),
+            Spell.Cast("Expel Harm", ret => (Lua.PlayerPower >= 40 && Me.HealthPercent <= 86) || (Me.CurrentHealth <= 35))
                 );
 
         }
@@ -133,7 +132,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply Shuffle if not active or MaxChi
-            Spell.PreventDoubleCast("Tiger Palm", 0.5, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
+            Spell.Cast("Tiger Palm",ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
             new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
 

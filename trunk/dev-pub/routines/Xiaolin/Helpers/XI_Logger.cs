@@ -33,6 +33,20 @@ namespace Xiaolin.Helpers
         {
             WriteToLogFile();
         }
+
+        public static void Performance(string format, params object[] args)
+        {
+            if (SG.Instance.General.PerformanceLogging == LogCategory.Performance)
+                Write(LogLevel.Normal, Colors.HotPink, format, args);
+        }
+
+        private static void Write(LogLevel level, Color color, string format, params object[] args)
+        {
+            if (LogQueue.Contains(string.Format(format, args))) return;
+            LogQueue.Enqueue(string.Format(format, args));
+
+            Styx.Common.Logging.Write(level, color, string.Format("[{0}]: {1}", Xiaolin.XIMain.XIName, format), args);
+        }
         #endregion
 
         #region AXIanced Logging

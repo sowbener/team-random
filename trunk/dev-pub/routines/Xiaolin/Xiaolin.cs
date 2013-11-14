@@ -44,6 +44,7 @@ using Spell = Xiaolin.Core.XISpell;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
+using Xiaolin.Core;
 
 namespace Xiaolin
 {
@@ -131,6 +132,8 @@ namespace Xiaolin
             /* Gather required information */
             XILogger.StatCounter();
             XILogger.LogTimer(500);
+            //Cooldownwatcher
+            CooldownWatcher.Initialize();
 
             /* Start Combat */
             PreBuffSelector();

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Action = Styx.TreeSharp.Action;
 using Logger = Xiaolin.Helpers.XILogger;
+using Xiaolin.Core;
 
 // Credits for this code go out to the PureRotation Team!
 namespace Xiaolin.Helpers
@@ -200,6 +201,23 @@ namespace Xiaolin.Helpers
             return Lua.GetReturnVal<float>("return GetPowerRegen()", 1);
         }
 
+        public static double JabOK()
+        {
+            double playerEnergy;
+            double ER_Rate;
+            double KSCD;
+            double JabbingIsOK;
+
+            playerEnergy = XILua.PlayerPower;
+            ER_Rate = XILua.LuaGetEnergyRegen();
+            KSCD = CooldownWatcher.GetSpellCooldownTimeLeft(121253);
+
+            JabbingIsOK = (playerEnergy - 40) + (KSCD * ER_Rate);
+
+            return JabbingIsOK;
+
+        }
+
         public static double TimeToEnergyCap()
         {
 
@@ -246,27 +264,6 @@ namespace Xiaolin.Helpers
             if (XISettings.Instance.General.CheckDisableClickToMove)
             {
                 Lua.DoString("SetCVar('autoInteract', '1')");
-            }
-        }
-        #endregion
-
-        #region RuneCoolDown //Thanks wulf <3
-
-        public static double GetRuneCooldown(int runeslot)
-        {
-            try
-            {
-                using (StyxWoW.Memory.AcquireFrame())
-                {
-                    var lua = String.Format("local x=select(1, GetRuneCooldown({0})); if x==nil then return 0 else return x-GetTime() end", runeslot);
-                    var t = Double.Parse(Styx.WoWInternals.Lua.GetReturnValues(lua)[0]);
-                    return Math.Abs(t);
-                }
-            }
-            catch
-            {
-            //    Logger.FailLog(" Lua Failed in GetRuneCooldown");
-                return 0;
             }
         }
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Styx.Helpers;
 using System.ComponentModel;
+using Xiaolin.Helpers;
 
 namespace Xiaolin.Interfaces.Settings
 {
@@ -18,6 +19,13 @@ namespace Xiaolin.Interfaces.Settings
         [DisplayName("Disable Click to Move")]
         [Description("This disables click to move.")]
         public bool CheckDisableClickToMove { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(LogCategory.None)]
+        [Category("Logging")]
+        [DisplayName("Performance Logging")]
+        [Description("Performance = on, None = off.")]
+        public LogCategory PerformanceLogging { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
