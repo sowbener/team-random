@@ -354,7 +354,9 @@ namespace FuryUnleashed.Rotations.Arms
                 Spell.Cast(SpellBook.StaggeringShout,
                     ret =>
                         Global.StaggeringShoutTalent && InternalSettings.Instance.Arms.CheckPiercingHowl &&
-                        Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckPiercingHowlNum)
+                        Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckPiercingHowlNum),
+                new Decorator(ret => Unit.VigilanceTarget != null,
+                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
                 );
         }
     }

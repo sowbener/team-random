@@ -40,6 +40,7 @@
                             TasteForBlood = 60503, // Needs Checking
                             Timewarp = 80353,
                             Ultimatum = 122510,
+                            Vengeance = 132365,
                             Victorious = 32216,
                             VictoriousT15 = 138279,
                             WeakenedArmor = 113746,

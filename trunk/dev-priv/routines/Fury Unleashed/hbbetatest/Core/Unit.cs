@@ -165,7 +165,7 @@ namespace FuryUnleashed.Core
                         VigilanceTarget = (from u in NearbyRaidMembers(StyxWoW.Me.Location, 30)
                             where u.IsValid
                             where u.Guid != Me.Guid
-                            where !tankOnly || u.HasAura("Vengeance")
+                            where !tankOnly || u.HasAura(AuraBook.Vengeance)
                             where u.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
                             select u).FirstOrDefault();
                             

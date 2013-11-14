@@ -175,7 +175,9 @@ namespace FuryUnleashed.Rotations.Protection
                     (IS.Instance.Protection.DemoralizeShout == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Rallying Cry", ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry),
-                Spell.CastOnGround("Demoralizing Banner", loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && IS.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= IS.Instance.Protection.CheckDemoBannerNum && U.IsDoNotUseOnTgt)
+                Spell.CastOnGround("Demoralizing Banner", loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && IS.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= IS.Instance.Protection.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
+                new Decorator(ret => Unit.VigilanceTarget != null,
+                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
                 );
         }
 
