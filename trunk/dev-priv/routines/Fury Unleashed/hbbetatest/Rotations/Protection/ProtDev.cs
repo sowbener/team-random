@@ -47,9 +47,9 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase, true)),
+                    Spell.Cast(SpellBook.HeroicStrike, ret => (Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase) || Global.UltimatumAura, true)),
                 new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckAoENum,
-                    Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase, true))
+                    Spell.Cast(SpellBook.Cleave, ret => (Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && Global.NormalPhase) || Global.UltimatumAura, true))
                 );
         }
 
