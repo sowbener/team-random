@@ -184,7 +184,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return ((IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnPartyMember) ||
+                return ((IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnRaidMember) ||
                         (IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
             }
         }

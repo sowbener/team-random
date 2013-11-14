@@ -115,6 +115,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.updatevigilancetargetbutton = new System.Windows.Forms.Button();
+            this.vigilancetargettextbox = new System.Windows.Forms.TextBox();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -839,6 +841,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.vigilancetargettextbox);
+            this.panel2.Controls.Add(this.updatevigilancetargetbutton);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.shieldbarriersizetextbox);
             this.panel2.Controls.Add(this.shieldblocksizetextbox);
@@ -950,6 +954,29 @@
             this.label3.Size = new System.Drawing.Size(48, 19);
             this.label3.TabIndex = 3;
             this.label3.Text = "Arms";
+            // 
+            // updatevigilancetargetbutton
+            // 
+            this.updatevigilancetargetbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updatevigilancetargetbutton.Location = new System.Drawing.Point(3, 169);
+            this.updatevigilancetargetbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.updatevigilancetargetbutton.Name = "updatevigilancetargetbutton";
+            this.updatevigilancetargetbutton.Size = new System.Drawing.Size(201, 28);
+            this.updatevigilancetargetbutton.TabIndex = 6;
+            this.updatevigilancetargetbutton.Text = "Update Vigilance Target";
+            this.updatevigilancetargetbutton.UseVisualStyleBackColor = true;
+            this.updatevigilancetargetbutton.Click += new System.EventHandler(this.updatevigilancetargetbutton_Click);
+            // 
+            // vigilancetargettextbox
+            // 
+            this.vigilancetargettextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vigilancetargettextbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.vigilancetargettextbox.Location = new System.Drawing.Point(211, 173);
+            this.vigilancetargettextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.vigilancetargettextbox.Name = "vigilancetargettextbox";
+            this.vigilancetargettextbox.ReadOnly = true;
+            this.vigilancetargettextbox.Size = new System.Drawing.Size(171, 21);
+            this.vigilancetargettextbox.TabIndex = 7;
             // 
             // DebuggerGui
             // 
@@ -1075,5 +1102,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox vigilancetargettextbox;
+        private System.Windows.Forms.Button updatevigilancetargetbutton;
     }
 }

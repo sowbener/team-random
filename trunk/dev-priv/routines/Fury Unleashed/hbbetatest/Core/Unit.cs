@@ -19,6 +19,8 @@ namespace FuryUnleashed.Core
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static readonly Random Random = new Random();
 
+        public static WoWUnit VigilanceTarget;
+
         #region Caching RaidMembers Functions
         // RaidMembers IEnumerable
         internal static IEnumerable<WoWPlayer> RaidMembers
@@ -147,27 +149,28 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Unit Booleans
-        public static WoWPlayer VigilanceResult;
-        public static WoWPlayer VigilanceUsage
+        public static bool GetVigilanceTarget()
         {
-            get
+            using (new PerformanceLogger("VigilanceTarget"))
             {
-                using (new PerformanceLogger("VigilanceUsage"))
-                {
-                    VigilanceResult = null;
-                    if (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank)
-                    {
-                        VigilanceResult = RaidMembers.FirstOrDefault(p => !p.IsMe && p.IsAlive && p.Combat && p.HealthPercent <= InternalSettings.Instance.General.VigilanceNum && p.Distance <= 40);
-                        return VigilanceResult;
-                    }
+                VigilanceTarget = null;
 
-                    if (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnPartyMember)
-                    {
-                        VigilanceResult = RaidMembers.FirstOrDefault(p => !p.IsMe && p.IsAlive && p.Combat && p.HealthPercent <= InternalSettings.Instance.General.VigilanceNum && p.Distance <= 40);
-                        return VigilanceResult;
-                    }
+                var tankOnly = InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank;
+
+                switch (InternalSettings.Instance.General.Vigilance)
+                {
+                    case Enum.VigilanceTrigger.Never:
+                        return false;
+                    default:
+                        VigilanceTarget = (from unit in NearbyFriendlyUnits(StyxWoW.Me.Location, 30)
+                            where unit.IsValid
+                            where unit.Guid != Me.Guid
+                            where !tankOnly || unit.HasAura("Vengeance")
+                            where unit.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
+                            select unit).FirstOrDefault();
+                            
+                    return VigilanceTarget != null;
                 }
-                return null;
             }
         }
 

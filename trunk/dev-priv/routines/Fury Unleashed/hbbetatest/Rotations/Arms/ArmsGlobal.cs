@@ -177,7 +177,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnPartyMember) ||
+                return ((InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnRaidMember) ||
                         (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
             }
         }

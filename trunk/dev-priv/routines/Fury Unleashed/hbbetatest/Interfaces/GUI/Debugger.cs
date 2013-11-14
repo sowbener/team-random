@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using FuryUnleashed.Core;
@@ -75,6 +74,14 @@ namespace FuryUnleashed.Interfaces.GUI
                 damagetakentextbox.Text = Core.Utilities.Logger.PrintDamageTaken;
             }
         }
+
+        private void UpdateVigilanceTarget()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                vigilancetargettextbox.Text = Core.Utilities.Logger.PrintVigilanceTarget;
+            }
+        }
         #endregion
 
         #region Errors
@@ -133,6 +140,11 @@ namespace FuryUnleashed.Interfaces.GUI
         private void updatedamagetakenbutton_Click(object sender, EventArgs e)
         {
             UpdateDamageTaken();
+        }
+
+        private void updatevigilancetargetbutton_Click(object sender, EventArgs e)
+        {
+            UpdateVigilanceTarget();
         }
     }
 }

@@ -119,7 +119,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             Never,
             OnTank,
-            OnPartyMember
+            OnRaidMember
         }
 
         public enum WarriorTalents

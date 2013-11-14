@@ -122,7 +122,8 @@ namespace FuryUnleashed.Rotations.Protection
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe),
                 Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry),
-                Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceResult, ret => Unit.VigilanceUsage != null)
+                new Decorator(ret => Unit.GetVigilanceTarget() && Unit.VigilanceTarget != null,
+                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
                 );
         }
 

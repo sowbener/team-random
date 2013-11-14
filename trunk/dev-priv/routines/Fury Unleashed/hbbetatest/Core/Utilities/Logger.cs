@@ -143,6 +143,19 @@ namespace FuryUnleashed.Core.Utilities
             }
         }
 
+        public static string PrintVigilanceTarget
+        {
+            get
+            {
+                Unit.GetVigilanceTarget();
+
+                var vigilancetarget = Unit.VigilanceTarget;
+
+                CombatLogLg("FU: Vigilance target is {0}", vigilancetarget);
+                return vigilancetarget.ToString();
+            }
+        }
+
         public static void WriteFileLog(string message, params object[] args)
         {
             if (message == null) return;
