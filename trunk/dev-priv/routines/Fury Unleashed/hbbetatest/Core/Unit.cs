@@ -25,14 +25,14 @@ namespace FuryUnleashed.Core
         // RaidMembers IEnumerable
         internal static IEnumerable<WoWPlayer> RaidMembers
         {
-            get { return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid); }
+            get { return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => IsViable(u) && u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid); }
         }
 
         internal static IEnumerable<WoWUnit> NearbyRaidMembers(WoWPoint fromLocation, double radius)
         {
             var units = RaidMembers;
             var maxDistance = radius * radius;
-            return units.Where(u =>  u.Location.DistanceSqr(fromLocation) < maxDistance);
+            return units.Where(u => IsViable(u) && u.Location.DistanceSqr(fromLocation) < maxDistance);
         }
 
         public static int RaidMembersNeedCryCount;
@@ -49,25 +49,17 @@ namespace FuryUnleashed.Core
 
         internal static IEnumerable<WoWUnit> FriendlyUnits
         {
-            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.IsValid && u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
+            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
         }
 
         // NearbyAttackableUnits IEnumerable
-        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius, bool isinmyraid)
+        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius)
         {
             var friendly = FriendlyUnits;
             var maxDistance = radius * radius;
 
-            return isinmyraid == false ? 
-                friendly.Where(x => x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance) :
-                friendly.Where(x => x.IsFriendly && IsInMyGroup && x.Location.DistanceSqr(fromLocation) < maxDistance);
+            return friendly.Where(x => IsViable(x) && x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance);
         }
-
-        public static bool IsInMyGroup
-        {
-            get { return (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty); }
-        }
-
         #endregion
 
         #region Caching AttackableUnits Functions
@@ -170,12 +162,12 @@ namespace FuryUnleashed.Core
                     case Enum.VigilanceTrigger.Never:
                         return false;
                     default:
-                        VigilanceTarget = (from unit in NearbyFriendlyUnits(StyxWoW.Me.Location, 30, true)
-                            where unit.IsValid
-                            where unit.Guid != Me.Guid
-                            where !tankOnly || unit.HasAura("Vengeance")
-                            where unit.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
-                            select unit).FirstOrDefault();
+                        VigilanceTarget = (from u in NearbyRaidMembers(StyxWoW.Me.Location, 30)
+                            where u.IsValid
+                            where u.Guid != Me.Guid
+                            where !tankOnly || u.HasAura("Vengeance")
+                            where u.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
+                            select u).FirstOrDefault();
                             
                     return VigilanceTarget != null;
                 }

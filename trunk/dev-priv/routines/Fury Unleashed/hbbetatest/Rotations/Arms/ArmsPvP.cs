@@ -339,17 +339,17 @@ namespace FuryUnleashed.Rotations.Arms
                             ret =>
                                 Me.HealthPercent < 65 && !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget.IsPlayer &&
                                 !StyxWoW.Me.CurrentTarget.IsFriendly && Unit.NearbyAttackableUnitsCount >= 1),
-                        new Decorator(ret => Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 25, false).Any(),
+                        new Decorator(ret => Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 25).Any(),
                             Spell.Cast(SpellBook.Intervene,
                                 ret =>
-                                    Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 25, false)
+                                    Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 25)
                                         .Where(x => x.Distance > 12 && x.Distance < 35 && x.InLineOfSpellSight)
                                         .OrderByDescending(x => x.Distance)
                                         .FirstOrDefault(),
                                 ret => NeedBerserkerRage())
                             ),
                         new PrioritySelector(
-                            ctx => Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 35, false)
+                            ctx => Unit.NearbyFriendlyUnits(StyxWoW.Me.Location, 35)
                                 .OrderByDescending(x => x.Distance)
                                 .FirstOrDefault(x => x.Distance > 12 && x.InLineOfSpellSight),
                             new Decorator(ctx => ctx != null,
