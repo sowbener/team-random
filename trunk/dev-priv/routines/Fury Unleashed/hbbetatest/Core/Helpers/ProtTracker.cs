@@ -44,7 +44,7 @@ namespace FuryUnleashed.Core.Helpers
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
-                            AddDamageTaken(DateTime.Now, (int)(double)damage);
+                            AddDamageTaken(DateTime.Now, (int)damage);
                     }
                     break;
 
@@ -61,7 +61,7 @@ namespace FuryUnleashed.Core.Helpers
 
                         if (countDamage && !AddingDamageTaken)
                         {
-                            AddDamageTaken(DateTime.Now, (int)(double)damage);
+                            AddDamageTaken(DateTime.Now, (int)damage);
                         }
                     }
                     break;
