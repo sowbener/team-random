@@ -148,7 +148,7 @@ namespace Xiaolin.Routines
                 Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
             new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
-            Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled && Lua.PlayerPower >= 40 && CooldownWatcher.GetSpellCooldownTimeLeft(121253) > 3),
+            Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled && Lua.PlayerPower >= 40),
             Spell.Cast("Breath of Fire", ret => NeedBreathofFire && ShuffleSetting > 6)
             
                   );
