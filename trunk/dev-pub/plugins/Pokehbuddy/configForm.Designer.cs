@@ -30,10 +30,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Unknown");
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Simple leveling");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Boost leveling");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("test3");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Unknown");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Simple leveling");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Boost leveling");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test3");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button59 = new System.Windows.Forms.Button();
@@ -282,6 +282,15 @@
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.checkBox18 = new System.Windows.Forms.CheckBox();
+            this.checkBox17 = new System.Windows.Forms.CheckBox();
+            this.checkBox16 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label92 = new System.Windows.Forms.Label();
+            this.label91 = new System.Windows.Forms.Label();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox15 = new System.Windows.Forms.CheckBox();
             this.checkBox14 = new System.Windows.Forms.CheckBox();
             this.button50 = new System.Windows.Forms.Button();
             this.button55 = new System.Windows.Forms.Button();
@@ -366,6 +375,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.tabPage6.SuspendLayout();
+            this.groupBox17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox4.SuspendLayout();
@@ -401,6 +413,7 @@
             this.tabPage5.Size = new System.Drawing.Size(879, 546);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "1-Click Settings";
+            this.tabPage5.Click += new System.EventHandler(this.tabPage5_Click);
             // 
             // button59
             // 
@@ -1216,7 +1229,7 @@
             this.groupBox16.Controls.Add(this.button58);
             this.groupBox16.Controls.Add(this.button57);
             this.groupBox16.Controls.Add(this.listView2);
-            this.groupBox16.Location = new System.Drawing.Point(849, 392);
+            this.groupBox16.Location = new System.Drawing.Point(367, 373);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(696, 231);
             this.groupBox16.TabIndex = 64;
@@ -1247,17 +1260,17 @@
             // listView2
             // 
             this.listView2.CheckBoxes = true;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem6.Checked = true;
-            listViewItem6.StateImageIndex = 1;
-            listViewItem7.StateImageIndex = 0;
-            listViewItem8.Checked = true;
-            listViewItem8.StateImageIndex = 1;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.Checked = true;
+            listViewItem2.StateImageIndex = 1;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.Checked = true;
+            listViewItem4.StateImageIndex = 1;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem5,
-            listViewItem6,
-            listViewItem7,
-            listViewItem8});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4});
             this.listView2.Location = new System.Drawing.Point(6, 19);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(308, 197);
@@ -1666,7 +1679,6 @@
             this.button37.TabIndex = 39;
             this.button37.Text = "Import from Forum";
             this.button37.UseVisualStyleBackColor = true;
-            this.button37.Visible = false;
             this.button37.Click += new System.EventHandler(this.button37_Click);
             // 
             // button36
@@ -1678,7 +1690,6 @@
             this.button36.TabIndex = 38;
             this.button36.Text = "Share to Forum";
             this.button36.UseVisualStyleBackColor = true;
-            this.button36.Visible = false;
             this.button36.Click += new System.EventHandler(this.button36_Click);
             // 
             // button35
@@ -3264,6 +3275,7 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.groupBox17);
             this.tabPage6.Controls.Add(this.checkBox14);
             this.tabPage6.Controls.Add(this.button50);
             this.tabPage6.Controls.Add(this.button55);
@@ -3274,6 +3286,131 @@
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "3rd party addons";
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.checkBox18);
+            this.groupBox17.Controls.Add(this.checkBox17);
+            this.groupBox17.Controls.Add(this.checkBox16);
+            this.groupBox17.Controls.Add(this.numericUpDown2);
+            this.groupBox17.Controls.Add(this.label92);
+            this.groupBox17.Controls.Add(this.label91);
+            this.groupBox17.Controls.Add(this.numericUpDown3);
+            this.groupBox17.Controls.Add(this.checkBox15);
+            this.groupBox17.Location = new System.Drawing.Point(63, 204);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(467, 214);
+            this.groupBox17.TabIndex = 43;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "groupBox17";
+            // 
+            // checkBox18
+            // 
+            this.checkBox18.AutoSize = true;
+            this.checkBox18.Location = new System.Drawing.Point(261, 64);
+            this.checkBox18.Name = "checkBox18";
+            this.checkBox18.Size = new System.Drawing.Size(98, 17);
+            this.checkBox18.TabIndex = 45;
+            this.checkBox18.Text = "Tradeable Only";
+            this.checkBox18.UseVisualStyleBackColor = true;
+            this.checkBox18.CheckedChanged += new System.EventHandler(this.checkBox18_CheckedChanged);
+            // 
+            // checkBox17
+            // 
+            this.checkBox17.AutoSize = true;
+            this.checkBox17.Location = new System.Drawing.Point(190, 64);
+            this.checkBox17.Name = "checkBox17";
+            this.checkBox17.Size = new System.Drawing.Size(75, 17);
+            this.checkBox17.TabIndex = 44;
+            this.checkBox17.Text = "Allow Wild";
+            this.checkBox17.UseVisualStyleBackColor = true;
+            this.checkBox17.CheckedChanged += new System.EventHandler(this.checkBox17_CheckedChanged);
+            // 
+            // checkBox16
+            // 
+            this.checkBox16.AutoSize = true;
+            this.checkBox16.Location = new System.Drawing.Point(6, 57);
+            this.checkBox16.Name = "checkBox16";
+            this.checkBox16.Size = new System.Drawing.Size(53, 17);
+            this.checkBox16.TabIndex = 43;
+            this.checkBox16.Text = "Slot 1";
+            this.checkBox16.UseVisualStyleBackColor = true;
+            this.checkBox16.CheckedChanged += new System.EventHandler(this.checkBox16_CheckedChanged);
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(65, 57);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(51, 20);
+            this.numericUpDown2.TabIndex = 38;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(133, 38);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(56, 13);
+            this.label92.TabIndex = 42;
+            this.label92.Text = "Max Level";
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(62, 38);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(53, 13);
+            this.label91.TabIndex = 41;
+            this.label91.Text = "Min Level";
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(136, 58);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDown3.TabIndex = 39;
+            this.numericUpDown3.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            // 
+            // checkBox15
+            // 
+            this.checkBox15.AutoSize = true;
+            this.checkBox15.Location = new System.Drawing.Point(192, 48);
+            this.checkBox15.Name = "checkBox15";
+            this.checkBox15.Size = new System.Drawing.Size(123, 17);
+            this.checkBox15.TabIndex = 40;
+            this.checkBox15.Text = "Use Favorites ONLY";
+            this.checkBox15.UseVisualStyleBackColor = true;
+            this.checkBox15.CheckedChanged += new System.EventHandler(this.checkBox15_CheckedChanged);
             // 
             // checkBox14
             // 
@@ -3718,6 +3855,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox17.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox4.ResumeLayout(false);
@@ -4037,6 +4178,15 @@
         private System.Windows.Forms.Label label89;
         private System.Windows.Forms.Button button60;
         private System.Windows.Forms.Button button61;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.CheckBox checkBox16;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label92;
+        private System.Windows.Forms.Label label91;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.CheckBox checkBox15;
+        private System.Windows.Forms.CheckBox checkBox18;
+        private System.Windows.Forms.CheckBox checkBox17;
 
     }
 

@@ -105,6 +105,8 @@ namespace Pokehbuddyplug.Librarian
 
             qqq = @"UPDATE SkillLibrary SET Prio = 0 WHERE Prio IS NULL";
             doNonQuery(qqq);
+            qqq = @"UPDATE SkillLibrary SET Cooldown = 0 WHERE Cooldown IS NULL";
+            doNonQuery(qqq);
 
 
         }
@@ -357,6 +359,10 @@ namespace Pokehbuddyplug.Librarian
             }
 
         }
+        public string GeneratePuppyLogic(string Skillset)
+        {
+            return "SWAPOUT TURNNUMBER ISGREATERTHAN 1@CASTSPELL(3) COOLDOWN(SKILL(3)) EQUALS false@CASTSPELL(2) COOLDOWN(SKILL(2)) EQUALS false@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false";
+        }
         public string GenerateLogic(string Skillset)
         {
             string[] skillz = Skillset.Split('@');
@@ -399,7 +405,7 @@ namespace Pokehbuddyplug.Librarian
             string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 25";
             dummy = dummy + "@" + GenFromLib(gotskills, priolist).Replace(gotskills[2], "3").Replace(gotskills[1], "2").Replace(gotskills[0], "1");
             dummy = dummy + "@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false@CASTSPELL(2) COOLDOWN(SKILL(2)) EQUALS false@CASTSPELL(3) COOLDOWN(SKILL(3)) EQUALS false";
-            return dummy;
+            return dummy.Replace("@ @", "@").Replace("@ @", "@").Replace("@@", "@").Replace("@@", "@");
             
         }
         private string GenFromLib(string[] skills, int[] prio)
@@ -520,6 +526,11 @@ namespace Pokehbuddyplug.Librarian
             {
                 doNonQuery(s);
             }
+        }
+
+        private void Librarian_Load(object sender, EventArgs e)
+        {
+
         }
         
 

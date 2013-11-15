@@ -218,7 +218,7 @@
             "ORDER BY Cooldown DESC"});
             this.comboBox2.Location = new System.Drawing.Point(41, 106);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(130, 21);
+            this.comboBox2.Size = new System.Drawing.Size(329, 21);
             this.comboBox2.TabIndex = 14;
             // 
             // Librarian
@@ -243,6 +243,7 @@
             this.Controls.Add(this.listBox1);
             this.Name = "Librarian";
             this.Text = "Librarian";
+            this.Load += new System.EventHandler(this.Librarian_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

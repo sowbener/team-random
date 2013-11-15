@@ -227,6 +227,48 @@ namespace Pokehbuddyplug
             value = textBox.Text;
             return dialogResult;
         }
+        public static DialogResult MultiInputBox(string title, string promptText, ref string value)
+        {
+            Form form = new Form();
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+            textBox.Multiline = true;
+            textBox.Text = value;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(9, 20, 372, 13);
+            textBox.SetBounds(12, 36, 372, 20);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+            buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            form.ClientSize = new Size(396, 107);
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+            value = textBox.Text.Replace(Environment.NewLine,"");
+            return dialogResult;
+        }
 
         private void BlacklistLoad()
         {
@@ -329,6 +371,11 @@ namespace Pokehbuddyplug
             toolTip1.SetToolTip(this.textBox11, "Complicated, will think of this later");
 
             checkBox11.Checked = Pokehbuddy.MySettings.AllowAutoUpdate;
+            checkBox16.Checked = Pokehbuddy.MySettings.Slot1SwapEnabled;
+            checkBox15.Checked = Pokehbuddy.MySettings.Slot1SwapFavoriteOnly;
+            numericUpDown2.Value = Pokehbuddy.MySettings.Slot1SwapMinLevel;
+            numericUpDown3.Value = Pokehbuddy.MySettings.Slot1SwapMaxLevel;
+
             textBox3.Text = Pokehbuddy.MySettings.HPFormula;
             textBox4.Text = Pokehbuddy.MySettings.AdFormula;
             textBox5.Text = Pokehbuddy.MySettings.DisFormula;
@@ -680,11 +727,11 @@ namespace Pokehbuddyplug
 
         private void updatenumbers()
         {
-            var ce = new CalcEngine.CalcEngine();
-            string s = "1 + 1 * 3";
-            var x = ce.Parse(s);
             
-            var value = x.Evaluate();
+            string s = "1 + 1 * 3";
+
+
+            var value = Pokehbuddy.Calculate(s);
             int advantage = 0;
             int disadvantage = 0;
             var total = 0;
@@ -698,8 +745,8 @@ namespace Pokehbuddyplug
 
             s = textBox3.Text;
             s = s.Replace("petHP", Pokehbuddy.GetPetHPPreCombat(1).ToString()).Replace("HPFactor", trackBar1.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = int.Parse(value.ToString());
             label50.Text = value.ToString();
             //Logging.Write("Lua test : " + CalcLua(s));
@@ -712,15 +759,15 @@ namespace Pokehbuddyplug
             if (mypet == Pokehbuddy.SmartChoiceDealMoreDMG(comboBox16.SelectedIndex+1)) advantage = advantage + 2;
             s = textBox4.Text;   //advantage * 50 * AdFactor
             s = s.Replace("advantage", advantage.ToString()).Replace("AdFactor", trackBar3.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label49.Text = value.ToString();
 
             s = textBox5.Text;   //advantage * 50 * AdFactor
             s = s.Replace("disadvantage", disadvantage.ToString()).Replace("DisFactor", trackBar4.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label48.Text = value.ToString();
 
@@ -728,8 +775,8 @@ namespace Pokehbuddyplug
 
             s = textBox6.Text;   //advantage * 50 * AdFactor
             s = s.Replace("petLevel", Pokehbuddy.GetPetLevelPreCombat(1).ToString()).Replace("enemylevel", (comboBox15.SelectedIndex+1).ToString()).Replace("LevelFactor", trackBar2.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label47.Text = value.ToString();
 
@@ -743,8 +790,8 @@ namespace Pokehbuddyplug
 
             s = textBox3.Text;
             s = s.Replace("petHP", Pokehbuddy.GetPetHPPreCombat(2).ToString()).Replace("HPFactor", trackBar1.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = int.Parse(value.ToString());
             label56.Text = value.ToString();
 
@@ -756,15 +803,15 @@ namespace Pokehbuddyplug
             if (mypet == Pokehbuddy.SmartChoiceDealMoreDMG(comboBox16.SelectedIndex + 1)) advantage = advantage + 2;
             s = textBox4.Text;   //advantage * 50 * AdFactor
             s = s.Replace("advantage", advantage.ToString()).Replace("AdFactor", trackBar3.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label55.Text = value.ToString();
 
             s = textBox5.Text;   //advantage * 50 * AdFactor
             s = s.Replace("disadvantage", disadvantage.ToString()).Replace("DisFactor", trackBar4.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label54.Text = value.ToString();
 
@@ -772,8 +819,8 @@ namespace Pokehbuddyplug
 
             s = textBox6.Text;   //advantage * 50 * AdFactor
             s = s.Replace("petLevel", Pokehbuddy.GetPetLevelPreCombat(2).ToString()).Replace("enemylevel", (comboBox15.SelectedIndex + 1).ToString()).Replace("LevelFactor", trackBar2.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label53.Text = value.ToString();
 
@@ -787,8 +834,8 @@ namespace Pokehbuddyplug
 
             s = textBox3.Text;
             s = s.Replace("petHP", Pokehbuddy.GetPetHPPreCombat(3).ToString()).Replace("HPFactor", trackBar1.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = int.Parse(value.ToString());
             label62.Text = value.ToString();
 
@@ -800,15 +847,15 @@ namespace Pokehbuddyplug
             if (mypet == Pokehbuddy.SmartChoiceDealMoreDMG(comboBox16.SelectedIndex + 1)) advantage = advantage + 2;
             s = textBox4.Text;   //advantage * 50 * AdFactor
             s = s.Replace("advantage", advantage.ToString()).Replace("AdFactor", trackBar3.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label60.Text = value.ToString();
 
             s = textBox5.Text;   //advantage * 50 * AdFactor
             s = s.Replace("disadvantage", disadvantage.ToString()).Replace("DisFactor", trackBar4.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label59.Text = value.ToString();
 
@@ -816,8 +863,8 @@ namespace Pokehbuddyplug
 
             s = textBox6.Text;   //advantage * 50 * AdFactor
             s = s.Replace("petLevel", Pokehbuddy.GetPetLevelPreCombat(3).ToString()).Replace("enemylevel", (comboBox15.SelectedIndex + 1).ToString()).Replace("LevelFactor", trackBar2.Value.ToString());
-            x = ce.Parse(s);
-            value = x.Evaluate();
+
+            value = Pokehbuddy.Calculate(s);
             total = total + int.Parse(value.ToString());
             label58.Text = value.ToString();
 
@@ -1751,6 +1798,8 @@ namespace Pokehbuddyplug
             button56.Enabled = true;
             button36.Enabled = true;
             button37.Enabled = true;
+            button49.Enabled = true;
+            button61.Enabled = true;
 
            
 
@@ -1775,7 +1824,8 @@ namespace Pokehbuddyplug
             button56.Enabled = false;
             button36.Enabled = false;
             button37.Enabled = false;
-
+            button49.Enabled = false;
+            button61.Enabled = false;
 
 
         }
@@ -2059,11 +2109,12 @@ namespace Pokehbuddyplug
         private void button37_Click(object sender, System.EventArgs e)
         {
             string value = "";
-            if (InputBox("Import from Forum", "Paste here :", ref value) == DialogResult.OK)
+            if (MultiInputBox("Import from Forum", "Paste here :", ref value) == DialogResult.OK)
             {
+                button43.Enabled = true;
                 if (value.IndexOf("[Logic]") > -1)
                 {
-                    int FirstChr = value.IndexOf("[Logic]") + 8;
+                    int FirstChr = value.IndexOf("[Logic]") + "[Logic]".Length;
                     int SecondChr = value.IndexOf("[/Logic]", FirstChr);
                     textBox8.Text = value.Substring(FirstChr, SecondChr - FirstChr);
                     //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
@@ -2071,7 +2122,7 @@ namespace Pokehbuddyplug
                 }
                 if (value.IndexOf("[Spells]") > -1)
                 {
-                    int FirstChr = value.IndexOf("[Spells]") + 8;
+                    int FirstChr = value.IndexOf("[Spells]") + "[Spells]".Length;
                     int SecondChr = value.IndexOf("[/Spells]", FirstChr);
                     textBox9.Text = value.Substring(FirstChr, SecondChr - FirstChr);
                     //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
@@ -2079,7 +2130,7 @@ namespace Pokehbuddyplug
                 }
                 if (value.IndexOf("[Author]") > -1)
                 {
-                    int FirstChr = value.IndexOf("[Author]") + 8;
+                    int FirstChr = value.IndexOf("[Author]") + "[Author]".Length;
                     int SecondChr = value.IndexOf("[/Author]", FirstChr);
                     label84.Text = value.Substring(FirstChr, SecondChr - FirstChr);
                     //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
@@ -2087,7 +2138,7 @@ namespace Pokehbuddyplug
                 }
                 if (value.IndexOf("[Notes]") > -1)
                 {
-                    int FirstChr = value.IndexOf("[Notes]") + 8;
+                    int FirstChr = value.IndexOf("[Notes]") + "[Notes]".Length;
                     int SecondChr = value.IndexOf("[/Notes]", FirstChr);
                     textBox10.Text = value.Substring(FirstChr, SecondChr - FirstChr);
                     //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
@@ -2095,7 +2146,7 @@ namespace Pokehbuddyplug
                 }
                 if (value.IndexOf("[LogicType]") > -1)
                 {
-                    int FirstChr = value.IndexOf("[LogicType]") + 8;
+                    int FirstChr = value.IndexOf("[LogicType]") + "[LogicType]".Length;
                     int SecondChr = value.IndexOf("[/LogicType]", FirstChr);
                     textBox11.Text = value.Substring(FirstChr, SecondChr - FirstChr);
                     //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
@@ -2211,7 +2262,7 @@ namespace Pokehbuddyplug
             if (TreeRoot.IsRunning)
             {
                 TreeRoot.Stop();
-                Thread.Sleep(1000);
+                StyxWoW.Sleep(1000);
             }
             foreach (KeyValuePair<string, BotBase> Base in BotManager.Instance.Bots)
             {
@@ -2219,11 +2270,11 @@ namespace Pokehbuddyplug
                 {
                     BotManager.Instance.SetCurrent(Base.Value);
                     if (!BotManager.Current.Initialized) BotManager.Current.Initialize();
-                    Thread.Sleep(500);
+                    StyxWoW.Sleep(500);
                 }
             }
             ProfileManager.LoadEmpty();
-            Thread.Sleep(500);
+            StyxWoW.Sleep(500);
             TreeRoot.Start();
             //Logging.Write("Correct botbase selected");
         }
@@ -2249,7 +2300,7 @@ namespace Pokehbuddyplug
                 
                 try
                 {
-                    theMethod.Invoke(this, null);
+                    if (Pokehbuddy.quicksettingsnames.Count < array.Length-1)  theMethod.Invoke(this, null);
                 }
                 catch (Exception e)
                 {
@@ -2346,7 +2397,7 @@ namespace Pokehbuddyplug
             string dummy="";
             foreach (ListViewItem l in listView2.Items)
             {
-                if (l.Checked) dummy = dummy + l.Index.ToString();
+                if (l.Checked) dummy = dummy + l.Index.ToString()+" ";
             }
             textBox11.Text = dummy;
             groupBox16.Visible = false;
@@ -2501,8 +2552,43 @@ namespace Pokehbuddyplug
                 textBox2.Text = itm.SubItems[1].Text;*/
             }
         }
-        
 
+        private void tabPage5_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void checkBox16_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.Slot1SwapEnabled = checkBox16.Checked;
+        }
+
+        private void checkBox15_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.Slot1SwapFavoriteOnly = checkBox15.Checked;
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.Slot1SwapMinLevel = Int32.Parse(numericUpDown2.Value.ToString());
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.Slot1SwapMaxLevel = Int32.Parse(numericUpDown3.Value.ToString());
+        }
+
+        private void checkBox17_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.Slot1AllowWild = checkBox17.Checked;
+        }
+
+        private void checkBox18_CheckedChanged(object sender, System.EventArgs e)
+        {
+            Pokehbuddy.MySettings.Slot1TradeableOnly = checkBox18.Checked;
+        }
+        
+       
 
 
             
