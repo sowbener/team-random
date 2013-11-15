@@ -1,0 +1,8 @@
+This is a WoW Addon. If you want to use it, move the folder into your World of Warcraft addons folder;
+
+<WoW>/Interface/Addons/XiaolinRoutineToggle/MillzRoutineToggle.lua
+<WoW>/Interface/Addons/XiaolinRoutineToggle/MillzRoutineToggle.toc
+<WoW>/Interface/Addons/XiaolinRoutineToggle/MillzRoutineToggle.xml
+
+Thanks to larcerkev for the original addon.
+Thanks to Millz for editing and fixing up the addon.
