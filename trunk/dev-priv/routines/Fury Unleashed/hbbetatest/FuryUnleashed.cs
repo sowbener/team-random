@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core;
+﻿using System.Windows.Forms;
+using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -57,6 +58,11 @@ namespace FuryUnleashed
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
+                if (!GlobalSettings.Instance.UseFrameLock)
+                {
+                    MessageBox.Show("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!");
+                }
+
                 Unleash();
             }
             catch (Exception exception)
@@ -106,7 +112,7 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Thanks list is available in the topic!");
             Logger.CombatLogOr("\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
-            if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS!"); }
+            if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
             else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
