@@ -81,7 +81,7 @@ namespace Xiaolin.Routines
         public static int MaxChi { get { return XITalentManager.HasTalent(8) ? 5 : 4; } } // 
         
         
-        private static bool NeedGuard { get { return Me.HasAura("Power Guard") && Me.HasAura("Shuffle") && Me.HealthPercent <= MonkSettings.GuardHPPercent; } }
+        private static bool NeedGuard { get { return Me.HasAura("Power Guard") && ShuffleSetting >= 3; } }
 
         private static bool NeedDampenHarm { get { return XITalentManager.HasTalent(14) && Me.HealthPercent <= MonkSettings.DampenHarmPercent && !Me.HasAura("Fortifying Brew"); } }
 
@@ -107,7 +107,7 @@ namespace Xiaolin.Routines
 
         private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting > 2; } }
 
-        private static bool NeedChiWave { get { return XITalentManager.HasTalent(4) && Me.HealthPercent <= MonkSettings.ChiWavePercent; } }
+        private static bool NeedChiWave { get { return XITalentManager.HasTalent(4); } }
 
         private static bool NeedHealingSphere { get { return Lua.PlayerPower >= 60 && Me.HealthPercent <= MonkSettings.HealingSpherePercent; } }
 
