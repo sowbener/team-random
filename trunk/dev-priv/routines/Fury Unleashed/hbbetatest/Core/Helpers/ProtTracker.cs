@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using FuryUnleashed.Core.Utilities;
+﻿using FuryUnleashed.Core.Utilities;
 using Styx;
 using System;
 using System.Collections.Generic;
