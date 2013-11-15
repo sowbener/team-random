@@ -14,7 +14,6 @@ namespace FuryUnleashed.Rotations.Protection
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         // TODO: Add Execute Support
-
         internal static Composite DevProtCombat
         {
             get
@@ -56,6 +55,7 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtSt()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.Execute, ret => Global.ExecutePhase && Lua.PlayerPower >= Lua.PlayerPowerMax - 10),
                 Spell.Cast(SpellBook.Devastate, ret => !Global.WeakenedArmor3S),
 
                 Spell.Cast(SpellBook.ShieldSlam),

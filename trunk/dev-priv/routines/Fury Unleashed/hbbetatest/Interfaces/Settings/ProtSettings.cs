@@ -111,10 +111,10 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.BarrierBlock BarrierBlockSelection { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(55)]
+        [Styx.Helpers.DefaultValue(60)]
         [Category("Protection - Shield Block & Barrier")]
         [DisplayName("Use Above Rage %")]
-        [Description("Select the amount of rage required before the Shield Block and Barrier logic kicks in.")]
+        [Description("Select the amount of rage required before the Shield Block and Barrier logic kicks in - I suggest 60 or higher!")]
         public int ShieldBarrierBlockNum { get; set; }
         #endregion
 

@@ -153,7 +153,7 @@ namespace FuryUnleashed.Core.Helpers
 
                     var ragemultiplier = sumrage / 60.0;
 
-                    if (2 * (attackpower - 2 * strength) > stamina * 2.5) { sumstam = 2 * (attackpower - 2 * strength); }
+                    if (1.8 * (attackpower - 2 * strength) > stamina * 2.5) { sumstam = 2 * (attackpower - 2 * strength); }
                     else sumstam = stamina * 2.5;
 
                     var barrierresult = sumstam * ragemultiplier;
