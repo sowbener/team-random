@@ -98,6 +98,10 @@ namespace Xiaolin.Managers
                                 LogKey("Cooldown", XISettingsH.Instance.CooldownKeyChoice, XISettingsH.Instance.ModKeyChoice, IsCooldown);
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(IsCooldown
+                                                     ? "RunMacroText('/MyCooldowns true')"
+                                                     : "RunMacroText('/MyCooldowns false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
                                                      ? @"print('Cooldowns \124cFF15E61C Enabled!')"
                                                      : @"print('Cooldowns \124cFFE61515 Disabled!')");
                             });
@@ -108,6 +112,10 @@ namespace Xiaolin.Managers
                                 LogKey("AoE", XISettingsH.Instance.MultiTgtKeyChoice, XISettingsH.Instance.ModKeyChoice, IsAoe);
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(IsAoe
+                                                     ? "RunMacroText('/AoEderp true')"
+                                                     : "RunMacroText('/AoEderp false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsAoe                                                
                                                      ? @"print('Aoe \124cFF15E61C Enabled!')"
                                                      : @"print('Aoe \124cFFE61515 Disabled!')");
                             });
