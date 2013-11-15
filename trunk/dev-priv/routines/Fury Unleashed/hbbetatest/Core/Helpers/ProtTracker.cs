@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core.Utilities;
+﻿using System.Security.Cryptography.X509Certificates;
+using FuryUnleashed.Core.Utilities;
 using Styx;
 using System;
 using System.Collections.Generic;
@@ -168,15 +169,19 @@ namespace FuryUnleashed.Core.Helpers
             return 0;
         }
 
+        // Crit Block Formula: (http://www.wowwiki.com/Critical_Block)
+        // Mastery Ratio is 272.7 (http://wowpedia.org/Mastery)
+        //
+        // var criticalBlockChance = (mastery * 2.2) / 100; // Shield Maid version ...
         public static double CalculateEstimatedBlockValue()
         {
             using (new PerformanceLogger("CalculateEstimatedBlockValue"))
             {
                 try
                 {
-                    var damageoversixseconds = GetDamageTaken(DateTime.Now);
-                    var mastery = StyxWoW.Me.Mastery;
-                    var criticalBlockChance = (mastery * 2.2) / 100;
+                    var damageoversixseconds = GetDamageTaken(DateTime.Now); // Verified and Correct
+                    var mastery = StyxWoW.Me.Mastery; // Verified and Correct
+                    var criticalBlockChance = (8 * 1.5) + (mastery / 272.7 * 1.5); // Verified and Correct
                     var blockresult = damageoversixseconds * criticalBlockChance * 0.6 + damageoversixseconds * (1 - criticalBlockChance) * 0.3;
 
                     return blockresult;
