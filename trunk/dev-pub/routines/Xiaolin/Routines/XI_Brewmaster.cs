@@ -149,7 +149,7 @@ namespace Xiaolin.Routines
             new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
             new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
             Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire)
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && ShuffleSetting > 6)
             
                   );
         }
