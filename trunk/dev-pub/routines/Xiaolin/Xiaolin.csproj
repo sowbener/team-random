@@ -101,25 +101,15 @@
   <ItemGroup>
     <Folder Include="Interfaces\Images\" />
     <Folder Include="Properties\" />
-    <Folder Include="XiaolinRoutineToggle\.svn\tmp\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="XiaolinRoutineToggle\Demo.png" />
-    <Content Include="XiaolinRoutineToggle\XiaolinRoutineToggle.xml" />
     <Content Include="XiaolinRoutineToggle\READ ME.txt" />
+    <Content Include="XiaolinRoutineToggle\XiaolinRoutineToggle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="XiaolinRoutineToggle\.svn\entries" />
-    <None Include="XiaolinRoutineToggle\.svn\format" />
-    <None Include="XiaolinRoutineToggle\.svn\pristine\2d\2da8d31fb23ff284ae3a26fbdc90ced731403021.svn-base" />
-    <None Include="XiaolinRoutineToggle\.svn\pristine\4e\4e355ae208b417e9dffed319b0cee8f80ba6003d.svn-base" />
-    <None Include="XiaolinRoutineToggle\.svn\pristine\53\53e9486a63bce9cee943f5b03dc66f3abbb3a021.svn-base" />
-    <None Include="XiaolinRoutineToggle\.svn\pristine\5b\5b82e299436a958014baafe5bd268bb5693167df.svn-base" />
-    <None Include="XiaolinRoutineToggle\.svn\pristine\fc\fc85bb3e63720fbce295ea8d76845a7ebd385051.svn-base" />
-    <None Include="XiaolinRoutineToggle\.svn\wc.db" />
     <None Include="XiaolinRoutineToggle\XiaolinRoutineToggle.lua" />
     <None Include="XiaolinRoutineToggle\XiaolinRoutineToggle.toc" />
   </ItemGroup>

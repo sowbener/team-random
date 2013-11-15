@@ -39,6 +39,12 @@ namespace Xiaolin.Interfaces.Settings
         [Description("Changes the HP Percent to use Guard")]
         public int GuardHPPercent { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Use RJW on Single Target")]
+        public bool UseRJWSingleTarget { get; set; }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(50)]

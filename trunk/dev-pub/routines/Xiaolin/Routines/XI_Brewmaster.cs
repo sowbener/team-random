@@ -63,6 +63,8 @@ namespace Xiaolin.Routines
 
         #region BoolsTemp
 
+        internal static bool TalentJadeWindEnabled { get { return XITalentManager.HasTalent(16); } }
+
         private static XISettingsBM MonkSettings { get { return SG.Instance.Brewmaster; } }
 
         internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307, Me); } }
@@ -103,7 +105,7 @@ namespace Xiaolin.Routines
 
         private static bool CanJab { get { return Styx.WoWInternals.WoWSpell.FromId(121253).Cooldown; } }
 
-        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && Me.HasAura("Shuffle"); } }
+        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting > 2; } }
 
         private static bool NeedChiWave { get { return XITalentManager.HasTalent(4) && Me.HealthPercent <= MonkSettings.ChiWavePercent; } }
 
@@ -134,7 +136,8 @@ namespace Xiaolin.Routines
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
             new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
-            Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd) // Build PG and TP for Guard
+            Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
+            Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled && ShuffleSetting > 3 && MonkSettings.UseRJWSingleTarget)
                 );
 
         }
@@ -142,6 +145,12 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterMt()
         {
             return new PrioritySelector(
+                Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
+            new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
+            Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled),
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire)
+            
                   );
         }
 
