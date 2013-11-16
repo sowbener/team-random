@@ -21,6 +21,13 @@ namespace Xiaolin.Interfaces.Settings
         public bool CheckDisableClickToMove { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General")]
+        [DisplayName("Enables Addon usage")]
+        [Description("This Enables XiaolinRoutineToggler")]
+        public bool EnableMacroOutput { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(LogCategory.None)]
         [Category("Logging")]
         [DisplayName("Performance Logging")]

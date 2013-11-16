@@ -58,50 +58,30 @@ namespace Xiaolin.Interfaces.GUI
             XISettings.Instance.Load();
             XISettingsH.Instance.Load();
 
-            // Hotkey - AMZ
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.Q, "Q"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.E, "E"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.R, "R"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.G, "G"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.LControlKey, "Left Control"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.RControlKey, "Right Control"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.LShiftKey, "Left Shift"));
-            ComboHkAMZ.Items.Add(new XIEnum.XICboItem((int)Keys.RShiftKey, "Right Shift"));
 
-            // Hotkey - Remorseless Winter etc
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.Q, "Q"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.E, "E"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.G, "G"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.LControlKey, "Left Control"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.RControlKey, "Right Control"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.LShiftKey, "Left Shift"));
-            ComboHkTier6.Items.Add(new XIEnum.XICboItem((int)Keys.RShiftKey, "Right Shift"));
+            // Hotkey - ElusiveBrew of the Dead
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.Q, "Q"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.F, "F"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.R, "R"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.E, "E"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.G, "G"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.LControlKey, "Left Control"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.RControlKey, "Right Control"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.LShiftKey, "Left Shift"));
+            ComboHkElusiveBrew.Items.Add(new XIEnum.XICboItem((int)Keys.RShiftKey, "Right Shift"));
 
-            // Hotkey - Deterrence of the Dead
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.Q, "Q"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.F, "F"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.R, "R"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.E, "E"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.G, "G"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.LControlKey, "Left Control"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.RControlKey, "Right Control"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.LShiftKey, "Left Shift"));
-            ComboHkDeterrence.Items.Add(new XIEnum.XICboItem((int)Keys.RShiftKey, "Right Shift"));
-
-            // Hotkey - Raise Disengage
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.Q, "Q"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.F, "F"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.R, "R"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.E, "E"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.G, "G"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.LControlKey, "Left Control"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.RControlKey, "Right Control"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.LShiftKey, "Left Shift"));
-            ComboHkDisengage.Items.Add(new XIEnum.XICboItem((int)Keys.RShiftKey, "Right Shift"));
+            // Hotkey - Raise DizzyingHaze
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.Q, "Q"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.F, "F"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.R, "R"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.E, "E"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.G, "G"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.LControlKey, "Left Control"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.RControlKey, "Right Control"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.LShiftKey, "Left Shift"));
+            ComboHkDizzyingHaze.Items.Add(new XIEnum.XICboItem((int)Keys.RShiftKey, "Right Shift"));
 
             // Hotkey Mode Choice
             ComboHkMode.Items.Add(new XIEnum.XICboItem((int)XIEnum.Mode.Auto, "Automatic Mode"));
@@ -233,10 +213,8 @@ namespace Xiaolin.Interfaces.GUI
             ComboHkPause.Items.Add(new XIEnum.XICboItem((int)Keys.R, "R"));
             ComboHkPause.Items.Add(new XIEnum.XICboItem((int)Keys.None, "No Hotkey"));
 
-            SetComboBoxEnum(ComboHkAMZ, (int)XISettingsH.Instance.AMZ);
-            SetComboBoxEnum(ComboHkDisengage, (int)XISettingsH.Instance.Disengage);
-            SetComboBoxEnum(ComboHkTier6, (int)XISettingsH.Instance.Tier6);
-            SetComboBoxEnum(ComboHkDeterrence, (int)XISettingsH.Instance.Deterrence);
+            SetComboBoxEnum(ComboHkDizzyingHaze, (int)XISettingsH.Instance.DizzyingHaze);
+            SetComboBoxEnum(ComboHkElusiveBrew, (int)XISettingsH.Instance.ElusiveBrew);
 
             SetComboBoxEnum(ComboHkMode, (int)XISettingsH.Instance.ModeSelection);
             SetComboBoxEnum(ComboHkModifier, (int)XISettingsH.Instance.ModKeyChoice);
@@ -278,22 +256,22 @@ namespace Xiaolin.Interfaces.GUI
         }
 
         #region Hotkeys
-        private void ComboHkAMZ_SelectedIndexChanged(object sender, EventArgs e)
+     //   private void ComboHkAMZ_SelectedIndexChanged(object sender, EventArgs e)
+     //   {
+     //       XISettingsH.Instance.AMZ = (Keys)GetComboBoxEnum(ComboHkAMZ);
+   //     }
+        private void ComboHkDizzyingHaze_SelectedIndexChanged(object sender, EventArgs e)
         {
-            XISettingsH.Instance.AMZ = (Keys)GetComboBoxEnum(ComboHkAMZ);
+            XISettingsH.Instance.DizzyingHaze = (Keys)GetComboBoxEnum(ComboHkDizzyingHaze);
         }
-        private void ComboHkDisengage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            XISettingsH.Instance.Disengage = (Keys)GetComboBoxEnum(ComboHkDisengage);
-        }
-        private void ComboHkTier6_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            XISettingsH.Instance.Tier6 = (Keys)GetComboBoxEnum(ComboHkTier6);
-        }
+ //       private void ComboHkTier6_SelectedIndexChanged(object sender, EventArgs e)
+  //      {
+  //          XISettingsH.Instance.Tier6 = (Keys)GetComboBoxEnum(ComboHkTier6);
+ //       }
 
-        private void ComboHkDeterrence_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboHkElusiveBrew_SelectedIndexChanged(object sender, EventArgs e)
         {
-            XISettingsH.Instance.Deterrence = (Keys)GetComboBoxEnum(ComboHkDeterrence);
+            XISettingsH.Instance.ElusiveBrew = (Keys)GetComboBoxEnum(ComboHkElusiveBrew);
         }
 
         private void ComboHkMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -356,9 +334,9 @@ namespace Xiaolin.Interfaces.GUI
 
         }
 
-        private void ComboHkDeterrence_SelectedIndexChanged_1(object sender, EventArgs e)
+        private void ComboHkElusiveBrew_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            XISettingsH.Instance.Deterrence = (Keys)GetComboBoxEnum(ComboHkDeterrence);
+            XISettingsH.Instance.ElusiveBrew = (Keys)GetComboBoxEnum(ComboHkElusiveBrew);
         }
     }
 }

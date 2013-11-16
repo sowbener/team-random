@@ -46,13 +46,9 @@
             this.ComboHkMode = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.ComboHkTier6 = new System.Windows.Forms.ComboBox();
-            this.ComboHkDeterrence = new System.Windows.Forms.ComboBox();
+            this.ComboHkElusiveBrew = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ComboHkAMZ = new System.Windows.Forms.ComboBox();
-            this.ComboHkDisengage = new System.Windows.Forms.ComboBox();
+            this.ComboHkDizzyingHaze = new System.Windows.Forms.ComboBox();
             this.SpecGrid = new System.Windows.Forms.PropertyGrid();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPicture)).BeginInit();
             this.HotkeyPanel.SuspendLayout();
@@ -121,13 +117,9 @@
             this.HotkeyPanel.Controls.Add(this.ComboHkMode);
             this.HotkeyPanel.Controls.Add(this.label5);
             this.HotkeyPanel.Controls.Add(this.label4);
-            this.HotkeyPanel.Controls.Add(this.label3);
-            this.HotkeyPanel.Controls.Add(this.ComboHkTier6);
-            this.HotkeyPanel.Controls.Add(this.ComboHkDeterrence);
+            this.HotkeyPanel.Controls.Add(this.ComboHkElusiveBrew);
             this.HotkeyPanel.Controls.Add(this.label2);
-            this.HotkeyPanel.Controls.Add(this.label1);
-            this.HotkeyPanel.Controls.Add(this.ComboHkAMZ);
-            this.HotkeyPanel.Controls.Add(this.ComboHkDisengage);
+            this.HotkeyPanel.Controls.Add(this.ComboHkDizzyingHaze);
             this.HotkeyPanel.Location = new System.Drawing.Point(645, 254);
             this.HotkeyPanel.Name = "HotkeyPanel";
             this.HotkeyPanel.Size = new System.Drawing.Size(286, 372);
@@ -137,21 +129,21 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(5, 119);
+            this.label11.Location = new System.Drawing.Point(12, 60);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(137, 16);
+            this.label11.Size = new System.Drawing.Size(85, 16);
             this.label11.TabIndex = 21;
-            this.label11.Text = "Disengage Key DNW";
+            this.label11.Text = "Elusive Brew";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(6, 91);
+            this.label10.Location = new System.Drawing.Point(12, 33);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(137, 16);
+            this.label10.Size = new System.Drawing.Size(123, 16);
             this.label10.TabIndex = 20;
-            this.label10.Text = "Deterrence Key DNW";
+            this.label10.Text = "Auto Dizzying Haze";
             // 
             // SaveButton
             // 
@@ -311,42 +303,14 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Hotkey Options - Toggle Type";
             // 
-            // label3
+            // ComboHkElusiveBrew
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(5, 61);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 16);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "TBA";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
-            // 
-            // ComboHkTier6
-            // 
-            this.ComboHkTier6.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.ComboHkTier6.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkTier6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ComboHkTier6.DropDownHeight = 110;
-            this.ComboHkTier6.DropDownWidth = 140;
-            this.ComboHkTier6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkTier6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.ComboHkTier6.FormattingEnabled = true;
-            this.ComboHkTier6.IntegralHeight = false;
-            this.ComboHkTier6.Location = new System.Drawing.Point(155, 59);
-            this.ComboHkTier6.Name = "ComboHkTier6";
-            this.ComboHkTier6.Size = new System.Drawing.Size(121, 21);
-            this.ComboHkTier6.TabIndex = 6;
-            this.ComboHkTier6.SelectedIndexChanged += new System.EventHandler(this.ComboHkTier6_SelectedIndexChanged);
-            // 
-            // ComboHkDeterrence
-            // 
-            this.ComboHkDeterrence.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ComboHkDeterrence.Location = new System.Drawing.Point(155, 91);
-            this.ComboHkDeterrence.Name = "ComboHkDeterrence";
-            this.ComboHkDeterrence.Size = new System.Drawing.Size(121, 21);
-            this.ComboHkDeterrence.TabIndex = 19;
-            this.ComboHkDeterrence.SelectedIndexChanged += new System.EventHandler(this.ComboHkDeterrence_SelectedIndexChanged_1);
+            this.ComboHkElusiveBrew.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkElusiveBrew.Location = new System.Drawing.Point(155, 32);
+            this.ComboHkElusiveBrew.Name = "ComboHkElusiveBrew";
+            this.ComboHkElusiveBrew.Size = new System.Drawing.Size(121, 21);
+            this.ComboHkElusiveBrew.TabIndex = 19;
+            this.ComboHkElusiveBrew.SelectedIndexChanged += new System.EventHandler(this.ComboHkElusiveBrew_SelectedIndexChanged_1);
             // 
             // label2
             // 
@@ -358,50 +322,22 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Hotkey Options - Casting Type";
             // 
-            // label1
+            // ComboHkDizzyingHaze
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(5, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 16);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "TBA";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // ComboHkAMZ
-            // 
-            this.ComboHkAMZ.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.ComboHkAMZ.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkAMZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ComboHkAMZ.DropDownHeight = 110;
-            this.ComboHkAMZ.DropDownWidth = 140;
-            this.ComboHkAMZ.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkAMZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ComboHkAMZ.FormattingEnabled = true;
-            this.ComboHkAMZ.IntegralHeight = false;
-            this.ComboHkAMZ.Location = new System.Drawing.Point(155, 27);
-            this.ComboHkAMZ.Name = "ComboHkAMZ";
-            this.ComboHkAMZ.Size = new System.Drawing.Size(121, 21);
-            this.ComboHkAMZ.TabIndex = 0;
-            this.ComboHkAMZ.SelectedIndexChanged += new System.EventHandler(this.ComboHkAMZ_SelectedIndexChanged);
-            // 
-            // ComboHkDisengage
-            // 
-            this.ComboHkDisengage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.ComboHkDisengage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkDisengage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ComboHkDisengage.DropDownHeight = 110;
-            this.ComboHkDisengage.DropDownWidth = 140;
-            this.ComboHkDisengage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkDisengage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ComboHkDisengage.FormattingEnabled = true;
-            this.ComboHkDisengage.IntegralHeight = false;
-            this.ComboHkDisengage.Location = new System.Drawing.Point(155, 118);
-            this.ComboHkDisengage.Name = "ComboHkDisengage";
-            this.ComboHkDisengage.Size = new System.Drawing.Size(121, 21);
-            this.ComboHkDisengage.TabIndex = 0;
-            this.ComboHkDisengage.SelectedIndexChanged += new System.EventHandler(this.ComboHkDisengage_SelectedIndexChanged);
+            this.ComboHkDizzyingHaze.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ComboHkDizzyingHaze.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.ComboHkDizzyingHaze.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkDizzyingHaze.DropDownHeight = 110;
+            this.ComboHkDizzyingHaze.DropDownWidth = 140;
+            this.ComboHkDizzyingHaze.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ComboHkDizzyingHaze.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComboHkDizzyingHaze.FormattingEnabled = true;
+            this.ComboHkDizzyingHaze.IntegralHeight = false;
+            this.ComboHkDizzyingHaze.Location = new System.Drawing.Point(155, 59);
+            this.ComboHkDizzyingHaze.Name = "ComboHkDizzyingHaze";
+            this.ComboHkDizzyingHaze.Size = new System.Drawing.Size(121, 21);
+            this.ComboHkDizzyingHaze.TabIndex = 0;
+            this.ComboHkDizzyingHaze.SelectedIndexChanged += new System.EventHandler(this.ComboHkDizzyingHaze_SelectedIndexChanged);
             // 
             // SpecGrid
             // 
@@ -452,27 +388,23 @@
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.PictureBox LogoPicture;
         private System.Windows.Forms.Panel HotkeyPanel;
-        private System.Windows.Forms.ComboBox ComboHkAMZ;
-        private System.Windows.Forms.ComboBox ComboHkDisengage;
-        private System.Windows.Forms.ComboBox ComboHkTier6;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ComboHkMode;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox ComboHkPause;
-        private System.Windows.Forms.ComboBox ComboHkDeterrence;
         private System.Windows.Forms.ComboBox ComboHkMultiTgt;
         private System.Windows.Forms.ComboBox ComboHkCooldown;
         private System.Windows.Forms.ComboBox ComboHkModifier;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.PropertyGrid SpecGrid;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox ComboHkElusiveBrew;
+        private System.Windows.Forms.ComboBox ComboHkDizzyingHaze;
     }
 }

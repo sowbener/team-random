@@ -15,6 +15,8 @@ namespace Xiaolin.Managers
         public static bool IsCooldown { get; private set; }
         public static bool IsAoe { get; private set; }
         public static bool IsSpecialKey { get; private set; }
+        public static bool ElusiveBrew { get; private set; }
+        public static bool AutoDizzyingHaze { get; private set; }
 
         public delegate T Selection<out T>(object context);
 
@@ -23,14 +25,14 @@ namespace Xiaolin.Managers
             if (RoutineManager.Current.Name != XIMain.XIName) return;
             if (XISettingsH.Instance.ModeSelection == XIEnum.Mode.Hotkey)
                 RegisterKeys();
-            XILua.DisableClickToMove();
+              XILua.DisableClickToMove();
         }
 
         public static void BotEvents_OnBotStopped(EventArgs args)
         {
             if (RoutineManager.Current.Name != XIMain.XIName) return;
                 RemoveAllKeys();
-            XILua.EnableClickToMove();
+        //    XILua.EnableClickToMove();
             XILogger.DiagLogW("Xiaolin: stopped!");
         }
 
@@ -86,6 +88,10 @@ namespace Xiaolin.Managers
                             {
                                 IsPaused = !IsPaused;
                                 LogKey("Pause", XISettingsH.Instance.PauseKeyChoice, XISettingsH.Instance.ModKeyChoice, IsPaused);
+                                if (XISettings.Instance.General.EnableMacroOutput)
+                                    Lua.DoString(IsPaused
+                                                    ? "RunMacroText('/Def true')"
+                                                    : "RunMacroText('/Def false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput)
                                     Lua.DoString(IsPaused
                                                      ? @"print('Rotation \124cFFE61515 Paused!')"
@@ -96,12 +102,40 @@ namespace Xiaolin.Managers
                             {
                                 IsCooldown = !IsCooldown;
                                 LogKey("Cooldown", XISettingsH.Instance.CooldownKeyChoice, XISettingsH.Instance.ModKeyChoice, IsCooldown);
-                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                if (XISettings.Instance.General.EnableMacroOutput && !IsPaused)
                                     Lua.DoString(IsCooldown
                                                      ? "RunMacroText('/MyCooldowns true')"
                                                      : "RunMacroText('/MyCooldowns false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(IsCooldown
+                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
+                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("Elusivebrew", XISettingsH.Instance.ElusiveBrew, XISettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                ElusiveBrew = !ElusiveBrew;
+                                LogKey("Elusivebrew", XISettingsH.Instance.ElusiveBrew, XISettingsH.Instance.ModKeyChoice, ElusiveBrew);
+                                if (XISettings.Instance.General.EnableMacroOutput && !IsPaused)
+                                    Lua.DoString(ElusiveBrew
+                                                     ? "RunMacroText('/elusivebrew true')"
+                                                     : "RunMacroText('/elusivebrew false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(ElusiveBrew
+                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
+                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("AutoDizzying", XISettingsH.Instance.DizzyingHaze, XISettingsH.Instance.ModKeyChoice, hk =>
+                            {
+                                AutoDizzyingHaze = !AutoDizzyingHaze;
+                                LogKey("AutoDizzying", XISettingsH.Instance.DizzyingHaze, XISettingsH.Instance.ModKeyChoice, AutoDizzyingHaze);
+                                if (XISettings.Instance.General.EnableMacroOutput && !IsPaused)
+                                    Lua.DoString(AutoDizzyingHaze
+                                                     ? "RunMacroText('/dizzling true')"
+                                                     : "RunMacroText('/dizzling false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(AutoDizzyingHaze
                                                      ? @"print('Cooldowns \124cFF15E61C Enabled!')"
                                                      : @"print('Cooldowns \124cFFE61515 Disabled!')");
                             });
@@ -129,18 +163,24 @@ namespace Xiaolin.Managers
                                                      ? @"print('Special \124cFF15E61C Enabled!')"
                                                      : @"print('Special \124cFFE61515 Disabled!')");
                             });
-                            XILogger.DiagLogW("Xiaolin: Hotkeys registered with individual values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}",
+                            XILogger.DiagLogW("Xiaolin: Hotkeys registered with individual values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}, DizzyingHaze{5}, ElusiveBrew{6}",
                                 XISettingsH.Instance.ModKeyChoice,
                                 XISettingsH.Instance.PauseKeyChoice,
                                 XISettingsH.Instance.CooldownKeyChoice,
                                 XISettingsH.Instance.MultiTgtKeyChoice,
-                                XISettingsH.Instance.SpecialKeyChoice);
+                                XISettingsH.Instance.SpecialKeyChoice,
+                                XISettingsH.Instance.DizzyingHaze,
+                                XISettingsH.Instance.ElusiveBrew);
                             break;
                         default:
                             HotkeysManager.Register("Pause", XISettingsH.Instance.PauseKeyChoice, ModifierKeys.Alt, hk =>
                             {
                                 IsPaused = !IsPaused;
                                 LogKey("Pause", XISettingsH.Instance.PauseKeyChoice, ModifierKeys.Alt, IsPaused);
+                                if (XISettings.Instance.General.EnableMacroOutput)
+                                    Lua.DoString(IsPaused
+                                                    ? "RunMacroText('/Def true')"
+                                                    : "RunMacroText('/Def false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput)
                                     Lua.DoString(IsPaused
                                                      ? @"print('Rotation \124cFFE61515 Paused!')"
@@ -151,6 +191,10 @@ namespace Xiaolin.Managers
                             {
                                 IsCooldown = !IsCooldown;
                                 LogKey("Cooldown", XISettingsH.Instance.CooldownKeyChoice, ModifierKeys.Alt, IsCooldown);
+                                if (XISettings.Instance.General.EnableMacroOutput && !IsPaused)
+                                    Lua.DoString(IsCooldown
+                                                     ? "RunMacroText('/MyCooldowns true')"
+                                                     : "RunMacroText('/MyCooldowns false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(IsCooldown
                                                      ? @"print('Cooldowns \124cFF15E61C Enabled!')"
@@ -163,9 +207,42 @@ namespace Xiaolin.Managers
                                 LogKey("AOE", XISettingsH.Instance.MultiTgtKeyChoice, ModifierKeys.Alt, IsAoe);
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(IsAoe
+                                                     ? "RunMacroText('/AoEderp true')"
+                                                     : "RunMacroText('/AoEderp false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(IsAoe
                                                      ? @"print('Aoe \124cFF15E61C Enabled!')"
                                                      : @"print('Aoe \124cFFE61515 Disabled!')");
                             });
+
+                            HotkeysManager.Register("Elusivebrew", XISettingsH.Instance.ElusiveBrew, ModifierKeys.Alt, hk =>
+                            {
+                                ElusiveBrew = !ElusiveBrew;
+                                LogKey("Elusivebrew", XISettingsH.Instance.ElusiveBrew, ModifierKeys.Alt, ElusiveBrew);
+                                if (XISettings.Instance.General.EnableMacroOutput && !IsPaused)
+                                    Lua.DoString(ElusiveBrew
+                                                     ? "RunMacroText('/elusivebrew true')"
+                                                     : "RunMacroText('/elusivebrew false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(ElusiveBrew
+                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
+                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                            });
+
+                            HotkeysManager.Register("AutoDizzying", XISettingsH.Instance.DizzyingHaze, ModifierKeys.Alt, hk =>
+                            {
+                                AutoDizzyingHaze = !AutoDizzyingHaze;
+                                LogKey("AutoDizzying", XISettingsH.Instance.DizzyingHaze, ModifierKeys.Alt, AutoDizzyingHaze);
+                                if (XISettings.Instance.General.EnableMacroOutput && !IsPaused)
+                                    Lua.DoString(AutoDizzyingHaze
+                                                     ? "RunMacroText('/dizzling true')"
+                                                     : "RunMacroText('/dizzling false')");
+                                if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
+                                    Lua.DoString(AutoDizzyingHaze
+                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
+                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                            });
+
 
                             HotkeysManager.Register("Special", XISettingsH.Instance.SpecialKeyChoice, ModifierKeys.Alt, hk =>
                             {
@@ -176,12 +253,14 @@ namespace Xiaolin.Managers
                                                      ? @"print('Special \124cFF15E61C Enabled!')"
                                                      : @"print('Special \124cFFE61515 Disabled!')");
                             });
-                            XILogger.DiagLogW("Xiaolin: Hotkeys registered with default values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}",
+                            XILogger.DiagLogW("Xiaolin: Hotkeys registered with default values. Configured ModifierKey: {0}, PauseKey: {1}, CooldownKey: {2}, AoEKey: {3}, SpecialKey: {4}, DizzyingHaze{5}, ElusiveBrew{6}",
                                 XISettingsH.Instance.ModKeyChoice,
                                 XISettingsH.Instance.PauseKeyChoice,
                                 XISettingsH.Instance.CooldownKeyChoice,
                                 XISettingsH.Instance.MultiTgtKeyChoice,
-                                XISettingsH.Instance.SpecialKeyChoice);
+                                XISettingsH.Instance.SpecialKeyChoice,
+                                XISettingsH.Instance.DizzyingHaze,
+                                XISettingsH.Instance.ElusiveBrew);
                             break;
                     }
                     break;
@@ -194,6 +273,8 @@ namespace Xiaolin.Managers
             HotkeysManager.Unregister("Pause");
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
+            HotkeysManager.Unregister("AutoDizzying");
+            HotkeysManager.Unregister("Elusivebrew");
             HotkeysManager.Unregister("Special");
             XILogger.DiagLogW("Xiaolin: Hotkeys removed!");
         }

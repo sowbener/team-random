@@ -27,9 +27,9 @@ namespace Xiaolin.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
         [Category("Hotkeys")]
-        [DisplayName("Disengage Key")]
-        [Description("Choose preferred Disengage key.")]
-        public Keys Disengage { get; set; }
+        [DisplayName("DizzyingHaze Key")]
+        [Description("Choose preferred DizzyingHaze key.")]
+        public Keys DizzyingHaze { get; set; }
 
 
         [Setting]
@@ -42,9 +42,9 @@ namespace Xiaolin.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
         [Category("Hotkeys")]
-        [DisplayName("Deterrence Key")]
-        [Description("Choose prferred Deterrence combat ability key.")]
-        public Keys Deterrence { get; set; }
+        [DisplayName("ElusiveBrew Key")]
+        [Description("Choose prferred ElusiveBrew combat ability key.")]
+        public Keys ElusiveBrew { get; set; }
 
         
         [Setting]

@@ -20,12 +20,6 @@ namespace Xiaolin.Interfaces.Settings
         public bool SummonBlackOxStatue { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Brewmaster - Ability Options")]
-        [DisplayName("Use Elusive Brew")]
-        public bool UseElusiveBrew { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(6)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Shuffle Timer")]
@@ -126,35 +120,35 @@ namespace Xiaolin.Interfaces.Settings
         #region Item Options
         [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.OnBossDummy)]
-        [Category("Unholy - Item Options")]
+        [Category("Brewmaster - Item Options")]
         [DisplayName("Hands / Waist")]
         [Description("Select the usage of your Hands / Waist.")]
         public XIEnum.AbilityTrigger UseHands { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("Unholy - Item Options")]
+        [Category("Brewmaster - Item Options")]
         [DisplayName("Healthstone")]
         [Description("Checked enables Healthstone usage.")]
         public bool CheckHealthStone { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(40)]
-        [Category("Unholy - Item Options")]
+        [Category("Brewmaster - Item Options")]
         [DisplayName("Healthstone %")]
         [Description("Select the use-on HP for Healthstone usage.")]
         public int CheckHealthStoneNum { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.OnBossDummy)]
-        [Category("Unholy - Item Options")]
+        [Category("Brewmaster - Item Options")]
         [DisplayName("Trinket #1")]
         [Description("Select the usage of Trinket #1.")]
         public XIEnum.AbilityTrigger Trinket1 { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.OnBossDummy)]
-        [Category("Unholy - Item Options")]
+        [Category("Brewmaster - Item Options")]
         [DisplayName("Trinket #2")]
         [Description("Select the usage of Trinket #2.")]
         public XIEnum.AbilityTrigger Trinket2 { get; set; }
@@ -163,45 +157,43 @@ namespace Xiaolin.Interfaces.Settings
         #region Selectable Options
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("Unholy - Selectable Options")]
+        [Category("Brewmaster - Selectable Options")]
         [DisplayName("Enable Multi-Target (AoE)")]
         [Description("Enables AoE abilities, multi-target combat will be engaged.")]
         public bool CheckAoE { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("Unholy - Selectable Options")]
+        [Category("Brewmaster - Selectable Options")]
         [DisplayName("Enable Auto Attack")]
         [Description("Enables auto attack, persistent combat while tabbing units.")]
         public bool CheckAutoAttack { get; set; }
 
        
-
-
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("Unholy - Selectable Options")]
+        [Category("Brewmaster - Selectable Options")]
         [DisplayName("Enable Item De-Sync")]
         [Description("Enables de-sync of items - With this enabled it uses Hands / Waist outside Trinket Cooldowns.")]
         public bool CheckDesyncTrinkHands { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("Unholy - Selectable Options")]
+        [Category("Brewmaster - Selectable Options")]
         [DisplayName("Enable Interrupts")]
         [Description("Enables interrupts, uses Pummel and Intimidating Shout.")]
         public bool CheckInterrupts { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("Unholy - Selectable Options")]
+        [Category("Brewmaster - Selectable Options")]
         [DisplayName("Enable Lifeblood")]
         [Description("Checked enables Lifeblood.")]
         public bool CheckLifeblood { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(10)]
-        [Category("Unholy - Selectable Options")]
+        [Category("Brewmaster - Selectable Options")]
         [DisplayName("Lifeblood %")]
         [Description("Will use Lifeblood when health % is less than or equal to the set value.")]
         public int CheckLifebloodNum { get; set; }

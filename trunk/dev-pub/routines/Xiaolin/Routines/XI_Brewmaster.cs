@@ -89,7 +89,7 @@ namespace Xiaolin.Routines
 
         private static bool NeedZenMeditation { get { return Me.HealthPercent <= MonkSettings.ZenMeditationPercent; } }
 
-        private static bool NeedElusiveBrew { get { return MonkSettings.UseElusiveBrew && Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
+        private static bool NeedElusiveBrew { get { return XIHotKeyManager.ElusiveBrew && Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
 
         private static bool NeedBuildStacksForGaurd { get { return !Me.HasAura(118636) || !Me.HasAura(125359) || Lua.PlayerPower <= 30; } }
 
@@ -147,7 +147,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
                 Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
-            new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
+            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder()),
             Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled && Lua.PlayerPower >= 40),
             Spell.Cast("Breath of Fire", ret => NeedBreathofFire && ShuffleSetting > 6)
             
