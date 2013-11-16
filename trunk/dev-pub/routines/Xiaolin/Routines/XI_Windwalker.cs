@@ -40,7 +40,7 @@ namespace Xiaolin.Routines
                                         WindwalkerUtility(),
                                         I.WindwalkerUseItems(),
                                         WindwalkerOffensive(),
-                                        new Decorator(ret => SG.Instance.Windwalker.CheckAoE && (U.NearbyAttackableUnitsCount >= 2), WindwalkerMt()),
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckAoE && U.NearbyAttackableUnitsCount > 3, WindwalkerMt()),
                                             WindwalkerSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
                                 new PrioritySelector(
@@ -52,7 +52,7 @@ namespace Xiaolin.Routines
                                                 new PrioritySelector(
                                                         I.WindwalkerUseItems(),
                                                         WindwalkerOffensive())),
-                                        new Decorator(ret => XIHotKeyManager.IsAoe && SG.Instance.Windwalker.CheckAoE && U.AttackableMeleeUnitsCount >= 2, WindwalkerMt()),
+                                        new Decorator(ret => XIHotKeyManager.IsAoe, WindwalkerMt()),
                                         WindwalkerSt())));
             }
         }
