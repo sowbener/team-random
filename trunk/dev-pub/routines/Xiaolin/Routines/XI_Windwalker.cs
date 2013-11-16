@@ -66,6 +66,7 @@ namespace Xiaolin.Routines
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
         internal static bool ComboBreakerBoKUp { get { return Me.HasAura(116768); } }
         internal static bool TalentAscensionEnabled { get { return XITalentManager.HasTalent(8); } }
+        internal static bool RushingJadeWindTalent { get { return XITalentManager.HasTalent(16); } }
         internal static bool ComboBreakerTpUp { get { return Me.HasAura(118864); } }
         internal static double ComboBreakerTpRemains { get { return Spell.GetMyAuraTimeLeft(118864, Me); } }
         internal static double RisingSunKickDebuffRemains { get { return Spell.GetMyAuraTimeLeft(130320, Me.CurrentTarget); } }
@@ -76,10 +77,6 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerSt()
         {
             return new PrioritySelector(
-               Spell.Cast("Tigereye Brew", ret => TigerEyeUseDown && Spell.GetSpellCooldown(107428).TotalSeconds < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1),
-               Spell.Cast("Chi Brew", ret => TalentChiBrewEnabled && Lua.PlayerChi == 0),
-               Spell.Cast("Energizing Brew", ret => Lua.TimeToEnergyCap() > 5),
-               Spell.Cast("Invoke Xuen, the White Tiger"),
                Spell.Cast("Tiger Palm", ret => TigerPowerRemains <= 3),
                Spell.Cast("Rising Sun Kick"),
               //  new Decorator(ret => RisingSunKickReady, new ActionAlwaysSucceed()),
@@ -97,7 +94,9 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                  );
+                Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent),
+                Spell.Cast("Storm, Earth, and Fire"),
+                WindwalkerSt());
         }
 
 
@@ -114,7 +113,26 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
                 //actions+=/tigereye_brew,if=buff.tigereye_brew_use.down&cooldown.rising_sun_kick.remains=0&chi>=2&target.debuff.rising_sun_kick.remains&buff.tiger_power.remains
-                
+               Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && Spell.GetSpellCooldown(107428).TotalSeconds < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
+                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.Always)
+                    )),
+               Spell.Cast("Chi Brew", ret => (TalentChiBrewEnabled && Lua.PlayerChi == 0) && (
+                    (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.Always)
+                    )),
+               Spell.Cast("Energizing Brew", ret => Lua.TimeToEnergyCap() > 5 && (
+                    (SG.Instance.Windwalker.EnergizingBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Windwalker.EnergizingBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Windwalker.EnergizingBrew == XIEnum.AbilityTrigger.Always)
+                    )),
+               Spell.Cast("Invoke Xuen, the White Tiger", ret => (
+                    (SG.Instance.Windwalker.Xuen == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Windwalker.Xuen == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Windwalker.Xuen == XIEnum.AbilityTrigger.Always)
+                    )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Windwalker.ClassRacials == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Windwalker.ClassRacials == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
