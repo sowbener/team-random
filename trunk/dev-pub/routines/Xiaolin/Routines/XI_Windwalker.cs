@@ -113,11 +113,11 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
                 //actions+=/tigereye_brew,if=buff.tigereye_brew_use.down&cooldown.rising_sun_kick.remains=0&chi>=2&target.debuff.rising_sun_kick.remains&buff.tiger_power.remains
-               Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && CooldownWatcher.GetSpellCooldownTimeLeft(107428) < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
-                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
-                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.Always)
-                    )),
+            //   Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && CooldownWatcher.GetSpellCooldownTimeLeft(107428) < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
+          //          (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+          //          (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+         //           (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.Always)
+         //           )),
                Spell.Cast("Chi Brew", ret => (TalentChiBrewEnabled && Lua.PlayerChi == 0) && (
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||

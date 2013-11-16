@@ -43,6 +43,7 @@ namespace Xiaolin.Routines
                                         BrewmasterUtility(),
                                         I.BrewmasterUseItems(),
                                         BrewmasterOffensive(),
+                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP))),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && U.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
@@ -51,6 +52,7 @@ namespace Xiaolin.Routines
                                         new Decorator(ret => Me.HealthPercent < 100, BrewmasterDefensive()),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts && U.CanInterrupt, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
+                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP))),
                                         new Decorator(ret => XIHotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                         I.BrewmasterUseItems(),
@@ -67,7 +69,7 @@ namespace Xiaolin.Routines
 
         private static XISettingsBM MonkSettings { get { return SG.Instance.Brewmaster; } }
 
-        internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307, Me); } }
+        internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307); } }
 
         internal static bool CanUsePurifyingBrew { get { return ((Lua.PlayerChi >= 3 || Me.HasAura(138237)) && Me.HasAura(124273)) || (Me.HasAura(124274) && (ShuffleSetting > 4 || Lua.PlayerChi > 3)) || (Me.HasAura(124275) && (ShuffleSetting > 10 || Lua.PlayerChi > 3)); } }
 
@@ -122,22 +124,28 @@ namespace Xiaolin.Routines
         internal static Composite ChiBuilder()
         {
             return new PrioritySelector(
-            Spell.Cast("Keg Smash", ret => Lua.PlayerPower >= 40),
+            Spell.Cast("Keg Smash"),
             Spell.Cast("Expel Harm", ret => (Lua.PlayerPower >= 40 && Me.HealthPercent <= 90) || (Me.HealthPercent <= 35)),
             Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30),
             Spell.Cast("Tiger Palm", ret => Lua.JabOK() < 30)            
                 );
 
         }
+
+       
+
         internal static Composite BrewmasterSt()
         {
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
-            new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
-            new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
+            new Decorator(ret => Lua.PlayerChi < 3 , ChiBuilder()),
+            new Decorator(ret => ShuffleSetting < 5, new ActionAlwaysSucceed()),
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
-            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 2 && MonkSettings.UseRJWSingleTarget)
+            Spell.Cast("Chi Wave"),
+            Spell.Cast("Guard", ret => NeedGuard),
+            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 4 && MonkSettings.UseRJWSingleTarget),
+            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
 
         }
@@ -145,12 +153,15 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterMt()
         {
             return new PrioritySelector(
+            Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
-            new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
-            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder()),
-            Spell.Cast("Rushing Jade Wind", ret => Lua.PlayerPower > 39),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire)
-            
+            new Decorator(ret => Lua.PlayerChi < 3, ChiBuilder()),
+            new Decorator(ret => ShuffleSetting < 5, new ActionAlwaysSucceed()),        
+            Spell.Cast("Rushing Jade Wind"),
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire),
+            Spell.Cast("Chi Wave"),
+            Spell.Cast("Guard", ret => NeedGuard),
+            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                   );
         }
 
@@ -160,14 +171,11 @@ namespace Xiaolin.Routines
         {
                         return new PrioritySelector(
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
-                     Spell.Cast("Guard", ret => NeedGuard), // Debating..if we dont check for shuffle it steals Chi from Blackout Kick
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
-                     Spell.Cast("Chi Wave", ret => NeedChiWave),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
                      I.BrewmasterUseHealthStone(),
-                     Spell.Cast("Zen Meditation", ret => NeedZenMeditation), // yeah yeah..its channeled..but it’ll reduce that one melee hit by 90%, which might save our life.
-                     Spell.Cast("Elusive Brew", ret => NeedElusiveBrew));
+                     Spell.Cast("Zen Meditation", ret => NeedZenMeditation));
         }
 
 

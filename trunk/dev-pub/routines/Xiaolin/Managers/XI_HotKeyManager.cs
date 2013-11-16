@@ -122,8 +122,8 @@ namespace Xiaolin.Managers
                                                      : "RunMacroText('/elusivebrew false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(ElusiveBrew
-                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
-                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                                                     ? @"print('ElusiveBrew \124cFF15E61C Enabled!')"
+                                                     : @"print('ElusiveBrew \124cFFE61515 Disabled!')");
                             });
 
                             HotkeysManager.Register("AutoDizzying", XISettingsH.Instance.DizzyingHaze, XISettingsH.Instance.ModKeyChoice, hk =>
@@ -136,8 +136,8 @@ namespace Xiaolin.Managers
                                                      : "RunMacroText('/dizzling false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(AutoDizzyingHaze
-                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
-                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                                                     ? @"print('Dizzling \124cFF15E61C Enabled!')"
+                                                     : @"print('Dizzling \124cFFE61515 Disabled!')");
                             });
 
                             HotkeysManager.Register("AoE", XISettingsH.Instance.MultiTgtKeyChoice, XISettingsH.Instance.ModKeyChoice, hk =>
@@ -225,8 +225,8 @@ namespace Xiaolin.Managers
                                                      : "RunMacroText('/elusivebrew false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(ElusiveBrew
-                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
-                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                                                     ? @"print('ElusiveBrew \124cFF15E61C Enabled!')"
+                                                     : @"print('ElusiveBrew \124cFFE61515 Disabled!')");
                             });
 
                             HotkeysManager.Register("AutoDizzying", XISettingsH.Instance.DizzyingHaze, ModifierKeys.Alt, hk =>
@@ -239,8 +239,8 @@ namespace Xiaolin.Managers
                                                      : "RunMacroText('/dizzling false')");
                                 if (XISettings.Instance.General.EnableWoWChatOutput && !IsPaused)
                                     Lua.DoString(AutoDizzyingHaze
-                                                     ? @"print('Cooldowns \124cFF15E61C Enabled!')"
-                                                     : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                                                     ? @"print('Dizzling \124cFF15E61C Enabled!')"
+                                                     : @"print('Dizzling \124cFFE61515 Disabled!')");
                             });
 
 
