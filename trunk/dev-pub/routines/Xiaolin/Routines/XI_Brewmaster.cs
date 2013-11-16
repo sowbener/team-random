@@ -43,7 +43,7 @@ namespace Xiaolin.Routines
                                         BrewmasterUtility(),
                                         I.BrewmasterUseItems(),
                                         BrewmasterOffensive(),
-                                        new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && (U.NearbyAttackableUnitsCount >= 2), BrewmasterMt()),
+                                        new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && U.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
                                 new PrioritySelector(
@@ -55,7 +55,7 @@ namespace Xiaolin.Routines
                                                 new PrioritySelector(
                                                         I.BrewmasterUseItems(),
                                                         BrewmasterOffensive())),
-                                        new Decorator(ret => XIHotKeyManager.IsAoe && SG.Instance.Brewmaster.CheckAoE && U.AttackableMeleeUnitsCount >= 2, BrewmasterMt()),
+                                        new Decorator(ret => XIHotKeyManager.IsAoe, BrewmasterMt()),
                                         BrewmasterSt())));
             }
         }
@@ -137,7 +137,7 @@ namespace Xiaolin.Routines
             new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
             new Decorator(ret =>  Lua.PlayerChi < MaxChi, ChiBuilder()),
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
-            Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled && ShuffleSetting > 3 && MonkSettings.UseRJWSingleTarget)
+            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 2 && MonkSettings.UseRJWSingleTarget)
                 );
 
         }
@@ -145,11 +145,11 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => Lua.PlayerChi > 2 && ShuffleSetting < 5, new ActionAlwaysSucceed()),
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder()),
-            Spell.Cast("Rushing Jade Wind", ret => TalentJadeWindEnabled && Lua.PlayerPower >= 40),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && ShuffleSetting > 6)
+            Spell.Cast("Rushing Jade Wind", ret => Lua.PlayerPower > 39),
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire)
             
                   );
         }
