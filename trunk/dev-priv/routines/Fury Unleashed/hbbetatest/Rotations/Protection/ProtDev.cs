@@ -56,7 +56,7 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Execute, ret => Global.ExecutePhase && Lua.PlayerPower >= Lua.PlayerPowerMax - 10),
-                Spell.Cast(SpellBook.Devastate, ret => !Global.WeakenedArmor3S, true),
+                Spell.Cast(SpellBook.Devastate, ret => !Global.WeakenedArmor3S),
 
                 Spell.Cast(SpellBook.ShieldSlam),
                 Spell.Cast(SpellBook.Revenge, ret => Lua.PlayerPower != Lua.PlayerPowerMax),
@@ -66,7 +66,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ProtGlobal.Tier6AbilityUsage),
 
                 Spell.Cast(SpellBook.ThunderClap, ret => !Global.WeakenedBlowsAura || Global.FadingWb(1500)),
-                Spell.Cast(SpellBook.Devastate, ret => true, true),
+                Spell.Cast(SpellBook.Devastate),
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout)))
