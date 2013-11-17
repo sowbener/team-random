@@ -114,7 +114,13 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
             if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
             else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.", GlobalSettings.Instance.TicksPerSecond); }
+            Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("Recommended rotations are (Selectable in the GUI):");
+            Logger.CombatLogOr("Arms: Release");
+            Logger.CombatLogOr("Fury: Release");
+            Logger.CombatLogOr("Protection: Development");
             Logger.CombatLogWh("-------------------------------------------\r\n");
+
 
             /* Update TalentManager */
             try { TalentManager.Update(); }
