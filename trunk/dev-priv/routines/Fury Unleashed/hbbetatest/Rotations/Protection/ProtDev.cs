@@ -65,8 +65,8 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ProtGlobal.Tier4AbilityUsage),
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ProtGlobal.Tier6AbilityUsage),
 
-                Spell.Cast(SpellBook.Devastate, ret => true, true),
                 Spell.Cast(SpellBook.ThunderClap, ret => !Global.WeakenedBlowsAura || Global.FadingWb(1500)),
+                Spell.Cast(SpellBook.Devastate, ret => true, true),
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout)))
@@ -149,10 +149,10 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Dev_ProtOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && ProtGlobal.Tier6AbilityUsage, true),
-                Spell.Cast(SpellBook.BerserkerRage, ret => (!Global.EnrageAura || Global.FadingEnrage(1500)) && ProtGlobal.BerserkerRageUsage, true),
-                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && ProtGlobal.Tier6AbilityUsage, true),
-                Spell.Cast(SpellBook.Recklessness, ret => ProtGlobal.RecklessnessUsage, true),
+                Spell.Cast(SpellBook.Avatar, on => Me, ret => Global.AvatarTalent && ProtGlobal.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!Global.EnrageAura || Global.FadingEnrage(1500)) && ProtGlobal.BerserkerRageUsage, true),
+                Spell.Cast(SpellBook.Bloodbath, on => Me, ret => Global.BloodbathTalent && ProtGlobal.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.Recklessness, on => Me, ret => ProtGlobal.RecklessnessUsage, true),
                 Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && ProtGlobal.SkullBannerUsage, true)
                 );
         }
