@@ -60,14 +60,16 @@ namespace FuryUnleashed.Rotations.Protection
 
                 Spell.Cast(SpellBook.ShieldSlam),
                 Spell.Cast(SpellBook.Revenge, ret => Lua.PlayerPower != Lua.PlayerPowerMax),
+
+                // Added to support and DPS increase.
+                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ProtGlobal.Tier4AbilityUsage),
+                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ProtGlobal.Tier6AbilityUsage),
+
                 Spell.Cast(SpellBook.Devastate),
                 Spell.Cast(SpellBook.ThunderClap, ret => !Global.WeakenedBlowsAura || Global.FadingWb(1500)),
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout)),
-                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout))),
-
-                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && ProtGlobal.Tier4AbilityUsage),
-                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && ProtGlobal.Tier6AbilityUsage)
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout)))
                 );
         }
 
