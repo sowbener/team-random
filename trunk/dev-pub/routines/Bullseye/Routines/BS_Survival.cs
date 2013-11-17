@@ -139,9 +139,9 @@ namespace Bullseye.Routines
                     (SG.Instance.Survival.RapidFire == BsEnum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Stampede", ret => ( 
-                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
-                    (SG.Instance.Beastmastery.Stampede == BsEnum.AbilityTrigger.Always)
+                    (SG.Instance.Survival.Stampede == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Survival.Stampede == BsEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Survival.Stampede == BsEnum.AbilityTrigger.Always)
                     )),
                     PetManager.CreateCastPetActionOn("Rabid", ret => Me, ret => Me.CurrentTarget != null && (
                     (SG.Instance.Survival.Rabid == BsEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
