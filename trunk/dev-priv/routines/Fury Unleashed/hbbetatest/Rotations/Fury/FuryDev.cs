@@ -133,12 +133,10 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => Global.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.FadingDeathSentence(3000)),
-                        Spell.Cast(SpellBook.StormBolt),
-                        Spell.Cast(SpellBook.HeroicStrike, ret => Global.Tier16TwoPieceBonus && Lua.PlayerPower > 100 && Global.RemainingCs(4500)),
+                        Spell.Cast(SpellBook.StormBolt, ret => FuryGlobal.Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && Global.BerserkerRageOnCooldown),
                         Spell.Cast(SpellBook.Execute),
-                        Spell.Cast(SpellBook.RagingBlow)
-                        )),
+                        Spell.Cast(SpellBook.RagingBlow))),
                 new Decorator(ret => !Global.ColossusSmashAura,
                     new PrioritySelector(
                         Dev_FurySt())));
@@ -147,9 +145,10 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryHeroicStrike()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage), // Added to prevent ragecapping.
+                Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Me.MaxRage, true), // Added to prevent ragecapping.
+                Spell.Cast(SpellBook.HeroicStrike, ret => Global.ExecutePhase && Global.Tier16TwoPieceBonus && Lua.PlayerPower > 100 && Global.RemainingCs(4500), true),
                 //actions.single_target+=/heroic_strike,if=((debuff.colossus_smash.up&rage>=40)&target.health.pct>=20)|rage>=100&buff.enrage.up
-                Spell.Cast(SpellBook.HeroicStrike, ret => Global.NormalPhase && Lua.PlayerPower >= 40 && Global.ColossusSmashAura || Lua.PlayerPower >= Me.MaxRage - 20 && Global.EnrageAura));
+                Spell.Cast(SpellBook.HeroicStrike, ret => Global.NormalPhase && Lua.PlayerPower >= 40 && Global.ColossusSmashAura || Lua.PlayerPower >= Me.MaxRage - 20 && Global.EnrageAura, true));
         }
 
         internal static Composite Dev_FuryMt()
@@ -222,15 +221,15 @@ namespace FuryUnleashed.Rotations.Fury
         {
             return new PrioritySelector(
                 //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
-                Spell.Cast(SpellBook.Recklessness, ret => !Global.SkullBannerAura && FuryGlobal.RecklessnessUsage),
+                Spell.Cast(SpellBook.Recklessness, ret => !Global.SkullBannerAura && FuryGlobal.RecklessnessUsage, true),
                 //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
-                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && Global.RecklessnessAura && FuryGlobal.Tier6AbilityUsage),
+                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && Global.RecklessnessAura && FuryGlobal.Tier6AbilityUsage, true),
                 //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
-                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && FuryGlobal.SkullBannerUsage && (Global.RecklessnessAura || ((Global.ColossusSmashSpellCooldown < 2000 || Global.ColossusSmashAura) && Global.ReadinessAura))),
+                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && FuryGlobal.SkullBannerUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || FuryGlobal.RecklessnessSync), true),
                 //actions+=/berserker_rage,if=buff.enrage.remains<1&cooldown.bloodthirst.remains>1
-                Spell.Cast(SpellBook.BerserkerRage, ret => (!Global.EnrageAura || Global.FadingEnrage(1000) && Global.BloodthirstSpellCooldown > 1000) && FuryGlobal.BerserkerRageUsage),
+                Spell.Cast(SpellBook.BerserkerRage, ret => (!Global.EnrageAura || Global.FadingEnrage(1000) && Global.BloodthirstSpellCooldown > 1000) && FuryGlobal.BerserkerRageUsage, true),
                 //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
-                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && (Global.ColossusSmashSpellCooldown < 2000 || Global.RemainingCs(5000)) && FuryGlobal.Tier6AbilityUsage)
+                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && (Global.ColossusSmashSpellCooldown < 2000 || Global.RemainingCs(5000)) && FuryGlobal.Tier6AbilityUsage, true)
                 );
         }
 
