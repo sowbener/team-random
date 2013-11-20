@@ -83,7 +83,8 @@ namespace FuryUnleashed.Core
                 Logger.CombatLogFb("Using: Slot 2 trinket is used.");
             }
 
-            if (CanUseHands(InternalSettings.Instance.Arms.UseHands, hands))
+            if (CanUseHands(InternalSettings.Instance.Arms.UseHands, hands) && Global.ColossusSmashTracker &&
+                        !Global.FadingOffensiveCooldowns(10000))
             {
                 hands.Use();
                 Logger.CombatLogFb("Using: Engineering hands are used.");
@@ -154,10 +155,10 @@ namespace FuryUnleashed.Core
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
-                    new Decorator(ret => (Global.BloodbathAura || !Global.BbTalent) && Global.ColossusSmashAura,
+                    new Decorator(ret => (Global.BloodbathAura || !Global.BloodbathTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseArmsItems(); return RunStatus.Failure; } ))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
-                    new Decorator(ret => (Global.BloodbathAura || !Global.BbTalent) && Global.ColossusSmashAura,
+                    new Decorator(ret => (Global.BloodbathAura || !Global.BloodbathTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseFuryItems(); return RunStatus.Failure; }))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                     new Decorator(ret => Global.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,

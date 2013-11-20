@@ -30,11 +30,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger ClassRacials { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(Enum.MsrTrigger.Never)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Enable (Mass) Spell Reflection")]
-        [Description("Checked enables (Mass) Spell Reflection.")]
-        public bool CheckSpellReflect { get; set; }
+        [DisplayName("Mass Spell Reflection")]
+        [Description("Select the usage of Mass Spell Reflection.")]
+        public Enum.MsrTrigger MassSpellReflection { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
@@ -65,11 +65,18 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger Tier4AoeAbilities { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Ability Options")]
         [DisplayName("Tier 6 Abilities")]
         [Description("Select the usage of Tier 6 - Usage of Avatar, Bloodbath or Storm Bolt.")]
         public Enum.AbilityTrigger Tier6Abilities { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Tier 6 Abilities - AoE")]
+        [Description("Select the usage of Tier 6 - Usage of Bloodbath during AoE.")]
+        public Enum.AbilityTrigger Tier6AoeAbilities { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.Shouts.CommandingShout)]
@@ -77,6 +84,38 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Warrior Shout Selector")]
         [Description("Choose preferred Warrior Shout.")]
         public Enum.Shouts ShoutSelection { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region Shield Block & Barrier
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Enable Block/Barrier")]
+        [Description("Checked enables the usage of Shield Block and Barrier - See further options!")]
+        public bool CheckShieldBarrierBlock { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Advanced Logics")]
+        [Description("Checked enables Shield Block or Barrier's advanced logics - Calculates which is best to use!")]
+        public bool CheckShieldBbAdvancedLogics { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.BarrierBlock.None)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Select Block/Barrier")]
+        [Description("Manually select which is used - Will not work with advanced logics enabled!")]
+        public Enum.BarrierBlock BarrierBlockSelection { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(60)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("Use Above Rage %")]
+        [Description("Select the amount of rage required before the Shield Block and Barrier logic kicks in - I suggest 60 or higher!")]
+        public int ShieldBarrierBlockNum { get; set; }
         #endregion
 
         // ========================================================================================
@@ -97,14 +136,14 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckDemoBannerNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Defensive Options")]
         [DisplayName("Demoralizing Shout")]
         [Description("Select the usage of Demoralizing Shout.")]
         public Enum.AbilityTrigger DemoralizeShout { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(10)]
+        [Styx.Helpers.DefaultValue(60)]
         [Category("Protection - Defensive Options")]
         [DisplayName("Demoralizing Shout %")]
         [Description("Select the use-on HP for Demoralizing Shout usage - 100% is always.")]
@@ -139,20 +178,6 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckRallyingCryNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Protection - Defensive Options")]
-        [DisplayName("Shield Block/Barrier")]
-        [Description("Checked enables Shield Block or Barrier - Use Hotkeys to switch block/barrier.")]
-        public bool CheckShieldBlock { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.BarrierBlock.ShieldBlock)]
-        [Category("Protection - Defensive Options")]
-        [DisplayName("Select Block/Barrier")]
-        [Description("Select which ability should be used - Suggested is to use the Hotkey mode (Will ignore this setting at hotkey mode)!")]
-        public Enum.BarrierBlock BarrierBlockSelection { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Defensive Options")]
         [DisplayName("Enable Shield Wall")]
@@ -165,6 +190,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Shield Wall %")]
         [Description("Will use Shield Wall when health % is less than or equal to the set value.")]
         public int CheckShieldWallNum { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.MsrTrigger.Never)]
+        [Category("Protection - Defensive Options")]
+        [DisplayName("Mass Spell Reflection")]
+        [Description("Select the usage of Mass Spell Reflection.")]
+        public Enum.MsrTrigger SpellReflection { get; set; }
         #endregion
 
         // ========================================================================================
@@ -231,21 +263,21 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Item Options
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Item Options")]
         [DisplayName("Hands / Waist")]
         [Description("Select the usage of your Hands / Waist.")]
         public Enum.AbilityTrigger UseHands { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Item Options")]
         [DisplayName("Trinket #1")]
         [Description("Select the usage of Trinket #1.")]
         public Enum.AbilityTrigger Trinket1 { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Item Options")]
         [DisplayName("Trinket #2")]
         [Description("Select the usage of Trinket #2.")]
@@ -302,7 +334,7 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Interrupts & Stuns
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.Hamstring.AddList)]
+        [Styx.Helpers.DefaultValue(Enum.Hamstring.Never)]
         [Category("Protection - Interrupts & Stuns")]
         [DisplayName("Use Hamstring On")]
         [Description("Select the usage of Hamstring - Does not use on bosses.")]
@@ -323,13 +355,6 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckInterruptsAoE { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(500)]
-        [Category("Protection - Interrupts & Stuns")]
-        [DisplayName("Interrupt at MS left")]
-        [Description("Set the amount of cast-time left in order to interrupt - Milliseconds (1000 is 1 second).")]
-        public int NumInterruptTimer { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Interrupts & Stuns")]
         [DisplayName("Enable Intimidating Shout")]
@@ -340,7 +365,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Interrupts & Stuns")]
         [DisplayName("Enable Piercing Howl")]
-        [Description("Checked enables Piercing Howl (If talented).")]
+        [Description("Checked enables Piercing Howl (If Talented).")]
         public bool CheckPiercingHowl { get; set; }
 
         [Setting]
@@ -354,7 +379,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Interrupts & Stuns")]
         [DisplayName("Enable Staggering Shout")]
-        [Description("Checked enables Staggering Shout (If talented).")]
+        [Description("Checked enables Staggering Shout (If Talented).")]
         public bool CheckStaggeringShout { get; set; }
 
         [Setting]

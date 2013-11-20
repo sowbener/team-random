@@ -1,4 +1,6 @@
-﻿using FuryUnleashed.Core;
+﻿using System.Windows.Forms;
+using FuryUnleashed.Core;
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
@@ -7,12 +9,14 @@ using Styx;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.CommonBot.Routines;
+using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using A = FuryUnleashed.Rotations.ArmsRotation;
-using F = FuryUnleashed.Rotations.FuryRotation;
-using P = FuryUnleashed.Rotations.ProtRotation;
+using A = FuryUnleashed.Rotations.Arms.ArmsGlobal;
+using BotEvents = Styx.CommonBot.BotEvents;
+using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
+using P = FuryUnleashed.Rotations.Protection.ProtGlobal;
 
 namespace FuryUnleashed
 {
@@ -21,7 +25,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 4, 3);
+        public static readonly Version Revision = new Version(1, 5, 4, 8);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
@@ -54,6 +58,11 @@ namespace FuryUnleashed
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
+                if (!GlobalSettings.Instance.UseFrameLock)
+                {
+                    MessageBox.Show("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!");
+                }
+
                 Unleash();
             }
             catch (Exception exception)
@@ -67,6 +76,11 @@ namespace FuryUnleashed
 			if (!StyxWoW.IsInWorld || Me == null || !Me.IsValid || Me.IsDead)
             {
                 return;
+            }
+
+            if (Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                DamageTracker.Pulse();
             }
 
             if (TalentManager.Pulse())
@@ -98,11 +112,23 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Thanks list is available in the topic!");
             Logger.CombatLogOr("\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
+            if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
+            else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.", GlobalSettings.Instance.TicksPerSecond); }
+            Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("Recommended rotations are (Selectable in the GUI):");
+            Logger.CombatLogOr("Arms: Release");
+            Logger.CombatLogOr("Fury: Release");
+            Logger.CombatLogOr("Protection: Development");
             Logger.CombatLogWh("-------------------------------------------\r\n");
+
 
             /* Update TalentManager */
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
+
+            /* Initialize Damage Tracker */
+            DamageTracker.Initialize();
 
             /* Gather required information */
             Logger.StatCounter();
@@ -135,6 +161,7 @@ namespace FuryUnleashed
         internal static void StopBot(string reason)
         {
             Logger.CombatLogWh(reason);
+            CombatLogHandler.Shutdown();
             TreeRoot.Stop();
         }
         #endregion

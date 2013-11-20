@@ -33,6 +33,7 @@
             this.StatusStripText = new System.Windows.Forms.ToolStripStatusLabel();
             this.LogoPicture = new System.Windows.Forms.PictureBox();
             this.HotkeyPanel = new System.Windows.Forms.Panel();
+            this.debuggerpanel = new System.Windows.Forms.Panel();
             this.HkMockingBannerLabel = new System.Windows.Forms.Label();
             this.ComboHkMockingBanner = new System.Windows.Forms.ComboBox();
             this.HkSpecialLabel = new System.Windows.Forms.Label();
@@ -121,6 +122,7 @@
             // HotkeyPanel
             // 
             this.HotkeyPanel.BackColor = System.Drawing.Color.White;
+            this.HotkeyPanel.Controls.Add(this.debuggerpanel);
             this.HotkeyPanel.Controls.Add(this.HkMockingBannerLabel);
             this.HotkeyPanel.Controls.Add(this.ComboHkMockingBanner);
             this.HotkeyPanel.Controls.Add(this.HkSpecialLabel);
@@ -150,6 +152,15 @@
             this.HotkeyPanel.Name = "HotkeyPanel";
             this.HotkeyPanel.Size = new System.Drawing.Size(334, 477);
             this.HotkeyPanel.TabIndex = 3;
+            // 
+            // debuggerpanel
+            // 
+            this.debuggerpanel.BackColor = System.Drawing.Color.White;
+            this.debuggerpanel.Location = new System.Drawing.Point(9, 415);
+            this.debuggerpanel.Name = "debuggerpanel";
+            this.debuggerpanel.Size = new System.Drawing.Size(312, 26);
+            this.debuggerpanel.TabIndex = 5;
+            this.debuggerpanel.Click += new System.EventHandler(this.debuggerpanel_Click);
             // 
             // HkMockingBannerLabel
             // 
@@ -604,5 +615,6 @@
         private System.Windows.Forms.ComboBox ComboHkSpecial;
         private System.Windows.Forms.Label HkMockingBannerLabel;
         private System.Windows.Forms.ComboBox ComboHkMockingBanner;
+        private System.Windows.Forms.Panel debuggerpanel;
     }
 }

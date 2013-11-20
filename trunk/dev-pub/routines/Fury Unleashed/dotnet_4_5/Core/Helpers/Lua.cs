@@ -44,6 +44,41 @@ namespace FuryUnleashed.Core.Helpers
         }
         #endregion
 
+        #region PlayerPower Rage
+        public static uint PlayerPower
+        {
+            get
+            {
+                try
+                {
+                    using (StyxWoW.Memory.AcquireFrame())
+                    {
+                        return Lua.GetReturnVal<uint>("return UnitPower(\"player\");", 0);
+                    }
+                }
+                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
+            }
+        }
+
+        public static uint PlayerPowerMax
+        {
+            get
+            {
+                try
+                {
+                    using (StyxWoW.Memory.AcquireFrame())
+                    {
+                        return Lua.GetReturnVal<uint>("return UnitPowerMax(\"player\",1);", 0);
+                    }
+                }
+                catch
+                {
+                    Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return 0;
+                }
+            }
+        }
+        #endregion
+
         #region Disable Click-To-Move
         public static void DisableClickToMove()
         {

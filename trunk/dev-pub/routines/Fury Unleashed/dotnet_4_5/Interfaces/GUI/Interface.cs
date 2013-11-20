@@ -471,15 +471,24 @@ namespace FuryUnleashed.Interfaces.GUI
             switch (StyxWoW.Me.Specialization)
             {
                 case WoWSpec.WarriorArms:
-                    selectSpec = internalSettings.Arms;
+                    if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.RotationVersion.PvP)
+                    { selectSpec = internalSettings.PvPArms; }
+                    else
+                    { selectSpec = internalSettings.Arms; }
                     break;
 
                 case WoWSpec.WarriorFury:
-                    selectSpec = internalSettings.Fury;
+                    if (InternalSettings.Instance.General.CrFuryRotVersion == Enum.RotationVersion.PvP)
+                    { selectSpec = internalSettings.PvPFury; }
+                    else
+                    { selectSpec = internalSettings.Fury; }
                     break;
 
                 case WoWSpec.WarriorProtection:
-                    selectSpec = internalSettings.Protection;
+                    if (InternalSettings.Instance.General.CrProtRotVersion == Enum.RotationVersion.PvP)
+                    { selectSpec = internalSettings.PvPProtection; }
+                    else
+                    { selectSpec = internalSettings.Protection; }
                     break;
             }
 
@@ -543,6 +552,11 @@ namespace FuryUnleashed.Interfaces.GUI
         #endregion
 
         #region Buttons
+        private void debuggerpanel_Click(object sender, EventArgs e)
+        {
+            new DebuggerGui().Show();
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             InternalSettings.Instance.Save();

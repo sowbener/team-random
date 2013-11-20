@@ -1,4 +1,10 @@
-﻿using System;
+﻿using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Interfaces.Settings;
+using FuryUnleashed.Rotations;
+using Styx;
+using Styx.Common;
+using Styx.Helpers;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -7,15 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media;
-using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Interfaces.Settings;
-using FuryUnleashed.Rotations;
-using Styx;
-using Styx.Common;
-using Styx.Helpers;
-using Styx.TreeSharp;
-using Styx.WoWInternals;
-using Action = Styx.TreeSharp.Action;
 
 namespace FuryUnleashed.Core.Utilities
 {
@@ -26,35 +23,35 @@ namespace FuryUnleashed.Core.Utilities
         // Combatlogging.
         public static void CombatLogFb(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Devastate") || !message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogLg(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Devastate") || !message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogOr(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Devastate") || !message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogPu(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Devastate") || !message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
 
         public static void CombatLogWh(string message, params object[] args)
         {
-            if (message == _lastCombatmsg && !message.Contains("Execute")) return; 
+            if (message == _lastCombatmsg && (!message.Contains("Devastate") || !message.Contains("Execute") || !message.Contains("Heroic Strike"))) return;
             Logging.Write(Colors.White, "{0}", String.Format(message, args));
             _lastCombatmsg = message;
         }
@@ -90,77 +87,83 @@ namespace FuryUnleashed.Core.Utilities
             Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
         }
 
-        //public static void AdvancedLogP(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
-        //}
+        // Specific Loggers
+        public static void CooldownTrackerLog(string message, params object[] args)
+        {
+            if (message == null || InternalSettings.Instance.General.CheckCooldownTrackerLogging == false) return;
+            Logging.WriteDiagnostic(Colors.Crimson, "{0}", String.Format(message, args));
+        }
 
-        //public static void AdvancedLogW(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.White, "{0}", String.Format(message, args));
-        //}
+        // Debug Logging
+        public static string PrintBarrierSize
+        {
+            get
+            {
+                var shieldbarriersize = DamageTracker.CalculateEstimatedAbsorbValue();
 
-        //public static void InitLogF(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
-        //}
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                {
+                    return "Use Protection Spec!";
+                }
 
-        //public static void InitLogO(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
-        //}
+                CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, DamageTracker.ShieldBarrierSpellId);
+                return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
-        //public static void InitLogW(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.Write(Colors.White, "{0}", String.Format(message, args));
-        //}
+        public static string PrintBlockSize
+        {
+            get
+            {
+                var shieldblocksize = DamageTracker.CalculateEstimatedBlockValue();
 
-        //public static void DiagLogW(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.WriteDiagnostic(Colors.White, "{0}", String.Format(message, args));
-        //}
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                {
+                    return "Use Protection Spec!";
+                }
 
-        //public static void DiagLogP(string message, params object[] args)
-        //{
-        //    if (message == null) return;
-        //    Logging.WriteDiagnostic(Colors.MediumPurple, "{0}", String.Format(message, args));
-        //}
+                CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, DamageTracker.ShieldBlockSpellId);
+                return shieldblocksize.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
-        //private static string _lastCombatmsg;
+        public static string PrintDamageTaken
+        {
+            get
+            {
+                var damagetaken = DamageTracker.GetDamageTaken(DateTime.Now);
 
-        //public static void CombatLogO(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.Orange, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                {
+                    return "Use Protection Spec!";
+                }
 
-        //public static void CombatLogF(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.Firebrick, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
+                CombatLogLg("FU: Damage taken is {0}", damagetaken);
+                return damagetaken.ToString(CultureInfo.InvariantCulture);
+            }
+        }
 
-        //public static void CombatLogG(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.LimeGreen, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
+        public static string PrintVigilanceTarget
+        {
+            get
+            {
+                if (StyxWoW.Me.GroupInfo.IsInParty || StyxWoW.Me.GroupInfo.IsInRaid)
+                {
+                    Unit.GetVigilanceTarget();
 
-        //public static void CombatLogP(string message, params object[] args)
-        //{
-        //    if (message == _lastCombatmsg && !message.Contains("Execute")) return;
-        //    Logging.Write(Colors.MediumPurple, "{0}", String.Format(message, args));
-        //    _lastCombatmsg = message;
-        //}
+                    var vigilancetarget = Unit.VigilanceTarget;
+
+                    if (vigilancetarget == null)
+                    {
+                        return "No Suitable Target";
+                    }
+
+                    CombatLogLg("FU: Vigilance target is {0}", vigilancetarget);
+                    return vigilancetarget.ToString();
+                }
+                return "No Suitable Target";
+            }
+        }
 
         public static void WriteFileLog(string message, params object[] args)
         {
@@ -192,37 +195,38 @@ namespace FuryUnleashed.Core.Utilities
                 LogSettings("Protection Settings (SettingsP)", InternalSettings.Instance.Protection);
             WriteFile("");
             WriteFile("====== Talents ======");
-            WriteFile("Juggernaut Talent: {0}", Global.JnTalent);
-            WriteFile("Double Time Talent: {0}", Global.DtTalent);
-            WriteFile("Warbringer Talent: {0}", Global.WbTalent);
-            WriteFile("Enraged Regeneration Talent: {0}", Global.ErTalent);
-            WriteFile("Second Wind Talent: {0}", Global.ScTalent);
-            WriteFile("Impending Victory Talent: {0}", Global.IvTalent);
-            WriteFile("Staggering Shout Talent: {0}", Global.SsTalent);
-            WriteFile("Piercing Howl Talent: {0}", Global.PhTalent);
-            WriteFile("Disrupting Shout Talent: {0}", Global.DsTalent);
-            WriteFile("Bladestorm Talent: {0}", Global.BsTalent);
-            WriteFile("Shockwave Talent: {0}", Global.SwTalent);
-            WriteFile("Dragon Roar Talent: {0}", Global.DrTalent);
-            WriteFile("Mass Spell Reflection Talent: {0}", Global.MrTalent);
-            WriteFile("Safeguard Talent: {0}", Global.SgTalent);
-            WriteFile("Vigilance Talent: {0}", Global.VgTalent);
-            WriteFile("Avatar Talent: {0}", Global.AvTalent);
-            WriteFile("Bloodbath Talent: {0}", Global.BbTalent);
-            WriteFile("Storm Bolt Talent: {0}", Global.SbTalent);
+            WriteFile("Juggernaut Talent: {0}", Global.JuggernautTalent);
+            WriteFile("Double Time Talent: {0}", Global.DoubleTimeTalent);
+            WriteFile("Warbringer Talent: {0}", Global.WarbringerTalent);
+            WriteFile("Enraged Regeneration Talent: {0}", Global.EnragedRegenerationTalent);
+            WriteFile("Second Wind Talent: {0}", Global.SecondWindTalent);
+            WriteFile("Impending Victory Talent: {0}", Global.ImpendingVictoryTalent);
+            WriteFile("Staggering Shout Talent: {0}", Global.StaggeringShoutTalent);
+            WriteFile("Piercing Howl Talent: {0}", Global.PiercingHowlTalent);
+            WriteFile("Disrupting Shout Talent: {0}", Global.DisruptingShoutTalent);
+            WriteFile("Bladestorm Talent: {0}", Global.BladestormTalent);
+            WriteFile("Shockwave Talent: {0}", Global.ShockwaveTalent);
+            WriteFile("Dragon Roar Talent: {0}", Global.DragonRoarTalent);
+            WriteFile("Mass Spell Reflection Talent: {0}", Global.MassSpellReflectionTalent);
+            WriteFile("Safeguard Talent: {0}", Global.SafeguardTalent);
+            WriteFile("Vigilance Talent: {0}", Global.VigilanceTalent);
+            WriteFile("Avatar Talent: {0}", Global.AvatarTalent);
+            WriteFile("Bloodbath Talent: {0}", Global.BloodbathTalent);
+            WriteFile("Storm Bolt Talent: {0}", Global.StormBoltTalent);
             WriteFile("");
             WriteFile("====== Tier Bonuses ======");
             WriteFile("Tier 15 DPS 2P: {0}", Global.Tier15TwoPieceBonus);
-            WriteFile("Tier 15 DPS 4P: {0}", Global.Tier15FourPieceBonus);
+            WriteFile("Tier 15 DPS 4P: {0}", Global.SkullBannerAuraT15);
             WriteFile("Tier 15 Prot 2P: {0}", Global.Tier15TwoPieceBonusT);
             WriteFile("Tier 15 Prot 4P: {0}", Global.Tier15FourPieceBonusT);
             WriteFile("Tier 16 DPS 2P: {0}", Global.Tier16TwoPieceBonus);
-            WriteFile("Tier 16 DPS 4P: {0}", Global.Tier16FourPieceBonus);
+            WriteFile("Tier 16 DPS 4P: {0}", Global.DeathSentenceAuraT16);
             WriteFile("Tier 16 Prot 2P: {0}", Global.Tier16TwoPieceBonusT);
             WriteFile("Tier 16 Prot 4P: {0}", Global.Tier16FourPieceBonusT);
             WriteFile("");
             WriteFile("======= Other Info =======");
             WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
+            WriteFile("Weapon Speed: {0}", Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0));
         }
 
         private static Timer _fuTimer;
@@ -306,66 +310,67 @@ namespace FuryUnleashed.Core.Utilities
         #region Advanced Logging
         // 1, TimeSpan.FromMilliseconds(SG.Instance.NumAdvLogThrottleTime), RunStatus.Failure
         // 1 traverse per xxx timespan ms
-        internal static Composite AdvancedLogging
-        {
-            get
-            {
-                return new PrioritySelector(
-                    //Cached Units Logging
-                    new Decorator(ret => InternalSettings.Instance.General.CheckUnitLogging,
-                        new PrioritySelector(
-                            new ThrottlePasses(1,
-                                TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
-                                RunStatus.Failure,
-                                new Action(delegate
-                                {
-                                    CombatLogPu("Cached Unit Counts:");
-                                    CombatLogWh("Units - In Range (2Y - SlamCleave): {0}",Unit.NearbySlamCleaveUnitsCount);
-                                    CombatLogWh("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
-                                    CombatLogWh("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
-                                    CombatLogWh("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
-                                    CombatLogWh("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
-                                    CombatLogWh("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
-                                    CombatLogPu("Units - Slam Viable: {0}", Global.SlamViable);
-                                    CombatLogPu("Units - Whirlwind viable: {0}", Global.WhirlwindViable);
-                                }
-                                )))),
-                    // Cached Aura's Logging
-                    new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
-                        new PrioritySelector(
-                            new ThrottlePasses(1,
-                                TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
-                                RunStatus.Failure,
-                                new Action(delegate
-                                {
-                                    // ReSharper disable InconsistentNaming
-                                    CombatLogPu("Cached Target Aura's:");
-                                    foreach (var WoWAura in Spell.CachedTargetAuras)
-                                    {
-                                        CombatLogWh("{0}", WoWAura);
-                                    }
-                                    CombatLogPu("Cached Self Aura's:");
-                                    foreach (var WoWAura in Spell.CachedAuras)
-                                    {
-                                        CombatLogWh("{0}", WoWAura);
-                                    }
-                                }
-                                )))),
-                    //Temporary Functions Logging
-                    new Decorator(ret => InternalSettings.Instance.General.CheckTestLogging,
-                        new PrioritySelector(
-                            new ThrottlePasses(1,
-                                TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
-                                RunStatus.Failure,
-                                new Action(delegate
-                                {
-                                    CombatLogPu("Test Logging:");
-                                    CombatLogWh("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
-                                    CombatLogWh("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
-                                }
-                                )))));
-            }
-        }
+        //internal static Composite AdvancedLogging
+        //{
+        //    get
+        //    {
+        //        return new PrioritySelector(
+        //            //Cached Units Logging
+        //            new Decorator(ret => InternalSettings.Instance.General.CheckUnitLogging,
+        //                new PrioritySelector(
+        //                    new ThrottlePasses(1,
+        //                        TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
+        //                        RunStatus.Failure,
+        //                        new Action(delegate
+        //                        {
+        //                            CombatLogPu("Cached Unit Counts:");
+        //                            CombatLogWh("Units - In Range (2Y - SlamCleave): {0}",Unit.NearbySlamCleaveUnitsCount);
+        //                            CombatLogWh("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
+        //                            CombatLogWh("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
+        //                            CombatLogWh("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
+        //                            CombatLogWh("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
+        //                            CombatLogWh("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
+        //                            CombatLogPu("Units - Slam Viable: {0}", Global.SlamViable);
+        //                            CombatLogPu("Units - Whirlwind viable: {0}", Global.WhirlwindViable);
+        //                        }
+        //                        )))),
+        //            // Aura & CD logging.
+        //            new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
+        //                new PrioritySelector(
+        //                    new ThrottlePasses(1,
+        //                        TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
+        //                        RunStatus.Failure,
+        //                        new Action(delegate
+        //                        {
+        //                            // ReSharper disable InconsistentNaming
+        //                            CombatLogPu("Cooldowns:");
+        //                            foreach (var WoWAura in CooldownTracker.cooldowns)
+        //                            {
+        //                                CombatLogWh("{0}", WoWAura);
+        //                            }
+        //                            //CombatLogPu("Self Aura's:");
+        //                            //foreach (var WoWAura in Spell.CachedAuras)
+        //                            //{
+        //                            //    CombatLogWh("{0}", WoWAura);
+        //                            //}
+        //                        }
+        //                        )))),
+        //            //Temporary Functions Logging
+        //            new Decorator(ret => InternalSettings.Instance.General.CheckTestLogging,
+        //                new PrioritySelector(
+        //                    new ThrottlePasses(1,
+        //                        TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
+        //                        RunStatus.Failure,
+        //                        new Action(delegate
+        //                        {
+        //                            CombatLogPu("Test Logging:");
+        //                            CombatLogWh("BT OC {0}", Global.BtOc);
+        //                            CombatLogWh("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
+        //                            CombatLogWh("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
+        //                        }
+        //                        )))));
+        //    }
+        //}
         #endregion
 
     }

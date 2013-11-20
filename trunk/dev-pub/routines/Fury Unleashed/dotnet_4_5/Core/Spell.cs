@@ -1,8 +1,9 @@
-﻿using FuryUnleashed.Core.Utilities;
-// ReSharper disable ImplicitlyCapturedClosure
+﻿// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 using CommonBehaviors.Actions;
+using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Utilities;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
@@ -31,39 +32,49 @@ namespace FuryUnleashed.Core
 
         #region Casting Methods
         // Casting by Name
-        public static Composite Cast(string spell, Selection<bool> reqs = null)
+        public static Composite Cast(string spell, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs);
+            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
 
-        public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
+        public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return
                 new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spell, onUnit(ret))),
                     new Action(ret =>
+                    {
+                        if (SpellManager.Cast(spell, onUnit(ret)))
                         {
-                            SpellManager.Cast(spell, onUnit(ret));
                             CooldownTracker.SpellUsed(spell);
                             Logger.CombatLogOr("Casting: " + spell + " on " + onUnit(ret).SafeName);
-                        }));
+                            if (!failThrough)
+                                return RunStatus.Success;
+                        }
+                        return RunStatus.Failure;
+                    }));
         }
 
         // Casting by Integer
-        public static Composite Cast(int spell, Selection<bool> reqs = null)
+        public static Composite Cast(int spell, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs);
+            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
 
-        public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
+        public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return
                 new Decorator(ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && SpellManager.CanCast(spell, onUnit(ret)),
                     new Action(ret =>
+                    {
+                        if (SpellManager.Cast(spell, onUnit(ret)))
                         {
-                            SpellManager.Cast(spell, onUnit(ret));
                             CooldownTracker.SpellUsed(spell);
                             Logger.CombatLogOr("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
-                        }));
+                            if (!failThrough)
+                                return RunStatus.Success;
+                        }
+                        return RunStatus.Failure;
+                    }));
         }
         
         // Casting on Ground by String
@@ -92,6 +103,30 @@ namespace FuryUnleashed.Core
         }
 
         // Casting on Ground by Int
+        public static Composite CastOnGround(int spell, UnitSelectionDelegate onUnit)
+        {
+            return CastOnGround(spell, onUnit, ret => true);
+        }
+
+        public static Composite CastOnGround(int spell, UnitSelectionDelegate onUnit, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        {
+            return
+                new Decorator(ret => onUnit != null && requirements(ret) && SpellManager.CanCast(spell) && (StyxWoW.Me.Location.Distance(onUnit(ret).Location) <= WoWSpell.FromId(spell).MaxRange || WoWSpell.FromId(spell).MaxRange == 0),
+                    new Sequence(
+                       new Action(ret => SpellManager.Cast(spell)),
+                        new DecoratorContinue(ctx => waitForSpell,
+                            new WaitContinue(1, ret =>
+                                StyxWoW.Me.CurrentPendingCursorSpell != null &&
+                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spell, new ActionAlwaysSucceed())),
+                        new Action(ret =>
+                        {
+                            SpellManager.ClickRemoteLocation(onUnit(ret).Location);
+                            CooldownTracker.SpellUsed(spell);
+                            Logger.CombatLogOr("Casting: " + spell);
+                        }
+                        )));
+        }
+
         public static Composite CastOnGround(int spell, LocationRetriever onLocation)
         {
             return CastOnGround(spell, onLocation, ret => true);
@@ -114,427 +149,6 @@ namespace FuryUnleashed.Core
                             Logger.CombatLogOr("Casting: " + spell);
                         }
                         )));
-        }
-        #endregion
-
-        #region Sequence Casting Methods
-        // Example Use
-        //public static List<Composite> complist = new List<Composite>(){ 
-        //             Spell.Cast("Ball Buster"), 
-        //             Spell.Cast("Ball Destroyer"),  
-        //             Spell.Cast("Nut *****er")};
-
-        //public static SequenceCast MySequence = new SequenceCast(complist);
-
-        //public static Composite Rotaion()
-        //{
-        //    return new PrioritySelector(
-        //                MySequence.Execute(ret => SomethingAwesomeHappened),
-        //                Spell.Cast("Blah"),
-        //                Spell.Cast("Blah"),
-        //                Spell.Cast("Blah"),
-        //                Spell.Cast("Blah"));
-        //}  
-        internal class SequenceCast
-        {
-            private readonly List<Composite> _children;
-            private int _current;
-            private readonly int _endSequence;
-            private bool _sequenceRunning;
-
-            public SequenceCast(List<Composite> l)
-            {
-                _children = l;
-                _current = 0;
-                _endSequence = l.Count();
-                _sequenceRunning = false;
-            }
-
-            public Composite Execute(Selection<bool> reqs = null)
-            {
-                return new Decorator(ret => _sequenceRunning || (reqs == null || reqs(ret)), new PrioritySelector(WaitForCast, ExecuteCurrentNode()));
-            }
-
-            private static Composite WaitForCast
-            {
-                get { return new Decorator(ret => Me.IsCasting || SpellManager.GlobalCooldown, new Action(ret => RunStatus.Success)); }
-            }
-
-            private Composite ExecuteCurrentNode()
-            {
-                return new Action(context =>
-                {
-                    //Check for end of sequence
-                    if (_current >= _endSequence)
-                    {
-                        _current = 0;
-                        _sequenceRunning = false;
-                        return RunStatus.Failure;
-                    }
-
-                    //Sequence isnt over, try to run next node
-                    var node = _children.ElementAt(_current);
-                    node.Start(context);
-                    while (node.Tick(context) == RunStatus.Running)
-                    {
-                        //Run Node
-                    }
-                    node.Stop(context);
-
-                    //Node Failed, so sequence over!
-                    if (node.LastStatus == RunStatus.Failure)
-                    {
-                        _current = 0;
-                        _sequenceRunning = false;
-                        return RunStatus.Failure;
-                    }
-
-                    //Node Succeed, Increment!!
-                    _current++;
-                    _sequenceRunning = true;
-                    return RunStatus.Success;
-                });
-            }
-        }
-        #endregion
-
-        #region Cooldown Tracking
-        // Cached - If no cached result is found, check realtime.
-        public static TimeSpan GetSpellCooldown(string spell, bool overide = false)
-        {
-            if (overide)
-                return CooldownTracker.CooldownTimeLeft(spell);
-
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                return results.Override != null ? results.Override.CooldownTimeLeft : results.Original.CooldownTimeLeft;
-            }
-
-            return TimeSpan.MaxValue;
-        }
-
-        public static TimeSpan GetSpellCooldown(int spell, bool overide = false)
-        {
-            if (overide)
-                return CooldownTracker.CooldownTimeLeft(spell);
-
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                return results.Override != null ? results.Override.CooldownTimeLeft : results.Original.CooldownTimeLeft;
-            }
-
-            return TimeSpan.MaxValue;
-        }
-
-        public static bool SpellOnCooldown(string spell, bool overide = false)
-        {
-            if (overide)
-                return !CooldownTracker.IsOnCooldown(spell);
-
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                return results.Override != null ? results.Override.Cooldown : results.Original.Cooldown;
-            }
-
-            return false;
-        }
-
-        public static bool SpellOnCooldown(int spell, bool overide = false)
-        {
-            if (overide)
-                return !CooldownTracker.IsOnCooldown(spell);
-
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                return results.Override != null ? results.Override.Cooldown : results.Original.Cooldown;
-            }
-
-            return false;
-        }
-        #endregion
-
-        #region Cooldown Tracker
-        // Actual tracker for the cooldowns.
-        public static class CooldownTracker
-        {
-            public static bool IsOnCooldown(int spell)
-            {
-                SpellFindResults results;
-                if (SpellManager.FindSpell(spell, out results))
-                {
-                    WoWSpell result = results.Override ?? results.Original;
-                    long lastUsed;
-                    if (_cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        if (DateTime.Now.Ticks < lastUsed)
-                        {
-                            return result.Cooldown;
-                        }
-                        return false;
-                    }
-                }
-                return false;
-            }
-
-            public static bool IsOnCooldown(string spell)
-            {
-                SpellFindResults results;
-                if (SpellManager.FindSpell(spell, out results))
-                {
-                    WoWSpell result = results.Override ?? results.Original;
-                    long lastUsed;
-                    if (_cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        if (DateTime.Now.Ticks < lastUsed)
-                        {
-                            return result.Cooldown;
-                        }
-                        return false;
-                    }
-                }
-                return false;
-            }
-
-            public static TimeSpan CooldownTimeLeft(int spell)
-            {
-                SpellFindResults results;
-                if (SpellManager.FindSpell(spell, out results))
-                {
-                    WoWSpell result = results.Override ?? results.Original;
-                    long lastUsed;
-                    if (_cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        if (DateTime.Now.Ticks < lastUsed)
-                        {
-                            return result.CooldownTimeLeft;
-                        }
-                        return TimeSpan.MaxValue;
-                    }
-                }
-                return TimeSpan.MaxValue;
-            }
-
-            public static TimeSpan CooldownTimeLeft(string spell)
-            {
-                SpellFindResults results;
-                if (SpellManager.FindSpell(spell, out results))
-                {
-                    WoWSpell result = results.Override ?? results.Original;
-                    long lastUsed;
-                    if (_cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        if (DateTime.Now.Ticks < lastUsed)
-                        {
-                            return result.CooldownTimeLeft;
-                        }
-                        return TimeSpan.MaxValue;
-                    }
-                }
-                return TimeSpan.MaxValue;
-            }
-
-            public static void SpellUsed(string spell)
-            {
-                SpellFindResults results;
-                if (SpellManager.FindSpell(spell, out results))
-                {
-                    WoWSpell result = results.Override ?? results.Original;
-                    _cooldowns[result] = result.CooldownTimeLeft.Ticks + DateTime.Now.Ticks;
-                }
-            }
-
-            public static void SpellUsed(int spell)
-            {
-                SpellFindResults results;
-                if (SpellManager.FindSpell(spell, out results))
-                {
-                    WoWSpell result = results.Override ?? results.Original;
-                    _cooldowns[result] = result.CooldownTimeLeft.Ticks + DateTime.Now.Ticks;
-                }
-            }
-
-            private static Dictionary<WoWSpell, long> _cooldowns = new Dictionary<WoWSpell, long>();
-        }
-        #endregion
-
-        #region Aura Tracking & Caching
-        // Cached Aura retrieval - Aura's applied by anyone
-        public static bool HasAnyCachedAura(this WoWUnit unit, string aura, int stacks, int msuLeft = 0)
-        {
-            WoWAura cachedResult = null;
-
-            //Used for debugging
-            //if (cachedResult.Name == "Skull Banner")
-            //    Logging.Write("Caching Debugger: WoWUnit {0} - Aura {1} with {2} stacks - Msuleft {3}", unit, aura, stacks, msuLeft);
-
-            if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                cachedResult = CachedTargetAuras.FirstOrDefault(a => a.Name == aura);
-
-            if (CachedAuras != null && unit == Me)
-                cachedResult = CachedAuras.FirstOrDefault(a => a.Name == aura);
-
-            if (cachedResult == null)
-                return false;
-
-            if (cachedResult.TimeLeft.TotalMilliseconds > msuLeft)
-                return cachedResult.StackCount >= stacks;
-
-            return false;
-        }
-
-        public static bool HasAnyCachedAura(this WoWUnit unit, int aura, int stacks, int msuLeft = 0)
-        {
-            WoWAura cachedResult = null;
-
-            //Used for debugging
-            //if (cachedResult.Name == "Skull Banner")
-            //    Logging.Write("Caching Debugger: WoWUnit {0} - Aura {1} with {2} stacks - Msuleft {3}", unit, aura, stacks, msuLeft);
-
-            if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                cachedResult = CachedTargetAuras.FirstOrDefault(a => a.SpellId == aura);
-
-            if (CachedAuras != null && unit == Me)
-                cachedResult = CachedAuras.FirstOrDefault(a => a.SpellId == aura);
-
-            if (cachedResult == null)
-                return false;
-
-            if (cachedResult.TimeLeft.TotalMilliseconds > msuLeft)
-                return cachedResult.StackCount >= stacks;
-
-            return false;
-        }
-
-        // Cached Aura retrieval - Aura's applied by StyxWoW.Me.Guid
-        public static bool HasCachedAura(this WoWUnit unit, string aura, int stacks, int msuLeft = 0)
-        {
-            WoWAura cachedResult = null;
-
-            //Used for debugging
-            //if (cachedResult.Name == "Skull Banner")
-            //    Logging.Write("Caching Debugger: WoWUnit {0} - Aura {1} with {2} stacks - Msuleft {3}", unit, aura, stacks, msuLeft);
-
-            if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                cachedResult = CachedTargetAuras.FirstOrDefault(a => a.Name == aura && a.CreatorGuid == StyxWoW.Me.Guid);
-
-            if (CachedAuras != null && unit == Me)
-                cachedResult = CachedAuras.FirstOrDefault(a => a.Name == aura && a.CreatorGuid == StyxWoW.Me.Guid);
-
-            if (cachedResult == null)
-                return false;
-
-            if (cachedResult.TimeLeft.TotalMilliseconds > msuLeft)
-                return cachedResult.StackCount >= stacks;
-
-            return false;
-        }
-
-        public static bool HasCachedAura(this WoWUnit unit, int aura, int stacks, int msuLeft = 0)
-        {
-            WoWAura cachedResult = null;
-
-            //Used for debugging
-            //if (cachedResult.Name == "Skull Banner")
-            //    Logging.Write("Caching Debugger: WoWUnit {0} - Aura {1} with {2} stacks - Msuleft {3}", unit, aura, stacks, msuLeft);
-
-            if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                cachedResult = CachedTargetAuras.FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == StyxWoW.Me.Guid);
-
-            if (CachedAuras != null && unit == Me)
-                cachedResult = CachedAuras.FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == StyxWoW.Me.Guid);
-
-            if (cachedResult == null)
-                return false;
-
-            if (cachedResult.TimeLeft.TotalMilliseconds > msuLeft)
-                return cachedResult.StackCount >= stacks;
-
-            return false;
-        }
-
-        public static IEnumerable<WoWAura> CachedAuras = new List<WoWAura>();
-        public static IEnumerable<WoWAura> CachedTargetAuras = new List<WoWAura>();
-        public static void GetCachedAuras()
-        {
-            if (Me.CurrentTarget != null) 
-                CachedTargetAuras = Me.CurrentTarget.GetAllAuras();
-                CachedAuras = Me.GetAllAuras();
-        }
-        #endregion
-
-        #region Non-Cached Aura Functions
-        public static bool HasAura(this WoWUnit unit, string aura, int stacks = 0, bool isMyAura = false, int msLeft = 0)
-        {
-            var result = unit.GetAuraFromName(aura, isMyAura);
-
-            if (result == null)
-                return false;
-
-            if (result.TimeLeft.TotalMilliseconds > msLeft)
-                return result.StackCount >= stacks;
-
-            return false;
-        }
-
-        public static bool HasAura(this WoWUnit unit, int aura, int stacks = 0, bool isMyAura = false, int msLeft = 0)
-        {
-            var result = unit.GetAuraFromId(aura, isMyAura);
-
-            if (result == null)
-                return false;
-
-            if (result.TimeLeft.TotalMilliseconds > msLeft)
-                return result.StackCount >= stacks;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets an Aura by Name. Note: this is a fix for the HB API wrapper GetAuraByName
-        /// </summary>
-        public static WoWAura GetAuraFromName(this WoWUnit unit, string aura, bool isMyAura = false)
-        {
-            return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.TimeLeft > TimeSpan.Zero);
-        }
-
-        /// <summary>
-        /// Gets an Aura by ID. Note: this is a fix for the HB API wrapper GetAuraById
-        /// </summary>
-        public static WoWAura GetAuraFromId(this WoWUnit unit, int aura, bool isMyAura = false)
-        {
-            return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.TimeLeft > TimeSpan.Zero);
-        }
-
-        public static bool HasAuraWithMechanic(this WoWUnit unit, params WoWSpellMechanic[] mechanics)
-        {
-            var auras = unit.GetAllAuras();
-            return auras.Any(a => mechanics.Contains(a.Spell.Mechanic));
-        }
-
-        public static bool HasAuraWithMechanic(this WoWUnit unit, params WoWApplyAuraType[] applyType)
-        {
-            var auras = unit.GetAllAuras();
-            return auras.Any(a => a.Spell.SpellEffects.Any(se => applyType.Contains(se.AuraType)));
-        }
-		
-        internal static bool FadingSelfAura(int spellid, int fadingtime)
-        {
-            if (!Me.GotTarget)
-                return false;
-            WoWAura fadingaura = CachedAuras.FirstOrDefault(a => a.SpellId == spellid && a.CreatorGuid == StyxWoW.Me.Guid);
-            return fadingaura != null && fadingaura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-        }
-
-        internal static bool FadingTargetAura(int spellid, int fadingtime)
-        {
-            if (!Me.GotTarget)
-                return false;
-            WoWAura fadingaura = CachedTargetAuras.FirstOrDefault(a => a.SpellId == spellid && a.CreatorGuid == StyxWoW.Me.Guid);
-            return fadingaura != null && fadingaura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
         }
         #endregion
 
@@ -572,5 +186,237 @@ namespace FuryUnleashed.Core
             78 // Heroic Strike
         };
         #endregion GCD
+
+        #region Cached & Non-Cached Aura Functions
+        public static IEnumerable<WoWAura> CachedAuras = new List<WoWAura>();
+        public static IEnumerable<WoWAura> CachedTargetAuras = new List<WoWAura>();
+
+        /// <summary>
+        /// Gets aura's on StyxWoW.Me and StyxWoW.Me.CurrentTarget and adds them to CachedAuras & CachedTargetAuras lists for one traverse.
+        /// </summary>
+        public static void GetCachedAuras()
+        {
+            using (new PerformanceLogger("GetCachedAuras"))
+            {
+                try
+                {
+                    if (Unit.IsViable(Me)) { CachedAuras = Me.GetAllAuras(); }
+                    if (Unit.IsViable(Me.CurrentTarget)) { CachedTargetAuras = Me.CurrentTarget.GetAllAuras(); }
+                }
+                catch (Exception getcachedauraException)
+                {
+                    Logger.DiagLogFb("FU: Failed to retrieve aura's - {0}", getcachedauraException);
+                }
+            }
+        }
+
+        /// <summary>
+        /// HasAura extention - String
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
+        /// <param name="auraname">Full Auraname</param>
+        /// <param name="stacks">Amount of Stacks on the Aura</param>
+        /// <param name="msuLeft">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool HasAura(WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("HasAura"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    WoWAura auraresult = null;
+
+                    if (!cached)
+                    {
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                    }
+
+                    if (auraresult == null) return false;
+
+                    if (auraresult.TimeLeft.TotalMilliseconds > msuLeft)
+                        return auraresult.StackCount >= stacks;
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// HasAura extention - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="stacks">Amount of Stacks on the Aura</param>
+        /// <param name="msuLeft">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool HasAura(WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("HasAura"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    WoWAura auraresult = null;
+
+                    if (!cached)
+                    {
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                    }
+
+                    if (auraresult == null) return false;
+
+                    if (auraresult.TimeLeft.TotalMilliseconds > msuLeft)
+                        return auraresult.StackCount >= stacks;
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets fading aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static double AuraTimeLeft(WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("AuraTimeLeft"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return 0;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+                    return 0;
+                }
+                catch (Exception) { return 0; }
+            }
+        }
+        /// <summary>
+        /// Gets fading aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="fadingtime">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool FadingAura(WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("FadingAura"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);                        
+                    }
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets remaining aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="remainingtime">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool RemainingAura(WoWUnit unit, int auraId, int remainingtime, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("RemainingAura"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
+                    }
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+        #endregion
     }
 }

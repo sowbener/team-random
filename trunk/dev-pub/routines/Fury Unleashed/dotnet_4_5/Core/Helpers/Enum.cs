@@ -29,13 +29,21 @@ namespace FuryUnleashed.Core.Helpers
             Never,
             Always,
             OnBossDummy,
-            OnBlTwHr
+            OnBlTwHr,
+            a
         }
 
         public enum BarrierBlock
         {
+            None,
             ShieldBlock,
             ShieldBarrier
+        }
+
+        public enum Interrupts
+        {
+            Constant,
+            RandomTimed
         }
 
         public enum Hamstring
@@ -108,6 +116,13 @@ namespace FuryUnleashed.Core.Helpers
             OnT15Proc,
         }
 
+        public enum VigilanceTrigger
+        {
+            Never,
+            OnTank,
+            OnRaidMember
+        }
+
         public enum WarriorTalents
         {
             Juggernaut = 1,
@@ -130,10 +145,10 @@ namespace FuryUnleashed.Core.Helpers
             StormBolt
         }
 
-        public enum WoWVersion
+        public enum RotationVersion
         {
             Development,
-            SimCraft,
+            PvP,
             Release
         }
         #endregion

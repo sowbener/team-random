@@ -63,17 +63,6 @@ namespace FuryUnleashed.Core.Managers
             //throw new Exception("FU: Unable to retrieve revision");
         }
 
-        //private static int GetRevision()
-        //{
-        //    var client = new WebClient();
-        //    var html = client.DownloadString(FuSvnUrl);
-        //    var pattern = new Regex(@" - Revision (?<rev>\d+):", RegexOptions.CultureInvariant);
-        //    Match match = pattern.Match(html);
-        //    if (match.Success && match.Groups["rev"].Success)
-        //        return int.Parse(match.Groups["rev"].Value);
-        //    throw new Exception("FU: Unable to retrieve revision.");
-        //}
-
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)
         {
             var html = client.DownloadString(url);

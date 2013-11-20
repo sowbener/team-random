@@ -14,6 +14,24 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
+        #region Global Interrupt Settings
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.Interrupts.RandomTimed)]
+        [Category("Global Interrupt Settings")]
+        [DisplayName("Interrupt Mode")]
+        [Description("Select the interrupt mode - Constant or after a random casttime - RANDOM IS RECOMMENDED!")]
+        public Enum.Interrupts InterruptMode { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1000)]
+        [Category("Global Interrupt Settings")]
+        [DisplayName("Constant Interrupt Value")]
+        [Description("Select a value in milliseconds, when units casttime gets below this numer it will be interrupted.")]
+        public int InterruptNum { get; set; }
+        #endregion
+
+        // ========================================================================================
+
         #region General
         [Setting]
         [Styx.Helpers.DefaultValue(60)]
@@ -56,31 +74,45 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnRaidMember)]
+        [Category("General")]
+        [DisplayName("Vigilance")]
+        [Description("Select the usage of Vigilance.")]
+        public Enum.VigilanceTrigger Vigilance { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(15)]
+        [Category("General")]
+        [DisplayName("Vigilance %")]
+        [Description("Select the use-on HP for Vigilance usage.")]
+        public int VigilanceNum { get; set; }
         #endregion
 
         // ========================================================================================
 
         #region Rotational Settings
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Arms Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.WoWVersion CrArmsRotVersion { get; set; }
+        public Enum.RotationVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.SimCraft)]
+        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Fury Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.WoWVersion CrFuryRotVersion { get; set; }
+        public Enum.RotationVersion CrFuryRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WoWVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Development)]
         [Category("Rotational Settings")]
         [DisplayName("Prot Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.WoWVersion CrProtRotVersion { get; set; }
+        public Enum.RotationVersion CrProtRotVersion { get; set; }
         #endregion
 
         // ========================================================================================
@@ -89,30 +121,16 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Debug Logging")]
-        [DisplayName("Enable Debug Logging")]
-        [Description("Enable this to trigger the debug logging tree.")]
-        public bool CheckDebugLogging { get; set; }
+        [DisplayName("CooldownTracker Logging")]
+        [Description("Enables the logging for the Cooldown Tracker - Requires diagnostic loglevel.")]
+        public bool CheckCooldownTrackerLogging { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Debug Logging")]
-        [DisplayName("Enable Cache Logging")]
-        [Description("Enables advanced logging for cached functions - Requires Debug Logging enabled.")]
-        public bool CheckCacheLogging { get; set; }
-
-		[Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Debug Logging")]
-        [DisplayName("Enable Test Logging")]
-        [Description("Enables advanced logging for test functions - Requires Debug Logging enabled.")]
-        public bool CheckTestLogging { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Debug Logging")]
-        [DisplayName("Enable Unit Logging")]
-        [Description("Enables advanced logging for unit functions - Requires Debug Logging enabled.")]
-        public bool CheckUnitLogging { get; set; }
+        [DisplayName("Enable TreeSharp Timer")]
+        [Description("Enables the timer to measure the amount of MS for a composite traverse - Requires diagnostic loglevel.")]
+        public bool CheckTreePerformance { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.LogCategory.None)]
@@ -120,20 +138,6 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Performance Logging")]
         [Description("Performance = on, None = off.")]
         public Enum.LogCategory PerformanceLogging { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Debug Timers")]
-        [DisplayName("Enable TreeSharp Timer")]
-        [Description("Enables the timer to measure the amount of MS for a composite traverse - Requires diagnostic loglevel.")]
-        public bool CheckTreePerformance { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(2500)]
-        [Category("Debug Timers")]
-        [DisplayName("Logging Throttle Time")]
-        [Description("Time between advanced logs - Throttle  - Requires Debug Logging enabled.")]
-        public int LoggingThrottleNum { get; set; }
         #endregion
 
         // ========================================================================================
