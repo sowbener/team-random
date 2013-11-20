@@ -9,7 +9,6 @@ namespace FuryUnleashed.Core.Helpers
 {
     public class DamageTracker
     {
-
         #region DamageTracker
         private static Dictionary<DateTime, double> _damageTaken;
 
@@ -124,10 +123,10 @@ namespace FuryUnleashed.Core.Helpers
             }
         }
 
-        internal static double GetDamageTaken(DateTime timestamp = default(DateTime))
+        internal static double GetDamageTaken(DateTime timestamp = default(DateTime), double lastseconds = 6)
         {
             DateTime current = timestamp;
-            TimeSpan lastSeconds = TimeSpan.FromSeconds(6);
+            TimeSpan lastSeconds = TimeSpan.FromSeconds(lastseconds);
 
             return (from entry in _damageTaken
                     let diff = current - entry.Key
@@ -136,12 +135,10 @@ namespace FuryUnleashed.Core.Helpers
         }
         #endregion
 
-        #region VARs
+        #region Protection-Spec Functions
         internal const int ShieldBarrierSpellId = 112048;
         internal const int ShieldBlockSpellId = 132404;
-        #endregion
 
-        #region Calculates
         public static double CalculateEstimatedAbsorbValue()
         {
             using (new PerformanceLogger("CalculateEstimatedAbsorbValue"))
@@ -200,6 +197,31 @@ namespace FuryUnleashed.Core.Helpers
             return 1;
         }
         #endregion
-        
+
+        #region Fury-Spec Functions
+
+        public static bool StanceTracker()
+        {
+            using (new PerformanceLogger("StanceTracker"))
+            {
+                try
+                {
+                    // Battle: You gain rage from auto-attacking: 3.5 Rage for a 1.00 Weapon Speed for each hit. Offhand weapons generate half the rage of the main-hand.
+                    // Berserker: You gain rage from damage taken. The formula is 1 rage for 1% of health lost, and 50% of the rage generation of auto-attacks when compared to Battle Stance.
+
+                    var weaponspeed = Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0);
+                    var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Datetime 3 seconds - retrieves damage received over 3 seconds.
+                    var healthperpercent = StyxWoW.Me.MaxHealth / 100; // Calculates amount of health per percent.
+                    //var battlestanceregen = ;
+                    //var berserkerstanceregen = ;
+                }
+                catch (Exception exstancetrack)
+                {
+                    Logger.DiagLogFb("FU: Failed CalculateEstimatedBlockValue - {0}", exstancetrack);
+                }
+            }
+            return false;
+        }
+        #endregion
     }
 }
