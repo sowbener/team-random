@@ -41,8 +41,7 @@ namespace Bullseye.Routines
                                         I.MarksmanshipUseItems(),
                                         MarksmanshipOffensive(),
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAoE && (U.NearbyAttackableUnitsCount >= 2), MarksmanshipMt()),
-                                        new Decorator(ret => CarefulAim, MarksmanshipStOver80()),
-                                        new Decorator(ret => !CarefulAim, MarksmanshipStUnder80()))),
+                                        MarksmanshipSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAutoAttack, Lua.StartAutoAttack),
@@ -54,16 +53,19 @@ namespace Bullseye.Routines
                                                         I.MarksmanshipUseItems(),
                                                         MarksmanshipOffensive())),
                                         new Decorator(ret => BsHotKeyManager.IsAoe && SG.Instance.Marksmanship.CheckAoE && U.AttackableMeleeUnitsCount >= 2, MarksmanshipMt()),
-                                        new Decorator(ret => CarefulAim, MarksmanshipStOver80()),
-                                        new Decorator(ret => !CarefulAim, MarksmanshipStUnder80()))));
+                                        MarksmanshipSt())));
             }
         }
         #endregion
 
         #region Rotations
-        internal static Composite MarksmanshipStUnder80()
+        internal static Composite MarksmanshipSt()
         {
             return new PrioritySelector(
+                new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 80,
+                 new PrioritySelector(MarksmanshipStOver80())),
+                 new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 80,
+                 new PrioritySelector(
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.General.EnableTraps),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Fervor", ret => FervorReqs),
@@ -78,10 +80,7 @@ namespace Bullseye.Routines
                 Spell.PreventDoubleCast("Aimed Shot", 0.7, ret => MasterMarksManFire),
                 Spell.Cast("Aimed Shot", ret => AimedshotEnough),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => EnoughForArcaneShot),
-                Spell.PreventDoubleCast("Steady Shot", 1)
-
-
-                );
+                Spell.PreventDoubleCast("Steady Shot", 1))));
 
         }
 
