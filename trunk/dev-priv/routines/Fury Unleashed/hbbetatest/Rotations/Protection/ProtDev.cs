@@ -94,13 +94,13 @@ namespace FuryUnleashed.Rotations.Protection
                 Item.ProtUseHealthStone(),
 
                 // Defensive
-                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckDemoBannerNum),
-                Spell.Cast(SpellBook.DemoralizingShout, on => Me, ret => ProtGlobal.DemoralizingShoutUsage && Me.HealthPercent <= InternalSettings.Instance.Protection.DemoShoutNum),
-                Spell.Cast(SpellBook.LastStand, on => Me, ret => InternalSettings.Instance.Protection.CheckLastStand && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckLastStandNum),
-                Spell.Cast(SpellBook.ShieldWall, on => Me, ret => InternalSettings.Instance.Protection.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckShieldWallNum),
+                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckDemoBannerNum, true),
+                Spell.Cast(SpellBook.DemoralizingShout, on => Me, ret => ProtGlobal.DemoralizingShoutUsage && Me.HealthPercent <= InternalSettings.Instance.Protection.DemoShoutNum, true),
+                Spell.Cast(SpellBook.LastStand, on => Me, ret => InternalSettings.Instance.Protection.CheckLastStand && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckLastStandNum, true),
+                Spell.Cast(SpellBook.ShieldWall, on => Me, ret => InternalSettings.Instance.Protection.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckShieldWallNum, true),
 
-                Spell.Cast(SpellBook.SpellReflection, ret => ProtGlobal.SpellReflectionUsage && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
-                Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && ProtGlobal.MassSpellReflectionUsage && Global.SpellReflectionSpellCooldown > 0 && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SpellBook.SpellReflection, ret => ProtGlobal.SpellReflectionUsage && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting, true),
+                Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && ProtGlobal.MassSpellReflectionUsage && Global.SpellReflectionSpellCooldown > 0 && Unit.IsViable(Me.CurrentTarget) && Global.TargettingMe && Me.CurrentTarget.IsCasting, true),
 
                 new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && !InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower >= InternalSettings.Instance.Protection.ShieldBarrierBlockNum,
                     new PrioritySelector(
@@ -109,8 +109,8 @@ namespace FuryUnleashed.Rotations.Protection
 
                 new Decorator(ret => InternalSettings.Instance.Protection.CheckShieldBarrierBlock && InternalSettings.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower >= InternalSettings.Instance.Protection.ShieldBarrierBlockNum,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (ProtTracker.CalculateEstimatedAbsorbValue() > ProtTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
-                        Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => ProtTracker.CalculateEstimatedAbsorbValue() <= ProtTracker.CalculateEstimatedBlockValue(), true))));
+                        Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
+                        Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true))));
         }
 
         internal static Composite Dev_ProtGcdUtility()
@@ -127,14 +127,14 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 // Need to improve hamstring method
-                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !Global.HamstringAura && (InternalSettings.Instance.Protection.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Protection.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
-                Spell.Cast(SpellBook.IntimidatingShout, ret => InternalSettings.Instance.Protection.CheckIntimidatingShout && Global.IntimidatingShoutGlyph && !Unit.IsTargetBoss),
-                Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe),
-                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry),
-                Spell.Cast(SpellBook.StaggeringShout, ret => Global.StaggeringShoutTalent && InternalSettings.Instance.Protection.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckStaggeringShoutNum),
-                Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && InternalSettings.Instance.Protection.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckPiercingHowlNum),
+                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !Global.HamstringAura && (InternalSettings.Instance.Protection.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Protection.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget), true),
+                Spell.Cast(SpellBook.IntimidatingShout, ret => InternalSettings.Instance.Protection.CheckIntimidatingShout && Global.IntimidatingShoutGlyph && !Unit.IsTargetBoss, true),
+                Spell.Cast(SpellBook.Taunt, ret => InternalSettings.Instance.Protection.CheckAutoTaunt && !Global.TargettingMe, true),
+                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0 && !Global.LastStandAura && InternalSettings.Instance.Protection.CheckRallyingCry, true),
+                Spell.Cast(SpellBook.StaggeringShout, ret => Global.StaggeringShoutTalent && InternalSettings.Instance.Protection.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckStaggeringShoutNum, true),
+                Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && InternalSettings.Instance.Protection.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Protection.CheckPiercingHowlNum, true),
                 new Decorator(ret => Unit.VigilanceTarget != null,
-                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
+                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget, ret => true, true))
                 );
         }
 

@@ -25,7 +25,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 4, 7);
+        public static readonly Version Revision = new Version(1, 5, 4, 8);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly double WoWVersion = 5.4;
 
@@ -80,7 +80,7 @@ namespace FuryUnleashed
 
             if (Me.Specialization == WoWSpec.WarriorProtection)
             {
-                Core.Helpers.ProtTracker.Pulse();
+                DamageTracker.Pulse();
             }
 
             if (TalentManager.Pulse())
@@ -115,6 +115,7 @@ namespace FuryUnleashed
             if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
             else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("\r\n");
             Logger.CombatLogOr("Recommended rotations are (Selectable in the GUI):");
             Logger.CombatLogOr("Arms: Release");
             Logger.CombatLogOr("Fury: Release");
@@ -126,8 +127,8 @@ namespace FuryUnleashed
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
 
-            /* Initialize ProtTracker */
-            ProtTracker();
+            /* Initialize Damage Tracker */
+            DamageTracker.Initialize();
 
             /* Gather required information */
             Logger.StatCounter();
@@ -162,14 +163,6 @@ namespace FuryUnleashed
             Logger.CombatLogWh(reason);
             CombatLogHandler.Shutdown();
             TreeRoot.Stop();
-        }
-
-        internal static void ProtTracker()
-        {
-            if (Me.Specialization == WoWSpec.WarriorProtection)
-            {
-                Core.Helpers.ProtTracker.Initialize();
-            }
         }
         #endregion
 

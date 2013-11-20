@@ -7,7 +7,7 @@ using Styx.Common;
 
 namespace FuryUnleashed.Core.Helpers
 {
-    public class ProtTracker
+    public class DamageTracker
     {
 
         #region DamageTracker
@@ -21,7 +21,7 @@ namespace FuryUnleashed.Core.Helpers
             _damageTaken = new Dictionary<DateTime, double>();
             CombatLogHandler.Initialize();
             AttachCombatLogEvent();
-            Logger.CombatLogFb("FU: ProtTracker Initialized.");
+            Logger.CombatLogFb("FU: Damage Tracker Initialized.");
         }
 
         public static void Pulse()
@@ -33,6 +33,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             CombatLogHandler.Register("SWING_DAMAGE", HandleCombatLog);
             CombatLogHandler.Register("SPELL_DAMAGE", HandleCombatLog);
+            CombatLogHandler.Register("RANGE_DAMAGE", HandleCombatLog);
         }
 
         private static void HandleCombatLog(CombatLogEventArgs args)
@@ -49,6 +50,14 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "RANGE_DAMAGE":
+                    if (args.DestGuid == StyxWoW.Me.Guid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                    {
+                        object damage = args.Amount;
+                        if (!AddingDamageTaken)
+                            AddDamageTaken(DateTime.Now, (int)damage);
+                    }
+                    break;
+
                 case "SPELL_DAMAGE":
                     if (args.DestGuid == StyxWoW.Me.Guid)
                     {
@@ -60,9 +69,7 @@ namespace FuryUnleashed.Core.Helpers
                                            (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
                         if (countDamage && !AddingDamageTaken)
-                        {
                             AddDamageTaken(DateTime.Now, (int)damage);
-                        }
                     }
                     break;
             }

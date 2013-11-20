@@ -99,14 +99,14 @@ namespace FuryUnleashed.Core.Utilities
         {
             get
             {
-                var shieldbarriersize = ProtTracker.CalculateEstimatedAbsorbValue();
+                var shieldbarriersize = DamageTracker.CalculateEstimatedAbsorbValue();
 
                 if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                 {
                     return "Use Protection Spec!";
                 }
 
-                CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, ProtTracker.ShieldBarrierSpellId);
+                CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, DamageTracker.ShieldBarrierSpellId);
                 return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -115,14 +115,14 @@ namespace FuryUnleashed.Core.Utilities
         {
             get
             {
-                var shieldblocksize = ProtTracker.CalculateEstimatedBlockValue();
+                var shieldblocksize = DamageTracker.CalculateEstimatedBlockValue();
 
                 if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                 {
                     return "Use Protection Spec!";
                 }
 
-                CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, ProtTracker.ShieldBlockSpellId);
+                CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, DamageTracker.ShieldBlockSpellId);
                 return shieldblocksize.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -131,7 +131,7 @@ namespace FuryUnleashed.Core.Utilities
         {
             get
             {
-                var damagetaken = ProtTracker.GetDamageTaken(DateTime.Now);
+                var damagetaken = DamageTracker.GetDamageTaken(DateTime.Now);
 
                 if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                 {
