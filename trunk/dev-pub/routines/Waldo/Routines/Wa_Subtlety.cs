@@ -154,7 +154,7 @@ namespace Waldo.Routines
         static Composite SubShadowDance()
         {
             return new PrioritySelector(
-                   Spell.Cast("Shadow Dance", ret => Lua.PlayerPower > 74 && !Me.HasAura("Stealth") && !Me.HasAura("Vanish") && (G.FindWeaknessOff || G.FindWeakness < 3) && (
+                   Spell.Cast("Shadow Dance", ret => Me.CurrentTarget != null && Lua.PlayerPower > 74 && !Me.HasAura("Stealth") && G.RuptureSetting > 2 && G.SNDSetting > 2 && !Me.HasAura("Vanish") && (G.FindWeaknessOff || G.FindWeakness < 3) && (
                     (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowDance == WaEnum.AbilityTrigger.Always)
