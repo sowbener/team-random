@@ -209,10 +209,11 @@ namespace FuryUnleashed.Core.Helpers
                     // Battle: You gain rage from auto-attacking: 3.5 Rage for a 1.00 Weapon Speed for each hit. Offhand weapons generate half the rage of the main-hand.
                     // Berserker: You gain rage from damage taken. The formula is 1 rage for 1% of health lost, and 50% of the rage generation of auto-attacks when compared to Battle Stance.
 
-                    var weaponspeed = Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0);
+                    var mhweaponspeed = Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0);
+                    var ohweaponspeed = Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0);
                     var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Datetime 3 seconds - retrieves damage received over 3 seconds.
                     var healthperpercent = StyxWoW.Me.MaxHealth / 100; // Calculates amount of health per percent.
-                    //var battlestanceregen = ;
+                    var battlestanceregen = (mhweaponspeed * 3.5) + (ohweaponspeed * 1.75);
                     //var berserkerstanceregen = ;
                 }
                 catch (Exception exstancetrack)
