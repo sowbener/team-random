@@ -65,7 +65,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger Tier4AoeAbilities { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Ability Options")]
         [DisplayName("Tier 6 Abilities")]
         [Description("Select the usage of Tier 6 - Usage of Avatar, Bloodbath or Storm Bolt.")]
@@ -90,7 +90,7 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Shield Block & Barrier
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Shield Block & Barrier")]
         [DisplayName("Enable Block/Barrier")]
         [Description("Checked enables the usage of Shield Block and Barrier - See further options!")]
@@ -136,14 +136,14 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckDemoBannerNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Defensive Options")]
         [DisplayName("Demoralizing Shout")]
         [Description("Select the usage of Demoralizing Shout.")]
         public Enum.AbilityTrigger DemoralizeShout { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(10)]
+        [Styx.Helpers.DefaultValue(60)]
         [Category("Protection - Defensive Options")]
         [DisplayName("Demoralizing Shout %")]
         [Description("Select the use-on HP for Demoralizing Shout usage - 100% is always.")]
@@ -263,21 +263,21 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Item Options
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Item Options")]
         [DisplayName("Hands / Waist")]
         [Description("Select the usage of your Hands / Waist.")]
         public Enum.AbilityTrigger UseHands { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Item Options")]
         [DisplayName("Trinket #1")]
         [Description("Select the usage of Trinket #1.")]
         public Enum.AbilityTrigger Trinket1 { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Protection - Item Options")]
         [DisplayName("Trinket #2")]
         [Description("Select the usage of Trinket #2.")]
@@ -334,7 +334,7 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Interrupts & Stuns
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.Hamstring.AddList)]
+        [Styx.Helpers.DefaultValue(Enum.Hamstring.Never)]
         [Category("Protection - Interrupts & Stuns")]
         [DisplayName("Use Hamstring On")]
         [Description("Select the usage of Hamstring - Does not use on bosses.")]

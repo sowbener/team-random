@@ -41,7 +41,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public int RacialNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("General")]
         [DisplayName("Enable Automatic Updates")]
         [Description("Enables the automatic updater in this CC - Updates from RELEASE.")]
@@ -76,7 +76,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckPreCombatBuff { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
+        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnRaidMember)]
         [Category("General")]
         [DisplayName("Vigilance")]
         [Description("Select the usage of Vigilance.")]

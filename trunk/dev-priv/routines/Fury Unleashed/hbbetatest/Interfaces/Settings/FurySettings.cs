@@ -23,7 +23,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger BerserkerRage { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
         [Category("Fury - Ability Options")]
         [DisplayName("Class Racials")]
         [Description("Select the usage of your class racials - Only DPS abilities (Buffs & Attacks).")]
@@ -65,7 +65,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public Enum.AbilityTrigger Tier4AoeAbilities { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Fury - Ability Options")]
         [DisplayName("Tier 6 Abilities")]
         [Description("Select the usage of Tier 6 - Usage of Avatar, Bloodbath or Storm Bolt.")]
@@ -146,7 +146,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckShieldWallNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Fury - Defensive Options")]
         [DisplayName("Enable Spell Reflection")]
         [Description("Checked enables Spell Reflection.")]
@@ -179,7 +179,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckHealthStone { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(20)]
+        [Styx.Helpers.DefaultValue(10)]
         [Category("Fury - Regeneration Options")]
         [DisplayName("Healthstone %")]
         [Description("Select the use-on HP for Healthstone usage.")]
@@ -218,21 +218,21 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Item Options
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Fury - Item Options")]
         [DisplayName("Hands / Waist")]
         [Description("Select the usage of your Hands / Waist.")]
         public Enum.AbilityTrigger UseHands { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Fury - Item Options")]
         [DisplayName("Trinket #1")]
         [Description("Select the usage of Trinket #1.")]
         public Enum.AbilityTrigger Trinket1 { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Fury - Item Options")]
         [DisplayName("Trinket #2")]
         [Description("Select the usage of Trinket #2.")]
@@ -283,34 +283,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Shattering Throw")]
         [Description("Checked enables Shattering Throw.")]
         public bool CheckShatteringThrow { get; set; }
-
-        //[Setting]
-        //[Styx.Helpers.DefaultValue(Enum.SunderArmor.Always)]
-        //[Category("Fury - Selectable Options")]
-        //[DisplayName("Enable Sunder Armor")]
-        //[Description("Select Sunder Armor usage - Also set the amount of stacks which needs to be applied!")]
-        //public Enum.SunderArmor CheckSunderArmor { get; set; }
-
-        //[Setting]
-        //[Styx.Helpers.DefaultValue(Enum.SunderStacks.ThreeStacks)]
-        //[Category("Fury - Selectable Options")]
-        //[DisplayName("Sunder Armor Stacks")]
-        //[Description("Select the amount of units within 8 yards before AoE kicks in. Recommended is 3!")]
-        //public Enum.SunderStacks CheckSunderArmorNum { get; set; }
-
-        // [Setting]
-        // [Styx.Helpers.DefaultValue(true)]
-        // [Category("Fury - Selectable Options")]
-        // [DisplayName("Enable Thunder Clap")]
-        // [Description("Enables Thunder Clap to spread Deep Wounds in AoE - NeedThunderclapUnitsCount.")]
-        // public bool CheckAoEThunderclap { get; set; }
         #endregion
 
         // ========================================================================================
 
         #region Interrupts & Stuns
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.Hamstring.AddList)]
+        [Styx.Helpers.DefaultValue(Enum.Hamstring.Never)]
         [Category("Fury - Interrupts & Stuns")]
         [DisplayName("Use Hamstring On")]
         [Description("Select the usage of Hamstring - Does not use on bosses.")]
