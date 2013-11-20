@@ -200,7 +200,7 @@ namespace Waldo.Core
             Logger.DebugLog(" --> We have {0} spells on cooldown for {1}", SpellCooldownEntries.Count, SpellCooldownEntries.Values.FirstOrDefault().SpellCooldownName);
         }
 
-        private static double GetSpellCooldownTimeLeft(int spell)
+        internal static double GetSpellCooldownTimeLeft(int spell)
         {
             var guid = MeGuid + (ulong)spell;
 

@@ -121,6 +121,8 @@ namespace Waldo.Routines
         internal static bool ShadowBladesSND { get { return Me.HasCachedAura(5171, 0, 12000); } }
         internal static bool FucknoSND { get { return !Me.HasCachedAura(5171, 0); } }
         internal static bool IloveyouSND { get { return Me.HasCachedAura(5171, 0); } }
+        internal static double SNDSetting { get { return Spell.GetAuraTimeLeft(5171, Me); } }
+        internal static Double RuptureSetting { get { return Spell.GetAuraTimeLeft("Rupture", Me.CurrentTarget); } }
         internal static bool MySNDBabyIsFalling { get { return !Me.HasCachedAura(5171, 0, 2000); } }
         internal static bool SliceandDiceSub { get { return Me.HasCachedAuraDown(5171, 0, 4000); } }
         internal static bool SliceAndDiceSubGenerator { get { return Me.HasCachedAuraDown(5171, 0, 6000); } }
