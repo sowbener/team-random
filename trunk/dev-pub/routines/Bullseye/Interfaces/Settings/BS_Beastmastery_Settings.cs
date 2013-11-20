@@ -63,6 +63,14 @@ namespace Bullseye.Interfaces.Settings
         [Description("Select amount of units to use the cleave rotation for 3-4 targets")]
         public int AoEMultiShotCount { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Beastmastery - Ability Options")]
+        [DisplayName("AoE Number")]
+        [Description("Select amount of units to use the AoE Rotation")]
+        public int AoECount { get; set; }
+
+
         #endregion
 
         #region Item Options

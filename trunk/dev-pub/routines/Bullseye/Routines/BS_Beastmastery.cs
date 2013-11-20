@@ -44,9 +44,13 @@ namespace Bullseye.Routines
                                         BeastmasteryUtility(),
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive(),
-                                        new Decorator(ret => SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount > 4 && !UseQuasiAoE, BeastmasteryMt()),
-                                        new Decorator(ret => UseQuasiAoE, BeastmasteryCleave()),
-                                       new Decorator(ret => !UseQuasiAoE, BeastmasterySt()))),
+                                       new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && BsUnit.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, BeastmasteryMt()),
+                            new Decorator(ret => Me.CurrentTarget != null && (BsUnit.NearbyAttackableUnitsCount < SG.Instance.Beastmastery.AoECount || !SG.Instance.Beastmastery.CheckAoE),
+                                new PrioritySelector
+                                (
+                                    new Decorator(ret => !UseQuasiAoE, BeastmasterySt()),
+                                    new Decorator(ret => UseQuasiAoE, BeastmasteryCleave())
+                                )))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckAutoAttack, Lua.StartAutoAttack),
@@ -57,9 +61,13 @@ namespace Bullseye.Routines
                                         new PrioritySelector(
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive())),
-                                        new Decorator(ret => BsHotKeyManager.IsAoe && !UseQuasiAoE, BeastmasteryMt()),
-                                        new Decorator(ret => BsHotKeyManager.IsAoe && UseQuasiAoE, BeastmasteryCleave()),
-                                        new Decorator(ret => !BsHotKeyManager.IsAoe, BeastmasterySt()))));
+                                        new Decorator(ret => BsHotKeyManager.IsAoe, BeastmasteryMt()),
+                                         new Decorator
+                                   (ret => !BsHotKeyManager.IsAoe, new PrioritySelector
+                                   (
+                                    new Decorator(ret => !BsHotKeyManager.IsSpecialKey, BeastmasterySt()),
+                                    new Decorator(ret => BsHotKeyManager.IsSpecialKey, BeastmasteryCleave())
+                                )))));
             }
         }
         #endregion
