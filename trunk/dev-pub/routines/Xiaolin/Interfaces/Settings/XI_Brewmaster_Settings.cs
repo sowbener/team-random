@@ -41,6 +41,13 @@ namespace Xiaolin.Interfaces.Settings
 
 
         [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Use Breath of Fire")]
+        public bool CheckBreathofFire { get; set; }
+
+
+        [Setting]
         [Styx.Helpers.DefaultValue(50)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Dampen Harm HP Percent")]

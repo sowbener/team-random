@@ -156,9 +156,9 @@ namespace Xiaolin.Routines
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => Lua.PlayerChi < 4, ChiBuilder()),
-            new Decorator(ret => ShuffleSetting <= 3, new ActionAlwaysSucceed()),        
-            Spell.Cast("Rushing Jade Wind"),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire),
+            new Decorator(ret => ShuffleSetting <= 3, new ActionAlwaysSucceed()),
+            Spell.Cast("Spinning Crane Kick"),
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
             Spell.Cast("Chi Wave"),
             Spell.Cast("Guard", ret => NeedGuard),
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
