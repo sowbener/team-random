@@ -43,7 +43,7 @@ namespace Xiaolin.Routines
                                         BrewmasterUtility(),
                                         I.BrewmasterUseItems(),
                                         BrewmasterOffensive(),
-                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP))),
+                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && U.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
@@ -52,7 +52,7 @@ namespace Xiaolin.Routines
                                         new Decorator(ret => Me.HealthPercent < 100, BrewmasterDefensive()),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts && U.CanInterrupt, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
-                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP))),
+                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
                                         new Decorator(ret => XIHotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                         I.BrewmasterUseItems(),
