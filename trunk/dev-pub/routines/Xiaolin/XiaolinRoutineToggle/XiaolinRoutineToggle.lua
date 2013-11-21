@@ -86,7 +86,7 @@ function RoutineToggles_OnUpdate(self, elapsed)
 
 	
 	if (self.TimeSinceLastUpdate > 1.0) then
-		Xiaolin_FrameText:SetText("[Xiaolin' Combat Routines]\n|cffFFFFFFElusiveBrew: "..ebStatus.."\n|cffFFFFFFCooldowns: "..cStatus.."\n|cffFFFFFFAuto-Dizzling: "..adStatus.."\n|cffFFFFFFAoE: "..aStatus.."\n"|cffFFFFFFPause: "..pStatus.."\n");
+		Xiaolin_FrameText:SetText("[Xiaolin' Combat Routines]\n|cffFFFFFFElusiveBrew: "..ebStatus.."\n|cffFFFFFFCooldowns: "..cStatus.."\n|cffFFFFFFAuto-Dizzling: "..adStatus.."\n|cffFFFFFFAoE: "..aStatus.."\n"|cffFFFFFFPause: "..pStatus.."\n);
 	end
 end 	
 

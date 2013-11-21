@@ -1,48 +1,19 @@
-﻿#region Revision info
-
-/*
- * $Author: wulf_ $
- * $Date: 2013-09-14 10:59:10 +1000 (Sat, 14 Sep 2013) $
- * $ID$
- * $Revision: 201 $
- * $LastChangedBy: wulf_ $
- * $ChangesMade$
- */
-
-#endregion Revision info
-
-using JetBrains.Annotations;
-using Xiaolin.Core;
-using Xiaolin.Helpers;
-using Logger = Xiaolin.Helpers.XILogger;
-using Styx;
-using Styx.Common;
-using Styx.WoWInternals;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-
+using JetBrains.Annotations;
+using Styx;
+using Styx.Common;
+using Styx.WoWInternals;
+using Logger = Xiaolin.Helpers.XILogger;
 namespace Xiaolin.Core
 {
     [UsedImplicitly]
     internal class CombatLogHandler
     {
-        /*
-         * CombatLogHandler.Register("SPELL_AURA_APPLIED", HandleAuraUpdate);
-         * CombatLogHandler.Register("SPELL_AURA_REMOVED", HandleAuraUpdate);
-         *
-
-        private void HandleAuraUpdate(CombatLogEventArgs args)
-        {
-            var guid = args.SourceGuid;
-            // update the auras on this unit...
-        }
-
-         */
-
-        // Credits to Apoc for this class...I just fixed a few bugs.
+        // Credits to Apoc and Wulf for this class!!!
 
         //public static BossEncounter CurrentBossEncounter { get; set; }
 
@@ -128,7 +99,7 @@ namespace Xiaolin.Core
                         break;
 
                     case "ENVIRONMENTAL":
-                        if (index < args.Args.Length) a.EnvironmentalType = (EnvironmentalType)Enum.Parse(typeof(EnvironmentalType), args.Args[index++].ToString(), true);
+                        if (index < args.Args.Length) a.EnvironmentalType = (EnvironmentalType)System.Enum.Parse(typeof(EnvironmentalType), args.Args[index++].ToString(), true);
                         break;
                 }
 
@@ -153,7 +124,7 @@ namespace Xiaolin.Core
 
                         case "SHIELD_MISSED": // DAMAGE_SHIELD_MISSED
                         case "MISSED":
-                            if (index < args.Args.Length) a.MissType = (MissType)Enum.Parse(typeof(MissType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.MissType = (MissType)System.Enum.Parse(typeof(MissType), args.Args[index++].ToString(), true);
                             if (index < args.Args.Length) a.IsOffHand = Convert.ToBoolean(args.Args[index++]);
                             // AmountMissed (probably not there)
                             break;
@@ -191,7 +162,7 @@ namespace Xiaolin.Core
                             if (index < args.Args.Length) a.ExtraSpellId = (int)(double)args.Args[index++];
                             if (index < args.Args.Length) a.ExtraSpellName = args.Args[index++].ToString();
                             if (index < args.Args.Length) a.ExtraSchool = (WoWSpellSchool)(double)args.Args[index++];
-                            if (index < args.Args.Length) a.AuraType = (AuraType)Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             break;
 
                         case "EXTRA_ATTACKS":
@@ -202,12 +173,12 @@ namespace Xiaolin.Core
                         case "AURA_REMOVED":
                         case "AURA_REFRESH":
                         case "AURA_BROKEN":
-                            if (index < args.Args.Length) a.AuraType = (AuraType)Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             break;
 
                         case "AURA_APPLIED_DOSE":
                         case "AURA_REMOVED_DOSE":
-                            if (index < args.Args.Length) a.AuraType = (AuraType)Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
+                            if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
                             break;
 
@@ -276,15 +247,15 @@ namespace Xiaolin.Core
                         }
                         catch (Exception ex)
                         {
-                            Logger.DebugLog("{0}", ex);
+                            Logger.DiagLogW("{0}", ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.DebugLog(args.Args[1] + ", Index: " + index);
-                Logger.DebugLog("{0}", ex);
+                Logger.DiagLogW(args.Args[1] + ", Index: " + index);
+                Logger.DiagLogW("{0}", ex);
             }
         }
 
@@ -365,7 +336,7 @@ namespace Xiaolin.Core
                 // Pop in our new one. This avoids a shitload of events being thrown at us, that we really don't care about.
                 Lua.Events.AddFilter("COMBAT_LOG_EVENT_UNFILTERED", sb.ToString().TrimEnd(" or ".ToArray()));
 
-                Logger.DebugLog(" Removed combat filter:  {0}", combatLogEventName);
+                Logger.DiagLogW(" Removed combat filter:  {0}", combatLogEventName);
             }
         }
     }
@@ -418,7 +389,6 @@ namespace Xiaolin.Core
         Reflect,
         Resist
     }
-
 
     public enum AuraType
     {

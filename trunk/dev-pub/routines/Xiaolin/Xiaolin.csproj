@@ -7,8 +7,8 @@
     <ProjectGuid>{8A25D1BD-CF0C-4DC2-A061-329FA143D4A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bullseye</RootNamespace>
-    <AssemblyName>Bullseye</AssemblyName>
+    <RootNamespace>Xiaolin</RootNamespace>
+    <AssemblyName>Xiaolin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -63,13 +63,13 @@
   <ItemGroup>
     <Compile Include="Core\XI_CombatLogHandler.cs" />
     <Compile Include="Core\XI_CooldownWatcher.cs" />
+    <Compile Include="Helpers\XI_GuardTracker.cs" />
     <Compile Include="Helpers\XI_PerformenceLogger.cs" />
     <Compile Include="Routines\XI_Brewmaster.cs" />
     <Compile Include="Xiaolin.cs" />
     <Compile Include="Core\XI_Item.cs" />
     <Compile Include="Core\XI_Spell.cs" />
     <Compile Include="Core\XI_Unit.cs" />
-    <Compile Include="Helpers\XI_CombatLog.cs" />
     <Compile Include="Helpers\XI_Throttle.cs" />
     <Compile Include="Helpers\XI_EncounterSpecifics.cs" />
     <Compile Include="Helpers\XI_Enum.cs" />

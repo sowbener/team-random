@@ -42,9 +42,22 @@ namespace Xiaolin.Core
             get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
         }
 
+        internal static IEnumerable<WoWUnit> AggroUnits
+        {
+            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => u.Aggro && u.Attackable && !u.IsDead && !u.IsFriendly && u.CanSelect); }
+        }
+
         internal static IEnumerable<WoWUnit> AttackableMeleeUnits
         {
             get { return AttackableUnits.Where(u => u.IsWithinMeleeRange); }
+        }
+
+
+        internal static IEnumerable<WoWUnit> NearbyAggroUnits(WoWPoint fromLocation, double radius)
+        {
+            var hostile = AggroUnits;
+            var maxDistance = radius * radius;
+            return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
         }
 
         internal static IEnumerable<WoWUnit> NearbyAttackableUnits(WoWPoint fromLocation, double radius)
@@ -63,10 +76,19 @@ namespace Xiaolin.Core
         }
 
         public static int NearbyAttackableUnitsCount;
+
+        public static int NearbyAggroUnitsCount;
+
         public static void GetNearbyAttackableUnitsCount()
         {
             if (Me.CurrentTarget != null)
                 NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 20).Count();
+        }
+
+        public static void GetNearbyAggroUnitsCount()
+        {
+            if (Me.CurrentTarget != null)
+                NearbyAggroUnitsCount = NearbyAggroUnits(StyxWoW.Me.Location, 20).Count();
         }
 
         internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Blood Plague")) >= 3; } }

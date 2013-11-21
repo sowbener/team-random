@@ -55,6 +55,7 @@ namespace Xiaolin
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         internal static readonly Version Revision = new Version(1, 0, 9);
+        internal static double _initap = 0;
 
         internal static readonly string XIName = "Xiaolin - IR " + Revision;
 
@@ -99,6 +100,8 @@ namespace Xiaolin
               
                 // Double cast shit
                 Spell.PulseDoubleCastEntries();
+               if (!Me.HasAura(120267) && !Me.Combat)
+               _initap = StyxWoW.Me.AttackPower;
 
             }
 
@@ -132,8 +135,13 @@ namespace Xiaolin
             /* Gather required information */
             XILogger.StatCounter();
             XILogger.LogTimer(500);
+
             //Cooldownwatcher
             CooldownWatcher.Initialize();
+            CombatLogHandler.Initialize();
+            XILua.PopulateSecondryStats();
+            _initap = StyxWoW.Me.AttackPower;
+
 
             /* Start Combat */
             PreBuffSelector();
