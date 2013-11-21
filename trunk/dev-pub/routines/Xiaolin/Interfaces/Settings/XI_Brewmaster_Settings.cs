@@ -115,13 +115,6 @@ namespace Xiaolin.Interfaces.Settings
         public int ChiWavePercent { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(4)]
-        [Category("Brewmaster - Ability Options")]
-        [DisplayName("Spinning Crane AoE Count")]
-        [Description("Changes the Count to use Spinning Crane Kick")]
-        public int SpinningCraneKickCount { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(6)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Healing Sphere HP %")]

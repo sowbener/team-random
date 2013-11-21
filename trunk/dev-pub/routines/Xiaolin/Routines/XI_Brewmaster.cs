@@ -38,12 +38,14 @@ namespace Xiaolin.Routines
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
-                                        new Decorator(ret => Me.HealthPercent < 100, BrewmasterDefensive()),
+                                        new Decorator(ret => Me.HealthPercent < 100, 
+                                        new PrioritySelector(
+                                            Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
+                                            BrewmasterDefensive())),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts && U.CanInterrupt, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
                                         I.BrewmasterUseItems(),
                                         BrewmasterOffensive(),
-                                        new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && U.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
@@ -93,21 +95,19 @@ namespace Xiaolin.Routines
 
         private static bool NeedElusiveBrew { get { return XIHotKeyManager.ElusiveBrew && Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
 
-        private static bool NeedBuildStacksForGaurd { get { return !Me.HasAura(118636) || !Me.HasAura(125359); } }
+        private static bool NeedBuildStacksForGaurd { get { return Lua.PlayerPower <= 30 || (Lua.PlayerChi >= 1 && !Me.HasAura(118636)); } }
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && XITalentManager.HasTalent(16); } }
 
-        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting < 3 || Lua.PlayerChi >= 4; } }
+        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 4; } }
 
         private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || XITalentManager.HasGlyph("Touch of Death")); } }
 
         private static bool NeedDizzyingHaze { get { return Lua.PlayerPower >= 40 && CanApplyDizzyingHaze; } }
 
-        private static bool NeedSpinningCraneKick { get { return XIUnit.NearbyAttackableUnitsCount >= MonkSettings.SpinningCraneKickCount && ShuffleSetting > 4; } }
-
         private static bool CanJab { get { return Styx.WoWInternals.WoWSpell.FromId(121253).Cooldown; } }
 
-        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting > 2; } }
+        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting >= 6; } }
 
         private static bool NeedChiWave { get { return XITalentManager.HasTalent(4); } }
 
@@ -139,11 +139,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
-            new Decorator(ret => (!Me.HasAura(115307) || ShuffleSetting <= 3) && Lua.PlayerChi < 4, ChiBuilder()),
-            new Decorator(ret => ShuffleSetting <= 3, new ActionAlwaysSucceed()),
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
-            Spell.Cast("Chi Wave"),
-            Spell.Cast("Guard", ret => GuardTracker.GuardOK),
             Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 4 && MonkSettings.UseRJWSingleTarget),
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
@@ -172,6 +168,8 @@ namespace Xiaolin.Routines
                         return new PrioritySelector(
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
+                     Spell.Cast("Chi Wave"),
+                     Spell.Cast("Guard", ret => GuardTracker.GuardOK),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
                      I.BrewmasterUseHealthStone(),
