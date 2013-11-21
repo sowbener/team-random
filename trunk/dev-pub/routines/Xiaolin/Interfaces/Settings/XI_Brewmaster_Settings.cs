@@ -37,7 +37,22 @@ namespace Xiaolin.Interfaces.Settings
         [Styx.Helpers.DefaultValue(true)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Use RJW on Single Target")]
+        [Description("Uses Rushing Jade Wind on Single Target")]
         public bool UseRJWSingleTarget { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Use Rushing Jade Wind / Spinning Crane Kick")]
+        [Description("Enables usage of Rushing Jade Wind or Spinning Crane Kick on AoE")]
+        public bool CheckRJW { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(6)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Rushing Jade Wind / Spinning Crane Kick Count")]
+        [Description("Changes the amount of units to use RJW or SCK")]
+        public int RJWCount { get; set; }
 
 
         [Setting]

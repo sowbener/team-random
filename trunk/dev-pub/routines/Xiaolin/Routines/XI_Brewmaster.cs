@@ -157,7 +157,7 @@ namespace Xiaolin.Routines
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => Lua.PlayerChi < 4, ChiBuilder()),
             new Decorator(ret => ShuffleSetting <= 3, new ActionAlwaysSucceed()),
-            Spell.Cast("Spinning Crane Kick"),
+            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && MonkSettings.CheckRJW),
             Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
             Spell.Cast("Chi Wave"),
             Spell.Cast("Guard", ret => NeedGuard),
