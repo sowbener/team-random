@@ -107,10 +107,10 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Expel Harm", ret => Me.HealthPercent >= SG.Instance.Windwalker.ExpelHarmHP),
-                Spell.Cast("Fortifying Brew", ret => Me.HealthPercent >= SG.Instance.Windwalker.FortifyingBrewHP),
+                Spell.Cast("Expel Harm", ret => Me.HealthPercent <= SG.Instance.Windwalker.ExpelHarmHP),
+                Spell.Cast("Fortifying Brew", ret => Me.HealthPercent <= SG.Instance.Windwalker.FortifyingBrewHP),
            //     Spell.Cast("Healing Sphere", ret => Me, ret => Me.HealthPercent <= 90),
-                Spell.Cast("Touch of Karma", ret => Me.HealthPercent >= SG.Instance.Windwalker.TouchofKarmaHP),
+                Spell.Cast("Touch of Karma", ret => Me.HealthPercent <= SG.Instance.Windwalker.TouchofKarmaHP),
                 I.WindwalkerUseHealthStone()
                 );
         }
