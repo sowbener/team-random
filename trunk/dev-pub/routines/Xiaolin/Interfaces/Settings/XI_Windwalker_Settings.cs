@@ -49,6 +49,29 @@ namespace Xiaolin.Interfaces.Settings
         [Description("Select the usage of your class racials - Only DPS abilities (Buffs & Attacks).")]
         public XIEnum.AbilityTrigger ClassRacials { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(20)]
+        [Category("Windwalker - Item Options")]
+        [DisplayName("Expel Harm %")]
+        [Description("Select the use-on HP for Expel Harm usage.")]
+        public int ExpelHarmHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(20)]
+        [Category("Windwalker - Item Options")]
+        [DisplayName("Fortifying Brew  %")]
+        [Description("Select the use-on HP for Fortifying Brew usage.")]
+        public int FortifyingBrewHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(20)]
+        [Category("Windwalker - Item Options")]
+        [DisplayName("Touch of Karma %")]
+        [Description("Select the use-on HP for Touch of Karma usage.")]
+        public int TouchofKarmaHP { get; set; }
+
+
+
         #endregion
 
         #region Item Options

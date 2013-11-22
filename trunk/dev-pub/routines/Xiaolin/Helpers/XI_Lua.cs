@@ -132,6 +132,34 @@ namespace Xiaolin.Helpers
             }
         }
 
+        public static double LuaGetSpellCharges()
+        {
+            return Lua.GetReturnVal<int>("return GetSpellCharges(115399)", 0);
+        }
+
+        public static double GetSpellRechargeTime(int spellId, int rechargeTime)
+        {
+            try
+            {
+                // currentCharges, maxCharges, timeLastCast, cooldownDuration = GetSpellCharges(spellId or spellName)
+                double val = Double.Parse(Styx.WoWInternals.Lua.GetReturnValues("local x=select(3, GetSpellCharges(" + spellId + ")); if x==nil then return 999 else return GetTime()-x end")[0]);
+
+                if (val > 0)
+                {
+                    return (rechargeTime - val);
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch
+            {
+                Logger.CombatLog("Lua failed in GetSpellRechargeTime");
+                return 999;
+            }
+        }
+
         public static double PlayerChi
         {
             get

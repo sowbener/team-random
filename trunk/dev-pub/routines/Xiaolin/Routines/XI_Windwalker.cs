@@ -2,6 +2,7 @@
 using Xiaolin.Core;
 using Xiaolin.Helpers;
 using Xiaolin.Managers;
+using System.Linq;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
@@ -71,6 +72,9 @@ namespace Xiaolin.Routines
         internal static double ComboBreakerTpRemains { get { return Spell.GetMyAuraTimeLeft(118864, Me); } }
         internal static double RisingSunKickDebuffRemains { get { return Spell.GetMyAuraTimeLeft(130320, Me.CurrentTarget); } }
         internal static bool TigerEyeUseDown { get { return !Me.HasAura(116740); } }
+        internal static double TigerEyeBrewStacks { get { return Spell.GetAuraStack(Me, 125195); } }
+
+        public static int MaxChi { get { return XITalentManager.HasTalent(8) ? 5 : 4; } } // 
 #endregion
 
         #region Rotations
@@ -85,8 +89,7 @@ namespace Xiaolin.Routines
                 Spell.Cast("Chi Wave", ret => Lua.TimeToEnergyCap() > 2),
                 Spell.Cast("Blackout Kick", ret => ComboBreakerBoKUp),
                 Spell.Cast("Tiger Palm", ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
-                Spell.Cast("Jab", ret => Lua.PlayerChi < 3 && TalentAscensionEnabled),
-                Spell.Cast("Jab", ret => !TalentAscensionEnabled && Lua.PlayerChi <= 2),
+                Spell.Cast("Jab", ret => MaxChi - Lua.PlayerChi >= 2),
                 Spell.Cast("Blackout Kick", ret => !RisingSunKickReady));
 
         }
@@ -95,7 +98,7 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
                 Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent),
-                Spell.Cast("Storm, Earth, and Fire"),
+             //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }
 
@@ -104,6 +107,10 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerDefensive()
         {
             return new PrioritySelector(
+                Spell.Cast("Expel Harm", ret => Me.HealthPercent >= SG.Instance.Windwalker.ExpelHarmHP),
+                Spell.Cast("Fortifying Brew", ret => Me.HealthPercent >= SG.Instance.Windwalker.FortifyingBrewHP),
+           //     Spell.Cast("Healing Sphere", ret => Me, ret => Me.HealthPercent <= 90),
+                Spell.Cast("Touch of Karma", ret => Me.HealthPercent >= SG.Instance.Windwalker.TouchofKarmaHP),
                 I.WindwalkerUseHealthStone()
                 );
         }
@@ -112,13 +119,14 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerOffensive()
         {
             return new PrioritySelector(
-                //actions+=/tigereye_brew,if=buff.tigereye_brew_use.down&cooldown.rising_sun_kick.remains=0&chi>=2&target.debuff.rising_sun_kick.remains&buff.tiger_power.remains
-            //   Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && CooldownWatcher.GetSpellCooldownTimeLeft(107428) < 1 && Lua.PlayerChi >= 2 && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
-          //          (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-          //          (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
-         //           (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.Always)
-         //           )),
-               Spell.Cast("Chi Brew", ret => (TalentChiBrewEnabled && Lua.PlayerChi == 0) && (
+               Spell.Cast("Tigereye Brew", ret => ((TigerEyeUseDown && TigerEyeBrewStacks == 20) || (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) && TigerEyeUseDown) || (TigerEyeUseDown && Lua.PlayerChi >= 2 && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || TigerEyeBrewStacks >= 15 || Me.CurrentTarget.HealthPercent < 20) && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1)) && (
+                  (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                   (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.Always)
+                    )),
+                //LuaGetSpellCharges()
+                //actions+=/chi_brew,if=talent.chi_brew.enabled&chi<=2&(trinket.proc.agility.react|(charges=1&recharge_time<=10)|charges=2|target.time_to_die<charges*10)
+               Spell.Cast("Chi Brew", ret => ((TalentChiBrewEnabled && Lua.PlayerChi <= 2) && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || (Lua.LuaGetSpellCharges() == 1 && Lua.GetSpellRechargeTime(115399, 45) <= 10) || Lua.LuaGetSpellCharges() == 2 || (Lua.LuaGetSpellCharges() > 1 && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10))) && (
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.Always)

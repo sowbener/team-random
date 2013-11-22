@@ -40,7 +40,7 @@ namespace Xiaolin.Routines
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, 
                                         new PrioritySelector(
-                                            Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
+                                            Spell.Cast("Elusive Brew", ret => XIUnit.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
                                             BrewmasterDefensive())),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts && U.CanInterrupt, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
