@@ -4,6 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Styx.Helpers;
 
 namespace Tyrael.Shared
 {
@@ -72,6 +73,7 @@ namespace Tyrael.Shared
         public TyraelInterface()
         {
             InitializeComponent();
+            GlobalSettings.Instance.Load();
             TyraelSettings.Instance.Load();
 
             comboModifierKey.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Alt, "Alt - Mod"));
@@ -93,10 +95,10 @@ namespace Tyrael.Shared
             comboPauseKey.Items.Add(new CboItem((int)Keys.C, "C"));
             SetComboBoxEnum(comboPauseKey, (int)TyraelSettings.Instance.PauseKeyChoice);
 
-            TPSTrackBar.Value = TyraelSettings.Instance.HonorbuddyTps;
-            HonorbuddyTps = TyraelSettings.Instance.HonorbuddyTps;
+            TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
+            HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
 
-            checkFrameLock.Checked = TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True;
+            checkFrameLock.Checked = GlobalSettings.Instance.UseFrameLock;
 
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
@@ -135,19 +137,19 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Enables TPS scaling in Tyrael.");
         }
 
-        private readonly int _var = TyraelSettings.Instance.HonorbuddyTps;
+        private readonly int _var = GlobalSettings.Instance.TicksPerSecond;
 
         private int HonorbuddyTps
         {
             get
             {
-                return TPSTrackBar.Value;
+                return (byte)TPSTrackBar.Value;
             }
             set
             {
-                Text = string.Format("Tyrael now ticks with {0} Ticks per Second.", value);
-                TpsLabel.Text = Text = string.Format("{0} Ticks per Second.", value);
-                TPSTrackBar.Value = value;
+                Text = string.Format("Tyrael now ticks with {0} Ticks per Second.", (byte)value);
+                TpsLabel.Text = Text = string.Format("{0} Ticks per Second.", (byte)value);
+                TPSTrackBar.Value = (byte)value;
             }
         }
 
@@ -158,13 +160,13 @@ namespace Tyrael.Shared
 
         private void TPSTrackBar_Scroll(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.HonorbuddyTps = TPSTrackBar.Value;
-            HonorbuddyTps = TPSTrackBar.Value;
+            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            HonorbuddyTps = (byte)TPSTrackBar.Value;
         }
 
         private void checkFrameLock_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.FrameLock = checkFrameLock.Checked ? TyraelUtilities.LockState.True : TyraelUtilities.LockState.False;
+            GlobalSettings.Instance.UseFrameLock = checkFrameLock.Checked;
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
@@ -204,11 +206,14 @@ namespace Tyrael.Shared
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            GlobalSettings.Instance.Save();
+
             TyraelSettings.Instance.Save();
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
-            TreeRoot.TicksPerSecond = (byte)TyraelSettings.Instance.HonorbuddyTps;
             Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ChatOutput 
@@ -219,7 +224,7 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Click to Move enabled!"
                     : "[Tyrael] Click to Move disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True
+                GlobalSettings.Instance.UseFrameLock
                     ? "[Tyrael] FrameLock enabled!"
                     : "[Tyrael] FrameLock disabled!");
             Logging.Write(Colors.DodgerBlue,

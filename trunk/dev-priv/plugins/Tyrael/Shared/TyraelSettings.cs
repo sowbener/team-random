@@ -38,14 +38,14 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(false)]
         public bool PluginPulsing { get; set; }
 
-        [Setting, DefaultValue(true)]
+        [Setting, DefaultValue(false)]
         public bool ScaleTps { get; set; }
 
-        [Setting, DefaultValue(30)]
-        public int HonorbuddyTps { get; set; }
+        //[Setting, DefaultValue(30)]
+        //public int HonorbuddyTps { get; set; }
 
-        [Setting, DefaultValue(TyraelUtilities.LockState.True)]
-        public TyraelUtilities.LockState FrameLock { get; set; }
+        //[Setting, DefaultValue(TyraelUtilities.LockState.True)]
+        //public TyraelUtilities.LockState FrameLock { get; set; }
 
         [Setting, DefaultValue(ModifierKeys.Alt)]
         public ModifierKeys ModKeyChoice { get; set; }
