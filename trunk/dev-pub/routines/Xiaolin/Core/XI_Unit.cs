@@ -82,7 +82,7 @@ namespace Xiaolin.Core
         public static void GetNearbyAttackableUnitsCount()
         {
             if (Me.CurrentTarget != null)
-                NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 20).Count();
+                NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
         }
 
         public static void GetNearbyAggroUnitsCount()

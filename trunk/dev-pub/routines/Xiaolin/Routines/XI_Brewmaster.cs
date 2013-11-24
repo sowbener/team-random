@@ -38,10 +38,8 @@ namespace Xiaolin.Routines
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
-                                        new Decorator(ret => Me.HealthPercent < 100, 
-                                        new PrioritySelector(
                                             Spell.Cast("Elusive Brew", ret => XIUnit.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
-                                            BrewmasterDefensive())),
+                                            BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts && U.CanInterrupt, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
                                         I.BrewmasterUseItems(),
@@ -51,7 +49,7 @@ namespace Xiaolin.Routines
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
-                                        new Decorator(ret => Me.HealthPercent < 100, BrewmasterDefensive()),
+                                        BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts && U.CanInterrupt, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
                                         new Decorator(ret => XIHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew", ret => Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
@@ -103,13 +101,18 @@ namespace Xiaolin.Routines
 
         private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || XITalentManager.HasGlyph("Touch of Death")); } }
 
-        private static bool NeedDizzyingHaze { get { return Lua.PlayerPower >= 40 && CanApplyDizzyingHaze; } }
+        private static bool NeedDizzyingHaze { get { return Lua.PlayerPower >= 40 && CanApplyDizzyingHaze && MonkSettings.UseDizzyingHaze; } }
 
         private static bool CanJab { get { return Styx.WoWInternals.WoWSpell.FromId(121253).Cooldown; } }
 
         private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting >= 6; } }
 
         private static bool NeedChiWave { get { return XITalentManager.HasTalent(4); } }
+
+        internal static Composite ClearDizzyingHaze()
+        {
+            return new Decorator(ret => StyxWoW.Me.HasPendingSpell("Dizzying Haze") && CanApplyDizzyingHaze, new Action(ret => Styx.WoWInternals.Lua.DoString("SpellStopTargeting()")));
+        }
 
         private static bool NeedHealingSphere { get { return Lua.PlayerPower >= 60 && Me.HealthPercent <= MonkSettings.HealingSpherePercent; } }
 
@@ -138,9 +141,10 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
-            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
             Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 4 && MonkSettings.UseRJWSingleTarget),
+            Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
 
@@ -151,12 +155,22 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
-            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && MonkSettings.CheckRJW),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
-            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
+            new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
+            Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
+           new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder()),
+            ClearDizzyingHaze(), // hackish but that fucking circle shit pisses me off.. -- wulf.
+            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && MonkSettings.CheckRJW && ShuffleSetting > 3),
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire)
                   );
         }
 
+
+        private static Composite HandleHealingCooldowns()
+        {
+            return new PrioritySelector(
+                    Spell.CastOnGround("Healing Sphere", ret => Me.Location, ret => NeedHealingSphere),
+                    I.BrewmasterUseHealthStone());
+        }
 
 
         internal static Composite BrewmasterDefensive()
@@ -166,9 +180,9 @@ namespace Xiaolin.Routines
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
                      Spell.Cast("Chi Wave"),
                      Spell.Cast("Guard", ret => GuardTracker.GuardOK),
+                     new Decorator(ret => Me.HealthPercent < 100, HandleHealingCooldowns()),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
-                     I.BrewmasterUseHealthStone(),
                      Spell.Cast("Zen Meditation", ret => NeedZenMeditation));
         }
 

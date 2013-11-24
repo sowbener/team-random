@@ -41,6 +41,13 @@ namespace Xiaolin.Interfaces.Settings
         public bool UseRJWSingleTarget { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Auto-Use Dizzying Haze")]
+        [Description("Uses Dizzying Haze")]
+        public bool UseDizzyingHaze { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Use Rushing Jade Wind / Spinning Crane Kick")]
