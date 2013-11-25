@@ -19,15 +19,9 @@ namespace Xiaolin.Interfaces.Settings
         [DisplayName("Set Black Ox Statue")]
         public bool SummonBlackOxStatue { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(6)]
-        [Category("Brewmaster - Ability Options")]
-        [DisplayName("Shuffle Timer")]
-        [Description("Changes the timer to use Shuffle")]
-        public int ShuffleSetting { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(90)]
+        [Styx.Helpers.DefaultValue(60)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Guard HP Percent")]
         [Description("Changes the HP Percent to use Guard")]
@@ -70,7 +64,7 @@ namespace Xiaolin.Interfaces.Settings
 
 
         [Setting]
-        [Styx.Helpers.DefaultValue(50)]
+        [Styx.Helpers.DefaultValue(80)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Dampen Harm HP Percent")]
         [Description("Changes the HP Percent to use Dampen Harm")]
@@ -78,7 +72,7 @@ namespace Xiaolin.Interfaces.Settings
 
 
         [Setting]
-        [Styx.Helpers.DefaultValue(60)]
+        [Styx.Helpers.DefaultValue(40)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Fortifying Brew HP %")]
         [Description("Changes the HP % to use Fortifying Brew")]
@@ -101,7 +95,7 @@ namespace Xiaolin.Interfaces.Settings
         public int ElusiveBrew { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(50)]
+        [Styx.Helpers.DefaultValue(90)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Elusive Brew HP %")]
         [Description("Changes the HP % to use Elusive Brew")]
@@ -115,14 +109,7 @@ namespace Xiaolin.Interfaces.Settings
         public int BrewWithZenSphere { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(99)]
-        [Category("Brewmaster - Ability Options")]
-        [DisplayName("Chi Wave HP %")]
-        [Description("Changes the HP % to use Chi Wave")]
-        public int ChiWavePercent { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(6)]
+        [Styx.Helpers.DefaultValue(0)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("Healing Sphere HP %")]
         [Description("Changes the HP % to use Healing Sphere")]
