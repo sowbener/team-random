@@ -143,7 +143,7 @@ namespace Xiaolin.Routines
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
-            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 4 && MonkSettings.UseRJWSingleTarget),
+            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 3 && MonkSettings.UseRJWSingleTarget),
             Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
