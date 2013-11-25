@@ -157,10 +157,10 @@ namespace Xiaolin.Routines
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
             Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
-           new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder()),
             ClearDizzyingHaze(), // hackish but that fucking circle shit pisses me off.. -- wulf.
             Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && MonkSettings.CheckRJW && ShuffleSetting > 3),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire)
+            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
+            new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder())
                   );
         }
 
@@ -219,7 +219,10 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterInterrupts()
         {
             {
-                return new PrioritySelector(
+                  return new PrioritySelector(
+                   new Throttle(1, System.TimeSpan.FromMilliseconds(G._random.Next(SG.Instance.General.InterruptStart, SG.Instance.General.InterruptEnd)), RunStatus.Failure,
+                    Spell.Cast("Spear Hand Strike", ret => (SG.Instance.General.InterruptList == XIEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == XIEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
                   );
             }
         }

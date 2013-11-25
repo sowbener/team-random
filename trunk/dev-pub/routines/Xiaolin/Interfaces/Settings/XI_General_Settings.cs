@@ -12,6 +12,32 @@ namespace Xiaolin.Interfaces.Settings
         {
         }
 
+        #region interrupt
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(700)]
+        [Category("General")]
+        [DisplayName("Interrupt Start")]
+        [Description("Select the interrupt start timer, DO NOT USE BELOW 700 MS.")]
+        public int InterruptStart { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1800)]
+        [Category("General")]
+        [DisplayName("Interrupt End")]
+        [Description("Select the interrupt end timer.")]
+        public int InterruptEnd { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(XIEnum.InterruptList.MoP)]
+        [Category("General")]
+        [DisplayName("Interrupt List")]
+        [Description("Select list over interrupts (Expension Pack).")]
+        public XIEnum.InterruptList InterruptList { get; set; }
+
+        #endregion
+
         #region General
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

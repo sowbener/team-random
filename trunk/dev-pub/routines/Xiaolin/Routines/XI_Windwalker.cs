@@ -168,7 +168,11 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerInterrupts()
         {
             {
-                return new PrioritySelector(
+                 return new PrioritySelector(
+                   new Throttle(1, System.TimeSpan.FromMilliseconds(G._random.Next(SG.Instance.General.InterruptStart, SG.Instance.General.InterruptEnd)), RunStatus.Failure,
+                    Spell.Cast("Spear Hand Strike", ret => (SG.Instance.General.InterruptList == XIEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == XIEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
+
                   );
             }
         }

@@ -48,6 +48,12 @@ namespace Xiaolin.Helpers
             OnBlTwHr
         }
 
+        public enum InterruptList
+        {
+            MoP,
+            NextExpensionPack
+        }
+
         public enum VcTrigger
         {
             Never,
