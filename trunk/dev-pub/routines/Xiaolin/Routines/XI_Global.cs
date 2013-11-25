@@ -37,7 +37,8 @@ namespace Xiaolin.Routines
         {
             return new PrioritySelector(
                 new Action(delegate { XISpell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { XIUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; })
+                new Action(delegate { XIUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Action(delegate { XIUnit.GetNearbyAggroUnitsCount(); return RunStatus.Failure; })
                 );
         }
 
