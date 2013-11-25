@@ -8,6 +8,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Styx.WoWInternals.WoWObjects;
 
 namespace Tyrael.Shared
 {
@@ -69,10 +70,15 @@ namespace Tyrael.Shared
         #endregion
 
         #region Others
-        public enum LockState
+        public enum Minify
         {
             True,
             False
+        }
+
+        public static bool IsViable(WoWObject wowObject)
+        {
+            return (wowObject != null) && wowObject.IsValid;
         }
 
         internal static void StatCounter()

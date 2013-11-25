@@ -103,8 +103,8 @@ namespace Tyrael.Shared
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
             checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
+            checkMinify.Checked = TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
-            checkScaleTps.Checked = TyraelSettings.Instance.ScaleTps;
         }
 
         private void checkChatOutput_MouseMove(object sender, MouseEventArgs e)
@@ -132,9 +132,9 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Enables plugins in Tyrael.");
         }
 
-        private void checkScaleTps_MouseMove(object sender, MouseEventArgs e)
+        private void checkMinify_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Enables TPS scaling in Tyrael.");
+            TpsLabel.Text = Text = string.Format("Minify reduces the stress on the PC when executing a routine.");
         }
 
         private readonly int _var = GlobalSettings.Instance.TicksPerSecond;
@@ -189,9 +189,9 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PluginPulsing = checkPlugins.Checked;
         }
 
-        private void checkScaleTps_CheckedChanged(object sender, EventArgs e)
+        private void checkMinify_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.ScaleTps = checkScaleTps.Checked;
+            TyraelSettings.Instance.Minify = checkMinify.Checked ? TyraelUtilities.Minify.True : TyraelUtilities.Minify.False;
         }
 
         private void comboModifierKey_SelectedIndexChanged(object sender, EventArgs e)
@@ -232,13 +232,13 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Continues Healing mode enabled!"
                     : "[Tyrael] Continues Healing mode disabled!");
             Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True
+                    ? "[Tyrael] Minify Performance Enhancer is enabled!"
+                    : "[Tyrael] Minify Performance Enhancer is disabled!");
+            Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.PluginPulsing
                     ? "[Tyrael] Plugins are enabled!"
                     : "[Tyrael] Plugins are disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.ScaleTps
-                    ? "[Tyrael] TPS scaling is enabled!"
-                    : "[Tyrael] TPS scaling is disabled!");
 
             Logging.Write(Colors.DodgerBlue, 
                     "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);

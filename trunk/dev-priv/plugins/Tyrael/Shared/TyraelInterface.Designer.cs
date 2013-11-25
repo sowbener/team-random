@@ -42,7 +42,7 @@
             this.NamePanel = new System.Windows.Forms.Panel();
             this.LabelName = new System.Windows.Forms.Label();
             this.TpsLabel = new System.Windows.Forms.Label();
-            this.checkScaleTps = new System.Windows.Forms.CheckBox();
+            this.checkMinify = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SettingsPanel.SuspendLayout();
@@ -138,7 +138,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(10, 83);
+            this.checkPlugins.Location = new System.Drawing.Point(10, 103);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -241,26 +241,26 @@
             this.TpsLabel.TabIndex = 1;
             this.TpsLabel.Text = "Tyrael";
             // 
-            // checkScaleTps
+            // checkMinify
             // 
-            this.checkScaleTps.AutoSize = true;
-            this.checkScaleTps.Enabled = false;
-            this.checkScaleTps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkScaleTps.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkScaleTps.Location = new System.Drawing.Point(10, 103);
-            this.checkScaleTps.Name = "checkScaleTps";
-            this.checkScaleTps.Size = new System.Drawing.Size(215, 21);
-            this.checkScaleTps.TabIndex = 9;
-            this.checkScaleTps.Text = "Enable Scale Ticks per Second";
-            this.checkScaleTps.UseVisualStyleBackColor = false;
-            this.checkScaleTps.CheckedChanged += new System.EventHandler(this.checkScaleTps_CheckedChanged);
-            this.checkScaleTps.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.checkScaleTps.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkScaleTps_MouseMove);
+            this.checkMinify.AutoSize = true;
+            this.checkMinify.Enabled = false;
+            this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.checkMinify.Location = new System.Drawing.Point(10, 83);
+            this.checkMinify.Name = "checkMinify";
+            this.checkMinify.Size = new System.Drawing.Size(107, 21);
+            this.checkMinify.TabIndex = 9;
+            this.checkMinify.Text = "Enable Minify";
+            this.checkMinify.UseVisualStyleBackColor = false;
+            this.checkMinify.CheckedChanged += new System.EventHandler(this.checkMinify_CheckedChanged);
+            this.checkMinify.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.checkMinify.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkMinify_MouseMove);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.checkScaleTps);
+            this.panel1.Controls.Add(this.checkMinify);
             this.panel1.Controls.Add(this.checkChatOutput);
             this.panel1.Controls.Add(this.checkClicktoMove);
             this.panel1.Controls.Add(this.checkHealingMode);
@@ -335,7 +335,7 @@
         private System.Windows.Forms.ComboBox comboModifierKey;
         private System.Windows.Forms.ComboBox comboPauseKey;
         private System.Windows.Forms.CheckBox checkClicktoMove;
-        private System.Windows.Forms.CheckBox checkScaleTps;
+        private System.Windows.Forms.CheckBox checkMinify;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
 
