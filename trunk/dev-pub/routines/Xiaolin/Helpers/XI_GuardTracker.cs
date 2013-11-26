@@ -161,7 +161,7 @@ namespace Xiaolin.Helpers
              
 
                 // If our attackpower beats the estimate then we do it.
-                var GuardShieldUp = predictedGuardValue + healthDeficit > fakeGuardValue && StyxWoW.Me.HealthPercent < 99;
+                var GuardShieldUp = predictedGuardValue > fakeGuardValue + healthDeficit && StyxWoW.Me.HealthPercent < 99;
 
                 return GuardShieldUp;
             }
