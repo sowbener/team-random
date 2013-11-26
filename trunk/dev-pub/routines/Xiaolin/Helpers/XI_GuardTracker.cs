@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Styx.Common;
 using Logger = Xiaolin.Helpers.XILogger;
+using SG = Xiaolin.Interfaces.Settings;
 
 namespace Xiaolin.Helpers
 {
@@ -141,10 +142,11 @@ namespace Xiaolin.Helpers
             {
                 double predictedGuardValue = 0.0;
                 double fakeGuardValue = 0.0;
+
                 double attackpower = StyxWoW.Me.AttackPower;
 
 
-                var healthDeficit = (StyxWoW.Me.MaxHealth - StyxWoW.Me.CurrentHealth);
+                var healthDeficit = (StyxWoW.Me.MaxHealth * SG.XISettings.Instance.Brewmaster.HPAPScale/100);
 
                 // This should return the predicted shield over the last 5 seconds
                 //[(Attack power * 1.971) + 14232]  
@@ -152,7 +154,6 @@ namespace Xiaolin.Helpers
                 fakeGuardValue = Math.Truncate(XIMain._initap * 2);
 
                 
-              //  [Xiaolin - IR 1.0.9]: DSTracker: RealGuardValue [0] >= minimumValue [35407] estimate [0] predictedGuardValue [70815]
              //    Logger.DebugLog("======================================================================================");
               //   Logger.DebugLog("DSTracker: PredictedGuardValue[{0}] >= attackpowerfake [{1}]", fakeGuardValue, predictedGuardValue);
             //    Logger.DebugLog("DSTracker: attackpowerlua[{0}] >= attackpowerapi [{1}]", attackpower, XIMain._initap);
@@ -160,7 +161,7 @@ namespace Xiaolin.Helpers
              
 
                 // If our attackpower beats the estimate then we do it.
-                 var GuardShieldUp = predictedGuardValue > fakeGuardValue && StyxWoW.Me.HealthPercent < 99;
+                var GuardShieldUp = predictedGuardValue + healthDeficit > fakeGuardValue && StyxWoW.Me.HealthPercent < 99;
 
                 return GuardShieldUp;
             }
