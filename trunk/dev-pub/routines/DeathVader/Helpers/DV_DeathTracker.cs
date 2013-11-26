@@ -204,8 +204,8 @@ namespace DeathVader.Helpers
 
                 //Logger.DebugLog("DSTracker: Total Damage [{0}]", damageOverFiveSeconds);
 
-                scentBloodStacks = StyxWoW.Me.AuraStackCount("Scent of Blood");
-                bloodChargeStacks = StyxWoW.Me.AuraStackCount("Blood Charge");
+                scentBloodStacks = DvSpell.GetAuraStackCount("Scent of Blood");
+                bloodChargeStacks = DvSpell.GetAuraStackCount("Blood Charge");
                 var healthDeficit = (StyxWoW.Me.MaxHealth - StyxWoW.Me.CurrentHealth);
 
                 // This should return the predicted shield over the last 5 seconds
@@ -257,7 +257,7 @@ namespace DeathVader.Helpers
                 // Luck of the Draw - MoP Dungeon bonus
                 if (StyxWoW.Me.HasAura("Luck of the Draw"))
                 {
-                    lotDStackcount = StyxWoW.Me.AuraStackCount("Luck of the Draw");
+                    lotDStackcount = DvSpell.GetAuraStackCount("Luck of the Draw");
                 }
                 luckOfTheDrawAmt = LUCK_OF_THE_DRAW_MOD * lotDStackcount;
 
