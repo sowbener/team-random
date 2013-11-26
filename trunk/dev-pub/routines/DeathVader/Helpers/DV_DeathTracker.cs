@@ -248,7 +248,7 @@ namespace DeathVader.Helpers
                 double vbHealingInc = 0.0;
                 double gsHealModifier = 0.0;
                 double luckOfTheDrawAmt = 0.0;
-                int lotDStackcount = 0;
+                uint lotDStackcount = 0;
 
                 // Vampiric Blood
                 double vbHealingIncModified = DvTalentManager.HasGlyph("Vampiric Blood") ? vbGlyphedHealingInc : vbUnglyphedHealingInc;
@@ -259,6 +259,7 @@ namespace DeathVader.Helpers
                 {
                     lotDStackcount = DvSpell.GetAuraStackCount("Luck of the Draw");
                 }
+
                 luckOfTheDrawAmt = LUCK_OF_THE_DRAW_MOD * lotDStackcount;
 
                 // Guardian Spirit - from priest
