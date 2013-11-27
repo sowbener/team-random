@@ -28,7 +28,7 @@ namespace Xiaolin.Interfaces.Settings
         public int GuardHPPercent { get; set; }
 
          [Setting]
-        [Styx.Helpers.DefaultValue(20)]
+        [Styx.Helpers.DefaultValue(10)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("HP AP Guard")]
         [Description("% of your total HP to be used as AP. Default 20")]
