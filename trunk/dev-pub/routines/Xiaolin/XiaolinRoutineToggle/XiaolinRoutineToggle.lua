@@ -18,8 +18,8 @@ function SlashCmdList.CDTOGGLE(msg, editbox) -- 4.
 	end
 end
 
-SLASH_CDTOGGLE1 = '/Def';
-function SlashCmdList.CDTOGGLE(msg, editbox) -- 4.
+SLASH_PAUSETOGGLE1 = '/Def';
+function SlashCmdList.PAUSETOGGLE(msg, editbox) -- 4.
 	if msg == "true" then
 		RoutineToggles.pauseStatus = true;
 	end
@@ -72,7 +72,7 @@ function RoutineToggles_OnUpdate(self, elapsed)
 		cStatus = "|cff00FF00Enabled";
 	end
 	if (RoutineToggles.pauseStatus == true) then
-	    pStatus = "cff00FF00Enabled";
+	    pStatus = "|cff00FF00Enabled";
 	end
 	if (RoutineToggles.autodizzlingStatus == true) then
 		adStatus = "|cff00FF00Enabled";
@@ -86,7 +86,7 @@ function RoutineToggles_OnUpdate(self, elapsed)
 
 	
 	if (self.TimeSinceLastUpdate > 1.0) then
-		Xiaolin_FrameText:SetText("[Xiaolin' Combat Routines]\n|cffFFFFFFElusiveBrew: "..ebStatus.."\n|cffFFFFFFCooldowns: "..cStatus.."\n|cffFFFFFFAuto-Dizzling: "..adStatus.."\n|cffFFFFFFAoE: "..aStatus.."\n"|cffFFFFFFPause: "..pStatus.."\n);
+		Xiaolin_FrameText:SetText("[Xiaolin]\n|cffFFFFFFElusiveBrew: "..ebStatus.."\n|cffFFFFFFCooldowns: "..cStatus.."\n|cffFFFFFFAuto-Dizzling: "..adStatus.."\n|cffFFFFFFAoE: "..aStatus.."\n|cffFFFFFFPause: "..pStatus.."\n");
 	end
 end 	
 

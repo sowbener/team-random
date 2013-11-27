@@ -100,7 +100,7 @@ namespace Xiaolin
               
                 // Double cast shit
                 Spell.PulseDoubleCastEntries();
-               if (!Me.HasAura(120267) && !Me.Combat)
+               if (!Me.Combat && !Me.HasAura(120267))
                _initap = StyxWoW.Me.AttackPower;
 
             }
