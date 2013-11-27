@@ -13,7 +13,7 @@ namespace Pokehbuddyplug
     {
         //private const string PbSvnUrl = "http://team-random.googlecode.com/svn/trunk/PokeBuddy/Pokehbuddy/"; // oude svn
         //private const string PbSvnUrl = "http://subversion.assembla.com/svn/team-random/trunk/dev-priv/plugins/Pokehbuddy/";  // private beta
-        private const string PbSvnUrl = "http://subversion.assembla.com/svn/team-random/trunk/dev-pub/plugins/Pokehbuddy/";  // public beta
+        private const string PbSvnUrl = "http://subversion.assembla.com/svn/team-random/trunk/release/plugins/Pokehbuddy/";  // public beta
         
 
         private static readonly Regex _linkPattern = new Regex(@"<li><a href="".+"">(?<ln>.+(?:..))</a></li>",
