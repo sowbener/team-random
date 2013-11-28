@@ -93,9 +93,11 @@ namespace Xiaolin.Routines
 
         private static bool NeedElusiveBrew { get { return XIHotKeyManager.ElusiveBrew && Spell.GetAuraStack(Me, 128939) > MonkSettings.ElusiveBrew && Me.HealthPercent <= MonkSettings.ElusiveBrewHP; } }
 
-        private static bool NeedBuildStacksForGaurd { get { return Lua.PlayerPower <= 30 || (Lua.PlayerChi >= 1 && !Me.HasAura(118636)); } }
+        private static bool NeedBuildStacksForGaurd { get { return Lua.PlayerChi >= 1 && !Me.HasAura(118636); } }
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && XITalentManager.HasTalent(16); } }
+
+        private static bool GuardOK { get { return Lua.PlayerChi >= 2 && (Me.AttackPower > (XIMain._initap + StyxWoW.Me.MaxHealth * MonkSettings.HPAPScale / 100)) && Me.HasAura(118636) && ShuffleSetting >= 1; } }
 
         private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 4; } }
 
@@ -129,8 +131,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.Cast("Keg Smash"),
             Spell.Cast("Expel Harm", ret => Me.HealthPercent <= 90 || Me.HealthPercent <= 35),
-            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
-            Spell.Cast("Tiger Palm", ret => Lua.JabOK() < 30)            
+            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35)        
                 );
 
         }
@@ -178,8 +179,8 @@ namespace Xiaolin.Routines
                         return new PrioritySelector(
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
+                     Spell.Cast("Guard", ret => GuardOK),
                      Spell.Cast("Chi Wave"),
-                     Spell.Cast("Guard", ret => GuardTracker.GuardOK),
                      new Decorator(ret => Me.HealthPercent < 100, HandleHealingCooldowns()),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),

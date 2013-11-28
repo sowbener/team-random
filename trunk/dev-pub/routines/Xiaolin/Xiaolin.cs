@@ -139,7 +139,6 @@ namespace Xiaolin
             //Cooldownwatcher
             CooldownWatcher.Initialize();
             CombatLogHandler.Initialize();
-            XILua.PopulateSecondryStats();
             _initap = StyxWoW.Me.AttackPower;
 
 

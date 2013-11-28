@@ -152,12 +152,15 @@ namespace Xiaolin.Helpers
                 //[(Attack power * 1.971) + 14232]  
                 predictedGuardValue = Math.Truncate(attackpower * 2);
                 fakeGuardValue = Math.Truncate(XIMain._initap * 2);
-
+               // [17:21:03.763 D] [Xiaolin - IR 1.1]: DSTracker: PredictedGuardValue[578] >= attackpowerfake [578]
+               // [[17:21:03.763 D] [Xiaolin - IR 1.1]: DSTracker: attackpowerlua[289] >= attackpowerapi [289]
+                // [[17:21:03.792 D] [Xiaolin - IR 1.1]: AP(): 289
                 
-             //    Logger.DebugLog("======================================================================================");
-              //   Logger.DebugLog("DSTracker: PredictedGuardValue[{0}] >= attackpowerfake [{1}]", fakeGuardValue, predictedGuardValue);
-            //    Logger.DebugLog("DSTracker: attackpowerlua[{0}] >= attackpowerapi [{1}]", attackpower, XIMain._initap);
-             //    Logger.DebugLog("======================================================================================");
+              //  Logger.DebugLog("======================================================================================");
+             //    Logger.DebugLog("DSTracker: PredictedGuardValue[{0}] >= attackpowerfake [{1}]", fakeGuardValue, predictedGuardValue);
+             //   Logger.DebugLog("DSTracker: attackpowerlua[{0}] >= attackpowerapi [{1}]", attackpower, XIMain._initap);
+            //    Logger.DebugLog("HealthTracker: HealthAP [{0}]", healthDeficit);
+            //     Logger.DebugLog("======================================================================================");
              
 
                 // If our attackpower beats the estimate then we do it.
