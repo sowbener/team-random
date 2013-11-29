@@ -51,6 +51,7 @@ namespace Shammy.Interfaces.Settings
         [Description("Select which buff you want on your Off-hand.")]
         public SmEnum.WeaponImbueO WeaponImbueSelectorO { get; set; }
 
+        [Setting]
         [Styx.Helpers.DefaultValue(SmEnum.AbilityTrigger.Always)]
         [Category("Enhancement - Ability Options")]
         [DisplayName("Feral Spirit")]
