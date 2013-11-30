@@ -20,6 +20,8 @@ namespace Xiaolin.Helpers
 
         private static bool AddingDamageTaken { get; set; }
         private static bool RemovingDamageTaken { get; set; }
+        private static bool VengeanceAP { get; set;  }
+
 
         public static void Initialize()
         {

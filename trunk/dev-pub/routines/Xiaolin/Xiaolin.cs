@@ -32,6 +32,7 @@ using Xiaolin.Managers;
 using JetBrains.Annotations;
 using Styx;
 using Styx.CommonBot;
+using System.Linq;
 using Styx.CommonBot.Routines;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
@@ -56,6 +57,8 @@ namespace Xiaolin
 
         internal static readonly Version Revision = new Version(1, 1);
         internal static double _initap = 0;
+        internal static double _NewAP = 0;
+        internal static double _NoModifierAP = 0;
 
         internal static readonly string XIName = "Xiaolin - IR " + Revision;
 
@@ -100,8 +103,11 @@ namespace Xiaolin
               
                 // Double cast shit
                 Spell.PulseDoubleCastEntries();
-               if (!Me.Combat && !Me.HasAura(120267))
+                if (!Me.Combat && !Me.HasAura(120267))
                _initap = StyxWoW.Me.AttackPower;
+                _NewAP = XILua.Vengeance(120267);
+                _NoModifierAP = StyxWoW.Me.AttackPower;
+
 
             }
 
@@ -140,6 +146,7 @@ namespace Xiaolin
             CooldownWatcher.Initialize();
             CombatLogHandler.Initialize();
             _initap = StyxWoW.Me.AttackPower;
+            _NewAP = StyxWoW.Me.AttackPower;
 
 
             /* Start Combat */

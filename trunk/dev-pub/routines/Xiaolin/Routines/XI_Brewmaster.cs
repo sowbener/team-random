@@ -97,7 +97,7 @@ namespace Xiaolin.Routines
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && XITalentManager.HasTalent(16); } }
 
-        private static bool GuardOK { get { return Lua.PlayerChi >= 2 && (Me.AttackPower > (XIMain._initap + StyxWoW.Me.MaxHealth * MonkSettings.HPAPScale / 100)) && Me.HasAura(118636) && ShuffleSetting >= 1; } }
+        private static bool GuardOK { get { return Lua.PlayerChi >= 2 && (XIMain._initap + XIMain._NewAP) > XIMain._initap + (StyxWoW.Me.MaxHealth * MonkSettings.HPAPScale / 100) && Me.HasAura(118636) && ShuffleSetting >= 1; } }
 
         private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 4; } }
 
@@ -107,7 +107,7 @@ namespace Xiaolin.Routines
 
         private static bool CanJab { get { return Styx.WoWInternals.WoWSpell.FromId(121253).Cooldown; } }
 
-        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting >= 6; } }
+        private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting >= 3; } }
 
         private static bool NeedChiWave { get { return XITalentManager.HasTalent(4); } }
 
@@ -131,7 +131,8 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.Cast("Keg Smash"),
             Spell.Cast("Expel Harm", ret => Me.HealthPercent <= 90 || Me.HealthPercent <= 35),
-            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35)        
+            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
+            Spell.Cast("Tiger Palm", ret => Lua.JabOK() <= 30 && ShuffleSetting > 3 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) >= 2)
                 );
 
         }
@@ -144,7 +145,7 @@ namespace Xiaolin.Routines
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
             Spell.Cast("Tiger Palm", ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
-            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting > 3 && MonkSettings.UseRJWSingleTarget),
+            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting >= 2 && MonkSettings.UseRJWSingleTarget),
             Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
@@ -159,7 +160,7 @@ namespace Xiaolin.Routines
             new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
             Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
             ClearDizzyingHaze(), // hackish but that fucking circle shit pisses me off.. -- wulf.
-            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && MonkSettings.CheckRJW && ShuffleSetting > 3),
+            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && ShuffleSetting >= 1),
             Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
             new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder())
                   );

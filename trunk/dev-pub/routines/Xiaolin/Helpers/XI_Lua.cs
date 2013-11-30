@@ -132,6 +132,24 @@ namespace Xiaolin.Helpers
             }
         }
 
+        public static double Vengeance(int spellid)
+        {
+            try
+            {
+                using (StyxWoW.Memory.AcquireFrame())
+                {
+                    var lua = String.Format("local vName,veng; vName=GetSpellInfo({0}); veng=select(15, UnitAura(\"player\", vName)); if veng==nil then return 0 else return veng end", spellid);
+                    var t = Double.Parse(Styx.WoWInternals.Lua.GetReturnValues(lua)[0]);
+                    return Math.Abs(t);
+                }
+            }
+            catch
+            {
+                Logger.FailLog(" Lua Failed in Vengeance");
+                return 0;
+            }
+        }
+
         public static double LuaGetSpellCharges()
         {
             return Lua.GetReturnVal<int>("return GetSpellCharges(115399)", 0);
