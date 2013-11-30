@@ -170,9 +170,9 @@ namespace DeathVader.Routines
                     (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Empower Rune Weapon", ret => (I.WieldsTwoHandedWeapons && CanEmpowerRuneWeapon) || (!I.WieldsTwoHandedWeapons && CanEmpowerRuneWeaponDW) && (
-                    (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
-                    (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.Always)
+                    (SG.Instance.Frost.EmpowerRuneWeapon == DvEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Frost.EmpowerRuneWeapon == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Frost.EmpowerRuneWeapon == DvEnum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (
                     (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
