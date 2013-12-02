@@ -1,5 +1,6 @@
 ﻿using Styx.Helpers;
 using System.ComponentModel;
+using Shammy.Helpers;
 
 namespace Shammy.Interfaces.Settings
 {
@@ -10,6 +11,33 @@ namespace Shammy.Interfaces.Settings
             : base(SmSettings.SettingsPath + "_General.xml")
         {
         }
+
+
+        #region interrupt
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(700)]
+        [Category("General")]
+        [DisplayName("Interrupt Start")]
+        [Description("Select the interrupt start timer, DO NOT USE BELOW 700 MS.")]
+        public int InterruptStart { get; set; }
+
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1800)]
+        [Category("General")]
+        [DisplayName("Interrupt End")]
+        [Description("Select the interrupt end timer.")]
+        public int InterruptEnd { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(SmEnum.InterruptList.MoP)]
+        [Category("General")]
+        [DisplayName("Interrupt List")]
+        [Description("Select list over interrupts (Expension Pack).")]
+        public SmEnum.InterruptList InterruptList { get; set; }
+
+        #endregion
 
         #region General
         [Setting]

@@ -17,6 +17,9 @@ namespace Shammy.Helpers
                 _s = ps;
             }
 
+
+         
+
             public override string ToString()
             {
                 return _s;
@@ -46,6 +49,12 @@ namespace Shammy.Helpers
             Always,
             OnBossDummy,
             OnBlTwHr
+        }
+
+        public enum InterruptList
+        {
+            MoP,
+            NextExpensionPack
         }
 
         public enum VcTrigger

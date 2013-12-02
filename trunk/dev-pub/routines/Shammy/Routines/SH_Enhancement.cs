@@ -201,9 +201,12 @@ namespace Shammy.Routines
 
         internal static Composite EnhancementInterrupts()
         {
-            return new PrioritySelector(
-                        Spell.Cast("Wind Shear", on => Me.CurrentTarget, ret => Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast)
-                      );
+            {
+                return new PrioritySelector(
+                   new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(SG.Instance.General.InterruptStart, SG.Instance.General.InterruptEnd)), RunStatus.Failure,
+                    Spell.Cast("Wind Shear", ret => (SG.Instance.General.InterruptList == SmEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == SmEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))));
+            }
         }
         #endregion
 

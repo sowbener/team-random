@@ -190,11 +190,12 @@ namespace Shammy.Routines
         {
             {
                 return new PrioritySelector(
-                    new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(500), RunStatus.Failure,
-                        Spell.Cast("Wind Shear", ret => Me.CurrentTarget != null && Me.CurrentTarget.CanInterruptCurrentSpellCast)
-                        ));
+                   new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(SG.Instance.General.InterruptStart, SG.Instance.General.InterruptEnd)), RunStatus.Failure,
+                    Spell.Cast("Wind Shear", ret => (SG.Instance.General.InterruptList == SmEnum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+                    (SG.Instance.General.InterruptList == SmEnum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))));
             }
         }
+
         #endregion
 
         #region Rotation - PvP
