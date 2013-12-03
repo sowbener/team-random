@@ -226,7 +226,7 @@ namespace FuryUnleashed.Core.Utilities
             WriteFile("");
             WriteFile("======= Other Info =======");
             WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
-            WriteFile("Weapon Speed: {0}", Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0));
+            //WriteFile("Weapon Speed: {0}", Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0));
         }
 
         private static Timer _fuTimer;
