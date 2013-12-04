@@ -199,7 +199,6 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region Fury-Spec Functions
-
         //public static bool StanceTracker()
         //{
         //    using (new PerformanceLogger("StanceTracker"))
