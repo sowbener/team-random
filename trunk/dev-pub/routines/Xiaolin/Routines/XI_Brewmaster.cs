@@ -99,7 +99,7 @@ namespace Xiaolin.Routines
 
         private static bool GuardOK { get { return Lua.PlayerChi >= 2 && (XIMain._initap + XIMain._NewAP) > XIMain._initap + (StyxWoW.Me.MaxHealth * MonkSettings.HPAPScale / 100) && Me.HasAura(118636) && ShuffleSetting >= 1; } }
 
-        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || ShuffleSetting <= 3 || Lua.PlayerChi >= 4; } }
+        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || Lua.PlayerChi > 3 || (ShuffleSetting <= 3 && Lua.PlayerChi >= 2); } }
 
         private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || XITalentManager.HasGlyph("Touch of Death")); } }
 
@@ -157,10 +157,11 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
             Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
             new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
             Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
             ClearDizzyingHaze(), // hackish but that fucking circle shit pisses me off.. -- wulf.
-            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && ShuffleSetting >= 1),
+            Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && (ShuffleSetting >= 1 && Me.HasAura(118636) && Me.HasAura(125359) || (ShuffleSetting >= 1 && Me.HealthPercent < 70 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) > 1))),
             Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
             new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder())
                   );
