@@ -57,6 +57,14 @@ namespace Bullseye.Interfaces.Settings
         public BsEnum.AbilityTrigger ClassRacials { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Beastmastery - Selectable Options")]
+        [DisplayName("Enable Tier4 Abilities (AoE)")]
+        [Description("Enables Tier4 Abilities to be used on AoE. Default is Enabled")]
+        public bool UseTier4AoE { get; set; }
+
+
+        [Setting]
         [Styx.Helpers.DefaultValue(2)]
         [Category("Beastmastery - Ability Options")]
         [DisplayName("Cleave Number")]

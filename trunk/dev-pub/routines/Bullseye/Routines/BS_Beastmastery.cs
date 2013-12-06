@@ -89,7 +89,6 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),    
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-                //actions+=/arcane_shot,if=(buff.thrill_of_the_hunt.react&!buff.beast_within.up&cooldown.bestial_wrath.remains=0&focus>80)|(buff.thrill_of_the_hunt.react&buff.beast_within.up)
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
@@ -113,7 +112,6 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
-                //actions+=/arcane_shot,if=(buff.thrill_of_the_hunt.react&!buff.beast_within.up&cooldown.bestial_wrath.remains=0&focus>80)|(buff.thrill_of_the_hunt.react&buff.beast_within.up)
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
@@ -128,6 +126,9 @@ namespace Bullseye.Routines
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.Cast("Fervor", ret => FervorReqs && SG.Instance.Beastmastery.UseTier4AoE),
+                Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90 && SG.Instance.Beastmastery.UseTier4AoE),
+                Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Multi-Shot"),              
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
