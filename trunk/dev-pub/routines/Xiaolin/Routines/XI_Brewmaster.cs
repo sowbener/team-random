@@ -71,7 +71,7 @@ namespace Xiaolin.Routines
 
         internal static double ShuffleSetting { get { return Spell.GetAuraTimeLeft(115307); } }
 
-        internal static bool CanUsePurifyingBrew { get { return ((Lua.PlayerChi >= 3 || Me.HasAura(138237)) && Me.HasAura(124273)) || (Me.HasAura(124274) && (ShuffleSetting > 4 || Lua.PlayerChi > 3)) || (Me.HasAura(124275) && (ShuffleSetting > 10 || Lua.PlayerChi > 3)); } }
+        internal static bool CanUsePurifyingBrew { get { return ((Lua.PlayerChi >= 3 || Me.HasAura(138237)) && Me.HasAura(124273)) || (Me.HasAura(124274) && (ShuffleSetting > 4 && Lua.PlayerChi > 3)) || (Me.HasAura(124275) && (ShuffleSetting > 10 && Lua.PlayerChi > 3)); } }
 
         internal static bool CanApplyDizzyingHaze { get { return XIUnit.NearbyAttackableUnits(Me.CurrentTarget.Location, 8).Any(x => !x.HasAura("Dizzying Haze") && !x.IsBoss && !x.IsFlying) && Me.HasAura("Shuffle"); } }
 
