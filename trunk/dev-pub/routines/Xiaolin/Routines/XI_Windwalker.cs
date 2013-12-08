@@ -90,6 +90,7 @@ namespace Xiaolin.Routines
                 Spell.Cast("Blackout Kick", ret => ComboBreakerBoKUp),
                 Spell.Cast("Tiger Palm", ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
                 Spell.Cast("Jab", ret => MaxChi - Lua.PlayerChi >= 2),
+                Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent),
                 Spell.Cast("Blackout Kick", ret => !RisingSunKickReady));
 
         }
