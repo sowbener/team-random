@@ -88,11 +88,12 @@
             this.StatusStrip.BackColor = System.Drawing.Color.White;
             this.StatusStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.StatusStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.StatusStrip.Font = new System.Drawing.Font("Calisto MT", 8.25F);
+            this.StatusStrip.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusStripText});
             this.StatusStrip.Location = new System.Drawing.Point(4, 585);
             this.StatusStrip.Name = "StatusStrip";
+            this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
             this.StatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.StatusStrip.Size = new System.Drawing.Size(1007, 23);
             this.StatusStrip.SizingGrip = false;
@@ -158,7 +159,7 @@
             this.debuggerpanel.BackColor = System.Drawing.Color.White;
             this.debuggerpanel.Location = new System.Drawing.Point(9, 415);
             this.debuggerpanel.Name = "debuggerpanel";
-            this.debuggerpanel.Size = new System.Drawing.Size(312, 26);
+            this.debuggerpanel.Size = new System.Drawing.Size(321, 26);
             this.debuggerpanel.TabIndex = 5;
             this.debuggerpanel.Click += new System.EventHandler(this.debuggerpanel_Click);
             // 
@@ -166,7 +167,7 @@
             // 
             this.HkMockingBannerLabel.AutoSize = true;
             this.HkMockingBannerLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkMockingBannerLabel.Location = new System.Drawing.Point(6, 91);
+            this.HkMockingBannerLabel.Location = new System.Drawing.Point(5, 91);
             this.HkMockingBannerLabel.Name = "HkMockingBannerLabel";
             this.HkMockingBannerLabel.Size = new System.Drawing.Size(111, 17);
             this.HkMockingBannerLabel.TabIndex = 28;
@@ -197,7 +198,7 @@
             // 
             this.HkSpecialLabel.AutoSize = true;
             this.HkSpecialLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkSpecialLabel.Location = new System.Drawing.Point(6, 362);
+            this.HkSpecialLabel.Location = new System.Drawing.Point(5, 362);
             this.HkSpecialLabel.Name = "HkSpecialLabel";
             this.HkSpecialLabel.Size = new System.Drawing.Size(122, 17);
             this.HkSpecialLabel.TabIndex = 26;
@@ -212,6 +213,7 @@
             this.ComboHkSpecial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.ComboHkSpecial.DropDownHeight = 110;
             this.ComboHkSpecial.DropDownWidth = 140;
+            this.ComboHkSpecial.Enabled = false;
             this.ComboHkSpecial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ComboHkSpecial.Font = new System.Drawing.Font("Century Gothic", 8.25F);
             this.ComboHkSpecial.FormattingEnabled = true;
@@ -228,7 +230,7 @@
             // 
             this.HkTier4AbilityLabel.AutoSize = true;
             this.HkTier4AbilityLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkTier4AbilityLabel.Location = new System.Drawing.Point(6, 151);
+            this.HkTier4AbilityLabel.Location = new System.Drawing.Point(5, 151);
             this.HkTier4AbilityLabel.Name = "HkTier4AbilityLabel";
             this.HkTier4AbilityLabel.Size = new System.Drawing.Size(81, 17);
             this.HkTier4AbilityLabel.TabIndex = 22;
@@ -262,7 +264,7 @@
             this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.SaveButton.Location = new System.Drawing.Point(9, 447);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(312, 23);
+            this.SaveButton.Size = new System.Drawing.Size(321, 23);
             this.SaveButton.TabIndex = 5;
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = false;
@@ -274,7 +276,7 @@
             // 
             this.HkShattThrowLabel.AutoSize = true;
             this.HkShattThrowLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkShattThrowLabel.Location = new System.Drawing.Point(6, 121);
+            this.HkShattThrowLabel.Location = new System.Drawing.Point(5, 121);
             this.HkShattThrowLabel.Name = "HkShattThrowLabel";
             this.HkShattThrowLabel.Size = new System.Drawing.Size(115, 17);
             this.HkShattThrowLabel.TabIndex = 20;
@@ -305,7 +307,7 @@
             // 
             this.HkPauseLabel.AutoSize = true;
             this.HkPauseLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkPauseLabel.Location = new System.Drawing.Point(6, 332);
+            this.HkPauseLabel.Location = new System.Drawing.Point(5, 332);
             this.HkPauseLabel.Name = "HkPauseLabel";
             this.HkPauseLabel.Size = new System.Drawing.Size(114, 17);
             this.HkPauseLabel.TabIndex = 18;
@@ -317,7 +319,7 @@
             // 
             this.HkAoELabel.AutoSize = true;
             this.HkAoELabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkAoELabel.Location = new System.Drawing.Point(6, 302);
+            this.HkAoELabel.Location = new System.Drawing.Point(5, 302);
             this.HkAoELabel.Name = "HkAoELabel";
             this.HkAoELabel.Size = new System.Drawing.Size(169, 17);
             this.HkAoELabel.TabIndex = 17;
@@ -329,7 +331,7 @@
             // 
             this.HkCooldownLabel.AutoSize = true;
             this.HkCooldownLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkCooldownLabel.Location = new System.Drawing.Point(6, 272);
+            this.HkCooldownLabel.Location = new System.Drawing.Point(5, 272);
             this.HkCooldownLabel.Name = "HkCooldownLabel";
             this.HkCooldownLabel.Size = new System.Drawing.Size(146, 17);
             this.HkCooldownLabel.TabIndex = 16;
@@ -341,7 +343,7 @@
             // 
             this.HkModifierLabel.AutoSize = true;
             this.HkModifierLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkModifierLabel.Location = new System.Drawing.Point(6, 242);
+            this.HkModifierLabel.Location = new System.Drawing.Point(5, 242);
             this.HkModifierLabel.Name = "HkModifierLabel";
             this.HkModifierLabel.Size = new System.Drawing.Size(127, 17);
             this.HkModifierLabel.TabIndex = 15;
@@ -448,7 +450,7 @@
             // 
             this.HkModeLabel.AutoSize = true;
             this.HkModeLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkModeLabel.Location = new System.Drawing.Point(6, 212);
+            this.HkModeLabel.Location = new System.Drawing.Point(5, 212);
             this.HkModeLabel.Name = "HkModeLabel";
             this.HkModeLabel.Size = new System.Drawing.Size(135, 17);
             this.HkModeLabel.TabIndex = 9;
@@ -460,7 +462,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(5, 185);
+            this.label4.Location = new System.Drawing.Point(4, 185);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(233, 19);
             this.label4.TabIndex = 8;
@@ -470,7 +472,7 @@
             // 
             this.HkHeroicLeapLabel.AutoSize = true;
             this.HkHeroicLeapLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkHeroicLeapLabel.Location = new System.Drawing.Point(6, 61);
+            this.HkHeroicLeapLabel.Location = new System.Drawing.Point(5, 61);
             this.HkHeroicLeapLabel.Name = "HkHeroicLeapLabel";
             this.HkHeroicLeapLabel.Size = new System.Drawing.Size(85, 17);
             this.HkHeroicLeapLabel.TabIndex = 7;
@@ -501,7 +503,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(5, 4);
+            this.label2.Location = new System.Drawing.Point(4, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(238, 19);
             this.label2.TabIndex = 5;
@@ -511,7 +513,7 @@
             // 
             this.HkDemoBannerLabel.AutoSize = true;
             this.HkDemoBannerLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkDemoBannerLabel.Location = new System.Drawing.Point(6, 31);
+            this.HkDemoBannerLabel.Location = new System.Drawing.Point(5, 31);
             this.HkDemoBannerLabel.Name = "HkDemoBannerLabel";
             this.HkDemoBannerLabel.Size = new System.Drawing.Size(141, 17);
             this.HkDemoBannerLabel.TabIndex = 4;
@@ -557,7 +559,7 @@
             // 
             // Interface
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1015, 612);
@@ -566,7 +568,7 @@
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.GeneralGrid);
             this.Controls.Add(this.LogoPicture);
-            this.Font = new System.Drawing.Font("Calisto MT", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Interface";
             this.ShowIcon = false;
