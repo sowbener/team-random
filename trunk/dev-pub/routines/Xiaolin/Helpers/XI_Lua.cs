@@ -150,6 +150,27 @@ namespace Xiaolin.Helpers
             }
         }
 
+        //local stagger = select(14, UnitAura("player", "moderate stagger", nil, "HARMFUL"));
+        public static double PurifyingBrew(int spellid)
+        {
+            try
+            {
+                using (StyxWoW.Memory.AcquireFrame())
+                {
+                    var lua = String.Format("local vName,brew; vName=GetSpellInfo({0}); brew=select(15, UnitDebuff(\"player\", vName, nil)); if brew==nil then return 0 else return brew end", spellid);
+                    var t = Double.Parse(Styx.WoWInternals.Lua.GetReturnValues(lua)[0]);
+                    return Math.Abs(t);
+                }
+            }
+            catch
+            {
+                Logger.FailLog(" Lua Failed in Purifying Brew");
+                return 0;
+            }
+        }
+
+
+
         public static double LuaGetSpellCharges()
         {
             return Lua.GetReturnVal<int>("return GetSpellCharges(115399)", 0);
@@ -245,6 +266,25 @@ namespace Xiaolin.Helpers
         public static double LuaGetEnergyRegen()
         {
             return Lua.GetReturnVal<float>("return GetPowerRegen()", 1);
+        }
+
+
+
+        public static double RJWOK()
+        {
+            double playerEnergy;
+            double ER_Rate;
+            double RJWCD;
+            double RJWISOK;
+
+            playerEnergy = XILua.PlayerPower;
+            ER_Rate = XILua.LuaGetEnergyRegen();
+            RJWCD = CooldownWatcher.GetSpellCooldownTimeLeft(116847);
+
+            RJWISOK = playerEnergy + (ER_Rate * RJWCD);
+
+            return RJWISOK;
+
         }
 
         public static double JabOK()

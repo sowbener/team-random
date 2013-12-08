@@ -31,8 +31,16 @@ namespace Xiaolin.Interfaces.Settings
         [Styx.Helpers.DefaultValue(10)]
         [Category("Brewmaster - Ability Options")]
         [DisplayName("HP AP Guard")]
-        [Description("% of your total HP to be used as AP. Default 20")]
+        [Description("% of your total HP to be used as AP. Default 10")]
         public int HPAPScale { get; set; }
+
+
+         [Setting]
+         [Styx.Helpers.DefaultValue(10)]
+         [Category("Brewmaster - Ability Options")]
+         [DisplayName("HP Moderate Scale")]
+         [Description("Moderate needs to be higher than % of your total HP before using. Default 10")]
+         public int HPModerateScale { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
@@ -40,6 +48,20 @@ namespace Xiaolin.Interfaces.Settings
         [DisplayName("Use RJW on Single Target")]
         [Description("Uses Rushing Jade Wind on Single Target")]
         public bool UseRJWSingleTarget { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Use Purifying Brew on Moderate Stagger")]
+        [Description("Uses Purifying Brew on Moderate Stagger. Default is Enabled")]
+        public bool PurifyingModerate{ get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Brewmaster - Ability Options")]
+        [DisplayName("Use Purifying Brew on Light Stagger")]
+        [Description("Uses Purifying Brew on Light Stagger. Default is Disabled (Enable if you're farming)")]
+        public bool PurifyingLight { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
