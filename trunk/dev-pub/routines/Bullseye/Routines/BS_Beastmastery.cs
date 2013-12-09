@@ -34,7 +34,8 @@ namespace Bullseye.Routines
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
                         new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => BsHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Binding Shot", ret => BsTalentManager.HasTalent(4)))),
-                        G.InitializeCaching(),                        
+                        G.InitializeCaching(),
+                        G.AutoTarget(),
                         new Decorator(ret => SG.Instance.Beastmastery.EnablePetStuff, HandleCommon()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
                                 new PrioritySelector(
@@ -44,18 +45,12 @@ namespace Bullseye.Routines
                                         BeastmasteryUtility(),
                                         I.BeastmasteryUseItems(),
                                         BeastmasteryOffensive(),
-                                       new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && BsUnit.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, 
-                                           new PrioritySelector(
-                                           G.AutoTarget(),
-                                           BeastmasteryMt())),
+                                       new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && BsUnit.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, BeastmasteryMt()),
                             new Decorator(ret => Me.CurrentTarget != null && (BsUnit.NearbyAttackableUnitsCount < SG.Instance.Beastmastery.AoECount || !SG.Instance.Beastmastery.CheckAoE),
                                 new PrioritySelector
                                 (
                                     new Decorator(ret => !UseQuasiAoE, BeastmasterySt()),
-                                    new Decorator(ret => UseQuasiAoE, 
-                                        new PrioritySelector(
-                                        G.AutoTarget(),
-                                        BeastmasteryCleave()))
+                                    new Decorator(ret => UseQuasiAoE, BeastmasteryCleave())
                                 )))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Hotkey,
                                 new PrioritySelector(
