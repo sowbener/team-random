@@ -21,6 +21,13 @@ namespace Bullseye.Interfaces.Settings
         public bool CheckDisableClickToMove { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General")]
+        [DisplayName("Auto-Target")]
+        [Description("This enables Auto-Targetting.")]
+        public bool AutoTarget { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("General")]
         [DisplayName("Allow Usage Tracking")]

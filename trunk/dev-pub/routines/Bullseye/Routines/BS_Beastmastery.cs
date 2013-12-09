@@ -35,6 +35,7 @@ namespace Bullseye.Routines
                         new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => BsHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Binding Shot", ret => BsTalentManager.HasTalent(4)))),
                         G.InitializeCaching(),
+                        G.AutoTarget(),
                         new Decorator(ret => SG.Instance.Beastmastery.EnablePetStuff, HandleCommon()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
                                 new PrioritySelector(
