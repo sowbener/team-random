@@ -116,7 +116,7 @@ namespace Bullseye.Routines
 
        internal static Composite AutoTarget()
         {
-            return new Action(delegate
+            return new Styx.TreeSharp.Action(delegate
             {
                 if (!SG.Instance.General.AutoTarget ||
                     LastAutoTarget > DateTime.Now)
@@ -196,14 +196,14 @@ namespace Bullseye.Routines
                 if (UnitBestTarget == null && !Me.CurrentMap.IsBattleground && !Me.CurrentMap.IsArena)
                 {
                     UnitBestTarget = BsUnit.NearbyUnFriendlyUnits.OrderBy(unit => unit.ThreatInfo.RawPercent).FirstOrDefault(
-                        unit => unit != null && unit.IsValid &&
-                                (Me.CurrentMap.Name == "Proving Grounds" ||
-                                 Me.IsFacing(unit) &&
-                                 (unit.IsTargetingMyPartyMember || unit.IsTargetingMyRaidMember ||
-                                  unit.IsTargetingMeOrPet)) &&
+                        unit => unit.IsValid &&
+                                Me.IsFacing(unit) &&
+                                (unit.IsTargetingMyPartyMember || unit.IsTargetingMyRaidMember ||
+                                 unit.IsTargetingMeOrPet) &&
                                 BsUnit.Attackable(unit, 40));
                 }
-                return UnitBestTarget != null;
+
+                return UnitBestTarget != null && !UnitBestTarget.IsDisabled;
             }
         }
 

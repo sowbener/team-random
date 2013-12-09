@@ -240,12 +240,11 @@ namespace Bullseye.Core
 
         internal static bool Attackable(WoWUnit target, int range)
         {
-            if (!DefaultCheck ||
+            if (
                 Blacklist.Contains(target.Guid, BlacklistFlags.All) ||
                 BsSpell.SpellDistance(target) > range ||
                 !IsEnemy(target) ||
                 range > 5 &&
-                BsSpell.SpellDistance(target) > 5 &&
                 !InLineOfSpellSightCheck(target))
             {
                 return false;
