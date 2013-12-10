@@ -57,6 +57,7 @@
     <Compile Include="Core\Helpers\CooldownTracker.cs" />
     <Compile Include="Core\Helpers\DamageTracker.cs" />
     <Compile Include="Core\Item.cs" />
+    <Compile Include="Core\Managers\CacheManager.cs" />
     <Compile Include="Core\Spell.cs" />
     <Compile Include="Core\Unit.cs" />
     <Compile Include="FuryUnleashed.cs" />

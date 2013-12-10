@@ -24,7 +24,7 @@ namespace FuryUnleashed.Rotations
         #region Global Used Composites
         internal static Composite InitializeCaching()
         {
-            return new PrioritySelector(
+            return new PrioritySelector(Unit.PulseCache,
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
@@ -88,18 +88,6 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        //private static Random _random = new Random();
-        //internal static Composite InitializeInterrupts()
-        //{
-        //    return new PrioritySelector(
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-        //            Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
-        //            ),
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-        //            Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
-        //            ));
-        //}
-
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
@@ -133,6 +121,11 @@ namespace FuryUnleashed.Rotations
                 default: return null;
             }
         }
+
+        //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+        //actions+=/berserking,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+        //actions+=/blood_fury,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+        //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
 
         internal static bool RacialUsageSatisfied(string racial)
         {
@@ -227,6 +220,7 @@ namespace FuryUnleashed.Rotations
                 return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
             }
         }
+
         // Major CD Variables
         internal static bool ColossusSmashTracker
         {

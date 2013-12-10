@@ -41,14 +41,14 @@ namespace FuryUnleashed.Interfaces.Settings
         public int RacialNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("General")]
         [DisplayName("Enable Automatic Updates")]
-        [Description("Enables the automatic updater in this CC - Updates from RELEASE.")]
+        [Description("Enables the automatic updater in this CC.")]
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Development)]
+        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
         [Category("General")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]
@@ -76,7 +76,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckPreCombatBuff { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnRaidMember)]
+        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
         [Category("General")]
         [DisplayName("Vigilance")]
         [Description("Select the usage of Vigilance.")]
@@ -94,25 +94,25 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Rotational Settings
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.ArmsRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Arms Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.RotationVersion CrArmsRotVersion { get; set; }
+        public Enum.ArmsRotationVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.FuryRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Fury Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.RotationVersion CrFuryRotVersion { get; set; }
+        public Enum.FuryRotationVersion CrFuryRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.ProtRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Prot Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.RotationVersion CrProtRotVersion { get; set; }
+        public Enum.ProtRotationVersion CrProtRotVersion { get; set; }
         #endregion
 
         // ========================================================================================

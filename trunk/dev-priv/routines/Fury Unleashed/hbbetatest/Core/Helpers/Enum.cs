@@ -144,10 +144,22 @@ namespace FuryUnleashed.Core.Helpers
             StormBolt
         }
 
-        public enum RotationVersion
+        public enum ArmsRotationVersion
         {
             Development,
             PvP,
+            Release
+        }
+
+        public enum FuryRotationVersion
+        {
+            Development,
+            Release
+        }
+
+        public enum ProtRotationVersion
+        {
+            Development,
             Release
         }
         #endregion

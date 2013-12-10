@@ -16,7 +16,7 @@ namespace FuryUnleashed.Core.Managers
     {
         private static readonly string FuSvnUrl = InternalSettings.Instance.General.SvnUrl == Enum.SvnUrl.Release
             ? "https://subversion.assembla.com/svn/team-random/trunk/release/routines/Fury Unleashed/dotnet_4_5/"
-            : "https://subversion.assembla.com/svn/team-random/trunk/dev-priv/routines/Fury Unleashed/hbbetatest/";
+            : "https://subversion.assembla.com/svn/team-random/trunk/dev-pub/routines/Fury Unleashed/dotnet_4_5/";
         private static readonly Regex LinkPattern = new Regex(@"<li><a href="".+"">(?<ln>.+(?:..))</a></li>", RegexOptions.CultureInvariant);
 
         public static void CheckForUpdate()

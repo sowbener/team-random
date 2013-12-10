@@ -70,10 +70,10 @@ namespace FuryUnleashed.Rotations.Arms
                     Global.InitializeOnKeyActions(),
                     new Decorator(ret => InternalSettings.Instance.Arms.CheckInterrupts && Unit.CanInterrupt,
                         Global.InitializeInterrupts()),
-                    new Switch<Enum.RotationVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Development, ArmsDev.DevArmsCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.PvP, ArmsPvP.PvPArmsCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Release, ArmsRel.RelArmsCombat)));
+                    new Switch<Enum.ArmsRotationVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
+                        new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Development, ArmsDev.DevArmsCombat),
+                        new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.PvP, ArmsPvP.PvPArmsCombat),
+                        new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Release, ArmsRel.RelArmsCombat)));
             }
         }
 

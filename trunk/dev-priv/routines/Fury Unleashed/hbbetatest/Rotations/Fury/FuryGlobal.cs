@@ -46,9 +46,9 @@ namespace FuryUnleashed.Rotations.Fury
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.RotationVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Development, FuryDev.DevFuryCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Release, FuryRel.RelFuryCombat)));
+                    new Switch<Enum.FuryRotationVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
+                        new SwitchArgument<Enum.FuryRotationVersion>(Enum.FuryRotationVersion.Development, FuryDev.DevFuryCombat),
+                        new SwitchArgument<Enum.FuryRotationVersion>(Enum.FuryRotationVersion.Release, FuryRel.RelFuryCombat)));
             }
         }
 
@@ -101,6 +101,22 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
+        internal static bool HeroicThrowUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckHeroicThrow;
+            }
+        }
+
+        internal static bool ImpendingVictoryUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckRotImpVic;
+            }
+        }
+
         internal static bool MassSpellReflectionUsage
         {
             get
@@ -127,6 +143,14 @@ namespace FuryUnleashed.Rotations.Fury
                 return ((IS.Instance.Fury.Recklessness == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Fury.Recklessness == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Fury.Recklessness == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool ShatteringThrowUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckShatteringThrow;
             }
         }
 
@@ -201,7 +225,8 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return (G.BloodbathAura || !G.BloodbathTalent || G.ReadinessAura);
+                //(buff.bloodbath.up|!talent.bloodbath.enabled)
+                return (G.BloodbathAura || !G.BloodbathTalent);
             }
         }
 

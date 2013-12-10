@@ -118,7 +118,7 @@ namespace FuryUnleashed
             Logger.CombatLogOr("\r\n");
             Logger.CombatLogOr("Recommended rotations are (Selectable in the GUI):");
             Logger.CombatLogOr("Arms: Release");
-            Logger.CombatLogOr("Fury: Release");
+            Logger.CombatLogOr("Fury: Release or Development - Test which you like the most!");
             Logger.CombatLogOr("Protection: Release");
             Logger.CombatLogWh("-------------------------------------------\r\n");
 

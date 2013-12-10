@@ -31,22 +31,28 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Casting Methods
-        // Casting by Name
-        public static Composite Cast(string spell, Selection<bool> reqs = null, bool failThrough = false)
+        /// <summary>
+        /// Casting method for regular casting - string
+        /// </summary>
+        /// <param name="spellname">String SpellName to Cast</param>
+        /// <param name="reqs">-</param>
+        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
+        /// <returns></returns>
+        public static Composite Cast(string spellname, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
+            return Cast(spellname, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
 
-        public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
+        public static Composite Cast(string spellname, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return
-                new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spell, onUnit(ret))),
+                new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spellname, onUnit(ret))),
                     new Action(ret =>
                     {
-                        if (SpellManager.Cast(spell, onUnit(ret)))
+                        if (SpellManager.Cast(spellname, onUnit(ret)))
                         {
-                            CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogOr("Casting: " + spell + " on " + onUnit(ret).SafeName);
+                            CooldownTracker.SpellUsed(spellname);
+                            Logger.CombatLogOr("Casting: " + spellname + " on " + onUnit(ret).SafeName);
                             if (!failThrough)
                                 return RunStatus.Success;
                         }
@@ -54,99 +60,223 @@ namespace FuryUnleashed.Core
                     }));
         }
 
-        // Casting by Integer
-        public static Composite Cast(int spell, Selection<bool> reqs = null, bool failThrough = false)
+        /// <summary>
+        /// Casting method for regular casting - int
+        /// </summary>
+        /// <param name="spellid">Integer Spell to Cast</param>
+        /// <param name="reqs">-</param>
+        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
+        /// <returns></returns>
+        public static Composite Cast(int spellid, Selection<bool> reqs = null, bool failThrough = false)
         {
-            return Cast(spell, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
+            return Cast(spellid, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
 
-        public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
+        public static Composite Cast(int spellid, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return
-                new Decorator(ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && SpellManager.CanCast(spell, onUnit(ret)),
+                new Decorator(ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && SpellManager.CanCast(spellid, onUnit(ret)),
                     new Action(ret =>
                     {
-                        if (SpellManager.Cast(spell, onUnit(ret)))
+                        if (SpellManager.Cast(spellid, onUnit(ret)))
                         {
-                            CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogOr("Casting: " + WoWSpell.FromId(spell).Name + " on " + onUnit(ret).SafeName);
+                            CooldownTracker.SpellUsed(spellid);
+                            Logger.CombatLogOr("Casting: " + WoWSpell.FromId(spellid).Name + " on " + onUnit(ret).SafeName);
                             if (!failThrough)
                                 return RunStatus.Success;
                         }
                         return RunStatus.Failure;
                     }));
         }
-        
-        // Casting on Ground by String
-        public static Composite CastOnGround(string spell, LocationRetriever onLocation)
+
+        /// <summary>
+        /// Casting method for MultiDot casting - string
+        /// </summary>
+        /// <param name="spellname">String spell to cast</param>
+        /// <param name="unit">WoWUnit to Multidot on</param>
+        /// <param name="reqs">-</param>
+        /// <returns></returns>
+        public static Composite MultiDot(string spellname, WoWUnit unit, Selection<bool> reqs = null)
         {
-            return CastOnGround(spell, onLocation, ret => true);
+            return MultiDot(spellname, unit, 1, reqs);
         }
 
-        public static Composite CastOnGround(string spell, LocationRetriever onLocation, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        public static Composite MultiDot(string spellname, WoWUnit unit, int refreshDurationRemaining, Selection<bool> reqs = null)
+        {
+            WoWUnit target = null;
+            try
+            {
+                return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
+                    new PrioritySelector(dot => target = Unit.MultiDotUnits(unit, spellname, 0, refreshDurationRemaining),
+                        new Action(ctx =>
+                        {
+                            Cast(spellname, on => target, ret => Unit.IsViable(target));
+                            CooldownTracker.SpellUsed(spellname);
+                        })));
+            }
+            catch (Exception ex)
+            {
+                return new PrioritySelector(
+                    new Action(ret =>
+                    {
+                        Logger.DiagLogFb("Exception MultiDot {0}", ex);
+                        Logger.DiagLogFb("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellname, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
+                    }));
+            }
+        }
+
+        /// <summary>
+        /// Casting method for MultiDot casting - int
+        /// </summary>
+        /// <param name="spellid">Integer spell to cast</param>
+        /// <param name="unit">WoWUnit to Multidot on</param>
+        /// <param name="reqs">-</param>
+        /// <returns></returns>
+        public static Composite MultiDot(int spellid, WoWUnit unit, Selection<bool> reqs = null)
+        {
+            return MultiDot(spellid, unit, 1, reqs);
+        }
+
+        public static Composite MultiDot(int spellid, WoWUnit unit, int refreshDurationRemaining, Selection<bool> reqs = null)
+        {
+            WoWUnit target = null;
+            try 
+            { 
+                return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
+                    new PrioritySelector(dot => target = Unit.MultiDotUnits(unit, spellid, 0, refreshDurationRemaining),
+                        new Action(ctx =>
+                        {
+                            Cast(spellid, on => target, ret => Unit.IsViable(target));
+                            CooldownTracker.SpellUsed(spellid);
+                        })));
+            }
+            catch (Exception ex)
+            {
+                return new PrioritySelector(
+                    new Action(ret =>
+                    {
+                        Logger.DiagLogFb("Exception MultiDot {0}", ex);
+                        Logger.DiagLogFb("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
+                    }));
+            }
+        }
+
+        /// <summary>
+        /// Casting method for casting on Ground location - string
+        /// </summary>
+        /// <param name="spellname">String Spellname</param>
+        /// <param name="onLocation">Location where to cast - Like Me.Location</param>
+        /// <returns></returns>
+        public static Composite CastOnGround(string spellname, LocationRetriever onLocation)
+        {
+            return CastOnGround(spellname, onLocation, ret => true);
+        }
+
+        public static Composite CastOnGround(string spellname, LocationRetriever onLocation, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
         {
             return
-                new Decorator(ret => onLocation != null && requirements(ret) && SpellManager.CanCast(spell) && (StyxWoW.Me.Location.Distance(onLocation(ret)) <= SpellManager.Spells[spell].MaxRange || SpellManager.Spells[spell].MaxRange == 0),
+                new Decorator(ret => onLocation != null && requirements(ret) && SpellManager.CanCast(spellname) && (StyxWoW.Me.Location.Distance(onLocation(ret)) <= SpellManager.Spells[spellname].MaxRange || SpellManager.Spells[spellname].MaxRange == 0),
                     new Sequence(
-                       new Action(ret => SpellManager.Cast(spell)),
+                       new Action(ret => SpellManager.Cast(spellname)),
                         new DecoratorContinue(ctx => waitForSpell,
                             new WaitContinue(1, ret =>
                                 StyxWoW.Me.CurrentPendingCursorSpell != null &&
-                                StyxWoW.Me.CurrentPendingCursorSpell.Name == spell, new ActionAlwaysSucceed())),
+                                StyxWoW.Me.CurrentPendingCursorSpell.Name == spellname, new ActionAlwaysSucceed())),
                         new Action(ret =>
                             {
                                 SpellManager.ClickRemoteLocation(onLocation(ret));
-                                CooldownTracker.SpellUsed(spell);
-                                Logger.CombatLogOr("Casting: " + spell);
+                                CooldownTracker.SpellUsed(spellname);
+                                Logger.CombatLogOr("Casting: " + spellname);
                             }
                         )));
         }
 
-        // Casting on Ground by Int
-        public static Composite CastOnGround(int spell, UnitSelectionDelegate onUnit)
+        /// <summary>
+        /// Casting method for casting on Ground location - int
+        /// </summary>
+        /// <param name="spellid">Integer Spell</param>
+        /// <param name="onLocation">Location where to cast - Like Me.Location</param>
+        /// <returns></returns>
+        public static Composite CastOnGround(int spellid, LocationRetriever onLocation)
         {
-            return CastOnGround(spell, onUnit, ret => true);
+            return CastOnGround(spellid, onLocation, ret => true);
         }
 
-        public static Composite CastOnGround(int spell, UnitSelectionDelegate onUnit, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        public static Composite CastOnGround(int spellid, LocationRetriever onLocation, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
         {
             return
-                new Decorator(ret => onUnit != null && requirements(ret) && SpellManager.CanCast(spell) && (StyxWoW.Me.Location.Distance(onUnit(ret).Location) <= WoWSpell.FromId(spell).MaxRange || WoWSpell.FromId(spell).MaxRange == 0),
+                new Decorator(ret => onLocation != null && requirements(ret) && SpellManager.CanCast(spellid) && (StyxWoW.Me.Location.Distance(onLocation(ret)) <= WoWSpell.FromId(spellid).MaxRange || WoWSpell.FromId(spellid).MaxRange == 0),
                     new Sequence(
-                       new Action(ret => SpellManager.Cast(spell)),
+                       new Action(ret => SpellManager.Cast(spellid)),
                         new DecoratorContinue(ctx => waitForSpell,
                             new WaitContinue(1, ret =>
                                 StyxWoW.Me.CurrentPendingCursorSpell != null &&
-                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spell, new ActionAlwaysSucceed())),
+                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spellid, new ActionAlwaysSucceed())),
                         new Action(ret =>
                         {
-                            SpellManager.ClickRemoteLocation(onUnit(ret).Location);
-                            CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogOr("Casting: " + spell);
+                            SpellManager.ClickRemoteLocation(onLocation(ret));
+                            CooldownTracker.SpellUsed(spellid);
+                            Logger.CombatLogOr("Casting: " + spellid);
                         }
                         )));
         }
 
-        public static Composite CastOnGround(int spell, LocationRetriever onLocation)
+        /// <summary>
+        /// Casting method for casting on Ground location - string
+        /// </summary>
+        /// <param name="spellname">String Spellname</param>
+        /// <param name="onUnit">Casting on unit ground location</param>
+        /// <returns></returns>
+        public static Composite CastOnGround(string spellname, UnitSelectionDelegate onUnit)
         {
-            return CastOnGround(spell, onLocation, ret => true);
+            return CastOnGround(spellname, onUnit, ret => true);
         }
 
-        public static Composite CastOnGround(int spell, LocationRetriever onLocation, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        public static Composite CastOnGround(string spellname, UnitSelectionDelegate onUnit, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
         {
             return
-                new Decorator(ret => onLocation != null && requirements(ret) && SpellManager.CanCast(spell) && (StyxWoW.Me.Location.Distance(onLocation(ret)) <= WoWSpell.FromId(spell).MaxRange || WoWSpell.FromId(spell).MaxRange == 0),
+                new Decorator(ret => onUnit != null && requirements(ret) && SpellManager.CanCast(spellname) && (StyxWoW.Me.Location.Distance(onUnit(ret).Location) <= SpellManager.Spells[spellname].MaxRange || SpellManager.Spells[spellname].MaxRange == 0),
                     new Sequence(
-                       new Action(ret => SpellManager.Cast(spell)),
+                       new Action(ret => SpellManager.Cast(spellname)),
                         new DecoratorContinue(ctx => waitForSpell,
                             new WaitContinue(1, ret =>
                                 StyxWoW.Me.CurrentPendingCursorSpell != null &&
-                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spell, new ActionAlwaysSucceed())),
+                                StyxWoW.Me.CurrentPendingCursorSpell.Name == spellname, new ActionAlwaysSucceed())),
                         new Action(ret =>
                         {
-                            SpellManager.ClickRemoteLocation(onLocation(ret));
-                            CooldownTracker.SpellUsed(spell);
-                            Logger.CombatLogOr("Casting: " + spell);
+                            SpellManager.ClickRemoteLocation(onUnit(ret).Location);
+                            CooldownTracker.SpellUsed(spellname);
+                            Logger.CombatLogOr("Casting: " + spellname);
+                        }
+                        )));
+        }
+
+        /// <summary>
+        /// Casting method for casting on Ground location - int
+        /// </summary>
+        /// <param name="spellid">Integer Spell ID</param>
+        /// <param name="onUnit">Casting on unit ground location</param>
+        /// <returns></returns>
+        public static Composite CastOnGround(int spellid, UnitSelectionDelegate onUnit)
+        {
+            return CastOnGround(spellid, onUnit, ret => true);
+        }
+
+        public static Composite CastOnGround(int spellid, UnitSelectionDelegate onUnit, CanRunDecoratorDelegate requirements, bool waitForSpell = false)
+        {
+            return
+                new Decorator(ret => onUnit != null && requirements(ret) && SpellManager.CanCast(spellid) && (StyxWoW.Me.Location.Distance(onUnit(ret).Location) <= WoWSpell.FromId(spellid).MaxRange || WoWSpell.FromId(spellid).MaxRange == 0),
+                    new Sequence(
+                       new Action(ret => SpellManager.Cast(spellid)),
+                        new DecoratorContinue(ctx => waitForSpell,
+                            new WaitContinue(1, ret =>
+                                StyxWoW.Me.CurrentPendingCursorSpell != null &&
+                                StyxWoW.Me.CurrentPendingCursorSpell.Id == spellid, new ActionAlwaysSucceed())),
+                        new Action(ret =>
+                        {
+                            SpellManager.ClickRemoteLocation(onUnit(ret).Location);
+                            CooldownTracker.SpellUsed(spellid);
+                            Logger.CombatLogOr("Casting: " + spellid);
                         }
                         )));
         }
