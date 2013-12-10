@@ -249,6 +249,8 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Cached Units v2
+        // Might need to Initialize the list - CachedAttackableUnitsList = new List<WoWUnit>();
+
         /// <summary>
         /// Pulsed in FuryUnleashed.Rotations.Global.InitializeCaching() - Starts the filling of the CachedAttackableUnitsList
         /// </summary>
