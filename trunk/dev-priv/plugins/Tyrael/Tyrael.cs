@@ -17,7 +17,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 5, 0);
+        public static readonly Version Revision = new Version(5, 5, 1);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         private static Composite _root;
@@ -127,7 +127,8 @@ namespace Tyrael
             return new PrioritySelector(
                 new Decorator(ret => SanityCheckCombat(),
                     new PrioritySelector(
-                        //new Action(delegate { StyxWoW.Memory.ReleaseFrame(true); return RunStatus.Failure; }),
+                        // This causes the GUI to crash when performing the routine when saving.
+                        new Action(delegate { StyxWoW.Memory.ReleaseFrame(true); return RunStatus.Failure; }), 
                         RoutineManager.Current.HealBehavior,
                         RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
                         RoutineManager.Current.CombatBehavior)),
