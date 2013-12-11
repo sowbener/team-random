@@ -35,7 +35,6 @@ namespace Bullseye.Routines
                         new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => BsHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Binding Shot", ret => BsTalentManager.HasTalent(4)))),
                         G.InitializeCaching(),
-                        G.AutoTarget(),
                         new Decorator(ret => SG.Instance.Beastmastery.EnablePetStuff, HandleCommon()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
                                 new PrioritySelector(
@@ -84,11 +83,11 @@ namespace Bullseye.Routines
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.SpellDistance(Me.Pet.CurrentTarget) < 25f),
-                new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()), 
+                new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
-                Spell.Cast("Barrage", ret => TalentBarrage),    
+                Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
@@ -130,7 +129,7 @@ namespace Bullseye.Routines
                 Spell.Cast("Fervor", ret => FervorReqs && SG.Instance.Beastmastery.UseTier4AoE),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90 && SG.Instance.Beastmastery.UseTier4AoE),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
-                Spell.Cast("Multi-Shot"),              
+                Spell.Cast("Multi-Shot"),
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
@@ -139,7 +138,7 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryDefensive()
         {
             return new PrioritySelector(
-                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && Me.Pet != null && !Me.Pet.IsAlive), 
+                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && Me.Pet != null && !Me.Pet.IsAlive),
                 I.BeastmasteryUseHealthStone()
                 );
         }
@@ -147,7 +146,7 @@ namespace Bullseye.Routines
         internal static Composite HandleCommon()
         {
             return new PrioritySelector(
-                Spell.Cast("Mend Pet", ret => Me.Pet != null && Me.Pet.HealthPercent <= SG.Instance.General.MendPetHP && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
+                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= SG.Instance.General.MendPetHP && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
         }
 
         internal static Composite BeastmasteryOffensive()
