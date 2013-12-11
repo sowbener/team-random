@@ -1,4 +1,5 @@
-﻿using Styx.Common;
+﻿using Styx;
+using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
 using Styx.WoWInternals;
@@ -15,11 +16,18 @@ namespace Tyrael.Shared
     public class TyraelUtilities
     {
         #region Hotkeys
-        [DllImport("user32.dll")]
-        private static extern short GetAsyncKeyState(Keys vKey);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetActiveWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern short GetAsyncKeyState(int vkey);
+
         public static bool IsKeyAsyncDown(Keys key)
         {
-            return (GetAsyncKeyState(key)) != 0;
+            if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
+                return false;
+
+            return key != Keys.None && (GetAsyncKeyState((int)key) & 0x8000) != 0;
         }
 
         public static bool IsTyraelPaused { get; set; }
@@ -90,7 +98,7 @@ namespace Tyrael.Shared
                 {
                     Parallel.Invoke(
                         () => new WebClient().DownloadData("http://c.statcounter.com/9219924/0/e3fed179/1/"),
-                        () => Logging.WriteDiagnostic("FU: StatCounter has been updated!"));
+                        () => Logging.WriteDiagnostic("Tyrael: StatCounter has been updated!"));
                     TyraelSettings.Instance.LastStatCounted = statcounterDate;
                     TyraelSettings.Instance.Save();
                 }

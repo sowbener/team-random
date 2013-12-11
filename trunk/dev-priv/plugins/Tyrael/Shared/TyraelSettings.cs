@@ -35,7 +35,7 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(false)]
         public bool PluginPulsing { get; set; }
 
-        [Setting, DefaultValue(TyraelUtilities.Minify.True)]
+        [Setting, DefaultValue(TyraelUtilities.Minify.False)]
         public TyraelUtilities.Minify Minify { get; set; }
 
         [Setting, DefaultValue(ModifierKeys.Alt)]
