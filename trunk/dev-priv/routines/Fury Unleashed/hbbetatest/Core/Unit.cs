@@ -20,18 +20,14 @@ namespace FuryUnleashed.Core
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static readonly Random Random = new Random();
-        private const int AttackableunitsExpiry = 25;
+        private const int AttackableunitsExpiry = 100;
+        private const int RaidmembersExpiry = 500;
 
         public static WoWUnit VigilanceTarget;
         public static List<WoWUnit> CachedAttackableUnitsList;
-        
-        #region Caching RaidMembers Functions
-        // RaidMembers IEnumerable
-        internal static IEnumerable<WoWPlayer> RaidMembers
-        {
-            get { return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => IsViable(u) && u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid); }
-        }
+        public static List<WoWPlayer> CachedRaidMembersList;
 
+        #region Caching RaidMembers Functions - Needs to be migrated to v2
         internal static IEnumerable<WoWUnit> NearbyRaidMembers(WoWPoint fromLocation, double radius)
         {
             var units = RaidMembers;
@@ -67,12 +63,6 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Cached Units v1 - Needs to be migrated to v2
-        // AttackableUnits IEnumerable - Non Cached
-        internal static IEnumerable<WoWUnit> AttackableUnits
-        {
-            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
-        }
-
         // NearbyAttackableUnits IEnumerable
         internal static IEnumerable<WoWUnit> NearbyAttackableUnits(WoWPoint fromLocation, double radius)
         {
@@ -100,9 +90,6 @@ namespace FuryUnleashed.Core
                         !x.IsFriendly && (x.IsCasting || x.IsChanneling) && x.IsTargetingPet &&
                         x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
         }
-
-        // Get Functions (Counts, MultiDotUnit)
-
 
         public static int InterruptableUnitsCount;
         public static void GetInterruptableUnitsCount()
@@ -249,14 +236,44 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Cached Units v2
-        // Might need to Initialize the list - CachedAttackableUnitsList = new List<WoWUnit>();
+        /// <summary>
+        /// Initialize the required lists for Cached Units.
+        /// </summary>
+        public static void InitializeCacheLists()
+        {
+            CachedAttackableUnitsList = new List<WoWUnit>();
+            CachedRaidMembersList = new List<WoWPlayer>();
+
+            Logger.DiagLogPu("FU: Caching Lists are created!");
+        }
 
         /// <summary>
         /// Pulsed in FuryUnleashed.Rotations.Global.InitializeCaching() - Starts the filling of the CachedAttackableUnitsList
         /// </summary>
-        public static Composite PulseCache
+        public static Composite FillCacheLists
         {
-            get { return new Action(delegate { CachedAttackableUnitsList = CacheAttackableUnits; return RunStatus.Failure; }); }
+            get 
+            { return new Action(delegate
+                {
+                    CachedAttackableUnitsList = CacheAttackableUnits;
+                    CachedRaidMembersList = CacheRaidMembers; 
+                        return RunStatus.Failure;
+                }); 
+            }
+        }
+
+        /// <summary>
+        /// Core check on Attackable Units - Further filtering happens with the cached list.
+        /// </summary>
+        internal static IEnumerable<WoWUnit> AttackableUnits
+        {
+            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter && u.Distance <= 60); }
+        }
+
+        // RaidMembers IEnumerable
+        internal static IEnumerable<WoWPlayer> RaidMembers
+        {
+            get { return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => IsViable(u) && u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid); }
         }
 
         /// <summary>
@@ -266,7 +283,7 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                const string cachekey = "AttackableUnitsInRange";
+                const string cachekey = "AttackableUnits";
                 var attackableUnits = CacheManager.Get<List<WoWUnit>>(cachekey);
 
                 if (attackableUnits == null)
@@ -275,6 +292,25 @@ namespace FuryUnleashed.Core
                     CacheManager.Add(attackableUnits, cachekey, AttackableunitsExpiry);
                 }
                 return attackableUnits;
+            }
+        }
+
+        /// <summary>
+        /// Populates the CachedRaidMembersList on request of PulseCache Composite - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
+        /// </summary>
+        public static List<WoWPlayer> CacheRaidMembers
+        {
+            get
+            {
+                const string cachekey = "RaidMembers";
+                var raidMembers = CacheManager.Get<List<WoWPlayer>>(cachekey);
+
+                if (raidMembers == null)
+                {
+                    raidMembers = RaidMembers.ToList();
+                    CacheManager.Add(raidMembers, cachekey, RaidmembersExpiry);
+                }
+                return raidMembers;
             }
         }
 

@@ -82,6 +82,22 @@ namespace FuryUnleashed.Interfaces.GUI
                 vigilancetargettextbox.Text = Core.Utilities.Logger.PrintVigilanceTarget;
             }
         }
+
+        private void UpdateCachedAttackableUnitsList()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                cachedattackableunitsdatagrid.DataSource = Unit.CachedAttackableUnitsList;
+            }
+        }
+
+        private void UpdateCachedRaidMembersList()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                cachedraidmembersdatagrid.DataSource = Unit.CachedRaidMembersList;
+            }
+        }
         #endregion
 
         #region Errors
@@ -145,6 +161,16 @@ namespace FuryUnleashed.Interfaces.GUI
         private void updatevigilancetargetbutton_Click(object sender, EventArgs e)
         {
             UpdateVigilanceTarget();
+        }
+
+        private void cachedattackableunitsbutton_Click(object sender, EventArgs e)
+        {
+            UpdateCachedAttackableUnitsList();
+        }
+
+        private void cachedraidmembersbutton_Click(object sender, EventArgs e)
+        {
+            UpdateCachedRaidMembersList();
         }
     }
 }

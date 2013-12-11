@@ -110,6 +110,7 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Supported World of Warcraft version: " + WoWVersion + ".");
             Logger.CombatLogOr("Support will be handled via the HB Forums.");
             Logger.CombatLogOr("Thanks list is available in the topic!");
+            Logger.CombatLogOr("Special thanks to: Stormchasing, Wulf, Mirabis, Alxaw, Weischbier & Millz!");
             Logger.CombatLogOr("\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
             if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
@@ -127,8 +128,9 @@ namespace FuryUnleashed
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
 
-            /* Initialize Damage Tracker */
+            /* Initialize Various Functions */
             DamageTracker.Initialize();
+            Unit.InitializeCacheLists();
 
             /* Gather required information */
             Logger.StatCounter();

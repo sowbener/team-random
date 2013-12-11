@@ -101,10 +101,12 @@
             this.ısActiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.otheroptionstab = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.vigilancetargettextbox = new System.Windows.Forms.TextBox();
+            this.updatevigilancetargetbutton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.shieldbarriersizetextbox = new System.Windows.Forms.TextBox();
             this.shieldblocksizetextbox = new System.Windows.Forms.TextBox();
@@ -115,8 +117,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.updatevigilancetargetbutton = new System.Windows.Forms.Button();
-            this.vigilancetargettextbox = new System.Windows.Forms.TextBox();
+            this.cachedattackableunitslisttab = new System.Windows.Forms.TabPage();
+            this.cachedraidmemberslisttab = new System.Windows.Forms.TabPage();
+            this.cachedattackableunitsdatagrid = new System.Windows.Forms.DataGridView();
+            this.cachedraidmembersdatagrid = new System.Windows.Forms.DataGridView();
+            this.cachedraidmembersbutton = new System.Windows.Forms.Button();
+            this.cachedattackableunitsbutton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -126,10 +132,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).BeginInit();
             this.targetcachedaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).BeginInit();
-            this.tabPage1.SuspendLayout();
+            this.otheroptionstab.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.cachedattackableunitslisttab.SuspendLayout();
+            this.cachedraidmemberslisttab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedattackableunitsdatagrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedraidmembersdatagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // Tabs
@@ -138,7 +148,9 @@
             this.Tabs.Controls.Add(this.targetaurastab);
             this.Tabs.Controls.Add(this.mycachedaurastab);
             this.Tabs.Controls.Add(this.targetcachedaurastab);
-            this.Tabs.Controls.Add(this.tabPage1);
+            this.Tabs.Controls.Add(this.cachedattackableunitslisttab);
+            this.Tabs.Controls.Add(this.cachedraidmemberslisttab);
+            this.Tabs.Controls.Add(this.otheroptionstab);
             this.Tabs.Location = new System.Drawing.Point(14, 15);
             this.Tabs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Tabs.Name = "Tabs";
@@ -806,19 +818,19 @@
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // tabPage1
+            // otheroptionstab
             // 
-            this.tabPage1.Controls.Add(this.panel3);
-            this.tabPage1.Controls.Add(this.panel2);
-            this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tabPage1.Size = new System.Drawing.Size(1367, 542);
-            this.tabPage1.TabIndex = 4;
-            this.tabPage1.Text = "Other Options";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.otheroptionstab.Controls.Add(this.panel3);
+            this.otheroptionstab.Controls.Add(this.panel2);
+            this.otheroptionstab.Controls.Add(this.panel1);
+            this.otheroptionstab.Location = new System.Drawing.Point(4, 25);
+            this.otheroptionstab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.otheroptionstab.Name = "otheroptionstab";
+            this.otheroptionstab.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.otheroptionstab.Size = new System.Drawing.Size(1367, 542);
+            this.otheroptionstab.TabIndex = 4;
+            this.otheroptionstab.Text = "Other Options";
+            this.otheroptionstab.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -855,6 +867,29 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(443, 524);
             this.panel2.TabIndex = 7;
+            // 
+            // vigilancetargettextbox
+            // 
+            this.vigilancetargettextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vigilancetargettextbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.vigilancetargettextbox.Location = new System.Drawing.Point(211, 173);
+            this.vigilancetargettextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.vigilancetargettextbox.Name = "vigilancetargettextbox";
+            this.vigilancetargettextbox.ReadOnly = true;
+            this.vigilancetargettextbox.Size = new System.Drawing.Size(171, 21);
+            this.vigilancetargettextbox.TabIndex = 7;
+            // 
+            // updatevigilancetargetbutton
+            // 
+            this.updatevigilancetargetbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updatevigilancetargetbutton.Location = new System.Drawing.Point(3, 169);
+            this.updatevigilancetargetbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.updatevigilancetargetbutton.Name = "updatevigilancetargetbutton";
+            this.updatevigilancetargetbutton.Size = new System.Drawing.Size(201, 28);
+            this.updatevigilancetargetbutton.TabIndex = 6;
+            this.updatevigilancetargetbutton.Text = "Update Vigilance Target";
+            this.updatevigilancetargetbutton.UseVisualStyleBackColor = true;
+            this.updatevigilancetargetbutton.Click += new System.EventHandler(this.updatevigilancetargetbutton_Click);
             // 
             // label1
             // 
@@ -955,28 +990,72 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Arms";
             // 
-            // updatevigilancetargetbutton
+            // cachedattackableunitslisttab
             // 
-            this.updatevigilancetargetbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.updatevigilancetargetbutton.Location = new System.Drawing.Point(3, 169);
-            this.updatevigilancetargetbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.updatevigilancetargetbutton.Name = "updatevigilancetargetbutton";
-            this.updatevigilancetargetbutton.Size = new System.Drawing.Size(201, 28);
-            this.updatevigilancetargetbutton.TabIndex = 6;
-            this.updatevigilancetargetbutton.Text = "Update Vigilance Target";
-            this.updatevigilancetargetbutton.UseVisualStyleBackColor = true;
-            this.updatevigilancetargetbutton.Click += new System.EventHandler(this.updatevigilancetargetbutton_Click);
+            this.cachedattackableunitslisttab.Controls.Add(this.cachedattackableunitsbutton);
+            this.cachedattackableunitslisttab.Controls.Add(this.cachedattackableunitsdatagrid);
+            this.cachedattackableunitslisttab.Location = new System.Drawing.Point(4, 25);
+            this.cachedattackableunitslisttab.Name = "cachedattackableunitslisttab";
+            this.cachedattackableunitslisttab.Padding = new System.Windows.Forms.Padding(3);
+            this.cachedattackableunitslisttab.Size = new System.Drawing.Size(1367, 542);
+            this.cachedattackableunitslisttab.TabIndex = 5;
+            this.cachedattackableunitslisttab.Text = "Cached Attackable Units";
+            this.cachedattackableunitslisttab.UseVisualStyleBackColor = true;
             // 
-            // vigilancetargettextbox
+            // cachedraidmemberslisttab
             // 
-            this.vigilancetargettextbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vigilancetargettextbox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.vigilancetargettextbox.Location = new System.Drawing.Point(211, 173);
-            this.vigilancetargettextbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.vigilancetargettextbox.Name = "vigilancetargettextbox";
-            this.vigilancetargettextbox.ReadOnly = true;
-            this.vigilancetargettextbox.Size = new System.Drawing.Size(171, 21);
-            this.vigilancetargettextbox.TabIndex = 7;
+            this.cachedraidmemberslisttab.Controls.Add(this.cachedraidmembersbutton);
+            this.cachedraidmemberslisttab.Controls.Add(this.cachedraidmembersdatagrid);
+            this.cachedraidmemberslisttab.Location = new System.Drawing.Point(4, 25);
+            this.cachedraidmemberslisttab.Name = "cachedraidmemberslisttab";
+            this.cachedraidmemberslisttab.Size = new System.Drawing.Size(1367, 542);
+            this.cachedraidmemberslisttab.TabIndex = 6;
+            this.cachedraidmemberslisttab.Text = "Cached Raid Members";
+            this.cachedraidmemberslisttab.UseVisualStyleBackColor = true;
+            // 
+            // cachedattackableunitsdatagrid
+            // 
+            this.cachedattackableunitsdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.cachedattackableunitsdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cachedattackableunitsdatagrid.EnableHeadersVisualStyles = false;
+            this.cachedattackableunitsdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.cachedattackableunitsdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedattackableunitsdatagrid.Name = "cachedattackableunitsdatagrid";
+            this.cachedattackableunitsdatagrid.Size = new System.Drawing.Size(1352, 489);
+            this.cachedattackableunitsdatagrid.TabIndex = 0;
+            // 
+            // cachedraidmembersdatagrid
+            // 
+            this.cachedraidmembersdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.cachedraidmembersdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cachedraidmembersdatagrid.EnableHeadersVisualStyles = false;
+            this.cachedraidmembersdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.cachedraidmembersdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedraidmembersdatagrid.Name = "cachedraidmembersdatagrid";
+            this.cachedraidmembersdatagrid.Size = new System.Drawing.Size(1352, 489);
+            this.cachedraidmembersdatagrid.TabIndex = 1;
+            // 
+            // cachedraidmembersbutton
+            // 
+            this.cachedraidmembersbutton.Location = new System.Drawing.Point(7, 7);
+            this.cachedraidmembersbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedraidmembersbutton.Name = "cachedraidmembersbutton";
+            this.cachedraidmembersbutton.Size = new System.Drawing.Size(350, 28);
+            this.cachedraidmembersbutton.TabIndex = 4;
+            this.cachedraidmembersbutton.Text = "Update Cached Raid Members list";
+            this.cachedraidmembersbutton.UseVisualStyleBackColor = true;
+            this.cachedraidmembersbutton.Click += new System.EventHandler(this.cachedraidmembersbutton_Click);
+            // 
+            // cachedattackableunitsbutton
+            // 
+            this.cachedattackableunitsbutton.Location = new System.Drawing.Point(7, 7);
+            this.cachedattackableunitsbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedattackableunitsbutton.Name = "cachedattackableunitsbutton";
+            this.cachedattackableunitsbutton.Size = new System.Drawing.Size(350, 28);
+            this.cachedattackableunitsbutton.TabIndex = 4;
+            this.cachedattackableunitsbutton.Text = "Update Cached Attackable Units list";
+            this.cachedattackableunitsbutton.UseVisualStyleBackColor = true;
+            this.cachedattackableunitsbutton.Click += new System.EventHandler(this.cachedattackableunitsbutton_Click);
             // 
             // DebuggerGui
             // 
@@ -998,13 +1077,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).EndInit();
             this.targetcachedaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).EndInit();
-            this.tabPage1.ResumeLayout(false);
+            this.otheroptionstab.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.cachedattackableunitslisttab.ResumeLayout(false);
+            this.cachedraidmemberslisttab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cachedattackableunitsdatagrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedraidmembersdatagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1089,7 +1172,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras;
         private System.Windows.Forms.Button mycachedaurasbutton;
         private System.Windows.Forms.Button targetcachedaurasbutton;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage otheroptionstab;
         private System.Windows.Forms.Button updateshieldblockbutton;
         private System.Windows.Forms.Button updateshieldbarrierbutton;
         private System.Windows.Forms.TextBox shieldbarriersizetextbox;
@@ -1104,5 +1187,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox vigilancetargettextbox;
         private System.Windows.Forms.Button updatevigilancetargetbutton;
+        private System.Windows.Forms.TabPage cachedattackableunitslisttab;
+        private System.Windows.Forms.TabPage cachedraidmemberslisttab;
+        private System.Windows.Forms.DataGridView cachedattackableunitsdatagrid;
+        private System.Windows.Forms.DataGridView cachedraidmembersdatagrid;
+        private System.Windows.Forms.Button cachedattackableunitsbutton;
+        private System.Windows.Forms.Button cachedraidmembersbutton;
     }
 }

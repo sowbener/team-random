@@ -24,7 +24,7 @@ namespace FuryUnleashed.Rotations
         #region Global Used Composites
         internal static Composite InitializeCaching()
         {
-            return new PrioritySelector(Unit.PulseCache,
+            return new PrioritySelector(Unit.FillCacheLists,
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
