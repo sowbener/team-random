@@ -31,7 +31,7 @@ namespace Tyrael
 
         public override PulseFlags PulseFlags
         {
-            get { return !TyraelUtilities.IsTyraelPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel; }
+            get { return !TyraelUtilities.IsTyraelPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua /*| PulseFlags.InfoPanel*/; }
         }
 
         public override Form ConfigurationForm
@@ -89,12 +89,12 @@ namespace Tyrael
         {
             if (TyraelSettings.Instance.PluginPulsing)
             {
-                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua /*| PulseFlags.InfoPanel*/;
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are enabled!");
             }
             else
             {
-                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua /*| PulseFlags.InfoPanel*/;
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are disabled!");
             }
         }

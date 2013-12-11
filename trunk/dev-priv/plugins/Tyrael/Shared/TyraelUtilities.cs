@@ -16,19 +16,19 @@ namespace Tyrael.Shared
     public class TyraelUtilities
     {
         #region Hotkeys
-        //[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        //public static extern IntPtr GetActiveWindow();
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetActiveWindow();
 
-        //[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        //private static extern short GetAsyncKeyState(int vkey);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern short GetAsyncKeyState(int vkey);
 
-        //public static bool IsKeyAsyncDown(Keys key)
-        //{
-        //    if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
-        //        return false;
+        public static bool IsKeyAsyncDown(Keys key)
+        {
+            if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
+                return false;
 
-        //    return key != Keys.None && (GetAsyncKeyState((int)key) & 0x8000) != 0;
-        //}
+            return key != Keys.None && (GetAsyncKeyState((int)key) & 0x8000) != 0;
+        }
 
         public static bool IsTyraelPaused { get; set; }
 
