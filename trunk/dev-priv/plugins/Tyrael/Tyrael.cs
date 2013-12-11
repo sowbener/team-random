@@ -92,12 +92,10 @@ namespace Tyrael
             if (TyraelSettings.Instance.PluginPulsing)
             {
                 _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-                //Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are enabled!");
             }
             else
             {
                 _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-                //Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are disabled!");
             }
         }
         #endregion
