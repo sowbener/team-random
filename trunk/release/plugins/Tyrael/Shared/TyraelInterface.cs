@@ -207,7 +207,6 @@ namespace Tyrael.Shared
         private void SaveButton_Click(object sender, EventArgs e)
         {
             GlobalSettings.Instance.Save();
-
             TyraelSettings.Instance.Save();
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
@@ -215,6 +214,7 @@ namespace Tyrael.Shared
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
+            Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ChatOutput 
                     ? "[Tyrael] ChatOutput enabled!" 
@@ -249,6 +249,7 @@ namespace Tyrael.Shared
 
             Logging.Write(Colors.DodgerBlue, 
                     "[Tyrael] Interface saved and closed!");
+            Logging.Write(Colors.White, "------------------------------------------");
             Close();
         }
     }

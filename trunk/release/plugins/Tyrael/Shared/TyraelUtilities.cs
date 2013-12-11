@@ -84,6 +84,12 @@ namespace Tyrael.Shared
             False
         }
 
+        public enum SvnUrl
+        {
+            Release,
+            Development
+        }
+
         public static bool IsViable(WoWObject wowObject)
         {
             return (wowObject != null) && wowObject.IsValid;
