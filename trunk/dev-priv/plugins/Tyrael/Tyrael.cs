@@ -65,7 +65,7 @@ namespace Tyrael
                 Logging.Write(Colors.DodgerBlue, "\r\n");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] Special thanks to the following persons:");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] PureRotation Team");
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Minify Authors");
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Minify Author (Mirabis)");
                 Logging.Write(Colors.White, "-------------------------------------------\r\n");
             }
             catch (Exception initExept)
@@ -90,12 +90,12 @@ namespace Tyrael
             if (TyraelSettings.Instance.PluginPulsing)
             {
                 _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are enabled!");
+                //Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are enabled!");
             }
             else
             {
                 _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are disabled!");
+                //Logging.Write(Colors.DodgerBlue, "[Tyrael] Plugins are disabled!");
             }
         }
         #endregion
