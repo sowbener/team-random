@@ -214,6 +214,7 @@ namespace Tyrael.Shared
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
+            Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ChatOutput 
                     ? "[Tyrael] ChatOutput enabled!" 
@@ -248,6 +249,7 @@ namespace Tyrael.Shared
 
             Logging.Write(Colors.DodgerBlue, 
                     "[Tyrael] Interface saved and closed!");
+            Logging.Write(Colors.White, "------------------------------------------");
             Close();
         }
     }
