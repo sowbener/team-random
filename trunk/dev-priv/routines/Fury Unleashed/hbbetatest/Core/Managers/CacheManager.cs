@@ -1,4 +1,6 @@
-﻿using System;
+﻿//!CompilerOption:AddRef:System.Runtime.Caching.dll
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
