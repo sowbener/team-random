@@ -23,6 +23,7 @@ namespace Tyrael
         private static Composite _root;
         private static PulseFlags _pulseFlags;
 
+
         #region Overrides
         public override string Name
         {
@@ -48,6 +49,7 @@ namespace Tyrael
         {
             try
             {
+                Updater.CheckForUpdate();
                 TyraelSettings.Instance.Load();
                 ProfileManager.LoadEmpty();
                 GlobalSettings.Instance.LogoutForInactivity = false;
@@ -127,8 +129,7 @@ namespace Tyrael
             return new PrioritySelector(
                 new Decorator(ret => SanityCheckCombat(),
                     new PrioritySelector(
-                        // This causes the GUI to crash when performing the routine when saving.
-                        new Action(delegate { StyxWoW.Memory.ReleaseFrame(true); return RunStatus.Failure; }), 
+                        new Action(delegate { StyxWoW.Memory.ReleaseFrame(false); return RunStatus.Failure; }), 
                         RoutineManager.Current.HealBehavior,
                         RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
                         RoutineManager.Current.CombatBehavior)),

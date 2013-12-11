@@ -38,6 +38,9 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(TyraelUtilities.Minify.False)]
         public TyraelUtilities.Minify Minify { get; set; }
 
+        [Setting, DefaultValue(TyraelUtilities.SvnUrl.Release)]
+        public TyraelUtilities.SvnUrl SvnUrl { get; set; }
+
         [Setting, DefaultValue(ModifierKeys.Alt)]
         public ModifierKeys ModKeyChoice { get; set; }
 
@@ -46,6 +49,12 @@ namespace Tyrael.Shared
         #endregion
 
         #region Manual Settings
+        [Setting, DefaultValue(false)]
+        public bool CheckAutoUpdate { get; set; }
+
+        [Setting, DefaultValue(0)]
+        public int CurrentRevision { get; set; }
+
         [Setting, DefaultValue("")]
         public string LastStatCounted { get; set; }
         #endregion
