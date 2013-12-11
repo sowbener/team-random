@@ -127,7 +127,7 @@ namespace Tyrael
             return new PrioritySelector(
                 new Decorator(ret => SanityCheckCombat(),
                     new PrioritySelector(
-                        new Action(delegate { StyxWoW.Memory.ReleaseFrame(); return RunStatus.Failure; }),
+                        new Action(delegate { StyxWoW.Memory.ReleaseFrame(true); return RunStatus.Failure; }),
                         RoutineManager.Current.HealBehavior,
                         RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
                         RoutineManager.Current.CombatBehavior)),
