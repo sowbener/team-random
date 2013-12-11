@@ -207,7 +207,6 @@ namespace Tyrael.Shared
         private void SaveButton_Click(object sender, EventArgs e)
         {
             GlobalSettings.Instance.Save();
-
             TyraelSettings.Instance.Save();
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
