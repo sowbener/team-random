@@ -27,6 +27,7 @@ namespace Tyrael.Shared
         {
             try
             {
+                Logging.Write(Colors.White, "------------------------------------------");
                 Logging.Write(Colors.DodgerBlue, "\r\n[Tyrael] Checking if the used revision is the latest, updates if it is not.");
                 var remoteRev = GetRevision();
 
@@ -40,11 +41,13 @@ namespace Tyrael.Shared
                     TyraelSettings.Instance.CurrentRevision = remoteRev;
                     TyraelSettings.Instance.Save();
 
-                    Logging.Write(Colors.DodgerBlue, "[Tyrael] A new version of Fury Unleashed was installed. Please restart Honorbuddy.");
+                    Logging.Write(Colors.DodgerBlue, "[Tyrael] A new version of Tyrael was installed. Please restart Honorbuddy.");
+                    Logging.Write(Colors.White, "------------------------------------------");
                 }
                 else
                 {
                     Logging.Write(Colors.DodgerBlue, "[Tyrael] No updates found.");
+                    Logging.Write(Colors.White, "------------------------------------------");
                 }
             }
             catch (Exception ex)
