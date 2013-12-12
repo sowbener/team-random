@@ -32,7 +32,7 @@ namespace Tyrael.Shared
 
                 if (TyraelSettings.Instance.CurrentRevision != remoteRev)
                 {
-                    var logwrt = TyraelSettings.Instance.CheckAutoUpdate ? "[Tyrael] Downloading Update - Please wait." : "[Tyrael] Please update manually!";
+                    var logwrt = TyraelSettings.Instance.CheckAutoUpdate ? "[Tyrael] Downloading Update - Please wait." : "Please update manually!";
                     Logging.Write(Colors.DodgerBlue, "[Tyrael] A new version was found. " + logwrt);
                     if (!TyraelSettings.Instance.CheckAutoUpdate && checkallow) return;
 
