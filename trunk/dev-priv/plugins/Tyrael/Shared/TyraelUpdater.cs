@@ -27,8 +27,8 @@ namespace Tyrael.Shared
         {
             try
             {
-                Logging.Write(Colors.White, "------------------------------------------");
-                Logging.Write(Colors.DodgerBlue, "\r\n[Tyrael] Checking if the used revision is the latest, updates if it is not.");
+                Logging.Write(Colors.White, "\r\n------------------------------------------");
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Checking if the used revision is the latest, updates if it is not.");
                 var remoteRev = GetRevision();
 
                 if (TyraelSettings.Instance.CurrentRevision != remoteRev)
