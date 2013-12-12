@@ -84,7 +84,7 @@ namespace Waldo.Routines
             return new PrioritySelector(
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && WaLua.PlayerComboPts < 3),
-                Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (WaLua.PlayerComboPts < 5 || G._anticipationCount < 3),
+                Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (WaLua.PlayerComboPts < 5 || G._anticipationCount < 3)),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                 Spell.Cast("Vanish", ret => Lua.PlayerPower <= 75 && WaLua.PlayerComboPts <= 3 && !Me.HasAura(51713) && !Me.HasAura("Master of Subtlety") && (G.FindWeaknessOff || G.FindWeakness < 3)),
                 new Decorator(ret => WaLua.PlayerComboPts > 4, Finishers()),
