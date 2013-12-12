@@ -177,13 +177,13 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage),
                         //# Enrage overlaps 4 GCDs, which allows bloodthirst to be used mostly to keep enrage up, as rage income is typically not an issue with the aoe rotation.
                         //actions.aoe+=/bloodthirst,cycle_targets=1,if=!dot.deep_wounds.ticking&buff.enrage.down
-                        Spell.MultiDot(SpellBook.Bloodthirst, Me, ret => !Global.DeepWoundsAura && !Global.EnrageAura),
+                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds, ret => !Global.EnrageAura),
                         //actions.aoe+=/raging_blow,if=buff.meat_cleaver.stack=3
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS3),
                         //actions.aoe+=/whirlwind
                         Spell.Cast(SpellBook.Whirlwind),
                         //actions.aoe+=/bloodthirst,cycle_targets=1,if=!dot.deep_wounds.ticking
-                        Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
                         //actions.aoe+=/colossus_smash
                         Spell.Cast(SpellBook.ColossusSmash),
                         //actions.aoe+=/battle_shout,if=rage<70
@@ -192,26 +192,35 @@ namespace FuryUnleashed.Rotations.Fury
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))))),
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
                     new PrioritySelector(
-                        //actions.three_targets=bloodbath,if=enabled&buff.enrage.up
-                        //actions.three_targets+=/heroic_leap,if=buff.enrage.up
                         //actions.three_targets+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && !Global.ColossusSmashAura && (FuryGlobal.BloodbathSync) && FuryGlobal.Tier4AbilityAoEUsage),
                         //actions.three_targets+=/shockwave,if=enabled
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage),
                         //actions.three_targets+=/bladestorm,if=enabled&buff.enrage.up&(buff.bloodbath.up|!talent.bloodbath.enabled)
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Global.EnrageAura && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage),
                         //actions.three_targets+=/colossus_smash
+                        Spell.Cast(SpellBook.ColossusSmash),
                         //actions.three_targets+=/storm_bolt,if=enabled&debuff.colossus_smash.up
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityAoEUsage),
                         //actions.three_targets+=/raging_blow,if=buff.meat_cleaver.stack=2
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS2),
                         //actions.three_targets+=/bloodthirst,cycle_targets=1,if=!dot.deep_wounds.ticking
+                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
                         //actions.three_targets+=/whirlwind
+                        Spell.Cast(SpellBook.Whirlwind),
                         //actions.three_targets+=/raging_blow
+                        Spell.Cast(SpellBook.RagingBlow),
                         //actions.three_targets+=/battle_shout,if=rage<70
+                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))),
                         //actions.three_targets+=/heroic_throw
-                        )),
+                        Spell.Cast(SpellBook.HeroicThrow, ret => FuryGlobal.HeroicThrowUsage))),
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
-                        //actions.two_targets=bloodbath,if=enabled&buff.enrage.up
-                        //actions.two_targets+=/heroic_leap,if=buff.enrage.up
                         //# Generally, if an encounter has any type of AoE, Bladestorm will be the better choice.
                         //actions.two_targets+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && !Global.ColossusSmashAura && (FuryGlobal.BloodbathSync) && FuryGlobal.Tier4AbilityAoEUsage),
                         //actions.two_targets+=/bladestorm,if=enabled&buff.enrage.up&(buff.bloodbath.up|!talent.bloodbath.enabled)
                         Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Global.EnrageAura && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage),
                         //actions.two_targets+=/shockwave,if=enabled
@@ -220,7 +229,9 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.ColossusSmash),
                         //# Keep deep wounds on as many targets as possible.
                         //actions.two_targets+=/bloodthirst,cycle_targets=1,if=dot.deep_wounds.remains<5
+                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
                         //actions.two_targets+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
+                        Spell.Cast(SpellBook.Bloodthirst, ret => Global.NormalPhase && !Global.ColossusSmashAura && Me.CurrentRage < 30 && !Global.EnrageAura),
                         //actions.two_targets+=/storm_bolt,if=enabled&debuff.colossus_smash.up
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityAoEUsage),
                         //actions.two_targets+=/wait,sec=cooldown.bloodthirst.remains,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)&cooldown.bloodthirst.remains<=1&cooldown.bloodthirst.remains

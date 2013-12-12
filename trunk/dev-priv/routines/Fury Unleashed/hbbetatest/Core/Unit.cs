@@ -139,6 +139,21 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
+        /// Retrieves the count (Integer) of nearby units 
+        /// </summary>
+        public static int InterruptableUnitsCount;
+        public static void GetInterruptableUnitsCount()
+        {
+            using (new PerformanceLogger("GetInterruptableUnitsCount"))
+            {
+                if (IsViable(Me.CurrentTarget))
+                {
+                    InterruptableUnitsCount = CachedAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
+                }
+            }
+        }
+
+        /// <summary>
         /// Retrieves the count (Integer & Float) of nearby units (8y) - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int NearbyAttackableUnitsCount;
@@ -366,8 +381,6 @@ namespace FuryUnleashed.Core
         }
         #endregion
 
-
-
         
         #region Caching RaidMembers Functions - Needs to be migrated to v2
         internal static IEnumerable<WoWUnit> NearbyRaidMembers(WoWPoint fromLocation, double radius)
@@ -431,14 +444,6 @@ namespace FuryUnleashed.Core
             return hostile.Where(x =>
                         !x.IsFriendly && (x.IsCasting || x.IsChanneling) && x.IsTargetingPet &&
                         x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
-        }
-
-        public static int InterruptableUnitsCount;
-        public static void GetInterruptableUnitsCount()
-        {
-            using (new PerformanceLogger("GetInterruptableUnitsCount"))
-                if (IsViable(Me.CurrentTarget))
-                    InterruptableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
         }
         #endregion
     }

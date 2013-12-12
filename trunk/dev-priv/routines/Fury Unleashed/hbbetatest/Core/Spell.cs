@@ -92,26 +92,27 @@ namespace FuryUnleashed.Core
         /// <summary>
         /// Casting method for MultiDot casting - string
         /// </summary>
-        /// <param name="spellname">String spell to cast</param>
+        /// <param name="spellid">String spell to cast</param>
+        /// <param name="debuff">Integer of the debuff to check (AuraBook)</param>
         /// <param name="unit">WoWUnit to Multidot on</param>
         /// <param name="reqs">-</param>
         /// <returns></returns>
-        public static Composite MultiDot(string spellname, WoWUnit unit, Selection<bool> reqs = null)
+        public static Composite MultiDot(string spellid, WoWUnit unit, int debuff, Selection<bool> reqs = null)
         {
-            return MultiDot(spellname, unit, 1, reqs);
+            return MultiDot(spellid, unit, debuff, 1, reqs);
         }
 
-        public static Composite MultiDot(string spellname, WoWUnit unit, int refreshDurationRemaining, Selection<bool> reqs = null)
+        public static Composite MultiDot(string spellid, WoWUnit unit, int debuff, int refreshDurationRemaining, Selection<bool> reqs = null)
         {
             WoWUnit target = null;
             try
             {
                 return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
-                    new PrioritySelector(dot => target = Unit.MultiDotUnits(unit, spellname, 0, refreshDurationRemaining),
+                    new PrioritySelector(dot => target = Unit.MultiDotUnits(unit, debuff, 0, refreshDurationRemaining),
                         new Action(ctx =>
                         {
-                            Cast(spellname, on => target, ret => Unit.IsViable(target));
-                            CooldownTracker.SpellUsed(spellname);
+                            Cast(spellid, on => target, ret => Unit.IsViable(target));
+                            CooldownTracker.SpellUsed(spellid);
                         })));
             }
             catch (Exception ex)
@@ -120,7 +121,7 @@ namespace FuryUnleashed.Core
                     new Action(ret =>
                     {
                         Logger.DiagLogFb("Exception MultiDot {0}", ex);
-                        Logger.DiagLogFb("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellname, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
+                        Logger.DiagLogFb("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
                     }));
             }
         }
@@ -129,21 +130,22 @@ namespace FuryUnleashed.Core
         /// Casting method for MultiDot casting - int
         /// </summary>
         /// <param name="spellid">Integer spell to cast</param>
+        /// <param name="debuff">Int of the debuff to check (AuraBook)</param>
         /// <param name="unit">WoWUnit to Multidot on</param>
         /// <param name="reqs">-</param>
         /// <returns></returns>
-        public static Composite MultiDot(int spellid, WoWUnit unit, Selection<bool> reqs = null)
+        public static Composite MultiDot(int spellid, WoWUnit unit, int debuff, Selection<bool> reqs = null)
         {
-            return MultiDot(spellid, unit, 1, reqs);
+            return MultiDot(spellid, unit, debuff, 1, reqs);
         }
 
-        public static Composite MultiDot(int spellid, WoWUnit unit, int refreshDurationRemaining, Selection<bool> reqs = null)
+        public static Composite MultiDot(int spellid, WoWUnit unit, int debuff, int refreshDurationRemaining, Selection<bool> reqs = null)
         {
             WoWUnit target = null;
             try 
             { 
                 return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
-                    new PrioritySelector(dot => target = Unit.MultiDotUnits(unit, spellid, 0, refreshDurationRemaining),
+                    new PrioritySelector(dot => target = Unit.MultiDotUnits(unit, debuff, 0, refreshDurationRemaining),
                         new Action(ctx =>
                         {
                             Cast(spellid, on => target, ret => Unit.IsViable(target));
