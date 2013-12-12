@@ -49,7 +49,7 @@ namespace Tyrael.Shared
         #endregion
 
         #region Manual Settings
-        [Setting, DefaultValue(false)]
+        [Setting, DefaultValue(true)]
         public bool CheckAutoUpdate { get; set; }
 
         [Setting, DefaultValue(0)]
