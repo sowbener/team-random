@@ -27,7 +27,7 @@ namespace Tyrael.Shared
         {
             try
             {
-                Logging.Write(Colors.DodgerBlue, "\r\n[Tyrael] Checking if the used revision is the latest, updates if not - Can be disabled in the GUI.");
+                Logging.Write(Colors.DodgerBlue, "\r\n[Tyrael] Checking if the used revision is the latest, updates if it is not.");
                 var remoteRev = GetRevision();
 
                 if (TyraelSettings.Instance.CurrentRevision != remoteRev)
