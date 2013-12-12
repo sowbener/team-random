@@ -65,6 +65,7 @@
     <Compile Include="Core\XI_CooldownWatcher.cs" />
     <Compile Include="Helpers\XI_GuardTracker.cs" />
     <Compile Include="Helpers\XI_PerformenceLogger.cs" />
+    <Compile Include="Helpers\XI_Spellbook.cs" />
     <Compile Include="Routines\XI_Brewmaster.cs" />
     <Compile Include="Xiaolin.cs" />
     <Compile Include="Core\XI_Item.cs" />

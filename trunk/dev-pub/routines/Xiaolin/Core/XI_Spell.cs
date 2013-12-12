@@ -467,6 +467,26 @@ namespace Xiaolin.Core
         }
         #endregion
 
+        #region MeHasAnyAura (Credits millz)
+
+        public static bool HasAnyAura(this WoWUnit unit, params string[] auraNames)
+        {
+            if (unit == null) return false;
+
+            var auras = unit.GetAllAuras();
+            var hashes = new HashSet<string>(auraNames);
+            return auras.Any(a => hashes.Contains(a.Name));
+        }
+
+        public static bool HasAnyAura(this WoWUnit unit, HashSet<int> auraIDs)
+        {
+            if (unit == null) return false;
+
+            var auras = unit.GetAllAuras();
+            return auras.Any(a => auraIDs.Contains(a.SpellId));
+        }
+        #endregion
+
         #region Cooldown Tracker
         // Actual tracker for the cooldowns.
         public static class CooldownTracker

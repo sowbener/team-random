@@ -129,10 +129,10 @@ namespace Xiaolin.Routines
         internal static Composite ChiBuilder()
         {
             return new PrioritySelector(
-            Spell.Cast("Keg Smash"),
-            Spell.Cast("Expel Harm", ret => (Me.HealthPercent <= 90  && Lua.JabOK() <= 30) || Me.HealthPercent <= 35),
-            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
-            Spell.PreventDoubleCast("Tiger Palm", 1, ret => Lua.JabOK() <= 30 && ShuffleSetting > 3 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) > 1)
+            Spell.Cast(SpellBook.KegSmash),
+            Spell.Cast(SpellBook.ExpelHarm, ret => (Me.HealthPercent <= 90  && Lua.JabOK() <= 30) || Me.HealthPercent <= 35),
+            Spell.Cast(SpellBook.Jab, ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
+            Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => Lua.JabOK() <= 30 && ShuffleSetting > 3 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) > 1)
                 );
 
         }
@@ -142,11 +142,10 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterSt()
         {
             return new PrioritySelector(
-            Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
-            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
-            Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
+            Spell.Cast(SpellBook.BlackoutKick, ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
+            Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => NeedBuildStacksForGaurd), // Build PG and
             Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting >= 2 && MonkSettings.UseRJWSingleTarget),
-            Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
+            Spell.Cast(SpellBook.TouchofDeath, ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
 
@@ -155,14 +154,13 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterMt()
         {
             return new PrioritySelector(
-            Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
-            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
-            Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
+            Spell.Cast(SpellBook.BlackoutKick, ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
+            Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
             new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
             Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
             ClearDizzyingHaze(), // hackish but that fucking circle shit pisses me off.. -- wulf.
             Spell.Cast("Spinning Crane Kick", ret => XIUnit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && (ShuffleSetting >= 1 && Me.HasAura(118636) && Me.HasAura(125359) || (ShuffleSetting >= 1 && Me.HealthPercent < 70 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) > 1))),
-            Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
+            Spell.Cast(SpellBook.BreathofFire, ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
             new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder())
                   );
         }
@@ -171,7 +169,7 @@ namespace Xiaolin.Routines
         private static Composite HandleHealingCooldowns()
         {
             return new PrioritySelector(
-                    Spell.CastOnGround("Healing Sphere", ret => Me.Location, ret => NeedHealingSphere),
+                   // Spell.CastOnGround("Healing Sphere", ret => Me.Location, ret => NeedHealingSphere),
                     I.BrewmasterUseHealthStone());
         }
 
@@ -179,12 +177,12 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterDefensive()
         {
                         return new PrioritySelector(
-                     Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
-                     Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
-                     Spell.Cast("Guard", ret => GuardOK),
+                     Spell.Cast(SpellBook.PurifyingBrew, ret => CanUsePurifyingBrew), // Top Priority
+                     Spell.Cast(SpellBook.DampenHarm, ret => NeedDampenHarm),
+                     Spell.Cast(SpellBook.Guard, ret => GuardOK),
                      Spell.Cast("Chi Wave"),
                      new Decorator(ret => Me.HealthPercent < 100, HandleHealingCooldowns()),
-                     Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
+                     Spell.Cast(SpellBook.FortifyingBrew, ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
                      Spell.Cast("Zen Meditation", ret => NeedZenMeditation));
         }
@@ -214,7 +212,7 @@ namespace Xiaolin.Routines
         internal static Composite BrewmasterUtility()
         {
             return new PrioritySelector(
-                Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true),
+                Spell.CastOnGround("Summon Black Ox Statue", ret => Me.CurrentTarget.Location, ret => CanPlaceBlackOxStatue, true), // Checks target is not flying and we are not fighting elegon.
                 Spell.Cast("Disable", ret => UnitIsFleeing)
                 );
         }

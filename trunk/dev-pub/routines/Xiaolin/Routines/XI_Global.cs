@@ -29,7 +29,9 @@ namespace Xiaolin.Routines
             get
             {
                 return new PrioritySelector(
-                   );
+                    
+                Spell.Cast("Legacy of the White Tiger", ret => Me.Specialization == WoWSpec.MonkWindwalker && !Me.HasAnyAura(LegacyoftheWhiteTiger)),
+                Spell.Cast("Legacy of the Emperor", ret => !Me.HasAnyAura(LegacyoftheEmperor)));
             }
         }
 
@@ -47,6 +49,29 @@ namespace Xiaolin.Routines
         #region InterruptList
 
         internal static Random _random = new Random();
+
+        internal static readonly HashSet<int> LegacyoftheEmperor = new HashSet<int>
+       {
+
+           117666, // Legacy of the Emperor
+           1126, // Mark of the Wild
+           20217, // Blessing of Kings
+           90363, // Embrace of the Shale Spider	
+
+       };
+
+        internal static readonly HashSet<int> LegacyoftheWhiteTiger = new HashSet<int>
+       {
+
+         116781, // Legacy of the White Tiger
+         17007, // Leader of the Pack
+         1459, // Arcane Brilliance
+         61316, // Dalaran Brilliance
+         24604, // Furious Howl
+         90309, // Terrifying Roar	
+         126373, // Fearless Roar
+         126309, // Still Water
+       };
 
         internal static readonly HashSet<int> AgilityProcList = new HashSet<int>
         {

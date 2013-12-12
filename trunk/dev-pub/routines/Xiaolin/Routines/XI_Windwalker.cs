@@ -81,24 +81,24 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerSt()
         {
             return new PrioritySelector(
-               Spell.Cast("Tiger Palm", ret => TigerPowerRemains <= 3),
-               Spell.Cast("Rising Sun Kick"),
+               Spell.Cast(SpellBook.TigerPalm, ret => TigerPowerRemains <= 3),
+               Spell.Cast(SpellBook.RisingSunKick),
               //  new Decorator(ret => RisingSunKickReady, new ActionAlwaysSucceed()),
-                Spell.Cast("Tiger Palm", ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
-                Spell.Cast("Fists of Fury", ret => EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
-                Spell.Cast("Chi Wave", ret => Lua.TimeToEnergyCap() > 2),
-                Spell.Cast("Blackout Kick", ret => ComboBreakerBoKUp),
-                Spell.Cast("Tiger Palm", ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
-                Spell.Cast("Jab", ret => MaxChi - Lua.PlayerChi >= 2),
-                Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent),
-                Spell.Cast("Blackout Kick", ret => !RisingSunKickReady));
+                Spell.Cast(SpellBook.TigerPalm, ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
+                Spell.Cast(SpellBook.FistsofFury, ret => EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
+                Spell.Cast(SpellBook.ChiWave, ret => Lua.TimeToEnergyCap() > 2),
+                Spell.Cast(SpellBook.BlackoutKick, ret => ComboBreakerBoKUp),
+                Spell.Cast(SpellBook.TigerPalm, ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
+                Spell.Cast(SpellBook.Jab, ret => MaxChi - Lua.PlayerChi >= 2),
+                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent),
+                Spell.Cast(SpellBook.BlackoutKick, ret => !RisingSunKickReady));
 
         }
 
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent),
+                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent),
              //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }
@@ -125,8 +125,7 @@ namespace Xiaolin.Routines
                    (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.TigereyeBrew == XIEnum.AbilityTrigger.Always)
                     )),
-                //LuaGetSpellCharges()
-                //actions+=/chi_brew,if=talent.chi_brew.enabled&chi<=2&(trinket.proc.agility.react|(charges=1&recharge_time<=10)|charges=2|target.time_to_die<charges*10)
+                
                Spell.Cast("Chi Brew", ret => ((TalentChiBrewEnabled && Lua.PlayerChi <= 2) && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || (Lua.LuaGetSpellCharges() == 1 && Lua.GetSpellRechargeTime(115399, 45) <= 10) || Lua.LuaGetSpellCharges() == 2 || (Lua.LuaGetSpellCharges() > 1 && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10))) && (
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Windwalker.ChiBrew == XIEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
