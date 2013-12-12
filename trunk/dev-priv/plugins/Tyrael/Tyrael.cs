@@ -45,11 +45,15 @@ namespace Tyrael
             get { return _root ?? (_root = CreateRoot()); }
         }
 
+        public override void Initialize()
+        {
+            Updater.CheckForUpdate();
+        }
+
         public override void Start()
         {
             try
             {
-                Updater.CheckForUpdate();
                 TyraelSettings.Instance.Load();
                 ProfileManager.LoadEmpty();
                 GlobalSettings.Instance.LogoutForInactivity = false;
