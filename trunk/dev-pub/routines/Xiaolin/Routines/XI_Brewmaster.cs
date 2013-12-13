@@ -131,7 +131,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.Cast(SpellBook.KegSmash),
             Spell.Cast(SpellBook.ExpelHarm, ret => (Me.HealthPercent <= 90  && Lua.JabOK() <= 30) || Me.HealthPercent <= 35),
-            Spell.Cast(SpellBook.Jab, ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
+            Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
             Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => Lua.JabOK() <= 30 && ShuffleSetting > 3 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) > 1)
                 );
 
