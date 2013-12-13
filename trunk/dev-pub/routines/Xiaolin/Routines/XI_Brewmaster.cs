@@ -144,7 +144,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.Cast(SpellBook.BlackoutKick, ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
             Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => NeedBuildStacksForGaurd), // Build PG and
-            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting >= 2 && MonkSettings.UseRJWSingleTarget),
+            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
             Spell.Cast(SpellBook.TouchofDeath, ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );
