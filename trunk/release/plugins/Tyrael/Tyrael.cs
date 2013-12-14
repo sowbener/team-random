@@ -78,6 +78,7 @@ namespace Tyrael
 
         public override void Stop()
         {
+            Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");
             TyraelUtilities.RemoveHotkeys();
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Reconfiguring Honorbuddy.");
@@ -85,6 +86,7 @@ namespace Tyrael
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Resetting TreeRoot to default value.");
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
+            Logging.Write(Colors.White, "-------------------------------------------\r\n");
         }
 
         public static void PluginPulsing()
