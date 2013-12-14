@@ -79,49 +79,42 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FurySt()
         {
             return new PrioritySelector(
-                //actions.single_target+=/bloodthirst,if=!buff.enrage.up
-                Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura),
-                //# Galakras cooldown reduction trinket allows Storm Bolt to be synced with Colossus Smash. 'buff.cooldown_reduction.up' is a hackish way of seeing if the trinket is equipped.
+                //Added for Supporting it.
+                Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.ColossusSmashAura || Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500), // Added T16 P4.
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
-                //# Delay Bloodthirst if 2 stacks of raging blow are available inside Colossus Smash.
                 //actions.single_target+=/raging_blow,if=buff.raging_blow.stack=2&debuff.colossus_smash.up&target.health.pct>=20
                 Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S && Global.ColossusSmashAura && Global.NormalPhase),
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
-                //actions.single_target+=/bloodthirst
+                //actions.single_target+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
                 Spell.Cast(SpellBook.Bloodthirst),
-                //# The GCD reduction of the Bloodsurge buff allows 3 Wild Strikes in-between Bloodthirst.
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
-                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Global.BloodthirstSpellCooldown <= 1000 && Global.NormalPhase),
-                //actions.single_target+=/wait,sec=cooldown.bloodthirst.remains,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)&cooldown.bloodthirst.remains<=1&cooldown.bloodthirst.remains
-                new Decorator(ret => Global.NormalPhase && !Global.ColossusSmashAura && Lua.PlayerPower < 30 && !Global.EnrageAura && Global.BloodthirstSpellCooldown <= 1000, new ActionAlwaysSucceed()),
+                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000),
                 //actions.single_target+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
-                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && !Global.ColossusSmashAura && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityUsage),
-                //# The debuff from Colossus Smash lasts 6.5 seconds and also has 0.25~ seconds of travel time. This allows 4 1.5 second globals to be used inside of it every time now.
+                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && (!Global.ColossusSmashAura && FuryGlobal.BloodbathSync) && FuryGlobal.Tier4AbilityUsage),
                 //actions.single_target+=/colossus_smash
                 Spell.Cast(SpellBook.ColossusSmash),
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && FuryGlobal.Tier6AbilityUsage),
                 //actions.single_target+=/execute,if=debuff.colossus_smash.up|rage>70|target.time_to_die<12
-                Spell.Cast(SpellBook.Execute, ret => (Global.ColossusSmashAura || Lua.PlayerPower > 70) && Global.ExecutePhase),
-                //actions.single_target+=/raging_blow,if=target.health.pct<20|buff.raging_blow.stack=2|debuff.colossus_smash.up|buff.raging_blow.remains<=3
-                Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S || Global.ColossusSmashAura || Global.FadingRb(3000) || Global.ExecutePhase),
-                //# Titan's Grip Bladestorm is competitive with Dragon Roar (Not quite better) with a single target.
-                //actions.single_target+=/bladestorm,if=enabled
-                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityUsage),
+                Spell.Cast(SpellBook.Execute, ret => Global.ColossusSmashAura || Lua.PlayerPower > 70),
+                //actions.single_target+=/raging_blow,if=target.health.pct<20|buff.raging_blow.stack=2|(debuff.colossus_smash.up|(cooldown.bloodthirst.remains>=1&buff.raging_blow.remains<=3))
+                Spell.Cast(SpellBook.RagingBlow, ret => Global.ExecutePhase || Global.RagingBlow2S || (Global.ColossusSmashAura || Global.BloodthirstSpellCooldown >= 1 && Global.FadingRb(3000))),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.up
                 Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
-                //# If Colossus Smash is coming up soon, it's a good idea to save 1 charge of raging blow for it.
+                //actions.single_target+=/bladestorm,if=enabled&cooldown.bloodthirst.remains>2
+                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Global.BloodthirstSpellCooldown > 2000 && FuryGlobal.Tier4AbilityUsage),
                 //actions.single_target+=/raging_blow,if=cooldown.colossus_smash.remains>=3
                 Spell.Cast(SpellBook.RagingBlow, ret => Global.ColossusSmashSpellCooldown >= 3000),
                 //actions.single_target+=/shockwave,if=enabled
                 Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
                 //actions.single_target+=/heroic_throw,if=debuff.colossus_smash.down&rage<60
-                Spell.Cast(SpellBook.HeroicThrow, ret => !Global.ColossusSmashAura && Lua.PlayerPower < 60 && FuryGlobal.HeroicThrowUsage),
-                //# Shattering Throw is a very small personal dps increase, but a fairly significant raid dps increase. Only use to fill empty globals.
-                //actions.single_target+=/shattering_throw,if=cooldown.colossus_smash.remains>5
-                Spell.Cast(SpellBook.ShatteringThrow, ret => Global.ColossusSmashSpellCooldown > 5000 && FuryGlobal.ShatteringThrowUsage),
+                Spell.Cast(SpellBook.HeroicThrow, ret => !Global.ColossusSmashAura && Lua.PlayerPower < 60 && InternalSettings.Instance.Fury.CheckHeroicThrow),
+                //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
+                new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura)),
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura))),
                 //actions.single_target+=/wild_strike,if=debuff.colossus_smash.up&target.health.pct>=20
                 Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashAura && Global.NormalPhase),
                 //actions.single_target+=/battle_shout,if=rage<70
@@ -131,14 +124,23 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
                 Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashSpellCooldown >= 2000 && Lua.PlayerPower >= 70 && Global.NormalPhase),
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
-                Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && Global.ColossusSmashSpellCooldown >= 2000 && Global.NormalPhase && FuryGlobal.ImpendingVictoryUsage)
+                Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && Global.NormalPhase && Global.ColossusSmashSpellCooldown >= 2000 && InternalSettings.Instance.Fury.CheckRotImpVic)
                 );
         }
 
         internal static Composite Dev_FuryExec()
         {
             return new PrioritySelector(
-                Dev_FurySt());
+                new Decorator(ret => Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.FadingDeathSentence(3000)),
+                        Spell.Cast(SpellBook.StormBolt, ret => FuryGlobal.Tier6AbilityUsage),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && Global.BerserkerRageOnCooldown),
+                        Spell.Cast(SpellBook.Execute),
+                        Spell.Cast(SpellBook.RagingBlow))),
+                new Decorator(ret => !Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Dev_FurySt())));
         }
 
         internal static Composite Dev_FuryHeroicStrike()
