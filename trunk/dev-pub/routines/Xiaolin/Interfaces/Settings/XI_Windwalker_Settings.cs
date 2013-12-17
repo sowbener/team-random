@@ -42,6 +42,14 @@ namespace Xiaolin.Interfaces.Settings
         [Description("Select the usage of Xuen")]
         public XIEnum.AbilityTrigger Xuen { get; set; }
 
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Windwalker - Ability Options")]
+        [DisplayName("Rushing Jade Wind Single Target")]
+        [Description("Select the usage of Rushing Jade Wind Single Target")]
+        public bool EnableRJWSingleTarget { get; set; }
+
         [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.OnBossDummy)]
         [Category("Windwalker - Ability Options")]

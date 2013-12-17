@@ -67,7 +67,7 @@ namespace Xiaolin.Routines
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
         internal static bool ComboBreakerBoKUp { get { return Me.HasAura(116768); } }
         internal static bool TalentAscensionEnabled { get { return XITalentManager.HasTalent(8); } }
-        internal static bool RushingJadeWindTalent { get { return XITalentManager.HasTalent(16); } }
+        internal static bool RushingJadeWindTalent { get { return XITalentManager.HasTalent(16) && SG.Instance.Windwalker.EnableRJWSingleTarget; } }
         internal static bool ComboBreakerTpUp { get { return Me.HasAura(118864); } }
         internal static double ComboBreakerTpRemains { get { return Spell.GetMyAuraTimeLeft(118864, Me); } }
         internal static double RisingSunKickDebuffRemains { get { return Spell.GetMyAuraTimeLeft(130320, Me.CurrentTarget); } }

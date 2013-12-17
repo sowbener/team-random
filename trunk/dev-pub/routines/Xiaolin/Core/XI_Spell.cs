@@ -172,7 +172,7 @@ namespace Xiaolin.Core
                 }
             }
             bool formSwitch = false;
-            uint currentPower = Me.CurrentPower;
+            double currentPower = XILua.PlayerPower;
             if (Me.Class == WoWClass.Druid)
             {
                 if (Me.Shapeshift == ShapeshiftForm.Cat || Me.Shapeshift == ShapeshiftForm.Bear || Me.Shapeshift == ShapeshiftForm.DireBear)
