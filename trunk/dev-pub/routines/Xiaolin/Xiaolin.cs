@@ -55,7 +55,7 @@ namespace Xiaolin
         public static XIMain Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        internal static readonly Version Revision = new Version(1, 1);
+        internal static readonly Version Revision = new Version(1, 2);
         internal static double _initap = 0;
         internal static double _NewAP = 0;
         internal static double _NoModifierAP = 0;
