@@ -30,8 +30,8 @@ namespace Xiaolin.Routines
             {
                 return new PrioritySelector(
 
-                Spell.CastRaidBuff("Legacy of the White Tiger", ret => true),
-                Spell.CastRaidBuff("Legacy of the Emperor",  ret => true));
+                Spell.Cast("Legacy of the White Tiger", ret => Me.Specialization == WoWSpec.MonkWindwalker && Me.HasAnyAura(LegacyoftheWhiteTiger)),
+                Spell.Cast("Legacy of the Emperor", ret => Me.HasAnyAura(LegacyoftheEmperor)));
             }
         }
 
