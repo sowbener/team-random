@@ -129,7 +129,7 @@ namespace Xiaolin.Routines
         internal static Composite ChiBuilder()
         {
             return new PrioritySelector(
-            Spell.Cast(SpellBook.KegSmash),
+            Spell.Cast(SpellBook.KegSmash, ret => Lua.PlayerPower >= 40),
             Spell.Cast(SpellBook.ExpelHarm, ret => (Me.HealthPercent <= 90  && Lua.JabOK() <= 30) || Me.HealthPercent <= 35),
             Spell.Cast("Jab", ret => Lua.PlayerPower >= 40 && Lua.JabOK() >= 30 && Me.HealthPercent > 35),
             Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => Lua.JabOK() <= 30 && ShuffleSetting > 3 && CooldownWatcher.GetSpellCooldownTimeLeft(115295) > 1)
@@ -144,7 +144,7 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
             Spell.Cast(SpellBook.BlackoutKick, ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
             Spell.PreventDoubleCast(SpellBook.TigerPalm, 1, ret => NeedBuildStacksForGaurd), // Build PG and
-            Spell.Cast("Rushing Jade Wind", ret => ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
+            Spell.Cast("Rushing Jade Wind", ret =>  ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
             Spell.Cast(SpellBook.TouchofDeath, ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
                 );

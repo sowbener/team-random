@@ -12,7 +12,7 @@ namespace Xiaolin.Interfaces.Settings
         {
         }
 
-        #region interrupt
+        #region Interrupt
 
         [Setting]
         [Styx.Helpers.DefaultValue(700)]
@@ -52,6 +52,14 @@ namespace Xiaolin.Interfaces.Settings
         [DisplayName("Enables Addon usage")]
         [Description("This Enables XiaolinRoutineToggler")]
         public bool EnableMacroOutput { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("General")]
+        [DisplayName("Enables Raid Buffing")]
+        [Description("This enables Raid Buffing")]
+        public bool EnableRaidPartyBuffing { get; set; }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(LogCategory.None)]

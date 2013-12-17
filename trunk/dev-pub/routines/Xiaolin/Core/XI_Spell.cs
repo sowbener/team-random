@@ -36,6 +36,237 @@ namespace Xiaolin.Core
         internal delegate T Selection<out T>(object context);
         #endregion
 
+        #region Buff
+        public static Composite CastRaidBuff(string name, CanRunDecoratorDelegate cond)
+        {
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!Xiaolin.Interfaces.Settings.XISettings.Instance.General.EnableRaidPartyBuffing)
+                        return false;
+
+                    if (!cond(a))
+                        return false;
+
+                    if (!SpellManager.CanCast(name, Me))
+                    {
+                        return false;
+                    }
+
+                    var players = new List<WoWPlayer> { Me };
+                    if (Me.GroupInfo.IsInRaid)
+                    {
+                        players.Remove(Me);
+                        players.AddRange(Me.RaidMembers);
+                    }
+                    else if (Me.GroupInfo.IsInParty)
+                    {
+                        players.AddRange(Me.PartyMembers);
+                    }
+
+                    var ProvidablePlayerBuffs = new HashSet<int>();
+
+                    return players.Any(x => x.Distance2DSqr < 40 * 40 && ((x.HasAnyAura(Xiaolin.Routines.XIGlobal.LegacyoftheWhiteTiger) && Me.Specialization == WoWSpec.MonkWindwalker) || x.HasAnyAura(Xiaolin.Routines.XIGlobal.LegacyoftheEmperor)) && !x.IsDead && !x.IsGhost && x.IsAlive);
+                },
+                new Sequence(
+                    new Action(a => SpellManager.Cast(name))));
+        }
+
+
+        #endregion
+
+        #region Cast Hack - allows casting spells that CanCast returns False
+
+        public static bool CanCastHack(string castName)
+        {
+            return CanCastHack(castName, Me.CurrentTarget, skipWowCheck: false);
+        }
+        public static bool CanCastHack(int castId)
+        {
+            return CanCastHack(castId, Me.CurrentTarget, skipWowCheck: false);
+        }
+        /// <summary>
+        /// CastHack following done because CanCast() wants spell as "Metamorphosis: Doom" while Cast() and aura name are "Doom"
+        /// </summary>
+        /// <param name="castName"></param>
+        /// <param name="onUnit"></param>
+        /// <param name="requirements"></param>
+        /// <returns></returns>
+        public static bool CanCastHack(string castName, WoWUnit unit, bool skipWowCheck = false)
+        {
+            SpellFindResults sfr;
+            if (!SpellManager.FindSpell(castName, out sfr))
+            {
+                Logger.DebugLog("CanCast: spell [{0}] not known", castName);
+                return false;
+            }
+
+            return CanCastHack(sfr, unit, skipWowCheck);
+        }
+        /// <summary>
+        /// CastHack following done because CanCast() wants spell as "Metamorphosis: Doom" while Cast() and aura name are "Doom"
+        /// </summary>
+        /// <param name="castName"></param>
+        /// <param name="onUnit"></param>
+        /// <param name="requirements"></param>
+        /// <returns></returns>
+        public static bool CanCastHack(int castId, WoWUnit unit, bool skipWowCheck = false)
+        {
+            SpellFindResults sfr;
+            if (!SpellManager.FindSpell(castId, out sfr))
+            {
+                return false;
+            }
+
+            return CanCastHack(sfr, unit, skipWowCheck);
+        }
+        /// <summary>
+        /// CastHack following done because CanCast() wants spell as "Metamorphosis: Doom" while Cast() and aura name are "Doom"
+        /// </summary>
+        public static bool CanCastHack(SpellFindResults sfr, WoWUnit unit, bool skipWowCheck = false)
+        {
+            WoWSpell spell = sfr.Override ?? sfr.Original;
+            // check range
+            if (unit != null && !spell.IsSelfOnlySpell && !unit.IsMe)
+            {
+                if (spell.IsMeleeSpell && !unit.IsWithinMeleeRange)
+                {
+                    Logger.DebugLog("CanCastHack[{0}]: not in melee range", spell.Name);
+                    return false;
+                }
+                if (spell.HasRange)
+                {
+                    if (unit.Distance > spell.ActualMaxRange(unit))
+                    {
+                      //  Logger.DebugLog("CanCastHack[{0}]: out of range - further than {1:F1}", spell.Name, ActualMaxRange(unit));
+                        return false;
+                    }
+                    if (unit.Distance < spell.ActualMinRange(unit))
+                    {
+                     //   Logger.DebugLog("CanCastHack[{0}]: out of range - closer than {1:F1}", spell.Name, ActualMinRange(unit));
+                        return false;
+                    }
+                }
+
+                if (!unit.InLineOfSpellSight)
+                {
+                    Logger.DebugLog("CanCastHack[{0}]: not in spell line of {1}", spell.Name, unit.SafeName);
+                    return false;
+                }
+            }
+
+
+
+            if (Me.ChanneledCastingSpellId == 0)
+            {
+                uint num = StyxWoW.WoWClient.Latency * 2u;
+                if (StyxWoW.Me.IsCasting && Me.CurrentCastTimeLeft.TotalMilliseconds > num)
+                {
+                    Logger.DebugLog("CanCastHack[{0}]: current cast of [1] has {2:F0} ms left", spell.Name, Me.CurrentCastId, Me.CurrentCastTimeLeft.TotalMilliseconds - num);
+                    return false;
+                }
+
+                if (spell.CooldownTimeLeft.TotalMilliseconds > num)
+                {
+                    return false;
+                }
+            }
+            bool formSwitch = false;
+            uint currentPower = Me.CurrentPower;
+            if (Me.Class == WoWClass.Druid)
+            {
+                if (Me.Shapeshift == ShapeshiftForm.Cat || Me.Shapeshift == ShapeshiftForm.Bear || Me.Shapeshift == ShapeshiftForm.DireBear)
+                {
+                    if (Me.HealingSpellIds.Contains(spell.Id))
+                    {
+                        formSwitch = true;
+                        currentPower = Me.CurrentMana;
+                    }
+                    else if (spell.PowerCost >= 100)
+                    {
+                        formSwitch = true;
+                        currentPower = Me.CurrentMana;
+                    }
+                }
+            }
+
+            if (currentPower < (uint)spell.PowerCost)
+            {
+                Logger.DebugLog("CanCast[{0}]: insufficient power (need {1:F0}, have {2:F0} {3})", spell.Name, spell.PowerCost, currentPower, formSwitch ? "Mana in Form" : Me.PowerType.ToString());
+                return false;
+            }
+
+            // override spell will sometimes always have cancast=false, so check original also
+            if (!skipWowCheck && !spell.CanCast && (sfr.Override == null || !sfr.Original.CanCast))
+            {
+                Logger.DebugLog("CanCast[{0}]: spell specific CanCast failed (#{1})", spell.Name, spell.Id);
+
+                return false;
+            }
+            return true;
+        }
+
+        public static bool HaveAllowMovingWhileCastingAura(WoWSpell spell = null)
+        {
+            return Me.GetAllAuras().Any(a => a.ApplyAuraType == (WoWApplyAuraType)330 && (spell == null || spell.CastTime < (uint)a.TimeLeft.TotalMilliseconds));
+        }
+
+        public static bool IsFunnel(string name)
+        {
+            SpellFindResults sfr;
+            SpellManager.FindSpell(name, out sfr);
+            WoWSpell spell = sfr.Override ?? sfr.Original;
+            if (spell == null)
+                return false;
+            return IsFunnel(spell);
+        }
+
+  
+        public static bool IsFunnel(WoWSpell spell)
+        {
+            // HV has the answer... ty m8
+            bool IsChanneled = false;
+            var row = StyxWoW.Db[Styx.Patchables.ClientDb.Spell].GetRow((uint)spell.Id);
+            if (row.IsValid)
+            {
+                var spellMiscIdx = row.GetField<uint>(24);
+                row = StyxWoW.Db[Styx.Patchables.ClientDb.SpellMisc].GetRow(spellMiscIdx);
+                var flags = row.GetField<uint>(4);
+                IsChanneled = (flags & 68) != 0;
+            }
+
+            return IsChanneled;
+        }
+
+        public static float ActualMinRange(this WoWSpell spell, WoWUnit unit)
+        {
+            if (spell.MinRange == 0)
+                return 0;
+
+            // some code was using 1.66666675f instead of Me.CombatReach ?
+            return unit != null ? spell.MinRange + unit.CombatReach + StyxWoW.Me.CombatReach : spell.MinRange;
+        }
+
+        public static float ActualMaxRange(this WoWSpell spell, WoWUnit unit)
+        {
+            if (spell.MaxRange == 0)
+                return 0;
+            // 0.1 margin for error
+            return unit != null ? spell.MaxRange + unit.CombatReach + StyxWoW.Me.CombatReach : spell.MaxRange;
+        }
+
+        public static float ActualMaxRange(string name, WoWUnit unit)
+        {
+            SpellFindResults sfr;
+            if (!SpellManager.FindSpell(name, out sfr))
+                return 0f;
+
+            WoWSpell spell = sfr.Override ?? sfr.Original;
+            return spell.ActualMaxRange(unit);
+        }
+        #endregion Cast Hack - allows casting spells that CanCast returns False
+
+
         #region Casting Methods
         // Casting by Name
         public static Composite Cast(string spell, Selection<bool> reqs = null)
@@ -45,14 +276,35 @@ namespace Xiaolin.Core
 
         public static Composite Cast(string spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
         {
-            return
-                new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && SpellManager.CanCast(spell, onUnit(ret))),
+
+            try
+            {
+                SpellFindResults sfr;
+                if (!SpellManager.FindSpell(spell, out sfr))
+                {
+                    return new PrioritySelector();
+                }
+                WoWSpell _spell = sfr.Override ?? sfr.Original;
+                return
+                    new Decorator(
+                        ret => onUnit != null && onUnit(ret) != null &&
+                            ((reqs != null && reqs(ret)) || (reqs == null)) && CanCastHack(_spell.Id, onUnit(ret)),
+                        new Sequence(
+                            new Action(ret => SpellManager.Cast(_spell.Id, onUnit(ret))),
+                            new Action(ret => Logger.InfoLog(String.Format("*{0} on {1} at {2:F1} yds at {3:F1}%", spell, onUnit(ret).SafeName, onUnit(ret).Distance, onUnit(ret).HealthPercent)))
+                         //   new Action(ret => Lastspellcast = spell))
+                        )); // this is here so i can track stuff like pyroblast. --wulf
+            }
+            catch (Exception ex)
+            {
+
+                return new PrioritySelector(
                     new Action(ret =>
-                        {
-                            SpellManager.Cast(spell, onUnit(ret));
-                            CooldownTracker.SpellUsed(spell);
-                            XILogger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
-                        }));
+                    {
+                        Logger.DebugLog("Exception Cast by string {0}", ex);
+                        Logger.DebugLog("We tried to cast spell={0}, onUnit={1}, onUnit(ret)={2},name={3},health={4}", spell, onUnit != null, onUnit(ret) != null, onUnit(ret) != null ? onUnit(ret).SafeName : "<none>", onUnit(ret) != null ? onUnit(ret).HealthPercent : 0);
+                    }));
+            }
         }
 
         // Casting by Integer
@@ -63,14 +315,25 @@ namespace Xiaolin.Core
 
         public static Composite Cast(int spell, UnitSelectionDelegate onUnit, Selection<bool> reqs = null)
         {
-            return
-                new Decorator(ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && SpellManager.CanCast(spell, onUnit(ret)),
+            try
+            {
+                return
+                    new Decorator(
+                        ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && CanCastHack(spell, onUnit(ret)),
+                         new Sequence(
+                            new Action(ret => SpellManager.Cast(spell, onUnit(ret))),
+                            new Action(ret => Logger.InfoLog(String.Format("*{0} on {1} at {2:F1} yds at {3:F1}%", WoWSpell.FromId(spell).Name, onUnit(ret).SafeName, onUnit(ret).Distance, onUnit(ret).HealthPercent)))));
+            }
+            catch (Exception ex)
+            {
+
+                return new PrioritySelector(
                     new Action(ret =>
-                        {
-                            SpellManager.Cast(spell, onUnit(ret));
-                            CooldownTracker.SpellUsed(spell);
-                            XILogger.CombatLogO("Casting: " + spell + " on " + onUnit(ret).SafeName);
-                        }));
+                    {
+                        Logger.DebugLog("Exception Cast by Id {0}", ex);
+                        Logger.DebugLog("We tried to cast spell={0}, onUnit={1}, onUnit(ret)={2},name={3},health={4}", spell, onUnit != null, onUnit(ret) != null, onUnit(ret) != null ? onUnit(ret).SafeName : "<none>", onUnit(ret) != null ? onUnit(ret).HealthPercent : 0);
+                    }));
+            }
         }
 
         // Casting on Ground by String
