@@ -21,13 +21,14 @@ namespace FuryUnleashed.Core
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static readonly Random Random = new Random();
         private const int AttackableunitsExpiry = 100;
-        private const int RaidmembersExpiry = 500;
+        private const int RaidmembersExpiry = 250;
 
         public static WoWUnit VigilanceTarget;
         public static List<WoWUnit> CachedAttackableUnitsList;
         public static List<WoWPlayer> CachedRaidMembersList;
 
         #region Cached Units v2
+
         /// <summary>
         /// Initialize the required lists for Cached Units.
         /// </summary>
@@ -40,9 +41,9 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
-        /// Pulsed in FuryUnleashed.Rotations.Global.InitializeCaching() - Starts the filling of the CachedAttackableUnitsList
+        /// Pulsed in FuryUnleashed.Rotations.Global.InitializeCaching() - Starts the caching unit functions.
         /// </summary>
-        public static Composite PopulateCacheLists
+        public static Composite PopulateUnitCacheLists
         {
             get
             {
@@ -50,6 +51,10 @@ namespace FuryUnleashed.Core
                 {
                     CachedAttackableUnitsList = CacheAttackableUnits;
                     CachedRaidMembersList = CacheRaidMembers;
+
+                    GetNearbyAttackableUnitsCount();
+                    GetVigilanceTarget();
+
                     return RunStatus.Failure;
                 });
             }

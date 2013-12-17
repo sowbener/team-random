@@ -4,6 +4,7 @@ using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
+using FuryUnleashed.Interfaces.Settings;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
@@ -115,9 +116,9 @@ namespace FuryUnleashed
             if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
             else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogFb("Recommended rotations are (Selectable in the GUI):");
-            Logger.CombatLogOr("Arms: Release");
-            Logger.CombatLogOr("Fury: Release or Development - Test which you like the most!");
-            Logger.CombatLogOr("Protection: Release");
+            Logger.CombatLogOr("Arms: {0}", InternalSettings.Instance.General.CrArmsRotVersion.ToString());
+            Logger.CombatLogOr("Fury: {0}", InternalSettings.Instance.General.CrFuryRotVersion.ToString());
+            Logger.CombatLogOr("Protection: {0}", InternalSettings.Instance.General.CrProtRotVersion.ToString());
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
 

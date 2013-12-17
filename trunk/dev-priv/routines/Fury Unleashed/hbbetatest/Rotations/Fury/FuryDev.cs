@@ -149,16 +149,15 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => !InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
                         //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up
-                        Spell.Cast(SpellBook.HeroicStrike, ret => (Global.ColossusSmashAura && Lua.PlayerPower >= 40 && Global.NormalPhase || Lua.PlayerPower >= Lua.PlayerPowerMax - 20) && Global.EnrageAura, true)
-                        )),
+                        Spell.Cast(SpellBook.HeroicStrike, ret => (Global.ColossusSmashAura && Lua.PlayerPower >= 40 && Global.NormalPhase || Lua.PlayerPower >= Lua.PlayerPowerMax - 20) && Global.EnrageAura, true),
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Lua.PlayerPowerMax, true))),
                 new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
-                        //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
-                        //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
+                        //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90 //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                         Spell.Cast(SpellBook.Cleave, ret => (Lua.PlayerPower >= 60 && Global.ColossusSmashAura || Lua.PlayerPower > 90) && Unit.NearbyAttackableUnitsCount < 4, true),
                         //actions.aoe+=/cleave,if=rage>110
-                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax - 10 && Unit.NearbyAttackableUnitsCount >= 4, true)
-                        )));
+                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax - 10 && Unit.NearbyAttackableUnitsCount >= 4, true),
+                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower == Lua.PlayerPowerMax, true))));
         }
 
         internal static Composite Dev_FuryMt()
