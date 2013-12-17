@@ -91,7 +91,7 @@ namespace Xiaolin.Routines
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
                 Spell.PreventDoubleCast("Jab", 0.5, ret => MaxChi - Lua.PlayerChi >= 2),
                 Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 1.3, ret => Lua.BlackoutKickOK() >= 40));
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 1.2, ret => Lua.BlackoutKickOK() >= 40));
 
         }
 
