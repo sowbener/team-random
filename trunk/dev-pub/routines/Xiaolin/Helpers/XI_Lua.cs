@@ -287,6 +287,26 @@ namespace Xiaolin.Helpers
 
         }
 
+
+        public static double BlackoutKickOK()
+        {
+
+            //actions.single_target+=/blackout_kick,if=energy+energy.regen*cooldown.rising_sun_kick.remains>=40
+
+            double playerEnergy;
+            double ER_Rate;
+            double RSKCooldown;
+            double BoKOK;
+
+            playerEnergy = XILua.PlayerPower;
+            ER_Rate = XILua.LuaGetEnergyRegen();
+            RSKCooldown = CooldownWatcher.GetSpellCooldownTimeLeft(107428);
+
+            BoKOK = playerEnergy + ER_Rate * RSKCooldown;
+
+            return BoKOK;
+        }
+
         public static double JabOK()
         {
             double playerEnergy;
