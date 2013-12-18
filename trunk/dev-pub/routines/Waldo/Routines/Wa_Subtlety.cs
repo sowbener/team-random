@@ -126,15 +126,15 @@ namespace Waldo.Routines
             return new PrioritySelector(
               Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && WaLua.PlayerComboPts < 1),
               new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
-              new Decorator(ret => U.NearbyAttackableUnitsCount < 4, SubSt()),
-              new Decorator(ret => WaLua.PlayerComboPts < 4 && U.NearbyAttackableUnitsCount > 3 && U.NearbyAttackableUnitsCount < 7, new PrioritySelector(
+              new Decorator(ret => U.NearbyAttackableUnitsCount == 3, SubSt()),
+              new Decorator(ret => WaLua.PlayerComboPts < 4 && U.NearbyAttackableUnitsCount == 4 && U.NearbyAttackableUnitsCount <= 6, new PrioritySelector(
               new Decorator(ret => !Styx.WoWInternals.WoWSpell.FromId(8676).CanCast, ComboBuilders()),
               Spell.Cast("Ambush", ret => Me.IsStealthed || Me.HasAura(108208) || Lua.PlayerPower < 90 && WaLua.PlayerComboPts < 5),
               Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
               Spell.Cast("Crimson Tempest", ret => (G.CrimsonTempestNotUp && WaLua.PlayerComboPts < 1) || (WaLua.PlayerComboPts > 4 && !G.FucknoSND && G.CrimsonTempestNotUp)),
               Spell.Cast("Eviscerate", ret => Lua.PlayerComboPts > 4 && !G.FucknoSND && !G.CrimsonTempestNotUp),
               Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 4 && G.FucknoSND))),
-              new Decorator(ret => U.NearbyAttackableUnitsCount > 6, new PrioritySelector(
+              new Decorator(ret => U.NearbyAttackableUnitsCount >= 7, new PrioritySelector(
                 Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 4),
                  Spell.Cast("Crimson Tempest", ret => (G.CrimsonTempestNotUp && WaLua.PlayerComboPts < 1) || (WaLua.PlayerComboPts > 4 && !G.FucknoSND && G.CrimsonTempestNotUp)),
                  Spell.Cast("Slice and Dice", ret => WaLua.PlayerComboPts > 4 && G.FucknoSND)
