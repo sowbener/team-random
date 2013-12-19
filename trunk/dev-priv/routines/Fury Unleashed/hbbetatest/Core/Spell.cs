@@ -109,17 +109,20 @@ namespace FuryUnleashed.Core
                 {
                     return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
                         new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
-                            new Action(ret =>
-                            {
-                                if (SpellManager.Cast(spellid, target))
+                            new Decorator(ret => Unit.IsViable(target),
+                                new Action(ret =>
                                 {
-                                    CooldownTracker.SpellUsed(spellid);
-                                    Logger.CombatLogLg("MultiDoT: " + WoWSpell.FromId(spellid).Name + " on " + target.SafeName);
-                                    if (!failThrough)
-                                        return RunStatus.Success;
-                                }
-                                return RunStatus.Failure;
-                            })));
+                                    if (SpellManager.Cast(spellid, target))
+                                    {
+                                        CooldownTracker.SpellUsed(spellid);
+                                        Logger.CombatLogWh("MultiDoT: " + WoWSpell.FromId(spellid).Name + " on " + target.SafeName);
+                                        if (!failThrough)
+                                        {
+                                            return RunStatus.Success;
+                                        }
+                                    }
+                                    return RunStatus.Failure;
+                                }))));
                 }
                 catch (Exception ex)
                 {
