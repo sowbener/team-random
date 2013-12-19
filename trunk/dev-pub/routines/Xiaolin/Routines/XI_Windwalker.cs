@@ -62,7 +62,7 @@ namespace Xiaolin.Routines
         #region BoolsTemp
 
         internal static bool TalentChiBrewEnabled { get { return XITalentManager.HasTalent(9); } }
-        internal static bool FistsofFuryIsCasting { get { return Me.HasAura(113656); } }
+        internal static bool FistsofFuryIsCasting { get { return Me.HasAura(113656) && Lua.PlayerPower <= 99; } }
         internal static bool EnergizingBrewDown { get { return !Me.HasAura(115288); } }
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
         internal static bool ComboBreakerBoKUp { get { return Me.HasAura(116768); } }
