@@ -88,7 +88,7 @@ namespace FuryUnleashed.Rotations.Fury
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
                 //actions.single_target+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
                 Spell.Cast(SpellBook.Bloodthirst, ret => Unit.NearbyAttackableUnitsCount == 1),
-                Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1000, 5, ret => Unit.NearbyAttackableUnitsCount > 1),
+                Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => Unit.NearbyAttackableUnitsCount > 1),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1 - Added AoE replace.
                 Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000 && Unit.NearbyAttackableUnitsCount == 1),
                 Spell.Cast(SpellBook.Whirlwind, ret => Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000 && (Unit.NearbyAttackableUnitsCount > 1 && FuryGlobal.AoEUsage)),
@@ -155,7 +155,7 @@ namespace FuryUnleashed.Rotations.Fury
                     new PrioritySelector(
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && Unit.NearbyAttackableUnitsCount == 1),
-                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1000, 5, ret => !Global.EnrageAura && Unit.NearbyAttackableUnitsCount > 1),
+                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => !Global.EnrageAura && Unit.NearbyAttackableUnitsCount > 1),
                         Spell.Cast(SpellBook.Execute),
                         Spell.Cast(SpellBook.RagingBlow))),
                 new Decorator(ret => !Global.ColossusSmashAura,
@@ -165,7 +165,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower >= 100),
                         Spell.Cast(SpellBook.Bloodthirst, ret => Lua.PlayerPower < 100 && Unit.NearbyAttackableUnitsCount == 1),
-                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1000, 5, ret => Lua.PlayerPower < 100 && Unit.NearbyAttackableUnitsCount > 1),
+                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => Lua.PlayerPower < 100 && Unit.NearbyAttackableUnitsCount > 1),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S),
                         Spell.Cast(SpellBook.Execute, ret => Global.ColossusSmashOnCooldown && Global.BloodThirstOnCooldown && Global.RagingBlow1S && Lua.PlayerPower > 80 && Global.ColossusSmashSpellCooldown >= 1500),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Lua.PlayerPower < 60),
@@ -191,7 +191,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
 
                         //Spell.Cast(SpellBook.Bloodthirst),
-                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1000, 5),
+                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5),
                         Spell.Cast(SpellBook.Whirlwind),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS3)
                         )),

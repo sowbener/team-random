@@ -133,12 +133,9 @@ namespace FuryUnleashed.Core
         internal static WoWUnit MultiDotUnit(int debuffid, int auratimeleft, double radius)
         {
             var selectableunits = NearbyAttackableUnits(StyxWoW.Me.Location, radius).Where(x => IsViable(x) && !x.IsPlayer).OrderByDescending(x => x.HealthPercent);
-            var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && !Spell.HasAura(x, debuffid));
+            var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && !Spell.HasAura(x, debuffid)) ??
+                          selectableunits.FirstOrDefault(x => IsViable(x) && Spell.HasAura(x, debuffid, 0, auratimeleft));
 
-            //if (dotunit == null)
-            //{
-            //    dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && Spell.HasAura(x, debuffid, 0, auratimeleft));
-            //}
             return dotunit;
         }
 
