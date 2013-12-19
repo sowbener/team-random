@@ -108,7 +108,8 @@ namespace FuryUnleashed.Core
                 {
                     return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
                         new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
-                            new Action(ctx =>
+                            new Action(ret => Logger.DiagLogPu("MultiDoT Target {0}!", target)),
+                            new Action(delegate
                             {
                                 Logger.DiagLogPu("MultiDoT SpellID {0} cast on {1}!", spellid, target);
                                 Cast(spellid, on => target, ret => Unit.IsViable(target));
