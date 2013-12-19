@@ -82,6 +82,14 @@ namespace FuryUnleashed.Rotations.Fury
             return Me.CurrentRage >= Me.MaxRage - 10;
         }
 
+        internal static bool AoEUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckAoE;
+            }
+        }
+
         internal static bool BerserkerRageUsage
         {
             get
