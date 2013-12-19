@@ -187,7 +187,8 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
                         Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
 
-                        Spell.Cast(SpellBook.Bloodthirst),
+                        //Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.MultiDoT(SpellBook.Bloodthirst, Me.CurrentTarget, AuraBook.DeepWounds, 1000, 5),
                         Spell.Cast(SpellBook.Whirlwind),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS3)
                         )),
