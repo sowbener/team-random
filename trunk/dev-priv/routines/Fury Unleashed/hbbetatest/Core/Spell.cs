@@ -93,36 +93,22 @@ namespace FuryUnleashed.Core
         /// Casting method used for MultiDotting. Not using any caching, so might decrease performance!
         /// </summary>
         /// <param name="spellid">ID of the spell to be cast - eg SpellBook.Bloodthirst</param>
-        /// <param name="unit">Me.Currenttarget should suffice, just a check that we actually have a target</param>
         /// <param name="debuffid">ID of the debuff to find on a possible multidot target - eg AuraBook.DeepWounds</param>
         /// <param name="auratimeleft">Timeleft on the aura in order to refresh it if no unit without the aura is found</param>
         /// <param name="radius">Radius - 5y</param>
         /// <param name="reqs">-</param>
         /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
         /// <returns>-</returns>
-        public static Composite MultiDoT(int spellid, WoWUnit unit, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
+        public static Composite MultiDoT(int spellid, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
         {
             using (new PerformanceLogger("MultiDoT"))
             {
                 WoWUnit target = null;
                 try
                 {
-                    return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
+                    return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null),
                         new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
-                            new Decorator(ret => Unit.IsViable(target),
-                                new Action(ret =>
-                                {
-                                    if (SpellManager.Cast(spellid, target))
-                                    {
-                                        CooldownTracker.SpellUsed(spellid);
-                                        Logger.CombatLogWh("MultiDoT: " + WoWSpell.FromId(spellid).Name + " on " + target.SafeName);
-                                        if (!failThrough)
-                                        {
-                                            return RunStatus.Success;
-                                        }
-                                    }
-                                    return RunStatus.Failure;
-                                }))));
+                            new Action(ctx => Cast(spellid, on => target, ret => Unit.IsViable(target)))));
                 }
                 catch (Exception ex)
                 {
@@ -136,6 +122,42 @@ namespace FuryUnleashed.Core
 
             }
         }
+        //public static Composite MultiDoT(int spellid, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
+        //{
+        //    using (new PerformanceLogger("MultiDoT"))
+        //    {
+        //        WoWUnit target = null;
+        //        try
+        //        {
+        //            return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null),
+        //                new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
+        //                    new Decorator(ret => Unit.IsViable(target),
+        //                        new Action(ret =>
+        //                        {
+        //                            if (SpellManager.Cast(spellid, target))
+        //                            {
+        //                                CooldownTracker.SpellUsed(spellid);
+        //                                Logger.CombatLogWh("MultiDoT: " + WoWSpell.FromId(spellid).Name + " on " + target.SafeName);
+        //                                if (!failThrough)
+        //                                {
+        //                                    return RunStatus.Success;
+        //                                }
+        //                            }
+        //                            return RunStatus.Failure;
+        //                        }))));
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return new PrioritySelector(
+        //                new Action(ret =>
+        //                {
+        //                    Logger.DiagLogPu("Exception MultiDot {0}", ex);
+        //                    Logger.DiagLogPu("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
+        //                }));
+        //        }
+
+        //    }
+        //}
 
         /// <summary>
         /// Casting method for casting on Ground location - string
