@@ -62,10 +62,7 @@ namespace FuryUnleashed.Core.Helpers
                     {
                         object damage = args.Amount;
 
-                        // Do not count damage from no source or maybe this is just particular items like Shannox's Jagged Tear?
-                        // Do not count Spirit Link damage since it doesn't affect DS.
-                        bool countDamage = args.SourceName != null ||
-                                           (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
+                        bool countDamage = args.SourceName != null || (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
                         if (countDamage && !AddingDamageTaken)
                             AddDamageTaken(DateTime.Now, (int)damage);
