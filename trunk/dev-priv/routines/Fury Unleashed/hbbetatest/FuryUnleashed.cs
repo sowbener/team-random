@@ -4,7 +4,6 @@ using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
-using FuryUnleashed.Interfaces.Settings;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
