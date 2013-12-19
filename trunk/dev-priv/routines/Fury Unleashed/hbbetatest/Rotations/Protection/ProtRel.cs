@@ -125,7 +125,7 @@ namespace FuryUnleashed.Rotations.Protection
 
                 // Defensive
                 Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckDemoBannerNum, true),
-                Spell.Cast(SpellBook.DemoralizingShout, on => Me, ret => ProtGlobal.DemoralizingShoutUsage && Me.HealthPercent <= InternalSettings.Instance.Protection.DemoShoutNum, true),
+                Spell.Cast(SpellBook.DemoralizingShout, on => Me, ret => ProtGlobal.DemoralizingShoutUsage && Global.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.DemoShoutNum, true),
                 Spell.Cast(SpellBook.LastStand, on => Me, ret => InternalSettings.Instance.Protection.CheckLastStand && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckLastStandNum, true),
                 Spell.Cast(SpellBook.ShieldWall, on => Me, ret => InternalSettings.Instance.Protection.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckShieldWallNum, true),
 

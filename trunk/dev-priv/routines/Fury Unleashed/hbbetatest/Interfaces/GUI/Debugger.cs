@@ -87,7 +87,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                cachedattackableunitsdatagrid.DataSource = Unit.CachedAttackableUnitsList;
+                //cachedattackableunitsdatagrid.DataSource = Unit.CachedAttackableUnitsList;
             }
         }
 
@@ -95,7 +95,7 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             if (Unit.IsViable(StyxWoW.Me))
             {
-                cachedraidmembersdatagrid.DataSource = Unit.CachedRaidMembersList;
+                //cachedraidmembersdatagrid.DataSource = Unit.CachedRaidMembersList;
             }
         }
         #endregion

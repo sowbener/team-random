@@ -178,13 +178,13 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage),
                         //# Enrage overlaps 4 GCDs, which allows bloodthirst to be used mostly to keep enrage up, as rage income is typically not an issue with the aoe rotation.
                         //actions.aoe+=/bloodthirst,cycle_targets=1,if=!dot.deep_wounds.ticking&buff.enrage.down
-                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds, ret => !Global.EnrageAura),
+                        //Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds, ret => !Global.EnrageAura),
                         //actions.aoe+=/raging_blow,if=buff.meat_cleaver.stack=3
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS3),
                         //actions.aoe+=/whirlwind
                         Spell.Cast(SpellBook.Whirlwind),
                         //actions.aoe+=/bloodthirst,cycle_targets=1,if=!dot.deep_wounds.ticking
-                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
+                        //Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
                         //actions.aoe+=/colossus_smash
                         Spell.Cast(SpellBook.ColossusSmash),
                         //actions.aoe+=/battle_shout,if=rage<70
@@ -206,7 +206,7 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.three_targets+=/raging_blow,if=buff.meat_cleaver.stack=2
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS2),
                         //actions.three_targets+=/bloodthirst,cycle_targets=1,if=!dot.deep_wounds.ticking
-                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
+                        //Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
                         //actions.three_targets+=/whirlwind
                         Spell.Cast(SpellBook.Whirlwind),
                         //actions.three_targets+=/raging_blow
@@ -230,7 +230,7 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.ColossusSmash),
                         //# Keep deep wounds on as many targets as possible.
                         //actions.two_targets+=/bloodthirst,cycle_targets=1,if=dot.deep_wounds.remains<5
-                        Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
+                        //Spell.MultiDot(SpellBook.Bloodthirst, Me, AuraBook.DeepWounds),
                         //actions.two_targets+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
                         Spell.Cast(SpellBook.Bloodthirst, ret => Global.NormalPhase && !Global.ColossusSmashAura && Me.CurrentRage < 30 && !Global.EnrageAura),
                         //actions.two_targets+=/storm_bolt,if=enabled&debuff.colossus_smash.up

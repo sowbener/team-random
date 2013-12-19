@@ -1,17 +1,14 @@
-﻿using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Core.Managers;
+﻿
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
 using Styx;
-using Styx.CommonBot;
-using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Action = Styx.TreeSharp.Action;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core
@@ -20,116 +17,142 @@ namespace FuryUnleashed.Core
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static readonly Random Random = new Random();
-        private const int AttackableunitsExpiry = 100;
-        private const int RaidmembersExpiry = 250;
 
         public static WoWUnit VigilanceTarget;
-        public static List<WoWUnit> CachedAttackableUnitsList;
-        public static List<WoWPlayer> CachedRaidMembersList;
 
-        #region Cached Units v2
-
+        #region Unit Caching Functions
         /// <summary>
-        /// Initialize the required lists for Cached Units.
-        /// </summary>
-        public static void InitializeCacheLists()
-        {
-            CachedAttackableUnitsList = new List<WoWUnit>();
-            CachedRaidMembersList = new List<WoWPlayer>();
-
-            Logger.DiagLogPu("FU: Caching Lists are created!");
-        }
-
-        /// <summary>
-        /// Pulsed in FuryUnleashed.Rotations.Global.InitializeCaching() - Starts the caching unit functions.
-        /// </summary>
-        public static Composite PopulateUnitCacheLists
-        {
-            get
-            {
-                return new Action(delegate
-                {
-                    CachedAttackableUnitsList = CacheAttackableUnits;
-                    CachedRaidMembersList = CacheRaidMembers;
-
-                    GetNearbyAttackableUnitsCount();
-                    GetVigilanceTarget();
-
-                    return RunStatus.Failure;
-                });
-            }
-        }
-
-        /// <summary>
-        /// Core check on Attackable Units - Further filtering happens with the cached list.
+        /// Core check on Attackable Units (60 yards) - Further filtering should be applied.
         /// </summary>
         internal static IEnumerable<WoWUnit> AttackableUnits
         {
-            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter && u.Distance <= 60); }
+            get
+            {
+                return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter && u.Distance <= 60);
+            }
         }
 
-        // RaidMembers IEnumerable
+        /// <summary>
+        /// Core check on Friendly Units (60 yards) - Further filtering should be applied.
+        /// </summary>
+        internal static IEnumerable<WoWUnit> FriendlyUnits
+        {
+            get
+            {
+                return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter && u.Distance <= 60);
+            }
+        }
+
+        /// <summary>
+        /// Core check on Raid Members - Further filtering should be applied.
+        /// </summary>
         internal static IEnumerable<WoWPlayer> RaidMembers
         {
-            get { return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => IsViable(u) && u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid); }
-        }
-
-        /// <summary>
-        /// Populates the CachedAttackableUnitsList on request of PulseCache Composite - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
-        /// </summary>
-        public static List<WoWUnit> CacheAttackableUnits
-        {
             get
             {
-                const string cachekey = "AttackableUnits";
-                var attackableUnits = CacheManager.Get<List<WoWUnit>>(cachekey);
-
-                if (attackableUnits == null)
-                {
-                    attackableUnits = AttackableUnits.ToList();
-                    CacheManager.Add(attackableUnits, cachekey, AttackableunitsExpiry);
-                }
-                return attackableUnits;
+                return ObjectManager.GetObjectsOfType<WoWPlayer>(true, true).Where(u => IsViable(u) && u.CanSelect && !u.IsDead && u.IsInMyPartyOrRaid);
             }
         }
 
         /// <summary>
-        /// Populates the CachedRaidMembersList on request of PulseCache Composite - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
+        /// Core check on Attackable Units nearby (Specific Range) - Further filtering should be applied.
         /// </summary>
-        public static List<WoWPlayer> CacheRaidMembers
+        /// <param name="fromLocation">Location - EG StyxWoW.Me.Location</param>
+        /// <param name="radius">Radius for DistanceSqr (Yards)</param>
+        /// <returns>Unit (Enemyunit) which fits the arguments</returns>
+        internal static IEnumerable<WoWUnit> NearbyAttackableUnits(WoWPoint fromLocation, double radius)
         {
-            get
-            {
-                const string cachekey = "RaidMembers";
-                var raidMembers = CacheManager.Get<List<WoWPlayer>>(cachekey);
+            var hostile = AttackableUnits;
+            var maxDistance = radius * radius;
 
-                if (raidMembers == null)
-                {
-                    raidMembers = RaidMembers.ToList();
-                    CacheManager.Add(raidMembers, cachekey, RaidmembersExpiry);
-                }
-                return raidMembers;
-            }
+            return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
         }
 
         /// <summary>
-        /// IEnumerable for retrieving WowUnits within a certain range from the cache (CachedAttackableUnitsList)
+        /// Core check on Nearby Casting Units which can be interrupted and not casted on StyxWoW.Me - Further filtering should be applied.
         /// </summary>
-        /// <param name="fromLocation">DistanceSqr - 2y for SlamCleave - 5y for melee - 8y for AoE</param>
-        /// <param name="radius">-</param>
-        /// <returns></returns>
-        internal static IEnumerable<WoWUnit> CachedAttackableUnits(WoWPoint fromLocation, double radius)
+        /// <param name="fromLocation">Location - EG StyxWoW.Me.Location</param>
+        /// <param name="radius">Radius for DistanceSqr (Yards)</param>
+        /// <returns>Unit which fits the arguments</returns>
+        internal static IEnumerable<WoWUnit> NearbyCastingUnits(WoWPoint fromLocation, double radius)
         {
-            using (new PerformanceLogger("CachedNearbyAttackableUnits"))
+            var hostile = AttackableUnits;
+            var maxDistance = radius * radius;
+
+            return hostile.Where(x => IsViable(x) && (x.IsCasting || x.IsChanneling) && (x.IsTargetingPet || x.IsTargetingMyPartyMember || x.IsTargetingMyRaidMember) && x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        /// <summary>
+        /// Core check on Nearby Casting Units which can be interrupted and casted on StyxWoW.Me - Further filtering should be applied.
+        /// </summary>
+        /// <param name="fromLocation">Location - EG StyxWoW.Me.Location</param>
+        /// <param name="radius">Radius for DistanceSqr (Yards)</param>
+        /// <returns>Unit which fits the arguments</returns>
+        internal static IEnumerable<WoWUnit> NearbyCastingUnitsTargetingMe(WoWPoint fromLocation, double radius)
+        {
+            var hostile = AttackableUnits;
+            var maxDistance = radius * radius;
+
+            return hostile.Where(x => IsViable(x) && (x.IsCasting || x.IsChanneling) && x.IsTargetingMeOrPet && x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        /// <summary>
+        /// Core check on Friendly Units nearby (Specific Range) - Further filtering should be applied.
+        /// </summary>
+        /// <param name="fromLocation">Location - EG StyxWoW.Me.Location</param>
+        /// <param name="radius">Radius for DistanceSqr (Yards)</param>
+        /// <returns>Unit which fits the arguments</returns>
+        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius)
+        {
+            var friendly = FriendlyUnits;
+            var maxDistance = radius * radius;
+
+            return friendly.Where(x => IsViable(x) && x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        /// <summary>
+        /// Core check on Raid Members nearby (Specific Range) - Further filtering should be applied.
+        /// </summary>
+        /// <param name="fromLocation">Location - EG StyxWoW.Me.Location</param>
+        /// <param name="radius">Radius for DistanceSqr (Yards)</param>
+        /// <returns>Unit (raidmember - IsInMyPartyOrRaid) which fits the arguments</returns>
+        internal static IEnumerable<WoWUnit> NearbyRaidMembers(WoWPoint fromLocation, double radius)
+        {
+            var units = RaidMembers;
+            var maxDistance = radius * radius;
+            return units.Where(u => IsViable(u) && u.Location.DistanceSqr(fromLocation) < maxDistance);
+        }
+
+        /// <summary>
+        /// Retrieves the target which requires Vigilance - Not StyxWoW.Me
+        /// </summary>
+        /// <returns>Viable unit to cast Vigilance on - Based on Settings</returns>
+        public static bool GetVigilanceTarget()
+        {
+            using (new PerformanceLogger("VigilanceTarget"))
             {
-                var hostile = CachedAttackableUnitsList;
-                var maxDistance = radius * radius;
-                return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
+                VigilanceTarget = null;
+                var tankOnly = InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank;
+
+                switch (InternalSettings.Instance.General.Vigilance)
+                {
+                    case Enum.VigilanceTrigger.Never:
+                        return false;
+                    default:
+                        VigilanceTarget = (from u in NearbyRaidMembers(StyxWoW.Me.Location, 30)
+                                           where IsViable(u)
+                                           where u.Guid != Me.Guid
+                                           where !tankOnly || u.HasAura(AuraBook.Vengeance)
+                                           where u.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
+                                           select u).FirstOrDefault();
+
+                        return VigilanceTarget != null;
+                }
             }
         }
 
         /// <summary>
-        /// Retrieves the count (Integer & Float) of melee units (5y) - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
+        /// Retrieves the count (Integer) of melee units (5y) - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int AttackableMeleeUnitsCount;
         public static void GetAttackableMeleeUnitsCount()
@@ -138,7 +161,7 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    AttackableMeleeUnitsCount = CachedAttackableUnits(StyxWoW.Me.Location, 5).Count();
+                    AttackableMeleeUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 5).Count();
                 }
             }
         }
@@ -153,7 +176,7 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    InterruptableUnitsCount = CachedAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
+                    InterruptableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
                 }
             }
         }
@@ -169,8 +192,8 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    NearbyAttackableUnitsCount = CachedAttackableUnits(StyxWoW.Me.Location, 8).Count();
-                    NearbyAttackableUnitsFloat = CachedAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                    NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                    NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
                 }
             }
         }
@@ -186,8 +209,8 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    NearbySlamCleaveUnitsCount = CachedAttackableUnits(StyxWoW.Me.Location, 2).Count();
-                    NearbySlamCleaveUnitsFloat = CachedAttackableUnits(StyxWoW.Me.Location, 2).Count();
+                    NearbySlamCleaveUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
+                    NearbySlamCleaveUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 2).Count();
                 }
             }
         }
@@ -202,163 +225,35 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    NeedThunderclapUnitsCount = CachedAttackableUnits(StyxWoW.Me.Location, 8).Count(u => !u.HasAura(AuraBook.DeepWounds));
+                    NeedThunderclapUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count(u => !u.HasAura(AuraBook.DeepWounds));
                 }
             }
         }
 
         /// <summary>
-        /// Used for Multidotting Bloodthirst - Deep Wounds - STRING
+        /// Retrieves the count (Integer) of nearby raidmembers which needs rallying cry (30y) - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
         /// </summary>
-        /// <param name="unit">Selected unit for Multidot - Retrieved from CachedAttackableUnitsList</param>
-        /// <param name="debuff">Aura which unit has or do not has.</param>
-        /// <param name="radius">0 by default - Only the unit no unit around it.</param>
-        /// <param name="refreshDurationRemaining">If no unit without aura is found, it reapplies to the user on which the bufftimer is below refreshDurationRemaining</param>
-        /// <returns></returns>
-        internal static WoWUnit MultiDotUnits(WoWUnit unit, string debuff, double radius, int refreshDurationRemaining)
+        public static int RaidMembersNeedCryCount;
+        public static void GetRaidMembersNeedCryCount()
         {
-            IEnumerable<WoWUnit> attackable =
-                CachedAttackableUnits(unit.Location, radius).Where(x => IsViable(x) && !x.IsPlayer).OrderByDescending(x => x.HealthPercent);
-
-            var dotTarget = attackable.FirstOrDefault(x => !Spell.HasAura(x, debuff));
-
-            if (dotTarget == null)
+            using (new PerformanceLogger("GetRaidMembersNeedCryCount"))
             {
-                dotTarget = attackable.FirstOrDefault(x => Spell.HasAura(x, debuff, 0, refreshDurationRemaining));
-            }
-            return dotTarget;
-        }
-
-        /// <summary>
-        /// Used for Multidotting Bloodthirst - Deep Wounds - INTEGER
-        /// </summary>
-        /// <param name="unit">Selected unit for Multidot - Retrieved from CachedAttackableUnitsList</param>
-        /// <param name="debuff">Aura which unit has or do not has.</param>
-        /// <param name="radius">0 by default - Only the unit no unit around it.</param>
-        /// <param name="refreshDurationRemaining">If no unit without aura is found, it reapplies to the user on which the bufftimer is below refreshDurationRemaining</param>
-        /// <returns></returns>
-        internal static WoWUnit MultiDotUnits(WoWUnit unit, int debuff, double radius, int refreshDurationRemaining)
-        {
-            IEnumerable<WoWUnit> attackable = CachedAttackableUnits(unit.Location, radius).Where(x => IsViable(x) && !x.IsPlayer).OrderByDescending(x => x.HealthPercent);
-
-            var dotTarget = attackable.FirstOrDefault(x => !Spell.HasAura(x, debuff));
-
-            if (dotTarget == null)
-            {
-                dotTarget = attackable.FirstOrDefault(x => Spell.HasAura(x, debuff, 0, refreshDurationRemaining));
-            }
-            return dotTarget;
-        }
-        #endregion
-
-        #region Unit Booleans
-        public static bool GetVigilanceTarget()
-        {
-            using (new PerformanceLogger("VigilanceTarget"))
-            {
-                VigilanceTarget = null;
-
-                var tankOnly = InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank;
-
-                switch (InternalSettings.Instance.General.Vigilance)
+                if (IsViable(Me.CurrentTarget))
                 {
-                    case Enum.VigilanceTrigger.Never:
-                        return false;
-                    default:
-                        VigilanceTarget = (from u in NearbyRaidMembers(StyxWoW.Me.Location, 30)
-                            where u.IsValid
-                            where u.Guid != Me.Guid
-                            where !tankOnly || u.HasAura(AuraBook.Vengeance)
-                            where u.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
-                            select u).FirstOrDefault();
-                            
-                    return VigilanceTarget != null;
+                    RaidMembersNeedCryCount = NearbyRaidMembers(StyxWoW.Me.Location, 30).Count(u => u.Combat && !u.HasAura(AuraBook.RallyingCry) && (
+                    (Global.IsArmsSpec && u.HealthPercent <= InternalSettings.Instance.Arms.CheckRallyingCryNum) ||
+                    (Global.IsFurySpec && u.HealthPercent <= InternalSettings.Instance.Fury.CheckRallyingCryNum) ||
+                    (Global.IsProtSpec && u.HealthPercent <= InternalSettings.Instance.Protection.CheckRallyingCryNum)
+                    ));
                 }
             }
         }
-
-        public static bool IsInRange(this WoWUnit unit, string spell)
-        {
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                var spellId = results.Override != null ? results.Override.Id : results.Original.Id;
-                return IsInRange(unit, WoWSpell.FromId(spellId));
-            }
-            return false;
-        }
-
-        public static bool IsInRange(this WoWUnit unit, int spell)
-        {
-            return IsInRange(unit, WoWSpell.FromId(spell));
-        }
-
-        public static bool IsInRange(this WoWUnit unit, WoWSpell spell)
-        {
-            return unit.Distance <= (spell.MaxRange + unit.CombatReach);
-        }
-
-        public static bool IsHamstringTarget
-        {
-            get { return IsViable(Me.CurrentTarget) && Me.CurrentTarget.HamstringUnitsList(); }
-        }
-
-        public static bool IsTargetRare
-        {
-            get { return IsViable(Me.CurrentTarget) && Me.CurrentTarget.RareUnitsList(); }
-        }
-
-        public static bool IsTargetBoss
-        {
-            get { return IsViable(Me.CurrentTarget) && Me.CurrentTarget.TargetIsBoss(); }
-        }
-
-        public static bool IsDoNotUseOnTgt
-        {
-            get { return IsViable(Me.CurrentTarget) && !Me.CurrentTarget.DoNotUseOnTgtList(); }
-        }
         #endregion
 
-        #region Self Functions
-        // Using CombatReach - Range test
-        public static float CalculatedMeleeRange
-        {
-            get
-            {
-                if (!StyxWoW.Me.GotTarget) { return 5f; }
-                if (StyxWoW.Me.CurrentTarget.IsPlayer) { return 5f; }
-                return Math.Max(5f, StyxWoW.Me.CombatReach + 1.3333334f + StyxWoW.Me.CurrentTarget.CombatReach);
-            }
-        }
-		
-		public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
-        {
-            return Math.Abs(spell.MaxRange) < 1 ? 0 : (IsViable(unit) ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
-        }
-
-        public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
-        {
-            return Math.Abs(spell.MinRange) < 1 ? 0 : (IsViable(unit) ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
-        }
-        #endregion
-
-        #region Simple Booleans
-        internal static bool DefaultCheck
-        {
-            get
-            {
-                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
-            }
-        }
-
-        internal static bool DefaultBuffCheck
-        {
-            get
-            {
-                return IsViable(Me) && !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink");
-            }
-        }
-
+        #region Global Functions
+        /// <summary>
+        /// Default check to see if we can interrupt the spell cast or channel.
+        /// </summary>
         internal static bool CanInterrupt
         {
             get
@@ -373,82 +268,111 @@ namespace FuryUnleashed.Core
             }
         }
 
-        // Can be used in Pulse.
-        public static void UpdateObjectManager()
+        /// <summary>
+        /// Default check before casting - Checks various things like if StyxWoW.Me.CurrentTarget is viable, self not mounted and more.
+        /// </summary>
+        internal static bool DefaultCheck
         {
-            using (new PerformanceLogger("ObjManager Update"))
-                ObjectManager.Update();
+            get
+            {
+                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
+            }
         }
 
+        /// <summary>
+        /// Default check before buffing - Checks various things like if StyxWoW.Me is viable, self not mounted and more.
+        /// </summary>
+        internal static bool DefaultBuffCheck
+        {
+            get
+            {
+                return IsViable(Me) && !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink");
+            }
+        }
+
+        /// <summary>
+        /// Check to be used in any function which retrieves objects from the objectmanager.
+        /// </summary>
+        /// <param name="wowObject">wowObject to check if object does not equal null and isvalid.</param>
+        /// <returns>Isviable or not.</returns>
         public static bool IsViable(WoWObject wowObject)
         {
             return (wowObject != null) && wowObject.IsValid;
         }
-        #endregion
 
-        
-        #region Caching RaidMembers Functions - Needs to be migrated to v2
-        internal static IEnumerable<WoWUnit> NearbyRaidMembers(WoWPoint fromLocation, double radius)
+        /// <summary>
+        /// Can be used to force a ObjectManager update - Can be used in Pulse()
+        /// </summary>
+        public static void UpdateObjectManager()
         {
-            var units = RaidMembers;
-            var maxDistance = radius * radius;
-            return units.Where(u => IsViable(u) && u.Location.DistanceSqr(fromLocation) < maxDistance);
-        }
-
-        public static int RaidMembersNeedCryCount;
-        public static void GetRaidMembersNeedCryCount()
-        {
-            using (new PerformanceLogger("GetRaidMembersNeedCryCount"))
-                if (IsViable(Me.CurrentTarget))
-                    RaidMembersNeedCryCount = NearbyRaidMembers(StyxWoW.Me.Location, 30).Count(u => u.Combat && !u.HasAura(97462) && (
-                    (Global.IsArmsSpec && u.HealthPercent <= InternalSettings.Instance.Arms.CheckRallyingCryNum) ||
-                    (Global.IsFurySpec && u.HealthPercent <= InternalSettings.Instance.Fury.CheckRallyingCryNum) ||
-                    (Global.IsProtSpec && u.HealthPercent <= InternalSettings.Instance.Protection.CheckRallyingCryNum)
-                    ));
-        }
-
-        internal static IEnumerable<WoWUnit> FriendlyUnits
-        {
-            get { return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter); }
-        }
-
-        // NearbyAttackableUnits IEnumerable
-        internal static IEnumerable<WoWUnit> NearbyFriendlyUnits(WoWPoint fromLocation, double radius)
-        {
-            var friendly = FriendlyUnits;
-            var maxDistance = radius * radius;
-
-            return friendly.Where(x => IsViable(x) && x.IsFriendly && x.Location.DistanceSqr(fromLocation) < maxDistance);
+            using (new PerformanceLogger("ObjManager Update"))
+            {
+                ObjectManager.Update();
+            }
         }
         #endregion
 
-        #region Cached Units v1 - Needs to be migrated to v2
-        // NearbyAttackableUnits IEnumerable
-        internal static IEnumerable<WoWUnit> NearbyAttackableUnits(WoWPoint fromLocation, double radius)
+        #region HashSet Checks
+        /// <summary>
+        /// Checks if Unit is viable and if Unit is on Hashlist for this function.
+        /// </summary>
+        public static bool IsHamstringTarget
         {
-            var hostile = AttackableUnits;
-            var maxDistance = radius * radius;
-            return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
+            get
+            {
+                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.HamstringUnitsList();
+            }
         }
 
-        // NearbyCastingUnits IEnumerable
-        internal static IEnumerable<WoWUnit> NearbyCastingUnits(WoWPoint fromLocation, double radius)
+        /// <summary>
+        /// Checks if Unit is viable and if Unit is on Hashlist for this function.
+        /// </summary>
+        public static bool IsTargetRare
         {
-            var hostile = AttackableUnits;
-            var maxDistance = radius * radius;
-            return hostile.Where(x =>
-                        !x.IsFriendly && (x.IsCasting || x.IsChanneling) && (x.IsTargetingPet || x.IsTargetingMyPartyMember || x.IsTargetingMyRaidMember) &&
-                        x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
+            get
+            {
+                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.RareUnitsList();
+            }
         }
 
-        // NearbyCastingUnitsTargetingMe IEnumerable
-        internal static IEnumerable<WoWUnit> NearbyCastingUnitsTargetingMe(WoWPoint fromLocation, double radius)
+        /// <summary>
+        /// Checks if Unit is viable and if Unit is on Hashlist for this function.
+        /// </summary>
+        public static bool IsTargetBoss
         {
-            var hostile = AttackableUnits;
-            var maxDistance = radius * radius;
-            return hostile.Where(x =>
-                        !x.IsFriendly && (x.IsCasting || x.IsChanneling) && x.IsTargetingPet &&
-                        x.CanInterruptCurrentSpellCast && x.Location.DistanceSqr(fromLocation) < maxDistance);
+            get
+            {
+                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.TargetIsBoss();
+            }
+        }
+
+        /// <summary>
+        /// Checks if Unit is viable and if Unit is on Hashlist for this function.
+        /// </summary>
+        public static bool IsDoNotUseOnTgt
+        {
+            get
+            {
+                return IsViable(Me.CurrentTarget) && !Me.CurrentTarget.DoNotUseOnTgtList();
+            }
+        }
+        #endregion
+
+        #region Range Checks
+        /// <summary>
+        /// Using Math.Abs calculating the actual maximum range for spell cast on unit.
+        /// </summary>
+        public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
+        {
+            return Math.Abs(spell.MaxRange) < 1 ? 0 : (IsViable(unit) ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
+        }
+
+        /// <summary>
+        /// Using Math.Abs calculating the actual minimum range for spell cast on unit.
+        /// </summary>
+        public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
+        {
+            return Math.Abs(spell.MinRange) < 1 ? 0 : (IsViable(unit) ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
         }
         #endregion
     }
