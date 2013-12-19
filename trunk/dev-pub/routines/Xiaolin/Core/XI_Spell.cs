@@ -419,7 +419,7 @@ namespace Xiaolin.Core
                         ((reqs != null && reqs(ret)) || (reqs == null))
                         && onUnit != null
                         && onUnit(ret) != null
-                        && CanCastHack(spell, onUnit(ret), !ignoreMoving)
+                        && SpellManager.CanCast(spell, onUnit(ret), !ignoreMoving)//CanCastHack(spell, onUnit(ret), !ignoreMoving)
                         && !DoubleCastEntries.ContainsKey(spell + onUnit(ret).GetHashCode()),
                     new Sequence(
                         new Action(ret => SpellManager.Cast(spell, onUnit(ret))),
@@ -577,7 +577,7 @@ namespace Xiaolin.Core
                         ((reqs != null && reqs(ret)) || (reqs == null))
                         && onUnit != null
                         && onUnit(ret) != null
-                        && CanCastHack(spell, onUnit(ret), false)
+                        && SpellManager.CanCast(spell, onUnit(ret), false)//CanCastHack(spell, onUnit(ret), false)
                         && !DoubleCastEntries.ContainsKey(spell.ToString(CultureInfo.InvariantCulture) + onUnit(ret).GetHashCode()),
                     new Sequence(
                         new Action(ret => SpellManager.Cast(spell, onUnit(ret))),

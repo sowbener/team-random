@@ -103,7 +103,7 @@ namespace Xiaolin.Core
         // Is Targer a Boss or Dummy
         public static bool IsTargetBoss
         {
-            get { return Me.CurrentTarget.TargetIsBoss(); }
+            get { return Me.CurrentTarget.TargetIsBoss();}
         }
 
         public static bool IsAoETarget
