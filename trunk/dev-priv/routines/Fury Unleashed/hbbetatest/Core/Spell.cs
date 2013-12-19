@@ -89,14 +89,14 @@ namespace FuryUnleashed.Core
                     }));
         }
 
-        /// <summary>
-        /// Casting method for MultiDot casting - string
-        /// </summary>
-        /// <param name="spellid">String spell to cast</param>
-        /// <param name="debuff">Integer of the debuff to check (AuraBook)</param>
-        /// <param name="unit">WoWUnit to Multidot on</param>
-        /// <param name="reqs">-</param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// Casting method for MultiDot casting - string
+        ///// </summary>
+        ///// <param name="spellid">String spell to cast</param>
+        ///// <param name="debuff">Integer of the debuff to check (AuraBook)</param>
+        ///// <param name="unit">WoWUnit to Multidot on</param>
+        ///// <param name="reqs">-</param>
+        ///// <returns></returns>
         //public static Composite MultiDot(string spellid, WoWUnit unit, int debuff, Selection<bool> reqs = null)
         //{
         //    return MultiDot(spellid, unit, debuff, 1, reqs);
@@ -126,14 +126,14 @@ namespace FuryUnleashed.Core
         //    }
         //}
 
-        /// <summary>
-        /// Casting method for MultiDot casting - int
-        /// </summary>
-        /// <param name="spellid">Integer spell to cast</param>
-        /// <param name="debuff">Int of the debuff to check (AuraBook)</param>
-        /// <param name="unit">WoWUnit to Multidot on</param>
-        /// <param name="reqs">-</param>
-        /// <returns></returns>
+        ///// <summary>
+        ///// Casting method for MultiDot casting - int
+        ///// </summary>
+        ///// <param name="spellid">Integer spell to cast</param>
+        ///// <param name="debuff">Int of the debuff to check (AuraBook)</param>
+        ///// <param name="unit">WoWUnit to Multidot on</param>
+        ///// <param name="reqs">-</param>
+        ///// <returns></returns>
         //public static Composite MultiDot(int spellid, WoWUnit unit, int debuff, Selection<bool> reqs = null)
         //{
         //    return MultiDot(spellid, unit, debuff, 1, reqs);
