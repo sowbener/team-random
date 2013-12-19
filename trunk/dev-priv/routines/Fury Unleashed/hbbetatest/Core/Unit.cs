@@ -124,6 +124,25 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
+        /// Selects nearby unit within range without a specific aura to cast upon (Integer Used)
+        /// </summary>
+        /// <param name="debuffid">ID of the required debuff - For bloodthirst it's deep wounds.</param>
+        /// <param name="auratimeleft">If all units have deep wounds, refresh at how much MS left on aura</param>
+        /// <param name="radius">Range - eg 5 yards for Bloodthirst</param>
+        /// <returns></returns>
+        internal static WoWUnit MultiDotUnit(int debuffid, int auratimeleft, double radius)
+        {
+            var selectableunits = NearbyAttackableUnits(StyxWoW.Me.Location, radius).Where(x => IsViable(x) && !x.IsPlayer).OrderByDescending(x => x.HealthPercent);
+            var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && !Spell.HasAura(x, debuffid));
+
+            if (dotunit == null)
+            {
+                dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && Spell.HasAura(x, debuffid, 0, auratimeleft));
+            }
+            return dotunit;
+        }
+
+        /// <summary>
         /// Retrieves the target which requires Vigilance - Not StyxWoW.Me
         /// </summary>
         /// <returns>Viable unit to cast Vigilance on - Based on Settings</returns>
