@@ -98,8 +98,9 @@ namespace FuryUnleashed.Core
         /// <param name="auratimeleft">Timeleft on the aura in order to refresh it if no unit without the aura is found</param>
         /// <param name="radius">Radius - 5y</param>
         /// <param name="reqs">-</param>
+        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
         /// <returns>-</returns>
-        public static Composite MultiDoT(int spellid, WoWUnit unit, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null)
+        public static Composite MultiDoT(int spellid, WoWUnit unit, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
         {
             using (new PerformanceLogger("MultiDoT"))
             {
@@ -108,11 +109,16 @@ namespace FuryUnleashed.Core
                 {
                     return new Decorator(ret => Unit.IsViable(unit) && ((reqs != null && reqs(ret)) || reqs == null),
                         new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
-                            new Action(ret => Logger.DiagLogPu("MultiDoT Target {0}!", target)),
-                            new Action(delegate
+                            new Action(ret =>
                             {
-                                Logger.DiagLogPu("MultiDoT SpellID {0} cast on {1}!", spellid, target);
-                                Cast(spellid, on => target, ret => Unit.IsViable(target));
+                                if (SpellManager.Cast(spellid, target))
+                                {
+                                    CooldownTracker.SpellUsed(spellid);
+                                    Logger.CombatLogLg("MultiDoT: " + WoWSpell.FromId(spellid).Name + " on " + target.SafeName);
+                                    if (!failThrough)
+                                        return RunStatus.Success;
+                                }
+                                return RunStatus.Failure;
                             })));
                 }
                 catch (Exception ex)
