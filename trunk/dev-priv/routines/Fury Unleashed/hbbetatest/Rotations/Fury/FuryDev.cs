@@ -110,7 +110,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/shockwave,if=enabled
                 Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
                 //actions.single_target+=/heroic_throw,if=debuff.colossus_smash.down&rage<60
-                Spell.Cast(SpellBook.HeroicThrow, ret => !Global.ColossusSmashAura && Lua.PlayerPower < 60 && InternalSettings.Instance.Fury.CheckHeroicThrow),
+                Spell.Cast(SpellBook.HeroicThrow, ret => !Global.ColossusSmashAura && Lua.PlayerPower < 60 && FuryGlobal.HeroicThrowUsage),
                 //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura)),
@@ -124,23 +124,8 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
                 Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashSpellCooldown >= 2000 && Lua.PlayerPower >= 70 && Global.NormalPhase),
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
-                Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && Global.NormalPhase && Global.ColossusSmashSpellCooldown >= 2000 && InternalSettings.Instance.Fury.CheckRotImpVic)
+                Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && Global.NormalPhase && Global.ColossusSmashSpellCooldown >= 2000 && FuryGlobal.ImpendingVictoryUsage)
                 );
-        }
-
-        internal static Composite Dev_FuryExec()
-        {
-            return new PrioritySelector(
-                new Decorator(ret => Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.FadingDeathSentence(3000)),
-                        Spell.Cast(SpellBook.StormBolt, ret => FuryGlobal.Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && Global.BerserkerRageOnCooldown),
-                        Spell.Cast(SpellBook.Execute),
-                        Spell.Cast(SpellBook.RagingBlow))),
-                new Decorator(ret => !Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        Dev_FurySt())));
         }
 
         internal static Composite Dev_FuryHeroicStrike()
@@ -148,14 +133,42 @@ namespace FuryUnleashed.Rotations.Fury
             return new PrioritySelector(
                 new Decorator(ret => !InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
-                        //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up - Added Lua.PlayerPower == Lua.PlayerPowerMax
+                //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up - Added Lua.PlayerPower == Lua.PlayerPowerMax
                         Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Lua.PlayerPowerMax || ((Global.ColossusSmashAura && Lua.PlayerPower >= 40 && Global.NormalPhase || Lua.PlayerPower >= Lua.PlayerPowerMax - 20) && Global.EnrageAura), true))),
                 new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
-                        //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90 //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
+                //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90 //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                         Spell.Cast(SpellBook.Cleave, ret => (Lua.PlayerPower >= 60 && Global.ColossusSmashAura || Lua.PlayerPower > 90) && Unit.NearbyAttackableUnitsCount < 4, true),
-                        //actions.aoe+=/cleave,if=rage>110 - Added Lua.PlayerPower == Lua.PlayerPowerMax
+                //actions.aoe+=/cleave,if=rage>110 - Added Lua.PlayerPower == Lua.PlayerPowerMax
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower == Lua.PlayerPowerMax || Lua.PlayerPower > Lua.PlayerPowerMax - 10 && Unit.NearbyAttackableUnitsCount >= 4, true))));
+        }
+
+        // Using this for Execute Phase - http://www.icy-veins.com/fury-warrior-wow-pve-dps-rotation-cooldowns-abilities
+        internal static Composite Dev_FuryExec()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura),
+                        Spell.Cast(SpellBook.Execute),
+                        Spell.Cast(SpellBook.RagingBlow))),
+                new Decorator(ret => !Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && FuryGlobal.Tier6AbilityUsage),
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.ColossusSmash),
+                        Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower >= 100),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => Lua.PlayerPower < 100),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S),
+                        Spell.Cast(SpellBook.Execute, ret => Global.ColossusSmashOnCooldown && Global.BloodThirstOnCooldown && Global.RagingBlow1S && Lua.PlayerPower > 80 && Global.ColossusSmashSpellCooldown >= 1500),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Lua.PlayerPower < 60),
+                        Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
+                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 50)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 50))),
+                        Spell.Cast(SpellBook.HeroicThrow, ret => FuryGlobal.HeroicThrowUsage)
+                        )));
         }
 
         // Need to rework AoE
