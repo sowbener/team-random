@@ -17,12 +17,15 @@ namespace FuryUnleashed.Rotations.Protection
                     new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
+                                ProtRel.RelProtCombat
                                 )),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
+                                ProtRel.RelProtCombat
                                 )),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
+                                ProtRel.RelProtCombat
                                 ))));
             }
         }
