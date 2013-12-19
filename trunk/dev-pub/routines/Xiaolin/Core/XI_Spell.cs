@@ -288,7 +288,7 @@ namespace Xiaolin.Core
                 return
                     new Decorator(
                         ret => onUnit != null && onUnit(ret) != null &&
-                            ((reqs != null && reqs(ret)) || (reqs == null)) && CanCastHack(_spell.Id, onUnit(ret)),
+                            ((reqs != null && reqs(ret)) || (reqs == null)) && SpellManager.CanCast(spell, onUnit(ret)), //CanCastHack(spell, onUnit(ret)),
                         new Sequence(
                             new Action(ret => SpellManager.Cast(_spell.Id, onUnit(ret))),
                             new Action(ret => Logger.InfoLog(String.Format("*{0} on {1} at {2:F1} yds at {3:F1}%", spell, onUnit(ret).SafeName, onUnit(ret).Distance, onUnit(ret).HealthPercent)))
@@ -319,7 +319,7 @@ namespace Xiaolin.Core
             {
                 return
                     new Decorator(
-                        ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && CanCastHack(spell, onUnit(ret)),
+                        ret => ((reqs != null && reqs(ret)) || (reqs == null)) && onUnit != null && onUnit(ret) != null && SpellManager.CanCast(spell, onUnit(ret)), //CanCastHack(spell, onUnit(ret)),
                          new Sequence(
                             new Action(ret => SpellManager.Cast(spell, onUnit(ret))),
                             new Action(ret => Logger.InfoLog(String.Format("*{0} on {1} at {2:F1} yds at {3:F1}%", WoWSpell.FromId(spell).Name, onUnit(ret).SafeName, onUnit(ret).Distance, onUnit(ret).HealthPercent)))));

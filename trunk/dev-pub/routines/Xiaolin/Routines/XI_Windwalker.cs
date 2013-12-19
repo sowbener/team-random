@@ -62,7 +62,7 @@ namespace Xiaolin.Routines
         #region BoolsTemp
 
         internal static bool TalentChiBrewEnabled { get { return XITalentManager.HasTalent(9); } }
-        internal static bool RisingSunKickReady { get { return CooldownWatcher.OnCooldown(107428); } }
+        internal static bool FistsofFuryIsCasting { get { return Me.HasAura(113656); } }
         internal static bool EnergizingBrewDown { get { return !Me.HasAura(115288); } }
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
         internal static bool ComboBreakerBoKUp { get { return Me.HasAura(116768); } }
@@ -83,15 +83,15 @@ namespace Xiaolin.Routines
             return new PrioritySelector(
                Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => TigerPowerRemains <= 3),
                Spell.Cast(SpellBook.RisingSunKick),
-              //  new Decorator(ret => RisingSunKickReady, new ActionAlwaysSucceed()),
+                new Decorator(ret => FistsofFuryIsCasting, new ActionAlwaysSucceed()),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
                 Spell.Cast(SpellBook.FistsofFury, ret => EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
                 Spell.Cast(SpellBook.ChiWave, ret => Lua.TimeToEnergyCap() > 2),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 1.3, ret => ComboBreakerBoKUp),
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => ComboBreakerBoKUp),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
                 Spell.PreventDoubleCast("Jab", 0.5, ret => MaxChi - Lua.PlayerChi >= 2),
                 Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 1.2, ret => Lua.BlackoutKickOK() >= 40));
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => Lua.BlackoutKickOK() >= 40));
 
         }
 
