@@ -116,9 +116,9 @@ namespace FuryUnleashed
             if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
             else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogFb("Recommended rotations are (Selectable in the GUI):");
-            Logger.CombatLogOr("Arms: {0}", InternalSettings.Instance.General.CrArmsRotVersion.ToString());
-            Logger.CombatLogOr("Fury: {0}", InternalSettings.Instance.General.CrFuryRotVersion.ToString());
-            Logger.CombatLogOr("Protection: {0}", InternalSettings.Instance.General.CrProtRotVersion.ToString());
+            Logger.CombatLogOr("Arms: RELEASE");
+            Logger.CombatLogOr("Fury: RELEASE or DEVELOPMENT");
+            Logger.CombatLogOr("Protection: RELEASE");
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
 
