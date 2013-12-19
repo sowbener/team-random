@@ -109,6 +109,7 @@ namespace Xiaolin
                 _NoModifierAP = StyxWoW.Me.AttackPower;
 
 
+
             }
 
             catch (Exception e)
@@ -141,13 +142,13 @@ namespace Xiaolin
             /* Gather required information */
             XILogger.StatCounter();
             XILogger.LogTimer(500);
+            
 
             //Cooldownwatcher
             CooldownWatcher.Initialize();
             CombatLogHandler.Initialize();
             _initap = StyxWoW.Me.AttackPower;
             _NewAP = StyxWoW.Me.AttackPower;
-
 
             /* Start Combat */
             PreBuffSelector();

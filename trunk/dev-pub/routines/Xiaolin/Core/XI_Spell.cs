@@ -66,7 +66,7 @@ namespace Xiaolin.Core
 
                     var ProvidablePlayerBuffs = new HashSet<int>();
 
-                    return players.Any(x => x.Distance2DSqr < 40 * 40 && ((x.HasAnyAura(Xiaolin.Routines.XIGlobal.LegacyoftheWhiteTiger) && Me.Specialization == WoWSpec.MonkWindwalker) || x.HasAnyAura(Xiaolin.Routines.XIGlobal.LegacyoftheEmperor)) && !x.IsDead && !x.IsGhost && x.IsAlive);
+                    return players.Any(x => x.Distance2DSqr < 40 * 40 && ((!x.HasAnyAura(Xiaolin.Routines.XIGlobal.LegacyoftheWhiteTiger) && Me.Specialization == WoWSpec.MonkWindwalker) || !x.HasAnyAura(Xiaolin.Routines.XIGlobal.LegacyoftheEmperor)) && !x.IsDead && !x.IsGhost && x.IsAlive);
                 },
                 new Sequence(
                     new Action(a => SpellManager.Cast(name))));

@@ -29,12 +29,14 @@ namespace Xiaolin.Routines
             get
             {
                 return new PrioritySelector(
-
-               // Spell.Cast("Legacy of the White Tiger", ret => Me.Specialization == WoWSpec.MonkWindwalker && Me.HasAnyAura(LegacyoftheWhiteTiger)),
-               // Spell.Cast("Legacy of the Emperor", ret => Me.HasAnyAura(LegacyoftheEmperor))
-               );
+                new Decorator(ret => XIUnit.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat,
+                new PrioritySelector(
+                Spell.CastRaidBuff("Legacy of the White Tiger", ret => Me.Specialization == WoWSpec.MonkWindwalker && !Me.HasAnyAura(LegacyoftheWhiteTiger)),
+                Spell.CastRaidBuff("Legacy of the Emperor", ret => !Me.HasAnyAura(LegacyoftheEmperor))
+               )));
             }
         }
+
 
         internal static Composite InitializeCaching()
         {
@@ -55,6 +57,7 @@ namespace Xiaolin.Routines
        {
 
            117666, // Legacy of the Emperor
+           115921, // Legacy of the emperor
            1126, // Mark of the Wild
            20217, // Blessing of Kings
            90363, // Embrace of the Shale Spider	
