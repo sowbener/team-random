@@ -307,6 +307,14 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
+        /// Check to see if CurrentTarget has you as target.
+        /// </summary>
+        internal static bool IsTargettingMe
+        {
+            get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; }
+        }
+
+        /// <summary>
         /// Check to be used in any function which retrieves objects from the objectmanager.
         /// </summary>
         /// <param name="wowObject">wowObject to check if object does not equal null and isvalid.</param>

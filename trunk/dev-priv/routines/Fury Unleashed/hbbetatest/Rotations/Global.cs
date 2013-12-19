@@ -188,11 +188,6 @@ namespace FuryUnleashed.Rotations
             get { return Me.IsSafelyFacing(Me.CurrentTarget); }
         }
 
-        internal static bool TargettingMe
-        {
-            get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; }
-        }
-
         internal static bool WieldsTwoHandedWeapons
         {
             get { return Item.WieldsTwoHandedWeapons; }
