@@ -53,20 +53,13 @@ namespace FuryUnleashed.Rotations.Fury
         }
 
         #region Booleans
-        internal static bool UseWildStrike(bool hasSmashAura)
+        internal static bool UseWildStrike()
         {
-            if (hasSmashAura)
-            {
-                if ((Global.BloodthirstSpellCooldown < 1500 || Global.FadingCs(1250)) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 70)
-                    return true;
-            }
-            else
-            {
-                if (Global.ColossusSmashSpellCooldown >= 8000 && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
-                    return true;
-            }
+            if (Global.ColossusSmashSpellCooldown >= 7500 && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
+                return true;
             return Me.CurrentRage >= Me.MaxRage - 20;
         }
+
 
         internal static bool UseHeroicStrike(bool hasSmashAura)
         {
