@@ -34,7 +34,7 @@ namespace Xiaolin.Core
         // Check if we can interrupt
         internal static bool CanInterrupt
         {
-            get { return Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast; }
+            get { return Me.CurrentTarget.IsCasting; }
         }
         // Get UnitCount for Attackble MoXI.
         internal static IEnumerable<WoWUnit> AttackableUnits
