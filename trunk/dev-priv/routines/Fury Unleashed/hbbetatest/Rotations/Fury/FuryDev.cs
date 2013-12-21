@@ -87,10 +87,10 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
                 //actions.single_target+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
-                Spell.Cast(SpellBook.Bloodthirst, ret => Unit.NearbyAttackableUnitsCount == 1),
-                Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => Unit.NearbyAttackableUnitsCount > 1),
+                Spell.Cast(SpellBook.Bloodthirst, ret => (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
+                Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => FuryGlobal.AoEUsage),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1 - Added AoE replace.
-                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000 && Unit.NearbyAttackableUnitsCount == 1),
+                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000 && (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
                 Spell.Cast(SpellBook.Whirlwind, ret => Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000 && (Unit.NearbyAttackableUnitsCount > 1 && FuryGlobal.AoEUsage)),
                 //actions.single_target+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
                 Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && (!Global.ColossusSmashAura && FuryGlobal.BloodbathSync) && FuryGlobal.Tier4AbilityUsage),
@@ -103,7 +103,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/raging_blow,if=target.health.pct<20|buff.raging_blow.stack=2|(debuff.colossus_smash.up|(cooldown.bloodthirst.remains>=1&buff.raging_blow.remains<=3))
                 Spell.Cast(SpellBook.RagingBlow, ret => Global.ExecutePhase || Global.RagingBlow2S || (Global.ColossusSmashAura || Global.BloodthirstSpellCooldown >= 1 && Global.FadingRb(3000))),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.up
-                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Unit.NearbyAttackableUnitsCount == 1),
+                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
                 Spell.Cast(SpellBook.Whirlwind, ret => (Unit.NearbyAttackableUnitsCount > 1 && FuryGlobal.AoEUsage)),
                 //actions.single_target+=/bladestorm,if=enabled&cooldown.bloodthirst.remains>2
                 Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Global.BloodthirstSpellCooldown > 2000 && FuryGlobal.Tier4AbilityUsage),
@@ -118,14 +118,14 @@ namespace FuryUnleashed.Rotations.Fury
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura))),
                 //actions.single_target+=/wild_strike,if=debuff.colossus_smash.up&target.health.pct>=20
-                Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashAura && Global.NormalPhase && Unit.NearbyAttackableUnitsCount == 1),
+                Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashAura && Global.NormalPhase && (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
                 Spell.Cast(SpellBook.Whirlwind, ret => Global.ColossusSmashAura && Global.NormalPhase && (Unit.NearbyAttackableUnitsCount > 1 && FuryGlobal.AoEUsage)),
                 //actions.single_target+=/battle_shout,if=rage<70
                 new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))),
                 //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
-                Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashSpellCooldown >= 2000 && Lua.PlayerPower >= 70 && Global.NormalPhase && Unit.NearbyAttackableUnitsCount == 1),
+                Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashSpellCooldown >= 2000 && Lua.PlayerPower >= 70 && Global.NormalPhase && (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
                 Spell.Cast(SpellBook.Whirlwind, ret => Global.ColossusSmashSpellCooldown >= 2000 && Lua.PlayerPower >= 70 && Global.NormalPhase && (Unit.NearbyAttackableUnitsCount > 1 && FuryGlobal.AoEUsage)),
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
                 Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && Global.NormalPhase && Global.ColossusSmashSpellCooldown >= 2000 && FuryGlobal.ImpendingVictoryUsage)
@@ -154,8 +154,8 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => Global.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && Unit.NearbyAttackableUnitsCount == 1),
-                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => !Global.EnrageAura && Unit.NearbyAttackableUnitsCount > 1),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
+                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => !Global.EnrageAura && FuryGlobal.AoEUsage),
                         Spell.Cast(SpellBook.Execute),
                         Spell.Cast(SpellBook.RagingBlow))),
                 new Decorator(ret => !Global.ColossusSmashAura,
@@ -164,8 +164,8 @@ namespace FuryUnleashed.Rotations.Fury
                         Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower >= 100),
-                        Spell.Cast(SpellBook.Bloodthirst, ret => Lua.PlayerPower < 100 && Unit.NearbyAttackableUnitsCount == 1),
-                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => Lua.PlayerPower < 100 && Unit.NearbyAttackableUnitsCount > 1),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => Lua.PlayerPower < 100 && (Unit.NearbyAttackableUnitsCount == 1 || !FuryGlobal.AoEUsage)),
+                        Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, ret => Lua.PlayerPower < 100 && FuryGlobal.AoEUsage),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S),
                         Spell.Cast(SpellBook.Execute, ret => Global.ColossusSmashOnCooldown && Global.BloodThirstOnCooldown && Global.RagingBlow1S && Lua.PlayerPower > 80 && Global.ColossusSmashSpellCooldown >= 1500),
                         Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Lua.PlayerPower < 60),

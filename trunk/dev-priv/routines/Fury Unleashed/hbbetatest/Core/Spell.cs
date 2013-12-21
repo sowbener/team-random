@@ -106,7 +106,7 @@ namespace FuryUnleashed.Core
                 WoWUnit target = null;
                 try
                 {
-                    return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null),
+                    return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null) && Unit.NearbyAttackableUnitsCount > 1,
                         new PrioritySelector(dot => 
                             target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
                             new Decorator(ctx => Unit.IsViable(target),
