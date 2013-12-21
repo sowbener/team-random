@@ -27,7 +27,7 @@ namespace FuryUnleashed
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static readonly Version Revision = new Version(1, 5, 5, 2);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
-        public static readonly double WoWVersion = 5.4;
+        public static readonly string WoWVersion = "5.4.2";
 
         public override string Name { get { return FuName; } }
         public override bool WantButton { get { return true; } }
