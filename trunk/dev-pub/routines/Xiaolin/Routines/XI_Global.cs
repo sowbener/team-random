@@ -32,6 +32,7 @@ namespace Xiaolin.Routines
                 new Decorator(ret => XIUnit.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat,
                 new PrioritySelector(
                 Spell.CastRaidBuff("Legacy of the White Tiger", ret => Me.Specialization == WoWSpec.MonkWindwalker && !Me.HasAnyAura(LegacyoftheWhiteTiger)),
+                Spell.Cast("Stance of the Sturdy Ox", ret => Me.Specialization == WoWSpec.MonkBrewmaster),
                 Spell.CastRaidBuff("Legacy of the Emperor", ret => !Me.HasAnyAura(LegacyoftheEmperor))
                )));
             }
