@@ -524,13 +524,16 @@ namespace Pokehbuddyplug
                             WoWPoint dummy;
                             Stopwatch escapetimer = new Stopwatch();
                             escapetimer.Start();
-                            //using (new TemporaryHardLockRelease())
+                            
 							oldframelock = GlobalSettings.Instance.UseFrameLock;
 							GlobalSettings.Instance.UseFrameLock = false;
-							//StyxWoW.Memory.ReleaseFrame(false) {
+                            //StyxWoW.Memory.ReleaseFrame(false) {
+
+                            //using (new TemporaryHardLockRelease())
+                            
                             while (WildBattleTarget().Distance > 10 && !Styx.StyxWoW.Me.Combat && escapetimer.ElapsedMilliseconds < 10000)
                             {
-                                
+                                ObjectManager.Update();
                                 Pulsator.Pulse(PulseFlags.Objects);
                                 //if (Styx.StyxWoW.Me.Combat) return;
                                 if (Pokehbuddy.MySettings.DetailedLogging) BBLog("Move to spot");
@@ -573,6 +576,7 @@ namespace Pokehbuddyplug
                                 
                                
                             }
+                            
 							//}
 							
 							
@@ -634,8 +638,11 @@ namespace Pokehbuddyplug
                 
                 
                 //using (new TemporaryHardLockRelease())
-                if (InPetCombat())
+                while (InPetCombat())
                 {
+                    ObjectManager.Update();
+                    Pulsator.Pulse(PulseFlags.Objects);
+
                     if (oldbotbase == "")
                     {
                         oldbotbase = BotManager.Current.Name.ToString();
@@ -755,7 +762,7 @@ namespace Pokehbuddyplug
             string fav = "";
             
             if (!MySettings.Slot1SwapEnabled) return;
-            BBLog("Checking slot 1 level");
+            //BBLog("Checking slot 1 level");
             
             if (GetPetLevelPreCombat(1) >= MySettings.Slot1SwapMaxLevel || (GetPetLevelPreCombat(1)==1 && GetPetHPPreCombat(1) == 0))
             {
@@ -2376,7 +2383,7 @@ namespace Pokehbuddyplug
         {
             List<string> cnt1 = Lua.GetReturnValues("return C_PetBattles.GetActivePet(1)");
             int activepet = fixedindex[Int32.Parse(cnt1[0])];
-            BBLog("Fixed index for " + cnt1[0] + " is " + activepet);
+            //BBLog("Fixed index for " + cnt1[0] + " is " + activepet);
             List<string> cnt = Lua.GetReturnValues("dummy={} for i = 1, 3  do  local petID= C_PetJournal.GetPetLoadOutInfo(i); dummy[i]=petID  end return tonumber(dummy["+activepet+"],16);");
             //Logging.Write(cnt[0]);
             //int decAgain = int.Parse(, System.Globalization.NumberStyles.HexNumber);
