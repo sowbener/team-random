@@ -37,7 +37,7 @@ namespace Xiaolin.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, WindwalkerDefensive()),
-                                        new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts && U.CanInterrupt, WindwalkerInterrupts()),
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts, WindwalkerInterrupts()),
                                         WindwalkerUtility(),
                                         I.WindwalkerUseItems(),
                                         WindwalkerOffensive(),
@@ -47,7 +47,7 @@ namespace Xiaolin.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, WindwalkerDefensive()),
-                                        new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts && U.CanInterrupt, WindwalkerInterrupts()),
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts, WindwalkerInterrupts()),
                                         WindwalkerUtility(),
                                         new Decorator(ret => XIHotKeyManager.IsCooldown,
                                                 new PrioritySelector(
