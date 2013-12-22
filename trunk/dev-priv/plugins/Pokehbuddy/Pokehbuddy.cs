@@ -23,6 +23,8 @@ using Styx;
 //using Styx.Logic.Pathing;
 
 using Styx.Helpers;
+using BattlePetSwapper;
+
 
 
 
@@ -80,11 +82,15 @@ using Styx.WoWInternals.WoWObjects;
 using Styx.TreeSharp;
 //using Microsoft.VisualBasic.Interaction;
 using CalcEngine;
+using System.Reflection;
+using System.ComponentModel;
+using CommonBehaviors.Actions;
 
 namespace Pokehbuddyplug
 {
     public partial class Pokehbuddy : HBPlugin
     {
+        public static BPSPlugin BPS = new BPSPlugin();
         private readonly WaitTimer _updateTimer = WaitTimer.TenSeconds;
         private ulong oldguid = 0;
         private int skipcounter = 0;
@@ -94,9 +100,11 @@ namespace Pokehbuddyplug
         public int pvptimer;
         public bool disable = false;
         public bool oldlogging;
+		public bool oldframelock;
         public string temporder="";
         public static PetBattleSettings PetSettings;
         public static PetBattleSettings DefaultLogicz;
+        private WoWPoint oldloc = new WoWPoint(0, 0, 0);
         //private static readonly configForm Gui = new configForm();
         private configForm Gui = new configForm();
         private static Stopwatch timer = new Stopwatch();
@@ -104,6 +112,21 @@ namespace Pokehbuddyplug
         //private static readonly Form1 Gui2 = new Form1();
         public static List<string> theblacklist = new List<string>();
         public static List<string> thewhitelist = new List<string>();
+        public static List<string> quicksettingsnames = new List<string>();
+        public static List<string> quicksettingdesc = new List<string>();
+        public static List<string> quicksettingsfuncs = new List<string>();
+        private Stopwatch swaptimer = new Stopwatch();
+        private Stopwatch healtimer = new Stopwatch();
+        private Stopwatch stucktimer = new Stopwatch();
+        private Stopwatch logictimer = new Stopwatch();
+        private Stopwatch interacttimer = new Stopwatch();
+        private Stopwatch movetimer = new Stopwatch();
+        private static int roundnumber;
+        private static int oldroundnumber;
+        private static bool attachedLua = false;
+        private string oldbotbase;
+        private static int[] fixedindex;
+        Styx.WoWPoint[] WPBuffer;
 
         private string[] PetDefaultLogics = { "SWAPOUT Health(THISPET) ISLESSTHAN 30", "PASSTURN HASBUFF(822) EQUALS true", "PASSTURN HASBUFF(498) EQUALS true", "CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false" };
         public Pokehbuddy()
@@ -133,6 +156,9 @@ namespace Pokehbuddyplug
                 if (!File.Exists(filename)) File.Copy(reserve, filename);
                 filename = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Default Logic.xml";
                 reserve = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Data\\Default Logic.xml.default";
+                if (!File.Exists(filename)) File.Copy(reserve, filename);
+                filename = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Librarian\\Library.db";
+                reserve = Application.StartupPath + "\\Plugins\\Pokehbuddy\\Data\\Library.db.default";
                 if (!File.Exists(filename)) File.Copy(reserve, filename);
 
 
@@ -185,20 +211,91 @@ namespace Pokehbuddyplug
                 catch { } // Catch all, like 404's.
             }
         }
+        private void AttachLuaEvents()
+        {
+            if (attachedLua) return;
+            if (MySettings.DetailedLogging) BBLog("Lua events attached");
+            attachedLua = true;
+            Lua.Events.AttachEvent("PET_BATTLE_CLOSE", LuaEndOfBattle);
+            Lua.Events.AttachEvent("PET_BATTLE_OPENING_START", LuaPetBattleStarted);
+            Lua.Events.AttachEvent("PET_BATTLE_PET_ROUND_PLAYBACK_COMPLETE", LuaEndOfRound);
+            Lua.Events.AttachEvent("PET_BATTLE_TURN_STARTED", LuaRoundStart);
+            Lua.Events.AttachEvent("CHAT_MSG_PET_BATTLE_COMBAT_LOG", PetChatter);
+
+            
+
+        }
+        private void DetachLuaEvents()
+        {
+            if (!attachedLua) return;
+            attachedLua = false;
+            Lua.Events.DetachEvent("PET_BATTLE_CLOSE", LuaEndOfBattle);
+            Lua.Events.DetachEvent("PET_BATTLE_OPENING_START", LuaPetBattleStarted);
+            Lua.Events.DetachEvent("PET_BATTLE_PET_ROUND_PLAYBACK_COMPLETE", LuaEndOfRound);
+            Lua.Events.DetachEvent("PET_BATTLE_TURN_STARTED", LuaRoundStart);
+            Lua.Events.DetachEvent("CHAT_MSG_PET_BATTLE_COMBAT_LOG", PetChatter);
+            
+           
+            
+        }
+        private void PetChatter(object sender, LuaEventArgs args)
+        {
+         //   Logging.Write(sender.ToString() + " " + args.Args[0]);
+
+
+        }
+
+        private void LuaEndOfBattle(object sender, LuaEventArgs args)
+        {
+            if (MySettings.DetailedLogging) BBLog("battle ended");
+            roundnumber = 1;
+            oldroundnumber = 100;
+            
+            if (oldbotbase != "")
+            {
+                SetBot(oldbotbase);
+                oldbotbase ="";
+                
+            }
+
+        }
+        private void LuaPetBattleStarted(object sender, LuaEventArgs args)
+        {
+            if (MySettings.DetailedLogging) BBLog("battle started");
+            roundnumber = 1;
+        }
+        private void LuaEndOfRound(object sender, LuaEventArgs args)
+        {
+            if (MySettings.DetailedLogging) BBLog("end of round " + roundnumber.ToString());
+            if (oldroundnumber==roundnumber)roundnumber++;
+        }
+        private void LuaRoundStart(object sender, LuaEventArgs args)
+        {
+            
+            if (MySettings.DetailedLogging) BBLog("new round started");
+            if (oldroundnumber == roundnumber) roundnumber++;
+        }
+       
 
         public override void Initialize()
         {
           //  base.Initialize();
+            roundnumber = 1;
+            fixedindex= new int[]{0,1,2,3};
+
+            oldbotbase = "";
             if (initdone) return;
             initdone = true;
 
             PrintSettings();
+            //GetQuickSettings();
 
             string cs = Application.StartupPath + "\\Plugins\\Pokehbuddy\\PetLogics.db";
             if (!File.Exists(cs))
             {
                 File.Copy(Application.StartupPath + "\\Plugins\\Pokehbuddy\\Data\\PetLogics.db.default", cs);
             }
+            LoadPetSettings("0", "0");
 
 
             string filename = Application.StartupPath + "\\Plugins\\Pokehbuddy\\whitelist.txt";
@@ -216,7 +313,7 @@ namespace Pokehbuddyplug
 
 
             Updater.CheckForUpdate(Application.StartupPath + "\\Plugins\\Pokehbuddy\\");
-
+            AttachLuaEvents();
 
         }
         public override void OnButtonPress()
@@ -227,11 +324,66 @@ namespace Pokehbuddyplug
             Gui.Show();
             //Gui.Activate();
         }
+        private void Nothing(object sender, EventArgs a,CancelEventArgs e)
+        {
+            if (InPetCombat()) e.Cancel = true;
+        }
+        private bool IsThisAPuppy()
+        {
+            if (GetCurrentPetLevel() +3 < GetCurrentEnemyLevel())
+                if ((GetPetLevel(1) >= GetCurrentEnemyLevel()) || (GetPetLevel(2) >= GetCurrentEnemyLevel()) || (GetPetLevel(3) >= GetCurrentEnemyLevel()))
+                    if (GetPetsAlive() >= 2) return true;
+            
+            return false;
+        }
+        private void FixIndexes()
+        {
+            fixedindex=new int[]{0,1,2,3,0,0,0};
 
+            if (GetPetHPPreCombat(2) == 0)
+            {
+                fixedindex = ArrayRemoveAt(fixedindex, 2);
+            }
 
+            if (GetPetHPPreCombat(1) == 0)
+            {
+                
+                fixedindex = ArrayRemoveAt(fixedindex, 1);
+                
+            }
 
+        }
+        private int[] ArrayRemoveAt(int[] source, int index)
+        {
+            int[] dest = new int[source.Length - 1];
+            if (index > 0)
+                Array.Copy(source, 0, dest, 0, index);
+
+            if (index < source.Length - 1)
+                Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
+
+            return dest;
+        }
         public override void Pulse()
         {
+            
+            if (!swaptimer.IsRunning) swaptimer.Start();
+            if (!healtimer.IsRunning) healtimer.Start();
+            if (!stucktimer.IsRunning) stucktimer.Start();
+            if (!logictimer.IsRunning) logictimer.Start();
+            if (!interacttimer.IsRunning) interacttimer.Start();
+            if (!movetimer.IsRunning) movetimer.Start();
+            if (!InPetCombat())
+            {
+                UpdatePetSlot();
+                FixIndexes();
+            }
+            if (StyxWoW.Me.Combat) return;
+            //Mount.OnMountUp += Nothing;
+            //new ActionAlwaysFail();
+            //TreeHooks.Instance.ReplaceHook(
+            //Styx.CommonBot.SpellManager.Cast += Nothing;
+            
             if (disable) return;
             StatCounter();
             List<string> petsequipped = Lua.GetReturnValues("local dummy=3 if C_PetJournal.GetPetLoadOutInfo(1)==nil then dummy=dummy-1 end if C_PetJournal.GetPetLoadOutInfo(2)==nil then dummy=dummy-1 end if C_PetJournal.GetPetLoadOutInfo(3)==nil then dummy=dummy-1 end return dummy");
@@ -242,6 +394,24 @@ namespace Pokehbuddyplug
                 disable = true;
                 return;
             }
+
+            if (MySettings.BPSEnabled)
+            {
+                BBLog("Pulsing BPS");
+                try
+                {
+                    BPS.Pulse();
+                }
+                catch (Exception e)
+                {
+                    BBLog(e.ToString());
+                }
+            }
+            
+            
+            
+
+
 
 
             oldlogging = Pokehbuddy.MySettings.DetailedLogging;
@@ -292,8 +462,12 @@ namespace Pokehbuddyplug
                 {
                     //Bandages? Pet Rez Skill?
                     ///cast Revive Battle Pets           Pokehbuddy.MySettings.UseHealSkill
-                    if (SpellManager.CanCast("Revive Battle Pets") || !SpellManager.CanCast("Revive Battle Pets"))
+                    if (healtimer.ElapsedMilliseconds > 2000 && (SpellManager.CanCast("Revive Battle Pets") || !SpellManager.CanCast("Revive Battle Pets")))
                     {
+                        healtimer.Stop();
+                        healtimer.Reset();
+                        healtimer.Start();
+
                         //do i actually need heals?
                         int dumdum2 = 0;
                         if (GetPetHPPreCombat(1) < 40) dumdum2++;
@@ -327,7 +501,7 @@ namespace Pokehbuddyplug
                             BBLog("Enough pets injured, trying to heal/rez pets");
                             if (SpellManager.CanCast(125439)) SpellManager.Cast(125439);
                             
-                            //Thread.Sleep(300);
+                            //StyxWoW.Sleep(300);
                         }
                     }
                     int dumdum3 = 0;
@@ -344,18 +518,41 @@ namespace Pokehbuddyplug
                             //Navigate to the pet
 
 
-                            Styx.WoWInternals.WoWMovement.MoveStop();
-                            //Thread.Sleep(200);
+                            //Styx.WoWInternals.WoWMovement.MoveStop();
+                            //StyxWoW.Sleep(200);
 
                             WoWPoint dummy;
-                            while (WildBattleTarget().Distance > 10 && !Styx.StyxWoW.Me.Combat)
+                            Stopwatch escapetimer = new Stopwatch();
+                            escapetimer.Start();
+                            
+							oldframelock = GlobalSettings.Instance.UseFrameLock;
+							GlobalSettings.Instance.UseFrameLock = false;
+                            //StyxWoW.Memory.ReleaseFrame(false) {
+
+                            //using (new TemporaryHardLockRelease())
+                            
+                            while (WildBattleTarget().Distance > 10 && !Styx.StyxWoW.Me.Combat && escapetimer.ElapsedMilliseconds < 10000)
                             {
+                                ObjectManager.Update();
+                                Pulsator.Pulse(PulseFlags.Objects);
+                                //if (Styx.StyxWoW.Me.Combat) return;
                                 if (Pokehbuddy.MySettings.DetailedLogging) BBLog("Move to spot");
-                                if (Styx.StyxWoW.Me.IsFlying) Styx.WoWInternals.WoWMovement.ClickToMove(WildBattleTarget().Location.X, WildBattleTarget().Location.Y, WildBattleTarget().Location.Z + 3);
-                                if (!Styx.StyxWoW.Me.IsFlying) Navigator.MoveTo(WildBattleTarget().Location);
-                                dummy = Styx.StyxWoW.Me.Location;
-                                Thread.Sleep(500);
-                                if (dummy.Distance(Styx.StyxWoW.Me.Location) < 1)
+                                if (movetimer.ElapsedMilliseconds > 500)
+                                {
+                                    movetimer.Stop();
+                                    movetimer.Reset();
+                                    movetimer.Start();
+
+                                    //if (Styx.StyxWoW.Me.IsFlying) Flightor.MoveTo(new WoWPoint(WildBattleTarget().Location.X, WildBattleTarget().Location.Y, WildBattleTarget().Location.Z + 3));
+                                    if (Styx.StyxWoW.Me.IsFlying) Styx.WoWInternals.WoWMovement.ClickToMove(WildBattleTarget().Location.X, WildBattleTarget().Location.Y, WildBattleTarget().Location.Z + 3);
+                                    if (!Styx.StyxWoW.Me.IsFlying) Navigator.MoveTo(WildBattleTarget().Location);
+                                
+                                }
+                                //if (Styx.StyxWoW.Me.Combat) return;
+                                //dummy = Styx.StyxWoW.Me.Location;
+                                //StyxWoW.Sleep(500);
+                                //Pulsator.Pulse(PulseFlags.Objects);
+                                if (stucktimer.ElapsedMilliseconds > 1000 && oldloc.Distance(Styx.StyxWoW.Me.Location) < 0.5)
                                 {
                                     if (!Styx.StyxWoW.Me.Combat)
                                     {
@@ -369,14 +566,29 @@ namespace Pokehbuddyplug
                                         }
                                     }
                                 }
-                                //BBLog("dummy distance"+dummy.Distance(Styx.StyxWoW.Me.Location));
+                                if (stucktimer.ElapsedMilliseconds > 1000)
+                                {
+                                    stucktimer.Stop();
+                                    stucktimer.Reset();
+                                    stucktimer.Start();
+                                    oldloc = StyxWoW.Me.Location;
+                                }
+                                
+                               
                             }
+                            
+							//}
+							
+							
+							GlobalSettings.Instance.UseFrameLock = oldframelock;
 
 
                         }
-                        if (WildBattleTarget().Distance < 12)
+                        if (interacttimer.ElapsedMilliseconds > 1000 && WildBattleTarget().Distance < 12)
                         {
-
+                            interacttimer.Stop();
+                            interacttimer.Reset();
+                            interacttimer.Start();
                             //Preparation, like swapping pets for bonusses
                             SetPetAbilities();
                             BBLog("Battle Preparation");
@@ -401,11 +613,11 @@ namespace Pokehbuddyplug
 
                             catch (Exception ex) { BBLog(ex.ToString()); }
                             
-                            //Thread.Sleep(100);
+                            //StyxWoW.Sleep(100);
                             if (Styx.StyxWoW.Me.Mounted) Styx.CommonBot.Mount.Dismount();
                             if (Pokehbuddy.MySettings.DetailedLogging) BBLog("Attempting to start Wild Pet Battle");
                             WildBattleTarget().Interact();
-                            Thread.Sleep(1000);
+                            //StyxWoW.Sleep(1000);
 
                         }
 
@@ -420,11 +632,26 @@ namespace Pokehbuddyplug
 
 
                 }
+                //hook OnMountUp
+//[22:54:44] Dodo: if (inPetBattle)
+ //  e.Cancel = true
+                
+                
+                //using (new TemporaryHardLockRelease())
                 while (InPetCombat())
                 {
+                    ObjectManager.Update();
+                    Pulsator.Pulse(PulseFlags.Objects);
+
+                    if (oldbotbase == "")
+                    {
+                        oldbotbase = BotManager.Current.Name.ToString();
+                        SetBot("combat");
+                    }
+                    
                     try
                     { //Blacklist.Add(oldguid, TimeSpan.FromMinutes(10));
-
+                        //StyxWoW.Sleep(1);
                         Styx.Helpers.GlobalSettings.Instance.LogoutForInactivity = false;
 
                         Lua.DoString("if C_PetBattles.GetPVPMatchmakingInfo()=='proposal' then C_PetBattles.AcceptQueuedPVPMatch() end");
@@ -432,11 +659,19 @@ namespace Pokehbuddyplug
                         //Actual battle!
                         // BBLog("In Pet Combat against rarity "+GetRarity()+" and i can trap"+ CanTrap());
                         // BBLog("In Combat");
-                        if (MustSelectNew())
+                        if (MustSelectNew() && swaptimer.ElapsedMilliseconds > 3000)
                         {
                             BBLog("Have to select new one");
-                            if (MySettings.UseRatingSystem) ForcedSwapping();
-                            if (!MySettings.UseRatingSystem) DoSimpleRotate();
+                            try
+                            {
+                                if (MySettings.UseRatingSystem) ForcedSwapping();
+                                if (!MySettings.UseRatingSystem) DoSimpleRotate();
+                            } catch (Exception e){
+                                BBLog("Error "+e.ToString());
+                            }
+                            swaptimer.Stop();
+                            swaptimer.Reset();
+                            swaptimer.Start();
 
                         }
 
@@ -455,9 +690,21 @@ namespace Pokehbuddyplug
                         }
                         else
                         {
-                            if (CanFight())
+                            if (logictimer.ElapsedMilliseconds > 500 && CanFight())
                             {
-                                DoCombatRoutine();
+                                if (CanCastSomething())
+                                {
+                                    DoCombatRoutine();
+                                    //StyxWoW.Sleep(200);
+                                }
+                                else
+                                {
+                                    logictimer.Stop();
+                                    logictimer.Reset();
+                                    logictimer.Start();
+                                    BBLog("Cant cast anything or swapout, passing");
+                                    Lua.DoString("C_PetBattles.SkipTurn()");
+                                }
 
 
 
@@ -497,6 +744,94 @@ namespace Pokehbuddyplug
 
             }
         }
+        /*private void Restarter(object b)
+        {
+            while (TreeRoot.IsRunning)
+            {
+                //TreeRoot.Stop();
+                BotManager.Instance.SetCurrent((BotBase)b);
+            }
+            if (!BotManager.Current.Initialized) BotManager.Current.Initialize();
+            while (!TreeRoot.IsRunning)
+            {
+                TreeRoot.Start();
+            }
+        }*/
+        private void UpdatePetSlot()
+        {
+            string fav = "";
+            
+            if (!MySettings.Slot1SwapEnabled) return;
+            //BBLog("Checking slot 1 level");
+            
+            if (GetPetLevelPreCombat(1) >= MySettings.Slot1SwapMaxLevel || (GetPetLevelPreCombat(1)==1 && GetPetHPPreCombat(1) == 0))
+            {
+                BBLog("Going to switch slot 1");
+                Lua.DoString("C_PetJournal.SetFlagFilter(LE_PET_JOURNAL_FLAG_FAVORITES, false) C_PetJournal.SetFlagFilter(LE_PET_JOURNAL_FLAG_COLLECTED, true) C_PetJournal.SetFlagFilter(LE_PET_JOURNAL_FLAG_NOT_COLLECTED, true) ");
+                Lua.DoString("C_PetJournal.ClearSearchFilter() C_PetJournal.AddAllPetSourcesFilter() C_PetJournal.AddAllPetTypesFilter() ");
+
+                if (MySettings.Slot1SwapFavoriteOnly)
+                {
+                    fav = fav+"and favorite == true ";
+                }
+                if (MySettings.Slot1TradeableOnly)
+                {
+                    fav = fav + "and isTradeable == true ";
+                }
+
+
+                fav = fav + "and isWild == " + MySettings.Slot1AllowWild.ToString().ToLower()+ " ";
+                
+                string luastring = "view, total = C_PetJournal.GetNumPets() for wantlevel=" + MySettings.Slot1SwapMinLevel + "," + (MySettings.Slot1SwapMaxLevel - 1) + " do for i=1, total do petID, _, owned, _, level, favorite, _, _, _, _, _, _, _, isWild, canBattle, isTradeable, _, _ = C_PetJournal.GetPetInfoByIndex(i) if (petID ~= nil) then health, maxHealth, power, speed, rarity = C_PetJournal.GetPetStats(petID) if (health == maxHealth and level==wantlevel " + fav + "and owned == true and canBattle==true) then C_PetJournal.SetPetLoadOutInfo(1,petID) return end end end end ";
+                BBLog(luastring);
+                Lua.DoString(luastring);
+
+            }
+
+        }
+        private void SetBot(string tofind)
+        {
+            return;
+            Thread t = new Thread(new ParameterizedThreadStart(SetBotBase));
+            t.Start(tofind);
+
+        }
+        private void SetBotBase(object b)
+        {
+            string tofind = (string)b;
+            BBLog("Wanna switch to " + tofind);
+            if (BotManager.Current.Name.Contains(tofind)) return;
+            while (TreeRoot.IsRunning)
+            {
+                BBLog("Stopping " + BotManager.Current.Name);
+                TreeRoot.Stop();
+
+                StyxWoW.Sleep(1000);
+            }
+            foreach (KeyValuePair<string, BotBase> Base in BotManager.Instance.Bots)
+            {
+                if (Base.Key.ToLower().Contains(tofind.ToLower()))
+                {
+
+                    
+
+                    BBLog("I wanna start "+Base.Key);
+                    BotManager.Instance.SetCurrent(Base.Value);
+                    if (!BotManager.Current.Initialized) BotManager.Current.Initialize();
+                    StyxWoW.Sleep(500);
+                }
+            }
+            //ProfileManager.LoadEmpty();
+            StyxWoW.Sleep(500);
+            BBLog("Starting " + BotManager.Current.Name);
+            while (!TreeRoot.IsRunning)
+            {
+                TreeRoot.Start();
+                StyxWoW.Sleep(500);
+            }
+
+            //Logging.Write("Correct botbase selected");
+        }
         private void DoSimpleRotate()
         {
             
@@ -529,6 +864,9 @@ namespace Pokehbuddyplug
         {
             int getrari = Pokehbuddy.MySettings.GetRarity;
             if (getrari > 4) getrari = 2;
+            if (roundnumber == 0) roundnumber = 1;
+            if (roundnumber == oldroundnumber) roundnumber++;
+            oldroundnumber = roundnumber;
             if (Pokehbuddy.MySettings.ForfeitIfNotInteresting)
             {
                 List<string> forfeit = Lua.GetReturnValues("if C_PetBattles.GetBreedQuality(2,1) <= " + getrari + " and C_PetBattles.GetBreedQuality(2,2) <= " + getrari + " and C_PetBattles.GetBreedQuality(2,3) <= " + getrari + " and  C_PetBattles.IsWildBattle() == true then C_PetBattles.ForfeitGame() return 1 end return 0");
@@ -543,17 +881,16 @@ namespace Pokehbuddyplug
              }*/
             //private string PetDefaultLogics[] = {"SWAPOUT Health(THISPET) ISLESSTHAN 50","CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false",""};
             bool didlogic = false;
-            LoadPetSettings(ReadActiveSlot(), ReadActiveSlotSpecies());
-            try
-            {
-                Logging.Write(GetEquippedOrDefaultLogic(ReadActiveSlot(), ReadActiveSlotSpecies()));
-            }
-            catch (Exception ex)
-            {
-                Logging.Write(ex.ToString());
-            }
+            //LoadPetSettings(ReadActiveSlot(), ReadActiveSlotSpecies());
+            BBLog("Going to load " + ReadActiveSlot() + " species " + ReadActiveSlotSpecies());
+            PetSettings.Logic = GetEquippedOrDefaultLogic(ReadActiveSlot(), ReadActiveSlotSpecies()).Replace("@ @", "@").Replace("@ @", "@").Replace("@@", "@").Replace("@@", "@");
+            //Logging.Write(PetSettings.Logic);
+            
 
             string dumdum = "";
+            Stopwatch dummy = new Stopwatch();
+            dummy.Start();
+
             if (!MySettings.DetailedLogging)
             {
                 dumdum = PreParsing(DefaultLogicz.Logic + "@" + PetSettings.Logic);
@@ -567,8 +904,7 @@ namespace Pokehbuddyplug
             string[] PetLogics = dumdum.Split('@');
             bool stopdoingstuff = false;
             BBLog("Doing Logic");
-            Stopwatch dummy = new Stopwatch();
-            dummy.Start();
+            
             foreach (string alogic in PetLogics)
             {
 
@@ -581,11 +917,31 @@ namespace Pokehbuddyplug
                 {
                  
                     //BBLog("TRUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    if (!stopdoingstuff && (String.Compare(alogic.Substring(0, 7), "SWAPOUT") == 0))
+                    if (!stopdoingstuff && (String.Compare(alogic.Substring(0, 7), "SWAPOUT") == 0) && swaptimer.ElapsedMilliseconds > 500)
                     {
-                 
-                        if (MySettings.UseRatingSystem) WantSwapping();
-                        if (!MySettings.UseRatingSystem) DoSimpleRotate();
+                        swaptimer.Stop();
+                        swaptimer.Reset();
+                        swaptimer.Start();
+
+
+                        if (!MySettings.UseRatingSystem) 
+                        {
+                            BBLog("Going to do simple rotate");
+                            DoSimpleRotate(); 
+                        }
+                        else
+                        {
+                            BBLog("Going to do advanced rating system");
+                            try
+                            {
+                                WantSwapping();
+                            }
+                            catch (Exception e)
+                            {
+                                BBLog("Error " + e.ToString());
+                            }
+                        }
+
                         stopdoingstuff = true;
                         
                     }
@@ -602,13 +958,19 @@ namespace Pokehbuddyplug
 
             }
             dummy.Stop();
-           // BBLog("time elapsed " + dummy.ElapsedMilliseconds);
+            BBLog("time elapsed " + dummy.ElapsedMilliseconds);
             dummy.Reset();
             if (Pokehbuddy.MySettings.DetailedLogging)
             {
                 BBLog("----------------------------------------------------------------");
                 BBLog("FINISHED Logics");
                 BBLog("----------------------------------------------------------------");
+            }
+            if (didlogic)
+            {
+                logictimer.Stop();
+                logictimer.Reset();
+                logictimer.Start();
             }
             if (!didlogic)
             {
@@ -617,7 +979,7 @@ namespace Pokehbuddyplug
                 }
                 skipcounter++;
                 BBLog("SKIP count :" + skipcounter);
-                Thread.Sleep(1500);
+                //StyxWoW.Sleep(1500);
                 if (skipcounter > Pokehbuddy.MySettings.SkipCounterLimit)
                 {
                     Lua.DoString("C_PetBattles.SkipTurn()");
@@ -727,7 +1089,12 @@ namespace Pokehbuddyplug
             }
         }
         public string GetEquippedOrDefaultLogic(string petID, string speciesID)
+            
         {
+            Librarian.Librarian lib = new Librarian.Librarian();
+
+            
+            if (!DigitsOnly(speciesID)) speciesID = GetSpeciesByName(speciesID);
             string dummy = "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false";
 
             
@@ -764,6 +1131,8 @@ namespace Pokehbuddyplug
                 string whattodo = "";
                 if (returned == "-1")
                 {
+                    if (IsThisAPuppy()) return lib.GeneratePuppyLogic(GetEquippedOrDefaultSpellset(petID, speciesID)); 
+
                     whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
                 }
                 else
@@ -788,99 +1157,109 @@ namespace Pokehbuddyplug
                         }
                     }
                 }
-                if (dummy == "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")
-                {
-                    stm = "SELECT Logic FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
+                //if (dummy == "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")
+                //{
+                //    stm = "SELECT Logic FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
 
-                    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                    {
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                        {
-                            if (rdr.HasRows)
-                            {
-                                while (rdr.Read())
-                                {
-                                    string cel1 = rdr.GetString(0);
-                                    dummy = cel1;
-                                }
-                            }
-                        }
-                    }
+                //    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
+                //    {
+                //        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                //        {
+                //            if (rdr.HasRows)
+                //            {
+                //                while (rdr.Read())
+                //                {
+                //                    string cel1 = rdr.GetString(0);
+                //                    dummy = cel1;
+                //                }
+                //            }
+                //        }
+                //    }
 
-                }
+                //}
 
                 con.Close();
+            }
+            if (dummy == "SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")
+            {
+
+                if (IsThisAPuppy()) return lib.GeneratePuppyLogic(GetEquippedOrDefaultSpellset(petID, speciesID)); 
+
+                    dummy = lib.GenerateLogic(GetEquippedOrDefaultSpellset(petID, speciesID));
+                
+                
             }
             return dummy;
         }
-
+        static bool DigitsOnly(string s)
+        {
+            foreach (char c in s)
+            {
+                if (c < '0' || c > '9')
+                    return false;
+            }
+            return true;
+        }
 
         public string GetEquippedOrDefaultSpellset(string petID, string speciesID)
         {
+            
             string dummy = "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)";
-
-
-            string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\PetLogics.db";
-
-            using (SQLiteConnection con = new SQLiteConnection(cs))
+            try
             {
-                con.Open();
-                string stm = "";
-
-                stm = "SELECT LogicID FROM PetSelection WHERE PetID = '" + petID + "'";
-                string returned = "-1";
-
-                using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                {
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                    {
-                        if (rdr.HasRows)
-                        {
-                            while (rdr.Read())
-                            {
-                                string cel1 = rdr.GetString(0);
-
-                                returned = cel1;
-
-                            }
-
-                        }
-                    }
-                }
                 
+                if (!DigitsOnly(speciesID))speciesID = GetSpeciesByName(speciesID);
 
+                
+                string cs = "URI=file:" + Application.StartupPath + "\\Plugins\\Pokehbuddy\\PetLogics.db";
 
-
-                string whattodo = "";
-                if (returned == "-1")
+                using (SQLiteConnection con = new SQLiteConnection(cs))
                 {
-                    whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
-                }
-                else
-                {
-                    whattodo = "ID = '" + returned + "'";
-                }
+                    
+                    con.Open();
+                    string stm = "";
 
+                    stm = "SELECT LogicID FROM PetSelection WHERE PetID = '" + petID + "'";
+                    string returned = "-1";
 
-                stm = "SELECT Spellset FROM Logics WHERE " + whattodo;
-
-                using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
-                {
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
                     {
-                        if (rdr.HasRows)
+                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
                         {
-                            while (rdr.Read())
+                            if (rdr.HasRows)
                             {
-                                string cel1 = rdr.GetString(0);
-                                dummy = cel1;
+                                while (rdr.Read())
+                                {
+                                    string cel1 = rdr.GetString(0);
+
+                                    returned = cel1;
+
+                                }
+
                             }
                         }
                     }
-                }
-                if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
-                {
-                    stm = "SELECT Spellset FROM Logics WHERE SpeciesID = " + speciesID+" LIMIT 1" ;
+
+
+
+                    
+                    string whattodo = "";
+                    if (returned == "-1")
+                    {
+                        whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
+
+                        if (MySettings.AllowRoleDetect)
+                        {
+                            //iets anders  whattodo = "SpeciesID = " + speciesID + " AND isDefault = 1";
+                        }
+                    }
+                    else
+                    {
+                        whattodo = "ID = '" + returned + "'";
+                    }
+
+
+                    stm = "SELECT Spellset FROM Logics WHERE " + whattodo;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
                     {
@@ -896,15 +1275,48 @@ namespace Pokehbuddyplug
                             }
                         }
                     }
+                    
+                    //if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
+                    //{
+                    //    stm = "SELECT Spellset FROM Logics WHERE SpeciesID = " + speciesID + " LIMIT 1";
+
+                    //    using (SQLiteCommand cmd = new SQLiteCommand(stm, con))
+                    //    {
+                    //        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    //        {
+                    //            if (rdr.HasRows)
+                    //            {
+                    //                while (rdr.Read())
+                    //                {
+                    //                    string cel1 = rdr.GetString(0);
+                    //                    dummy = cel1;
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                        
 
 
 
 
+                    //}
 
+                    con.Close();
                 }
-
-                con.Close();
             }
+            catch (Exception e)
+            {
+                Logging.Write(e.ToString());
+            }
+            if (dummy == "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")
+            {
+                List<string> cntskillz = Lua.GetReturnValues("for i=1,3 do local petID, ability1ID, ability2ID, ability3ID, locked = C_PetJournal.GetPetLoadOutInfo(i) if (tonumber(petID,16)==" +petID + ") then return ability1ID, ability2ID, ability3ID end end return 0,0,0");
+                string spelllayout = "ASSIGNABILITY1(" + cntskillz[0] + ")@" +
+                                     "ASSIGNABILITY2(" + cntskillz[1] + ")@" +
+                                     "ASSIGNABILITY3(" + cntskillz[2] + ")";
+                dummy = spelllayout;
+            }
+            
             return dummy;
         }
 
@@ -988,7 +1400,7 @@ namespace Pokehbuddyplug
 
 
         }
-        public bool ActualCalc(string s)
+        public static bool ActualCalc(string s)
         {
             
             
@@ -1003,16 +1415,27 @@ namespace Pokehbuddyplug
 
 
         }
-        public bool Calc(string s)
+        public static int Calculate(string s)
         {
-            /*
-            s = s.Replace(" = ", " == ").Replace(" & "," and ").ToLower();
+            var ce = new CalcEngine.CalcEngine();
+            var x = ce.Parse(s);
+            //Logging.Write("Evaluating");
+            var value = x.Evaluate();
+            return Int32.Parse(value.ToString());
+            
+            //int returnVal = Lua.GetReturnVal<int>("return "+s, 0);
+            //return returnVal;
+        }
+        public static bool Calc(string s)
+        {
+            
+           /* s = s.Replace(" = ", " == ").Replace(" & "," and ").ToLower();
             int returnVal = Lua.GetReturnVal<int>("if ("+s+") then return 1 end return 0", 0);
             //Logging.Write("if (" + s + ") then return 1 end return 0");
             if (returnVal == 1) return true;
-            return false;*/
-            
-
+            return false;
+            ////////////////////////////////dit hieronder mag weg - of toch niet :P
+            /**/
             char[] delimit = new char[] { '&' };
             string s10 = s;
             foreach (string substr in s10.Split(delimit))
@@ -1022,7 +1445,7 @@ namespace Pokehbuddyplug
             }
             //BBLog("returning true");
             return true;
-
+            
 
         }
 
@@ -1039,12 +1462,12 @@ namespace Pokehbuddyplug
 
         public void WantSwapping()
         {
-            if (GetCurrentPetHealth() > 0 && GetPetHealth(1) < 30 && GetPetHealth(2) < 30 && GetPetHealth(3) < 30)
+            if ( GetPetHealth(1) < 25 && GetPetHealth(2) < 25 && GetPetHealth(3) < 25)
             {
-                return;
-                if (CanSelect(3)) { CombatCallPet(3); Thread.Sleep(500); return; }
-                if (CanSelect(2)) { CombatCallPet(2); Thread.Sleep(500); return; }
-                if (CanSelect(1)) { CombatCallPet(1); Thread.Sleep(500); return; }
+                if (GetCurrentPetHealth() > 0) return;
+                if (CanSelect(3)) { CombatCallPet(3); return; }
+                if (CanSelect(2)) { CombatCallPet(2); return; }
+                if (CanSelect(1)) { CombatCallPet(1); return; }
             }
             int slot1rating = 0;
             int slot2rating = 0;
@@ -1064,7 +1487,7 @@ namespace Pokehbuddyplug
             if (slot1rating >= slot2rating && slot1rating >= slot3rating) CombatCallPet(1);
             if (slot2rating >= slot1rating && slot2rating >= slot3rating) CombatCallPet(2);
             if (slot3rating >= slot2rating && slot3rating >= slot1rating) CombatCallPet(3);
-            Thread.Sleep(500);
+            //StyxWoW.Sleep(500);
         }
 
         public void ForcedSwapping()
@@ -1086,11 +1509,18 @@ namespace Pokehbuddyplug
             if (slot1rating >= slot2rating && slot1rating >= slot3rating) CombatCallPet(1);
             if (slot2rating >= slot1rating && slot2rating >= slot3rating) CombatCallPet(2);
             if (slot3rating >= slot2rating && slot3rating >= slot1rating) CombatCallPet(3);
-            Thread.Sleep(500);
-            while (!CanFight()){
+            //StyxWoW.Sleep(500);
+            //while (!CanFight()){
+            //}
+        }
+        private void PokeSleep(int time)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            while (sw.ElapsedMilliseconds < time) {
+                Pulsator.Pulse(PulseFlags.Objects);
             }
         }
-
         //rating=rating* (GetPetHealth(
         public void PetSwappingPreCombat()
         {
@@ -1110,7 +1540,7 @@ namespace Pokehbuddyplug
                 BBLog("Swapping something");
                 if (slot2rating >= slot3rating) SetSlot(1, 2);
                 if (slot2rating < slot3rating) SetSlot(1, 3);
-                //Thread.Sleep(1000);
+                //StyxWoW.Sleep(1000);
 
             }
             else
@@ -1523,10 +1953,14 @@ namespace Pokehbuddyplug
             for (int i = 1; i < 4; i++)
             {
                 //if (MySettings.DetailedLogging) BBLog("Checking for custom abilities for pet slot: " + i + " ID:" + ReadSlot(i));
-                LoadPetSettings(ReadSlot(i), ReadSlotSpecies(i));
+                //LoadPetSettings(ReadSlot(i), ReadSlotSpecies(i));
+                
+                    PetSettings.SpellLayout = GetEquippedOrDefaultSpellset(ReadSlot(i), ReadSlotSpecies(i));
+                    //Logging.Write("6");
                 if (PetSettings.SpellLayout == "") PetSettings.SpellLayout = "ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)";
                 //parse settings looking for AssignAbility1, AssignAbility2, AssignAbility3
                 string dumdum = PetSettings.SpellLayout;
+                //Logging.Write(dumdum);
 
                 string[] PetLogics = dumdum.Split('@');
 
@@ -1614,6 +2048,8 @@ namespace Pokehbuddyplug
             theLogic = theLogic.Replace("BEAST", "8");
             theLogic = theLogic.Replace("AQUATIC", "9");
             theLogic = theLogic.Replace("MECHANICAL", "10");
+            theLogic = theLogic.Replace("TURNNUMBER", roundnumber.ToString());
+
 
 
 
@@ -1679,9 +2115,12 @@ namespace Pokehbuddyplug
                 theLogic = theLogic.Replace("BEAST", "8");
                 theLogic = theLogic.Replace("AQUATIC", "9");
                 theLogic = theLogic.Replace("MECHANICAL", "10");
+                theLogic = theLogic.Replace("TURNNUMBER", roundnumber.ToString());
+
 
             }
 
+            
             theLogic = theLogic.Replace("SWAPOUT", "");
             theLogic = theLogic.Replace("FORFEIT", "");
             theLogic = theLogic.Replace("CASTSPELL(1)", "");
@@ -1763,11 +2202,11 @@ namespace Pokehbuddyplug
             if (mypet == SmartChoiceDealMoreDMG(enemytype)) advantage = advantage + 2;
 
             /*****************************************/
-            var ce = new CalcEngine.CalcEngine();
+            
             string s = "1 + 1 * 3";
-            var x = ce.Parse(s);
 
-            var value = x.Evaluate();
+
+            var value = Calculate(s);
             var total = 0;
 
             //pet 1
@@ -1775,29 +2214,29 @@ namespace Pokehbuddyplug
 
             s = MySettings.HPFormula;
             s = s.Replace("petHP", petHP.ToString()).Replace("HPFactor", Pokehbuddy.MySettings.HPFactor.ToString());
-            x = ce.Parse(s);
-            var HPresult = x.Evaluate();
+
+            var HPresult = Calculate(s);
             total = int.Parse(HPresult.ToString());
 
 
 
             s = MySettings.AdFormula;
             s = s.Replace("advantage", advantage.ToString()).Replace("AdFactor", MySettings.AdFactor.ToString());
-            x = ce.Parse(s);
-            var Adresult = x.Evaluate();
+
+            var Adresult = Calculate(s);
             total = total + int.Parse(Adresult.ToString());
 
 
             s = MySettings.DisFormula;
             s = s.Replace("disadvantage", disadvantage.ToString()).Replace("DisFactor", MySettings.DisFactor.ToString());
-            x = ce.Parse(s);
-            var Disresult = x.Evaluate();
+
+            var Disresult = Calculate(s);
             total = total + int.Parse(Disresult.ToString());
 
             s = MySettings.LevelFormula;
             s = s.Replace("petLevel", petLevel.ToString()).Replace("enemylevel", enemylevel.ToString()).Replace("LevelFactor", MySettings.LevelFactor.ToString());
-            x = ce.Parse(s);
-            var Levelresult = x.Evaluate();
+
+            var Levelresult = Calculate(s);
             total = total + int.Parse(Levelresult.ToString());
 
 
@@ -1830,9 +2269,12 @@ namespace Pokehbuddyplug
         }
         public bool InPetCombat()
         {
-            List<string> cnt = Lua.GetReturnValues("dummy,reason=C_PetBattles.IsTrapAvailable() return dummy,reason");
+            //List<string> cnt = Lua.GetReturnValues("dummy,reason=C_PetBattles.IsTrapAvailable() return dummy,reason");
+            List<string> cnt = Lua.GetReturnValues("if (C_PetBattles.IsInBattle() == true) then return 1 end return 0");
+            //if (Lua.GetReturnValues("if (C_PetBattles.IsInBattle() == true) then return 1 end return 0")[0] == "1") return;
 
-            if (cnt != null) { if (cnt[1] != "0") return true; }
+
+            if (cnt != null) { if (cnt[0] != "0") return true; }
             return false;
         }
 
@@ -1891,6 +2333,12 @@ namespace Pokehbuddyplug
             if (cnt != null) { if (cnt[0] == "0") return true; }
             return false;
         }
+        public bool CanCastSomething()
+        {
+            List<string> cnt = Lua.GetReturnValues("isUsable, currentCooldown = C_PetBattles.GetAbilityState(1, C_PetBattles.GetActivePet(1), 1) if (isUsable ~= true) then isUsable, currentCooldown = C_PetBattles.GetAbilityState(1, C_PetBattles.GetActivePet(1), 2) if (isUsable ~= true) then isUsable, currentCooldown = C_PetBattles.GetAbilityState(1, C_PetBattles.GetActivePet(1), 3) if (isUsable ~= true) then if (C_PetBattles.CanActivePetSwapOut() ~= true) then return false end end end end return true");
+            if (cnt != null) { if (cnt[0] == "1") return true; }
+            return false;
+        }
 
 
         public static string ReadSlot(int slotnr)
@@ -1933,7 +2381,10 @@ namespace Pokehbuddyplug
         }
         public string ReadActiveSlot()
         {
-            List<string> cnt = Lua.GetReturnValues("dummy={} for i = 1, 3   do  local petID= C_PetJournal.GetPetLoadOutInfo(i); dummy[i]=petID  end return tonumber(dummy[C_PetBattles.GetActivePet(1)],16);");
+            List<string> cnt1 = Lua.GetReturnValues("return C_PetBattles.GetActivePet(1)");
+            int activepet = fixedindex[Int32.Parse(cnt1[0])];
+            //BBLog("Fixed index for " + cnt1[0] + " is " + activepet);
+            List<string> cnt = Lua.GetReturnValues("dummy={} for i = 1, 3  do  local petID= C_PetJournal.GetPetLoadOutInfo(i); dummy[i]=petID  end return tonumber(dummy["+activepet+"],16);");
             //Logging.Write(cnt[0]);
             //int decAgain = int.Parse(, System.Globalization.NumberStyles.HexNumber);
             return cnt[0];//decAgain.ToString();
@@ -1941,7 +2392,7 @@ namespace Pokehbuddyplug
         }
         public string ReadActiveSlotSpecies()
         {
-            List<string> cnt = Lua.GetReturnValues("local petID = C_PetJournal.GetPetLoadOutInfo(C_PetBattles.GetActivePet(1)); local speciesID = C_PetJournal.GetPetInfoByPetID(petID) return speciesID");
+            List<string> cnt = Lua.GetReturnValues("return C_PetBattles.GetPetSpeciesID(1,C_PetBattles.GetActivePet(1))");
             //Logging.Write(cnt[0]);
             //int decAgain = int.Parse(, System.Globalization.NumberStyles.HexNumber);
             //return cnt[0];//decAgain.ToString();
@@ -2051,6 +2502,8 @@ namespace Pokehbuddyplug
             List<string> cnt = Lua.GetReturnValues("for j=1,C_PetBattles.GetNumAuras(1,C_PetBattles.GetActivePet(1)) do  local buffid = C_PetBattles.GetAuraInfo(1,C_PetBattles.GetActivePet(1),j)  if buffid == " + buffnum + " then return (true) end end return( false) ");
 
             if (cnt != null) { if (cnt[0] == "1") return true; }
+            if (CheckTeamBuff(buffnum, 1)) return true;
+            if (CheckWeatherBuff(buffnum)) return true;
             return false;
         }
 
@@ -2060,6 +2513,8 @@ namespace Pokehbuddyplug
             List<string> cnt = Lua.GetReturnValues("for j=1,C_PetBattles.GetNumAuras(2,C_PetBattles.GetActivePet(2)) do  local buffid = C_PetBattles.GetAuraInfo(2,C_PetBattles.GetActivePet(2),j)  if buffid == " + buffnum + " then return (true) end end return( false) ");
 
             if (cnt != null) { if (cnt[0] == "1") return true; }
+            if (CheckTeamBuff(buffnum, 2)) return true;
+            if (CheckWeatherBuff(buffnum)) return true;
             return false;
         }
 
@@ -2364,6 +2819,7 @@ namespace Pokehbuddyplug
             }
             catch (Exception exc)
             {
+                
 
             }
 
@@ -2467,107 +2923,131 @@ namespace Pokehbuddyplug
             Load();
         }
 
-        [Setting, DefaultValue(1)]
+        [Setting, Styx.Helpers.DefaultValue(4)]
         public int HPFactor { get; set; }
 
-        [Setting, DefaultValue(-100)]
+        [Setting, Styx.Helpers.DefaultValue(-30)]
         public int LevelFactor { get; set; }
 
-        [Setting, DefaultValue(1)]
+        [Setting, Styx.Helpers.DefaultValue(1)]
         public int AdFactor { get; set; }
 
-        [Setting, DefaultValue(1)]
+        [Setting, Styx.Helpers.DefaultValue(1)]
         public int DisFactor { get; set; }
 
-        [Setting, DefaultValue(250)]
+        [Setting, Styx.Helpers.DefaultValue(300)]
         public int Distance { get; set; }
 
-        [Setting, DefaultValue(3)]
+        [Setting, Styx.Helpers.DefaultValue(3)]
         public int GetRarity { get; set; }
 
-        [Setting, DefaultValue(5)]
+        [Setting, Styx.Helpers.DefaultValue(5)]
         public int BlacklistCounterLimit { get; set; }
 
-        [Setting, DefaultValue(5)]
+        [Setting, Styx.Helpers.DefaultValue(5)]
         public int SkipCounterLimit { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(false)]
         public bool DoPVP { get; set; }
 
-        [Setting, DefaultValue(5)]
+        [Setting, Styx.Helpers.DefaultValue(5)]
         public int PVPMinTime { get; set; }
 
-        [Setting, DefaultValue(10)]
+        [Setting, Styx.Helpers.DefaultValue(10)]
         public int PVPMaxTime { get; set; }
 
-        [Setting, DefaultValue(1)]
+        [Setting, Styx.Helpers.DefaultValue(1)]
         public int MinPetsAlive { get; set; }
 
-        [Setting, DefaultValue(3)]
+        [Setting, Styx.Helpers.DefaultValue(3)]
         public int BelowLevel { get; set; }
 
-        [Setting, DefaultValue(3)]
+        [Setting, Styx.Helpers.DefaultValue(3)]
         public int AboveLevel { get; set; }
 
-        [Setting, DefaultValue(0)]
+        [Setting, Styx.Helpers.DefaultValue(0)]
         public int UseBandagesToHeal { get; set; }
 
-        [Setting, DefaultValue(1)]
+        [Setting, Styx.Helpers.DefaultValue(1)]
         public int UseHealSkill { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(false)]
         public bool ForfeitIfNotInteresting { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(false)]
         public bool UseWhiteList { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(true)]
         public bool UseBlackList { get; set; }
 
-        [Setting, DefaultValue(true)]
+        [Setting, Styx.Helpers.DefaultValue(true)]
         public bool UseRatingSystem { get; set; }
 
-        [Setting, DefaultValue(true)]
+        [Setting, Styx.Helpers.DefaultValue(true)]
         public bool DoPreCombatSwapping { get; set; }
 
-        [Setting, DefaultValue(true)]
+        [Setting, Styx.Helpers.DefaultValue(true)]
         public bool CheckAllowUsageTracking { get; set; }
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(false)]
         public bool AllowAutoUpdate { get; set; }
-
-        [Setting, DefaultValue(0)]
+        
+        [Setting, Styx.Helpers.DefaultValue(false)]
+        public bool AllowRoleDetect { get; set; }
+        
+        [Setting, Styx.Helpers.DefaultValue(0)]
         public int CurrentRevision { get; set; }
         
-        [Setting, DefaultValue("")]
+        [Setting, Styx.Helpers.DefaultValue("")]
         public string LastDayChecked { get; set; }
-        
-        
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(false)]
+        public bool BPSEnabled { get; set; }
+
+        [Setting, Styx.Helpers.DefaultValue(false)]
         public bool DetailedLogging { get; set; }
 
-        [Setting, DefaultValue(true)]
+        [Setting, Styx.Helpers.DefaultValue(true)]
         public bool AmHorde { get; set; }
 
-        [Setting, DefaultValue("petHP * HPFactor")]
+        [Setting, Styx.Helpers.DefaultValue(false)]
+        public bool Slot1SwapEnabled { get; set; }
+
+        [Setting, Styx.Helpers.DefaultValue(true)]
+        public bool Slot1SwapFavoriteOnly { get; set; }
+        
+        [Setting, Styx.Helpers.DefaultValue(true)]
+        public bool Slot1TradeableOnly { get; set; }
+
+        [Setting, Styx.Helpers.DefaultValue(true)]
+        public bool Slot1AllowWild { get; set; }
+
+        
+
+        [Setting, Styx.Helpers.DefaultValue(1)]
+        public int Slot1SwapMinLevel { get; set; }
+
+        [Setting, Styx.Helpers.DefaultValue(20)]
+        public int Slot1SwapMaxLevel { get; set; }
+
+        [Setting, Styx.Helpers.DefaultValue("petHP * HPFactor")]
         public string HPFormula { get; set; }
 
-        [Setting, DefaultValue("advantage * 50 * AdFactor")]
+        [Setting, Styx.Helpers.DefaultValue("advantage * 50 * AdFactor")]
         public string AdFormula { get; set; }
 
-        [Setting, DefaultValue("disadvantage * 50 * DisFactor")]
+        [Setting, Styx.Helpers.DefaultValue("disadvantage * 50 * DisFactor")]
         public string DisFormula { get; set; }
 
-        [Setting, DefaultValue("(petLevel - enemylevel) * 4 * LevelFactor")]
+        [Setting, Styx.Helpers.DefaultValue("(petLevel - enemylevel) * 4 * LevelFactor")]
         public string LevelFormula { get; set; }
 
-        [Setting, DefaultValue("2,3,1")]
+        [Setting, Styx.Helpers.DefaultValue("2,3,1")]
         public string PetOrder { get; set; }
 
 
 
-        [Setting, DefaultValue(false)]
+        [Setting, Styx.Helpers.DefaultValue(false)]
         public bool IBSupport { get; set; }
 
     }
@@ -2581,10 +3061,10 @@ namespace Pokehbuddyplug
             Load();
         }
 
-        [Setting, DefaultValue("SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")]
+        [Setting, Styx.Helpers.DefaultValue("SWAPOUT Health(THISPET) ISLESSTHAN 30@CASTSPELL(1) COOLDOWN(SKILL(1)) EQUALS false")]
         public string Logic { get; set; }
 
-        [Setting, DefaultValue("ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")]
+        [Setting, Styx.Helpers.DefaultValue("ASSIGNABILITY1(0)@ASSIGNABILITY2(0)@ASSIGNABILITY3(0)")]
         public string SpellLayout { get; set; }
 
 
