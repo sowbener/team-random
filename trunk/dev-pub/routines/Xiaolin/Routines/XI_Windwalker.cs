@@ -86,12 +86,12 @@ namespace Xiaolin.Routines
                 new Decorator(ret => FistsofFuryIsCasting, new ActionAlwaysSucceed()),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
                 Spell.Cast(SpellBook.FistsofFury, ret => EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
-                Spell.Cast(SpellBook.ChiWave, ret => Lua.TimeToEnergyCap() > 2),
+                Spell.Cast(SpellBook.ChiWave),
                 Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => ComboBreakerBoKUp),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
                 Spell.PreventDoubleCast("Jab", 0.5, ret => MaxChi - Lua.PlayerChi >= 2),
-                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => Lua.BlackoutKickOK() >= 40));
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => Lua.BlackoutKickOK() >= 40),
+                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent));
 
         }
 
