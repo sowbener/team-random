@@ -1,0 +1,8 @@
+This is a WoW Addon. If you want to use it, move the folder into your World of Warcraft addons folder;
+
+<WoW>/Interface/Addons/BubblemanRoutineToggle/MillzRoutineToggle.lua
+<WoW>/Interface/Addons/BubblemanRoutineToggle/MillzRoutineToggle.toc
+<WoW>/Interface/Addons/BubblemanRoutineToggle/MillzRoutineToggle.xml
+
+Thanks to larcerkev for the original addon.
+Thanks to Millz for editing and fiBMng up the addon.
