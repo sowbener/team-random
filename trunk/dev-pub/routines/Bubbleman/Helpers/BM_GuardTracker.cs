@@ -127,7 +127,7 @@ namespace Bubbleman.Helpers
         internal static double GetDamageTaken(DateTime timestamp = default(DateTime))
         {
             DateTime current = timestamp;
-            TimeSpan lastSeconds = TimeSpan.FromSeconds(6);
+            TimeSpan lastSeconds = TimeSpan.FromSeconds(1.5);
 
             return (from entry in _damageTaken
                     let diff = current - entry.Key

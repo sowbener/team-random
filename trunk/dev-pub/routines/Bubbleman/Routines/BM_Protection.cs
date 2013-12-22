@@ -64,8 +64,17 @@ namespace Bubbleman.Routines
 
         #region BoolsTemp
 
-        internal static bool TalentJadeWindEnabled { get { return BMTalentManager.HasTalent(16); } }
+        internal static bool SanctifiedWrathTalent { get { return BMTalentManager.HasTalent(14); } }
 
+        internal static double EternalFlameSetting { get { return Spell.GetAuraTimeLeft(114163); } }
+
+        internal static double BastionofGloryCount { get { return Spell.GetAuraStack(Me, 114637); } }
+
+        internal static bool CrusaderStrikeCooldownRemains { get { return CooldownWatcher.OnCooldown(35395); } }
+        internal static bool CrusaderStrikeUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(35395) <= 400; } }
+
+        internal static bool DivinePurposeProc { get { return Me.HasAura(86172); } }
+        internal static bool AvengingWrathBuff { get { return Me.HasAura(31884); } }
         private static BMSettingsPR ProtectionSettings { get { return SG.Instance.Protection; } }
 
 
@@ -75,19 +84,41 @@ namespace Bubbleman.Routines
 
         #region Rotations
 
-        internal static Composite ChiBuilder()
-        {
-            return new PrioritySelector(
-                );
-
-        }
 
        
 
         internal static Composite ProtectionSt()
         {
             return new PrioritySelector(
-                );
+                
+                //actions+=/avenging_wrath
+                //actions+=/holy_avenger,if=talent.holy_avenger.enabled
+                //actions+=/divine_protection
+                //actions+=/guardian_of_ancient_kings
+                //actions+=/wait,sec=cooldown.crusader_strike.remains,if=cooldown.crusader_strike.remains>0&cooldown.crusader_strike.remains<=0.35
+                //actions+=/judgment
+                //actions+=/avengers_shield
+                //actions+=/sacred_shield,if=talent.sacred_shield.enabled&target.dot.sacred_shield.remains<5
+                //actions+=/hammer_of_wrath
+                //actions+=/execution_sentence,if=talent.execution_sentence.enabled
+                //actions+=/lights_hammer,if=talent.lights_hammer.enabled
+                //actions+=/holy_prism,if=talent.holy_prism.enabled
+                //actions+=/holy_wrath
+                //actions+=/consecration,if=target.debuff.flying.down&!ticking
+                //actions+=/sacred_shield,if=talent.sacred_shield.enabled
+                Spell.Cast("Eternal Flame", ret => (EternalFlameSetting < 2 && BastionofGloryCount > 2 && (Lua.HolyPower >= 3 || DivinePurposeProc))),
+                Spell.Cast("Shield of the Righteous", ret => Lua.HolyPower >= 5 || DivinePurposeProc || (Lua.HolyPower >= 3 && (G.DevastatingAbilities.Contains(Me.CurrentTarget.CurrentCastorChannelId())))),
+                Spell.Cast("Judgment", ret => SanctifiedWrathTalent && AvengingWrathBuff),
+                Spell.Cast("Crusader Strike"),
+                new Decorator(ret => CrusaderStrikeCooldownRemains && CrusaderStrikeUnder0, new ActionAlwaysSucceed()),
+                Spell.Cast("Judgment"),
+                Spell.Cast("Avenger's Shield"),
+              //  Spell.Cast("Sacred Shield", ret => )
+              Spell.Cast("Hammer of Wrath"),
+              Spell.Cast("Execution Sentence"),
+              Spell.Cast("Holy Prism"),
+              Spell.Cast("Holy Wrath"),
+              Spell.Cast("Consecration"));
 
         }
 

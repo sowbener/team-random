@@ -50,6 +50,18 @@ namespace Bubbleman.Routines
 
         internal static bool SpeedBuffsAura { get { return Me.HasAura(2825) || Me.HasAura(80353) || Me.HasAura(32182) || Me.HasAura(90355); } }
 
+        #region DevastatingAbilities
+
+       internal static readonly HashSet<int> DevastatingAbilities = new HashSet<int>
+       {
+
+           143502, // Execute General Nazgrim HC 
+
+       };
+
+
+        #endregion
+
         #region InterruptList
 
         internal static Random _random = new Random();

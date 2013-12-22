@@ -199,7 +199,7 @@ namespace Bubbleman.Helpers
             }
         }
 
-        public static double PlayerChi
+        public static double HolyPower
         {
             get
             {
@@ -209,12 +209,12 @@ namespace Bubbleman.Helpers
                   // return Me.CurrentChi;
                     //using (Memory.AcquireFrame())
                    {
-                        return Lua.GetReturnVal<int>("return UnitPower(\"player\", SPELL_POWER_CHI);", 0);
+                       return Lua.GetReturnVal<int>("return UnitPower(\"player\", SPELL_POWER_HOLY_POWER);", 0);
                     }
                 }
                 catch
                 {   
-                    BMLogger.DebugLog("Failed in Me.CurrentChi");
+                    BMLogger.DebugLog("Failed in Me.CurrentHolyPower");
                     return 0;
                 }
             }
