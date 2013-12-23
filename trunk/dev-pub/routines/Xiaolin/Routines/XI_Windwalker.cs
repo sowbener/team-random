@@ -86,7 +86,7 @@ namespace Xiaolin.Routines
                Spell.Cast(SpellBook.RisingSunKick),
                 new Decorator(ret => FistsofFuryIsCasting, new ActionAlwaysSucceed()),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
-                Spell.Cast("Touch of Death", ret => SG.Instance.Windwalker.TouchOfDeath),
+                Spell.Cast("Touch of Death", ret => SG.Instance.Windwalker.TouchOfDeath && (Me.HasAura(124490) && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10) || (Lua.PlayerChi >= 3 && Me.HasAura("Death Note"))),
                 Spell.Cast(SpellBook.FistsofFury, ret => EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
                 Spell.Cast(SpellBook.ChiWave),
                 Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.7, ret => ComboBreakerBoKUp),
