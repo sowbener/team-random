@@ -64,6 +64,7 @@ namespace Xiaolin.Routines
         internal static bool TalentChiBrewEnabled { get { return XITalentManager.HasTalent(9); } }
         internal static bool FistsofFuryIsCasting { get { return Me.HasAura(113656) && Lua.PlayerPower <= 99; } }
         internal static bool EnergizingBrewDown { get { return !Me.HasAura(115288); } }
+        internal static bool RSKCooldown { get { return CooldownWatcher.OnCooldown(107428); } }
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
         internal static bool ComboBreakerBoKUp { get { return Me.HasAura(116768); } }
         internal static bool TalentAscensionEnabled { get { return XITalentManager.HasTalent(8); } }
@@ -87,11 +88,11 @@ namespace Xiaolin.Routines
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
                 Spell.Cast(SpellBook.FistsofFury, ret => EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
                 Spell.Cast(SpellBook.ChiWave),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => ComboBreakerBoKUp),
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.7, ret => ComboBreakerBoKUp),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
-                Spell.PreventDoubleCast("Jab", 0.5, ret => MaxChi - Lua.PlayerChi >= 2),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.5, ret => Lua.BlackoutKickOK() >= 40),
-                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent));
+                Spell.PreventDoubleCast("Jab", 0.7, ret => MaxChi - Lua.PlayerChi >= 2),
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.7, ret => RSKCooldown),
+                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent && Lua.RJWOK() >= 20));
 
         }
 

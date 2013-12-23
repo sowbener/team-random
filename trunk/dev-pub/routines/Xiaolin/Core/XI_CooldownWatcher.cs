@@ -200,12 +200,22 @@ namespace Xiaolin.Core
             Logger.DebugLog(" --> We have {0} spells on cooldown for {1}", SpellCooldownEntries.Count, SpellCooldownEntries.Values.FirstOrDefault().SpellCooldownName);
         }
 
-        internal static double GetSpellCooldownTimeLeft(int spell)
+        internal static double GetSpellCooldownTimeLeftMs(int spell)
         {
             var guid = MeGuid + (ulong)spell;
 
             SpellCooldown results;
             var msleft = !SpellCooldownEntries.TryGetValue(guid, out results) ? 0 : DateTime.UtcNow.Subtract(results.SpellCooldownCurrentTime).TotalMilliseconds >= results.SpellCooldownExpiryTime ? 0 : DateTime.UtcNow.Subtract(results.SpellCooldownCurrentTime).TotalMilliseconds;
+            //Logger.Output(" --> GetSpellCooldownTimeLeft for {0} is {1}", WoWSpell.FromId(spell).Name, msleft);
+            return msleft;
+        }
+
+        internal static double GetSpellCooldownTimeLeft(int spell)
+        {
+            var guid = MeGuid + (ulong)spell;
+
+            SpellCooldown results;
+            var msleft = !SpellCooldownEntries.TryGetValue(guid, out results) ? 0 : DateTime.UtcNow.Subtract(results.SpellCooldownCurrentTime).TotalSeconds >= results.SpellCooldownExpiryTime ? 0 : DateTime.UtcNow.Subtract(results.SpellCooldownCurrentTime).TotalMilliseconds;
             //Logger.Output(" --> GetSpellCooldownTimeLeft for {0} is {1}", WoWSpell.FromId(spell).Name, msleft);
             return msleft;
         }
