@@ -20,6 +20,7 @@ using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using Styx.Helpers;
 using Styx;
+using GreyMagic;
 //using Styx.Logic.Pathing;
 
 using Styx.Helpers;
@@ -526,6 +527,7 @@ namespace Pokehbuddyplug
                             escapetimer.Start();
                             
 							oldframelock = GlobalSettings.Instance.UseFrameLock;
+                            
 							GlobalSettings.Instance.UseFrameLock = false;
                             //StyxWoW.Memory.ReleaseFrame(false) {
 
@@ -533,7 +535,7 @@ namespace Pokehbuddyplug
                             
                             while (WildBattleTarget().Distance > 10 && !Styx.StyxWoW.Me.Combat && escapetimer.ElapsedMilliseconds < 10000)
                             {
-                                ObjectManager.Update();
+                                //ObjectManager.Update();
                                 Pulsator.Pulse(PulseFlags.Objects);
                                 //if (Styx.StyxWoW.Me.Combat) return;
                                 if (Pokehbuddy.MySettings.DetailedLogging) BBLog("Move to spot");
@@ -638,10 +640,10 @@ namespace Pokehbuddyplug
                 
                 
                 //using (new TemporaryHardLockRelease())
-                while (InPetCombat())
+                if (InPetCombat())
                 {
-                    ObjectManager.Update();
-                    Pulsator.Pulse(PulseFlags.Objects);
+                    //ObjectManager.Update();
+                    //Pulsator.Pulse(PulseFlags.Objects);
 
                     if (oldbotbase == "")
                     {
