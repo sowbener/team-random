@@ -103,6 +103,7 @@ namespace Pokehbuddyplug
         public bool oldlogging;
 		public bool oldframelock;
         public string temporder="";
+        private bool diderror = false;
         public static PetBattleSettings PetSettings;
         public static PetBattleSettings DefaultLogicz;
         private WoWPoint oldloc = new WoWPoint(0, 0, 0);
@@ -367,7 +368,13 @@ namespace Pokehbuddyplug
         }
         public override void Pulse()
         {
-            
+            if (!diderror && GlobalSettings.Instance.UseFrameLock)
+            {
+                MessageBox.Show("Please disable framelock when using Pokehbuddy (for now)");
+                diderror = true;
+
+            }
+
             if (!swaptimer.IsRunning) swaptimer.Start();
             if (!healtimer.IsRunning) healtimer.Start();
             if (!stucktimer.IsRunning) stucktimer.Start();
@@ -528,9 +535,11 @@ namespace Pokehbuddyplug
                             
 							oldframelock = GlobalSettings.Instance.UseFrameLock;
                             
+                            
 							GlobalSettings.Instance.UseFrameLock = false;
+                           // GlobalSettings.Instance.Save();
                             //StyxWoW.Memory.ReleaseFrame(false) {
-
+                            
                             //using (new TemporaryHardLockRelease())
                             
                             while (WildBattleTarget().Distance > 10 && !Styx.StyxWoW.Me.Combat && escapetimer.ElapsedMilliseconds < 10000)
@@ -583,7 +592,7 @@ namespace Pokehbuddyplug
 							
 							
 							GlobalSettings.Instance.UseFrameLock = oldframelock;
-
+                            //GlobalSettings.Instance.Save();
 
                         }
                         if (interacttimer.ElapsedMilliseconds > 1000 && WildBattleTarget().Distance < 12)
@@ -640,16 +649,18 @@ namespace Pokehbuddyplug
                 
                 
                 //using (new TemporaryHardLockRelease())
-                if (InPetCombat())
+                bool imlocked = false;
+                while (!imlocked && InPetCombat())
                 {
+                    if (GlobalSettings.Instance.UseFrameLock) imlocked = true;
                     //ObjectManager.Update();
                     //Pulsator.Pulse(PulseFlags.Objects);
 
-                    if (oldbotbase == "")
+                    /*if (oldbotbase == "")
                     {
                         oldbotbase = BotManager.Current.Name.ToString();
                         SetBot("combat");
-                    }
+                    }*/
                     
                     try
                     { //Blacklist.Add(oldguid, TimeSpan.FromMinutes(10));
@@ -766,7 +777,7 @@ namespace Pokehbuddyplug
             if (!MySettings.Slot1SwapEnabled) return;
             //BBLog("Checking slot 1 level");
             
-            if (GetPetLevelPreCombat(1) >= MySettings.Slot1SwapMaxLevel || (GetPetLevelPreCombat(1)==1 && GetPetHPPreCombat(1) == 0))
+            if (GetPetLevelPreCombat(1) >= MySettings.Slot1SwapMaxLevel || GetPetHPPreCombat(1) == 0)
             {
                 BBLog("Going to switch slot 1");
                 Lua.DoString("C_PetJournal.SetFlagFilter(LE_PET_JOURNAL_FLAG_FAVORITES, false) C_PetJournal.SetFlagFilter(LE_PET_JOURNAL_FLAG_COLLECTED, true) C_PetJournal.SetFlagFilter(LE_PET_JOURNAL_FLAG_NOT_COLLECTED, true) ");

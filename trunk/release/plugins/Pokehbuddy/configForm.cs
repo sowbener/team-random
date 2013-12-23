@@ -373,6 +373,8 @@ namespace Pokehbuddyplug
             checkBox11.Checked = Pokehbuddy.MySettings.AllowAutoUpdate;
             checkBox16.Checked = Pokehbuddy.MySettings.Slot1SwapEnabled;
             checkBox15.Checked = Pokehbuddy.MySettings.Slot1SwapFavoriteOnly;
+            checkBox17.Checked = Pokehbuddy.MySettings.Slot1AllowWild;
+            checkBox18.Checked = Pokehbuddy.MySettings.Slot1TradeableOnly;
             numericUpDown2.Value = Pokehbuddy.MySettings.Slot1SwapMinLevel;
             numericUpDown3.Value = Pokehbuddy.MySettings.Slot1SwapMaxLevel;
 
@@ -2095,7 +2097,11 @@ namespace Pokehbuddyplug
 
         private void button36_Click(object sender, System.EventArgs e)
         {
+            //77 79
+
             string exportstring = "[code]";
+            exportstring = exportstring + "[Name]" + label77.Text + @"[/Name]" + Environment.NewLine;
+            exportstring = exportstring + "[Species]" + label79.Text + @"[/Species]" + Environment.NewLine;
             exportstring = exportstring + "[Logic]" + textBox8.Text + @"[/Logic]" + Environment.NewLine;
             exportstring = exportstring + "[Spells]" + textBox9.Text + @"[/Spells]" + Environment.NewLine;
             exportstring = exportstring + "[Author]" + label84.Text + @"[/Author]" + Environment.NewLine;
@@ -2119,6 +2125,22 @@ namespace Pokehbuddyplug
                     textBox8.Text = value.Substring(FirstChr, SecondChr - FirstChr);
                     //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
                     
+                }
+                if (value.IndexOf("[Name]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[Name]") + "[Name]".Length;
+                    int SecondChr = value.IndexOf("[/Name]", FirstChr);
+                    if (value.Substring(FirstChr, SecondChr - FirstChr) != label77.Text) MessageBox.Show("Name does not match!"); 
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
+
+                }
+                if (value.IndexOf("[Species]") > -1)
+                {
+                    int FirstChr = value.IndexOf("[Species]") + "[Species]".Length;
+                    int SecondChr = value.IndexOf("[/Species]", FirstChr);
+                    if (value.Substring(FirstChr, SecondChr - FirstChr) != label77.Text) MessageBox.Show("Species does not match!");
+                    //BBLog(dumdumdum+" "+FirstChr+" "+SecondChr+""+CheckForBuff(dumdumdum));
+
                 }
                 if (value.IndexOf("[Spells]") > -1)
                 {

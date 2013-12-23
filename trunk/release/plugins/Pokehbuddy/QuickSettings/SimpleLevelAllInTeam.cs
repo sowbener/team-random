@@ -12,7 +12,7 @@ namespace Pokehbuddyplug
     {
         public void SimpleLevelAllInTeamInit()
         {
-            Logging.Write("init simple level all in team");
+            //Logging.Write("init simple level all in team");
             Pokehbuddy.quicksettingsnames.Add("Level all pets in current team");
             Pokehbuddy.quicksettingdesc.Add("Enables GatherBuddy2, PetArea and manages the settings." + System.Environment.NewLine + System.Environment.NewLine + "Perfect for leveling your first team");
             Pokehbuddy.quicksettingsfuncs.Add("SimpleLevelAllInTeamExecute");
