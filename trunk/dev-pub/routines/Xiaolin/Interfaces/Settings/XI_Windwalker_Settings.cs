@@ -42,6 +42,13 @@ namespace Xiaolin.Interfaces.Settings
         [Description("Select the usage of Xuen")]
         public XIEnum.AbilityTrigger Xuen { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Windwalker - Ability Options")]
+        [DisplayName("Touch of Death")]
+        [Description("Select the usage of Touch of Death. Default is Off")]
+        public bool TouchOfDeath { get; set; }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
