@@ -14,135 +14,54 @@ namespace Bubbleman.Interfaces.Settings
 
         #region Ability Options
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.OnBossDummy)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Set Black Ox Statue")]
-        public bool SummonBlackOxStatue { get; set; }
-
+        [DisplayName("Avenging Wrath")]
+        [Description("Select the usage of your Avenging Wrath Cooldown to be used at.")]
+        public BMEnum.AbilityTrigger AvengingWrath { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(60)]
+        [Styx.Helpers.DefaultValue(55)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Guard HP Percent")]
-        [Description("Changes the HP Percent to use Guard")]
-        public int GuardHPPercent { get; set; }
-
-         [Setting]
-        [Styx.Helpers.DefaultValue(10)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("HP AP Guard")]
-        [Description("% of your total HP to be used as AP. Default 10")]
-        public int HPAPScale { get; set; }
-
-
-         [Setting]
-         [Styx.Helpers.DefaultValue(10)]
-         [Category("Protection - Ability Options")]
-         [DisplayName("HP Moderate Scale")]
-         [Description("Moderate needs to be higher than % of your total HP before using. Default 10")]
-         public int HPModerateScale { get; set; }
+        [DisplayName("Guardian of Ancient Kings % HP")]
+        [Description("Use Guardian of Ancient Kings at % HP")]
+        public int GuardianofAncientKingsHP { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Use RJW on Single Target")]
-        [Description("Uses Rushing Jade Wind on Single Target")]
-        public bool UseRJWSingleTarget { get; set; }
+        [DisplayName("Guardian of Ancient Kings Enable")]
+        [Description("Checked enables Guardian of Anicent Kings usage.")]
+        public bool GuardianofAncientKingsEnable { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(55)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Ardent Defender % HP")]
+        [Description("Use Ardent Defender at % HP")]
+        public int ArdentDefenderHP { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Use Purifying Brew on Moderate Stagger")]
-        [Description("Uses Purifying Brew on Moderate Stagger. Default is Enabled")]
-        public bool PurifyingModerate{ get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Use Purifying Brew on Light Stagger")]
-        [Description("Uses Purifying Brew on Light Stagger. Default is Disabled (Enable if you're farming)")]
-        public bool PurifyingLight { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Auto-Use Dizzying Haze")]
-        [Description("Uses Dizzying Haze")]
-        public bool UseDizzyingHaze { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Use Rushing Jade Wind / Spinning Crane Kick")]
-        [Description("Enables usage of Rushing Jade Wind or Spinning Crane Kick on AoE")]
-        public bool CheckRJW { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(6)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Rushing Jade Wind / Spinning Crane Kick Count")]
-        [Description("Changes the amount of units to use RJW or SCK")]
-        public int RJWCount { get; set; }
-
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Use Breath of Fire")]
-        public bool CheckBreathofFire { get; set; }
-
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(80)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Dampen Harm HP Percent")]
-        [Description("Changes the HP Percent to use Dampen Harm")]
-        public int DampenHarmPercent { get; set; }
-
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(40)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Fortifying Brew HP %")]
-        [Description("Changes the HP % to use Fortifying Brew")]
-        public int FortifyingBrewPercent { get; set; }
-
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(30)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Zen Meditation HP %")]
-        [Description("Changes the HP % to use Zen Meditation")]
-        public int ZenMeditationPercent { get; set; }
-
+        [DisplayName("Ardent Defender Enable")]
+        [Description("Checked enables Ardent Defender usage.")]
+        public bool ArdentDefenderEnable { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(10)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Elusive Brew Count")]
-        [Description("Uses Elusive Brew at this Count")]
-        public int ElusiveBrew { get; set; }
+        [DisplayName("Lay on Hands % HP")]
+        [Description("Use Lay on Hands at % HP")]
+        public int LayonHandsHP { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(90)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Elusive Brew HP %")]
-        [Description("Changes the HP % to use Elusive Brew")]
-        public int ElusiveBrewHP { get; set; }
+        [DisplayName("Guardian of Ancient Kings Enable")]
+        [Description("Checked enables Guardian of Anicent Kings usage.")]
+        public bool LayonHandsEnable { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(60)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Zen Sphere")]
-        [Description("Changes the Zen Sphere")]
-        public int BrewWithZenSphere { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(0)]
-        [Category("Protection - Ability Options")]
-        [DisplayName("Healing Sphere HP %")]
-        [Description("Changes the HP % to use Healing Sphere")]
-        public int HealingSpherePercent { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.OnBossDummy)]

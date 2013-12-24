@@ -63,7 +63,7 @@ namespace Bubbleman
         internal static readonly string BMName = "Bubbleman - IR " + Revision;
 
         public override string Name { get { return BMName; } }
-        public override WoWClass Class { get { return WoWClass.Monk; } }
+        public override WoWClass Class { get { return WoWClass.Paladin; } }
 
         #region BotEvents
         public BMMain()

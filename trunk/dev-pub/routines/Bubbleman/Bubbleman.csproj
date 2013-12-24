@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="Core\BM_CombatLogHandler.cs" />
     <Compile Include="Core\BM_CooldownWatcher.cs" />
-    <Compile Include="Helpers\BM_GuardTracker.cs" />
     <Compile Include="Helpers\BM_PerformenceLogger.cs" />
     <Compile Include="Helpers\BM_Spellbook.cs" />
     <Compile Include="Routines\BM_Protection.cs" />
