@@ -17,38 +17,9 @@ namespace Bubbleman.Interfaces.Settings
        
         [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.Always)]
         [Category("Retribution - Ability Options")]
-        [DisplayName("Energizing Brew")]
-        [Description("Select the usage of Energizing Brew.")]
-        public BMEnum.AbilityTrigger EnergizingBrew { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.Always)]
-        [Category("Retribution - Ability Options")]
-        [DisplayName("Tigereye Brew")]
-        [Description("Select the usage of Tigereye Brew.")]
-        public BMEnum.AbilityTrigger TigereyeBrew { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.Always)]
-        [Category("Retribution - Ability Options")]
-        [DisplayName("Chi Brew")]
-        [Description("Select the usage of Chi Brew")]
-        public BMEnum.AbilityTrigger ChiBrew { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.Always)]
-        [Category("Retribution - Ability Options")]
-        [DisplayName("Xuen")]
-        [Description("Select the usage of Xuen")]
-        public BMEnum.AbilityTrigger Xuen { get; set; }
-
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Retribution - Ability Options")]
-        [DisplayName("Rushing Jade Wind Single Target")]
-        [Description("Select the usage of Rushing Jade Wind Single Target")]
-        public bool EnableRJWSingleTarget { get; set; }
+        [DisplayName("Not in USE")]
+        [Description("Select the usage of XXXX")]
+        public BMEnum.AbilityTrigger XXXX { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(BMEnum.AbilityTrigger.OnBossDummy)]
@@ -60,23 +31,10 @@ namespace Bubbleman.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(20)]
         [Category("Retribution - Item Options")]
-        [DisplayName("Expel Harm %")]
-        [Description("Select the use-on HP for Expel Harm usage.")]
-        public int ExpelHarmHP { get; set; }
+        [DisplayName("NOT IN USE %")]
+        [Description("Select the use-on HP for NOT IN USE usage.")]
+        public int xxxx { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(20)]
-        [Category("Retribution - Item Options")]
-        [DisplayName("Fortifying Brew  %")]
-        [Description("Select the use-on HP for Fortifying Brew usage.")]
-        public int FortifyingBrewHP { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(20)]
-        [Category("Retribution - Item Options")]
-        [DisplayName("Touch of Karma %")]
-        [Description("Select the use-on HP for Touch of Karma usage.")]
-        public int TouchofKarmaHP { get; set; }
 
 
 

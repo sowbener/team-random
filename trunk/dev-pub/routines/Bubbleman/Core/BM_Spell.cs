@@ -971,8 +971,8 @@ namespace Bubbleman.Core
             Logger.DebugLog("FixGlobalCooldownInitialize: using Singular GCD");
             switch (StyxWoW.Me.Class)
             {
-                case WoWClass.Monk:
-                    FixGlobalCooldownCheckSpell = "Hunter's Mark";
+                case WoWClass.Paladin:
+                    FixGlobalCooldownCheckSpell = "Righteous Fury";
                     break;
             }
 
@@ -981,8 +981,8 @@ namespace Bubbleman.Core
 
             switch (StyxWoW.Me.Class)
             {
-                case WoWClass.Monk:
-                    FixGlobalCooldownCheckSpell = "Arcane Shot";
+                case WoWClass.Paladin:
+                    FixGlobalCooldownCheckSpell = "Seal of Command";
                     break;
             }
 #endif
