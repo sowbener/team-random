@@ -117,6 +117,7 @@ namespace Waldo
 
             //Cooldownwatcher
             CooldownWatcher.Initialize();
+            G.GetBinding();
            
 
             //if (_combatBehavior != null) _combatBehavior = new Sequence(new DecoratorContinue(x => Movement.EnableMovement && (!Me.IsCasting || !Movement.PlayerIsChanneling), Movement.MovingFacingBehavior());
