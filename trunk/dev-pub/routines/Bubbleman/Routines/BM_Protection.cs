@@ -39,7 +39,7 @@ namespace Bubbleman.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Protection.CheckAutoAttack, Lua.StartAutoAttack), 
                                             ProtectionDefensive(),
-                                        new Decorator(ret => SG.Instance.Protection.CheckInterrupts && U.CanInterrupt, ProtectionInterrupts()),
+                                        new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
                                         ProtectionUtility(),
                                         I.ProtectionUseItems(),
                                         ProtectionOffensive(),
@@ -49,7 +49,7 @@ namespace Bubbleman.Routines
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Protection.CheckAutoAttack, Lua.StartAutoAttack),
                                         ProtectionDefensive(),
-                                        new Decorator(ret => SG.Instance.Protection.CheckInterrupts && U.CanInterrupt, ProtectionInterrupts()),
+                                        new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
                                         ProtectionUtility(),
                                       //  new Decorator(ret => BMHotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew"))),
                                         new Decorator(ret => BMHotKeyManager.IsCooldown,
@@ -141,6 +141,7 @@ namespace Bubbleman.Routines
         internal static Composite ProtectionDefensive()
         {
          return new PrioritySelector(
+          Spell.Cast("Divine Protection", On => Me, ret => SG.Instance.Protection.DivineProtectionEnable && Me.HealthPercent <= SG.Instance.Protection.DivineProtectionHP),
           Spell.Cast("Guardian of Ancient Kings", ret => SG.Instance.Protection.GuardianofAncientKingsEnable && Me.HealthPercent <= SG.Instance.Protection.GuardianofAncientKingsHP),
           Spell.Cast("Ardent Defender", ret => SG.Instance.Protection.ArdentDefenderEnable && Me.HealthPercent <= SG.Instance.Protection.ArdentDefenderHP),
           Spell.Cast("Lay on Hands", ret => SG.Instance.Protection.LayonHandsEnable && Me.HealthPercent <= SG.Instance.Protection.LayonHandsHP)

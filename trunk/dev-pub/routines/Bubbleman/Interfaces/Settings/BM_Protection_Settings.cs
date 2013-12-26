@@ -58,9 +58,23 @@ namespace Bubbleman.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Ability Options")]
-        [DisplayName("Guardian of Ancient Kings Enable")]
-        [Description("Checked enables Guardian of Anicent Kings usage.")]
+        [DisplayName("Lay on Hands Enable")]
+        [Description("Checked enables Lay on Hands usage.")]
         public bool LayonHandsEnable { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(40)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Divine Protection % HP")]
+        [Description("Use Divine Protection at % HP")]
+        public int DivineProtectionHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Divine Protection Enable")]
+        [Description("Checked enables Divine Protection usage.")]
+        public bool DivineProtectionEnable { get; set; }
 
 
         [Setting]
