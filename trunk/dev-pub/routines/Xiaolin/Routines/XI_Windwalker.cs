@@ -33,6 +33,7 @@ namespace Xiaolin.Routines
                         new Decorator(ret => (XIHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckAXIancedLogging, XILogger.AXIancedLogging),
                         G.InitializeCaching(),
+                        G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
@@ -165,7 +166,7 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerUtility()
         {
             return new PrioritySelector(
-                );
+                  );
         }
 
         internal static Composite WindwalkerInterrupts()

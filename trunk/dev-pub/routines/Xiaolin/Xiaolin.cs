@@ -142,6 +142,7 @@ namespace Xiaolin
             /* Gather required information */
             XILogger.StatCounter();
             XILogger.LogTimer(500);
+            G.GetBinding();
             
 
             //Cooldownwatcher
