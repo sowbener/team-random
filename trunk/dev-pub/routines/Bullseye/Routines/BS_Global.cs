@@ -1,6 +1,7 @@
 ﻿using Bullseye.Core;
 using Bullseye.Helpers;
 using Bullseye.Managers;
+using CommonBehaviors.Actions;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
@@ -9,6 +10,7 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using Action = Styx.TreeSharp.Action;
 using KP = Bullseye.Managers.BsHotKeyManager.KeyboardPolling;
 using SG = Bullseye.Interfaces.Settings.BsSettings;
@@ -45,7 +47,160 @@ namespace Bullseye.Routines
 
         internal static bool SpeedBuffsAura { get { return Me.HasAura(2825) || Me.HasAura(80353) || Me.HasAura(32182) || Me.HasAura(90355); } }
 
-        #endregion           
+        #endregion    
+       
+
+        #region ManualCastPause
+
+        private static readonly HashSet<string> MovementKeyHS = new HashSet<string>
+        {
+            "MOVEFORWARD",
+            "MOVEBACKWARD",
+            "TURNLEFT",
+            "TURNRIGHT",
+            "STRAFELEFT",
+            "STRAFERIGHT",
+            "JUMP",
+            "TURNORACTION",
+            "CAMERAORSELECTORMOVE",
+        };
+
+        private static readonly HashSet<Keys> MovementKey = new HashSet<Keys> { };
+
+        private static string KeySystemtoKeyBind(string key)
+        {
+            switch (key)
+            {
+                case "D1":
+                    return "1";
+                case "D2":
+                    return "2";
+                case "D3":
+                    return "3";
+                case "D4":
+                    return "4";
+                case "D5":
+                    return "5";
+                case "D6":
+                    return "6";
+                case "D7":
+                    return "7";
+                case "D8":
+                    return "8";
+                case "D9":
+                    return "9";
+                case "D0":
+                    return "0";
+                case "OemMinus":
+                    return "-";
+                case "Oemplus":
+                    return "=";
+                default:
+                    return key;
+            }
+        }
+
+        internal static void GetBinding()
+        {
+            //Logging.Write("----------------------------------");
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                //Logging.Write(key.ToString());
+
+                //Logging.Write("Trying to run Lua.GetReturnVal<string>('return GetBindingAction('" + key.ToString() + "')', 0);");
+
+                var BlackListKey =
+                    Lua.GetReturnVal<string>("return GetBindingAction('" + KeySystemtoKeyBind(key.ToString()) + "')", 0);
+
+                if (MovementKeyHS.Contains(BlackListKey))
+                {
+                    //Logging.Write("Movement Key: " + BlackListKey + " = " + key);
+                    //Logging.Write(key + " Binding to " + BlackListKey + "  Blacklist it");
+                    //Logging.Write("Add {0} to BlackListKeyHS", key.ToString());
+                    MovementKey.Add(key);
+                }
+            }
+            //Logging.Write("----------------------------------");
+        }
+
+        private static bool MovementKeyPressed()
+        {
+            if (KP.GetAsyncKeyState(Keys.LButton) < 0 &&
+                KP.GetAsyncKeyState(Keys.RButton) < 0)
+            {
+                //Logging.Write("MovementKeyPressed: LButton and RButton Pressed");
+                return true;
+            }
+
+            //foreach (Keys key in MovementKey)
+            //{
+            //    if (GetAsyncKeyState(key) < 0)
+            //    {
+            //        //Logging.Write("MovementKeyPressed: {0} Pressed", KeySystemtoKeyBind(key.ToString()));
+            //        return true;
+            //    }
+            //}
+
+            return MovementKey.Any(key => KP.GetAsyncKeyState(key) < 0);
+        }
+
+        private static bool AnyKeyPressed()
+        {
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                if (KP.GetAsyncKeyState(key) != 0 &&
+                    key != Keys.LButton &&
+                    key != Keys.RButton &&
+                    key != Keys.LWin &&
+                    key != Keys.RWin &&
+                    key != Keys.ShiftKey &&
+                    key != Keys.LShiftKey &&
+                    key != Keys.RShiftKey &&
+                    key != Keys.ControlKey &&
+                    key != Keys.LControlKey &&
+                    key != Keys.RControlKey &&
+                    key != Keys.Menu &&
+                    key != Keys.LMenu &&
+                    key != Keys.RMenu &&
+                    key != Keys.Tab &&
+                    key != Keys.CapsLock &&
+                    !MovementKey.Contains(key))
+                {
+                    //Logging.Write(Colors.Gray,
+                    //    "Key {0} is pressed. Manual CastPause Activated. Combat Routine Pause for {1} ms",
+                    //    KeySystemtoKeyBind(key.ToString()),
+                    //    THSettings.Instance.AutoDetectManualCastMS);
+
+                    BsLogger.CombatLog(
+                        "Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms",
+                        SG.Instance.General.DetectKeyPress);
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal static Composite ManualCastPause()
+        {
+            return new Sequence(
+                new Decorator(ret =>
+                    SG.Instance.General.AutoDetectManualCast &&
+                    AnyKeyPressed(), new ActionAlwaysSucceed()),
+                //new Action(
+                //    delegate
+                //    {
+                //        Logging.Write(LogLevel.Diagnostic, Colors.Gray, "{0} Manual Cast Detected, Pause for {1} ms",
+                //            DateTime.Now.ToString("ss:fff"),
+                //            THSettings.Instance.AutoDetectManualCastMS);
+                //    }),
+                new WaitContinue(TimeSpan.FromMilliseconds(SG.Instance.General.DetectKeyPress), ret => false,
+                    new ActionAlwaysSucceed())
+                //new Action(delegate { Logging.Write("{0} Rotation Resume", DateTime.Now.ToString("ss:fff")); })
+                );
+        }
+
+        #endregion
 
         #region InterruptList
 

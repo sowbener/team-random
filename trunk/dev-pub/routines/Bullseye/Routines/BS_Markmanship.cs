@@ -32,6 +32,7 @@ namespace Bullseye.Routines
                         new Decorator(ret => (BsHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckABsancedLogging, BsLogger.ABsancedLogging),
                         G.InitializeCaching(),
+                        G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BsEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAutoAttack, Lua.StartAutoAttack),

@@ -12,6 +12,20 @@ namespace Bullseye.Interfaces.Settings
         {
         }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(0)]
+        [Category("General")]
+        [DisplayName("Logs if you press key to pause")]
+        [Description("This enables logging for pause key.")]
+        public int DetectKeyPress { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General")]
+        [DisplayName("Enable Pause so you'll be able to press cooldowns.")]
+        [Description("This enables the new pause (same as TuanHa's)")]
+        public bool AutoDetectManualCast { get; set; }
+
         #region General
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

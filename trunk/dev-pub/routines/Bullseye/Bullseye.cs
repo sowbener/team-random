@@ -114,6 +114,7 @@ namespace Bullseye
             /* Gather required information */
             BsLogger.StatCounter();
             BsLogger.LogTimer(500);
+            G.GetBinding();
 
             /* Start Combat */
             PreBuffSelector();
