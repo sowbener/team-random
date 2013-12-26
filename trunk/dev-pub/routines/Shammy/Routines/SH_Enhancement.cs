@@ -36,6 +36,7 @@ namespace Shammy.Routines
                         new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
                         new Decorator(ret => SG.Instance.General.CheckASmancedLogging, SmLogger.ASmancedLogging),
                         G.InitializeCaching(),
+                        G.ManualCastPause(),
                         new Decorator(ret => SH.Instance.ModeSelection == SmEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Enhancement.CheckAutoAttack, Lua.StartAutoAttack),

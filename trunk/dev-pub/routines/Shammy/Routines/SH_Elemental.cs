@@ -33,6 +33,7 @@ namespace Shammy.Routines
                         new Decorator(ret => (SmHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckASmancedLogging, SmLogger.ASmancedLogging),
                         G.InitializeCaching(),
+                        G.ManualCastPause(),
                         new Decorator(ret => !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == SmEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),

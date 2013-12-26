@@ -102,6 +102,7 @@ namespace Shammy
 
             /* Write information to LogFile */
             SmLogger.WriteToLogFile();
+            G.GetBinding();
 
             /* Start Combat */
             PreBuffSelector();
