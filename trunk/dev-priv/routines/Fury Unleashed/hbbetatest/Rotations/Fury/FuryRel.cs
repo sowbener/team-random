@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Windows.Forms;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
@@ -6,8 +6,6 @@ using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using System.Windows.Forms;
-using Enum = FuryUnleashed.Core.Helpers.Enum;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations.Fury
@@ -80,65 +78,53 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FurySt()
         {
             return new PrioritySelector(
-                new Decorator(ret => Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16), // Added T16 P4.
-                        Spell.Cast(SpellBook.RagingBlow),
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Bloodthirst),
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 80)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 80)))
-                        )),
-                new Decorator(ret => !Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60 && Global.ColossusSmashSpellCooldown < 1500)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 60 && Global.ColossusSmashSpellCooldown < 1500))),
-                        Spell.Cast(SpellBook.ColossusSmash, ret => Global.RagingBlow2S || Global.RagingBlow1S || Global.BloodthirstSpellCooldown > 3000),
-                        Spell.Cast(SpellBook.Execute, ret => Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500),
-                        Spell.Cast(SpellBook.RagingBlow, ret => ((Global.ColossusSmashSpellCooldown + 1000) > Spell.AuraTimeLeft(StyxWoW.Me, AuraBook.RagingBlow) || (Global.RagingBlow2S && Global.BloodthirstSpellCooldown < 2500)) && Global.ColossusSmashSpellCooldown >= 2500),
-                        new Decorator(ret => (Global.DeterminationAura || Global.OutrageAura) && Global.ColossusSmashSpellCooldown >= 10000,
-                            new PrioritySelector(
-                                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
-                                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
-                                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Me.IsSafelyFacing(Me.CurrentTarget) && FuryGlobal.Tier4AbilityUsage)
-                                )),
-                        Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
-                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow1S && Global.BloodthirstSpellCooldown < 2500 && Global.ColossusSmashSpellCooldown >= 3500),
-                        Spell.Cast(SpellBook.Bloodthirst),
-                        Spell.Cast(SpellBook.WildStrike, ret => FuryGlobal.UseWildStrike()),
-                        Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && InternalSettings.Instance.Fury.CheckRotImpVic),
-                        Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Fury.CheckHeroicThrow)
-                        )));
-
-        }
-
-        internal static Composite Rel_FuryExec()
-        {
-            return new PrioritySelector(
-                new Decorator(ret => Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        Spell.Cast(SpellBook.Execute),
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S || Global.RagingBlow1S),
-                        Spell.Cast(SpellBook.Bloodthirst))),
-                new Decorator(ret => !Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Me.CurrentRage < 60 && Global.ColossusSmashSpellCooldown < 1500)),
-                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Me.CurrentRage < 60 && Global.ColossusSmashSpellCooldown < 1500))),
-                        Spell.Cast(SpellBook.ColossusSmash),
-                        Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower == Me.MaxRage),
-                        Spell.Cast(SpellBook.Bloodthirst),
-                        Spell.Cast(SpellBook.RagingBlow, ret => Me.CurrentRage > 80 && (Global.RagingBlow2S || Global.RagingBlow1S)),
-                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.HeroicThrow, ret => InternalSettings.Instance.Fury.CheckHeroicThrow)
-                        )));
+                //Added for Supporting it.
+                Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.ColossusSmashAura || Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500), // Added T16 P4.
+                //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
+                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
+                //actions.single_target+=/raging_blow,if=buff.raging_blow.stack=2&debuff.colossus_smash.up&target.health.pct>=20
+                Spell.Cast(SpellBook.RagingBlow, ret => Global.RagingBlow2S && Global.ColossusSmashAura && Global.NormalPhase),
+                //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
+                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
+                //actions.single_target+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
+                Spell.Cast(SpellBook.Bloodthirst),
+                //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
+                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura && Global.NormalPhase && Global.BloodthirstSpellCooldown <= 1000),
+                //actions.single_target+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
+                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && (!Global.ColossusSmashAura && FuryGlobal.BloodbathSync) && FuryGlobal.Tier4AbilityUsage),
+                //actions.single_target+=/colossus_smash
+                Spell.Cast(SpellBook.ColossusSmash),
+                //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down
+                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && !Global.ReadinessAura && FuryGlobal.Tier6AbilityUsage),
+                //actions.single_target+=/execute,if=debuff.colossus_smash.up|rage>70|target.time_to_die<12
+                Spell.Cast(SpellBook.Execute, ret => Global.ColossusSmashAura || Lua.PlayerPower > 70),
+                //actions.single_target+=/raging_blow,if=target.health.pct<20|buff.raging_blow.stack=2|(debuff.colossus_smash.up|(cooldown.bloodthirst.remains>=1&buff.raging_blow.remains<=3))
+                Spell.Cast(SpellBook.RagingBlow, ret => Global.ExecutePhase || Global.RagingBlow2S || (Global.ColossusSmashAura || Global.BloodthirstSpellCooldown >= 1 && Global.FadingRagingBlow(3000))),
+                //actions.single_target+=/wild_strike,if=buff.bloodsurge.up
+                Spell.Cast(SpellBook.WildStrike, ret => Global.BloodsurgeAura),
+                //actions.single_target+=/bladestorm,if=enabled&cooldown.bloodthirst.remains>2
+                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && Global.BloodthirstSpellCooldown > 2000 && FuryGlobal.Tier4AbilityUsage),
+                //actions.single_target+=/raging_blow,if=cooldown.colossus_smash.remains>=3
+                Spell.Cast(SpellBook.RagingBlow, ret => Global.ColossusSmashSpellCooldown >= 3000),
+                //actions.single_target+=/shockwave,if=enabled
+                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityUsage),
+                //actions.single_target+=/heroic_throw,if=debuff.colossus_smash.down&rage<60
+                Spell.Cast(SpellBook.HeroicThrow, ret => !Global.ColossusSmashAura && Lua.PlayerPower < 60 && InternalSettings.Instance.Fury.CheckHeroicThrow),
+                //actions.single_target+=/battle_shout,if=rage<70&!debuff.colossus_smash.up
+                new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura)),
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70 && !Global.ColossusSmashAura))),
+                //actions.single_target+=/wild_strike,if=debuff.colossus_smash.up&target.health.pct>=20
+                Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashAura && Global.NormalPhase),
+                //actions.single_target+=/battle_shout,if=rage<70
+                new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
+                    new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))),
+                //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
+                Spell.Cast(SpellBook.WildStrike, ret => Global.ColossusSmashSpellCooldown >= 2000 && Lua.PlayerPower >= 70 && Global.NormalPhase),
+                //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
+                Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && !Global.ImpendingVictoryOnCooldown && Global.NormalPhase && Global.ColossusSmashSpellCooldown >= 2000 && InternalSettings.Instance.Fury.CheckRotImpVic)
+                );
         }
 
         internal static Composite Rel_FuryHeroicStrike()
@@ -146,73 +132,128 @@ namespace FuryUnleashed.Rotations.Fury
             return new PrioritySelector(
                 new Decorator(ret => !InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.HeroicStrike, ret => (FuryGlobal.UseHeroicStrike(Global.ColossusSmashAura) && Global.NormalPhase) || Lua.PlayerPower == Me.MaxRage, true))),
+                        //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up - Added Lua.PlayerPower == Lua.PlayerPowerMax
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Lua.PlayerPowerMax || ((Global.ColossusSmashAura && Lua.PlayerPower >= 40 && Global.NormalPhase || Lua.PlayerPower >= Lua.PlayerPowerMax - 20) && Global.EnrageAura), true))),
                 new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage > Me.MaxRage - 20, true))));
+                        //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90 //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
+                        Spell.Cast(SpellBook.Cleave, ret => (Lua.PlayerPower >= 60 && Global.ColossusSmashAura || Lua.PlayerPower > 90) && Unit.NearbyAttackableUnitsCount < 4, true),
+                        //actions.aoe+=/cleave,if=rage>110 - Added Lua.PlayerPower == Lua.PlayerPowerMax
+                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower == Lua.PlayerPowerMax || Lua.PlayerPower > Lua.PlayerPowerMax - 10 && Unit.NearbyAttackableUnitsCount >= 4, true))));
+        }
+
+        internal static Composite Rel_FuryExec()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.FadingDeathSentence(3000)),
+                        Spell.Cast(SpellBook.StormBolt, ret => FuryGlobal.Tier6AbilityUsage),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura),
+                        Spell.Cast(SpellBook.Execute),
+                        Spell.Cast(SpellBook.RagingBlow))),
+                new Decorator(ret => !Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.FadingDeathSentence(3000)),
+                        Rel_FurySt())));
         }
 
         internal static Composite Rel_FuryMt()
         {
             return new PrioritySelector(
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 2,
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 5,
                     new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.Cast(SpellBook.Whirlwind),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Lua.PlayerPower <= 60 && Global.MeatCleaverAuraS3)
+                        )),
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 4,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS3),
                         Spell.Cast(SpellBook.Bloodthirst),
                         Spell.Cast(SpellBook.ColossusSmash),
-                        Spell.Cast(SpellBook.Bloodbath),
-                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.RagingBlow, ret => RagingBlowAoE),
-                        Spell.Cast(SpellBook.Whirlwind, ret => StyxWoW.Me.HasAura(AuraBook.RagingWind)),
-                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage),
-                        Spell.Cast(SpellBook.Whirlwind),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS3),
+                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 10)
+                        )),
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS2),
+                        Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.Cast(SpellBook.ColossusSmash),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS2),
+                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 10)
+                        )),
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
+                        Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
+
+                        Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS1),
+                        Spell.Cast(SpellBook.Bloodthirst),
+                        Spell.Cast(SpellBook.ColossusSmash),
+                        Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS1),
+                        Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 10),
                         new PrioritySelector(
                             new Decorator(ret => Global.ExecutePhase, Rel_FuryExec()),
                             new Decorator(ret => Global.NormalPhase, Rel_FurySt()))
                         )));
         }
 
-
         internal static Composite Rel_FuryOffensive()
         {
             return new PrioritySelector(
-                // Spells
-                Spell.Cast(SpellBook.BerserkerRage,
-                    ret => FuryGlobal.BerserkerRageUsage && (Global.StormBoltOnCooldown && CooldownTracker.GetSpellCooldown(SpellBook.StormBolt) > TimeSpan.FromMilliseconds(4000)) && (Global.ColossusSmashAura &&
-                         (!Global.RagingBlow2S || (!Global.FadingCs(2500) && Global.RagingBlow1S) ||
-                         (!Global.RagingBlowAura)) || !Global.ColossusSmashOnCooldown && !Global.RagingBlow2S && !Global.RagingBlow1S), true),
-                Spell.Cast(SpellBook.Recklessness,
-                    ret => FuryGlobal.RecklessnessUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || Global.RunningOffensiveCoolDowns), true),
-                Spell.Cast(SpellBook.SkullBanner,
-                    ret => !Global.SkullBannerAura && FuryGlobal.SkullBannerUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true),
-                // Talents
-                Spell.Cast(SpellBook.Bloodbath,
-                    ret => Global.BloodbathTalent && FuryGlobal.Tier6AbilityUsage && (Global.ColossusSmashTracker || RecklessnessSync)),
-                Spell.Cast(SpellBook.Avatar,
-                    ret => Global.AvatarTalent && FuryGlobal.Tier6AbilityUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || RecklessnessSync), true)
+                //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
+                Spell.Cast(SpellBook.Recklessness, ret => !Global.SkullBannerAura && FuryGlobal.RecklessnessUsage, true),
+                //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
+                Spell.Cast(SpellBook.Avatar, ret => Global.AvatarTalent && Global.RecklessnessAura && FuryGlobal.Tier6AbilityUsage, true),
+                //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
+                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && FuryGlobal.SkullBannerUsage && Global.ColossusSmashTracker && (!Global.FadingOffensiveCooldowns() || FuryGlobal.RecklessnessSync), true),
+                //actions+=/berserker_rage,if=buff.enrage.remains<1&cooldown.bloodthirst.remains>1
+                Spell.Cast(SpellBook.BerserkerRage, ret => (!Global.EnrageAura || Global.FadingEnrage(1000) && Global.BloodthirstSpellCooldown > 1000) && FuryGlobal.BerserkerRageUsage, true),
+                //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
+                Spell.Cast(SpellBook.Bloodbath, ret => Global.BloodbathTalent && (Global.ColossusSmashSpellCooldown < 2000 || Global.RemainingColossusSmash(5000)) && FuryGlobal.Tier6AbilityUsage, true)
                 );
         }
-
 
         internal static Composite Rel_FuryGcdUtility()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.ImpendingVictory,
-                    ret => !Global.ImpendingVictoryOnCooldown && Global.ImpendingVictoryTalent && InternalSettings.Instance.Fury.CheckImpVic && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckImpVicNum),
-                Spell.Cast(SpellBook.VictoryRush,
-                    ret => !Global.VictoryRushOnCooldown && Global.VictoriousAura && InternalSettings.Instance.Fury.CheckVicRush && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckVicRushNum),
-                Spell.Cast(SpellBook.IntimidatingShout,
-                    ret => InternalSettings.Instance.Fury.CheckIntimidatingShout && Global.IntimidatingShoutGlyph && !Unit.IsTargetBoss),
-                Spell.Cast(SpellBook.ShatteringThrow,
-                    ret => InternalSettings.Instance.Fury.CheckShatteringThrow && Unit.IsTargetBoss && (Global.ColossusSmashSpellCooldown <= 3000 || Global.SkullBannerSpellCooldown <= 3000))
+                Spell.Cast(SpellBook.ImpendingVictory, ret => !Global.ImpendingVictoryOnCooldown && Global.ImpendingVictoryTalent && InternalSettings.Instance.Fury.CheckImpVic && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckImpVicNum),
+                Spell.Cast(SpellBook.VictoryRush, ret => !Global.VictoryRushOnCooldown && Global.VictoriousAura && InternalSettings.Instance.Fury.CheckVicRush && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckVicRushNum),
+                Spell.Cast(SpellBook.IntimidatingShout, ret => InternalSettings.Instance.Fury.CheckIntimidatingShout && Global.IntimidatingShoutGlyph && !Unit.IsTargetBoss),
+                Spell.Cast(SpellBook.ShatteringThrow, ret => InternalSettings.Instance.Fury.CheckShatteringThrow && Unit.IsTargetBoss && (Global.ColossusSmashSpellCooldown <= 3000 || Global.SkullBannerSpellCooldown <= 3000))
                 );
         }
-
 
         internal static Composite Rel_FuryRacials()
         {
             return new PrioritySelector(
-                new Decorator(ret => FuryGlobal.RacialUsage && Global.ColossusSmashAura,
+                new Decorator(ret => FuryGlobal.RacialUsage,
                     Spell.Cast(Global.SelectRacialSpell(), ret => Global.SelectRacialSpell() != null && Global.RacialUsageSatisfied(Global.SelectRacialSpell()))
                     ));
         }
@@ -232,7 +273,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             return new PrioritySelector(
                 Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckDemoBannerNum && Unit.IsDoNotUseOnTgt),
-                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !Global.HamstringAura && FuryGlobal.HamstringUsage),
+                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !Global.HamstringAura && (InternalSettings.Instance.Fury.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
                 Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && Unit.IsViable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && FuryGlobal.MassSpellReflectionUsage),
                 Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && InternalSettings.Instance.Fury.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckPiercingHowlNum),
                 Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0),
@@ -241,33 +282,5 @@ namespace FuryUnleashed.Rotations.Fury
                     Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
                 );
         }
-
-        #region Booleans
-        internal static bool RecklessnessSync
-        {
-            get
-            {
-                return (Global.RecklessnessAura);
-            }
-        }
-
-        internal static bool BloodbathSync
-        {
-            get
-            {
-                return (Global.BloodbathAura || !Global.BloodbathTalent);
-            }
-        }
-
-        internal static bool RagingBlowAoE
-        {
-            get
-            {
-                return (Unit.NearbyAttackableUnitsCount == 2 && Global.MeatCleaverAuraS2 ||
-                        Unit.NearbyAttackableUnitsCount >= 3 && Global.MeatCleaverAuraS3);
-            }
-        }
-
-        #endregion
     }
 }

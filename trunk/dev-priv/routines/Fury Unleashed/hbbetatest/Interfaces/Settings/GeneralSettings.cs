@@ -97,11 +97,11 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(Enum.ArmsRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Arms Rotation Version")]
-        [Description("Select which rotations you prefer - Development or Release.")]
+        [Description("Select which rotations you prefer - Development, PvP or Release.")]
         public Enum.ArmsRotationVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.FuryRotationVersion.Development)]
+        [Styx.Helpers.DefaultValue(Enum.FuryRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Fury Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]

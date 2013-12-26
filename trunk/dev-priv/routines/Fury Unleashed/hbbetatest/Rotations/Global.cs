@@ -466,28 +466,28 @@ namespace FuryUnleashed.Rotations
 
         #region Remaining & Fading Aura's
         // StyxWoW.Me.CurrentTarget - Remaining
-        internal static bool RemainingCs(int remainingtime)
+        internal static bool RemainingColossusSmash(int remainingtime)
         {
             return Spell.RemainingAura(Me.CurrentTarget, AuraBook.ColossusSmash, remainingtime);
         }
 
         // StyxWoW.Me.CurrentTarget - Fading
-        internal static bool FadingCs(int fadingtime)
+        internal static bool FadingColossusSmash(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.ColossusSmash, fadingtime);
         }
 
-        internal static bool FadingDw(int fadingtime)
+        internal static bool FadingDeepWounds(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.DeepWounds, fadingtime);
         }
 
-        internal static bool FadingSunder(int fadingtime)
+        internal static bool FadingSunderArmor(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.SunderArmor, fadingtime);
         }
 
-        internal static bool FadingWb(int fadingtime)
+        internal static bool FadingWeakenedBlows(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.WeakenedBlows, fadingtime);
         }
@@ -503,12 +503,12 @@ namespace FuryUnleashed.Rotations
             return Spell.FadingAura(Me, AuraBook.EnrageUnknown, fadingtime) || Spell.FadingAura(Me, AuraBook.EnrageNormal, fadingtime);
         }
 
-        internal static bool FadingRb(int fadingtime)
+        internal static bool FadingRagingBlow(int fadingtime)
         {
             return Spell.FadingAura(Me, AuraBook.RagingBlow, fadingtime);
         }
 
-        internal static bool FadingVc(int fadingtime)
+        internal static bool FadingVictoryRush(int fadingtime)
         {
             return Spell.FadingAura(Me, AuraBook.Victorious, fadingtime) || Spell.FadingAura(Me, AuraBook.VictoriousT15, fadingtime);
         }

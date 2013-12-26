@@ -69,7 +69,7 @@ namespace FuryUnleashed.Rotations.Fury
                     return true;
                 if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
                     return true;
-                if (Global.FadingCs(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
+                if (Global.FadingColossusSmash(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
                     return true;
             }
             return Me.CurrentRage >= Me.MaxRage - 10;
