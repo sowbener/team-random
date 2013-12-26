@@ -12,6 +12,25 @@ namespace Bubbleman.Interfaces.Settings
         {
         }
 
+        #region PauseThing
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(0)]
+        [Category("General")]
+        [DisplayName("Logs if you press key to pause")]
+        [Description("This enables logging for pause key.")]
+        public int DetectKeyPress { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("General")]
+        [DisplayName("Enable Pause so you'll be able to press cooldowns.")]
+        [Description("This enables the new pause (same as TuanHa's)")]
+        public bool AutoDetectManualCast { get; set; }
+
+
+        #endregion
+
         #region Interrupt
 
         [Setting]

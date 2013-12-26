@@ -142,6 +142,7 @@ namespace Bubbleman
             /* Gather required information */
             BMLogger.StatCounter();
             BMLogger.LogTimer(500);
+            G.GetBinding();
             
 
             //Cooldownwatcher
