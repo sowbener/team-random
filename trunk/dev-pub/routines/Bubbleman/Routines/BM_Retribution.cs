@@ -31,7 +31,7 @@ namespace Bubbleman.Routines
             {
                 return new PrioritySelector(
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, BMLogger.TreePerformance("InitializeRetribution")),
-                        new Decorator(ret => (BMHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                        new Decorator(ret => (BMHotKeyManager.IsPaused || !U.DefaultCheckRetri), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckABMancedLogging, BMLogger.ABMancedLogging),
                         G.InitializeCaching(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == BMEnum.Mode.Auto,

@@ -17,6 +17,15 @@ namespace Bubbleman.Core
             get
             {
                 return !Me.Mounted && Me.CurrentTarget != null && Me.CurrentTarget.Attackable &&
+                       !Me.CurrentTarget.IsDead;
+            }
+        }
+
+        internal static bool DefaultCheckRetri
+        {
+            get
+            {
+                return !Me.Mounted && Me.CurrentTarget != null && Me.CurrentTarget.Attackable &&
                        !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
             }
         }
