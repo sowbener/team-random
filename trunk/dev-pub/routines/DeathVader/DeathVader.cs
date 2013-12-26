@@ -151,6 +151,7 @@ namespace DeathVader
             /* Gather required information */
             DvLogger.StatCounter();
             DvLogger.LogTimer(500);
+            G.GetBinding();
 
             DvUnit.GetNearbyAttackableUnitsCount();
 

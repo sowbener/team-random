@@ -32,6 +32,8 @@ namespace DeathVader.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeUnholy")),
                         new Decorator(ret => (DvHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => SG.Instance.General.CheckAdvancedLogging, DvLogger.AdvancedLogging),
+                        G.InitializeOnKeyActions(),
+                        G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Unholy.CheckAutoAttack, Lua.StartAutoAttack),

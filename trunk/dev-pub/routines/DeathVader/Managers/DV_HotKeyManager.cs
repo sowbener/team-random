@@ -77,7 +77,7 @@ namespace DeathVader.Managers
 
             /* Keystates - One press with Spell Queueing */
             [DllImport("user32.dll")]
-            private static extern short GetAsyncKeyState(Keys vKey);
+           internal static extern short GetAsyncKeyState(Keys vKey);
 
             public static bool IsKeyAsyncDown(Keys vKey)
             {

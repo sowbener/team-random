@@ -37,6 +37,7 @@ namespace DeathVader.Routines
                         new Decorator(ret => DvHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.CastOnGround("Death and Decay", on => Me.CurrentTarget.Location, ret => Me.CurrentTarget != null))),
                         new Decorator(ret => DeathKnightSettings.EnableAutoTaunting, BloodTaunt()),
                         AutoGoreGrasp(),
+                        G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == DvEnum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Blood.CheckAutoAttack, Lua.StartAutoAttack),
