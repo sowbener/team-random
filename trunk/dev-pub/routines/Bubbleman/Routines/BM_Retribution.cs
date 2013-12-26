@@ -74,13 +74,13 @@ namespace Bubbleman.Routines
         internal static bool HolyAvengerUp { get { return Me.HasAura(105809); } }
         internal static bool AvengingWrathUp { get { return Me.HasAura(31884); } }
         internal static bool CrusaderStrikeCooldownRemains { get { return CooldownWatcher.OnCooldown(35395); } }
-        internal static bool CrusaderStrikeUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(35395) <= 200; } }
+        internal static bool CrusaderStrikeUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(35395) <= 500; } }
         internal static bool HammerofWrathCooldownRemains { get { return CooldownWatcher.OnCooldown(24275); } }
-        internal static bool HammerofWrathUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(24275) <= 200; } }
+        internal static bool HammerofWrathUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(24275) <= 500; } }
         internal static bool JudgmentCooldownRemains { get { return CooldownWatcher.OnCooldown(20271); } }
-        internal static bool JudgmentUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(20271) <= 200; } }
+        internal static bool JudgmentUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(20271) <= 500; } }
         internal static bool ExorcismCooldownRemains { get { return CooldownWatcher.OnCooldown(879); } }
-        internal static bool ExorcismUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(879) <= 200; } }
+        internal static bool ExorcismUnder0 { get { return CooldownWatcher.GetSpellCooldownTimeLeft(879) <= 500; } }
 
 
 
