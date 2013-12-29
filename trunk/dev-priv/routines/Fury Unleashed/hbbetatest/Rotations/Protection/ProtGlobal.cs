@@ -171,26 +171,6 @@ namespace FuryUnleashed.Rotations.Protection
             }
         }
 
-        internal static bool ImpendingVictoryUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
-                        (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                        (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15));
-            }
-        }
-
-        internal static bool VictoryRushUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
-                        (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                        (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15));
-            }
-        }
-
         internal static bool VigilanceUsage
         {
             get

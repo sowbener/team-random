@@ -4,6 +4,7 @@ using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.GUI;
+using FuryUnleashed.Interfaces.Settings;
 using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
@@ -15,6 +16,7 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using A = FuryUnleashed.Rotations.Arms.ArmsGlobal;
 using BotEvents = Styx.CommonBot.BotEvents;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using P = FuryUnleashed.Rotations.Protection.ProtGlobal;
 
@@ -25,7 +27,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 5, 3);
+        public static readonly Version Revision = new Version(1, 5, 5, 4);
         public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
         public static readonly string WoWVersion = "5.4.2";
 
@@ -78,16 +80,13 @@ namespace FuryUnleashed
                 return;
             }
 
-            if (Me.Specialization == WoWSpec.WarriorProtection)
-            {
-                DamageTracker.Pulse();
-            }
-
             if (TalentManager.Pulse())
 			{
                 // ReSharper disable once RedundantJumpStatement
 				return;
 			}
+
+            DamageTracker.Pulse();
         }
 
         public override void OnButtonPress()

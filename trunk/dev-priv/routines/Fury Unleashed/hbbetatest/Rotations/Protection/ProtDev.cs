@@ -6,9 +6,11 @@ namespace FuryUnleashed.Rotations.Protection
 {
     class ProtDev
     {
-        //private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        //private static LocalPlayer Me
+        //{
+        //    get { return StyxWoW.Me; }
+        //}
 
-        // TODO: Add Execute Support
         internal static Composite DevProtCombat
         {
             get

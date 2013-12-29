@@ -107,14 +107,6 @@ namespace FuryUnleashed.Core.Helpers
             Development
         }
 
-        public enum VcTrigger
-        {
-            Never,
-            Always,
-            OnVictoriousProc,
-            OnT15Proc,
-        }
-
         public enum VigilanceTrigger
         {
             Never,

@@ -13,7 +13,10 @@ namespace FuryUnleashed.Rotations.Arms
 {
     class ArmsGlobal
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
 
         internal static Composite InitializeArmsPreCombat
         {

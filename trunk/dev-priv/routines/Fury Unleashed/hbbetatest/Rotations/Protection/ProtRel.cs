@@ -12,9 +12,11 @@ namespace FuryUnleashed.Rotations.Protection
 {
     class ProtRel
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
 
-        // TODO: Add Execute Support
         internal static Composite RelProtCombat
         {
             get
@@ -149,7 +151,7 @@ namespace FuryUnleashed.Rotations.Protection
                 //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
                 //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
                 Spell.Cast(SpellBook.ImpendingVictory, ret => Global.ImpendingVictoryTalent && Me.HealthPercent <= InternalSettings.Instance.Protection.ImpendingVictoryNum),
-                Spell.Cast(SpellBook.VictoryRush, ret => Me.HealthPercent <= InternalSettings.Instance.Protection.VictoryRushNum)
+                Spell.Cast(SpellBook.VictoryRush, ret => Global.VictoriousAura && Me.HealthPercent <= InternalSettings.Instance.Protection.VictoryRushNum)
                 );
         }
 

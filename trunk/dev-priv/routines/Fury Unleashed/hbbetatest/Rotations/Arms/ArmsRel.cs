@@ -13,7 +13,11 @@ namespace FuryUnleashed.Rotations.Arms
 {
     class ArmsRel
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
+
         internal static Composite RelArmsCombat
         {
             get

@@ -231,11 +231,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckHealthStoneNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.VcTrigger.Always)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Regeneration Options")]
         [DisplayName("Impending Victory")]
-        [Description("Select the usage of Impending Victory.")]
-        public Enum.VcTrigger ImpendingVictory { get; set; }
+        [Description("Checked enables Impending Victory.")]
+        public bool ImpendingVictory { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(75)]
@@ -245,11 +245,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public int ImpendingVictoryNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.VcTrigger.Always)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Regeneration Options")]
         [DisplayName("Victory Rush")]
-        [Description("Select the usage of Victory Rush.")]
-        public Enum.VcTrigger VictoryRush { get; set; }
+        [Description("Checked enables Victory Rush.")]
+        public bool VictoryRush { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(75)]
