@@ -567,6 +567,10 @@ namespace FuryUnleashed.Interfaces.GUI
                 ((Styx.Helpers.Settings)SpecGrid.SelectedObject).Save();
             }
             Logger.CombatLogOr("Settings for Fury Unleashed saved!");
+            if (InternalSettings.Instance.General.AutoDetectManualCast)
+            {
+                HotKeyManager.InitializeBindings();
+            }
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             Logger.LogTimer(2000);

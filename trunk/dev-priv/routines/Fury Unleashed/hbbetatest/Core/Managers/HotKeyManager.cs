@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
@@ -115,5 +116,103 @@ namespace FuryUnleashed.Core.Managers
             HotkeysManager.Unregister("Special");
             Logger.DiagLogPu("Fury Unleashed: Hotkeys removed!");
         }
+
+        
+        #region ManualCastPause
+        private static string KeySystemtoKeyBind(string key)
+        {
+            switch (key)
+            {
+                case "D1":
+                    return "1";
+                case "D2":
+                    return "2";
+                case "D3":
+                    return "3";
+                case "D4":
+                    return "4";
+                case "D5":
+                    return "5";
+                case "D6":
+                    return "6";
+                case "D7":
+                    return "7";
+                case "D8":
+                    return "8";
+                case "D9":
+                    return "9";
+                case "D0":
+                    return "0";
+                case "OemMinus":
+                    return "-";
+                case "Oemplus":
+                    return "=";
+                default:
+                    return key;
+            }
+        }
+
+        internal static void InitializeBindings()
+        {
+            //Logging.Write("----------------------------------");
+            foreach (Keys key in System.Enum.GetValues(typeof(Keys)))
+            {
+                var blackListKey = Lua.GetReturnVal<string>("return GetBindingAction('" + KeySystemtoKeyBind(key.ToString()) + "')", 0);
+
+                if (HashSets.MovementKeysHash.Contains(blackListKey))
+                {
+                    //Logging.Write("Movement Key: " + BlackListKey + " = " + key);
+                    //Logging.Write(key + " Binding to " + BlackListKey + "  Blacklist it");
+                    //Logging.Write("Add {0} to BlackListKeyHS", key.ToString());
+                    HashSets.MovementKey.Add(key);
+                }
+            }
+        }
+
+        internal static bool MovementKeyPressed()
+        {
+            if (GetAsyncKeyState(Keys.LButton) < 0 && GetAsyncKeyState(Keys.RButton) < 0)
+            {
+                //Logging.Write("MovementKeyPressed: LButton and RButton Pressed");
+                return true;
+            }
+            return HashSets.MovementKey.Any(key => GetAsyncKeyState(key) < 0);
+        }
+
+        internal static bool AnyKeyPressed()
+        {
+            foreach (Keys key in System.Enum.GetValues(typeof(Keys)))
+            {
+                if (GetAsyncKeyState(key) != 0 &&
+                    key != Keys.LButton &&
+                    key != Keys.RButton &&
+                    key != Keys.LWin &&
+                    key != Keys.RWin &&
+                    key != Keys.ShiftKey &&
+                    key != Keys.LShiftKey &&
+                    key != Keys.RShiftKey &&
+                    key != Keys.ControlKey &&
+                    key != Keys.LControlKey &&
+                    key != Keys.RControlKey &&
+                    key != Keys.Menu &&
+                    key != Keys.LMenu &&
+                    key != Keys.RMenu &&
+                    key != Keys.Tab &&
+                    key != Keys.CapsLock &&
+                    !HashSets.MovementKey.Contains(key))
+            {
+                    //Logging.Write(Colors.Gray,
+                    //    "Key {0} is pressed. Manual CastPause Activated. Combat Routine Pause for {1} ms",
+                    //    KeySystemtoKeyBind(key.ToString()),
+                    //    THSettings.Instance.AutoDetectManualCastMS);
+
+                    Logger.CombatLogWh("FU: Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.ResumeTime);
+                    return true;
+                }
+            }
+            return false;
+        }
+        #endregion
+
     }
 }

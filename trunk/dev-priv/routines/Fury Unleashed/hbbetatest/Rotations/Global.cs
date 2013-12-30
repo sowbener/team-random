@@ -1,4 +1,5 @@
 ﻿using System;
+using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
@@ -58,6 +59,8 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.General.AutoDetectManualCast,
+                    ManualCastPause()),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Bladestorm, ret => BladestormTalent),
@@ -97,6 +100,14 @@ namespace FuryUnleashed.Rotations
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                     Spell.Cast(SB.Pummel)
                     ));
+        }
+
+        internal static Composite ManualCastPause()
+        {
+            return new Sequence(
+                new Decorator(ret => InternalSettings.Instance.General.AutoDetectManualCast && HotKeyManager.AnyKeyPressed(), new ActionAlwaysSucceed()),
+                new WaitContinue(TimeSpan.FromMilliseconds(InternalSettings.Instance.General.ResumeTime), ret => false,
+                    new ActionAlwaysSucceed()));
         }
         #endregion
 

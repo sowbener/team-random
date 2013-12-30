@@ -19,7 +19,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(Enum.Interrupts.RandomTimed)]
         [Category("Global Interrupt Settings")]
         [DisplayName("Interrupt Mode")]
-        [Description("Select the interrupt mode - Constant or after a random casttime - RANDOM IS RECOMMENDED!")]
+        [Description("Select the interrupt mode - Constant or after a random casttime - RandomTimed IS RECOMMENDED!")]
         public Enum.Interrupts InterruptMode { get; set; }
 
         [Setting]
@@ -32,59 +32,81 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
-        #region General
-        [Setting]
-        [Styx.Helpers.DefaultValue(60)]
-        [Category("General")]
-        [DisplayName("Class Racials %")]
-        [Description("Select the use-on HP or MP for Racials (All MP or HP dependant racials).")]
-        public int RacialNum { get; set; }
-
+        #region Updater
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("General")]
+        [Category("Updater")]
         [DisplayName("Enable Automatic Updates")]
         [Description("Enables the automatic updater in this CC.")]
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
-        [Category("General")]
+        [Category("Updater")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]
         public Enum.SvnUrl SvnUrl { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region General
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General Settings")]
+        [DisplayName("Manual Cast Pause.")]
+        [Description("When enabled, the routine allows you to properly manual-cast abilities.")]
+        public bool AutoDetectManualCast { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(100)]
+        [Category("General Settings")]
+        [DisplayName("Manual Cast Resume Time")]
+        [Description("Amount of time in miliseconds before resuming normal operation after manual cast.")]
+        public int ResumeTime { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("General")]
+        [Category("General Settings")]
         [DisplayName("Enable Hotkey ChatOutput")]
         [Description("Enables chat output for hotkeys.")]
         public bool CheckHotkeyChatOutput { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("General")]
+        [Category("General Settings")]
         [DisplayName("Enable PreCombat HKs")]
         [Description("Enabled allows you to use casting hotkeys outside of combat - COSTS PERFORMANCE!")]
         public bool CheckPreCombatHk { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region
+        [Setting]
+        [Styx.Helpers.DefaultValue(60)]
+        [Category("Combat Settings")]
+        [DisplayName("Class Racials %")]
+        [Description("Select the use-on HP or MP for Racials (All MP or HP dependant racials).")]
+        public int RacialNum { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("General")]
+        [Category("Combat Settings")]
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
-        [Category("General")]
+        [Category("Combat Settings")]
         [DisplayName("Vigilance")]
         [Description("Select the usage of Vigilance.")]
         public Enum.VigilanceTrigger Vigilance { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(15)]
-        [Category("General")]
+        [Category("Combat Settings")]
         [DisplayName("Vigilance %")]
         [Description("Select the use-on HP for Vigilance usage.")]
         public int VigilanceNum { get; set; }
