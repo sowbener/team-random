@@ -26,7 +26,7 @@
                             RagingBlow = 131116,
                             RagingWind = 115317,
                             RallyingCry = 97462,
-                            ReadinessNormal = 145991, // Confirmed
+                            Readiness = 145991, // Confirmed
                             Recklessness = 1719,
                             ShieldBarrier = 112048,
                             ShieldBlock = 2565,

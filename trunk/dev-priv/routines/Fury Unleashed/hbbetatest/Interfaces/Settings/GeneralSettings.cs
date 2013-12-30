@@ -100,14 +100,14 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
         [Category("Combat Settings")]
-        [DisplayName("Vigilance")]
+        [DisplayName("Vigilance Usage")]
         [Description("Select the usage of Vigilance.")]
         public Enum.VigilanceTrigger Vigilance { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(15)]
         [Category("Combat Settings")]
-        [DisplayName("Vigilance %")]
+        [DisplayName("Vigilance HP %")]
         [Description("Select the use-on HP for Vigilance usage.")]
         public int VigilanceNum { get; set; }
         #endregion
