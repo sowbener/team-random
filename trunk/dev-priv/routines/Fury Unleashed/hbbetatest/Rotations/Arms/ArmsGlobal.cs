@@ -24,11 +24,7 @@ namespace FuryUnleashed.Rotations.Arms
             {
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate
-                        {
-                            Spell.GetCachedAuras();
-                            return RunStatus.Failure;
-                        }),
+                        Global.InitializeCaching(),
                         new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
                                              StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
                                              StyxWoW.Me.CurrentTarget.Distance > 12 &&

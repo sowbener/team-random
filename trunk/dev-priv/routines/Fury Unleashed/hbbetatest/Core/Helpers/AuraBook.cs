@@ -22,11 +22,13 @@
                             Heroism = 32182,
                             LastStand = 12975,
                             MeatCleaver = 85739,
+                            MortalWounds = 115804,
                             Outrage = 146245, // Evil Eye of Galakras trinket Aura - Multi-ID ...
                             RagingBlow = 131116,
                             RagingWind = 115317,
                             RallyingCry = 97462,
-                            Readiness = 145991, // Confirmed
+                            ReadinessAddPctModifier = 145991, // Confirmed
+                            ReadinessPeriodicLeech = 145955, // Confirmed
                             Recklessness = 1719,
                             ShieldBarrier = 112048,
                             ShieldBlock = 2565,

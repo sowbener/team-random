@@ -26,7 +26,7 @@ namespace FuryUnleashed.Rotations.Protection
             {
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                        G.InitializeCaching(),
                         new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
                     new Decorator(ret => Unit.DefaultBuffCheck && ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,

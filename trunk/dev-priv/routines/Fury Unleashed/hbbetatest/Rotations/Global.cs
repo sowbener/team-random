@@ -355,7 +355,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool ReadinessAura
         {
-            get { return Spell.HasAura(Me, AuraBook.Readiness); }
+            get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier) || Spell.HasAura(Me, AuraBook.ReadinessPeriodicLeech); }
         }
 
         internal static bool RecklessnessAura
