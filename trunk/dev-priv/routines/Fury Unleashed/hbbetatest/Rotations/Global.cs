@@ -345,7 +345,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool RagingWindAura
         {
-            get { return Spell.HasAura(Me, 115317); }
+            get { return Spell.HasAura(Me, AuraBook.RagingWind); }
         }
 
         internal static bool RallyingCryAura
