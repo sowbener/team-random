@@ -19,6 +19,8 @@ using BotEvents = Styx.CommonBot.BotEvents;
 using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using P = FuryUnleashed.Rotations.Protection.ProtGlobal;
 
+// HB API Documentation: http://docs.honorbuddy.com/
+
 namespace FuryUnleashed
 {
     public class Root : CombatRoutine
