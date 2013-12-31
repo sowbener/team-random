@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace AntiAFK.GUI
 {
-    public partial class AntiAFKGui : Form
+    public partial class AntiAfkGui : Form
     {
         #region CBOItem
         public class CboItem
@@ -34,7 +34,7 @@ namespace AntiAFK.GUI
                 return;
             }
             item = (CboItem)cb.Items[0];
-            AntiAFK.AfkLogging("[AntiAFK] Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
+            AntiAfk.AfkLogging("[AntiAFK] Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
                           cb.Name, e, item.E);
             cb.SelectedIndex = 0;
         }
@@ -46,26 +46,27 @@ namespace AntiAFK.GUI
         }
         #endregion
 
-        public AntiAFKGui()
+        public AntiAfkGui()
         {
             InitializeComponent();
             AntiAFKSettings.Instance.Load();
 
             keydropdown.Items.Add(new CboItem((int)Keys.Space, "Space (Jump)"));
-            keydropdown.Items.Add(new CboItem((int)Keys.X, "X (Sit/Stand)"));
-            keydropdown.Items.Add(new CboItem((int)Keys.Z, "Z (Sheath/Unsheath Weapon)"));
-            keydropdown.Items.Add(new CboItem((int)Keys.Enter, "Enter/Return"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Up, "Forward (Up Arrow)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Down, "Backward (Down Arrow)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Left, "Left (Left Arrow)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.Right, "Right (Right Arrow)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.W, "Forward (W)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.S, "Backward (S)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.A, "Left (A)"));
+            keydropdown.Items.Add(new CboItem((int)Keys.D, "Right (D)"));
 
             SetComboBoxEnum(keydropdown, (int)AntiAFKSettings.Instance.AntiAfkKey);
             msnumeric.Value = new decimal(AntiAFKSettings.Instance.AntiAfkTime);
             pluginscheckbox.Checked = AntiAFKSettings.Instance.AntiAfkPlugins;
-
         }
 
-        private void AntiAFKGui_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void AntiAFKGui_Load(object sender, EventArgs e) { }
 
         private void keydropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -85,8 +86,8 @@ namespace AntiAFK.GUI
         private void buttonsaveandclose_Click(object sender, EventArgs e)
         {
             AntiAFKSettings.Instance.Save();
-            AntiAFK.PluginPulsing();
-            AntiAFK.AfkLogging("[AntiAFK] Settings are saved!");
+            AntiAfk.PluginPulsing();
+            AntiAfk.AfkLogging("[AntiAFK] Settings are saved!");
             Close();
         }
     }

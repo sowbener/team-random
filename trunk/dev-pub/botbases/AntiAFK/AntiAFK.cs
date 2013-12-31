@@ -18,10 +18,11 @@ using Timer = System.Timers.Timer;
 
 namespace AntiAFK
 {
-    public class AntiAFK : BotBase
+    public class AntiAfk : BotBase
     {
-        internal static readonly Stopwatch AntiAFKStopwatch = new Stopwatch();
+        internal static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
         internal static readonly AntiAFKSettings Settings = new AntiAFKSettings();
+        internal static double Version = 1.01;
         internal static Timer Antiafktimer;
 
         private static PulseFlags _pulseFlags;
@@ -40,7 +41,7 @@ namespace AntiAFK
 
         public override Form ConfigurationForm
         {
-            get { return new AntiAFKGui(); }
+            get { return new AntiAfkGui(); }
         }
 
         public override void Start()
@@ -56,7 +57,8 @@ namespace AntiAFK
                 }
 
                 AfkLogging("\r\n-------------------------------------------");
-                AfkLogging("This botbase is written by nomnomnom \r\n");
+                AfkLogging("[AntiAFK] BotBase - Version {0}", Version);
+                AfkLogging("[AntiAFK] This botbase is written by nomnomnom \r\n");
                 AfkLogging("[AntiAFK] Loaded - Pulse every {0} miliseconds.", AntiAFKSettings.Instance.AntiAfkTime);
                 AfkLogging("[AntiAFK] Loaded - Selected key is {0}.", AntiAFKSettings.Instance.AntiAfkKey);
                 AfkLogging("-------------------------------------------\r\n");
@@ -81,12 +83,12 @@ namespace AntiAFK
 
                 if (StyxWoW.Me.IsAFKFlagged)
                 {
-                    if (!AntiAFKStopwatch.IsRunning)
+                    if (!AntiAfkStopwatch.IsRunning)
                     {
-                        AntiAFKStopwatch.Start();
+                        AntiAfkStopwatch.Start();
                     }
 
-                    if (AntiAFKStopwatch.Elapsed.TotalSeconds >= Settings.AntiAfkTime)
+                    if (AntiAfkStopwatch.Elapsed.TotalSeconds >= Settings.AntiAfkTime)
                     {
                         AfkLogging("[AntiAFK] Time elapsed - Using key!");
                         KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
@@ -102,9 +104,9 @@ namespace AntiAFK
 
         public override void Stop()
         {
-            if (AntiAFKStopwatch.IsRunning)
+            if (AntiAfkStopwatch.IsRunning)
             {
-                AntiAFKStopwatch.Stop();
+                AntiAfkStopwatch.Stop();
             }
         }
 
@@ -132,8 +134,8 @@ namespace AntiAFK
         {
             AfkLogging("[AntiAFK] Releasing key!");
             KeyboardManager.ReleaseKey((Char)Settings.AntiAfkKey);
-            AntiAFKStopwatch.Reset();
-            AntiAFKStopwatch.Stop();
+            AntiAfkStopwatch.Reset();
+            AntiAfkStopwatch.Stop();
         }
 
         public static void AfkLogging(string message, params object[] args)

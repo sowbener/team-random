@@ -1,6 +1,6 @@
 ﻿namespace AntiAFK.GUI
 {
-    partial class AntiAFKGui
+    partial class AntiAfkGui
     {
         /// <summary>
         /// Required designer variable.
@@ -121,7 +121,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.msnumeric);
             this.Controls.Add(this.buttonsaveandclose);
-            this.Name = "AntiAFKGui";
+            this.Name = "AntiAfkGui";
             this.Text = "AntiAFK GUI";
             this.Load += new System.EventHandler(this.AntiAFKGui_Load);
             ((System.ComponentModel.ISupportInitialize)(this.msnumeric)).EndInit();
