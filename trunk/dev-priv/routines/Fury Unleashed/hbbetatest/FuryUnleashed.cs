@@ -127,7 +127,7 @@ namespace FuryUnleashed
 
             /* Initialize Various Functions */
             DamageTracker.Initialize();
-            if (InternalSettings.Instance.General.AutoDetectManualCast) { HotKeyManager.InitializeBindings(); }
+            HotKeyManager.InitializeBindings();
 
             /* Gather required information */
             Logger.StatCounter();

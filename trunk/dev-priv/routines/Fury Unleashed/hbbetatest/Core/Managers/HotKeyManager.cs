@@ -154,17 +154,19 @@ namespace FuryUnleashed.Core.Managers
 
         internal static void InitializeBindings()
         {
-            //Logging.Write("----------------------------------");
-            foreach (Keys key in System.Enum.GetValues(typeof(Keys)))
+            if (InternalSettings.Instance.General.AutoDetectManualCast)
             {
-                var blackListKey = Lua.GetReturnVal<string>("return GetBindingAction('" + KeySystemtoKeyBind(key.ToString()) + "')", 0);
-
-                if (HashSets.MovementKeysHash.Contains(blackListKey))
+                foreach (Keys key in System.Enum.GetValues(typeof(Keys)))
                 {
-                    //Logging.Write("Movement Key: " + BlackListKey + " = " + key);
-                    //Logging.Write(key + " Binding to " + BlackListKey + "  Blacklist it");
-                    //Logging.Write("Add {0} to BlackListKeyHS", key.ToString());
-                    HashSets.MovementKey.Add(key);
+                    var blackListKey = Lua.GetReturnVal<string>("return GetBindingAction('" + KeySystemtoKeyBind(key.ToString()) + "')", 0);
+
+                    if (HashSets.MovementKeysHash.Contains(blackListKey))
+                    {
+                        //Logging.Write("Movement Key: " + BlackListKey + " = " + key);
+                        //Logging.Write(key + " Binding to " + BlackListKey + "  Blacklist it");
+                        //Logging.Write("Add {0} to BlackListKeyHS", key.ToString());
+                        HashSets.MovementKey.Add(key);
+                    }
                 }
             }
         }
