@@ -90,11 +90,11 @@ namespace Xiaolin.Routines
                 Spell.Cast("Touch of Death", ret => SG.Instance.Windwalker.TouchOfDeath && (Me.HasAura(124490) && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10) || (Lua.PlayerChi >= 3 && Me.HasAura("Death Note"))),
                 Spell.Cast(SpellBook.FistsofFury, ret => !Me.IsMoving && EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),
                 Spell.Cast(SpellBook.ChiWave),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.7, ret => ComboBreakerBoKUp),
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.6, ret => ComboBreakerBoKUp),
                 Spell.PreventDoubleCast(SpellBook.TigerPalm, 0.7, ret => (ComboBreakerTpUp && Lua.TimeToEnergyCap() >= 2) || (ComboBreakerTpRemains <= 2 && ComboBreakerTpUp)),
                 Spell.PreventDoubleCast("Jab", 0.5, ret => MaxChi - Lua.PlayerChi >= 2),
                 Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent && Lua.RJWOK() >= 20),
-                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.7, ret => RSKCooldown)
+                Spell.PreventDoubleCast(SpellBook.BlackoutKick, 0.6, ret => Lua.BlackoutKickOK() >= 40)
                 );
 
         }

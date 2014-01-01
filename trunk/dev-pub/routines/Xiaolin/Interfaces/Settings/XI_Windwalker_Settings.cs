@@ -15,6 +15,7 @@ namespace Xiaolin.Interfaces.Settings
 
         #region Ability Options
        
+        [Setting]
         [Styx.Helpers.DefaultValue(XIEnum.AbilityTrigger.Always)]
         [Category("Windwalker - Ability Options")]
         [DisplayName("Energizing Brew")]
