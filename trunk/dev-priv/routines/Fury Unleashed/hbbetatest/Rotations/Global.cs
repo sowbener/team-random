@@ -357,6 +357,7 @@ namespace FuryUnleashed.Rotations
         internal static bool ReadinessAura
         {
             get { return StyxWoW.Me.HasAura(AuraBook.ReadinessAddPctModifier); }
+            //get { return Spell.HasAura(Me, "Readiness"); }
         }
 
         internal static bool RecklessnessAura
