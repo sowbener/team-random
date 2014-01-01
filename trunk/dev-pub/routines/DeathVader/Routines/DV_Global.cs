@@ -31,9 +31,9 @@ namespace DeathVader.Routines
             get
             {
                 return new PrioritySelector(
-                    new Decorator(ret => (Me.Specialization == WoWSpec.DeathKnightUnholy && DvUnit.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                    new Decorator(ret => (DvUnit.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new PrioritySelector(
-                            Spell.Cast("Raise Dead", ret => Me, ret => SG.Instance.Unholy.PrebuffPet && !Me.GotAlivePet))));
+                            Spell.Cast("Raise Dead", ret => Me, ret => Me.Specialization == WoWSpec.DeathKnightUnholy && SG.Instance.Unholy.PrebuffPet && !Me.GotAlivePet))));
             }
         }
 
