@@ -79,11 +79,11 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapFirstCheckDW),
                         Spell.Cast("Outbreak", ret => NeedEitherDis && SG.Instance.Frost.EnableOutbreak),
-                        Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && UnholyBlightTalent && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                         Spell.Cast("Frost Strike", ret => ObliterateProc || Lua.PlayerPower > 88),
+                        Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && UnholyBlightTalent && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                         Spell.Cast("Howling Blast", ret => G.BloodRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
+                        Spell.Cast(130735, ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapSecondCheckDW),
-                        Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.Cast("Howling Blast", ret => UnholyBlightCheck && NeedFrostFever),
                         Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague)),
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
@@ -106,7 +106,7 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.Cast("Outbreak", ret => NeedBothDisUp2H && UnholyBlightCheck),
                 Spell.Cast("Unholy Blight", ret => NeedBothDisUp2H && UnholyBlightTalent),
-                Spell.Cast("Soul Reaper", ret => Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
+                Spell.Cast(130735, ret => Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => BloodTapFirstCheck2H),
                 Spell.Cast("Howling Blast", ret => OutBreakCooldown && UnholyBlightCheck && NeedFrostFever2H),
                 Spell.Cast("Plague Strike", ret => OutBreakCooldown && UnholyBlightCheck && NeedBloodPlague2H),
@@ -145,8 +145,8 @@ namespace DeathVader.Routines
         internal static Composite FrostDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Death Strike", ret => Me.HasAura(101568)),
-                Spell.Cast("Death Siphon", ret => T.HasTalent(11) && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP),
+                Spell.Cast("Death Strike", ret => Me.HasAura(101568) && SG.Instance.Frost.EnableDeathStrike && Me.HealthPercent <= SG.Instance.Frost.DeathstrikeHP),
+                Spell.Cast("Death Siphon", ret => T.HasTalent(11) && SG.Instance.Frost.EnableDeathSiphon && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP),
                 I.FrostUseHealthStone()
                 );
         }
@@ -170,7 +170,7 @@ namespace DeathVader.Routines
                     (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.ClassRacials == DvEnum.AbilityTrigger.Always)
                     )),
-                    Spell.Cast("Empower Rune Weapon", ret => (I.WieldsTwoHandedWeapons && CanEmpowerRuneWeapon) || (!I.WieldsTwoHandedWeapons && CanEmpowerRuneWeaponDW) && (
+                    Spell.Cast("Empower Rune Weapon", ret => ((I.WieldsTwoHandedWeapons && CanEmpowerRuneWeapon) || (!I.WieldsTwoHandedWeapons && CanEmpowerRuneWeaponDW)) && (
                     (SG.Instance.Frost.EmpowerRuneWeapon == DvEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.EmpowerRuneWeapon == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.EmpowerRuneWeapon == DvEnum.AbilityTrigger.Always)

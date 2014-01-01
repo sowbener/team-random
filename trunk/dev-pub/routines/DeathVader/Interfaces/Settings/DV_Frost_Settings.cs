@@ -56,6 +56,41 @@ namespace DeathVader.Interfaces.Settings
         [Description("Select the usage of Outbreak. NOT RECOMMENDED TO ENABLE THIS UNLESS YOU DONT HAVE T16.")]
         public bool EnableOutbreak { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Frost - Ability Options")]
+        [DisplayName("Enable Death Strike")]
+        [Description("Select the usage of Death Strike.")]
+        public bool EnableDeathStrike { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Frost - Ability Options")]
+        [DisplayName("Enable Death Siphon")]
+        [Description("Select the usage of Death Siphon")]
+        public bool EnableDeathSiphon { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(80)]
+        [Category("Frost - Selectable Options")]
+        [DisplayName("Death Siphon %")]
+        [Description("Uses Death Siphon if specced at % of HP")]
+        public int DeathSiphonHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(80)]
+        [Category("Frost - Selectable Options")]
+        [DisplayName("Death Strike %")]
+        [Description("Uses Death Strike if specced at % of HP")]
+        public int DeathstrikeHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(36)]
+        [Category("Frost - Selectable Options")]
+        [DisplayName("Soul Reaper %")]
+        [Description("Select the use-on HP for Soul Reaper usage.")]
+        public int SoulReaperHP { get; set; }
+
         #endregion
 
         #region Item Options
@@ -118,25 +153,11 @@ namespace DeathVader.Interfaces.Settings
         public bool CheckAutoAttack { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(36)]
-        [Category("Frost - Selectable Options")]
-        [DisplayName("Soul Reaper %")]
-        [Description("Select the use-on HP for Soul Reaper usage.")]
-        public int SoulReaperHP { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Frost - Selectable Options")]
         [DisplayName("Enable Item De-Sync")]
         [Description("Enables de-sync of items - With this enabled it uses Hands / Waist outside Trinket Cooldowns.")]
         public bool CheckDesyncTrinkHands { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(80)]
-        [Category("Frost - Selectable Options")]
-        [DisplayName("Death Siphon %")]
-        [Description("Uses Death Siphon if specced at % of HP")]
-        public int DeathSiphonHP { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
