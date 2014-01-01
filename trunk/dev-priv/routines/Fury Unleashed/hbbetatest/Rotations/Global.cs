@@ -1,5 +1,4 @@
-﻿using System;
-using CommonBehaviors.Actions;
+﻿using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
@@ -10,6 +9,7 @@ using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
+using System;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
@@ -29,6 +29,7 @@ namespace FuryUnleashed.Rotations
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
+                //new Action(delegate { Logger.CombatLogWh("Galahkras Trinket: {0}", ReadinessAura); return RunStatus.Failure; }),
                 new Switch<WoWSpec>(ret => Me.Specialization,
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
@@ -355,7 +356,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool ReadinessAura
         {
-            get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier) || Spell.HasAura(Me, AuraBook.ReadinessPeriodicLeech); }
+            get { return StyxWoW.Me.HasAura(AuraBook.ReadinessAddPctModifier); }
         }
 
         internal static bool RecklessnessAura

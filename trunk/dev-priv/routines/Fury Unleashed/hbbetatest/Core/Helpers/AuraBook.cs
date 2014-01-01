@@ -27,7 +27,7 @@
                             RagingBlow = 131116,
                             RagingWind = 115317,
                             RallyingCry = 97462,
-                            ReadinessAddPctModifier = 145991, // Confirmed
+                            ReadinessAddPctModifier = 145991, // Confirmed - Default
                             ReadinessPeriodicLeech = 145955, // Confirmed
                             Recklessness = 1719,
                             ShieldBarrier = 112048,
