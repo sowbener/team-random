@@ -82,7 +82,7 @@ namespace DeathVader.Routines
                         Spell.Cast("Frost Strike", ret => ObliterateProc || Lua.PlayerPower > 88),
                         Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && UnholyBlightTalent && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                         Spell.Cast("Howling Blast", ret => G.BloodRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
-                        Spell.Cast(130735, ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
+                        Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTapSecondCheckDW),
                         Spell.Cast("Howling Blast", ret => UnholyBlightCheck && NeedFrostFever),
                         Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague)),
@@ -106,7 +106,7 @@ namespace DeathVader.Routines
             return new PrioritySelector(
                 Spell.Cast("Outbreak", ret => NeedBothDisUp2H && UnholyBlightCheck),
                 Spell.Cast("Unholy Blight", ret => NeedBothDisUp2H && UnholyBlightTalent),
-                Spell.Cast(130735, ret => Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
+                Spell.Cast("Soul Reaper", ret => Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => BloodTapFirstCheck2H),
                 Spell.Cast("Howling Blast", ret => OutBreakCooldown && UnholyBlightCheck && NeedFrostFever2H),
                 Spell.Cast("Plague Strike", ret => OutBreakCooldown && UnholyBlightCheck && NeedBloodPlague2H),
