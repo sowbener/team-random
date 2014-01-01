@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Runtime.InteropServices;
+using System.Timers;
 using System.Windows.Forms;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
@@ -7,6 +8,7 @@ using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
 using Styx.Common;
 using Styx.WoWInternals;
+using Timer = System.Windows.Forms.Timer;
 
 namespace FuryUnleashed.Core.Managers
 {
@@ -150,6 +152,21 @@ namespace FuryUnleashed.Core.Managers
                 default:
                     return key;
             }
+        }
+
+        private static System.Timers.Timer _hotkeyTimer;
+
+        public static void HotkeyTimer(int tickingtime)
+        {
+            _hotkeyTimer = new System.Timers.Timer(tickingtime);
+            _hotkeyTimer.Elapsed += OnTimedEvent;
+            _hotkeyTimer.AutoReset = false;
+            _hotkeyTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            InitializeBindings();
         }
 
         internal static void InitializeBindings()

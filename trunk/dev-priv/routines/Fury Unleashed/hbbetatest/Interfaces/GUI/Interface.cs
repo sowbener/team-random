@@ -569,7 +569,7 @@ namespace FuryUnleashed.Interfaces.GUI
             Logger.CombatLogOr("Settings for Fury Unleashed saved!");
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
-            HotKeyManager.InitializeBindings();
+            HotKeyManager.HotkeyTimer(500);
             Logger.LogTimer(2000);
             Close();
         }
