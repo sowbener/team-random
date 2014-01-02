@@ -460,7 +460,14 @@ namespace DeathVader.Routines
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
-                new Decorator(ret => DvHotKeyManager.AMZKey && SpellManager.CanCast("Anti-Magic Zone"),
+                new Decorator(ret => DvHotKeyManager.AMZKey && SG.Instance.General.UseModifierKey && SpellManager.CanCast("Anti-Magic Zone"),
+                    new Action(ret =>
+                    {
+                        SpellManager.Cast("Anti-Magic Zone");
+                        Styx.WoWInternals.Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
+                        DvLogger.CombatLogP("Casting: Anti-Magic Zone - On Mouse Location");
+                    })),
+                  new Decorator(ret => KP.IsKeyAsyncDown(SH.Instance.AMZ) && !SG.Instance.General.UseModifierKey && SpellManager.CanCast("Anti-Magic Zone"),
                     new Action(ret =>
                     {
                         SpellManager.Cast("Anti-Magic Zone");

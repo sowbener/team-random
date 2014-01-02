@@ -21,6 +21,14 @@ namespace DeathVader.Interfaces.Settings
         [Description("This enables logging for pause key.")]
         public int DetectKeyPress { get; set; }
 
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General")]
+        [DisplayName("Enable to Use Modifier Keys")]
+        [Description("This Enables Modifier Keys.")]
+        public bool UseModifierKey { get; set; }
+
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("General")]
