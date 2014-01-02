@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core;
+﻿using System.Threading;
+using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -91,7 +92,15 @@ namespace FuryUnleashed
 
         public override void OnButtonPress()
         {
-            new Interface().ShowDialog();
+            try
+            {
+                var guiThread = new Thread(StartGui);
+                guiThread.Start();
+            }
+            catch (Exception ex)
+            {
+                Logger.DiagLogFb("FU: Failed to start GUI: {0}", ex);
+            }
         }
 
         public override void ShutDown()
@@ -101,6 +110,11 @@ namespace FuryUnleashed
         #endregion
 
         #region Internals
+        internal static void StartGui()
+        {
+            new Interface().ShowDialog();
+        }
+
         internal void Unleash()
         {
             Logger.CombatLogWh("------------------------------------------");
