@@ -8,10 +8,8 @@ using Styx.WoWInternals.WoWObjects;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
 using U = FuryUnleashed.Core.Unit;
-using Action = Styx.TreeSharp.Action;
 
 namespace FuryUnleashed.Rotations.Fury
 {
@@ -27,7 +25,8 @@ namespace FuryUnleashed.Rotations.Fury
                     new PrioritySelector(ret => !Me.Combat,
                         G.InitializeCaching(),
                         new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
-                    new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                    new Decorator(ret => U.DefaultBuffCheck && IS.Instance.General.CheckPreCombatBuff && !Me.Combat,
+                    //new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SB.BattleShout, on => Me, ret => !G.BattleShoutAura)),
