@@ -37,24 +37,7 @@ namespace Tyrael
 
         public override Form ConfigurationForm
         {
-            get
-            {
-                try
-                {
-                    var guiThread = new Thread(StartGui);
-                    guiThread.Start();
-                }
-                catch (Exception ex)
-                {
-                    Logging.WriteDiagnostic(Colors.Red, "[Tyrael] GUI failed to start: {0}", ex);
-                }
-                return new TyraelInterface();
-            }
-        }
-
-        internal static void StartGui()
-        {
-            new TyraelInterface().ShowDialog();
+            get { return new TyraelInterface(); }
         }
 
         public override Composite Root
