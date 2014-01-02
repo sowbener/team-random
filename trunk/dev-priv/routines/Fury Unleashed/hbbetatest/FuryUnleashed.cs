@@ -35,7 +35,7 @@ namespace FuryUnleashed
         public override bool WantButton { get { return true; } }
         
         public override Composite CombatBehavior { get { return _combatBehavior ?? (_combatBehavior = CombatSelector()); } }
-        public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreBuffSelector()); } }
+        public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreCombatSelector()); } }
 
         private Composite _combatBehavior, _preCombatBehavior;
 
@@ -134,13 +134,13 @@ namespace FuryUnleashed
 
             /* Start Combat */
             Spell.InitGcdSpell();
-            PreBuffSelector();
+            PreCombatSelector();
             CombatSelector();
 
             Logger.CombatLogOr("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
         }
 
-        internal Composite PreBuffSelector()
+        internal Composite PreCombatSelector()
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms, A.InitializeArmsPreCombat),
