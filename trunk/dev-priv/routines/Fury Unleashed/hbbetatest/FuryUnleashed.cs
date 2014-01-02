@@ -39,6 +39,7 @@ namespace FuryUnleashed
         public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreCombatSelector()); } }
 
         private Composite _combatBehavior, _preCombatBehavior;
+        private static Form Interface { get; set; }
 
         #region Publics
         public override WoWClass Class
@@ -112,7 +113,9 @@ namespace FuryUnleashed
         #region Internals
         internal static void StartGui()
         {
-            new Interface().ShowDialog();
+            //new Interface().ShowDialog();
+            if (Interface == null || Interface.IsDisposed || Interface.Disposing) Interface = new Interface();
+            if (Interface != null || Interface.IsDisposed) Interface.ShowDialog();
         }
 
         internal void Unleash()
