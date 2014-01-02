@@ -27,8 +27,11 @@ namespace DeathVader.Core
 
         private static void UseItem(WoWItem item)
         {
-            DvLogger.CombatLogP("Using item: " + item.Name);
-            item.Use();
+            DvLogger.ItemLog("Using item: " + item.Name);
+            if (CanUseItem(item))
+            {
+                item.Use();
+            }
         }
 
         public static WoWItem FindFirstUsableItemBySpell(params string[] spellNames)
@@ -51,9 +54,8 @@ namespace DeathVader.Core
 
         private static bool CanUseItem(WoWItem item)
         {
-            return item != null && item.Usable && item.CooldownTimeLeft.TotalMilliseconds <= 0;
+            return item.Usable && item.Cooldown <= 0;
         }
-
 
 
         public static Composite UseItem(uint id)
@@ -64,6 +66,7 @@ namespace DeathVader.Core
                     ctx => ctx != null && CanUseItem((WoWItem)ctx),
                     new Action(ctx => UseItem((WoWItem)ctx))));
         }
+
 
         public static Composite UsePotion()
         {
