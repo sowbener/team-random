@@ -102,7 +102,7 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent && Lua.RJWOK() >= 20),
+                Spell.Cast("Rushing Jade Wind", ret => Lua.RJWOK() >= 20),
              //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }
