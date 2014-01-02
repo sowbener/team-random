@@ -42,7 +42,7 @@ namespace Xiaolin.Routines
                                         WindwalkerUtility(),
                                         I.WindwalkerUseItems(),
                                         WindwalkerOffensive(),
-                                        new Decorator(ret => SG.Instance.Windwalker.CheckAoE && U.NearbyAttackableUnitsCount > 3, WindwalkerMt()),
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckAoE && U.NearbyAttackableUnitsCount >= 2, WindwalkerMt()),
                                             WindwalkerSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == XIEnum.Mode.Hotkey,
                                 new PrioritySelector(
@@ -102,7 +102,7 @@ namespace Xiaolin.Routines
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.RushingJadeWind, ret => RushingJadeWindTalent),
+                Spell.Cast("Rushing Jade Wind", ret => RushingJadeWindTalent && Lua.RJWOK() >= 20),
              //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }
