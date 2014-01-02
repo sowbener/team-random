@@ -36,7 +36,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         /// <param name="spellname">String SpellName to Cast</param>
         /// <param name="reqs">-</param>
-        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
+        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure - Required for chain-casting like popping multiple CD's!</param>
         /// <returns></returns>
         public static Composite Cast(string spellname, Selection<bool> reqs = null, bool failThrough = false)
         {
@@ -65,7 +65,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         /// <param name="spellid">Integer Spell to Cast</param>
         /// <param name="reqs">-</param>
-        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
+        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure - Required for chain-casting like popping multiple CD's!</param>
         /// <returns></returns>
         public static Composite Cast(int spellid, Selection<bool> reqs = null, bool failThrough = false)
         {
@@ -97,7 +97,7 @@ namespace FuryUnleashed.Core
         /// <param name="auratimeleft">Timeleft on the aura in order to refresh it if no unit without the aura is found</param>
         /// <param name="radius">Radius - 5y</param>
         /// <param name="reqs">-</param>
-        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure</param>
+        /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure - Required for chain-casting like popping multiple CD's!</param>
         /// <returns>-</returns>
         public static Composite MultiDoT(int spellid, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
         {
@@ -107,8 +107,7 @@ namespace FuryUnleashed.Core
                 try
                 {
                     return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null) && Unit.NearbyAttackableUnitsCount > 1,
-                        new PrioritySelector(dot => 
-                            target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
+                        new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
                             new Decorator(ctx => Unit.IsViable(target),
                                 Cast(spellid, on => target, ret => Unit.IsViable(target)))));
                 }
@@ -352,7 +351,7 @@ namespace FuryUnleashed.Core
         /// <returns></returns>
         public static bool HasAura(WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
         {
-            using (new PerformanceLogger("HasAura"))
+            using (new PerformanceLogger("HasAura-String"))
             {
                 try
                 {
@@ -397,7 +396,7 @@ namespace FuryUnleashed.Core
         /// <returns></returns>
         public static bool HasAura(WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
         {
-            using (new PerformanceLogger("HasAura"))
+            using (new PerformanceLogger("HasAura-Int"))
             {
                 try
                 {
@@ -440,7 +439,7 @@ namespace FuryUnleashed.Core
         /// <returns></returns>
         public static double AuraTimeLeft(WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
         {
-            using (new PerformanceLogger("AuraTimeLeft"))
+            using (new PerformanceLogger("AuraTimeLeft-Int"))
             {
                 try
                 {
@@ -479,7 +478,7 @@ namespace FuryUnleashed.Core
         /// <returns></returns>
         public static bool FadingAura(WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
         {
-            using (new PerformanceLogger("FadingAura"))
+            using (new PerformanceLogger("FadingAura-Int"))
             {
                 try
                 {
@@ -519,7 +518,7 @@ namespace FuryUnleashed.Core
         /// <returns></returns>
         public static bool RemainingAura(WoWUnit unit, int auraId, int remainingtime, bool isFromMe = true, bool cached = true)
         {
-            using (new PerformanceLogger("RemainingAura"))
+            using (new PerformanceLogger("RemainingAura-Int"))
             {
                 try
                 {
