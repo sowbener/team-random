@@ -206,13 +206,13 @@ namespace Tyrael.Shared
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            //TreeRoot.Stop();
+
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.PluginPulsing();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
             Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
@@ -251,6 +251,9 @@ namespace Tyrael.Shared
                     "[Tyrael] Interface saved and closed!");
             Logging.Write(Colors.White, "------------------------------------------");
             Close();
+
+            //TreeRoot.Start();
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
         }
     }
 }

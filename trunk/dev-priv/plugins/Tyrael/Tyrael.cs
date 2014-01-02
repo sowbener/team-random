@@ -1,4 +1,5 @@
-﻿using CommonBehaviors.Actions;
+﻿using System.Threading;
+using CommonBehaviors.Actions;
 using Styx;
 using Styx.Common;
 using Styx.CommonBot;
@@ -17,12 +18,11 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 5, 2);
+        public static readonly Version Revision = new Version(5, 5, 3);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         private static Composite _root;
         private static PulseFlags _pulseFlags;
-
 
         #region Overrides
         public override string Name
@@ -37,7 +37,24 @@ namespace Tyrael
 
         public override Form ConfigurationForm
         {
-            get { return new TyraelInterface(); }
+            get
+            {
+                try
+                {
+                    var guiThread = new Thread(StartGui);
+                    guiThread.Start();
+                }
+                catch (Exception ex)
+                {
+                    Logging.WriteDiagnostic(Colors.Red, "[Tyrael] GUI failed to start: {0}", ex);
+                }
+                return new TyraelInterface();
+            }
+        }
+
+        internal static void StartGui()
+        {
+            new TyraelInterface().ShowDialog();
         }
 
         public override Composite Root

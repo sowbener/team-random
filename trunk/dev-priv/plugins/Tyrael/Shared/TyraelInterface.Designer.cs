@@ -244,7 +244,6 @@
             // checkMinify
             // 
             this.checkMinify.AutoSize = true;
-            this.checkMinify.Enabled = false;
             this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkMinify.Location = new System.Drawing.Point(10, 83);
