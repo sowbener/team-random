@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -39,7 +38,6 @@ namespace FuryUnleashed
         public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreCombatSelector()); } }
 
         private Composite _combatBehavior, _preCombatBehavior;
-        private static Form Interface { get; set; }
 
         #region Publics
         public override WoWClass Class
@@ -93,15 +91,7 @@ namespace FuryUnleashed
 
         public override void OnButtonPress()
         {
-            try
-            {
-                var guiThread = new Thread(StartGui);
-                guiThread.Start();
-            }
-            catch (Exception ex)
-            {
-                Logger.DiagLogFb("FU: Failed to start GUI: {0}", ex);
-            }
+            new Interface().ShowDialog();
         }
 
         public override void ShutDown()
@@ -111,13 +101,6 @@ namespace FuryUnleashed
         #endregion
 
         #region Internals
-        internal static void StartGui()
-        {
-            //new Interface().ShowDialog();
-            if (Interface == null || Interface.IsDisposed || Interface.Disposing) Interface = new Interface();
-            if (Interface != null || Interface.IsDisposed) Interface.ShowDialog();
-        }
-
         internal void Unleash()
         {
             Logger.CombatLogWh("------------------------------------------");
