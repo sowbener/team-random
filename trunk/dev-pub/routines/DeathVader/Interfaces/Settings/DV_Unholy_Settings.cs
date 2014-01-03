@@ -35,7 +35,7 @@ namespace DeathVader.Interfaces.Settings
         public bool EnablePowerDots { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Unholy - Ability Options")]
         [DisplayName("Raise Dead")]
         [Description("Select the usage of Auto-Raise Dead")]

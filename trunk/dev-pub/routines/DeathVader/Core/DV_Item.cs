@@ -22,7 +22,7 @@ namespace DeathVader.Core
             if (string.IsNullOrEmpty(itemSpell))
                 return false;
 
-            return item.Usable && item.Cooldown <= 0;
+            return item.Usable && item.Cooldown == 0;
         }
 
         private static void UseItem(WoWItem item)

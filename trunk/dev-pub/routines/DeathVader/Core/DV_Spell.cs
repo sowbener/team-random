@@ -471,6 +471,16 @@ namespace DeathVader.Core
 
         #region Aura Tracking & Caching
 
+        public static uint GetAuraStack(WoWUnit unit, int spellId)
+        {
+            if (unit != null)
+            {
+                var wantedAura = Me.GetAllAuras().FirstOrDefault(a => a.SpellId == spellId && a.StackCount > 0 && a.CreatorGuid == Me.Guid);
+                return wantedAura != null ? wantedAura.StackCount : 0;
+            }
+            return 0;
+        }
+
         public static WoWAura GetAuraFromName(this WoWUnit unit, string aura, bool isMyAura = false)
         {
             return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.TimeLeft > TimeSpan.Zero);
