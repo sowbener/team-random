@@ -340,7 +340,7 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
-        /// HasAura extention - String
+        /// HasAura extension - String
         /// </summary>
         /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
         /// <param name="auraname">Full Auraname</param>
@@ -348,8 +348,9 @@ namespace FuryUnleashed.Core
         /// <param name="msuLeft">Timeleft on the Aura</param>
         /// <param name="isFromMe">True, False - Is aura made by Me</param>
         /// <param name="cached">True, False - Use cached aura's</param>
+        /// <param name="nonlinq">Avoids using LINQ query to retrieve aura, use this is aura retrieval fails for whatever reason - !!!Not possible to check anything but aura!!!</param>
         /// <returns></returns>
-        public static bool HasAura(WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
+        public static bool HasAura(WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true, bool nonlinq = false)
         {
             using (new PerformanceLogger("HasAura-String"))
             {
@@ -358,6 +359,11 @@ namespace FuryUnleashed.Core
                     if (!Unit.IsViable(unit)) return false;
 
                     WoWAura auraresult = null;
+
+                    if (nonlinq)
+                    {
+                        unit.HasAura(auraname);
+                    }
 
                     if (!cached)
                     {
@@ -385,7 +391,7 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
-        /// HasAura extention - ID
+        /// HasAura extension - ID
         /// </summary>
         /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
         /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
@@ -393,8 +399,9 @@ namespace FuryUnleashed.Core
         /// <param name="msuLeft">Timeleft on the Aura</param>
         /// <param name="isFromMe">True, False - Is aura made by Me</param>
         /// <param name="cached">True, False - Use cached aura's</param>
+        /// <param name="nonlinq">Avoids using LINQ query to retrieve aura, use this is aura retrieval fails for whatever reason - !!!Not possible to check anything but aura!!!</param>
         /// <returns></returns>
-        public static bool HasAura(WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true)
+        public static bool HasAura(WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true, bool nonlinq = false)
         {
             using (new PerformanceLogger("HasAura-Int"))
             {
@@ -403,6 +410,11 @@ namespace FuryUnleashed.Core
                     if (!Unit.IsViable(unit)) return false;
 
                     WoWAura auraresult = null;
+
+                    if (nonlinq)
+                    {
+                        unit.HasAura(auraId);
+                    }
 
                     if (!cached)
                     {

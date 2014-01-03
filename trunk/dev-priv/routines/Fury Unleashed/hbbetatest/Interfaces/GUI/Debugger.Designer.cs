@@ -46,7 +46,7 @@
             this.ısActiveDataGridViewCheckBoxColumnMyAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ısPassiveDataGridViewCheckBoxColumnMyAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.myaurasbutton = new System.Windows.Forms.Button();
+            this.myaurasbutton1 = new System.Windows.Forms.Button();
             this.targetaurastab = new System.Windows.Forms.TabPage();
             this.mytargetaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,7 +64,7 @@
             this.ısActiveDataGridViewCheckBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.targetaurasbutton = new System.Windows.Forms.Button();
+            this.targetaurasbutton1 = new System.Windows.Forms.Button();
             this.mycachedaurastab = new System.Windows.Forms.TabPage();
             this.mycachedaurasbutton = new System.Windows.Forms.Button();
             this.mycachedaurasdatagrid = new System.Windows.Forms.DataGridView();
@@ -101,6 +101,12 @@
             this.ısActiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ısPassiveDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.cachedattackableunitslisttab = new System.Windows.Forms.TabPage();
+            this.cachedattackableunitsbutton = new System.Windows.Forms.Button();
+            this.cachedattackableunitsdatagrid = new System.Windows.Forms.DataGridView();
+            this.cachedraidmemberslisttab = new System.Windows.Forms.TabPage();
+            this.cachedraidmembersbutton = new System.Windows.Forms.Button();
+            this.cachedraidmembersdatagrid = new System.Windows.Forms.DataGridView();
             this.otheroptionstab = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -117,12 +123,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.cachedattackableunitslisttab = new System.Windows.Forms.TabPage();
-            this.cachedraidmemberslisttab = new System.Windows.Forms.TabPage();
-            this.cachedattackableunitsdatagrid = new System.Windows.Forms.DataGridView();
-            this.cachedraidmembersdatagrid = new System.Windows.Forms.DataGridView();
-            this.cachedraidmembersbutton = new System.Windows.Forms.Button();
-            this.cachedattackableunitsbutton = new System.Windows.Forms.Button();
+            this.myaurasbutton2 = new System.Windows.Forms.Button();
+            this.targetaurasbutton2 = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -132,14 +134,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).BeginInit();
             this.targetcachedaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).BeginInit();
+            this.cachedattackableunitslisttab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedattackableunitsdatagrid)).BeginInit();
+            this.cachedraidmemberslisttab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedraidmembersdatagrid)).BeginInit();
             this.otheroptionstab.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.cachedattackableunitslisttab.SuspendLayout();
-            this.cachedraidmemberslisttab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cachedattackableunitsdatagrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cachedraidmembersdatagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // Tabs
@@ -160,8 +162,9 @@
             // 
             // myaurastab
             // 
+            this.myaurastab.Controls.Add(this.myaurasbutton2);
             this.myaurastab.Controls.Add(this.myaurasdatagrid);
-            this.myaurastab.Controls.Add(this.myaurasbutton);
+            this.myaurastab.Controls.Add(this.myaurasbutton1);
             this.myaurastab.Location = new System.Drawing.Point(4, 25);
             this.myaurastab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.myaurastab.Name = "myaurastab";
@@ -312,21 +315,22 @@
             this.cancellableDataGridViewCheckBoxColumnMyAuras.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.cancellableDataGridViewCheckBoxColumnMyAuras.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // myaurasbutton
+            // myaurasbutton1
             // 
-            this.myaurasbutton.Location = new System.Drawing.Point(7, 7);
-            this.myaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.myaurasbutton.Name = "myaurasbutton";
-            this.myaurasbutton.Size = new System.Drawing.Size(350, 28);
-            this.myaurasbutton.TabIndex = 0;
-            this.myaurasbutton.Text = "Update my Aura\'s";
-            this.myaurasbutton.UseVisualStyleBackColor = true;
-            this.myaurasbutton.Click += new System.EventHandler(this.myaurasbutton_Click);
+            this.myaurasbutton1.Location = new System.Drawing.Point(7, 7);
+            this.myaurasbutton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.myaurasbutton1.Name = "myaurasbutton1";
+            this.myaurasbutton1.Size = new System.Drawing.Size(350, 28);
+            this.myaurasbutton1.TabIndex = 0;
+            this.myaurasbutton1.Text = "Update my Aura\'s (Me.Auras)";
+            this.myaurasbutton1.UseVisualStyleBackColor = true;
+            this.myaurasbutton1.Click += new System.EventHandler(this.myaurasbutton_Click);
             // 
             // targetaurastab
             // 
+            this.targetaurastab.Controls.Add(this.targetaurasbutton2);
             this.targetaurastab.Controls.Add(this.mytargetaurasdatagrid);
-            this.targetaurastab.Controls.Add(this.targetaurasbutton);
+            this.targetaurastab.Controls.Add(this.targetaurasbutton1);
             this.targetaurastab.Location = new System.Drawing.Point(4, 25);
             this.targetaurastab.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.targetaurastab.Name = "targetaurastab";
@@ -477,16 +481,16 @@
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.cancellableDataGridViewCheckBoxColumnMyTargetAuras.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // targetaurasbutton
+            // targetaurasbutton1
             // 
-            this.targetaurasbutton.Location = new System.Drawing.Point(7, 7);
-            this.targetaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.targetaurasbutton.Name = "targetaurasbutton";
-            this.targetaurasbutton.Size = new System.Drawing.Size(350, 28);
-            this.targetaurasbutton.TabIndex = 1;
-            this.targetaurasbutton.Text = "Update my Target\'s Aura\'s";
-            this.targetaurasbutton.UseVisualStyleBackColor = true;
-            this.targetaurasbutton.Click += new System.EventHandler(this.targetaurasbutton_Click);
+            this.targetaurasbutton1.Location = new System.Drawing.Point(7, 7);
+            this.targetaurasbutton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.targetaurasbutton1.Name = "targetaurasbutton1";
+            this.targetaurasbutton1.Size = new System.Drawing.Size(350, 28);
+            this.targetaurasbutton1.TabIndex = 1;
+            this.targetaurasbutton1.Text = "Update my Target\'s Aura\'s (Me.CurrentTarget.Auras)";
+            this.targetaurasbutton1.UseVisualStyleBackColor = true;
+            this.targetaurasbutton1.Click += new System.EventHandler(this.targetaurasbutton_Click);
             // 
             // mycachedaurastab
             // 
@@ -818,6 +822,73 @@
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.cancellableDataGridViewCheckBoxColumnMyTargetCachedAuras.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // cachedattackableunitslisttab
+            // 
+            this.cachedattackableunitslisttab.Controls.Add(this.cachedattackableunitsbutton);
+            this.cachedattackableunitslisttab.Controls.Add(this.cachedattackableunitsdatagrid);
+            this.cachedattackableunitslisttab.Location = new System.Drawing.Point(4, 25);
+            this.cachedattackableunitslisttab.Name = "cachedattackableunitslisttab";
+            this.cachedattackableunitslisttab.Padding = new System.Windows.Forms.Padding(3);
+            this.cachedattackableunitslisttab.Size = new System.Drawing.Size(1367, 542);
+            this.cachedattackableunitslisttab.TabIndex = 5;
+            this.cachedattackableunitslisttab.Text = "Cached Attackable Units";
+            this.cachedattackableunitslisttab.UseVisualStyleBackColor = true;
+            // 
+            // cachedattackableunitsbutton
+            // 
+            this.cachedattackableunitsbutton.Location = new System.Drawing.Point(7, 7);
+            this.cachedattackableunitsbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedattackableunitsbutton.Name = "cachedattackableunitsbutton";
+            this.cachedattackableunitsbutton.Size = new System.Drawing.Size(350, 28);
+            this.cachedattackableunitsbutton.TabIndex = 4;
+            this.cachedattackableunitsbutton.Text = "Update Cached Attackable Units list";
+            this.cachedattackableunitsbutton.UseVisualStyleBackColor = true;
+            this.cachedattackableunitsbutton.Click += new System.EventHandler(this.cachedattackableunitsbutton_Click);
+            // 
+            // cachedattackableunitsdatagrid
+            // 
+            this.cachedattackableunitsdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.cachedattackableunitsdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cachedattackableunitsdatagrid.EnableHeadersVisualStyles = false;
+            this.cachedattackableunitsdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.cachedattackableunitsdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedattackableunitsdatagrid.Name = "cachedattackableunitsdatagrid";
+            this.cachedattackableunitsdatagrid.Size = new System.Drawing.Size(1352, 489);
+            this.cachedattackableunitsdatagrid.TabIndex = 0;
+            // 
+            // cachedraidmemberslisttab
+            // 
+            this.cachedraidmemberslisttab.Controls.Add(this.cachedraidmembersbutton);
+            this.cachedraidmemberslisttab.Controls.Add(this.cachedraidmembersdatagrid);
+            this.cachedraidmemberslisttab.Location = new System.Drawing.Point(4, 25);
+            this.cachedraidmemberslisttab.Name = "cachedraidmemberslisttab";
+            this.cachedraidmemberslisttab.Size = new System.Drawing.Size(1367, 542);
+            this.cachedraidmemberslisttab.TabIndex = 6;
+            this.cachedraidmemberslisttab.Text = "Cached Raid Members";
+            this.cachedraidmemberslisttab.UseVisualStyleBackColor = true;
+            // 
+            // cachedraidmembersbutton
+            // 
+            this.cachedraidmembersbutton.Location = new System.Drawing.Point(7, 7);
+            this.cachedraidmembersbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedraidmembersbutton.Name = "cachedraidmembersbutton";
+            this.cachedraidmembersbutton.Size = new System.Drawing.Size(350, 28);
+            this.cachedraidmembersbutton.TabIndex = 4;
+            this.cachedraidmembersbutton.Text = "Update Cached Raid Members list";
+            this.cachedraidmembersbutton.UseVisualStyleBackColor = true;
+            this.cachedraidmembersbutton.Click += new System.EventHandler(this.cachedraidmembersbutton_Click);
+            // 
+            // cachedraidmembersdatagrid
+            // 
+            this.cachedraidmembersdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.cachedraidmembersdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cachedraidmembersdatagrid.EnableHeadersVisualStyles = false;
+            this.cachedraidmembersdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.cachedraidmembersdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cachedraidmembersdatagrid.Name = "cachedraidmembersdatagrid";
+            this.cachedraidmembersdatagrid.Size = new System.Drawing.Size(1352, 489);
+            this.cachedraidmembersdatagrid.TabIndex = 1;
+            // 
             // otheroptionstab
             // 
             this.otheroptionstab.Controls.Add(this.panel3);
@@ -990,72 +1061,27 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Arms";
             // 
-            // cachedattackableunitslisttab
+            // myaurasbutton2
             // 
-            this.cachedattackableunitslisttab.Controls.Add(this.cachedattackableunitsbutton);
-            this.cachedattackableunitslisttab.Controls.Add(this.cachedattackableunitsdatagrid);
-            this.cachedattackableunitslisttab.Location = new System.Drawing.Point(4, 25);
-            this.cachedattackableunitslisttab.Name = "cachedattackableunitslisttab";
-            this.cachedattackableunitslisttab.Padding = new System.Windows.Forms.Padding(3);
-            this.cachedattackableunitslisttab.Size = new System.Drawing.Size(1367, 542);
-            this.cachedattackableunitslisttab.TabIndex = 5;
-            this.cachedattackableunitslisttab.Text = "Cached Attackable Units";
-            this.cachedattackableunitslisttab.UseVisualStyleBackColor = true;
+            this.myaurasbutton2.Location = new System.Drawing.Point(1009, 8);
+            this.myaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.myaurasbutton2.Name = "myaurasbutton2";
+            this.myaurasbutton2.Size = new System.Drawing.Size(350, 28);
+            this.myaurasbutton2.TabIndex = 2;
+            this.myaurasbutton2.Text = "Update my Aura\'s (GetAllAuras())";
+            this.myaurasbutton2.UseVisualStyleBackColor = true;
+            this.myaurasbutton2.Click += new System.EventHandler(this.myaurasbutton2_Click);
             // 
-            // cachedraidmemberslisttab
+            // targetaurasbutton2
             // 
-            this.cachedraidmemberslisttab.Controls.Add(this.cachedraidmembersbutton);
-            this.cachedraidmemberslisttab.Controls.Add(this.cachedraidmembersdatagrid);
-            this.cachedraidmemberslisttab.Location = new System.Drawing.Point(4, 25);
-            this.cachedraidmemberslisttab.Name = "cachedraidmemberslisttab";
-            this.cachedraidmemberslisttab.Size = new System.Drawing.Size(1367, 542);
-            this.cachedraidmemberslisttab.TabIndex = 6;
-            this.cachedraidmemberslisttab.Text = "Cached Raid Members";
-            this.cachedraidmemberslisttab.UseVisualStyleBackColor = true;
-            // 
-            // cachedattackableunitsdatagrid
-            // 
-            this.cachedattackableunitsdatagrid.BackgroundColor = System.Drawing.Color.White;
-            this.cachedattackableunitsdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.cachedattackableunitsdatagrid.EnableHeadersVisualStyles = false;
-            this.cachedattackableunitsdatagrid.Location = new System.Drawing.Point(7, 43);
-            this.cachedattackableunitsdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cachedattackableunitsdatagrid.Name = "cachedattackableunitsdatagrid";
-            this.cachedattackableunitsdatagrid.Size = new System.Drawing.Size(1352, 489);
-            this.cachedattackableunitsdatagrid.TabIndex = 0;
-            // 
-            // cachedraidmembersdatagrid
-            // 
-            this.cachedraidmembersdatagrid.BackgroundColor = System.Drawing.Color.White;
-            this.cachedraidmembersdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.cachedraidmembersdatagrid.EnableHeadersVisualStyles = false;
-            this.cachedraidmembersdatagrid.Location = new System.Drawing.Point(7, 43);
-            this.cachedraidmembersdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cachedraidmembersdatagrid.Name = "cachedraidmembersdatagrid";
-            this.cachedraidmembersdatagrid.Size = new System.Drawing.Size(1352, 489);
-            this.cachedraidmembersdatagrid.TabIndex = 1;
-            // 
-            // cachedraidmembersbutton
-            // 
-            this.cachedraidmembersbutton.Location = new System.Drawing.Point(7, 7);
-            this.cachedraidmembersbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cachedraidmembersbutton.Name = "cachedraidmembersbutton";
-            this.cachedraidmembersbutton.Size = new System.Drawing.Size(350, 28);
-            this.cachedraidmembersbutton.TabIndex = 4;
-            this.cachedraidmembersbutton.Text = "Update Cached Raid Members list";
-            this.cachedraidmembersbutton.UseVisualStyleBackColor = true;
-            this.cachedraidmembersbutton.Click += new System.EventHandler(this.cachedraidmembersbutton_Click);
-            // 
-            // cachedattackableunitsbutton
-            // 
-            this.cachedattackableunitsbutton.Location = new System.Drawing.Point(7, 7);
-            this.cachedattackableunitsbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cachedattackableunitsbutton.Name = "cachedattackableunitsbutton";
-            this.cachedattackableunitsbutton.Size = new System.Drawing.Size(350, 28);
-            this.cachedattackableunitsbutton.TabIndex = 4;
-            this.cachedattackableunitsbutton.Text = "Update Cached Attackable Units list";
-            this.cachedattackableunitsbutton.UseVisualStyleBackColor = true;
-            this.cachedattackableunitsbutton.Click += new System.EventHandler(this.cachedattackableunitsbutton_Click);
+            this.targetaurasbutton2.Location = new System.Drawing.Point(1009, 8);
+            this.targetaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.targetaurasbutton2.Name = "targetaurasbutton2";
+            this.targetaurasbutton2.Size = new System.Drawing.Size(350, 28);
+            this.targetaurasbutton2.TabIndex = 3;
+            this.targetaurasbutton2.Text = "Update my Target\'s Aura\'s (Me.CurrentTarget.Auras)";
+            this.targetaurasbutton2.UseVisualStyleBackColor = true;
+            this.targetaurasbutton2.Click += new System.EventHandler(this.targetaurasbutton2_Click);
             // 
             // DebuggerGui
             // 
@@ -1077,6 +1103,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.mycachedaurasdatagrid)).EndInit();
             this.targetcachedaurastab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mytargetcachedaurasdatagrid)).EndInit();
+            this.cachedattackableunitslisttab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cachedattackableunitsdatagrid)).EndInit();
+            this.cachedraidmemberslisttab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cachedraidmembersdatagrid)).EndInit();
             this.otheroptionstab.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
@@ -1084,10 +1114,6 @@
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.cachedattackableunitslisttab.ResumeLayout(false);
-            this.cachedraidmemberslisttab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cachedattackableunitsdatagrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cachedraidmembersdatagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1097,10 +1123,10 @@
         private System.Windows.Forms.TabControl Tabs;
         private System.Windows.Forms.TabPage targetaurastab;
         private System.Windows.Forms.TabPage myaurastab;
-        private System.Windows.Forms.Button myaurasbutton;
+        private System.Windows.Forms.Button myaurasbutton1;
         private System.Windows.Forms.DataGridView myaurasdatagrid;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Button targetaurasbutton;
+        private System.Windows.Forms.Button targetaurasbutton1;
         private System.Windows.Forms.DataGridView mytargetaurasdatagrid;
         private System.Windows.Forms.TabPage mycachedaurastab;
         private System.Windows.Forms.TabPage targetcachedaurastab;
@@ -1193,5 +1219,7 @@
         private System.Windows.Forms.DataGridView cachedraidmembersdatagrid;
         private System.Windows.Forms.Button cachedattackableunitsbutton;
         private System.Windows.Forms.Button cachedraidmembersbutton;
+        private System.Windows.Forms.Button myaurasbutton2;
+        private System.Windows.Forms.Button targetaurasbutton2;
     }
 }

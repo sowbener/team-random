@@ -27,11 +27,27 @@ namespace FuryUnleashed.Interfaces.GUI
             }
         }
 
+        private void UpdateMyAurasLinq()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                myaurasdatagrid.DataSource = StyxWoW.Me.GetAllAuras().OrderBy(a => a.Name).ToList();
+            }
+        }
+
         private void UpdateTargetAuras()
         {
             if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
             {
                 mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.Auras.Values.OrderBy(a => a.Name).ToList();
+            }
+        }
+
+        private void UpdateTargetAurasLinq()
+        {
+            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            {
+                mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.GetAllAuras().OrderBy(a => a.Name).ToList();
             }
         }
 
@@ -128,9 +144,19 @@ namespace FuryUnleashed.Interfaces.GUI
             UpdateMyAuras();
         }
 
+        private void myaurasbutton2_Click(object sender, EventArgs e)
+        {
+            UpdateMyAurasLinq();
+        }
+
         private void targetaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateTargetAuras();
+        }
+
+        private void targetaurasbutton2_Click(object sender, EventArgs e)
+        {
+            UpdateTargetAurasLinq();
         }
 
         private void mycachedaurasbutton_Click(object sender, EventArgs e)
