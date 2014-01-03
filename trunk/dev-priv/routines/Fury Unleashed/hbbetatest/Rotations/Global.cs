@@ -360,10 +360,10 @@ namespace FuryUnleashed.Rotations
             get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier, 0 , 0, false, false, true); }
         }
 
-        internal static bool Test1
-        {
-            get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier, 0, 0, false, false); }
-        }
+        //internal static bool Test1
+        //{
+        //    get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier, 0, 0, false, false); }
+        //}
 
         internal static bool RecklessnessAura
         {

@@ -94,12 +94,13 @@ namespace FuryUnleashed.Core
         /// </summary>
         /// <param name="spellid">ID of the spell to be cast - eg SpellBook.Bloodthirst</param>
         /// <param name="debuffid">ID of the debuff to find on a possible multidot target - eg AuraBook.DeepWounds</param>
-        /// <param name="auratimeleft">Timeleft on the aura in order to refresh it if no unit without the aura is found</param>
-        /// <param name="radius">Radius - 5y</param>
+        /// <param name="auratimeleft">Timeleft on the aura in order to refresh it if no unit without the aura is found - Default 1500ms</param>
+        /// <param name="radius">Radius - Default 5 yards</param>
+        /// <param name="conedegrees">Degrees for the Facing Cone (Me.IsSafelyFacing() check) - Default 160</param>
         /// <param name="reqs">-</param>
         /// <param name="failThrough">This at true continues the tree as it returns a runstatus.failure - Required for chain-casting like popping multiple CD's!</param>
         /// <returns>-</returns>
-        public static Composite MultiDoT(int spellid, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
+        public static Composite MultiDoT(int spellid, int debuffid, int auratimeleft = 1500, double radius = 5, int conedegrees = 160, Selection<bool> reqs = null, bool failThrough = false)
         {
             using (new PerformanceLogger("MultiDoT"))
             {
@@ -107,18 +108,17 @@ namespace FuryUnleashed.Core
                 try
                 {
                     return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null) && Unit.NearbyAttackableUnitsCount > 1,
-                        new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
+                        new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius, conedegrees),
                             new Decorator(ctx => Unit.IsViable(target),
                                 Cast(spellid, on => target, ret => Unit.IsViable(target)))));
                 }
                 catch (Exception ex)
                 {
-                    return new PrioritySelector(
-                        new Action(ret =>
+                    return new Action(ret =>
                         {
                             Logger.DiagLogPu("Exception MultiDot {0}", ex);
                             Logger.DiagLogPu("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
-                        }));
+                        });
                 }
 
             }

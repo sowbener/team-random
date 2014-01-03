@@ -129,12 +129,13 @@ namespace FuryUnleashed.Core
         /// <param name="debuffid">ID of the required debuff - For bloodthirst it's deep wounds.</param>
         /// <param name="auratimeleft">If all units have deep wounds, refresh at how much MS left on aura</param>
         /// <param name="radius">Range - eg 5 yards for Bloodthirst</param>
+        /// <param name="conedegrees">Degrees for the Facing Cone (Me.IsSafelyFacing() check) - Default 160</param>
         /// <returns></returns>
-        internal static WoWUnit MultiDotUnit(int debuffid, int auratimeleft, double radius)
+        internal static WoWUnit MultiDotUnit(int debuffid, int auratimeleft, double radius, int conedegrees)
         {
-            var selectableunits = NearbyAttackableUnits(StyxWoW.Me.Location, radius).Where(x => IsViable(x) && !x.IsPlayer && Me.IsSafelyFacing(x, 160)).OrderByDescending(x => x.HealthPercent);
-            var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, 160) && !Spell.HasAura(x, debuffid)) ??
-                          selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, 160) && Spell.HasAura(x, debuffid, 0, auratimeleft));
+            var selectableunits = NearbyAttackableUnits(StyxWoW.Me.Location, radius).Where(x => IsViable(x) && !x.IsPlayer && Me.IsSafelyFacing(x, conedegrees)).OrderByDescending(x => x.HealthPercent);
+            var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, conedegrees) && !Spell.HasAura(x, debuffid)) ??
+                          selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, conedegrees) && Spell.HasAura(x, debuffid, 0, auratimeleft));
 
             return dotunit;
         }
@@ -148,6 +149,7 @@ namespace FuryUnleashed.Core
             using (new PerformanceLogger("VigilanceTarget"))
             {
                 VigilanceTarget = null;
+
                 var tankOnly = InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank;
 
                 switch (InternalSettings.Instance.General.Vigilance)
