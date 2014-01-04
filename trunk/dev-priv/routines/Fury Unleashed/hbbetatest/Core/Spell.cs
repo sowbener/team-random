@@ -360,9 +360,9 @@ namespace FuryUnleashed.Core
 
                     WoWAura auraresult = null;
 
-                    if (nonlinq && unit.HasAura(auraname))
+                    if (nonlinq)
                     {
-                        return true;
+                        if (unit.HasAura(auraname)) return true;
                     }
 
                     if (!cached)
@@ -411,9 +411,9 @@ namespace FuryUnleashed.Core
 
                     WoWAura auraresult = null;
 
-                    if (nonlinq && unit.HasAura(auraId))
+                    if (nonlinq)
                     {
-                        return true;
+                        if (unit.HasAura(auraId)) return true;
                     }
 
                     if (!cached)

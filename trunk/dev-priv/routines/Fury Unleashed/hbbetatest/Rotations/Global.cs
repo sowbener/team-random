@@ -29,7 +29,7 @@ namespace FuryUnleashed.Rotations
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
-                //new Action(delegate { Logger.CombatLogWh("Galahkras Trinket: {0}", ReadinessAuraTest); return RunStatus.Failure; }),
+                //new Action(delegate { Logger.CombatLogWh("Galahkras Trinket: {0}", ReadinessAura); return RunStatus.Failure; }),
                 new Switch<WoWSpec>(ret => Me.Specialization,
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
