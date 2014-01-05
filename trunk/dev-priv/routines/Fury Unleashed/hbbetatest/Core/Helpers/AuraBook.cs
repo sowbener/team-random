@@ -21,7 +21,7 @@
                             Hamstring = 1715,
                             Heroism = 32182,
                             LastStand = 12975,
-                            MeatCleaver = 85739,
+                            MeatCleaver = 85739, // Confirmed - Works with LINQ
                             MortalWounds = 115804,
                             Outrage = 146245, // Evil Eye of Galakras trinket Aura - Multi-ID ...
                             RagingBlow = 131116,
