@@ -204,22 +204,12 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PauseKeyChoice = (Keys)GetComboBoxEnum(comboPauseKey);
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private void ButtonLogging()
         {
-            TreeRoot.Stop();
-            
-            GlobalSettings.Instance.Save();
-            TyraelSettings.Instance.Save();
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
             Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.ChatOutput 
-                    ? "[Tyrael] ChatOutput enabled!" 
+                TyraelSettings.Instance.ChatOutput
+                    ? "[Tyrael] ChatOutput enabled!"
                     : "[Tyrael] ChatOutput disabled!");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ClickToMove
@@ -242,19 +232,72 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Plugins are enabled!"
                     : "[Tyrael] Plugins are disabled!");
 
-            Logging.Write(Colors.DodgerBlue, 
+            Logging.Write(Colors.DodgerBlue,
                     "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
 
             if (TpsChanges)
-            Logging.Write(Colors.DodgerBlue,
-                    "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
+                Logging.Write(Colors.DodgerBlue,
+                        "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
 
-            Logging.Write(Colors.DodgerBlue, 
+            Logging.Write(Colors.DodgerBlue,
                     "[Tyrael] Interface saved and closed!");
             Logging.Write(Colors.White, "------------------------------------------");
-            Close();
+        }
 
-            TreeRoot.Start();
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void slowbutton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.TicksPerSecond = 15;
+            GlobalSettings.Instance.UseFrameLock = false;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void normalbutton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.TicksPerSecond = 30;
+            GlobalSettings.Instance.UseFrameLock = true;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void extremebutton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.TicksPerSecond = 60;
+            GlobalSettings.Instance.UseFrameLock = true;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            Close();
         }
     }
 }

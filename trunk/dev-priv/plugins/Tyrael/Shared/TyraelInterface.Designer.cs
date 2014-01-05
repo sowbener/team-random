@@ -45,11 +45,16 @@
             this.checkMinify = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.extremebutton = new System.Windows.Forms.Button();
+            this.normalbutton = new System.Windows.Forms.Button();
+            this.slowbutton = new System.Windows.Forms.Button();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // SettingsPanel
@@ -199,7 +204,7 @@
             this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveButton.Location = new System.Drawing.Point(374, 229);
+            this.SaveButton.Location = new System.Drawing.Point(374, 263);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(135, 22);
             this.SaveButton.TabIndex = 0;
@@ -235,7 +240,7 @@
             this.TpsLabel.BackColor = System.Drawing.Color.Transparent;
             this.TpsLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TpsLabel.ForeColor = System.Drawing.Color.White;
-            this.TpsLabel.Location = new System.Drawing.Point(9, 231);
+            this.TpsLabel.Location = new System.Drawing.Point(9, 265);
             this.TpsLabel.Name = "TpsLabel";
             this.TpsLabel.Size = new System.Drawing.Size(43, 17);
             this.TpsLabel.TabIndex = 1;
@@ -244,6 +249,7 @@
             // checkMinify
             // 
             this.checkMinify.AutoSize = true;
+            this.checkMinify.Enabled = false;
             this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkMinify.Location = new System.Drawing.Point(10, 83);
@@ -281,13 +287,70 @@
             this.panel2.Size = new System.Drawing.Size(252, 130);
             this.panel2.TabIndex = 11;
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.slowbutton);
+            this.panel3.Controls.Add(this.normalbutton);
+            this.panel3.Controls.Add(this.extremebutton);
+            this.panel3.Location = new System.Drawing.Point(2, 229);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(507, 32);
+            this.panel3.TabIndex = 12;
+            // 
+            // extremebutton
+            // 
+            this.extremebutton.BackColor = System.Drawing.Color.White;
+            this.extremebutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.extremebutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.extremebutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.extremebutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.extremebutton.Location = new System.Drawing.Point(342, 3);
+            this.extremebutton.Name = "extremebutton";
+            this.extremebutton.Size = new System.Drawing.Size(162, 26);
+            this.extremebutton.TabIndex = 13;
+            this.extremebutton.Text = "Extreme Performance";
+            this.extremebutton.UseVisualStyleBackColor = false;
+            this.extremebutton.Click += new System.EventHandler(this.extremebutton_Click);
+            // 
+            // normalbutton
+            // 
+            this.normalbutton.BackColor = System.Drawing.Color.White;
+            this.normalbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.normalbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.normalbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.normalbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.normalbutton.Location = new System.Drawing.Point(173, 3);
+            this.normalbutton.Name = "normalbutton";
+            this.normalbutton.Size = new System.Drawing.Size(162, 26);
+            this.normalbutton.TabIndex = 14;
+            this.normalbutton.Text = "Normal Performance";
+            this.normalbutton.UseVisualStyleBackColor = false;
+            this.normalbutton.Click += new System.EventHandler(this.normalbutton_Click);
+            // 
+            // slowbutton
+            // 
+            this.slowbutton.BackColor = System.Drawing.Color.White;
+            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.Location = new System.Drawing.Point(3, 3);
+            this.slowbutton.Name = "slowbutton";
+            this.slowbutton.Size = new System.Drawing.Size(162, 26);
+            this.slowbutton.TabIndex = 14;
+            this.slowbutton.Text = "Slow Performance";
+            this.slowbutton.UseVisualStyleBackColor = false;
+            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
+            // 
             // TyraelInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(511, 253);
+            this.ClientSize = new System.Drawing.Size(511, 287);
             this.ControlBox = false;
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.SaveButton);
@@ -313,6 +376,7 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -337,6 +401,10 @@
         private System.Windows.Forms.CheckBox checkMinify;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button extremebutton;
+        private System.Windows.Forms.Button slowbutton;
+        private System.Windows.Forms.Button normalbutton;
 
     }
 }
