@@ -145,6 +145,12 @@ namespace Tyrael
 
         private static void SwitchSpec()
         {
+            if (TyraelSettings.Instance.ForceHealingMode)
+            {
+                TyraelSettings.Instance.HealingMode = false;
+                TyraelSettings.Instance.Save();
+            }
+
             if (!TyraelSettings.Instance.ForceHealingMode)
             {
                 switch (Me.Specialization)

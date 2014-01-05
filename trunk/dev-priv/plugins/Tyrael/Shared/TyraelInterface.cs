@@ -268,6 +268,11 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
             ButtonLogging();
 
@@ -281,6 +286,9 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -296,6 +304,9 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
