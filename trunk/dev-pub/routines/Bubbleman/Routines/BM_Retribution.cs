@@ -67,6 +67,7 @@ namespace Bubbleman.Routines
         internal static bool InquisitionUp { get { return Me.HasAura(84963); } }
         internal static double InquisitionTimer { get { return Spell.GetAuraTimeLeft(84963); } }
         internal static bool AnicentPowerDown { get { return !Me.HasAura(86700); } }
+        internal static bool AnicentPowerUp { get { return Me.HasAura(86700); } }
         internal static double AnicentPowerStack { get { return Spell.GetAuraStack(Me, 86700); } }
         internal static bool DivineCrusaderProc { get {  return  Me.HasAura(144595);} }
         internal static bool DivinePurposeProc { get {  return Me.HasAura(86172);} }
@@ -92,7 +93,7 @@ namespace Bubbleman.Routines
         internal static Composite RetributionSt()
         {
             return new PrioritySelector(
-            Spell.Cast("Execution Sentence", ret => InquisitionUp && (AnicentPowerDown || AnicentPowerStack == 12)),
+            Spell.Cast("Execution Sentence", ret => InquisitionUp && ((CooldownWatcher.GetSpellCooldownTimeLeft(86698) > 1000 && AnicentPowerDown) || (AnicentPowerUp && AnicentPowerStack >= 12))),
             Spell.Cast("Lights Hammer", ret => InquisitionUp && (AnicentPowerDown || AnicentPowerStack == 12)),
             Spell.Cast("Divine Storm", ret => DivineCrusaderProc && Lua.HolyPower == 5),
             Spell.Cast("Templar's Verdict", ret => Lua.HolyPower == 5 || (HolyAvengerUp && Lua.HolyPower >= 3)),
