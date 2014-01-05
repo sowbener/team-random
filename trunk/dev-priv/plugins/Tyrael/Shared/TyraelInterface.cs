@@ -125,7 +125,7 @@ namespace Tyrael.Shared
 
         private void checkHealingMode_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Forces the healing mode on or off - Otherwise autoselect on specialization!");
+            TpsLabel.Text = Text = string.Format("Forces healing mode - Otherwise autoselect (Spec)!");
         }
 
         private void checkPlugins_MouseMove(object sender, MouseEventArgs e)
@@ -136,6 +136,26 @@ namespace Tyrael.Shared
         private void checkMinify_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Minify reduces the stress on the PC when executing a routine.");
+        }
+
+        private void slowbutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled.");
+        }
+
+        private void normalbutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled.");
+        }
+
+        private void extremebutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled.");
+        }
+
+        private void SaveButton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Save the current settings and close the interface.");
         }
 
         private readonly int _var = GlobalSettings.Instance.TicksPerSecond;

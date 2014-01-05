@@ -211,6 +211,8 @@
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            this.SaveButton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.SaveButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SaveButton_MouseMove);
             // 
             // NamePanel
             // 
@@ -312,6 +314,8 @@
             this.slowbutton.Text = "Slow Performance";
             this.slowbutton.UseVisualStyleBackColor = false;
             this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
+            this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
             // 
             // normalbutton
             // 
@@ -327,6 +331,8 @@
             this.normalbutton.Text = "Normal Performance";
             this.normalbutton.UseVisualStyleBackColor = false;
             this.normalbutton.Click += new System.EventHandler(this.normalbutton_Click);
+            this.normalbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.normalbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.normalbutton_MouseMove);
             // 
             // extremebutton
             // 
@@ -342,6 +348,8 @@
             this.extremebutton.Text = "Extreme Performance";
             this.extremebutton.UseVisualStyleBackColor = false;
             this.extremebutton.Click += new System.EventHandler(this.extremebutton_Click);
+            this.extremebutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.extremebutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.extremebutton_MouseMove);
             // 
             // TyraelInterface
             // 
