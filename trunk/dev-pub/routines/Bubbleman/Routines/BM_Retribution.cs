@@ -93,6 +93,7 @@ namespace Bubbleman.Routines
         internal static Composite RetributionSt()
         {
             return new PrioritySelector(
+            Spell.Cast("Inquisition", ret => (!InquisitionUp || InquisitionTimer <= 2) && (Lua.HolyPower >= 3 || DivinePurposeProc)),
             Spell.Cast("Execution Sentence", ret => InquisitionUp && ((CooldownWatcher.GetSpellCooldownTimeLeft(86698) > 1000 && AnicentPowerDown) || (AnicentPowerUp && AnicentPowerStack >= 12))),
             Spell.Cast("Lights Hammer", ret => InquisitionUp && (AnicentPowerDown || AnicentPowerStack == 12)),
             Spell.Cast("Divine Storm", ret => DivineCrusaderProc && Lua.HolyPower == 5),
@@ -139,7 +140,6 @@ namespace Bubbleman.Routines
                 //actions+=/guardian_of_ancient_kings,if=buff.inquisition.up
                 //actions+=/holy_avenger,if=talent.holy_avenger.enabled&(buff.inquisition.up&holy_power<=2)
                 //actions+=/use_item,name=gauntlets_of_winged_triumph,if=buff.inquisition.up&(buff.ancient_power.down|buff.ancient_power.stack=12)
-                Spell.Cast("Inquisition", ret => (!InquisitionUp || InquisitionTimer <= 2) && (Lua.HolyPower >= 3 || DivinePurposeProc)),
                 Spell.Cast("Avenging Wrath", ret => InquisitionUp),
                 Spell.Cast("Guardian of Ancient Kings", ret => InquisitionUp),
                 Spell.Cast("Holy Avenger", ret => InquisitionUp && Lua.HolyPower <= 2),
