@@ -46,9 +46,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.extremebutton = new System.Windows.Forms.Button();
-            this.normalbutton = new System.Windows.Forms.Button();
             this.slowbutton = new System.Windows.Forms.Button();
+            this.normalbutton = new System.Windows.Forms.Button();
+            this.extremebutton = new System.Windows.Forms.Button();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
@@ -143,7 +143,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(10, 103);
+            this.checkPlugins.Location = new System.Drawing.Point(10, 83);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -158,11 +158,11 @@
             this.checkHealingMode.AutoSize = true;
             this.checkHealingMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkHealingMode.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkHealingMode.Location = new System.Drawing.Point(10, 43);
+            this.checkHealingMode.Location = new System.Drawing.Point(10, 103);
             this.checkHealingMode.Name = "checkHealingMode";
-            this.checkHealingMode.Size = new System.Drawing.Size(240, 21);
+            this.checkHealingMode.Size = new System.Drawing.Size(231, 21);
             this.checkHealingMode.TabIndex = 3;
-            this.checkHealingMode.Text = "Enable Continuous Healing Mode";
+            this.checkHealingMode.Text = "Force Continuous Healing Mode";
             this.checkHealingMode.UseVisualStyleBackColor = false;
             this.checkHealingMode.CheckedChanged += new System.EventHandler(this.checkHealingMode_CheckedChanged);
             this.checkHealingMode.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -173,7 +173,7 @@
             this.checkFrameLock.AutoSize = true;
             this.checkFrameLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkFrameLock.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkFrameLock.Location = new System.Drawing.Point(10, 63);
+            this.checkFrameLock.Location = new System.Drawing.Point(10, 43);
             this.checkFrameLock.Name = "checkFrameLock";
             this.checkFrameLock.Size = new System.Drawing.Size(139, 21);
             this.checkFrameLock.TabIndex = 2;
@@ -252,7 +252,7 @@
             this.checkMinify.Enabled = false;
             this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkMinify.Location = new System.Drawing.Point(10, 83);
+            this.checkMinify.Location = new System.Drawing.Point(10, 63);
             this.checkMinify.Name = "checkMinify";
             this.checkMinify.Size = new System.Drawing.Size(107, 21);
             this.checkMinify.TabIndex = 9;
@@ -298,20 +298,20 @@
             this.panel3.Size = new System.Drawing.Size(507, 32);
             this.panel3.TabIndex = 12;
             // 
-            // extremebutton
+            // slowbutton
             // 
-            this.extremebutton.BackColor = System.Drawing.Color.White;
-            this.extremebutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.extremebutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.extremebutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.extremebutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.extremebutton.Location = new System.Drawing.Point(342, 3);
-            this.extremebutton.Name = "extremebutton";
-            this.extremebutton.Size = new System.Drawing.Size(162, 26);
-            this.extremebutton.TabIndex = 13;
-            this.extremebutton.Text = "Extreme Performance";
-            this.extremebutton.UseVisualStyleBackColor = false;
-            this.extremebutton.Click += new System.EventHandler(this.extremebutton_Click);
+            this.slowbutton.BackColor = System.Drawing.Color.White;
+            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.Location = new System.Drawing.Point(3, 3);
+            this.slowbutton.Name = "slowbutton";
+            this.slowbutton.Size = new System.Drawing.Size(162, 26);
+            this.slowbutton.TabIndex = 14;
+            this.slowbutton.Text = "Slow Performance";
+            this.slowbutton.UseVisualStyleBackColor = false;
+            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
             // 
             // normalbutton
             // 
@@ -328,20 +328,20 @@
             this.normalbutton.UseVisualStyleBackColor = false;
             this.normalbutton.Click += new System.EventHandler(this.normalbutton_Click);
             // 
-            // slowbutton
+            // extremebutton
             // 
-            this.slowbutton.BackColor = System.Drawing.Color.White;
-            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.slowbutton.Location = new System.Drawing.Point(3, 3);
-            this.slowbutton.Name = "slowbutton";
-            this.slowbutton.Size = new System.Drawing.Size(162, 26);
-            this.slowbutton.TabIndex = 14;
-            this.slowbutton.Text = "Slow Performance";
-            this.slowbutton.UseVisualStyleBackColor = false;
-            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
+            this.extremebutton.BackColor = System.Drawing.Color.White;
+            this.extremebutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.extremebutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.extremebutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.extremebutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.extremebutton.Location = new System.Drawing.Point(342, 3);
+            this.extremebutton.Name = "extremebutton";
+            this.extremebutton.Size = new System.Drawing.Size(162, 26);
+            this.extremebutton.TabIndex = 13;
+            this.extremebutton.Text = "Extreme Performance";
+            this.extremebutton.UseVisualStyleBackColor = false;
+            this.extremebutton.Click += new System.EventHandler(this.extremebutton_Click);
             // 
             // TyraelInterface
             // 

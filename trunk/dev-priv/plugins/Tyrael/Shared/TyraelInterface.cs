@@ -102,7 +102,8 @@ namespace Tyrael.Shared
 
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
-            checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
+            //checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
+            checkHealingMode.Checked = TyraelSettings.Instance.ForceHealingMode;
             checkMinify.Checked = TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
         }
@@ -124,7 +125,7 @@ namespace Tyrael.Shared
 
         private void checkHealingMode_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Use the Pause Hotkeys when this is enabled!");
+            TpsLabel.Text = Text = string.Format("Forces the healing mode on or off - Otherwise autoselect on specialization!");
         }
 
         private void checkPlugins_MouseMove(object sender, MouseEventArgs e)
@@ -181,7 +182,8 @@ namespace Tyrael.Shared
 
         private void checkHealingMode_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.HealingMode = checkHealingMode.Checked;
+            //TyraelSettings.Instance.HealingMode = checkHealingMode.Checked;
+            TyraelSettings.Instance.ForceHealingMode = checkHealingMode.Checked;
         }
 
         private void checkPlugins_CheckedChanged(object sender, EventArgs e)
@@ -220,9 +222,9 @@ namespace Tyrael.Shared
                     ? "[Tyrael] FrameLock enabled!"
                     : "[Tyrael] FrameLock disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.HealingMode
-                    ? "[Tyrael] Continues Healing mode enabled!"
-                    : "[Tyrael] Continues Healing mode disabled!");
+                TyraelSettings.Instance.ForceHealingMode
+                    ? "[Tyrael] Forced Continues Healing mode enabled!"
+                    : "[Tyrael] Forced Continues Healing mode disabled!");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True
                     ? "[Tyrael] Minify Performance Enhancer is enabled!"
@@ -296,6 +298,8 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.Save();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
 
             Close();
         }

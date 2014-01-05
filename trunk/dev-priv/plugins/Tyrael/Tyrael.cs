@@ -140,41 +140,44 @@ namespace Tyrael
 
         private static bool SanityCheckCombat()
         {
-            return TyraelUtilities.IsViable(Me) && (TyraelSettings.Instance.HealingMode || StyxWoW.Me.Combat) && !Me.IsDead;
+            return TyraelUtilities.IsViable(Me) && (TyraelSettings.Instance.HealingMode || TyraelSettings.Instance.ForceHealingMode || StyxWoW.Me.Combat) && !Me.IsDead;
         }
 
         private static void SwitchSpec()
         {
-            switch (Me.Specialization)
+            if (!TyraelSettings.Instance.ForceHealingMode)
             {
-                case WoWSpec.DruidRestoration:
-                    TyraelSettings.Instance.HealingMode = true;
-                    TyraelSettings.Instance.Save();
-                    return;
-                case WoWSpec.MonkMistweaver:
-                    TyraelSettings.Instance.HealingMode = true;
-                    TyraelSettings.Instance.Save();
-                    return;
-                case WoWSpec.PaladinHoly:
-                    TyraelSettings.Instance.HealingMode = true;
-                    TyraelSettings.Instance.Save();
-                    return;
-                case WoWSpec.PriestDiscipline:
-                    TyraelSettings.Instance.HealingMode = true;
-                    TyraelSettings.Instance.Save();
-                    return;
-                case WoWSpec.PriestHoly:
-                    TyraelSettings.Instance.HealingMode = true;
-                    TyraelSettings.Instance.Save();
-                    return;
-                case WoWSpec.ShamanRestoration:
-                    TyraelSettings.Instance.HealingMode = true;
-                    TyraelSettings.Instance.Save();
-                    return;
-                default:
-                    TyraelSettings.Instance.HealingMode = false;
-                    TyraelSettings.Instance.Save();
-                    return;
+                switch (Me.Specialization)
+                {
+                    case WoWSpec.DruidRestoration:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.MonkMistweaver:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.PaladinHoly:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.PriestDiscipline:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.PriestHoly:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.ShamanRestoration:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    default:
+                        TyraelSettings.Instance.HealingMode = false;
+                        TyraelSettings.Instance.Save();
+                        return;
+                }                
             }
         }
         #endregion
