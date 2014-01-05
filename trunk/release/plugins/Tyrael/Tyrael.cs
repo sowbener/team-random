@@ -17,12 +17,11 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 5, 2);
+        public static readonly Version Revision = new Version(5, 5, 5);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         private static Composite _root;
         private static PulseFlags _pulseFlags;
-
 
         #region Overrides
         public override string Name
@@ -52,14 +51,16 @@ namespace Tyrael
                 Updater.CheckForUpdate();
                 TyraelSettings.Instance.Load();
                 ProfileManager.LoadEmpty();
-                GlobalSettings.Instance.LogoutForInactivity = false;
 
+                SwitchSpec();
                 PluginPulsing();
 
                 TyraelUtilities.ClickToMove();
                 TyraelUtilities.StatCounter();
                 TyraelUtilities.RegisterHotkeys();
+
                 TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                GlobalSettings.Instance.LogoutForInactivity = false;
 
                 Logging.Write(Colors.White, "------------------------------------------");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
@@ -139,7 +140,51 @@ namespace Tyrael
 
         private static bool SanityCheckCombat()
         {
-            return TyraelUtilities.IsViable(Me) && (TyraelSettings.Instance.HealingMode || StyxWoW.Me.Combat) && !Me.IsDead;
+            return TyraelUtilities.IsViable(Me) && (TyraelSettings.Instance.HealingMode || TyraelSettings.Instance.ForceHealingMode || StyxWoW.Me.Combat) && !Me.IsDead;
+        }
+
+        private static void SwitchSpec()
+        {
+            if (TyraelSettings.Instance.ForceHealingMode)
+            {
+                TyraelSettings.Instance.HealingMode = false;
+                TyraelSettings.Instance.Save();
+            }
+
+            if (!TyraelSettings.Instance.ForceHealingMode)
+            {
+                switch (Me.Specialization)
+                {
+                    case WoWSpec.DruidRestoration:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.MonkMistweaver:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.PaladinHoly:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.PriestDiscipline:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.PriestHoly:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    case WoWSpec.ShamanRestoration:
+                        TyraelSettings.Instance.HealingMode = true;
+                        TyraelSettings.Instance.Save();
+                        return;
+                    default:
+                        TyraelSettings.Instance.HealingMode = false;
+                        TyraelSettings.Instance.Save();
+                        return;
+                }                
+            }
         }
         #endregion
     }
