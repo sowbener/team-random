@@ -102,7 +102,8 @@ namespace Tyrael.Shared
 
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
-            checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
+            //checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
+            checkHealingMode.Checked = TyraelSettings.Instance.ForceHealingMode;
             checkMinify.Checked = TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
         }
@@ -124,7 +125,7 @@ namespace Tyrael.Shared
 
         private void checkHealingMode_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Use the Pause Hotkeys when this is enabled!");
+            TpsLabel.Text = Text = string.Format("Forces healing mode - Otherwise autoselect (Spec)!");
         }
 
         private void checkPlugins_MouseMove(object sender, MouseEventArgs e)
@@ -135,6 +136,26 @@ namespace Tyrael.Shared
         private void checkMinify_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Minify reduces the stress on the PC when executing a routine.");
+        }
+
+        private void slowbutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled.");
+        }
+
+        private void normalbutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled.");
+        }
+
+        private void extremebutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled.");
+        }
+
+        private void SaveButton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Save the current settings and close the interface.");
         }
 
         private readonly int _var = GlobalSettings.Instance.TicksPerSecond;
@@ -181,7 +202,8 @@ namespace Tyrael.Shared
 
         private void checkHealingMode_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.HealingMode = checkHealingMode.Checked;
+            //TyraelSettings.Instance.HealingMode = checkHealingMode.Checked;
+            TyraelSettings.Instance.ForceHealingMode = checkHealingMode.Checked;
         }
 
         private void checkPlugins_CheckedChanged(object sender, EventArgs e)
@@ -204,20 +226,12 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PauseKeyChoice = (Keys)GetComboBoxEnum(comboPauseKey);
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private void ButtonLogging()
         {
-            GlobalSettings.Instance.Save();
-            TyraelSettings.Instance.Save();
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
             Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.ChatOutput 
-                    ? "[Tyrael] ChatOutput enabled!" 
+                TyraelSettings.Instance.ChatOutput
+                    ? "[Tyrael] ChatOutput enabled!"
                     : "[Tyrael] ChatOutput disabled!");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ClickToMove
@@ -228,9 +242,9 @@ namespace Tyrael.Shared
                     ? "[Tyrael] FrameLock enabled!"
                     : "[Tyrael] FrameLock disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.HealingMode
-                    ? "[Tyrael] Continues Healing mode enabled!"
-                    : "[Tyrael] Continues Healing mode disabled!");
+                TyraelSettings.Instance.ForceHealingMode
+                    ? "[Tyrael] Forced Continues Healing mode enabled!"
+                    : "[Tyrael] Forced Continues Healing mode disabled!");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True
                     ? "[Tyrael] Minify Performance Enhancer is enabled!"
@@ -240,16 +254,84 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Plugins are enabled!"
                     : "[Tyrael] Plugins are disabled!");
 
-            Logging.Write(Colors.DodgerBlue, 
+            Logging.Write(Colors.DodgerBlue,
                     "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
 
             if (TpsChanges)
-            Logging.Write(Colors.DodgerBlue,
-                    "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
+                Logging.Write(Colors.DodgerBlue,
+                        "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
 
-            Logging.Write(Colors.DodgerBlue, 
+            Logging.Write(Colors.DodgerBlue,
                     "[Tyrael] Interface saved and closed!");
             Logging.Write(Colors.White, "------------------------------------------");
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void slowbutton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.TicksPerSecond = 15;
+            GlobalSettings.Instance.UseFrameLock = false;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void normalbutton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.TicksPerSecond = 30;
+            GlobalSettings.Instance.UseFrameLock = true;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void extremebutton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.Instance.TicksPerSecond = 60;
+            GlobalSettings.Instance.UseFrameLock = true;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
             Close();
         }
     }

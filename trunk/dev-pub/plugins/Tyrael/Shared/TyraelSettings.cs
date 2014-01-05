@@ -30,6 +30,9 @@ namespace Tyrael.Shared
         public bool ClickToMove { get; set; }
 
         [Setting, DefaultValue(false)]
+        public bool ForceHealingMode { get; set; }
+
+        [Setting, DefaultValue(false)]
         public bool HealingMode { get; set; }
 
         [Setting, DefaultValue(false)]

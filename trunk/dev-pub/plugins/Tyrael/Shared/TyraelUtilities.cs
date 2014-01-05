@@ -43,7 +43,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
-                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                    TreeRoot.Stop();
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
-                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                    TreeRoot.Start(); TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
                 }
             });
         }
