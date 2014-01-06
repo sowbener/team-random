@@ -350,7 +350,7 @@ namespace FuryUnleashed.Core
         /// <param name="cached">True, False - Use cached aura's</param>
         /// <param name="nonlinq">Avoids using LINQ query to retrieve aura, use this is aura retrieval fails for whatever reason - !!!Not possible to check anything but aura!!!</param>
         /// <returns></returns>
-        public static bool HasAura(WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true, bool nonlinq = false)
+        public static bool HasAura(this WoWUnit unit, string auraname, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true, bool nonlinq = false)
         {
             using (new PerformanceLogger("HasAura-String"))
             {
@@ -367,17 +367,17 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                     }
 
                     if (auraresult == null) return false;
@@ -401,7 +401,7 @@ namespace FuryUnleashed.Core
         /// <param name="cached">True, False - Use cached aura's</param>
         /// <param name="nonlinq">Avoids using LINQ query to retrieve aura, use this is aura retrieval fails for whatever reason - !!!Not possible to check anything but aura!!!</param>
         /// <returns></returns>
-        public static bool HasAura(WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true, bool nonlinq = false)
+        public static bool HasAura(this WoWUnit unit, int auraId, int stacks = 0, int msuLeft = 0, bool isFromMe = true, bool cached = true, bool nonlinq = false)
         {
             using (new PerformanceLogger("HasAura-Int"))
             {
@@ -418,17 +418,17 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                     }
 
                     if (auraresult == null) return false;
@@ -449,7 +449,7 @@ namespace FuryUnleashed.Core
         /// <param name="isFromMe">True, False - Is aura made by Me</param>
         /// <param name="cached">True, False - Use cached aura's</param>
         /// <returns></returns>
-        public static double AuraTimeLeft(WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
+        public static double AuraTimeLeft(this WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
         {
             using (new PerformanceLogger("AuraTimeLeft-Int"))
             {
@@ -459,19 +459,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
                     return 0;
@@ -488,7 +488,7 @@ namespace FuryUnleashed.Core
         /// <param name="isFromMe">True, False - Is aura made by Me</param>
         /// <param name="cached">True, False - Use cached aura's</param>
         /// <returns></returns>
-        public static bool FadingAura(WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
+        public static bool FadingAura(this WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
         {
             using (new PerformanceLogger("FadingAura-Int"))
             {
@@ -498,19 +498,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);                        
                     }
                 }
@@ -528,7 +528,7 @@ namespace FuryUnleashed.Core
         /// <param name="isFromMe">True, False - Is aura made by Me</param>
         /// <param name="cached">True, False - Use cached aura's</param>
         /// <returns></returns>
-        public static bool RemainingAura(WoWUnit unit, int auraId, int remainingtime, bool isFromMe = true, bool cached = true)
+        public static bool RemainingAura(this WoWUnit unit, int auraId, int remainingtime, bool isFromMe = true, bool cached = true)
         {
             using (new PerformanceLogger("RemainingAura-Int"))
             {
@@ -538,19 +538,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Me.Guid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
                 }

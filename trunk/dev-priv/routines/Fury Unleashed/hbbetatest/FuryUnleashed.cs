@@ -39,6 +39,8 @@ namespace FuryUnleashed
 
         private Composite _combatBehavior, _preCombatBehavior;
 
+        internal static ulong MyGuid = 0;
+
         #region Publics
         public override WoWClass Class
         {
@@ -123,6 +125,9 @@ namespace FuryUnleashed
             /* Update TalentManager */
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
+
+            /* Set Characters GUID */
+            MyGuid = Me.Guid;
 
             /* Initialize Various Functions */
             DamageTracker.Initialize();
