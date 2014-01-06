@@ -268,11 +268,12 @@ namespace Tyrael.Shared
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.PluginPulsing();
+
+            GlobalSettings.Instance.Save();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -283,11 +284,14 @@ namespace Tyrael.Shared
 
         private void slowbutton_Click(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.TicksPerSecond = 15;
+            TPSTrackBar.Value = 15;
+
+            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.PluginPulsing();
@@ -301,11 +305,14 @@ namespace Tyrael.Shared
 
         private void normalbutton_Click(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.TicksPerSecond = 30;
+            TPSTrackBar.Value = 30;
+
+            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.PluginPulsing();
@@ -319,11 +326,14 @@ namespace Tyrael.Shared
 
         private void extremebutton_Click(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.TicksPerSecond = 60;
+            TPSTrackBar.Value = 60;
+
+            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.PluginPulsing();
