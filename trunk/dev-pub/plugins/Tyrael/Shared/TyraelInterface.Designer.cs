@@ -143,7 +143,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(10, 83);
+            this.checkPlugins.Location = new System.Drawing.Point(10, 103);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -158,11 +158,11 @@
             this.checkHealingMode.AutoSize = true;
             this.checkHealingMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkHealingMode.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkHealingMode.Location = new System.Drawing.Point(10, 103);
+            this.checkHealingMode.Location = new System.Drawing.Point(10, 43);
             this.checkHealingMode.Name = "checkHealingMode";
-            this.checkHealingMode.Size = new System.Drawing.Size(231, 21);
+            this.checkHealingMode.Size = new System.Drawing.Size(240, 21);
             this.checkHealingMode.TabIndex = 3;
-            this.checkHealingMode.Text = "Force Continuous Healing Mode";
+            this.checkHealingMode.Text = "Enable Continuous Healing Mode";
             this.checkHealingMode.UseVisualStyleBackColor = false;
             this.checkHealingMode.CheckedChanged += new System.EventHandler(this.checkHealingMode_CheckedChanged);
             this.checkHealingMode.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -173,7 +173,7 @@
             this.checkFrameLock.AutoSize = true;
             this.checkFrameLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkFrameLock.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkFrameLock.Location = new System.Drawing.Point(10, 43);
+            this.checkFrameLock.Location = new System.Drawing.Point(10, 63);
             this.checkFrameLock.Name = "checkFrameLock";
             this.checkFrameLock.Size = new System.Drawing.Size(139, 21);
             this.checkFrameLock.TabIndex = 2;
@@ -254,7 +254,7 @@
             this.checkMinify.Enabled = false;
             this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkMinify.Location = new System.Drawing.Point(10, 63);
+            this.checkMinify.Location = new System.Drawing.Point(10, 83);
             this.checkMinify.Name = "checkMinify";
             this.checkMinify.Size = new System.Drawing.Size(107, 21);
             this.checkMinify.TabIndex = 9;
