@@ -40,7 +40,7 @@ namespace FuryUnleashed.Core.Helpers
             switch (args.Event)
             {
                 case "SWING_DAMAGE":
-                    if (args.DestGuid == StyxWoW.Me.Guid)
+                    if (args.DestGuid == Root.MyGuid)
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
@@ -49,7 +49,7 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "RANGE_DAMAGE":
-                    if (args.DestGuid == StyxWoW.Me.Guid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                    if (args.DestGuid == Root.MyGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
@@ -58,7 +58,7 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "SPELL_DAMAGE":
-                    if (args.DestGuid == StyxWoW.Me.Guid)
+                    if (args.DestGuid == Root.MyGuid)
                     {
                         object damage = args.Amount;
 

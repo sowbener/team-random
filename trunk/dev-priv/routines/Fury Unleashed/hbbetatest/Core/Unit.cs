@@ -159,7 +159,7 @@ namespace FuryUnleashed.Core
                     default:
                         VigilanceTarget = (from u in NearbyRaidMembers(StyxWoW.Me.Location, 30)
                                            where IsViable(u)
-                                           where u.Guid != Me.Guid
+                                           where u.Guid != Root.MyGuid
                                            where !tankOnly || u.HasAura(AuraBook.Vengeance)
                                            where u.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
                                            select u).FirstOrDefault();
@@ -313,7 +313,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static bool IsTargettingMe
         {
-            get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; }
+            get { return Me.CurrentTarget.CurrentTargetGuid == Root.MyGuid; }
         }
 
         /// <summary>
