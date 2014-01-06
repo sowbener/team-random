@@ -99,13 +99,13 @@ namespace Tyrael.Shared
             HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
 
             checkFrameLock.Checked = GlobalSettings.Instance.UseFrameLock;
+            checkFrameLock.Checked = TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True;
 
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
             checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
-            //checkHealingMode.Checked = TyraelSettings.Instance.ForceHealingMode;
-            checkMinify.Checked = TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
+            checkUpdater.Checked = TyraelSettings.Instance.CheckAutoUpdate;
         }
 
         private void checkChatOutput_MouseMove(object sender, MouseEventArgs e)
@@ -133,24 +133,24 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Enables plugins in Tyrael.");
         }
 
-        private void checkMinify_MouseMove(object sender, MouseEventArgs e)
+        private void checkUpdater_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Minify reduces the stress on the PC when executing a routine.");
+            TpsLabel.Text = Text = string.Format("Enables automatic updates Tyrael.");
         }
 
         private void slowbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled.");
+            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled - Hardlock disabled.");
         }
 
         private void normalbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled.");
+            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled - Hardlock enabled.");
         }
 
         private void extremebutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled.");
+            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled - Hardlock enabled.");
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
@@ -188,6 +188,7 @@ namespace Tyrael.Shared
         private void checkFrameLock_CheckedChanged(object sender, EventArgs e)
         {
             GlobalSettings.Instance.UseFrameLock = checkFrameLock.Checked;
+            TyraelSettings.Instance.FrameLock = checkFrameLock.Checked ? TyraelUtilities.LockState.True : TyraelUtilities.LockState.False;
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
@@ -210,9 +211,9 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PluginPulsing = checkPlugins.Checked;
         }
 
-        private void checkMinify_CheckedChanged(object sender, EventArgs e)
+        private void checkUpdater_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.Minify = checkMinify.Checked ? TyraelUtilities.Minify.True : TyraelUtilities.Minify.False;
+            TyraelSettings.Instance.CheckAutoUpdate = checkUpdater.Checked;
         }
 
         private void comboModifierKey_SelectedIndexChanged(object sender, EventArgs e)
@@ -237,7 +238,7 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Click to Move enabled!"
                     : "[Tyrael] Click to Move disabled!");
             Logging.Write(Colors.DodgerBlue,
-                GlobalSettings.Instance.UseFrameLock
+                (GlobalSettings.Instance.UseFrameLock || TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True)
                     ? "[Tyrael] FrameLock enabled!"
                     : "[Tyrael] FrameLock disabled!");
             Logging.Write(Colors.DodgerBlue,
@@ -245,13 +246,13 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Continues Healing mode enabled!"
                     : "[Tyrael] Continues Healing mode disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.Minify == TyraelUtilities.Minify.True
-                    ? "[Tyrael] Minify Performance Enhancer is enabled!"
-                    : "[Tyrael] Minify Performance Enhancer is disabled!");
-            Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.PluginPulsing
                     ? "[Tyrael] Plugins are enabled!"
                     : "[Tyrael] Plugins are disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.CheckAutoUpdate
+                    ? "[Tyrael] Updater is enabled!"
+                    : "[Tyrael] Updater is disabled!");
 
             Logging.Write(Colors.DodgerBlue,
                     "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
@@ -287,6 +288,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
+            TyraelSettings.Instance.FrameLock = TyraelUtilities.LockState.False;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -308,6 +310,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
+            TyraelSettings.Instance.FrameLock = TyraelUtilities.LockState.True;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -329,6 +332,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
+            TyraelSettings.Instance.FrameLock = TyraelUtilities.LockState.True;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();

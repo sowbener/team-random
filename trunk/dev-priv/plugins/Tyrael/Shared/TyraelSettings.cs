@@ -26,6 +26,9 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(true)]
         public bool ChatOutput { get; set; }
 
+        [Setting, DefaultValue(false)]
+        public bool CheckAutoUpdate { get; set; }
+
         [Setting, DefaultValue(true)]
         public bool ClickToMove { get; set; }
 
@@ -35,8 +38,8 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(false)]
         public bool PluginPulsing { get; set; }
 
-        [Setting, DefaultValue(TyraelUtilities.Minify.False)]
-        public TyraelUtilities.Minify Minify { get; set; }
+        [Setting, DefaultValue(TyraelUtilities.LockState.True)]
+        public TyraelUtilities.LockState FrameLock { get; set; }
 
         [Setting, DefaultValue(TyraelUtilities.SvnUrl.Release)]
         public TyraelUtilities.SvnUrl SvnUrl { get; set; }
@@ -49,9 +52,6 @@ namespace Tyrael.Shared
         #endregion
 
         #region Manual Settings
-        [Setting, DefaultValue(true)]
-        public bool CheckAutoUpdate { get; set; }
-
         [Setting, DefaultValue(0)]
         public int CurrentRevision { get; set; }
 

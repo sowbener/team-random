@@ -68,17 +68,8 @@ namespace Tyrael.Shared
         }
         #endregion
 
-        #region Click-To-Move (CTM)
-        public static void ClickToMove()
-        {
-            Lua.DoString(TyraelSettings.Instance.ClickToMove
-                ? "SetCVar('autoInteract', '1')"
-                : "SetCVar('autoInteract', '0')");
-        }
-        #endregion
-
         #region Others
-        public enum Minify
+        public enum LockState
         {
             True,
             False
@@ -111,6 +102,15 @@ namespace Tyrael.Shared
             }
             // ReSharper disable once EmptyGeneralCatchClause
             catch { /* Catch all errors */ }
+        }
+        #endregion
+
+        #region Click-To-Move (CTM)
+        public static void ClickToMove()
+        {
+            Lua.DoString(TyraelSettings.Instance.ClickToMove
+                ? "SetCVar('autoInteract', '1')"
+                : "SetCVar('autoInteract', '0')");
         }
         #endregion
     }

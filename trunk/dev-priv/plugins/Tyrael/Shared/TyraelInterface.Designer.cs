@@ -42,7 +42,7 @@
             this.NamePanel = new System.Windows.Forms.Panel();
             this.LabelName = new System.Windows.Forms.Label();
             this.TpsLabel = new System.Windows.Forms.Label();
-            this.checkMinify = new System.Windows.Forms.CheckBox();
+            this.checkUpdater = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -143,7 +143,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(10, 103);
+            this.checkPlugins.Location = new System.Drawing.Point(10, 83);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -248,26 +248,26 @@
             this.TpsLabel.TabIndex = 1;
             this.TpsLabel.Text = "Tyrael";
             // 
-            // checkMinify
+            // checkUpdater
             // 
-            this.checkMinify.AutoSize = true;
-            this.checkMinify.Enabled = false;
-            this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkMinify.Location = new System.Drawing.Point(10, 83);
-            this.checkMinify.Name = "checkMinify";
-            this.checkMinify.Size = new System.Drawing.Size(107, 21);
-            this.checkMinify.TabIndex = 9;
-            this.checkMinify.Text = "Enable Minify";
-            this.checkMinify.UseVisualStyleBackColor = false;
-            this.checkMinify.CheckedChanged += new System.EventHandler(this.checkMinify_CheckedChanged);
-            this.checkMinify.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.checkMinify.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkMinify_MouseMove);
+            this.checkUpdater.AutoSize = true;
+            this.checkUpdater.Enabled = false;
+            this.checkUpdater.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkUpdater.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.checkUpdater.Location = new System.Drawing.Point(10, 103);
+            this.checkUpdater.Name = "checkUpdater";
+            this.checkUpdater.Size = new System.Drawing.Size(124, 21);
+            this.checkUpdater.TabIndex = 9;
+            this.checkUpdater.Text = "Enable Updater";
+            this.checkUpdater.UseVisualStyleBackColor = false;
+            this.checkUpdater.CheckedChanged += new System.EventHandler(this.checkUpdater_CheckedChanged);
+            this.checkUpdater.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.checkUpdater.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkUpdater_MouseMove);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.checkMinify);
+            this.panel1.Controls.Add(this.checkUpdater);
             this.panel1.Controls.Add(this.checkChatOutput);
             this.panel1.Controls.Add(this.checkClicktoMove);
             this.panel1.Controls.Add(this.checkHealingMode);
@@ -406,7 +406,7 @@
         private System.Windows.Forms.ComboBox comboModifierKey;
         private System.Windows.Forms.ComboBox comboPauseKey;
         private System.Windows.Forms.CheckBox checkClicktoMove;
-        private System.Windows.Forms.CheckBox checkMinify;
+        private System.Windows.Forms.CheckBox checkUpdater;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
