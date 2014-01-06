@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Windows.Forms;
-using Styx;
+﻿using Styx;
 using Styx.Common;
 using Styx.Helpers;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Tyrael.Shared
 {
@@ -28,9 +28,6 @@ namespace Tyrael.Shared
 
         [Setting, DefaultValue(true)]
         public bool ClickToMove { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool ForceHealingMode { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool HealingMode { get; set; }

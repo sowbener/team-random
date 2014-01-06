@@ -3,13 +3,13 @@ using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
 using Styx.WoWInternals;
+using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Styx.WoWInternals.WoWObjects;
 
 namespace Tyrael.Shared
 {
@@ -43,7 +43,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
-                    TreeRoot.Stop();
+                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
-                    TreeRoot.Start(); TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
             });
         }
