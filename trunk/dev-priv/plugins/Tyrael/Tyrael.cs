@@ -118,37 +118,6 @@ namespace Tyrael
                         )));
         }
 
-        //private static PrioritySelector CreateRoot()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
-        //        new Switch<TyraelUtilities.LockState>(ctx => TyraelSettings.Instance.FrameLock,
-        //            new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.True, ExecuteFrameLocked()),
-        //            new SwitchArgument<TyraelUtilities.LockState>(TyraelUtilities.LockState.False, ExecuteNormal())),
-        //        RoutineManager.Current.PreCombatBuffBehavior,
-        //        RoutineManager.Current.RestBehavior);
-        //}
-
-        //private static Composite ExecuteFrameLocked()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => SanityCheckCombat(),
-        //            new PrioritySelector(
-        //                RoutineManager.Current.HealBehavior,
-        //                RoutineManager.Current.CombatBuffBehavior ?? new TyraelAction(ret => RunStatus.Failure),
-        //                RoutineManager.Current.CombatBehavior)));
-        //}
-
-        //private static Composite ExecuteNormal()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => SanityCheckCombat(),
-        //            new PrioritySelector(
-        //                RoutineManager.Current.HealBehavior,
-        //                RoutineManager.Current.CombatBuffBehavior ?? new TyraelAction(ret => RunStatus.Failure),
-        //                RoutineManager.Current.CombatBehavior)));
-        //}
-
         private static bool SanityCheckCombat()
         {
             return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.HealingMode) && !Me.IsDead;

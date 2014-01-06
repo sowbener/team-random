@@ -56,9 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Shared\TyraelUtilities.cs" />
-    <Compile Include="Shared\TyraelInterface.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Shared\TyraelInterface.cs" />
     <Compile Include="Shared\TyraelInterface.Designer.cs">
       <DependentUpon>TyraelInterface.cs</DependentUpon>
     </Compile>
