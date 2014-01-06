@@ -251,14 +251,13 @@
             // checkUpdater
             // 
             this.checkUpdater.AutoSize = true;
-            this.checkUpdater.Enabled = false;
             this.checkUpdater.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkUpdater.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkUpdater.Location = new System.Drawing.Point(10, 103);
             this.checkUpdater.Name = "checkUpdater";
-            this.checkUpdater.Size = new System.Drawing.Size(124, 21);
+            this.checkUpdater.Size = new System.Drawing.Size(163, 21);
             this.checkUpdater.TabIndex = 9;
-            this.checkUpdater.Text = "Enable Updater";
+            this.checkUpdater.Text = "Enable Tyrael Updater";
             this.checkUpdater.UseVisualStyleBackColor = false;
             this.checkUpdater.CheckedChanged += new System.EventHandler(this.checkUpdater_CheckedChanged);
             this.checkUpdater.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
