@@ -8,7 +8,6 @@ using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
 using Styx.Common;
 using Styx.WoWInternals;
-using Timer = System.Windows.Forms.Timer;
 
 namespace FuryUnleashed.Core.Managers
 {

@@ -1,6 +1,5 @@
 ﻿// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CompareOfFloatsByEqualityOperator
-// ReSharper disable FieldCanBeMadeReadOnly.Local
 using CommonBehaviors.Actions;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
@@ -123,42 +122,6 @@ namespace FuryUnleashed.Core
 
             }
         }
-        //public static Composite MultiDoT(int spellid, int debuffid, int auratimeleft, double radius, Selection<bool> reqs = null, bool failThrough = false)
-        //{
-        //    using (new PerformanceLogger("MultiDoT"))
-        //    {
-        //        WoWUnit target = null;
-        //        try
-        //        {
-        //            return new Decorator(ret => ((reqs != null && reqs(ret)) || reqs == null),
-        //                new PrioritySelector(dot => target = Unit.MultiDotUnit(debuffid, auratimeleft, radius),
-        //                    new Decorator(ret => Unit.IsViable(target),
-        //                        new Action(ret =>
-        //                        {
-        //                            if (SpellManager.Cast(spellid, target))
-        //                            {
-        //                                CooldownTracker.SpellUsed(spellid);
-        //                                Logger.CombatLogWh("MultiDoT: " + WoWSpell.FromId(spellid).Name + " on " + target.SafeName);
-        //                                if (!failThrough)
-        //                                {
-        //                                    return RunStatus.Success;
-        //                                }
-        //                            }
-        //                            return RunStatus.Failure;
-        //                        }))));
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return new PrioritySelector(
-        //                new Action(ret =>
-        //                {
-        //                    Logger.DiagLogPu("Exception MultiDot {0}", ex);
-        //                    Logger.DiagLogPu("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
-        //                }));
-        //        }
-
-        //    }
-        //}
 
         /// <summary>
         /// Casting method for casting on Ground location - string
