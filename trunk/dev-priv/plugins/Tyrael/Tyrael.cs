@@ -38,6 +38,11 @@ namespace Tyrael
         {
             get { return new TyraelInterface(); }
         }
+		
+		public override bool RequiresProfile
+        {
+            get { return false; }
+        }
 
         public override Composite Root
         {
