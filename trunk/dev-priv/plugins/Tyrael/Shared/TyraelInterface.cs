@@ -95,17 +95,20 @@ namespace Tyrael.Shared
             comboPauseKey.Items.Add(new CboItem((int)Keys.C, "C"));
             SetComboBoxEnum(comboPauseKey, (int)TyraelSettings.Instance.PauseKeyChoice);
 
-            TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
-            HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
-
-            checkFrameLock.Checked = GlobalSettings.Instance.UseFrameLock;
-            checkFrameLock.Checked = TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True;
-
+            checkAutomaticUpdater.Checked = TyraelSettings.Instance.CheckAutoUpdate;
             checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
+            checkFrameLock.Checked = GlobalSettings.Instance.UseFrameLock;
             checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
             checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
-            checkUpdater.Checked = TyraelSettings.Instance.CheckAutoUpdate;
+
+            HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
+            TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
+        }
+
+        private void checkAutomaticUpdater_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Enables the automatic updater.");
         }
 
         private void checkChatOutput_MouseMove(object sender, MouseEventArgs e)
@@ -133,24 +136,19 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Enables plugins in Tyrael.");
         }
 
-        private void checkUpdater_MouseMove(object sender, MouseEventArgs e)
-        {
-            TpsLabel.Text = Text = string.Format("Enables automatic updates Tyrael.");
-        }
-
         private void slowbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled - Hardlock disabled.");
+            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled.");
         }
 
         private void normalbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled - Hardlock enabled.");
+            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled.");
         }
 
         private void extremebutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled - Hardlock enabled.");
+            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled.");
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
@@ -185,10 +183,14 @@ namespace Tyrael.Shared
             HonorbuddyTps = (byte)TPSTrackBar.Value;
         }
 
+        private void checkAutomaticUpdater_CheckedChanged(object sender, EventArgs e)
+        {
+            TyraelSettings.Instance.CheckAutoUpdate = checkAutomaticUpdater.Checked;
+        }
+
         private void checkFrameLock_CheckedChanged(object sender, EventArgs e)
         {
             GlobalSettings.Instance.UseFrameLock = checkFrameLock.Checked;
-            TyraelSettings.Instance.FrameLock = checkFrameLock.Checked ? TyraelUtilities.LockState.True : TyraelUtilities.LockState.False;
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
@@ -211,11 +213,6 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PluginPulsing = checkPlugins.Checked;
         }
 
-        private void checkUpdater_CheckedChanged(object sender, EventArgs e)
-        {
-            TyraelSettings.Instance.CheckAutoUpdate = checkUpdater.Checked;
-        }
-
         private void comboModifierKey_SelectedIndexChanged(object sender, EventArgs e)
         {
             TyraelSettings.Instance.ModKeyChoice = (ModifierKeys)GetComboBoxEnum(comboModifierKey);
@@ -230,6 +227,10 @@ namespace Tyrael.Shared
         {
             Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.CheckAutoUpdate
+                    ? "[Tyrael] Automatic Updater is enabled!"
+                    : "[Tyrael] Automatic Updater is disabled!");
+            Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.ChatOutput
                     ? "[Tyrael] ChatOutput enabled!"
                     : "[Tyrael] ChatOutput disabled!");
@@ -238,7 +239,7 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Click to Move enabled!"
                     : "[Tyrael] Click to Move disabled!");
             Logging.Write(Colors.DodgerBlue,
-                (GlobalSettings.Instance.UseFrameLock || TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True)
+                GlobalSettings.Instance.UseFrameLock
                     ? "[Tyrael] FrameLock enabled!"
                     : "[Tyrael] FrameLock disabled!");
             Logging.Write(Colors.DodgerBlue,
@@ -249,10 +250,6 @@ namespace Tyrael.Shared
                 TyraelSettings.Instance.PluginPulsing
                     ? "[Tyrael] Plugins are enabled!"
                     : "[Tyrael] Plugins are disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckAutoUpdate
-                    ? "[Tyrael] Updater is enabled!"
-                    : "[Tyrael] Updater is disabled!");
 
             Logging.Write(Colors.DodgerBlue,
                     "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
@@ -268,12 +265,12 @@ namespace Tyrael.Shared
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
+
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.PluginPulsing();
-
-            GlobalSettings.Instance.Save();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -288,7 +285,6 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
-            TyraelSettings.Instance.FrameLock = TyraelUtilities.LockState.False;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -310,7 +306,6 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
-            TyraelSettings.Instance.FrameLock = TyraelUtilities.LockState.True;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -332,7 +327,6 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
-            TyraelSettings.Instance.FrameLock = TyraelUtilities.LockState.True;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();

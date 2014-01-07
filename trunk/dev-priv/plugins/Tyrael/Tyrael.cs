@@ -11,7 +11,6 @@ using System;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Tyrael.Shared;
-using TyraelAction = Styx.TreeSharp.Action;
 
 namespace Tyrael
 {
@@ -68,6 +67,7 @@ namespace Tyrael
                 Logging.Write(Colors.DodgerBlue, "\r\n");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] Special thanks to the following persons:");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] PureRotation Team");
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Minify Author (Mirabis)");
                 Logging.Write(Colors.White, "-------------------------------------------\r\n");
             }
             catch (Exception initExept)
@@ -103,20 +103,52 @@ namespace Tyrael
         #endregion
 
         #region Selectors
-        private static PrioritySelector CreateRoot()
+        private static Composite CreateRoot()
         {
             return new PrioritySelector(
-                new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
+                new Decorator(ret => IsPaused, new ActionAlwaysSucceed()),
                 new Decorator(ret => SanityCheckCombat(),
-                    new PrioritySelector(
-                        CreateFrameFactory(
-                            RoutineManager.Current.HealBehavior,
-                            RoutineManager.Current.CombatBuffBehavior ?? new TyraelAction(ret => RunStatus.Failure),
-                            RoutineManager.Current.CombatBehavior),
-                        RoutineManager.Current.PreCombatBuffBehavior,
-                        RoutineManager.Current.RestBehavior
-                        )));
+                    CreateFrameFactory(
+                        RoutineManager.Current.HealBehavior,
+                        RoutineManager.Current.CombatBuffBehavior ?? new ActionAlwaysFail(),
+                        RoutineManager.Current.CombatBehavior)),
+                    RoutineManager.Current.PreCombatBuffBehavior,
+                    RoutineManager.Current.RestBehavior);
         }
+
+        //private static PrioritySelector CreateRoot()
+        //{
+        //    return new PrioritySelector(
+        //        new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
+        //        new Switch<TyraelUtilities.Minify>(ctx => TyraelSettings.Instance.Minify,
+        //            new SwitchArgument<TyraelUtilities.Minify>(TyraelUtilities.Minify.True, Minified()),
+        //            new SwitchArgument<TyraelUtilities.Minify>(TyraelUtilities.Minify.False, NonMinified())));
+        //}
+
+        //private static Composite NonMinified()
+        //{
+        //    return new PrioritySelector(
+        //        new Decorator(ret => SanityCheckCombat(),
+        //            new PrioritySelector(
+        //                RoutineManager.Current.HealBehavior,
+        //                RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
+        //                RoutineManager.Current.CombatBehavior)),
+        //            RoutineManager.Current.PreCombatBuffBehavior,
+        //            RoutineManager.Current.RestBehavior);
+        //}
+
+        //private static Composite Minified()
+        //{
+        //    return new PrioritySelector(
+        //        new Decorator(ret => SanityCheckCombat(),
+        //            new PrioritySelector(
+        //                new Action(delegate { StyxWoW.Memory.ReleaseFrame(false); return RunStatus.Failure; }), 
+        //                RoutineManager.Current.HealBehavior,
+        //                RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
+        //                RoutineManager.Current.CombatBehavior)),
+        //            RoutineManager.Current.PreCombatBuffBehavior,
+        //            RoutineManager.Current.RestBehavior);
+        //}
 
         private static bool SanityCheckCombat()
         {
@@ -125,10 +157,7 @@ namespace Tyrael
 
         private static Composite CreateFrameFactory(params Composite[] children)
         {
-            if (TyraelSettings.Instance.FrameLock == TyraelUtilities.LockState.True)
-                return new FrameLockSelector(children);
-
-            return new PrioritySelector(children);
+            return GlobalSettings.Instance.UseFrameLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
 
         public class FrameLockSelector : PrioritySelector
