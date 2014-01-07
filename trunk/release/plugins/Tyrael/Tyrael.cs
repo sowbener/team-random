@@ -17,7 +17,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 5, 7);
+        public static readonly Version Revision = new Version(5, 5, 8);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static bool IsPaused;
 
@@ -38,6 +38,11 @@ namespace Tyrael
         public override Form ConfigurationForm
         {
             get { return new TyraelInterface(); }
+        }
+
+        public override bool RequiresProfile
+        {
+            get { return false; }
         }
 
         public override Composite Root
