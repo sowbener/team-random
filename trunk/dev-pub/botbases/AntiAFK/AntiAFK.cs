@@ -22,7 +22,7 @@ namespace AntiAFK
     {
         internal static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
         internal static readonly AntiAFKSettings Settings = new AntiAFKSettings();
-        internal static double Version = 1.01;
+        internal static double Version = 1.02;
         internal static Timer Antiafktimer;
 
         private static PulseFlags _pulseFlags;
@@ -42,6 +42,11 @@ namespace AntiAFK
         public override Form ConfigurationForm
         {
             get { return new AntiAfkGui(); }
+        }
+
+        public override bool RequiresProfile
+        {
+            get { return false; }
         }
 
         public override void Start()
@@ -147,12 +152,12 @@ namespace AntiAFK
         {
             if (AntiAFKSettings.Instance.AntiAfkPlugins)
             {
-                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua;
+                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
                 AfkLogging("[AntiAFK] Plugins are enabled!");
             }
             else
             {
-                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua;
+                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
                 AfkLogging("[AntiAFK] Plugins are disabled!");
             }
         }
