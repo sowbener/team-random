@@ -36,6 +36,14 @@ namespace DeathVader.Interfaces.Settings
         [Description("This enables the new pause (same as TuanHa's)")]
         public bool AutoDetectManualCast { get; set; }
 
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(LogCategory.None)]
+        [Category("Logging")]
+        [DisplayName("Performance Logging")]
+        [Description("Performance = on, None = off.")]
+        public LogCategory PerformanceLogging { get; set; }
+
         #region General
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

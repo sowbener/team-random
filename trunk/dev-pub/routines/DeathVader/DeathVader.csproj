@@ -61,6 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\DV_CombatLogHandler.cs" />
+    <Compile Include="Core\DV_CooldownWatcher.cs" />
     <Compile Include="Core\DV_Item.cs" />
     <Compile Include="Core\DV_Spell.cs" />
     <Compile Include="Core\DV_Unit.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Helpers\DV_Dkstuff.cs" />
     <Compile Include="Helpers\DV_CombatLog.cs" />
     <Compile Include="Helpers\DV_DoTTracker.cs" />
+    <Compile Include="Helpers\DV_PerformenceLogger.cs" />
     <Compile Include="Helpers\DV_Throttle.cs" />
     <Compile Include="Helpers\DV_EncounterSpecifics.cs" />
     <Compile Include="Helpers\DV_Enum.cs" />

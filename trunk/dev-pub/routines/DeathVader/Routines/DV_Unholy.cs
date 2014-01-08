@@ -65,24 +65,26 @@ namespace DeathVader.Routines
         {
             return new PrioritySelector(
                 //  Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks10 && RP32),
-               Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && Me.CurrentTarget.HealthPercent <= SG.Instance.Unholy.SoulReaperHP),
                Spell.PreventDoubleCast("Outbreak", 1, ret => SG.Instance.Unholy.EnablePowerDots && (Me.AttackPower > DoTTracker.SpellStats(Me.CurrentTarget, SpellBook.BloodPlague).AttackPower + SG.Instance.Unholy.AttackPowerDot)),
                Spell.PreventDoubleCast("Plague Strike", 0.7, ret => SG.Instance.Unholy.EnablePowerDots && Spell.SpellOnCooldown("Outbreak") && (Me.AttackPower > DoTTracker.SpellStats(Me.CurrentTarget, SpellBook.BloodPlague).AttackPower + SG.Instance.Unholy.AttackPowerDot)),
-               Spell.Cast("Unholy Blight", ret => T.HasTalent(3) && Spell.IsSpellInRange(115989) && NeedUnholyBlight),
-               Spell.Cast("Outbreak", ret => NeedUnholyBlight && UnholyBlightCheck),
+               Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks10 && Lua.PlayerPower > 31),
+               Spell.Cast("Unholy Blight", ret => T.HasTalent(3) && Spell.IsSpellInRange(115989) && (NeedBothDisUp || NeedUnholyBlight)),
+               Spell.Cast("Outbreak", ret => (NeedUnholyBlight || NeedBothDisUp) && UnholyBlightCheck),
+               Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && Me.CurrentTarget.HealthPercent <= SG.Instance.Unholy.SoulReaperHP),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && Me.CurrentTarget.HealthPercent <= SG.Instance.Unholy.SoulReaperHP && SoulReaperIsComplete),
                Spell.PreventDoubleCast("Plague Strike", 0.7, ret => NeedUnholyBlight && UnholyBlightCheck),
                Spell.Cast("Dark Transformation"),
-               Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && ShadowInfusionStack5),
                Spell.PreventDoubleCast("Death Coil", 0.5, ret => Spell.IsSpellInRange(47541) && Lua.PlayerPower > 90),
                Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => G.UnholyRuneSlotsActive > 1),
+                //Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && ShadowInfusionStack5),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && G.UnholyRuneSlotsActive == 2 && DeathAndDecayComingOffCooldown),
                Spell.Cast("Scourge Strike", ret => G.UnholyRuneSlotsActive > 1),
-               Spell.Cast("Festering Strike", ret =>  G.DeathRuneSlotsActiveFesterReal && G.FrostRuneSlotsActive > 1),
-               Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => G.UnholyRuneSlotsActive > 0),
+               Spell.Cast("Festering Strike", ret => G.DeathRuneSlotsActiveFesterReal && G.FrostRuneSlotsActive > 1 && G.BloodRuneSlotsActive > 1),
+               Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && DeathAndDecayComingOffCooldown),
-               Spell.PreventDoubleCast("Death Coil", 0.5, ret => Spell.IsSpellInRange(47541) && (SuddenDoomProc || (TimmyDoesntHaveBuff && G.UnholyRuneSlotsActive < 1))),
+               Spell.PreventDoubleCast("Death Coil", 0.5, ret => Spell.IsSpellInRange(47541) && (SuddenDoomProc || (TimmyDoesntHaveBuff && G.UnholyRuneSlotsActive <= 1))),
                Spell.Cast("Scourge Strike"),
+               Spell.Cast("Plague Leech", ret => T.HasTalent(2) && G.CanCastPlagueLeechUH),
                Spell.Cast("Festering Strike"),
                Spell.Cast("Horn of Winter", ret => Lua.PlayerPower < 20),
                Spell.PreventDoubleCast(47541, 0.5, ret => TimmyDoesntHaveBuff || (GargoyleCooldown8seconds && TimmyBuffRemains8seconds)),
@@ -97,14 +99,19 @@ namespace DeathVader.Routines
                      Spell.PreventDoubleCast("Pestilence", 1, ret => U.AoeBPCheck && UnholyBlightCheck && OutBreakCooldown),
                      Spell.Cast("Summon Gargoyle", ret => SG.Instance.Unholy.UseGargoyleInAoE),
                      Spell.Cast("Dark Transformation"),
+                     Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && ShadowInfusionStack5),
                      Spell.Cast("Blood Boil", ret => G.BloodRuneSlotsActive == 2 || G.DeathRuneSlotsActive == 2),
                      Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => G.UnholyRuneSlotsActive == 1),
                      Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive == 2 && Me.CurrentTarget.HealthPercent <= SG.Instance.Unholy.SoulReaperHP),
                      Spell.Cast("Scourge Strike", ret => G.UnholyRuneSlotsActive == 2),
                      Spell.PreventDoubleCast(47541, 0.5, ret => Lua.PlayerPower > 90 || Me.HasAura("Sudden Doom") || G.UnholyRuneSlotsActive <= 1),
                      Spell.Cast("Blood Boil"),
+                     Spell.Cast("Ict Touch"),
+                     Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && G.UnholyRuneSlotsActive == 1 && Me.CurrentTarget.HealthPercent <= SG.Instance.Unholy.SoulReaperHP),
                      Spell.Cast("Scourge Strike", ret => G.UnholyRuneSlotsActive == 1),
                      Spell.PreventDoubleCast(47541, 0.5, ret => Lua.PlayerPower > 20),
+                     Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5),
+                     Spell.Cast("Plague Leech", ret => T.HasTalent(2) && G.UnholyRuneSlotsActive == 1 && G.CanCastPlagueLeechUH),
                      Spell.Cast("Horn of Winter"));
         }
 
@@ -123,7 +130,7 @@ namespace DeathVader.Routines
         internal static Composite UnholyOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Unholy Frenzy", ret => Me,  ret =>  (
+                Spell.Cast("Unholy Frenzy", ret => Me, ret => (
                     (SG.Instance.Unholy.UnholyFrenzy == DvEnum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Unholy.UnholyFrenzy == DvEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Unholy.UnholyFrenzy == DvEnum.AbilityTrigger.Always)
@@ -184,28 +191,28 @@ namespace DeathVader.Routines
         private static bool BloodTapStacks8 { get { return Me.AuraStackCount("Blood Charge") >= 8; } }
 
         // Diseases
-        private static bool NeedUnholyBlight { get { return Me.CurrentTarget != null && (!Me.CurrentTarget.HasCachedAura(55095, 0, 1000)) || !Me.CurrentTarget.HasCachedAura(55078, 0, 1000); } }
-        private static bool NeedEitherDis { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura("Blood Plague", 0, 3000); } }
-        private static bool NeedFrostFever { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura("Frost Fever", 0); } }
-        private static bool NeedBloodPlague { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasCachedAura("Blood Plague", 0); } }
+        private static bool NeedUnholyBlight { get { return Me.CurrentTarget != null && NeedBothDisUpAoE; } }
+        private static bool NeedEitherDis { get { return Me.CurrentTarget != null && Spell.GetMyAuraTimeLeft("Blood Plague", Me.CurrentTarget) < 3; } }
+        private static bool NeedFrostFever { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Frost Fever"); } }
+        private static bool NeedBloodPlague { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Blood Plague"); } }
         private static bool NeedBothDisUp { get { return Me.CurrentTarget != null && (NeedFrostFever || NeedBloodPlague); } }
-        private static bool NeedBothDisUpAoE { get { return Me.CurrentTarget != null && (Spell.GetMyAuraTimeLeft("Blood Plague", Me.CurrentTarget) < 2 || Spell.GetMyAuraTimeLeft("Frost Fever", Me.CurrentTarget) < 2); } }
+        private static bool NeedBothDisUpAoE { get { return Me.CurrentTarget != null && (Spell.GetMyAuraTimeLeft("Blood Plague", Me.CurrentTarget) < 3 || Spell.GetMyAuraTimeLeft("Frost Fever", Me.CurrentTarget) < 3); } }
 
         //RunicCorruptionBuffCheck
-        private static bool RunicCorruptionDown { get { return !Me.HasCachedAura("Runic Corruption", 0); } }
+        private static bool RunicCorruptionDown { get { return !Me.HasAura("Runic Corruption"); } }
 
         //HowlingBlastProc and ObliterateProc
         private const int KillingMachine = 51124;
         private static bool HowlingBlastProc { get { return Me.HasAura("Freezing Fog"); } }
         private static bool ObliterateProc { get { return Me.HasAura(51124); } }
-        private static bool EmpowerRuneWeapon { get { return Me.CurrentTarget != null && Me.IsWithinMeleeRange && U.IsTargetBoss && Spell.GetSpellCooldown("Festering Strike").TotalMilliseconds > 1200 && Spell.GetSpellCooldown("Scourge Strike").TotalMilliseconds > 1200 && Lua.PlayerPower < 32; } }
+        private static bool EmpowerRuneWeapon { get { return Me.CurrentTarget != null && Me.IsWithinMeleeRange && U.IsTargetBoss && CooldownWatcher.GetSpellCooldownTimeLeft(85948) > 1200 && CooldownWatcher.GetSpellCooldownTimeLeft(55090) > 1200 && Lua.PlayerPower < 32; } }
 
         //RunesCheck
-        private static bool ObliterateRunes6 { get { return  G.DeathRuneSlotsActive + G.FrostRuneSlotsActive + G.UnholyRuneSlotsActive == 6; } }
+        private static bool ObliterateRunes6 { get { return G.DeathRuneSlotsActive + G.FrostRuneSlotsActive + G.UnholyRuneSlotsActive == 6; } }
         private static bool FrostRunes0 { get { return G.FrostRuneSlotsActive == 0; } }
 
         //DeathAndDecay
-        private static bool DeathAndDecayComingOffCooldown { get { return Spell.GetSpellCooldown("Death and Decay").TotalMilliseconds > 0; } }
+        private static bool DeathAndDecayComingOffCooldown { get { return !CooldownWatcher.OnCooldown(43265); } }
 
         //RunicPowerChecks
         private static bool RP76 { get { return Lua.PlayerPower > 76; } }
@@ -213,7 +220,7 @@ namespace DeathVader.Routines
         private static bool RP32 { get { return Lua.PlayerPower >= 32; } }
 
         //GargoyleCooldown
-        private static bool GargoyleCooldown8seconds { get { return Spell.GetSpellCooldown("Summon Gargoyle").TotalMilliseconds > 8000; } }
+        private static bool GargoyleCooldown8seconds { get { return  CooldownWatcher.GetSpellCooldownTimeLeft(49206) > 8000; } }
 
         //DeathCoil
         private static bool SuddenDoomProc { get { return Me.HasAura(81340); } }
@@ -225,18 +232,18 @@ namespace DeathVader.Routines
 
 
         //OutbreakCooldownCheck
-        private static bool OutBreakCooldown { get { return Spell.SpellOnCooldown("Outbreak"); } }
+        private static bool OutBreakCooldown { get { return CooldownWatcher.OnCooldown(77575); } }
 
         //UnholyBlight Check (For Aura)
         private static bool UnholyBlightCheck { get { return !Me.HasAura(115989); } }
 
         //SoulReaper Checks
         private static bool SoulReaperNon4SetBonusHPCheck { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 36; } }
-        private static bool SoulReaperIsComplete { get { return Spell.GetSpellCooldown("Soul Reaper").TotalMilliseconds > 0; } }
+        private static bool SoulReaperIsComplete { get { return !CooldownWatcher.OnCooldown(130736); } }
 
 
         // Abilities
-       //private static bool NeedDeathStrike { get { return SG.Instance.DeathKnight.EnableDarkSuccor && Me.HasCachedAura(101568, 0) && Me.HealthPercent < SG.Instance.DeathKnight.DeathStrikePercentCommon; } }
+        //private static bool NeedDeathStrike { get { return SG.Instance.DeathKnight.EnableDarkSuccor && Me.HasCachedAura(101568, 0) && Me.HealthPercent < SG.Instance.DeathKnight.DeathStrikePercentCommon; } }
 
         #endregion Booleans
 

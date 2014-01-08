@@ -21,7 +21,7 @@ using T = DeathVader.Managers.DvTalentManager;
 
 namespace DeathVader.Routines
 {
-   public class DvGlobal
+    public class DvGlobal
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
@@ -203,14 +203,14 @@ namespace DeathVader.Routines
 
         internal static int DeathRuneSlotsActive
         {
-            get {  return Me.DeathRuneCount; }
+            get { return Me.DeathRuneCount; }
         }
 
         internal static int BloodRuneSlotsActive
         {
             get
             {
-             //   DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
+                //   DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
                 return StyxWoW.Me.BloodRuneCount;
             }
         }
@@ -219,7 +219,7 @@ namespace DeathVader.Routines
         {
             get
             {
-             //   DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
+                //   DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
                 return StyxWoW.Me.FrostRuneCount;
             }
         }
@@ -235,7 +235,7 @@ namespace DeathVader.Routines
         {
             get
             {
-              //  DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
+                //  DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
                 return StyxWoW.Me.UnholyRuneCount;
             }
         }
@@ -267,6 +267,21 @@ namespace DeathVader.Routines
                 // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
                 return (frostFever.Between(350, 3000) || bloodPlague.Between(350, 3000))
                     && (FrostRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0);
+            }
+        }
+
+        internal static bool CanCastPlagueLeechUH
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+
+                int frostFever = (int)Me.CurrentTarget.GetAuraTimeLeft("Frost Fever").TotalMilliseconds;
+                int bloodPlague = (int)Me.CurrentTarget.GetAuraTimeLeft("Blood Plague").TotalMilliseconds;
+                // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
+                return (frostFever.Between(350, 30000) || bloodPlague.Between(350, 30000))
+                    && (BloodRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0) && !Spell.SpellOnCooldown("Outbreak");
             }
         }
 
@@ -397,7 +412,9 @@ namespace DeathVader.Routines
 
         internal static readonly HashSet<int> InterruptListMoP = new HashSet<int>
        {
-           136797, // Dino-Mending (ToT)
+           145171, // MC spell Garrosh (final phase empowered)
+		   145065, // MC spell Garrosh (P2)
+		   136797, // Dino-Mending (ToT)
            136587, // Venom Bolt Volley (ToT)
            61909, // Fireball (ToT)
            136189, // Sandbolt (ToT)
@@ -434,7 +451,7 @@ namespace DeathVader.Routines
 
         };
 
-#endregion
+        #endregion
 
         #region Misc
 

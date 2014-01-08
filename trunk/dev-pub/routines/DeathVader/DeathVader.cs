@@ -33,7 +33,6 @@ using JetBrains.Annotations;
 using Styx;
 using Styx.CommonBot;
 using Styx.CommonBot.Routines;
-using DeathVader.Helpers;
 using DeathVader.Core;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
@@ -147,6 +146,8 @@ namespace DeathVader
 
             /*Update LUA Stats*/
             DvLua.PopulateSecondryStats();
+            CooldownWatcher.Initialize();
+            CombatLogHandler.Initialize();
 
             /* Gather required information */
             DvLogger.StatCounter();

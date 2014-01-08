@@ -13,6 +13,55 @@ namespace DeathVader.Helpers
         {
             return unit != null && (ShieldBarrierIds.Contains(unit.Entry));
         }
+
+        public static readonly HashSet<string> FailType = new HashSet<string>
+        {
+            "SPELL_FAILED_AURA_BOUNCED",//"A more powerful spell is already active",
+            "SPELL_FAILED_SPELL_IN_PROGRESS",//"Another action is in progress",
+            "SPELL_FAILED_ONLY_OUTDOORS",//"Can only use outside",
+            "SPELL_FAILED_ONLY_UNDERWATER",//"Can only use while swimming",
+            "SPELL_FAILED_ASLEEP",//"Can't do that while asleep", BUG: Couldnt find constant, assuming this is correct.
+            "SPELL_FAILED_CHARMED", //"Can't do that while charmed", BUG: Couldnt find constant, assuming this is correct.
+            "SPELL_FAILED_CONFUSED",//"Can't do that while confused",
+            "SPELL_FAILED_FLEEING",//"Can't do that while fleeing",
+            "SPELL_FAILED_HORRIFIED", //"Can't do that while horrified", BUG: Couldnt find constant, assuming this is correct.
+            "SPELL_FAILED_INCAPACITATED", //"Can't do that while incapacitated", BUG: Couldnt find constant, assuming this is correct.
+            "SPELL_FAILED_MOVING", //"Can't do that while moving",
+            "SPELL_FAILED_SILENCED",//"Can't do that while silenced",
+            "SPELL_FAILED_STUNNED",//"Can't do that while stunned",
+            "SPELL_FAILED_ROOTED", //"You are unable to move",
+            "SPELL_FAILED_INTERRUPTED", //"Interrupted",
+            "SPELL_FAILED_ITEM_NOT_READY", //"Item is not ready yet",
+            //"Must be in Bear Form, Dire Bear Form",
+            //"Must have a Ranged Weapon equipped",
+            //"Not enough energy",
+            //"Not enough mana",
+            //"Not enough rage",
+            "SPELL_FAILED_NOT_READY",//"Not yet recovered",
+            //"Nothing to dispel",
+            //"Target is friendly",
+            "SPELL_FAILED_CASTER_DEAD",//"You are dead",
+            "SPELL_FAILED_AFFECTING_COMBAT", //"You are in combat",
+            //"You are in shapeshift form",
+
+        };
+
+        public static readonly HashSet<string> InvalidTargets = new HashSet<string>
+        {
+           
+           "SPELL_FAILED_TARGET_FRIENDLY", //"You can't do that yet",
+           "SPELL_FAILED_NOT_BEHIND", //"You must be behind your target",
+           "SPELL_FAILED_TARGETS_DEAD",//"Your target is dead",
+           "SPELL_FAILED_LINE_OF_SIGHT",//"Target not in line of sight",
+           "SPELL_FAILED_OUT_OF_RANGE",//"Out of range",
+           "SPELL_FAILED_UNIT_NOT_INFRONT", //"Target needs to be in front of you.",
+           "SPELL_FAILED_TARGET_ENEMY", //"Target is hostile",
+           "SPELL_FAILED_NOPATH",//"No path available", 
+           "SPELL_FAILED_BAD_IMPLICIT_TARGETS",//"No target",
+           "SPELL_FAILED_BAD_TARGETS", //"Invalid target",
+           "SPELL_FAILED_TOO_CLOSE ",//"Target too close",
+        };
+
         public static HashSet<uint> ShieldBarrierIds { get { return ShieldBarrier; } }
         private static readonly HashSet<uint> ShieldBarrier = new HashSet<uint>
         {
