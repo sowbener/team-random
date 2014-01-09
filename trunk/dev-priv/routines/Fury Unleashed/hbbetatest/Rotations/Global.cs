@@ -363,7 +363,6 @@ namespace FuryUnleashed.Rotations
 
         internal static bool ReadinessAura
         {
-            //get { return StyxWoW.Me.HasAura(AuraBook.ReadinessAddPctModifier); }
             get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier, 0, 0, false, false, true); }
         }
 
@@ -384,7 +383,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal) || Spell.HasAura(Me, AuraBook.SkullBannerExtra); }
         }
 
         internal static bool SkullBannerAuraT15

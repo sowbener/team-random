@@ -34,6 +34,7 @@
                             ShieldBlock = 2565,
                             SkullBannerT15 = 138127, // T15 Skull Banner proc Aura.
                             SkullBannerNormal = 114206, // This is the normal unmodified skull banner.
+                            SkullBannerExtra = 114207,
                             SweepingStrikes = 12328,
                             SuddenExecute = 139958,
                             SunderArmor = 113746,
