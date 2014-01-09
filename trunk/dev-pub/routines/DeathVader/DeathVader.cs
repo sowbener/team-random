@@ -114,7 +114,7 @@ namespace DeathVader
                 if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
 
                 if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
-                    DeathStrikeTracker.Initialize();
+                    DeathStrikeTracker.Pulse();
             }
 
             catch (Exception e)
@@ -148,6 +148,9 @@ namespace DeathVader
             DvLua.PopulateSecondryStats();
             CooldownWatcher.Initialize();
             CombatLogHandler.Initialize();
+            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
+                DeathStrikeTracker.Initialize();
+
 
             /* Gather required information */
             DvLogger.StatCounter();

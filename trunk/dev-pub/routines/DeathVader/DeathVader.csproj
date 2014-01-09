@@ -69,7 +69,6 @@
     <Compile Include="DeathVader.cs" />
     <Compile Include="Helpers\DV_DeathTracker.cs" />
     <Compile Include="Helpers\DV_Dkstuff.cs" />
-    <Compile Include="Helpers\DV_CombatLog.cs" />
     <Compile Include="Helpers\DV_DoTTracker.cs" />
     <Compile Include="Helpers\DV_PerformenceLogger.cs" />
     <Compile Include="Helpers\DV_Throttle.cs" />

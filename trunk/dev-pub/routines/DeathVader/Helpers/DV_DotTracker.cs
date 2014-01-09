@@ -9,6 +9,7 @@ using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using Lua = DeathVader.Helpers.DvLua;
 using Logger = DeathVader.Helpers.DvLogger;
+using DeathVader.Core;
 
 namespace DeathVader.Helpers
 {
@@ -100,7 +101,7 @@ namespace DeathVader.Helpers
                 }
                 else
                 {
-                    Logger.DebugLog("Updated     {0} with stats AP {1}, Int {2}, Crit {3}, MeleeHaste {4}, SpellHaste {5}, Mastery {6}, SpellPower {7}",
+                    Logger.DebugLog("Updated {0} with stats AP {1}, Int {2}, Crit {3}, MeleeHaste {4}, SpellHaste {5}, Mastery {6}, SpellPower {7}",
                         spellId,
                         Lua._secondaryStats.AttackPower,
                         Lua._secondaryStats.Intellect,
@@ -131,7 +132,7 @@ namespace DeathVader.Helpers
 
         public static StatInfo SpellStats(WoWUnit u, int spellId)
         {
-            if (StatInfos.ContainsKey(SpellUnitHash(u, spellId)))
+            if (u != null && StatInfos.ContainsKey(SpellUnitHash(u, spellId)))
             {
                 return StatInfos[SpellUnitHash(u, spellId)];
             }
@@ -142,80 +143,21 @@ namespace DeathVader.Helpers
         {
             if (_combatLogAttached)
                 return;
-            Styx.WoWInternals.Lua.Events.AttachEvent("COMBAT_LOG_EVENT_UNFILTERED", HandleCombatLog);
-            if (
-                !Styx.WoWInternals.Lua.Events.AddFilter(
-                    "COMBAT_LOG_EVENT_UNFILTERED",
-                    "return args[2] == 'SPELL_AURA_APPLIED' or args[2] == 'SPELL_AURA_REFRESH' or args[2] == 'SPELL_AURA_REMOVED'"))
-            {
-                Logger.InfoLog(
-                    "ERROR: Could not add combat log event filter! - Performance may be horrible, and things may not work properly!");
-            }
+            CombatLogHandler.Register("SPELL_AURA_APPLIED", HandleAura);
+            //CombatLogHandler.Register("SPELL_AURA_REFRESH", HandleAura);
+            CombatLogHandler.Register("SPELL_AURA_REMOVED", HandleAura);
 
-            Logger.InfoLog("Attached combat log");
+            Logger.InfoLog("[DotTracker] Attached to combat log");
             _combatLogAttached = true;
         }
-
-        private static void HandleCombatLog(object sender, LuaEventArgs args)
+        private static void HandleAura(CombatLogEventArgs args)
         {
-            var e = new CombatLogEventArgs(args.EventName, args.FireTimeStamp, args.Args);
-
-            //string TrackEvent = "";
-            //for (int i = 0; i < e.Args.Length; i++)
-            //{
-            //    if (e.Args[i] != null)
-            //    {
-            //        TrackEvent += string.Format(" Index: {0} - Value: {1}", i, e.Args[i]);
-            //    }
-            //}
-            //if (TrackEvent.Length > 0) Logger.DebugLog(TrackEvent);
-            switch (e.Event)
-            {
-                case "SPELL_AURA_APPLIED":
-                    try
-                    {
-                        //Add too List
-                        if (e.SourceGuid != 0 && e.SourceGuid == StyxWoW.Me.Guid)
-                        {
-                            UpdateStatInfo(e.DestGuid, e.SpellId);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                    break;
-
-                case "SPELL_AURA_REFRESH":
-                    try
-                    {
-                        //Add too List
-                        //Logger.DebugLog("{0} - {1} - {2} - {3} - {4} - {5}", e.SourceGuid, e.DestGuid, e.SourceUnit, e.DestUnit, e.SpellId, e.SpellName);
-                        if (e.SourceGuid != 0 && e.SourceGuid == StyxWoW.Me.Guid)
-                        {
-                            UpdateStatInfo(e.DestGuid, e.SpellId);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                    break;
-
-                case "SPELL_AURA_REMOVED":
-                    try
-                    {
-                        //remove from list
-                        if (e.SourceGuid != 0 && e.SourceGuid == StyxWoW.Me.Guid)
-                        {
-                            RemoveDotDamage(e.DestGuid, e.SpellId);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                    break;
-            }
+            UpdateStatInfo(args.DestGuid, args.SpellId);
         }
-
+        private static void RemoveAura(CombatLogEventArgs args)
+        {
+            RemoveDotDamage(args.DestGuid, args.SpellId);
+        }
         private static void RemoveDotDamage(ulong destGuid, int spellId)
         {
             TimeSpan lastSeconds = TimeSpan.FromSeconds(600); // our window
@@ -249,7 +191,7 @@ namespace DeathVader.Helpers
 
         private static int SpellUnitHash(WoWUnit u, int spellId)
         {
-            return SpellUnitHash(u.Guid, spellId);
+            return u != null ? SpellUnitHash(u.Guid, spellId) : 0;
         }
 
         private static int SpellUnitHash(ulong guid, int spellId)
@@ -257,7 +199,85 @@ namespace DeathVader.Helpers
             string toHash = guid.ToString(CultureInfo.InvariantCulture) + '_' + spellId.ToString(CultureInfo.InvariantCulture);
             return toHash.GetHashCode();
         }
+        public static bool NeedRefresh(WoWUnit u, int spellId)
+        {
+            var _class = Me.Class;
+            var _specc = Me.Specialization;
+            if (_class == WoWClass.None ||
+               _class == WoWClass.DeathKnight ||
+               _class == WoWClass.Hunter ||
+               _class == WoWClass.Rogue ||
+               _class == WoWClass.Warrior ||
+               (_class == WoWClass.Paladin && (_specc == WoWSpec.PaladinProtection || _specc == WoWSpec.PaladinRetribution)) ||
+               (_class == WoWClass.Druid && (_specc == WoWSpec.DruidFeral || _specc == WoWSpec.DruidGuardian)) ||
+                (_class == WoWClass.Monk && (_specc == WoWSpec.MonkBrewmaster || _specc == WoWSpec.MonkWindwalker)) ||
+                (_class == WoWClass.Shaman && _specc == WoWSpec.ShamanEnhancement)
+                )
+                return NeedMeleeRefresh(u, spellId);
+            if (_class == WoWClass.Priest ||
+                _class == WoWClass.Mage ||
+               _class == WoWClass.Warlock ||
+               (_class == WoWClass.Druid && (_specc == WoWSpec.DruidBalance)) ||
+                (_class == WoWClass.Monk && _specc == WoWSpec.MonkMistweaver) ||
+                (_class == WoWClass.Shaman && _specc == WoWSpec.ShamanElemental)
+                )
+                return NeedCasterRefresh(u, spellId);
+            return false;
+        }
 
+        public static bool NeedMeleeRefresh(WoWUnit u, int spellId)
+        {
+            if (u != null)
+            {
+                bool raisedAP = (SpellStats(u, spellId).AttackPower + 5000 < Lua._secondaryStats.AttackPower);
+                bool raisedCrit = (SpellStats(u, spellId).CritChance + 1000 < Lua._secondaryStats.Crit);
+                bool raisedHaste = (SpellStats(u, spellId).MeleeHaste + 1000 < Lua._secondaryStats.MeleeHaste);
+                bool raisedMastery = (SpellStats(u, spellId).Mastery + 1000 < Lua._secondaryStats.Mastery);
+                //we tested it, we want to see the reason in the log!
+                if (raisedAP || raisedCrit || raisedHaste || raisedMastery)
+                {
+                    Logger.DebugLog("[DotTracker] Spell {0} applied with {1} AP - {2} Crit - {3} Haste - {4} Mastery / stats now {5} AP - {6} Crit - {7} Haste - {8} Mastery",
+                        spellId,
+                        SpellStats(u, spellId).AttackPower,
+                        SpellStats(u, spellId).CritChance,
+                        SpellStats(u, spellId).MeleeHaste,
+                        SpellStats(u, spellId).Mastery,
+                        Lua._secondaryStats.AttackPower,
+                        Lua._secondaryStats.Crit,
+                        Lua._secondaryStats.MeleeHaste,
+                        Lua._secondaryStats.Mastery);
+                }
+                return raisedAP || raisedCrit || raisedHaste || raisedMastery;
+            }
+            return false;
+        }
+
+        public static bool NeedCasterRefresh(WoWUnit u, int spellId)
+        {
+            if (u != null)
+            {
+                bool raisedSP = (SpellStats(u, spellId).SpellPower + 1000 < Lua._secondaryStats.SpellPower);
+                bool raisedCrit = (SpellStats(u, spellId).CritChance + 1500 < Lua._secondaryStats.Crit);
+                bool raisedHaste = (SpellStats(u, spellId).SpellHaste + 1500 < Lua._secondaryStats.SpellHaste);
+                bool raisedMastery = (SpellStats(u, spellId).Mastery + 1500 < Lua._secondaryStats.Mastery);
+                //we tested it, we want to see the reason in the log!
+                if (raisedSP || raisedCrit || raisedHaste || raisedMastery)
+                {
+                    Logger.DebugLog("[DotTracker] Spell {0} applied with {1} SP - {2} Crit - {3} Haste - {4} Mastery / stats now {5} SP - {6} Crit - {7} Haste - {8} Mastery",
+                        spellId,
+                        SpellStats(u, spellId).SpellPower,
+                        SpellStats(u, spellId).CritChance,
+                        SpellStats(u, spellId).SpellHaste,
+                        SpellStats(u, spellId).Mastery,
+                        Lua._secondaryStats.AttackPower,
+                        Lua._secondaryStats.Crit,
+                        Lua._secondaryStats.MeleeHaste,
+                        Lua._secondaryStats.Mastery);
+                }
+                return raisedSP || raisedCrit || raisedHaste || raisedMastery;
+            }
+            return false;
+        }
         #endregion
     }
 }

@@ -8,6 +8,7 @@ using Styx;
 using Styx.Common;
 using Styx.WoWInternals;
 using Logger = DeathVader.Helpers.DvLogger;
+using DeathVader.Helpers;
 namespace DeathVader.Core
 {
     [UsedImplicitly]
@@ -170,8 +171,8 @@ namespace DeathVader.Core
                             break;
 
                         case "AURA_APPLIED":
-                        case "AURA_REMOVED":
                         case "AURA_REFRESH":
+                        case "AURA_REMOVED":
                         case "AURA_BROKEN":
                             if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             break;
@@ -408,6 +409,7 @@ namespace DeathVader.Core
 
     public class CombatLogEventArgs
     {
+
         public uint TimeStamp { get; set; }
 
         public string Event { get; set; }

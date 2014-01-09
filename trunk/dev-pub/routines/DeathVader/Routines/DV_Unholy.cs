@@ -65,8 +65,8 @@ namespace DeathVader.Routines
         {
             return new PrioritySelector(
                 //  Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks10 && RP32),
-               Spell.PreventDoubleCast("Outbreak", 1, ret => SG.Instance.Unholy.EnablePowerDots && (Me.AttackPower > DoTTracker.SpellStats(Me.CurrentTarget, SpellBook.BloodPlague).AttackPower + SG.Instance.Unholy.AttackPowerDot)),
-               Spell.PreventDoubleCast("Plague Strike", 0.7, ret => SG.Instance.Unholy.EnablePowerDots && Spell.SpellOnCooldown("Outbreak") && (Me.AttackPower > DoTTracker.SpellStats(Me.CurrentTarget, SpellBook.BloodPlague).AttackPower + SG.Instance.Unholy.AttackPowerDot)),
+               Spell.PreventDoubleCast("Outbreak", 1, ret => SG.Instance.Unholy.EnablePowerDots && DoTTracker.NeedMeleeRefresh(Me.CurrentTarget, SpellBook.BloodPlague)),
+               Spell.PreventDoubleCast("Plague Strike", 0.7, ret => SG.Instance.Unholy.EnablePowerDots && Spell.SpellOnCooldown("Outbreak") && DoTTracker.NeedMeleeRefresh(Me.CurrentTarget, SpellBook.BloodPlague)),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks10 && Lua.PlayerPower > 31),
                Spell.Cast("Unholy Blight", ret => T.HasTalent(3) && Spell.IsSpellInRange(115989) && (NeedBothDisUp || NeedUnholyBlight)),
                Spell.Cast("Outbreak", ret => (NeedUnholyBlight || NeedBothDisUp) && UnholyBlightCheck),

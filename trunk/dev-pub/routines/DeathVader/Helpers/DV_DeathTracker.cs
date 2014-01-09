@@ -28,8 +28,8 @@ namespace DeathVader.Helpers
 
         # region variables
 
-        private static bool _combatLogAttached;
 
+        private static bool _combatLogAttached;
         private const double scentBloodStackBuff = 0.2;
         private const double bloodShieldMasteryRatio = 96;
         private const double bloodShieldMasteryBase = 50;
@@ -65,35 +65,39 @@ namespace DeathVader.Helpers
             RemoveDamageTaken(DateTime.Now);
         }
 
+        #region TierChecks
+
+        private static readonly HashSet<int> Tier14Ids = new HashSet<int>
+        {
+            -526, // 509 ilvl
+            1124, // 496 ilvl
+            -503,  // 483 ilvl
+        };
+
+
+        #endregion
+
         #region Combat Log Events
 
         private static void AttachCombatLogEvent()
         {
             if (_combatLogAttached)
                 return;
-            Styx.WoWInternals.Lua.Events.AttachEvent("COMBAT_LOG_EVENT_UNFILTERED", HandleCombatLog);
-            if (
-                !Styx.WoWInternals.Lua.Events.AddFilter(
-                    "COMBAT_LOG_EVENT_UNFILTERED",
-                    "return args[2] == 'SWING_DAMAGE' or args[2] == 'RANGE_DAMAGE' or args[8] == UnitGUID('player') or args[2] == 'SPELL_DAMAGE'"))
-            {
-                Logger.InfoLog(
-                    "ERROR: Could not add combat log event filter! - Performance may be horrible, and things may not work properly!");
-            }
-
-            Logger.InfoLog("Attached combat log");
+            CombatLogHandler.Register("SWING_DAMAGE", HandleCombatLog);
+            CombatLogHandler.Register("SPELL_DAMAGE", HandleCombatLog);
+            Logger.InfoLog("[DeathTracker] Attached to combat log");
             _combatLogAttached = true;
         }
 
-        private static void HandleCombatLog(object sender, LuaEventArgs args)
+        private static void HandleCombatLog(CombatLogEventArgs args)
         {
-            var e = new CombatLogEventArgs(args.EventName, args.FireTimeStamp, args.Args);
-            switch (e.Event)
+            //var e = new CombatLogEventArgs(args.EventName, args.FireTimeStamp, args.Args);
+            switch (args.Event)
             {
                 case "SWING_DAMAGE":
-                    if (e.DestGuid == StyxWoW.Me.Guid)
+                    if (args.DestGuid == StyxWoW.Me.Guid)
                     {
-                        object damage = e.Args[11];
+                        object damage = args.School;
                         if (!AddingDamageTaken)
                             AddDamageTaken(DateTime.Now, (int)(double)damage);
                     }
@@ -101,16 +105,16 @@ namespace DeathVader.Helpers
 
                 case "RANGE_DAMAGE":
                 case "SPELL_DAMAGE":
-                    if (e.DestGuid == StyxWoW.Me.Guid)
+                    if (args.DestGuid == StyxWoW.Me.Guid)
                     {
-                        object damage = e.Args[14];
-                        string school = e.SpellSchool.ToString();
-                        string spellname = e.SpellName;
+                        object damage = args.Amount;
+                        string school = args.SpellSchool.ToString();
+                        string spellname = args.SpellName;
 
                         // Do not count damage from no source or maybe this is just particular items like Shannox's Jagged Tear?
                         // Do not count Spirit Link damage since it doesn't affect DS.
-                        bool countDamage = e.SourceName != null ||
-                                           (e.SpellName == "Spirit Link" && e.SourceName == "Spirit Link Totem");
+                        bool countDamage = args.SourceName != null ||
+                                           (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
                         if (countDamage && !AddingDamageTaken)
                         {
@@ -124,7 +128,6 @@ namespace DeathVader.Helpers
         #endregion
 
         #region Add, Remove, Get damage from the damage log
-
         private static void AddDamageTaken(DateTime timestamp, int damage)
         {
             // Add the new damage taken data
@@ -204,8 +207,8 @@ namespace DeathVader.Helpers
 
                 //Logger.DebugLog("DSTracker: Total Damage [{0}]", damageOverFiveSeconds);
 
-                scentBloodStacks = DvSpell.GetAuraStackCount("Scent of Blood");
-                bloodChargeStacks = DvSpell.GetAuraStackCount("Blood Charge");
+                scentBloodStacks = StyxWoW.Me.AuraStackCount("Scent of Blood");
+                bloodChargeStacks = StyxWoW.Me.AuraStackCount("Blood Charge");
                 var healthDeficit = (StyxWoW.Me.MaxHealth - StyxWoW.Me.CurrentHealth);
 
                 // This should return the predicted shield over the last 5 seconds
@@ -248,7 +251,7 @@ namespace DeathVader.Helpers
                 double vbHealingInc = 0.0;
                 double gsHealModifier = 0.0;
                 double luckOfTheDrawAmt = 0.0;
-                uint lotDStackcount = 0;
+                int lotDStackcount = 0;
 
                 // Vampiric Blood
                 double vbHealingIncModified = DvTalentManager.HasGlyph("Vampiric Blood") ? vbGlyphedHealingInc : vbUnglyphedHealingInc;
@@ -257,9 +260,8 @@ namespace DeathVader.Helpers
                 // Luck of the Draw - MoP Dungeon bonus
                 if (StyxWoW.Me.HasAura("Luck of the Draw"))
                 {
-                    lotDStackcount = DvSpell.GetAuraStackCount("Luck of the Draw");
+                    lotDStackcount = StyxWoW.Me.AuraStackCount("Luck of the Draw");
                 }
-
                 luckOfTheDrawAmt = LUCK_OF_THE_DRAW_MOD * lotDStackcount;
 
                 // Guardian Spirit - from priest
