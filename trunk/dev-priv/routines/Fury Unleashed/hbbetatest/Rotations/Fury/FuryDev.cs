@@ -89,7 +89,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //# Cooldowns are stacked whenever possible, and only delayed for the very last use of them.
 
                 //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
-                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && (G.ColossusSmashSpellCooldown < 2000 || G.ColossusSmashSpellCooldown >= 5000 || G.AlmostDead) && FG.Tier6AbilityUsage),
+                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && (G.ColossusSmashSpellCooldown < 2000 || G.RemainingColossusSmash(5000) || G.AlmostDead) && FG.Tier6AbilityUsage),
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
                 new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                     Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
@@ -152,10 +152,10 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryHeroicStrike()
         {
             return new PrioritySelector(
-                new Decorator(ret => !InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum,
+                new Decorator(ret => (!InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum) && G.NormalPhase,
                     new PrioritySelector(
                         //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up
-                        Spell.Cast(SpellBook.HeroicStrike, ret => (G.ColossusSmashAura && Lua.PlayerPower >= 40 && G.NormalPhase || Lua.PlayerPower >= 100) && G.EnrageAura, true))),
+                        Spell.Cast(SpellBook.HeroicStrike, ret => (G.ColossusSmashAura && Lua.PlayerPower >= 40 || Lua.PlayerPower >= 100) && G.EnrageAura, true))),
                 new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
                         new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
@@ -173,7 +173,25 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryExec()
         {
             return new PrioritySelector(
-                );
+                new Decorator(ret => !G.ColossusSmashAura,
+                    new PrioritySelector(
+                        //Prevent Rage Capping - With passthrough to the next item in the same tree.
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 5, true),
+                        //Only if Bloodthirst and Colossus Smash are not available, you have 1 charge of Raging Blow, your rage is over 80, and the global cooldown after it would not be Colossus Smash.
+                        Spell.Cast(SpellBook.Execute, ret => G.BloodThirstOnCooldown && G.ColossusSmashSpellCooldown > 3000 && G.RagingBlow1S && Lua.PlayerPower > 80),
+                        //Use Colossus Smash.
+                        Spell.Cast(SpellBook.ColossusSmash),
+                        //Use regular rotation.
+                        Dev_FurySt())),
+                new Decorator(ret => G.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 5, true),
+                        Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && FG.Tier6AbilityUsage),
+                        new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                            Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura && G.BerserkerRageOnCooldown),
+                        Spell.Cast(SpellBook.Execute),
+                        Spell.Cast(SpellBook.RagingBlow))));
         }
 
         // Using this for AoE Phase - http://www.icy-veins.com/fury-warrior-wow-pve-dps-rotation-cooldowns-abilities
@@ -295,8 +313,6 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryOffensive()
         {
             return new PrioritySelector(
-                //actions=auto_attack
-                //actions+=/mogu_power_potion,if=(target.health.pct<20&buff.recklessness.up)|target.time_to_die<=25
                 //# This incredibly long line can be translated to 'Use recklessness on cooldown with colossus smash; unless the boss will die before the ability is usable again, and then combine with execute instead.'
                 //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
                 //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
@@ -307,11 +323,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
                 //# There is a 0.25~ second delay in enrage application, this delay allows enrage to cover 4 GCDs of ability usage.
                 //actions+=/berserker_rage,if=buff.enrage.remains<1&cooldown.bloodthirst.remains>1
-                //actions+=/run_action_list,name=single_target,if=active_enemies=1
-                //actions+=/run_action_list,name=two_targets,if=active_enemies=2
-                //actions+=/run_action_list,name=three_targets,if=active_enemies=3
-                //actions+=/run_action_list,name=aoe,if=active_enemies>3
-
+                Spell.Cast(SpellBook.BerserkerRage, ret => !G.EnrageAura && G.BloodThirstOnCooldown || G.FadingEnrage(1000) && G.BloodbathSpellCooldown > 1000)
                 );
         }
 

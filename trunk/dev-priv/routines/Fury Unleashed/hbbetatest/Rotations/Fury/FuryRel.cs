@@ -134,7 +134,7 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryHeroicStrike()
         {
             return new PrioritySelector(
-                new Decorator(ret => !InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum,
+                new Decorator(ret => (!InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum) && Global.NormalPhase,
                     new PrioritySelector(
                         //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up - Added Lua.PlayerPower == Lua.PlayerPowerMax
                         Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower == Lua.PlayerPowerMax || ((Global.ColossusSmashAura && Lua.PlayerPower >= 40 && Global.NormalPhase || Lua.PlayerPower >= Lua.PlayerPowerMax - 20) && Global.EnrageAura), true))),
@@ -154,17 +154,21 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryExec()
         {
             return new PrioritySelector(
-                new Decorator(ret => Global.ColossusSmashAura,
-                    new PrioritySelector(
-                        Spell.Cast(SpellBook.Execute, ret => Global.FadingDeathSentence(3000)),
-                        Spell.Cast(SpellBook.StormBolt, ret => FuryGlobal.Tier6AbilityUsage),
-                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura),
-                        Spell.Cast(SpellBook.Execute),
-                        Spell.Cast(SpellBook.RagingBlow))),
                 new Decorator(ret => !Global.ColossusSmashAura,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.Execute, ret => Global.FadingDeathSentence(3000)),
-                        Rel_FurySt())));
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 5, true),
+                        Spell.Cast(SpellBook.Execute, ret => Global.BloodThirstOnCooldown && Global.ColossusSmashSpellCooldown > 3000 && Global.RagingBlow1S && Lua.PlayerPower > 80),
+                        Spell.Cast(SpellBook.ColossusSmash),
+                        Rel_FurySt())),
+                new Decorator(ret => Global.ColossusSmashAura,
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax -5, true),
+                        Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage),
+                        new Decorator(ret => FuryGlobal.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && Global.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                            Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
+                        Spell.Cast(SpellBook.Bloodthirst, ret => !Global.EnrageAura && Global.BerserkerRageOnCooldown),
+                        Spell.Cast(SpellBook.Execute),
+                        Spell.Cast(SpellBook.RagingBlow))));
         }
 
         internal static Composite Rel_FuryMt()
