@@ -88,8 +88,6 @@ namespace FuryUnleashed.Rotations.Fury
                 //# and then expend all of this rage by using heroic strike 3-4 times during colossus smash. It's also a good idea to save 1 charge of raging blow to use inside of this 6.5 second window.
                 //# Cooldowns are stacked whenever possible, and only delayed for the very last use of them.
 
-                //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
-                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && (G.ColossusSmashSpellCooldown < 2000 || G.RemainingColossusSmash(5000) || G.AlmostDead) && FG.Tier6AbilityUsage),
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
                 new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                     Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
@@ -313,17 +311,18 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryOffensive()
         {
             return new PrioritySelector(
-                //# This incredibly long line can be translated to 'Use recklessness on cooldown with colossus smash; unless the boss will die before the ability is usable again, and then combine with execute instead.'
-                //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
-                //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
-                //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
-                //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
-                //actions+=/blood_fury,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
-                //actions+=/berserking,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
-                //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
                 //# There is a 0.25~ second delay in enrage application, this delay allows enrage to cover 4 GCDs of ability usage.
                 //actions+=/berserker_rage,if=buff.enrage.remains<1&cooldown.bloodthirst.remains>1
-                Spell.Cast(SpellBook.BerserkerRage, ret => !G.EnrageAura && G.BloodThirstOnCooldown || G.FadingEnrage(1000) && G.BloodbathSpellCooldown > 1000)
+                Spell.Cast(SpellBook.BerserkerRage, ret => (!G.EnrageAura && G.BloodThirstOnCooldown || G.FadingEnrage(1000) && G.BloodbathSpellCooldown > 1000) && FG.BerserkerRageUsage, true),
+                //actions.single_target=bloodbath,if=enabled&(cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5|target.time_to_die<=20)
+                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && (G.ColossusSmashSpellCooldown < 2000 || G.RemainingColossusSmash(5000) || G.AlmostDead) && FG.Tier6AbilityUsage, true),
+                //# This incredibly long line can be translated to 'Use recklessness on cooldown with colossus smash; unless the boss will die before the ability is usable again, and then combine with execute instead.'
+                //actions+=/recklessness,if=!talent.bloodbath.enabled&((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20))|buff.bloodbath.up&(target.time_to_die>(192*buff.cooldown_reduction.value)|target.health.pct<20)|target.time_to_die<=12
+                Spell.Cast(SpellBook.Recklessness, ret => ((!G.BloodbathTalent && (G.RemainingColossusSmash(5000) || G.ColossusSmashSpellCooldown < 2000)) || (!G.BloodbathAura && (G.RemainingColossusSmash(5000) || G.ColossusSmashSpellCooldown < 2000))) && FG.RecklessnessUsage, true),
+                //actions+=/avatar,if=enabled&(buff.recklessness.up|target.time_to_die<=25)
+                Spell.Cast(SpellBook.Avatar, ret => G.AvatarTalent && (G.RecklessnessAura || G.AlmostDead) && FG.Tier6AbilityUsage, true),
+                //actions+=/skull_banner,if=buff.skull_banner.down&(((cooldown.colossus_smash.remains<2|debuff.colossus_smash.remains>=5)&target.time_to_die>192&buff.cooldown_reduction.up)|buff.recklessness.up)
+                Spell.Cast(SpellBook.SkullBanner, ret => !Global.SkullBannerAura && (G.RecklessnessAura || G.ColossusSmashSpellCooldown < 2000 || G.RemainingColossusSmash(5000)) && FG.SkullBannerUsage, true)
                 );
         }
 
