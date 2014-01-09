@@ -82,7 +82,7 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
-        #region
+        #region Combat Settings
         [Setting]
         [Styx.Helpers.DefaultValue(60)]
         [Category("Combat Settings")]
@@ -96,6 +96,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Combat Settings")]
+        [DisplayName("Enable Heroic Leap Usage")]
+        [Description("This enables the routine to cast Heroic Leap when applicable on your target - EXPERIMENTAL!")]
+        public bool CheckHeroicLeap { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]

@@ -20,81 +20,81 @@ namespace FuryUnleashed.Interfaces.Settings
         #region Hotkeys
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Casting Type Hotkeys")]
         [DisplayName("Demoralizing Banner Key")]
-        [Description("Choose preferred Demoralizing Banner key.")]
+        [Description("Select the preferred hotkey for Demoralizing Banner (Will cast on your mouse location).")]
         public Keys DemoBannerChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Casting Type Hotkeys")]
         [DisplayName("Heroic Leap Key")]
-        [Description("Choose preferred Heroic Leap key.")]
+        [Description("Select the preferred hotkey for Heroic Leap (Will cast on your mouse location).")]
         public Keys HeroicLeapChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Casting Type Hotkeys")]
         [DisplayName("Mocking Banner Key")]
-        [Description("Choose preferred Mocking Banner key.")]
+        [Description("Select the preferred hotkey for Mocking Banner (Will cast on your mouse location).")]
         public Keys MockingBannerChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Casting Type Hotkeys")]
         [DisplayName("Shattering Throw Key")]
-        [Description("Choose preferred Shattering Throw key.")]
+        [Description("Select the preferred hotkey for Shattering Throw (Casts on keypress).")]
         public Keys ShatteringThrowChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Casting Type Hotkeys")]
         [DisplayName("Tier 4 Ability Key")]
-        [Description("Choose preferred Tier 4 ability key.")]
+        [Description("Select the preferred hotkey for your Tier 4 abilities (Casts on keypress).")]
         public Keys Tier4Choice { get; set; }
 
         // ========================================================================================
         
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.Mode.Auto)]
-        [Category("Hotkeys")]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Mode Selector")]
-        [Description("Choose preferred Hotkey Mode.")]
+        [Description("Select the hotkey mode: Auto, Semi Hotkey (Only Pause & Cooldowns) or Hotkey (All hotkeys).")]
         public Enum.Mode ModeSelection { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(ModifierKeys.Alt)]
-        [Category("Hotkeys")]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Modifier Key")]
-        [Description("Choose preferred modifier key.")]
+        [Description("Select the preferred modifier key for the hotkeys.")]
         public ModifierKeys ModKeyChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Pause Key")]
-        [Description("Choose preferred pause key.")]
+        [Description("Select the preferred key to toggle pause the routine.")]
         public Keys PauseKeyChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Cooldown Key")]
-        [Description("Choose preferred cooldown key.")]
+        [Description("Select the preferred key to toggle cooldowns.")]
         public Keys CooldownKeyChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Multi-Target Key (AoE)")]
-        [Description("Choose preferred AoE key.")]
+        [Description("Select the preferred key to toggle AoE (Multi-Target).")]
         public Keys MultiTgtKeyChoice { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Keys.None)]
-        [Category("Hotkeys")]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Special Key")]
-        [Description("Arms: None - Fury: None - Prot: Switch Shield Block or Barrier.")]
+        [Description("Arms: None - Fury: None - Prot: None.")]
         public Keys SpecialKeyChoice { get; set; }
         #endregion
 

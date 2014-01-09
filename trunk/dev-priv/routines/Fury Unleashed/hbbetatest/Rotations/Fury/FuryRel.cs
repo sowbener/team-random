@@ -81,6 +81,9 @@ namespace FuryUnleashed.Rotations.Fury
             return new PrioritySelector(
                 //Added for Supporting it.
                 Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 && Global.ColossusSmashAura || Global.FadingDeathSentence(3000) && Global.ColossusSmashSpellCooldown >= 1500), // Added T16 P4.
+                //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
+                new Decorator(ret => FuryGlobal.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && Global.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                    Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && Global.ReadinessAura && Global.ColossusSmashAura && FuryGlobal.Tier6AbilityUsage),
                 //actions.single_target+=/raging_blow,if=buff.raging_blow.stack=2&debuff.colossus_smash.up&target.health.pct>=20
@@ -269,72 +272,6 @@ namespace FuryUnleashed.Rotations.Fury
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70)))
                         )));
         }
-
-        //internal static Composite Rel_FuryMt()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 5,
-        //            new PrioritySelector(
-        //                Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
-
-        //                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-        //                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
-
-        //                Spell.Cast(SpellBook.Bloodthirst),
-        //                Spell.Cast(SpellBook.Whirlwind),
-        //                Spell.Cast(SpellBook.RagingBlow, ret => Lua.PlayerPower <= 60 && Global.MeatCleaverAuraS3)
-        //                )),
-        //        new Decorator(ret => Unit.NearbyAttackableUnitsCount == 4,
-        //            new PrioritySelector(
-        //                Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
-
-        //                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-        //                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
-
-        //                Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS3),
-        //                Spell.Cast(SpellBook.Bloodthirst),
-        //                Spell.Cast(SpellBook.ColossusSmash),
-        //                Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS3),
-        //                Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 10)
-        //                )),
-        //        new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
-        //            new PrioritySelector(
-        //                Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
-
-        //                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-        //                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
-
-        //                Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS2),
-        //                Spell.Cast(SpellBook.Bloodthirst),
-        //                Spell.Cast(SpellBook.ColossusSmash),
-        //                Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS2),
-        //                Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 10)
-        //                )),
-        //        new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
-        //            new PrioritySelector(
-        //                Spell.Cast(SpellBook.Execute, ret => Global.DeathSentenceAuraT16 || Global.ExecutePhase && Global.ColossusSmashAura), // Added - Only in CS window or Death Sentence.
-
-        //                Spell.Cast(SpellBook.Bladestorm, ret => Global.BladestormTalent && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.DragonRoar, ret => Global.DragonRoarTalent && FuryGlobal.BloodbathSync && FuryGlobal.Tier4AbilityAoEUsage), // Added
-        //                Spell.Cast(SpellBook.StormBolt, ret => Global.StormBoltTalent && FuryGlobal.Tier6AbilityUsage), // Added
-        //                Spell.Cast(SpellBook.Shockwave, ret => Global.ShockwaveTalent && Global.ShockwaveFacing && FuryGlobal.Tier4AbilityAoEUsage), // Added
-
-        //                Spell.Cast(SpellBook.Whirlwind, ret => !Global.MeatCleaverAuraS1),
-        //                Spell.Cast(SpellBook.Bloodthirst),
-        //                Spell.Cast(SpellBook.ColossusSmash),
-        //                Spell.Cast(SpellBook.RagingBlow, ret => Global.MeatCleaverAuraS1),
-        //                Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Me.MaxRage - 10),
-        //                new PrioritySelector(
-        //                    new Decorator(ret => Global.ExecutePhase, Rel_FuryExec()),
-        //                    new Decorator(ret => Global.NormalPhase, Rel_FurySt()))
-        //                )));
-        //}
 
         internal static Composite Rel_FuryOffensive()
         {

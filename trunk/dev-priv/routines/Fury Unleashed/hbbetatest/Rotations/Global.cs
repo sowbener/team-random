@@ -28,10 +28,12 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
-                new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
-                //new Action(delegate { Logger.CombatLogWh("MC 3S Aura: {0}", MeatCleaverAuraS3); return RunStatus.Failure; }),
-                //new Action(delegate { Logger.CombatLogWh("MC Aura: {0}", MeatCleaverAura); return RunStatus.Failure; }),
+
+                new Decorator(ret => InternalSettings.Instance.General.Vigilance != Enum.VigilanceTrigger.Never,
+                    new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; })),
+
                 new Switch<WoWSpec>(ret => Me.Specialization,
+                    // Arms Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
                             new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
@@ -41,12 +43,16 @@ namespace FuryUnleashed.Rotations
                             new Decorator(ret => InternalSettings.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
                             new Action(delegate { Unit.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
+                    
+                    // Fury Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
                             new Decorator(ret => InternalSettings.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => InternalSettings.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
+
+                    // Protection Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
                             new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
@@ -168,7 +174,7 @@ namespace FuryUnleashed.Rotations
         #region Multi Category
         internal static bool AlmostDead
         {
-            get { return Me.CurrentTarget.HealthPercent <= 10; }
+            get { return Me.CurrentTarget.HealthPercent <= 5; }
         }
 
         internal static bool DumpAllRage
