@@ -97,7 +97,7 @@ namespace DeathVader.Helpers
                 case "SWING_DAMAGE":
                     if (args.DestGuid == StyxWoW.Me.Guid)
                     {
-                        object damage = args.School;
+                        object damage = args.Amount;
                         if (!AddingDamageTaken)
                             AddDamageTaken(DateTime.Now, (int)(double)damage);
                     }
