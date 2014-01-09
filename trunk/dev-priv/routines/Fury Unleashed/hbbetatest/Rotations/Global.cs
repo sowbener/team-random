@@ -383,7 +383,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal) || Spell.HasAura(Me, AuraBook.SkullBannerExtra); }
+            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal, 0, 0, false, false, true); }
         }
 
         internal static bool SkullBannerAuraT15
