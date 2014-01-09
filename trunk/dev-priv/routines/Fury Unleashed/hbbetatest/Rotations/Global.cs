@@ -538,17 +538,17 @@ namespace FuryUnleashed.Rotations
         // StyxWoW.Me.CurrentTarget
         internal static bool WeakenedArmor1S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 1, 0, false, false); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 1); }
         }
 
         internal static bool WeakenedArmor2S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 2, 0, false, false); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 2); }
         }
 
         internal static bool WeakenedArmor3S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 3, 0, false, false); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 3); }
         }
 
         // StyxWoW.Me
