@@ -100,7 +100,6 @@ namespace Bullseye.Routines
         internal static Composite BeastmasteryCleave()
         {
             return new PrioritySelector(
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.General.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
@@ -131,7 +130,6 @@ namespace Bullseye.Routines
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90 && SG.Instance.Beastmastery.UseTier4AoE),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Multi-Shot"),
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
