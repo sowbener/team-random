@@ -19,7 +19,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(Enum.Interrupts.RandomTimed)]
         [Category("Global Interrupt Settings")]
         [DisplayName("Interrupt Mode")]
-        [Description("Select the interrupt mode - Constant or after a random casttime - RANDOM IS RECOMMENDED!")]
+        [Description("Select the interrupt mode - Constant or after a random casttime - RandomTimed IS RECOMMENDED!")]
         public Enum.Interrupts InterruptMode { get; set; }
 
         [Setting]
@@ -32,60 +32,89 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
-        #region General
-        [Setting]
-        [Styx.Helpers.DefaultValue(60)]
-        [Category("General")]
-        [DisplayName("Class Racials %")]
-        [Description("Select the use-on HP or MP for Racials (All MP or HP dependant racials).")]
-        public int RacialNum { get; set; }
-
+        #region Updater
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("General")]
+        [Category("Updater")]
         [DisplayName("Enable Automatic Updates")]
-        [Description("Enables the automatic updater in this CC - Updates from RELEASE.")]
+        [Description("Enables the automatic updater in this CC.")]
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Development)]
-        [Category("General")]
+        [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
+        [Category("Updater")]
         [DisplayName("Auto Update Version")]
         [Description("Select the preferred SVN for the auto-updater.")]
         public Enum.SvnUrl SvnUrl { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region General
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General Settings")]
+        [DisplayName("Manual Cast Pause.")]
+        [Description("When enabled, the routine allows you to properly manual-cast abilities.")]
+        public bool AutoDetectManualCast { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(100)]
+        [Category("General Settings")]
+        [DisplayName("Manual Cast Resume Time")]
+        [Description("Amount of time in miliseconds before resuming normal operation after manual cast.")]
+        public int ResumeTime { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("General")]
+        [Category("General Settings")]
         [DisplayName("Enable Hotkey ChatOutput")]
         [Description("Enables chat output for hotkeys.")]
         public bool CheckHotkeyChatOutput { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("General")]
+        [Category("General Settings")]
         [DisplayName("Enable PreCombat HKs")]
         [Description("Enabled allows you to use casting hotkeys outside of combat - COSTS PERFORMANCE!")]
         public bool CheckPreCombatHk { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region Combat Settings
+        [Setting]
+        [Styx.Helpers.DefaultValue(60)]
+        [Category("Combat Settings")]
+        [DisplayName("Class Racials %")]
+        [Description("Select the use-on HP or MP for Racials (All MP or HP dependant racials).")]
+        public int RacialNum { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("General")]
+        [Category("Combat Settings")]
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnRaidMember)]
-        [Category("General")]
-        [DisplayName("Vigilance")]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Combat Settings")]
+        [DisplayName("Enable Heroic Leap Usage")]
+        [Description("This enables the routine to cast Heroic Leap when applicable on your target - EXPERIMENTAL!")]
+        public bool CheckHeroicLeap { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
+        [Category("Combat Settings")]
+        [DisplayName("Vigilance Usage")]
         [Description("Select the usage of Vigilance.")]
         public Enum.VigilanceTrigger Vigilance { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(15)]
-        [Category("General")]
-        [DisplayName("Vigilance %")]
+        [Category("Combat Settings")]
+        [DisplayName("Vigilance HP %")]
         [Description("Select the use-on HP for Vigilance usage.")]
         public int VigilanceNum { get; set; }
         #endregion
@@ -94,25 +123,25 @@ namespace FuryUnleashed.Interfaces.Settings
 
         #region Rotational Settings
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.ArmsRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Arms Rotation Version")]
-        [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.RotationVersion CrArmsRotVersion { get; set; }
+        [Description("Select which rotations you prefer - Development, PvP or Release.")]
+        public Enum.ArmsRotationVersion CrArmsRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Release)]
+        [Styx.Helpers.DefaultValue(Enum.FuryRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Fury Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.RotationVersion CrFuryRotVersion { get; set; }
+        public Enum.FuryRotationVersion CrFuryRotVersion { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.RotationVersion.Development)]
+        [Styx.Helpers.DefaultValue(Enum.ProtRotationVersion.Release)]
         [Category("Rotational Settings")]
         [DisplayName("Prot Rotation Version")]
         [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.RotationVersion CrProtRotVersion { get; set; }
+        public Enum.ProtRotationVersion CrProtRotVersion { get; set; }
         #endregion
 
         // ========================================================================================

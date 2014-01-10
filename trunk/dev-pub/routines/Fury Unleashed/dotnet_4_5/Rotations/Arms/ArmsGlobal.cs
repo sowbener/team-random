@@ -13,7 +13,10 @@ namespace FuryUnleashed.Rotations.Arms
 {
     class ArmsGlobal
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
 
         internal static Composite InitializeArmsPreCombat
         {
@@ -21,11 +24,7 @@ namespace FuryUnleashed.Rotations.Arms
             {
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate
-                        {
-                            Spell.GetCachedAuras();
-                            return RunStatus.Failure;
-                        }),
+                        Global.InitializeCaching(),
                         new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
                                              StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
                                              StyxWoW.Me.CurrentTarget.Distance > 12 &&
@@ -70,10 +69,10 @@ namespace FuryUnleashed.Rotations.Arms
                     Global.InitializeOnKeyActions(),
                     new Decorator(ret => InternalSettings.Instance.Arms.CheckInterrupts && Unit.CanInterrupt,
                         Global.InitializeInterrupts()),
-                    new Switch<Enum.RotationVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Development, ArmsDev.DevArmsCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.PvP, ArmsPvP.PvPArmsCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Release, ArmsRel.RelArmsCombat)));
+                    new Switch<Enum.ArmsRotationVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
+                        new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Development, ArmsDev.DevArmsCombat),
+                        new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.PvP, ArmsPvP.PvPArmsCombat),
+                        new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Release, ArmsRel.RelArmsCombat)));
             }
         }
 

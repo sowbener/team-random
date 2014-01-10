@@ -27,11 +27,27 @@ namespace FuryUnleashed.Interfaces.GUI
             }
         }
 
+        private void UpdateMyAurasLinq()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                myaurasdatagrid.DataSource = StyxWoW.Me.GetAllAuras().OrderBy(a => a.Name).ToList();
+            }
+        }
+
         private void UpdateTargetAuras()
         {
             if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
             {
                 mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.Auras.Values.OrderBy(a => a.Name).ToList();
+            }
+        }
+
+        private void UpdateTargetAurasLinq()
+        {
+            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            {
+                mytargetaurasdatagrid.DataSource = StyxWoW.Me.CurrentTarget.GetAllAuras().OrderBy(a => a.Name).ToList();
             }
         }
 
@@ -82,6 +98,22 @@ namespace FuryUnleashed.Interfaces.GUI
                 vigilancetargettextbox.Text = Core.Utilities.Logger.PrintVigilanceTarget;
             }
         }
+
+        private void UpdateCachedAttackableUnitsList()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                //cachedattackableunitsdatagrid.DataSource = Unit.CachedAttackableUnitsList;
+            }
+        }
+
+        private void UpdateCachedRaidMembersList()
+        {
+            if (Unit.IsViable(StyxWoW.Me))
+            {
+                //cachedraidmembersdatagrid.DataSource = Unit.CachedRaidMembersList;
+            }
+        }
         #endregion
 
         #region Errors
@@ -112,9 +144,19 @@ namespace FuryUnleashed.Interfaces.GUI
             UpdateMyAuras();
         }
 
+        private void myaurasbutton2_Click(object sender, EventArgs e)
+        {
+            UpdateMyAurasLinq();
+        }
+
         private void targetaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateTargetAuras();
+        }
+
+        private void targetaurasbutton2_Click(object sender, EventArgs e)
+        {
+            UpdateTargetAurasLinq();
         }
 
         private void mycachedaurasbutton_Click(object sender, EventArgs e)
@@ -145,6 +187,16 @@ namespace FuryUnleashed.Interfaces.GUI
         private void updatevigilancetargetbutton_Click(object sender, EventArgs e)
         {
             UpdateVigilanceTarget();
+        }
+
+        private void cachedattackableunitsbutton_Click(object sender, EventArgs e)
+        {
+            UpdateCachedAttackableUnitsList();
+        }
+
+        private void cachedraidmembersbutton_Click(object sender, EventArgs e)
+        {
+            UpdateCachedRaidMembersList();
         }
     }
 }

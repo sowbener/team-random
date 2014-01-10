@@ -161,7 +161,7 @@ namespace FuryUnleashed.Core
                     new Decorator(ret => (Global.BloodbathAura || !Global.BloodbathTalent) && Global.ColossusSmashAura,
                         new Action(ret => { UseFuryItems(); return RunStatus.Failure; }))),
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
-                    new Decorator(ret => Global.TargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,
+                    new Decorator(ret => Unit.IsTargettingMe && Me.HealthPercent <= InternalSettings.Instance.Protection.CheckTrinketsNum,
                         new Action(ret => { UseProtItems(); return RunStatus.Failure; }))));
         }
         #endregion

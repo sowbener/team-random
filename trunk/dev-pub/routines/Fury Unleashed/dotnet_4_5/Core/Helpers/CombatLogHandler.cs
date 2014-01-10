@@ -13,9 +13,7 @@ namespace FuryUnleashed.Core.Helpers
     [UsedImplicitly]
     internal class CombatLogHandler
     {
-        // Credits to Apoc and Wulf for this class!!!
-
-        //public static BossEncounter CurrentBossEncounter { get; set; }
+        //Credits to Apoc and Wulf for this class!!!
 
         internal static void Initialize()
         {

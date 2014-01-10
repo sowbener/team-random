@@ -26,7 +26,7 @@ namespace FuryUnleashed.Rotations.Protection
             {
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                        G.InitializeCaching(),
                         new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
                     new Decorator(ret => Unit.DefaultBuffCheck && ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,
@@ -47,9 +47,9 @@ namespace FuryUnleashed.Rotations.Protection
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => InternalSettings.Instance.Protection.CheckInterrupts && Unit.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.RotationVersion>(ctx => InternalSettings.Instance.General.CrProtRotVersion,
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Development, ProtDev.DevProtCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Release, ProtRel.RelProtCombat)));
+                    new Switch<Enum.ProtRotationVersion>(ctx => InternalSettings.Instance.General.CrProtRotVersion,
+                        new SwitchArgument<Enum.ProtRotationVersion>(Enum.ProtRotationVersion.Development, ProtDev.DevProtCombat),
+                        new SwitchArgument<Enum.ProtRotationVersion>(Enum.ProtRotationVersion.Release, ProtRel.RelProtCombat)));
             }
         }
 
@@ -168,26 +168,6 @@ namespace FuryUnleashed.Rotations.Protection
                 return ((IS.Instance.Protection.Tier6AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Protection.Tier6AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Protection.Tier6AoeAbilities == Enum.AbilityTrigger.Always));
-            }
-        }
-
-        internal static bool ImpendingVictoryUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
-                        (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                        (IS.Instance.Protection.ImpendingVictory == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15));
-            }
-        }
-
-        internal static bool VictoryRushUsage
-        {
-            get
-            {
-                return ((IS.Instance.Protection.VictoryRush == Enum.VcTrigger.Always && (G.VictoriousAura || G.VictoriousAuraT15)) ||
-                        (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnVictoriousProc && G.VictoriousAura) ||
-                        (IS.Instance.Protection.VictoryRush == Enum.VcTrigger.OnT15Proc && G.VictoriousAuraT15));
             }
         }
 

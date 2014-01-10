@@ -1,16 +1,16 @@
-﻿using FuryUnleashed.Core;
-using FuryUnleashed.Core.Managers;
-using FuryUnleashed.Interfaces.Settings;
-using Styx;
+﻿using FuryUnleashed.Interfaces.Settings;
 using Styx.TreeSharp;
-using Styx.WoWInternals.WoWObjects;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Rotations.Arms
 {
     class ArmsDev
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        //private static LocalPlayer Me
+        //{
+        //    get { return StyxWoW.Me; }
+        //}
+
         internal static Composite DevArmsCombat
         {
             get
@@ -19,65 +19,16 @@ namespace FuryUnleashed.Rotations.Arms
                     new Switch<Enum.Mode>(ctx => SettingsH.Instance.ModeSelection,
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsNonGcdUtility(),
-                                Dev_ArmsRacials(),
-                                Dev_ArmsOffensive(),
-                                Item.CreateItemBehaviour(),
-                                Dev_ArmsRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ArmsGcdUtility(),
-                                        new Decorator(
-                                            ret =>
-                                                InternalSettings.Instance.Arms.CheckAoE &&
-                                                Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
-                                        )))),
+                                ArmsRel.RelArmsCombat
+                                )),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Dev_ArmsRacials(),
-                                        Dev_ArmsOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Dev_ArmsRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ArmsGcdUtility(),
-                                        new Decorator(
-                                            ret =>
-                                                InternalSettings.Instance.Arms.CheckAoE &&
-                                                Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
-                                        )))),
+                                ArmsRel.RelArmsCombat
+                                )),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
-                                new Decorator(ret => Me.HealthPercent < 100, Dev_ArmsDefensive()),
-                                Dev_ArmsNonGcdUtility(),
-                                new Decorator(ret => HotKeyManager.IsCooldown,
-                                    new PrioritySelector(
-                                        Dev_ArmsRacials(),
-                                        Dev_ArmsOffensive(),
-                                        Item.CreateItemBehaviour())),
-                                Dev_ArmsRageDump(),
-                                new Decorator(ret => !Spell.IsGlobalCooldown(),
-                                    new PrioritySelector(
-                                        Dev_ArmsGcdUtility(),
-                                        new Decorator(
-                                            ret =>
-                                                InternalSettings.Instance.Arms.CheckAoE && HotKeyManager.IsAoe &&
-                                                Unit.NearbyAttackableUnitsCount >=
-                                                InternalSettings.Instance.Arms.CheckAoENum, Dev_ArmsMt()),
-                                        new Decorator(ret => Global.ExecutePhase, Dev_ArmsExec()),
-                                        new Decorator(ret => Global.NormalPhase, Dev_ArmsSt())
-                                        ))))));
+                                ArmsRel.RelArmsCombat
+                                ))));
             }
         }
 

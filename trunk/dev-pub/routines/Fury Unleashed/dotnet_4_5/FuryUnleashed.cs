@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
@@ -13,10 +12,13 @@ using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
+using System.Windows.Forms;
 using A = FuryUnleashed.Rotations.Arms.ArmsGlobal;
 using BotEvents = Styx.CommonBot.BotEvents;
 using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using P = FuryUnleashed.Rotations.Protection.ProtGlobal;
+
+// HB API Documentation: http://docs.honorbuddy.com/
 
 namespace FuryUnleashed
 {
@@ -25,17 +27,19 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 4, 8);
-        public static readonly string FuName = "Fury Unleashed Premium - IR " + Revision;
-        public static readonly double WoWVersion = 5.4;
+        public static readonly Version Revision = new Version(1, 5, 5, 6);
+        public static readonly string FuName = "Fury Unleashed - IR " + Revision;
+        public static readonly string WoWVersion = "5.4.2";
 
         public override string Name { get { return FuName; } }
         public override bool WantButton { get { return true; } }
         
         public override Composite CombatBehavior { get { return _combatBehavior ?? (_combatBehavior = CombatSelector()); } }
-        public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreBuffSelector()); } }
+        public override Composite PreCombatBuffBehavior { get { return _preCombatBehavior ?? (_preCombatBehavior = PreCombatSelector()); } }
 
         private Composite _combatBehavior, _preCombatBehavior;
+
+        internal static ulong MyGuid = 0;
 
         #region Publics
         public override WoWClass Class
@@ -78,16 +82,13 @@ namespace FuryUnleashed
                 return;
             }
 
-            if (Me.Specialization == WoWSpec.WarriorProtection)
-            {
-                DamageTracker.Pulse();
-            }
-
             if (TalentManager.Pulse())
 			{
                 // ReSharper disable once RedundantJumpStatement
 				return;
 			}
+
+            DamageTracker.Pulse();
         }
 
         public override void OnButtonPress()
@@ -110,16 +111,14 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Supported World of Warcraft version: " + WoWVersion + ".");
             Logger.CombatLogOr("Support will be handled via the HB Forums.");
             Logger.CombatLogOr("Thanks list is available in the topic!");
-            Logger.CombatLogOr("\r\n");
+            Logger.CombatLogOr("Special thanks to: Stormchasing, Wulf, Mirabis, Alxaw, Weischbier & Millz!\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
             if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
-            else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.", GlobalSettings.Instance.TicksPerSecond); }
-            Logger.CombatLogOr("\r\n");
-            Logger.CombatLogOr("\r\n");
-            Logger.CombatLogOr("Recommended rotations are (Selectable in the GUI):");
+            else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
+            Logger.CombatLogFb("Recommended rotations are (Selectable in the GUI):");
             Logger.CombatLogOr("Arms: Release");
             Logger.CombatLogOr("Fury: Release");
-            Logger.CombatLogOr("Protection: Development");
+            Logger.CombatLogOr("Protection: Release");
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
 
@@ -127,8 +126,12 @@ namespace FuryUnleashed
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
 
-            /* Initialize Damage Tracker */
+            /* Set Characters GUID */
+            MyGuid = Me.Guid;
+
+            /* Initialize Various Functions */
             DamageTracker.Initialize();
+            HotKeyManager.InitializeBindings();
 
             /* Gather required information */
             Logger.StatCounter();
@@ -136,13 +139,13 @@ namespace FuryUnleashed
 
             /* Start Combat */
             Spell.InitGcdSpell();
-            PreBuffSelector();
+            PreCombatSelector();
             CombatSelector();
 
             Logger.CombatLogOr("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
         }
 
-        internal Composite PreBuffSelector()
+        internal Composite PreCombatSelector()
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms, A.InitializeArmsPreCombat),

@@ -13,7 +13,11 @@ namespace FuryUnleashed.Rotations.Arms
 {
     class ArmsRel
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
+
         internal static Composite RelArmsCombat
         {
             get
@@ -258,7 +262,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             return new PrioritySelector(
 
-                new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
+                new Decorator(ret => !StyxWoW.Me.IsInInstance && Unit.IsViable(Me.CurrentTarget) &&
                                      StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
                                      StyxWoW.Me.CurrentTarget.Distance > 12 &&
                                      StyxWoW.Me.CurrentTarget.Distance < 30,
@@ -326,8 +330,8 @@ namespace FuryUnleashed.Rotations.Arms
                         Me.HealthPercent <= InternalSettings.Instance.Arms.CheckShieldWallNum),
                 Spell.Cast(SpellBook.SpellReflection,
                     ret =>
-                        ((InternalSettings.Instance.Arms.CheckSpellReflect && Me.CurrentTarget != null &&
-                          Global.TargettingMe && Me.CurrentTarget.IsCasting) ||
+                        ((InternalSettings.Instance.Arms.CheckSpellReflect && Unit.IsViable(Me.CurrentTarget) &&
+                          Unit.IsTargettingMe && Me.CurrentTarget.IsCasting) ||
                          Unit.NearbyCastingUnitsTargetingMe(StyxWoW.Me.Location, 45).FirstOrDefault() != null)),
                 Item.ArmsUseHealthStone()
                 );

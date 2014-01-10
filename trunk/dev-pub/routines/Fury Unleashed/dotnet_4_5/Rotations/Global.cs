@@ -1,4 +1,4 @@
-﻿using System;
+﻿using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
@@ -9,6 +9,7 @@ using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
+using System;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
@@ -27,8 +28,12 @@ namespace FuryUnleashed.Rotations
             return new PrioritySelector(
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
-                new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; }),
+
+                new Decorator(ret => InternalSettings.Instance.General.Vigilance != Enum.VigilanceTrigger.Never,
+                    new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; })),
+
                 new Switch<WoWSpec>(ret => Me.Specialization,
+                    // Arms Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
                             new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
@@ -38,12 +43,16 @@ namespace FuryUnleashed.Rotations
                             new Decorator(ret => InternalSettings.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
                             new Action(delegate { Unit.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
+                    
+                    // Fury Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
                             new Decorator(ret => InternalSettings.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => InternalSettings.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
+
+                    // Protection Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
                             new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
@@ -58,6 +67,8 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.General.AutoDetectManualCast,
+                    ManualCastPause()),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Bladestorm, ret => BladestormTalent),
@@ -88,18 +99,6 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        //private static Random _random = new Random();
-        //internal static Composite InitializeInterrupts()
-        //{
-        //    return new PrioritySelector(
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-        //            Spell.Cast(SpellBook.DisruptingShout, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()) && DisruptingShoutTalent && (PummelOnCooldown || Unit.InterruptableUnitsCount > 1))
-        //            ),
-        //        new ThrottlePasses(1, TimeSpan.FromMilliseconds(_random.Next(400, 1500)), RunStatus.Failure,
-        //            Spell.Cast(SpellBook.Pummel, ret => HashSets.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastOrChannelId()))
-        //            ));
-        //}
-
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
@@ -109,6 +108,14 @@ namespace FuryUnleashed.Rotations
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
                     Spell.Cast(SB.Pummel)
                     ));
+        }
+
+        internal static Composite ManualCastPause()
+        {
+            return new Sequence(
+                new Decorator(ret => InternalSettings.Instance.General.AutoDetectManualCast && HotKeyManager.AnyKeyPressed(), new ActionAlwaysSucceed()),
+                new WaitContinue(TimeSpan.FromMilliseconds(InternalSettings.Instance.General.ResumeTime), ret => false,
+                    new ActionAlwaysSucceed()));
         }
         #endregion
 
@@ -133,6 +140,11 @@ namespace FuryUnleashed.Rotations
                 default: return null;
             }
         }
+
+        //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
+        //actions+=/blood_fury,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+        //actions+=/berserking,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+        //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
 
         internal static bool RacialUsageSatisfied(string racial)
         {
@@ -162,7 +174,7 @@ namespace FuryUnleashed.Rotations
         #region Multi Category
         internal static bool AlmostDead
         {
-            get { return Me.CurrentTarget.HealthPercent <= 10; }
+            get { return Me.CurrentTarget.HealthPercent <= 5; }
         }
 
         internal static bool DumpAllRage
@@ -195,11 +207,6 @@ namespace FuryUnleashed.Rotations
             get { return Me.IsSafelyFacing(Me.CurrentTarget); }
         }
 
-        internal static bool TargettingMe
-        {
-            get { return Me.CurrentTarget.CurrentTargetGuid == Me.Guid; }
-        }
-
         internal static bool WieldsTwoHandedWeapons
         {
             get { return Item.WieldsTwoHandedWeapons; }
@@ -227,6 +234,7 @@ namespace FuryUnleashed.Rotations
                 return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
             }
         }
+
         // Major CD Variables
         internal static bool ColossusSmashTracker
         {
@@ -345,7 +353,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool RagingWindAura
         {
-            get { return Spell.HasAura(Me, 115317); }
+            get { return Spell.HasAura(Me, AuraBook.RagingWind); }
         }
 
         internal static bool RallyingCryAura
@@ -355,7 +363,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool ReadinessAura
         {
-            get { return Spell.HasAura(Me, AuraBook.ReadinessNormal) || Spell.HasAura(Me, "Readiness"); }
+            get { return Spell.HasAura(Me, AuraBook.ReadinessAddPctModifier, 0, 0, false, false, true); }
         }
 
         internal static bool RecklessnessAura
@@ -375,7 +383,7 @@ namespace FuryUnleashed.Rotations
 
         internal static bool SkullBannerAura
         {
-            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal, 0, 0, false); }
+            get { return Spell.HasAura(Me, AuraBook.SkullBannerNormal, 0, 0, false, false, true); }
         }
 
         internal static bool SkullBannerAuraT15
@@ -477,28 +485,28 @@ namespace FuryUnleashed.Rotations
 
         #region Remaining & Fading Aura's
         // StyxWoW.Me.CurrentTarget - Remaining
-        internal static bool RemainingCs(int remainingtime)
+        internal static bool RemainingColossusSmash(int remainingtime)
         {
             return Spell.RemainingAura(Me.CurrentTarget, AuraBook.ColossusSmash, remainingtime);
         }
 
         // StyxWoW.Me.CurrentTarget - Fading
-        internal static bool FadingCs(int fadingtime)
+        internal static bool FadingColossusSmash(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.ColossusSmash, fadingtime);
         }
 
-        internal static bool FadingDw(int fadingtime)
+        internal static bool FadingDeepWounds(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.DeepWounds, fadingtime);
         }
 
-        internal static bool FadingSunder(int fadingtime)
+        internal static bool FadingSunderArmor(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.SunderArmor, fadingtime);
         }
 
-        internal static bool FadingWb(int fadingtime)
+        internal static bool FadingWeakenedBlows(int fadingtime)
         {
             return Spell.FadingAura(Me.CurrentTarget, AuraBook.WeakenedBlows, fadingtime);
         }
@@ -514,12 +522,12 @@ namespace FuryUnleashed.Rotations
             return Spell.FadingAura(Me, AuraBook.EnrageUnknown, fadingtime) || Spell.FadingAura(Me, AuraBook.EnrageNormal, fadingtime);
         }
 
-        internal static bool FadingRb(int fadingtime)
+        internal static bool FadingRagingBlow(int fadingtime)
         {
             return Spell.FadingAura(Me, AuraBook.RagingBlow, fadingtime);
         }
 
-        internal static bool FadingVc(int fadingtime)
+        internal static bool FadingVictoryRush(int fadingtime)
         {
             return Spell.FadingAura(Me, AuraBook.Victorious, fadingtime) || Spell.FadingAura(Me, AuraBook.VictoriousT15, fadingtime);
         }

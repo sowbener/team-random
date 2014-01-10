@@ -169,7 +169,7 @@ namespace FuryUnleashed.Core.Managers
                 Update();
                 CombatLogHandler.Shutdown();
                 DamageTracker.Initialize();
-                Root.Instance.PreBuffSelector();
+                Root.Instance.PreCombatSelector();
                 Root.Instance.CombatSelector();
                 return true;
             }

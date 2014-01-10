@@ -29,8 +29,7 @@ namespace FuryUnleashed.Core.Helpers
             Never,
             Always,
             OnBossDummy,
-            OnBlTwHr,
-            a
+            OnBlTwHr
         }
 
         public enum BarrierBlock
@@ -108,14 +107,6 @@ namespace FuryUnleashed.Core.Helpers
             Development
         }
 
-        public enum VcTrigger
-        {
-            Never,
-            Always,
-            OnVictoriousProc,
-            OnT15Proc,
-        }
-
         public enum VigilanceTrigger
         {
             Never,
@@ -145,10 +136,22 @@ namespace FuryUnleashed.Core.Helpers
             StormBolt
         }
 
-        public enum RotationVersion
+        public enum ArmsRotationVersion
         {
             Development,
             PvP,
+            Release
+        }
+
+        public enum FuryRotationVersion
+        {
+            Development,
+            Release
+        }
+
+        public enum ProtRotationVersion
+        {
+            Development,
             Release
         }
         #endregion

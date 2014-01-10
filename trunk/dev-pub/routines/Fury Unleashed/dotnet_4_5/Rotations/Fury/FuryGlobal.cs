@@ -8,10 +8,8 @@ using Styx.WoWInternals.WoWObjects;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 using SB = FuryUnleashed.Core.Helpers.SpellBook;
 using U = FuryUnleashed.Core.Unit;
-using Action = Styx.TreeSharp.Action;
 
 namespace FuryUnleashed.Rotations.Fury
 {
@@ -25,7 +23,7 @@ namespace FuryUnleashed.Rotations.Fury
             {
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
-                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
+                        G.InitializeCaching(),
                         new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
                     new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
@@ -46,27 +44,20 @@ namespace FuryUnleashed.Rotations.Fury
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
                     new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.RotationVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Development, FuryDev.DevFuryCombat),
-                        new SwitchArgument<Enum.RotationVersion>(Enum.RotationVersion.Release, FuryRel.RelFuryCombat)));
+                    new Switch<Enum.FuryRotationVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
+                        new SwitchArgument<Enum.FuryRotationVersion>(Enum.FuryRotationVersion.Development, FuryDev.DevFuryCombat),
+                        new SwitchArgument<Enum.FuryRotationVersion>(Enum.FuryRotationVersion.Release, FuryRel.RelFuryCombat)));
             }
         }
 
         #region Booleans
-        internal static bool UseWildStrike(bool hasSmashAura)
+        internal static bool UseWildStrike()
         {
-            if (hasSmashAura)
-            {
-                if ((Global.BloodthirstSpellCooldown < 1500 || Global.FadingCs(1250)) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 70)
-                    return true;
-            }
-            else
-            {
-                if (Global.ColossusSmashSpellCooldown >= 8000 && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
-                    return true;
-            }
+            if (Global.ColossusSmashSpellCooldown >= 7500 && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
+                return true;
             return Me.CurrentRage >= Me.MaxRage - 20;
         }
+
 
         internal static bool UseHeroicStrike(bool hasSmashAura)
         {
@@ -76,10 +67,18 @@ namespace FuryUnleashed.Rotations.Fury
                     return true;
                 if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
                     return true;
-                if (Global.FadingCs(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
+                if (Global.FadingColossusSmash(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
                     return true;
             }
             return Me.CurrentRage >= Me.MaxRage - 10;
+        }
+
+        internal static bool AoEUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckAoE;
+            }
         }
 
         internal static bool BerserkerRageUsage
@@ -98,6 +97,30 @@ namespace FuryUnleashed.Rotations.Fury
             {
                 return ((IS.Instance.Fury.HamString == Enum.Hamstring.Always) ||
                         (IS.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget));
+            }
+        }
+
+        internal static bool HeroicLeapUsage
+        {
+            get
+            {
+                return IS.Instance.General.CheckHeroicLeap;
+            }
+        }
+
+        internal static bool HeroicThrowUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckHeroicThrow;
+            }
+        }
+
+        internal static bool ImpendingVictoryUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckRotImpVic;
             }
         }
 
@@ -127,6 +150,14 @@ namespace FuryUnleashed.Rotations.Fury
                 return ((IS.Instance.Fury.Recklessness == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Fury.Recklessness == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Fury.Recklessness == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool ShatteringThrowUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckShatteringThrow;
             }
         }
 
@@ -201,7 +232,8 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return (G.BloodbathAura || !G.BloodbathTalent || G.ReadinessAura);
+                //(buff.bloodbath.up|!talent.bloodbath.enabled)
+                return (G.BloodbathAura || !G.BloodbathTalent);
             }
         }
 
