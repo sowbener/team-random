@@ -56,6 +56,13 @@ namespace Bullseye.Interfaces.Settings
         [Description("Select the usage of your class racials - Only DPS abilities (Buffs & Attacks).")]
         public BsEnum.AbilityTrigger ClassRacials { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Survival - Ability Options")]
+        [DisplayName("Use Black Arrow on Focus Unit Only")]
+        [Description("Select the usage of Focus Target only for Black Arrow (adds)")]
+        public bool UseBlackArrowFocusTarget { get; set; }
+
 
         #endregion
 
