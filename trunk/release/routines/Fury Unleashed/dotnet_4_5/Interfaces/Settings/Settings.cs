@@ -27,11 +27,24 @@ namespace FuryUnleashed.Interfaces.Settings
         }
 
         #region Spec Loading Wrappers
+        private SettingsG _settingsG;
+
         private SettingsA _settingsA;
         private SettingsF _settingsF;
-        private SettingsG _settingsG;
         private SettingsP _settingsP;
 
+        private PvPSettingsA _pvpsettingsA;
+        private PvPSettingsF _pvpsettingsF;
+        private PvPSettingsP _pvpsettingsP;
+
+        // General
+        [Browsable(false)]
+        public SettingsG General
+        {
+            get { return _settingsG ?? (_settingsG = new SettingsG()); }
+        }
+
+        // PvE
         [Browsable(false)]
         public SettingsA Arms
         {
@@ -45,15 +58,28 @@ namespace FuryUnleashed.Interfaces.Settings
         }
 
         [Browsable(false)]
-        public SettingsG General
-        {
-            get { return _settingsG ?? (_settingsG = new SettingsG()); }
-        }
-
-        [Browsable(false)]
         public SettingsP Protection
         {
             get { return _settingsP ?? (_settingsP = new SettingsP()); }
+        }
+
+        // PvP
+        [Browsable(false)]
+        public PvPSettingsA PvPArms
+        {
+            get { return _pvpsettingsA ?? (_pvpsettingsA = new PvPSettingsA()); }
+        }
+
+        [Browsable(false)]
+        public PvPSettingsF PvPFury
+        {
+            get { return _pvpsettingsF ?? (_pvpsettingsF = new PvPSettingsF()); }
+        }
+
+        [Browsable(false)]
+        public PvPSettingsP PvPProtection
+        {
+            get { return _pvpsettingsP ?? (_pvpsettingsP = new PvPSettingsP()); }
         }
         #endregion
     }

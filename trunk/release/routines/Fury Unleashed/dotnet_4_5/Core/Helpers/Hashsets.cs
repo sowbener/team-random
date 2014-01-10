@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using Styx;
 using Styx.WoWInternals.WoWObjects;
 
@@ -39,6 +40,21 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region Other Lists
+        internal static readonly HashSet<Keys> MovementKey = new HashSet<Keys> { };
+
+        internal static readonly HashSet<string> MovementKeysHash = new HashSet<string>
+        {
+            "MOVEFORWARD",
+            "MOVEBACKWARD",
+            "TURNLEFT",
+            "TURNRIGHT",
+            "STRAFELEFT",
+            "STRAFERIGHT",
+            "JUMP",
+            "TURNORACTION",
+            "CAMERAORSELECTORMOVE",
+        };
+
         public static bool HamstringUnitsList(this WoWUnit unit)
         {
             return unit != null && (HamstringListIds.Contains(unit.Entry));
