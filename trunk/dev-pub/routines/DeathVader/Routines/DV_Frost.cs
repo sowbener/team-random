@@ -142,8 +142,8 @@ namespace DeathVader.Routines
         internal static Composite FrostDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Death Strike", ret => Me.HasAura(101568) && SG.Instance.Frost.EnableDeathStrike && Me.HealthPercent <= SG.Instance.Frost.DeathstrikeHP),
-                Spell.Cast("Death Siphon", ret => T.HasTalent(11) && SG.Instance.Frost.EnableDeathSiphon && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP),
+                Spell.Cast("Death Strike", ret => Me.HasAura(101568) && Me.HealthPercent <= SG.Instance.Frost.DeathstrikeHP),
+                Spell.Cast("Death Siphon", ret => T.HasTalent(11) && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP),
                 I.FrostUseHealthStone()
                 );
         }
