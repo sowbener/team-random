@@ -4,6 +4,7 @@ using Styx.WoWInternals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Styx.CommonBot;
 
 // Credits for this code go out to the PureRotation Team!
 namespace Waldo.Managers

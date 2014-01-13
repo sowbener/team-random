@@ -1,10 +1,22 @@
-﻿using CommonBehaviors.Actions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using Styx;
+using Styx.CommonBot;
+using Styx.WoWInternals;
+using Styx.WoWInternals.WoWObjects;
+using Styx.TreeSharp;
+using Action = Styx.TreeSharp.Action;
+using Styx.Common;
+using System.Diagnostics;
+using Styx.Common.Helpers;
+using System.Drawing;
+using Styx.WoWInternals.DBC;
+using CommonBehaviors.Actions;
 using Waldo.Core;
 using Waldo.Helpers;
 using Waldo.Managers;
-using Styx;
-using Styx.TreeSharp;
-using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using G = Waldo.Routines.WaGlobal;
 using I = Waldo.Core.WaItem;
@@ -14,13 +26,10 @@ using SG = Waldo.Interfaces.Settings.WaSettings;
 using SH = Waldo.Interfaces.Settings.WaSettingsH;
 using Spell = Waldo.Core.WaSpell;
 using U = Waldo.Core.WaUnit;
-using Styx.WoWInternals;
-using Styx.CommonBot;
-using System;
 
 namespace Waldo.Routines
 {
-    class WaCombat
+   static class WaCombat
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
@@ -155,7 +164,7 @@ namespace Waldo.Routines
         {
             return new PrioritySelector(
                 new Decorator(
-                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAttackableUnitsCount <= 1 || U.NearbyAttackableUnitsCount > 7),
+                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (AoeCount <= 1 || AoeCount > 7),
                     new Sequence(
                         new Styx.TreeSharp.Action(ret => WaLogger.DebugLog("/cancel Blade Flurry")),
                         new Styx.TreeSharp.Action(ret => Me.CancelAura("Blade Flurry")),
@@ -164,6 +173,184 @@ namespace Waldo.Routines
                     )
                 );
         }
+
+        public static int AoeCount { get; set; }
+
+        public static Styx.TreeSharp.Action CreateActionCalcAoeCount()
+        {
+            return new Styx.TreeSharp.Action(ret =>
+            {
+                if (Battlegrounds.IsInsideBattleground || NearbyUnfriendlyUnits.Any(u => u.Guid != Me.CurrentTargetGuid))
+                    AoeCount = 1;
+                else
+                    AoeCount = NearbyUnfriendlyUnits.Count(u => u.Distance < (u.MeleeDistance() + 3));
+                return RunStatus.Failure;
+            });
+        }
+
+        public static float MeleeDistance(this WoWUnit unit)
+        {
+            return MeleeDistance(unit);
+        }
+
+        /// <summary>
+        /// get melee distance between two units
+        /// </summary>
+        /// <param name="unit">unit</param>
+        /// <param name="other">Me if null, otherwise second unit</param>
+        /// <returns></returns>
+        public static float MeleeDistance(this WoWUnit unit, WoWUnit other = null)
+        {
+            // abort if mob null
+            if (unit == null)
+                return 0;
+
+            if (other == null)
+            {
+                if (unit.IsMe)
+                    return 0;
+                other = StyxWoW.Me;
+            }
+
+            // pvp, then keep it close
+            if (unit.IsPlayer && other.IsPlayer)
+                return 3.5f;
+
+            return Math.Max(5f, other.CombatReach + 1.3333334f + unit.CombatReach);
+        }
+
+ 
+
+        public static IEnumerable<WoWUnit> UnfriendlyUnits(int maxSpellDist)
+        {
+           
+
+            Type typeWoWUnit = typeof(WoWUnit);
+            Type typeWoWPlayer = typeof(WoWPlayer);
+            List<WoWUnit> list = new List<WoWUnit>();
+            List<WoWObject> objectList = ObjectManager.ObjectList;
+            for (int i = 0; i < objectList.Count; i++)
+            {
+                Type type = objectList[i].GetType();
+                if (type == typeWoWUnit || type == typeWoWPlayer)
+                {
+                    WoWUnit t = objectList[i] as WoWUnit;
+                    if (t != null && ValidUnit(t) && SpellDistance(t) < maxSpellDist)
+                    {
+                        list.Add(t);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public static float SpellDistance(this WoWUnit unit, WoWUnit other = null)
+        {
+            // abort if mob null
+            if (unit == null)
+                return 0;
+
+            // optional arg implying Me, then make sure not Mob also
+            if (other == null)
+                other = StyxWoW.Me;
+
+            // pvp, then keep it close
+            float dist = other.Location.Distance(unit.Location);
+            dist -= other.CombatReach + unit.CombatReach;
+            return Math.Max(0, dist);
+        }
+
+
+        public static bool ValidUnit(WoWUnit p, bool showReason = false)
+        {
+            if (p == null || !p.IsValid)
+                return false;
+
+            if (StyxWoW.Me.IsInInstance)
+            {
+        //        if (showReason) Logger.Write(invalidColor, "invalid attack unit {0} is an Instance Ignore Mob", p.SafeName());
+                return false;
+            }
+
+            // Ignore shit we can't select
+            if (!p.CanSelect)
+            {
+           //     if (showReason) Logger.Write(invalidColor, "invalid attack unit {0} cannot be Selected", p.SafeName());
+                return false;
+            }
+
+            // Ignore shit we can't attack
+            if (!p.Attackable)
+            {
+          //      if (showReason) Logger.Write(invalidColor, "invalid attack unit {0} cannot be Attacked", p.SafeName());
+                return false;
+            }
+
+            // Duh
+            if (p.IsDead)
+            {
+           //     if (showReason) Logger.Write(invalidColor, "invalid attack unit {0} is already Dead", p.SafeName());
+                return false;
+            }
+
+            // check for enemy players here as friendly only seems to work on npc's
+            if (p.IsPlayer)
+                return p.ToPlayer().IsHorde != StyxWoW.Me.IsHorde;
+
+            // Ignore friendlies!
+            if (p.IsFriendly)
+            {
+            //    if (showReason) Logger.Write(invalidColor, "invalid attack unit {0} is Friendly", p.SafeName());
+                return false;
+            }
+
+            // Dummies/bosses are valid by default. Period.
+          //  if (p.IsTrainingDummy() || p.IsBoss())
+           //     return true;
+
+            // If it is a pet/minion/totem, lets find the root of ownership chain
+        //    WoWUnit pOwner = GetPlayerParent(p);
+
+            // ignore if owner is player, alive, and not blacklisted then ignore (since killing owner kills it)
+         //   if (pOwner != null && pOwner.IsAlive && !Blacklist.Contains(pOwner, BlacklistFlags.Combat))
+        //    {
+              //  if (showReason) Logger.Write(invalidColor, "invalid attack unit {0} has a Player as Parent", p.SafeName());
+       //         return false;
+         //   }
+
+            // And ignore critters (except for those ferocious ones) /non-combat pets
+            if (p.IsNonCombatPet)
+            {
+              //  if (showReason) Logger.Write(invalidColor, "{0} is a Noncombat Pet", p.SafeName());
+                return false;
+            }
+
+            // And ignore critters (except for those ferocious ones) /non-combat pets
+            if (p.IsCritter && p.ThreatInfo.ThreatValue == 0 && !p.IsTargetingMyRaidMember)
+            {
+            //    if (showReason) Logger.Write(invalidColor, "{0} is a Critter", p.SafeName());
+                return false;
+            }
+            /*
+                        if (p.CreatedByUnitGuid != 0 || p.SummonedByUnitGuid != 0)
+                            return false;
+            */
+            return true;
+        }
+
+        /// <summary>
+        ///   Gets the nearby unfriendly units within 40 yards.
+        /// </summary>
+        /// <value>The nearby unfriendly units.</value>
+        public static IEnumerable<WoWUnit> NearbyUnfriendlyUnits
+        {
+            get
+            {
+                return UnfriendlyUnits(40);
+            }
+        }
+
+
 
         #endregion Booleans
 
