@@ -36,7 +36,7 @@ namespace Waldo.Routines
                         G.ManualCastPause(),
                         new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
-                        new Decorator(a => (U.NearbyAttackableUnitsCount > 7 || U.NearbyAttackableUnitsCount == 1) && SG.Instance.Combat.AutoTurnOffBladeFlurry, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
+                        new Decorator(ret => (U.NearbyAttackableUnitsCount > 7 || U.NearbyAttackableUnitsCount <= 1) && SG.Instance.Combat.AutoTurnOffBladeFlurry, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
                         new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
                         new Decorator(ret => !SG.Instance.Combat.PvPRotationCheck && SH.Instance.ModeSelection == WaEnum.Mode.Auto,
                                 new PrioritySelector(
