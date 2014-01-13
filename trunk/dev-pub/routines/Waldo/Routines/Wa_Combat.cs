@@ -32,11 +32,10 @@ namespace Waldo.Routines
                         new Decorator(ret => SG.Instance.General.CheckTreePerformance, WaLogger.TreePerformance("InitializeCom")),
                         new Decorator(ret => (WaHotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                         new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
-                        new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
                         G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
                         new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
-                        Spell.Cast("Blade Flurry", ret => U.NearbyAttackableUnitsCount > 1 && U.NearbyAttackableUnitsCount <= 8 && SG.Instance.Combat.AutoTurnOffBladeFlurry),
+                        new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
                         new Decorator(a => U.NearbyAttackableUnitsCount > 7 && SG.Instance.Combat.AutoTurnOffBladeFlurry, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
                         new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
                         new Decorator(ret => !SG.Instance.Combat.PvPRotationCheck && SH.Instance.ModeSelection == WaEnum.Mode.Auto,
@@ -47,7 +46,7 @@ namespace Waldo.Routines
                                         ComUtility(),
                                         I.ComUseItems(),
                                         ComOffensive(),
-                                        new Decorator(ret => SG.Instance.Combat.CheckAoE && U.AttackableMeleeUnitsCount > 1, ComMt()),
+                                        new Decorator(ret => SG.Instance.Combat.CheckAoE && U.NearbyAttackableUnitsCount > 7, ComMt()),
                                             ComSt())),
                         new Decorator(ret => !SG.Instance.Combat.PvPRotationCheck && SH.Instance.ModeSelection == WaEnum.Mode.Hotkey,
                                 new PrioritySelector(
@@ -59,7 +58,7 @@ namespace Waldo.Routines
                                          new PrioritySelector(
                                                         I.ComUseItems(),
                                                         ComOffensive())),
-                                        new Decorator(ret => WaHotKeyManager.IsAoe && U.AttackableMeleeUnitsCount > 1, ComMt()),
+                                        new Decorator(ret => WaHotKeyManager.IsAoe, ComMt()),
                                         ComSt())));
             }
         }
