@@ -96,11 +96,11 @@ namespace Tyrael.Shared
             SetComboBoxEnum(comboPauseKey, (int)TyraelSettings.Instance.PauseKeyChoice);
 
             checkAutomaticUpdater.Checked = TyraelSettings.Instance.CheckAutoUpdate;
-            checkChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
-            checkClicktoMove.Checked = TyraelSettings.Instance.ClickToMove;
+            checkChatOutput.Checked = TyraelSettings.Instance.CheckChatOutput;
+            checkClicktoMove.Checked = TyraelSettings.Instance.CheckClickToMove;
             checkFrameLock.Checked = GlobalSettings.Instance.UseFrameLock;
-            checkHealingMode.Checked = TyraelSettings.Instance.HealingMode;
-            checkPlugins.Checked = TyraelSettings.Instance.PluginPulsing;
+            checkHealingMode.Checked = TyraelSettings.Instance.CheckHealingMode;
+            checkPlugins.Checked = TyraelSettings.Instance.CheckPluginPulsing;
 
             HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
             TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
@@ -195,22 +195,22 @@ namespace Tyrael.Shared
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.ChatOutput = checkChatOutput.Checked;
+            TyraelSettings.Instance.CheckChatOutput = checkChatOutput.Checked;
         }
 
         private void checkClicktoMove_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.ClickToMove = checkClicktoMove.Checked;
+            TyraelSettings.Instance.CheckClickToMove = checkClicktoMove.Checked;
         }
 
         private void checkHealingMode_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.HealingMode = checkHealingMode.Checked;
+            TyraelSettings.Instance.CheckHealingMode = checkHealingMode.Checked;
         }
 
         private void checkPlugins_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.PluginPulsing = checkPlugins.Checked;
+            TyraelSettings.Instance.CheckPluginPulsing = checkPlugins.Checked;
         }
 
         private void comboModifierKey_SelectedIndexChanged(object sender, EventArgs e)
@@ -231,11 +231,11 @@ namespace Tyrael.Shared
                     ? "[Tyrael] Automatic Updater is enabled!"
                     : "[Tyrael] Automatic Updater is disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.ChatOutput
+                TyraelSettings.Instance.CheckChatOutput
                     ? "[Tyrael] ChatOutput enabled!"
                     : "[Tyrael] ChatOutput disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.ClickToMove
+                TyraelSettings.Instance.CheckClickToMove
                     ? "[Tyrael] Click to Move enabled!"
                     : "[Tyrael] Click to Move disabled!");
             Logging.Write(Colors.DodgerBlue,
@@ -243,11 +243,11 @@ namespace Tyrael.Shared
                     ? "[Tyrael] FrameLock enabled!"
                     : "[Tyrael] FrameLock disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.HealingMode
+                TyraelSettings.Instance.CheckHealingMode
                     ? "[Tyrael] Continues Healing mode enabled!"
                     : "[Tyrael] Continues Healing mode disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.PluginPulsing
+                TyraelSettings.Instance.CheckPluginPulsing
                     ? "[Tyrael] Plugins are enabled!"
                     : "[Tyrael] Plugins are disabled!");
 

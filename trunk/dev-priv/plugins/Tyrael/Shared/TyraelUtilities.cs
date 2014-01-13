@@ -39,7 +39,7 @@ namespace Tyrael.Shared
                 IsTyraelPaused = !IsTyraelPaused;
                 if (IsTyraelPaused)
                 {
-                    if (TyraelSettings.Instance.ChatOutput)
+                    if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
@@ -47,7 +47,7 @@ namespace Tyrael.Shared
                 }
                 else
                 {
-                    if (TyraelSettings.Instance.ChatOutput)
+                    if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
@@ -71,7 +71,7 @@ namespace Tyrael.Shared
         #region Click-To-Move (CTM)
         public static void ClickToMove()
         {
-            Lua.DoString(TyraelSettings.Instance.ClickToMove
+            Lua.DoString(TyraelSettings.Instance.CheckClickToMove
                 ? "SetCVar('autoInteract', '1')"
                 : "SetCVar('autoInteract', '0')");
         }

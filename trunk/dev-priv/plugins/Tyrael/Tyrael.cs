@@ -96,7 +96,7 @@ namespace Tyrael
 
         public static void PluginPulsing()
         {
-            if (TyraelSettings.Instance.PluginPulsing)
+            if (TyraelSettings.Instance.CheckPluginPulsing)
             {
                 _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
             }
@@ -121,48 +121,14 @@ namespace Tyrael
                     RoutineManager.Current.RestBehavior);
         }
 
-        //private static PrioritySelector CreateRoot()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => TyraelUtilities.IsTyraelPaused, new ActionAlwaysSucceed()),
-        //        new Switch<TyraelUtilities.Minify>(ctx => TyraelSettings.Instance.Minify,
-        //            new SwitchArgument<TyraelUtilities.Minify>(TyraelUtilities.Minify.True, Minified()),
-        //            new SwitchArgument<TyraelUtilities.Minify>(TyraelUtilities.Minify.False, NonMinified())));
-        //}
-
-        //private static Composite NonMinified()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => SanityCheckCombat(),
-        //            new PrioritySelector(
-        //                RoutineManager.Current.HealBehavior,
-        //                RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
-        //                RoutineManager.Current.CombatBehavior)),
-        //            RoutineManager.Current.PreCombatBuffBehavior,
-        //            RoutineManager.Current.RestBehavior);
-        //}
-
-        //private static Composite Minified()
-        //{
-        //    return new PrioritySelector(
-        //        new Decorator(ret => SanityCheckCombat(),
-        //            new PrioritySelector(
-        //                new Action(delegate { StyxWoW.Memory.ReleaseFrame(false); return RunStatus.Failure; }), 
-        //                RoutineManager.Current.HealBehavior,
-        //                RoutineManager.Current.CombatBuffBehavior ?? new Action(ret => RunStatus.Failure),
-        //                RoutineManager.Current.CombatBehavior)),
-        //            RoutineManager.Current.PreCombatBuffBehavior,
-        //            RoutineManager.Current.RestBehavior);
-        //}
-
         private static bool SanityCheckCombat()
         {
-            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.HealingMode) && !Me.IsDead;
+            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
         }
 
         private static Composite CreateFrameFactory(params Composite[] children)
         {
-            return GlobalSettings.Instance.UseFrameLock ? new FrameLockSelector(children) : new PrioritySelector(children);
+            return TyraelSettings.Instance.CheckSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
 
         public class FrameLockSelector : PrioritySelector
