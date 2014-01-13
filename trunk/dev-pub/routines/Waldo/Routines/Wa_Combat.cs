@@ -16,6 +16,7 @@ using Spell = Waldo.Core.WaSpell;
 using U = Waldo.Core.WaUnit;
 using Styx.WoWInternals;
 using Styx.CommonBot;
+using System;
 
 namespace Waldo.Routines
 {
@@ -34,9 +35,9 @@ namespace Waldo.Routines
                         new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
-                        new Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                        new Styx.TreeSharp.Action(delegate { WaUnit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
                         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
-                        new Decorator(ret => (U.NearbyAttackableUnitsCount > 7 || U.NearbyAttackableUnitsCount <= 1) && SG.Instance.Combat.AutoTurnOffBladeFlurry, new Action(delegate { Me.CancelAura("Blade Flurry"); return RunStatus.Failure; })),
+                        CreateBladeFlurryBehavior(),
                         new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
                         new Decorator(ret => !SG.Instance.Combat.PvPRotationCheck && SH.Instance.ModeSelection == WaEnum.Mode.Auto,
                                 new PrioritySelector(
@@ -150,6 +151,19 @@ namespace Waldo.Routines
 
         #region Booleans
 
+        internal static Composite CreateBladeFlurryBehavior()
+        {
+            return new PrioritySelector(
+                new Decorator(
+                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAttackableUnitsCount <= 1 || U.NearbyAttackableUnitsCount > 7),
+                    new Sequence(
+                        new Styx.TreeSharp.Action(ret => WaLogger.DebugLog("/cancel Blade Flurry")),
+                        new Styx.TreeSharp.Action(ret => Me.CancelAura("Blade Flurry")),
+                        new Wait(TimeSpan.FromMilliseconds(500), ret => !Me.HasAura("Blade Flurry"), new ActionAlwaysSucceed())
+                        )
+                    )
+                );
+        }
 
         #endregion Booleans
 
