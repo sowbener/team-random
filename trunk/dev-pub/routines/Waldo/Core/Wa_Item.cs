@@ -52,7 +52,7 @@ namespace Waldo.Core
 
         private static bool CanUseItem(WoWItem item)
         {
-            return item != null && item.Usable && item.Cooldown <= 0;
+            return item != null && item.Usable && item.Cooldown == 0;
         }
 
 
