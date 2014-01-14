@@ -1,14 +1,13 @@
 ﻿using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using Enum = FuryUnleashed.Core.Helpers.Enum;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using SB = FuryUnleashed.Core.Helpers.SpellBook;
 using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations.Fury
@@ -28,9 +27,9 @@ namespace FuryUnleashed.Rotations.Fury
                     new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
-                                Spell.Cast(SB.BattleShout, on => Me, ret => !G.BattleShoutAura)),
+                                Spell.Cast(SpellBook.BattleShout, on => Me, ret => !G.BattleShoutAura)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
-                                Spell.Cast(SB.CommandingShout, on => Me, ret => !G.CommandingShoutAura)))));
+                                Spell.Cast(SpellBook.CommandingShout, on => Me, ret => !G.CommandingShoutAura)))));
             }
         }
 

@@ -1,14 +1,15 @@
-﻿using System.Windows.Forms;
-using FuryUnleashed.Core;
+﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using G = FuryUnleashed.Rotations.Global;
+using System.Windows.Forms;
 using AG = FuryUnleashed.Rotations.Arms.ArmsGlobal;
-using Lua = FuryUnleashed.Core.Helpers.LuaClass;
+using G = FuryUnleashed.Rotations.Global;
+using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations.Arms
 {
@@ -36,7 +37,7 @@ namespace FuryUnleashed.Rotations.Arms
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Rel_ArmsGcdUtility(),
-                                        new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
+                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
                                         new Decorator(ret => G.ExecutePhase, Rel_ArmsExec()),
                                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt())
                                         )))),
@@ -53,7 +54,7 @@ namespace FuryUnleashed.Rotations.Arms
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Rel_ArmsGcdUtility(),
-                                        new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
+                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
                                         new Decorator(ret => G.ExecutePhase, Rel_ArmsExec()),
                                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt())
                                         )))),
@@ -70,7 +71,7 @@ namespace FuryUnleashed.Rotations.Arms
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Rel_ArmsGcdUtility(),
-                                        new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && HotKeyManager.IsAoe && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
+                                        new Decorator(ret => IS.Instance.Arms.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum, Rel_ArmsMt()),
                                         new Decorator(ret => G.ExecutePhase, Rel_ArmsExec()),
                                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt())
                                         ))))));
@@ -101,7 +102,7 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.HeroicThrow, ret => AG.HeroicThrowUsage),
                         Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && G.ColossusSmashSpellCooldown >= 6000 && AG.Tier4AbilityUsage), // Added - For the sake of supporting it.
                         Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityUsage), // Added - For the sake of supporting it.
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me))),
                         Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16),
@@ -113,10 +114,10 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsHeroicStrike()
         {
             return new PrioritySelector(
-                new Decorator(ret => (!InternalSettings.Instance.Arms.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Arms.CheckAoENum),
+                new Decorator(ret => (!IS.Instance.Arms.CheckAoE || U.NearbyAttackableUnitsCount < IS.Instance.Arms.CheckAoENum),
                     new PrioritySelector(
                         Spell.Cast(SpellBook.HeroicStrike, ret => ((G.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 15)), true))),
-                new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckAoENum,
+                new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage))));
         }
@@ -134,9 +135,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16), // Added.
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ThunderClap, ret => InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...
+                        Spell.Cast(SpellBook.ThunderClap, ret => IS.Instance.Arms.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0), // Should be MultiDot Mortal Strike ...
 
                         Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && AG.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityAoEUsage),
@@ -146,18 +147,18 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Added - Generate rage.
-                        new Decorator(ret => InternalSettings.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => IS.Instance.Arms.CheckExperimentalAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
                                 Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
-                        new Decorator(ret => !InternalSettings.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => !IS.Instance.Arms.CheckExperimentalAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam))),
                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt()),
                         new Decorator(ret => G.ExecutePhase, Rel_ArmsExec()))),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 3,
+                new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ThunderClap, ret => InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NeedThunderclapUnitsCount > 0),
+                        Spell.Cast(SpellBook.ThunderClap, ret => IS.Instance.Arms.CheckAoEThunderclap && U.NeedThunderclapUnitsCount > 0),
 
                         Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && AG.Tier4AbilityAoEUsage),
                         Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityAoEUsage),
@@ -167,11 +168,11 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Added - Generate rage.
-                        new Decorator(ret => InternalSettings.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => IS.Instance.Arms.CheckExperimentalAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
                                 Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
-                        new Decorator(ret => !InternalSettings.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => !IS.Instance.Arms.CheckExperimentalAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam))),
                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt()),
@@ -192,10 +193,10 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsGcdUtility()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.ImpendingVictory, ret => !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && InternalSettings.Instance.Arms.CheckImpVic && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckImpVicNum),
-                Spell.Cast(SpellBook.VictoryRush, ret => !G.VictoryRushOnCooldown && G.VictoriousAura && InternalSettings.Instance.Arms.CheckVicRush && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckVicRushNum),
-                Spell.Cast(SpellBook.IntimidatingShout, ret => InternalSettings.Instance.Arms.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !Unit.IsTargetBoss),
-                Spell.Cast(SpellBook.ShatteringThrow, ret => InternalSettings.Instance.Arms.CheckShatteringThrow && Unit.IsTargetBoss && (G.ColossusSmashSpellCooldown <= 3000 || G.SkullBannerSpellCooldown <= 3000)));
+                Spell.Cast(SpellBook.ImpendingVictory, ret => !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && IS.Instance.Arms.CheckImpVic && Me.HealthPercent <= IS.Instance.Arms.CheckImpVicNum),
+                Spell.Cast(SpellBook.VictoryRush, ret => !G.VictoryRushOnCooldown && G.VictoriousAura && IS.Instance.Arms.CheckVicRush && Me.HealthPercent <= IS.Instance.Arms.CheckVicRushNum),
+                Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Arms.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
+                Spell.Cast(SpellBook.ShatteringThrow, ret => IS.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss && (G.ColossusSmashSpellCooldown <= 3000 || G.SkullBannerSpellCooldown <= 3000)));
         }
 
         internal static Composite Rel_ArmsRacials()
@@ -208,24 +209,24 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.DiebytheSword, ret => InternalSettings.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckDiebytheSwordNum),
-                Spell.Cast(SpellBook.EnragedRegeneration, ret => G.EnragedRegenerationTalent && InternalSettings.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckEnragedRegenNum),
-                Spell.Cast(SpellBook.ShieldWall, ret => InternalSettings.Instance.Arms.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckShieldWallNum),
-                Spell.Cast(SpellBook.SpellReflection, ret => InternalSettings.Instance.Arms.CheckSpellReflect && Unit.IsViable(Me.CurrentTarget) && Unit.IsTargettingMe && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SpellBook.DiebytheSword, ret => IS.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= IS.Instance.Arms.CheckDiebytheSwordNum),
+                Spell.Cast(SpellBook.EnragedRegeneration, ret => G.EnragedRegenerationTalent && IS.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum),
+                Spell.Cast(SpellBook.ShieldWall, ret => IS.Instance.Arms.CheckShieldWall && Me.HealthPercent <= IS.Instance.Arms.CheckShieldWallNum),
+                Spell.Cast(SpellBook.SpellReflection, ret => IS.Instance.Arms.CheckSpellReflect && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
                 Item.ArmsUseHealthStone());
         }
 
         internal static Composite Rel_ArmsNonGcdUtility()
         {
             return new PrioritySelector(
-                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Arms.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckDemoBannerNum && Unit.IsDoNotUseOnTgt),
-                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !G.HamstringAura && (InternalSettings.Instance.Arms.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Arms.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
-                Spell.Cast(SpellBook.MassSpellReflection, ret => G.MassSpellReflectionTalent && Unit.IsViable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && AG.MassSpellReflectionUsage),
-                Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && InternalSettings.Instance.Arms.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckPiercingHowlNum),
-                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0),
-                Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && InternalSettings.Instance.Arms.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckStaggeringShoutNum),
-                new Decorator(ret => Unit.VigilanceTarget != null,
-                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget)));
+                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && IS.Instance.Arms.CheckDemoBanner && Me.HealthPercent <= IS.Instance.Arms.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
+                Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Arms.HamString == Enum.Hamstring.Always || IS.Instance.Arms.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
+                Spell.Cast(SpellBook.MassSpellReflection, ret => G.MassSpellReflectionTalent && U.IsViable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && AG.MassSpellReflectionUsage),
+                Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Arms.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckPiercingHowlNum),
+                Spell.Cast(SpellBook.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
+                Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Arms.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckStaggeringShoutNum),
+                new Decorator(ret => U.VigilanceTarget != null,
+                    Spell.Cast(SpellBook.Vigilance, on => U.VigilanceTarget)));
         }
     }
 }

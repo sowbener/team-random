@@ -13,8 +13,9 @@ using System;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
 using Enum = FuryUnleashed.Core.Helpers.Enum;
-using SB = FuryUnleashed.Core.Helpers.SpellBook;
+using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using U = FuryUnleashed.Core.Unit;
+
 
 namespace FuryUnleashed.Rotations
 {
@@ -27,47 +28,47 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new Action(delegate { Spell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
 
-                new Decorator(ret => InternalSettings.Instance.General.Vigilance != Enum.VigilanceTrigger.Never,
-                    new Action(delegate { Unit.GetVigilanceTarget(); return RunStatus.Failure; })),
+                new Decorator(ret => IS.Instance.General.Vigilance != Enum.VigilanceTrigger.Never,
+                    new Action(delegate { U.GetVigilanceTarget(); return RunStatus.Failure; })),
 
                 new Switch<WoWSpec>(ret => Me.Specialization,
                     // Arms Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorArms,
                         new PrioritySelector(
-                            new Decorator(ret => InternalSettings.Instance.Arms.CheckAoE && InternalSettings.Instance.Arms.CheckAoEThunderclap && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => InternalSettings.Instance.Arms.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => InternalSettings.Instance.Arms.CheckRallyingCry,
-                                new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
-                            new Action(delegate { Unit.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
+                            new Decorator(ret => IS.Instance.Arms.CheckAoE && IS.Instance.Arms.CheckAoEThunderclap && U.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { U.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => IS.Instance.Arms.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => IS.Instance.Arms.CheckRallyingCry,
+                                new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
+                            new Action(delegate { U.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
                     
                     // Fury Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
-                            new Decorator(ret => InternalSettings.Instance.Fury.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => InternalSettings.Instance.Fury.CheckRallyingCry,
-                                new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
+                            new Decorator(ret => IS.Instance.Fury.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => IS.Instance.Fury.CheckRallyingCry,
+                                new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
 
                     // Protection Caching Tree
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorProtection,
                         new PrioritySelector(
-                            new Decorator(ret => InternalSettings.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => InternalSettings.Instance.Protection.CheckInterruptsAoE && Unit.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { Unit.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
-                            new Decorator(ret => InternalSettings.Instance.Protection.CheckRallyingCry,
-                                new Action(delegate { Unit.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
+                            new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { U.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => IS.Instance.Protection.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
+                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                            new Decorator(ret => IS.Instance.Protection.CheckRallyingCry,
+                                new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
                                 ));
         }
 
         internal static Composite InitializeOnKeyActions()
         {
             return new PrioritySelector(
-                new Decorator(ret => InternalSettings.Instance.General.AutoDetectManualCast,
+                new Decorator(ret => IS.Instance.General.AutoDetectManualCast,
                     ManualCastPause()),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
@@ -103,18 +104,16 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast(SB.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))
-                    ),
+                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
                 new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast(SB.Pummel)
-                    ));
+                    Spell.Cast(SpellBook.Pummel)));
         }
 
         internal static Composite ManualCastPause()
         {
             return new Sequence(
-                new Decorator(ret => InternalSettings.Instance.General.AutoDetectManualCast && HotKeyManager.AnyKeyPressed(), new ActionAlwaysSucceed()),
-                new WaitContinue(TimeSpan.FromMilliseconds(InternalSettings.Instance.General.ResumeTime), ret => false,
+                new Decorator(ret => IS.Instance.General.AutoDetectManualCast && HotKeyManager.AnyKeyPressed(), new ActionAlwaysSucceed()),
+                new WaitContinue(TimeSpan.FromMilliseconds(IS.Instance.General.ResumeTime), ret => false,
                     new ActionAlwaysSucceed()));
         }
         #endregion
@@ -155,14 +154,14 @@ namespace FuryUnleashed.Rotations
                     case "Stoneform": return IsSick;
                     case "Escape Artist": return Me.Rooted;
                     case "Every Man for Himself": return IsImpaired;
-                    case "Shadowmeld": return Targeting.GetAggroOnMeWithin(Me.Location, 15) >= 1 && Me.HealthPercent < InternalSettings.Instance.General.RacialNum && !Me.IsMoving;
-                    case "Gift of the Naaru": return Me.HealthPercent <= InternalSettings.Instance.General.RacialNum;
+                    case "Shadowmeld": return Targeting.GetAggroOnMeWithin(Me.Location, 15) >= 1 && Me.HealthPercent < IS.Instance.General.RacialNum && !Me.IsMoving;
+                    case "Gift of the Naaru": return Me.HealthPercent <= IS.Instance.General.RacialNum;
                     case "Darkflight": return Me.IsMoving;
                     case "Blood Fury": return true;
                     case "War Stomp": return Targeting.GetAggroOnMeWithin(StyxWoW.Me.Location, 8) >= 1;
                     case "Berserking": return !HasteAbilities;
                     case "Will of the Forsaken": return IsLazy;
-                    case "Arcane Torrent": return Me.ManaPercent < InternalSettings.Instance.General.RacialNum && Me.Class != WoWClass.DeathKnight;
+                    case "Arcane Torrent": return Me.ManaPercent < IS.Instance.General.RacialNum && Me.Class != WoWClass.DeathKnight;
                     case "Rocket Barrage": return true;
                     default: return false;
                 }
@@ -220,7 +219,7 @@ namespace FuryUnleashed.Rotations
                 double wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
                 double slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
 
-                return (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= Unit.NearbyAttackableUnitsFloat / wwcost;
+                return (U.NearbySlamCleaveUnitsFloat * 3.4) / slamcost >= U.NearbyAttackableUnitsFloat / wwcost;
             }
         }
 
@@ -231,7 +230,7 @@ namespace FuryUnleashed.Rotations
                 double wwcost = WoWSpell.FromId(SpellBook.Whirlwind).PowerCost;
                 double slamcost = WoWSpell.FromId(SpellBook.Slam).PowerCost;
 
-                return Unit.NearbyAttackableUnitsFloat / wwcost >= (Unit.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
+                return U.NearbyAttackableUnitsFloat / wwcost >= (U.NearbySlamCleaveUnitsFloat * 3.4) / slamcost;
             }
         }
 

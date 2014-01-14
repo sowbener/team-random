@@ -3,16 +3,12 @@ using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
-using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using Enum = FuryUnleashed.Core.Helpers.Enum;
 using G = FuryUnleashed.Rotations.Global;
-using U = FuryUnleashed.Core.Unit;
-using L = FuryUnleashed.Core.Helpers.LuaClass;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using SB = FuryUnleashed.Core.Helpers.SpellBook;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations.Protection
 {
@@ -27,9 +23,9 @@ namespace FuryUnleashed.Rotations.Protection
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
                         G.InitializeCaching(),
-                        new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
-                    new Decorator(ret => Unit.DefaultBuffCheck && ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Protection.ShoutSelection,
+                        new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
+                    new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
                                 Spell.Cast(SpellBook.BattleShout, on => Me, ret => !G.BattleShoutAura)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
@@ -42,12 +38,12 @@ namespace FuryUnleashed.Rotations.Protection
             get
             {
                 return new PrioritySelector(
-                    new Decorator(ret => InternalSettings.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
-                    new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
+                    new Decorator(ret => IS.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
+                    new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
-                    new Decorator(ret => InternalSettings.Instance.Protection.CheckInterrupts && Unit.CanInterrupt, G.InitializeInterrupts()),
-                    new Switch<Enum.ProtRotationVersion>(ctx => InternalSettings.Instance.General.CrProtRotVersion,
+                    new Decorator(ret => IS.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                    new Switch<Enum.ProtRotationVersion>(ctx => IS.Instance.General.CrProtRotVersion,
                         new SwitchArgument<Enum.ProtRotationVersion>(Enum.ProtRotationVersion.Development, ProtDev.DevProtCombat),
                         new SwitchArgument<Enum.ProtRotationVersion>(Enum.ProtRotationVersion.Release, ProtRel.RelProtCombat)));
             }

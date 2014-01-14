@@ -3,10 +3,12 @@ using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
-using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
+using G = FuryUnleashed.Rotations.Global;
+using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations.Arms
 {
@@ -23,18 +25,18 @@ namespace FuryUnleashed.Rotations.Arms
             {
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
-                        Global.InitializeCaching(),
-                        new Decorator(ret => InternalSettings.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP && !StyxWoW.Me.IsInInstance && Unit.IsViable(Me.CurrentTarget) && StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly && StyxWoW.Me.CurrentTarget.Distance > 12 && StyxWoW.Me.CurrentTarget.Distance < 30,
+                        G.InitializeCaching(),
+                        new Decorator(ret => IS.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP && !StyxWoW.Me.IsInInstance && U.IsViable(Me.CurrentTarget) && StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly && StyxWoW.Me.CurrentTarget.Distance > 12 && StyxWoW.Me.CurrentTarget.Distance < 30,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Charge),
                                 Spell.CastOnGround(SpellBook.HeroicLeap, ret => StyxWoW.Me.CurrentTarget.Location))),
-                        new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk, Global.InitializeOnKeyActions())),
-                    new Decorator(ret => Unit.DefaultBuffCheck && ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
+                        new Decorator(ret => IS.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions())),
+                    new Decorator(ret => U.DefaultBuffCheck && ((IS.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
-                                Spell.Cast(SpellBook.BattleShout, on => Me, ret => !Global.BattleShoutAura)),
+                                Spell.Cast(SpellBook.BattleShout, on => Me, ret => !G.BattleShoutAura)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
-                                Spell.Cast(SpellBook.CommandingShout, on => Me, ret => !Global.CommandingShoutAura)))));
+                                Spell.Cast(SpellBook.CommandingShout, on => Me, ret => !G.CommandingShoutAura)))));
             }
         }
 
@@ -43,12 +45,12 @@ namespace FuryUnleashed.Rotations.Arms
             get
             {
                 return new PrioritySelector(
-                    new Decorator(ret => InternalSettings.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
-                    new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
-                    Global.InitializeCaching(),
-                    Global.InitializeOnKeyActions(),
-                    new Decorator(ret => InternalSettings.Instance.Arms.CheckInterrupts && Unit.CanInterrupt, Global.InitializeInterrupts()),
-                    new Switch<Enum.ArmsRotationVersion>(ctx => InternalSettings.Instance.General.CrArmsRotVersion,
+                    new Decorator(ret => IS.Instance.General.CheckTreePerformance, TreeSharp.Tree(true)),
+                    new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
+                    G.InitializeCaching(),
+                    G.InitializeOnKeyActions(),
+                    new Decorator(ret => IS.Instance.Arms.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                    new Switch<Enum.ArmsRotationVersion>(ctx => IS.Instance.General.CrArmsRotVersion,
                         new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Development, ArmsDev.DevArmsCombat),
                         new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.PvP, ArmsPvP.PvPArmsCombat),
                         new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Release, ArmsRel.RelArmsCombat)));
@@ -59,9 +61,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.BerserkerRage == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -69,7 +71,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return InternalSettings.Instance.Arms.CheckHeroicThrow;
+                return IS.Instance.Arms.CheckHeroicThrow;
             }
         }
 
@@ -77,7 +79,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return InternalSettings.Instance.Arms.CheckRotImpVic;
+                return IS.Instance.Arms.CheckRotImpVic;
             }
         }
 
@@ -85,8 +87,8 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((Unit.NearbyCastingUnits(StyxWoW.Me.Location, 45)) != null || (InternalSettings.Instance.Arms.MassSpellReflection == Enum.MsrTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.MassSpellReflection == Enum.MsrTrigger.Always && Global.PummelOnCooldown && Global.DisruptingShoutOnCooldown));
+                return ((U.NearbyCastingUnits(StyxWoW.Me.Location, 45)) != null || (IS.Instance.Arms.MassSpellReflection == Enum.MsrTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.MassSpellReflection == Enum.MsrTrigger.Always && G.PummelOnCooldown && G.DisruptingShoutOnCooldown));
             }
         }
 
@@ -94,9 +96,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.ClassRacials == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.ClassRacials == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -104,9 +106,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.Recklessness == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Recklessness == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Recklessness == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.Recklessness == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.Recklessness == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.Recklessness == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -114,9 +116,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.SkullBanner == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.SkullBanner == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -124,9 +126,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.Tier4Abilities == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -134,9 +136,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.Tier6Abilities == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -144,9 +146,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.Tier4AoeAbilities == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -154,9 +156,9 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.Arms.Tier6AoeAbilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
-                        (InternalSettings.Instance.Arms.Tier6AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && Global.HasteAbilities) ||
-                        (InternalSettings.Instance.Arms.Tier6AoeAbilities == Enum.AbilityTrigger.Always));
+                return ((IS.Instance.Arms.Tier6AoeAbilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.Tier6AoeAbilities == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.Tier6AoeAbilities == Enum.AbilityTrigger.Always));
             }
         }
 
@@ -164,8 +166,8 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnRaidMember) ||
-                        (InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
+                return ((IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnRaidMember) ||
+                        (IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
             }
         }
 
@@ -173,7 +175,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((Global.RecklessnessAura) || (Global.DeterminationAura || Global.OutrageAura));
+                return ((G.RecklessnessAura) || (G.DeterminationAura || G.OutrageAura));
             }
         }
 
@@ -181,7 +183,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((Global.BloodbathAura || Global.AvatarTalent || Global.StormBoltTalent) || (Global.DeterminationAura || Global.OutrageAura));
+                return ((G.BloodbathAura || G.AvatarTalent || G.StormBoltTalent) || (G.DeterminationAura || G.OutrageAura));
             }
         }
     }
