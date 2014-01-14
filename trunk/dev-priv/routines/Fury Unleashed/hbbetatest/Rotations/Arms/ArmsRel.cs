@@ -221,9 +221,9 @@ namespace FuryUnleashed.Rotations.Arms
                 Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Arms.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Arms.CheckDemoBannerNum && Unit.IsDoNotUseOnTgt),
                 Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !G.HamstringAura && (InternalSettings.Instance.Arms.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Arms.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
                 Spell.Cast(SpellBook.MassSpellReflection, ret => G.MassSpellReflectionTalent && Unit.IsViable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && AG.MassSpellReflectionUsage),
-                Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && InternalSettings.Instance.Arms.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckPiercingHowlNum),
+                Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && InternalSettings.Instance.Arms.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckPiercingHowlNum),
                 Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0),
-                Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && InternalSettings.Instance.Arms.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckPiercingHowlNum),
+                Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && InternalSettings.Instance.Arms.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Arms.CheckStaggeringShoutNum),
                 new Decorator(ret => Unit.VigilanceTarget != null,
                     Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget)));
         }

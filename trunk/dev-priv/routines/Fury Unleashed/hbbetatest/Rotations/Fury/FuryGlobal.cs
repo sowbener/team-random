@@ -51,35 +51,6 @@ namespace FuryUnleashed.Rotations.Fury
         }
 
         #region Booleans
-        //internal static bool UseWildStrike()
-        //{
-        //    if (Global.ColossusSmashSpellCooldown >= 7500 && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
-        //        return true;
-        //    return Me.CurrentRage >= Me.MaxRage - 20;
-        //}
-
-        //internal static bool UseHeroicStrike(bool hasSmashAura)
-        //{
-        //    if (hasSmashAura)
-        //    {
-        //        if ((Global.RagingBlow1S || Global.RagingBlow2S) && Me.CurrentRage >= 40)
-        //            return true;
-        //        if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
-        //            return true;
-        //        if (Global.FadingColossusSmash(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
-        //            return true;
-        //    }
-        //    return Me.CurrentRage >= Me.MaxRage - 10;
-        //}
-
-        internal static bool AoEUsage
-        {
-            get
-            {
-                return IS.Instance.Fury.CheckAoE;
-            }
-        }
-
         internal static bool BerserkerRageUsage
         {
             get
@@ -90,14 +61,37 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
-        //internal static bool HamstringUsage
-        //{
-        //    get
-        //    {
-        //        return ((IS.Instance.Fury.HamString == Enum.Hamstring.Always) ||
-        //                (IS.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget));
-        //    }
-        //}
+        internal static bool BloodbathSync
+        {
+            get
+            {
+                return (G.BloodbathAura || !G.BloodbathTalent);
+            }
+        }
+
+        internal static bool DemoralizingBannerUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckDemoBanner;
+            }
+        }
+
+        internal static bool DiebytheSwordUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckDiebytheSword;
+            }
+        }
+
+        internal static bool EnragedRegenerationUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckEnragedRegen;
+            }
+        }
 
         internal static bool HeroicLeapUsage
         {
@@ -119,7 +113,15 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return IS.Instance.Fury.CheckRotImpVic;
+                return IS.Instance.Fury.CheckImpVic;
+            }
+        }
+
+        internal static bool IntimidatingShoutUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckIntimidatingShout;
             }
         }
 
@@ -129,6 +131,22 @@ namespace FuryUnleashed.Rotations.Fury
             {
                 return ((IS.Instance.Fury.MassSpellReflection == Enum.MsrTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Fury.MassSpellReflection == Enum.MsrTrigger.Always && G.PummelOnCooldown && G.DisruptingShoutOnCooldown));
+            }
+        }
+
+        internal static bool MultiTargetUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckAoE;
+            }
+        }
+
+        internal static bool PiercingHowlUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckPiercingHowl;
             }
         }
 
@@ -152,11 +170,27 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
+        internal static bool RotationalImpendingVictoryUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckRotImpVic;
+            }
+        }
+
         internal static bool ShatteringThrowUsage
         {
             get
             {
                 return IS.Instance.Fury.CheckShatteringThrow;
+            }
+        }
+
+        internal static bool ShieldWallUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckShieldWall;
             }
         }
 
@@ -167,6 +201,22 @@ namespace FuryUnleashed.Rotations.Fury
                 return ((IS.Instance.Fury.SkullBanner == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Fury.SkullBanner == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Fury.SkullBanner == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool SpellReflectUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckSpellReflect;
+            }
+        }
+
+        internal static bool StaggeringShoutUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckStaggeringShout;
             }
         }
 
@@ -210,6 +260,14 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
+        internal static bool VictoryRushUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckVicRush;
+            }
+        }
+
         //internal static bool VigilanceUsage
         //{
         //    get
@@ -227,13 +285,35 @@ namespace FuryUnleashed.Rotations.Fury
         //    }
         //}
 
-        internal static bool BloodbathSync
-        {
-            get
-            {
-                return (G.BloodbathAura || !G.BloodbathTalent);
-            }
-        }
+        //internal static bool UseWildStrike()
+        //{
+        //    if (Global.ColossusSmashSpellCooldown >= 7500 && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
+        //        return true;
+        //    return Me.CurrentRage >= Me.MaxRage - 20;
+        //}
+
+        //internal static bool UseHeroicStrike(bool hasSmashAura)
+        //{
+        //    if (hasSmashAura)
+        //    {
+        //        if ((Global.RagingBlow1S || Global.RagingBlow2S) && Me.CurrentRage >= 40)
+        //            return true;
+        //        if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
+        //            return true;
+        //        if (Global.FadingColossusSmash(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
+        //            return true;
+        //    }
+        //    return Me.CurrentRage >= Me.MaxRage - 10;
+        //}
+
+        //internal static bool HamstringUsage
+        //{
+        //    get
+        //    {
+        //        return ((IS.Instance.Fury.HamString == Enum.Hamstring.Always) ||
+        //                (IS.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget));
+        //    }
+        //}
 
         //internal static bool TrinketProc
         //{
