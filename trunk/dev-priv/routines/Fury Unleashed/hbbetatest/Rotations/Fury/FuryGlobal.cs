@@ -51,27 +51,26 @@ namespace FuryUnleashed.Rotations.Fury
         }
 
         #region Booleans
-        internal static bool UseWildStrike()
-        {
-            if (Global.ColossusSmashSpellCooldown >= 7500 && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
-                return true;
-            return Me.CurrentRage >= Me.MaxRage - 20;
-        }
+        //internal static bool UseWildStrike()
+        //{
+        //    if (Global.ColossusSmashSpellCooldown >= 7500 && Me.CurrentRage >= 80 && Global.BloodthirstSpellCooldown < 1500)
+        //        return true;
+        //    return Me.CurrentRage >= Me.MaxRage - 20;
+        //}
 
-
-        internal static bool UseHeroicStrike(bool hasSmashAura)
-        {
-            if (hasSmashAura)
-            {
-                if ((Global.RagingBlow1S || Global.RagingBlow2S) && Me.CurrentRage >= 40)
-                    return true;
-                if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
-                    return true;
-                if (Global.FadingColossusSmash(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
-                    return true;
-            }
-            return Me.CurrentRage >= Me.MaxRage - 10;
-        }
+        //internal static bool UseHeroicStrike(bool hasSmashAura)
+        //{
+        //    if (hasSmashAura)
+        //    {
+        //        if ((Global.RagingBlow1S || Global.RagingBlow2S) && Me.CurrentRage >= 40)
+        //            return true;
+        //        if ((!Global.RagingBlow1S && !Global.RagingBlow2S) && Me.CurrentRage >= 30)
+        //            return true;
+        //        if (Global.FadingColossusSmash(2000) && !Global.RagingBlow1S && !Global.RagingBlow2S && Me.CurrentRage >= 30)
+        //            return true;
+        //    }
+        //    return Me.CurrentRage >= Me.MaxRage - 10;
+        //}
 
         internal static bool AoEUsage
         {
@@ -91,14 +90,14 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
-        internal static bool HamstringUsage
-        {
-            get
-            {
-                return ((IS.Instance.Fury.HamString == Enum.Hamstring.Always) ||
-                        (IS.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget));
-            }
-        }
+        //internal static bool HamstringUsage
+        //{
+        //    get
+        //    {
+        //        return ((IS.Instance.Fury.HamString == Enum.Hamstring.Always) ||
+        //                (IS.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget));
+        //    }
+        //}
 
         internal static bool HeroicLeapUsage
         {
@@ -211,39 +210,38 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
-        internal static bool VigilanceUsage
-        {
-            get
-            {
-                return ((IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnRaidMember) ||
-                        (IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
-            }
-        }
+        //internal static bool VigilanceUsage
+        //{
+        //    get
+        //    {
+        //        return ((IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnRaidMember) ||
+        //                (IS.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank));
+        //    }
+        //}
 
-        internal static bool RecklessnessSync
-        {
-            get
-            {
-                return ((G.RecklessnessAura) || (G.ReadinessAura));
-            }
-        }
+        //internal static bool RecklessnessSync
+        //{
+        //    get
+        //    {
+        //        return ((G.RecklessnessAura) || (G.ReadinessAura));
+        //    }
+        //}
 
         internal static bool BloodbathSync
         {
             get
             {
-                //(buff.bloodbath.up|!talent.bloodbath.enabled)
                 return (G.BloodbathAura || !G.BloodbathTalent);
             }
         }
 
-        internal static bool TrinketProc
-        {
-            get
-            {
-                return Global.DeterminationAura || Global.OutrageAura;
-            }
-        }
+        //internal static bool TrinketProc
+        //{
+        //    get
+        //    {
+        //        return Global.DeterminationAura || Global.OutrageAura;
+        //    }
+        //}
         #endregion
     }
 }
