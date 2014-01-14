@@ -4,12 +4,14 @@ using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
+using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using AG = FuryUnleashed.Rotations.Arms.ArmsGlobal;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using U = FuryUnleashed.Core.Unit;
+using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations.Arms
 {
@@ -119,16 +121,33 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.HeroicStrike, ret => ((G.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 15) || (!G.UnendingRageGlyph && Me.CurrentRage >= Me.MaxRage - 15)), true))),
                 new Decorator(ret => IS.Instance.Arms.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Arms.CheckAoENum,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage))));
+                        Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage, true))));
         }
 
         internal static Composite Rel_ArmsExec()
         {
             return new PrioritySelector(
                 new Decorator(ret => !G.ColossusSmashAura,
-                    new PrioritySelector()),
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.ColossusSmash),
+                        Spell.Cast(SpellBook.MortalStrike),
+                        Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower > 80),
+                        Spell.Cast(SpellBook.Overpower),
+                        Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && AG.Tier6AbilityUsage), // Added.
+                        Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && AG.RotationalImpendingVictoryUsage),
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me))),
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && G.ColossusSmashSpellCooldown >= 6000 && AG.Tier4AbilityUsage), // Added - For the sake of supporting it.
+                        Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityUsage) // Added - For the sake of supporting it.
+                        )),
                 new Decorator(ret => G.ColossusSmashAura,
-                    new PrioritySelector()));
+                    new PrioritySelector(
+                        Spell.Cast(SpellBook.MortalStrike),
+                        Spell.Cast(SpellBook.Execute),
+                        Spell.Cast(SpellBook.Overpower))));
         }
 
         internal static Composite Rel_ArmsMt()
@@ -182,12 +201,12 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(500)) && G.ColossusSmashAura && AG.BerserkerRageUsage),
-                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && AG.Tier4AbilityUsage),
+                Spell.Cast(SpellBook.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(500)) && G.ColossusSmashAura && AG.BerserkerRageUsage, true),
+                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && AG.Tier4AbilityUsage, true),
 
                 Spell.Cast(SpellBook.Recklessness, ret => AG.RecklessnessUsage),
-                Spell.Cast(SpellBook.SkullBanner, ret => !G.SkullBannerAura && AG.RecklessnessSync && AG.SkullBannerUsage),
-                Spell.Cast(SpellBook.Avatar, ret => G.AvatarTalent && AG.RecklessnessSync && AG.Tier6AbilityUsage));
+                Spell.Cast(SpellBook.Avatar, ret => G.AvatarTalent && AG.RecklessnessSync && AG.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.SkullBanner, ret => !G.SkullBannerAura && AG.RecklessnessSync && AG.SkullBannerUsage, true));
         }
 
         internal static Composite Rel_ArmsGcdUtility()

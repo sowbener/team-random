@@ -112,6 +112,14 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
+        internal static bool RotationalImpendingVictoryUsage
+        {
+            get
+            {
+                return IS.Instance.Arms.CheckRotImpVic;
+            }
+        }
+
         internal static bool SkullBannerUsage
         {
             get
