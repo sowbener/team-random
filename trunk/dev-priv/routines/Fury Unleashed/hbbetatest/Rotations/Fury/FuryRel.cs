@@ -150,7 +150,7 @@ namespace FuryUnleashed.Rotations.Fury
                             Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true)),
                         new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 3,
                             //actions.aoe+=/cleave,if=rage>110
-                            Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax - 10)))));
+                            Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax - 10, true)))));
         }
 
         internal static Composite Rel_FuryExec()

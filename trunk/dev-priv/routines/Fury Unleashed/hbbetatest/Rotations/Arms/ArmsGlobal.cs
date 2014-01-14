@@ -6,7 +6,6 @@ using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
-using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 
 namespace FuryUnleashed.Rotations.Arms
@@ -25,31 +24,17 @@ namespace FuryUnleashed.Rotations.Arms
                 return new PrioritySelector(
                     new PrioritySelector(ret => !Me.Combat,
                         Global.InitializeCaching(),
-                        new Decorator(ret => !StyxWoW.Me.IsInInstance && StyxWoW.Me.CurrentTarget != null &&
-                                             StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly &&
-                                             StyxWoW.Me.CurrentTarget.Distance > 12 &&
-                                             StyxWoW.Me.CurrentTarget.Distance < 30,
+                        new Decorator(ret => InternalSettings.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP && !StyxWoW.Me.IsInInstance && Unit.IsViable(Me.CurrentTarget) && StyxWoW.Me.CurrentTarget.IsPlayer && !StyxWoW.Me.CurrentTarget.IsFriendly && StyxWoW.Me.CurrentTarget.Distance > 12 && StyxWoW.Me.CurrentTarget.Distance < 30,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Charge),
-                                Spell.CastOnGround(SpellBook.HeroicLeap, ret => StyxWoW.Me.CurrentTarget),
-                    //new Decorator(ret => InternalSettings.Instance.General.CheckDebugLogging, Logger.AdvancedLogging),
-                                new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk,
-                                    Global.InitializeOnKeyActions()),
-                                new Decorator(
-                                    ret =>
-                                        Unit.DefaultBuffCheck &&
-                                        ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) ||
-                                         Me.Combat),
-                                    new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
-                                        new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
-                                            Spell.Cast(SpellBook.BattleShout, on => Me, ret => !Global.BattleShoutAura)),
-                                        new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
-                                            Spell.Cast(SpellBook.CommandingShout, on => Me,
-                                                ret => !Global.CommandingShoutAura))))
-                                )
-                            )
-                        )
-                    );
+                                Spell.CastOnGround(SpellBook.HeroicLeap, ret => StyxWoW.Me.CurrentTarget.Location))),
+                        new Decorator(ret => InternalSettings.Instance.General.CheckPreCombatHk, Global.InitializeOnKeyActions())),
+                    new Decorator(ret => Unit.DefaultBuffCheck && ((InternalSettings.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Arms.ShoutSelection,
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout,
+                                Spell.Cast(SpellBook.BattleShout, on => Me, ret => !Global.BattleShoutAura)),
+                            new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout,
+                                Spell.Cast(SpellBook.CommandingShout, on => Me, ret => !Global.CommandingShoutAura)))));
             }
         }
 
