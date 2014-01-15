@@ -23,7 +23,7 @@ namespace Waldo.Core
             if (string.IsNullOrEmpty(itemSpell))
                 return false;
 
-            return item.Usable && item.Cooldown <= 0;
+            return item.Usable && item.Cooldown == 0;
         }
 
         private static void UseItem(WoWItem item)
@@ -56,6 +56,44 @@ namespace Waldo.Core
         }
 
 
+        public static Composite UseBagItem(int name, CanRunDecoratorDelegate cond, string reason)
+        {
+            WoWItem item = null;
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!cond(a)) return false;
+
+
+                    item = Me.BagItems.FirstOrDefault(x => x != null && x.Entry == name && x.Usable && x.Cooldown <= 0 && x.ItemInfo.RequiredLevel <= StyxWoW.Me.Level);
+
+                    return item != null;
+                },
+                new Sequence(
+                    new Action(a => WaLogger.CombatLog("[Using Item: {0}] [Reason: {1}]", name, reason)),
+                    new Action(a => item.Use()),
+                    new Action(a => RunStatus.Failure)));
+        }
+
+        public static Composite UseEngineerHands(int name, CanRunDecoratorDelegate cond, string reason)
+        {
+            WoWItem item = null;
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!cond(a)) return false;
+
+
+                    item = Me.BagItems.FirstOrDefault(x => x != null && x.Entry == name && x.Usable && x.Cooldown <= 0 && x.ItemInfo.RequiredLevel <= StyxWoW.Me.Level);
+
+                    return item != null;
+                },
+                new Sequence(
+                    new Action(a => WaLogger.CombatLog("[Using Item: {0}] [Reason: {1}]", name, reason)),
+                    new Action(a => item.Use()),
+                    new Action(a => RunStatus.Failure)));
+        }
+
         public static Composite UseItem(uint id)
         {
             return new PrioritySelector(
@@ -73,23 +111,23 @@ namespace Waldo.Core
                     (SG.Instance.Combat.Trinket1 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Combat.Trinket1 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Combat.Trinket1 == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Trinket1),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
 
-                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseItem(76089)),
+                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                 new Decorator(ret => (
                     (SG.Instance.Combat.Trinket2 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Combat.Trinket2 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Combat.Trinket2 == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
                 new Decorator(ret => (
                     (SG.Instance.Combat.UseHands == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Combat.UseHands == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Combat.UseHands == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Hands),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Hands),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))));
         }
@@ -101,23 +139,23 @@ namespace Waldo.Core
                     (SG.Instance.Assassination.Trinket1 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Assassination.Trinket1 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Assassination.Trinket1 == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Trinket1),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
 
-                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseItem(76089)),
+                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                 new Decorator(ret => (
                     (SG.Instance.Assassination.Trinket2 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Assassination.Trinket2 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Assassination.Trinket2 == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
                 new Decorator(ret => (
                     (SG.Instance.Assassination.UseHands == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Assassination.UseHands == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Assassination.UseHands == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Hands),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Hands),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))));
         }
@@ -129,23 +167,23 @@ namespace Waldo.Core
                     (SG.Instance.Subtlety.Trinket1 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.Trinket1 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Subtlety.Trinket1 == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket1),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Trinket1),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
 
-                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseItem(76089)),
+                new Decorator(ret => SG.Instance.General.CheckPotion && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                 new Decorator(ret => (
                     (SG.Instance.Subtlety.Trinket2 == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.Trinket2 == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Subtlety.Trinket2 == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Trinket2),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Trinket2),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))),
                 new Decorator(ret => Me.HasAura("Shadow Dance") && (
                     (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                     (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Subtlety.UseHands == WaEnum.AbilityTrigger.Always)),
-                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((uint)WoWInventorySlot.Hands),
+                    new PrioritySelector(ctx => StyxWoW.Me.Inventory.GetItemBySlot((int)WoWInventorySlot.Hands),
                         new Decorator(ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
                             new Action(ctx => UseItem((WoWItem)ctx))))));
         }
