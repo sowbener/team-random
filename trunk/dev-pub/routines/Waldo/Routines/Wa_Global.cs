@@ -289,7 +289,7 @@ namespace Waldo.Routines
         internal static bool PremeditationOnline { get { return !CooldownWatcher.OnCooldown(14183); } }
         internal static bool ShadowDanceOffline { get { return Spell.SpellOnCooldown(51713); } }
         internal static bool VanishIsOnCooldown { get { return Spell.SpellOnCooldown(1856); } }
-        internal static bool VanishIsNotOnCooldown { get { return !Spell.SpellOnCooldownn(1856); } }
+        internal static bool VanishIsNotOnCooldown { get { return !Spell.SpellOnCooldown(1856); } }
         internal static bool Kick { get { return WaSpell.SpellOnCooldown("Kick"); } }
 
         private static readonly HashSet<int> Tier14Ids = new HashSet<int>
