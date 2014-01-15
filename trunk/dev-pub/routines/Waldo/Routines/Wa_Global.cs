@@ -283,13 +283,13 @@ namespace Waldo.Routines
         internal static bool TargetHaveRupture4 { get { return Me.HasCachedAuraDown("Rupture", 0, 4000); } }
         internal static bool MeHasShadowFocus { get { return Me.HasCachedAura(108209, 0); } }
         internal static bool Vanishisoncooldown { get { return CooldownWatcher.OnCooldown(1856); } }
-        internal static bool ShadowDanceOnline { get { return !CooldownWatcher.OnCooldown(51713); } }
+        internal static bool ShadowDanceOnline { get { return !Spell.SpellOnCooldown(51713); } }
         internal static double FindWeakness { get { return Spell.GetMyAuraTimeLeft(91021, Me.CurrentTarget); } }
         internal static bool FindWeaknessOff { get { return !Spell.HasMyAura(Me.CurrentTarget, 91021); } }
         internal static bool PremeditationOnline { get { return !CooldownWatcher.OnCooldown(14183); } }
-        internal static bool ShadowDanceOffline { get { return CooldownWatcher.OnCooldown(51713); } }
-        internal static bool VanishIsOnCooldown { get { return CooldownWatcher.OnCooldown(1856); } }
-        internal static bool VanishIsNotOnCooldown { get { return !CooldownWatcher.OnCooldown(1856); } }
+        internal static bool ShadowDanceOffline { get { return Spell.SpellOnCooldown(51713); } }
+        internal static bool VanishIsOnCooldown { get { return Spell.SpellOnCooldown(1856); } }
+        internal static bool VanishIsNotOnCooldown { get { return !Spell.SpellOnCooldownn(1856); } }
         internal static bool Kick { get { return WaSpell.SpellOnCooldown("Kick"); } }
 
         private static readonly HashSet<int> Tier14Ids = new HashSet<int>
