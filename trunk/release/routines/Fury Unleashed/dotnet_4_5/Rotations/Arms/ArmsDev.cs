@@ -32,53 +32,58 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
-        #region Development Rotations
-
-        internal static Composite Dev_ArmsSt()
+        internal static Composite Rel_ArmsSt()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsExec()
+        internal static Composite Rel_ArmsHeroicStrike()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsRageDump()
+        internal static Composite Rel_ArmsExec()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsMt()
+        internal static Composite Rel_ArmsMt()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsOffensive()
+        internal static Composite Rel_ArmsOffensive()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsGcdUtility()
+        internal static Composite Rel_ArmsGcdUtility()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsRacials()
+        internal static Composite Rel_ArmsRacials()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsDefensive()
+        internal static Composite Rel_ArmsDefensive()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
 
-        internal static Composite Dev_ArmsNonGcdUtility()
+        internal static Composite Rel_ArmsNonGcdUtility()
         {
-            return new PrioritySelector();
+            return new PrioritySelector(
+                );
         }
-
-        #endregion
     }
 }
