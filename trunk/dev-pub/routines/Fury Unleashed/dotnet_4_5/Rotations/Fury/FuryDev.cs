@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using CommonBehaviors.Actions;
+﻿using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
@@ -7,9 +6,12 @@ using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using G = FuryUnleashed.Rotations.Global;
+using System.Windows.Forms;
 using FG = FuryUnleashed.Rotations.Fury.FuryGlobal;
+using G = FuryUnleashed.Rotations.Global;
+using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations.Fury
 {
@@ -37,7 +39,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
-                                        new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Dev_FuryMt()),
+                                        new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
                                         new Decorator(ret => G.NormalPhase, Dev_FurySt())
                                         )))),
@@ -54,7 +56,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
-                                        new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Dev_FuryMt()),
+                                        new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
                                         new Decorator(ret => G.NormalPhase, Dev_FurySt())
                                         )))),
@@ -71,7 +73,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
                                         Dev_FuryGcdUtility(),
-                                        new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && HotKeyManager.IsAoe && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum, Dev_FuryMt()),
+                                        new Decorator(ret => FG.MultiTargetUsage && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
                                         new Decorator(ret => G.NormalPhase, Dev_FurySt())
                                         ))))));
@@ -89,7 +91,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //# Cooldowns are stacked whenever possible, and only delayed for the very last use of them.
 
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
-                new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                     Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                 //actions.single_target+=/bloodthirst,if=!buff.enrage.up
                 Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura),
@@ -137,7 +139,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/wild_strike,if=debuff.colossus_smash.up&target.health.pct>=20
                 Spell.Cast(SpellBook.WildStrike, ret => G.ColossusSmashAura && G.NormalPhase),
                 //actions.single_target+=/battle_shout,if=rage<70
-                new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))),
                 //actions.single_target+=/wild_strike,if=cooldown.colossus_smash.remains>=2&rage>=70&target.health.pct>=20
@@ -150,19 +152,19 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryHeroicStrike()
         {
             return new PrioritySelector(
-                new Decorator(ret => (!InternalSettings.Instance.Fury.CheckAoE || Unit.NearbyAttackableUnitsCount < InternalSettings.Instance.Fury.CheckAoENum) && G.NormalPhase,
+                new Decorator(ret => (!FG.MultiTargetUsage || U.NearbyAttackableUnitsCount < IS.Instance.Fury.CheckAoENum) && G.NormalPhase,
                     new PrioritySelector(
                         //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up
                         Spell.Cast(SpellBook.HeroicStrike, ret => (G.ColossusSmashAura && Lua.PlayerPower >= 40 || Lua.PlayerPower >= 100) && G.EnrageAura, true))),
-                new Decorator(ret => InternalSettings.Instance.Fury.CheckAoE && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckAoENum,
+                new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
-                        new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
+                        new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                             //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                             Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true)),
-                        new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
+                        new Decorator(ret => U.NearbyAttackableUnitsCount == 3,
                             //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                             Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true)),
-                        new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 3,
+                        new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
                             //actions.aoe+=/cleave,if=rage>110
                             Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax -10)))));
         }
@@ -185,7 +187,7 @@ namespace FuryUnleashed.Rotations.Fury
                     new PrioritySelector(
                         Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 5, true),
                         Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && FG.Tier6AbilityUsage),
-                        new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                             Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura && G.BerserkerRageOnCooldown),
                         Spell.Cast(SpellBook.Execute),
@@ -196,14 +198,14 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryMt()
         {
             return new PrioritySelector(
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
                         //actions.two_targets=bloodbath,if=enabled&buff.enrage.up
                         Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && G.EnrageAura && FG.Tier6AbilityAoEUsage, true),
                         //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true),
                         //actions.two_targets+=/heroic_leap,if=buff.enrage.up
-                        new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                             Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         //# Generally, if an encounter has any type of AoE, Bladestorm will be the better choice.
                         //actions.two_targets+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
@@ -230,20 +232,20 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.two_targets+=/whirlwind,if=!buff.meat_cleaver.up
                         Spell.Cast(SpellBook.Whirlwind, ret => !G.MeatCleaverAura),
                         //actions.two_targets+=/battle_shout,if=rage<70
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))),
                         //actions.two_targets+=/heroic_throw
                         Spell.Cast(SpellBook.HeroicThrow, ret => FG.HeroicThrowUsage)
                         )),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
+                new Decorator(ret => U.NearbyAttackableUnitsCount == 3,
                     new PrioritySelector(
                         //actions.three_targets=bloodbath,if=enabled&buff.enrage.up
                         Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && G.EnrageAura && FG.Tier6AbilityAoEUsage, true),
                         //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true),
                         //actions.three_targets+=/heroic_leap,if=buff.enrage.up
-                        new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                             Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         //actions.three_targets+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
                         Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && !G.ColossusSmashAura && FG.BloodbathSync && FG.Tier4AbilityAoEUsage),
@@ -264,20 +266,20 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.three_targets+=/raging_blow
                         Spell.Cast(SpellBook.RagingBlow),
                         //actions.three_targets+=/battle_shout,if=rage<70
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70))),
                         //actions.three_targets+=/heroic_throw
                         Spell.Cast(SpellBook.HeroicThrow, ret => FG.HeroicThrowUsage)
                         )),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 3,
+                new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
                     new PrioritySelector(
                         //actions.aoe=bloodbath,if=enabled&buff.enrage.up
                         Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && G.EnrageAura && FG.Tier6AbilityAoEUsage, true),
                         //actions.aoe+=/cleave,if=rage>110
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax - 10, true),
                         //actions.aoe+=/heroic_leap,if=buff.enrage.up
-                        new Decorator(ret => FG.HeroicLeapUsage && Unit.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
+                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
                             Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         //# Dragon roar is a poor choice on large-scale AoE as the damage it does is reduced with additional targets. The damage it does per target is reduced by the following amounts:
                         //# 1/2/3/4/5+ targets ---> 0%/25%/35%/45%/50%
@@ -302,7 +304,7 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.aoe+=/colossus_smash
                         Spell.Cast(SpellBook.ColossusSmash),
                         //actions.aoe+=/battle_shout,if=rage<70
-                        new Switch<Enum.Shouts>(ctx => InternalSettings.Instance.Fury.ShoutSelection,
+                        new Switch<Enum.Shouts>(ctx => IS.Instance.Fury.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me, ret => Lua.PlayerPower < 70)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me, ret => Lua.PlayerPower < 70)))                    
                         )));
@@ -329,10 +331,10 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryGcdUtility()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.ImpendingVictory, ret => !Global.ImpendingVictoryOnCooldown && Global.ImpendingVictoryTalent && InternalSettings.Instance.Fury.CheckImpVic && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckImpVicNum),
-                Spell.Cast(SpellBook.VictoryRush, ret => !Global.VictoryRushOnCooldown && Global.VictoriousAura && InternalSettings.Instance.Fury.CheckVicRush && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckVicRushNum),
-                Spell.Cast(SpellBook.IntimidatingShout, ret => InternalSettings.Instance.Fury.CheckIntimidatingShout && Global.IntimidatingShoutGlyph && !Unit.IsTargetBoss),
-                Spell.Cast(SpellBook.ShatteringThrow, ret => InternalSettings.Instance.Fury.CheckShatteringThrow && Unit.IsTargetBoss && (Global.ColossusSmashSpellCooldown <= 3000 || Global.SkullBannerSpellCooldown <= 3000))
+                Spell.Cast(SpellBook.ImpendingVictory, ret => !Global.ImpendingVictoryOnCooldown && Global.ImpendingVictoryTalent && FG.ImpendingVictoryUsage && Me.HealthPercent <= IS.Instance.Fury.CheckImpVicNum),
+                Spell.Cast(SpellBook.VictoryRush, ret => !Global.VictoryRushOnCooldown && Global.VictoriousAura && FG.VictoryRushUsage && Me.HealthPercent <= IS.Instance.Fury.CheckVicRushNum),
+                Spell.Cast(SpellBook.IntimidatingShout, ret => FG.IntimidatingShoutUsage && Global.IntimidatingShoutGlyph && !U.IsTargetBoss),
+                Spell.Cast(SpellBook.ShatteringThrow, ret => FG.ShatteringThrowUsage && U.IsTargetBoss && (Global.ColossusSmashSpellCooldown <= 3000 || Global.SkullBannerSpellCooldown <= 3000))
                 );
         }
 
@@ -347,10 +349,10 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryDefensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.DiebytheSword, ret => InternalSettings.Instance.Fury.CheckDiebytheSword && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckDiebytheSwordNum),
-                Spell.Cast(SpellBook.EnragedRegeneration, ret => Global.EnragedRegenerationTalent && InternalSettings.Instance.Fury.CheckEnragedRegen && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckEnragedRegenNum),
-                Spell.Cast(SpellBook.ShieldWall, ret => InternalSettings.Instance.Fury.CheckShieldWall && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckShieldWallNum),
-                Spell.Cast(SpellBook.SpellReflection, ret => InternalSettings.Instance.Fury.CheckSpellReflect && Unit.IsViable(Me.CurrentTarget) && Unit.IsTargettingMe && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SpellBook.DiebytheSword, ret => FG.DiebytheSwordUsage && Me.HealthPercent <= IS.Instance.Fury.CheckDiebytheSwordNum),
+                Spell.Cast(SpellBook.EnragedRegeneration, ret => Global.EnragedRegenerationTalent && FG.EnragedRegenerationUsage && Me.HealthPercent <= IS.Instance.Fury.CheckEnragedRegenNum),
+                Spell.Cast(SpellBook.ShieldWall, ret => FG.ShieldWallUsage && Me.HealthPercent <= IS.Instance.Fury.CheckShieldWallNum),
+                Spell.Cast(SpellBook.SpellReflection, ret => FG.SpellReflectUsage && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
                 Item.FuryUseHealthStone()
                 );
         }
@@ -358,14 +360,14 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Dev_FuryNonGcdUtility()
         {
             return new PrioritySelector(
-                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && InternalSettings.Instance.Fury.CheckDemoBanner && Me.HealthPercent <= InternalSettings.Instance.Fury.CheckDemoBannerNum && Unit.IsDoNotUseOnTgt),
-                Spell.Cast(SpellBook.Hamstring, ret => !Unit.IsTargetBoss && !Global.HamstringAura && (InternalSettings.Instance.Fury.HamString == Enum.Hamstring.Always || InternalSettings.Instance.Fury.HamString == Enum.Hamstring.AddList && Unit.IsHamstringTarget)),
-                Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && Unit.IsViable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && FuryGlobal.MassSpellReflectionUsage),
-                Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && InternalSettings.Instance.Fury.CheckStaggeringShout && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckPiercingHowlNum),
-                Spell.Cast(SpellBook.RallyingCry, ret => Unit.RaidMembersNeedCryCount > 0),
-                Spell.Cast(SpellBook.StaggeringShout, ret => Global.StaggeringShoutTalent && InternalSettings.Instance.Fury.CheckPiercingHowl && Unit.NearbyAttackableUnitsCount >= InternalSettings.Instance.Fury.CheckPiercingHowlNum),
-                new Decorator(ret => Unit.VigilanceTarget != null,
-                    Spell.Cast(SpellBook.Vigilance, on => Unit.VigilanceTarget))
+                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && FG.DemoralizingBannerUsage && Me.HealthPercent <= IS.Instance.Fury.CheckDemoBannerNum && U.IsDoNotUseOnTgt),
+                Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !Global.HamstringAura && (IS.Instance.Fury.HamString == Enum.Hamstring.Always || IS.Instance.Fury.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
+                Spell.Cast(SpellBook.MassSpellReflection, ret => Global.MassSpellReflectionTalent && U.IsViable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && FuryGlobal.MassSpellReflectionUsage),
+                Spell.Cast(SpellBook.PiercingHowl, ret => Global.PiercingHowlTalent && FG.PiercingHowlUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckPiercingHowlNum),
+                Spell.Cast(SpellBook.RallyingCry, ret => U.RaidMembersNeedCryCount > 0),
+                Spell.Cast(SpellBook.StaggeringShout, ret => Global.StaggeringShoutTalent && FG.StaggeringShoutUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckStaggeringShoutNum),
+                new Decorator(ret => U.VigilanceTarget != null,
+                    Spell.Cast(SpellBook.Vigilance, on => U.VigilanceTarget))
                 );
         }
     }
