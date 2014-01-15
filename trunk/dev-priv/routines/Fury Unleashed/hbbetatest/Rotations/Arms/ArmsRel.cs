@@ -4,14 +4,13 @@ using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
-using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using AG = FuryUnleashed.Rotations.Arms.ArmsGlobal;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
-using U = FuryUnleashed.Core.Unit;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;
+using U = FuryUnleashed.Core.Unit;
 
 namespace FuryUnleashed.Rotations.Arms
 {
