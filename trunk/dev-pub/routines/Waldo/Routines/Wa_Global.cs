@@ -282,11 +282,11 @@ namespace Waldo.Routines
         internal static bool SliceAndDiceSubGenerator { get { return Me.HasCachedAuraDown(5171, 0, 6000); } }
         internal static bool TargetHaveRupture4 { get { return Me.HasCachedAuraDown("Rupture", 0, 4000); } }
         internal static bool MeHasShadowFocus { get { return Me.HasCachedAura(108209, 0); } }
-        internal static bool Vanishisoncooldown { get { return CooldownWatcher.OnCooldown(1856); } }
+        internal static bool Vanishisoncooldown { get { return Spell.SpellOnCooldown(1856); } }
         internal static bool ShadowDanceOnline { get { return !Spell.SpellOnCooldown(51713); } }
         internal static double FindWeakness { get { return Spell.GetMyAuraTimeLeft(91021, Me.CurrentTarget); } }
         internal static bool FindWeaknessOff { get { return !Spell.HasMyAura(Me.CurrentTarget, 91021); } }
-        internal static bool PremeditationOnline { get { return !CooldownWatcher.OnCooldown(14183); } }
+        internal static bool PremeditationOnline { get { return !Spell.SpellOnCooldown(14183); } }
         internal static bool ShadowDanceOffline { get { return Spell.SpellOnCooldown(51713); } }
         internal static bool VanishIsOnCooldown { get { return Spell.SpellOnCooldown(1856); } }
         internal static bool VanishIsNotOnCooldown { get { return !Spell.SpellOnCooldown(1856); } }
