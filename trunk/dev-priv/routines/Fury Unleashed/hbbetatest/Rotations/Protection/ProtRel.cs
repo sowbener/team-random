@@ -114,7 +114,7 @@ namespace FuryUnleashed.Rotations.Protection
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && PG.Tier4AbilityAoEUsage),
-                Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && PG.Tier4AbilityAoEUsage),
+                Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && PG.Tier6AbilityAoEUsage),
 
                 Spell.Cast(SpellBook.ThunderClap),
