@@ -14,6 +14,7 @@ using YourBuddy.Core.Managers;
 using SH = YourBuddy.Interfaces.Settings.SettingsH;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
 using G = YourBuddy.Rotations.Global;
+using YourBuddy.Interfaces.Settings;
 
 namespace YourBuddy.Rotations.Monk
 {

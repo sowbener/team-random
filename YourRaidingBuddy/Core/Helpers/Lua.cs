@@ -173,6 +173,25 @@ namespace YourBuddy.Core.Helpers
 
         #endregion
 
+        public static double PlayerComboPts
+        {
+            get
+            {
+                try
+                {
+                    using (StyxWoW.Memory.AcquireFrame())
+                    {
+                        return Styx.WoWInternals.Lua.GetReturnVal<int>("return GetComboPoints(\"player\");", 0);
+                    }
+                }
+                catch
+                {
+                    //  Logger.FailLog(" Lua Failed in PlayerComboPts");
+                    return 0;
+                }
+            }
+        }
+
         #region Taken From SuperBad //YouKnowILoveYouNavi <3
 
         public static double LuaGetComboPoints()

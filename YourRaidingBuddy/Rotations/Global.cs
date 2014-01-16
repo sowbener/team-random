@@ -24,6 +24,8 @@ namespace YourBuddy.Rotations
     class Global
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        internal static int? _anticipationCount;
+
 
 
         #region Global Used Composites
@@ -40,6 +42,26 @@ namespace YourBuddy.Rotations
                )));
             }
         }
+
+        internal static Composite InitializePreBuffRogue
+        {
+            get
+            {
+                return new PrioritySelector(
+        //           new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
+                    new Decorator(ret => Me.Specialization == WoWSpec.RogueAssassination && Unit.DefaultBuffCheck,
+                        new PrioritySelector(
+                    new Decorator(ret => SG.Instance.Assassination.CheckPoison, Poisons.CreateApplyPoisonsAss()))),
+                    new Decorator(ret => Me.Specialization == WoWSpec.RogueSubtlety,
+                        new PrioritySelector(
+                            Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura("Vanish")),
+                            new Decorator(ret => SG.Instance.Subtlety.CheckPoison, Poisons.CreateApplyPoisonsSub()))),
+                    new Decorator(ret => Me.Specialization == WoWSpec.RogueCombat && Unit.DefaultBuffCheck,
+                        new PrioritySelector(
+                   new Decorator(ret => SG.Instance.Combat.CheckPoison, Poisons.CreateApplyPoisonsCom()))));
+            }
+        }
+
 
 
         internal static Composite InitializeCaching()
@@ -310,6 +332,173 @@ namespace YourBuddy.Rotations
 
         };
         #endregion
+
+        #region RogueStuff
+
+        internal static int AnticipationCount
+        {
+            get
+            {
+                if (_anticipationCount.HasValue)
+                {
+                    return _anticipationCount.Value;
+                }
+
+                if (!HasAnticipation)
+                {
+                    _anticipationCount = 0;
+                    return _anticipationCount.Value;
+                }
+
+                _anticipationCount = Me.HasAura(115189)
+                                         ? (int)Me.GetAuraById(115189).StackCount
+                                         : 0;
+
+                return _anticipationCount.Value;
+            }
+        }
+
+        internal static bool HasAnticipation
+        {
+            get { return TalentManager.HasTalent(18); }
+        }
+
+        // Booleans for multiple use.
+        internal static bool YourGoingDownBoss { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 35; } }
+        internal static bool ImDpsingYou { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 35; } }
+        internal static bool TargettingMe { get { return Me.CurrentTarget.IsTargetingMeOrPet; } }
+        internal static bool TargetIsClose { get { return Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange; } }
+
+        // Cached Aura's - Can only be used with MY aura's (HasCachedAura).
+        internal static bool VendettaAura { get { return Me.HasAura(79140); } }
+        internal static bool ShadowbladesAura { get { return !Me.HasAura(121471); } }
+        internal static bool ShadowbladesAuraActive { get { return Me.HasAura("Shadow Blades"); } }
+        internal static bool DispatchProc { get { return Me.HasAura(121153); } }
+        internal static bool NoDispatchLove { get { return !Me.HasAura(121153); } }
+        internal static bool TargetNoRupture { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(1943); } }
+        internal static bool TargetHaveRupture { get { return Me.CurrentTarget != null & Me.CurrentTarget.HasAura(1943); } }
+        internal static bool TargetRuptureFalling { get { return Me.CurrentTarget != null && RuptureSetting < 2; } }
+        internal static bool HemorrhageDebuffFalling { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Hemorrhage"); } }
+        internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && RuptureSetting < 3; } }
+        internal static bool CrimsonTempestNotUp { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(121411); } }
+        internal static bool EnvenomRemains2Seconds { get { return !Me.HasAura(32645, 0, 2000); } }
+        internal static bool ShadowBladesSND { get { return Me.HasAura(5171, 0, 12000); } }
+        internal static bool FucknoSND { get { return !Me.HasAura(5171); } }
+        internal static bool IloveyouSND { get { return Me.HasAura(5171); } }
+        internal static double SNDSetting { get { return Spell.GetAuraTimeLeft(5171, Me); } }
+        internal static Double RuptureSetting { get { return Spell.GetAuraTimeLeft("Rupture", Me.CurrentTarget); } }
+        internal static bool MySNDBabyIsFalling { get { return SNDSetting < 2; } }
+        internal static bool SliceandDiceSub { get { return SNDSetting < 4; } }
+        internal static bool SliceAndDiceSubGenerator { get { return SNDSetting < 6; } }
+        internal static bool TargetHaveRupture4 { get { return RuptureSetting < 4; } }
+        internal static bool MeHasShadowFocus { get { return Me.HasAura(108209); } }
+        internal static bool Vanishisoncooldown { get { return CooldownTracker.SpellOnCooldown(1856); } }
+        internal static bool ShadowDanceOnline { get { return !CooldownTracker.SpellOnCooldown(51713); } }
+        internal static double FindWeakness { get { return Spell.GetAuraTimeLeft(91021, Me.CurrentTarget); } }
+        internal static bool FindWeaknessOff { get { return !Spell.HasAura(Me.CurrentTarget, 91021); } }
+        internal static bool PremeditationOnline { get { return !CooldownTracker.SpellOnCooldown(14183); } }
+        internal static bool ShadowDanceOffline { get { return CooldownTracker.SpellOnCooldown(51713); } }
+        internal static bool VanishIsOnCooldown { get { return CooldownTracker.SpellOnCooldown(1856); } }
+        internal static bool VanishIsNotOnCooldown { get { return !CooldownTracker.SpellOnCooldown(1856); } }
+        internal static bool Kick { get { return CooldownTracker.SpellOnCooldown("Kick"); } }
+
+        private static readonly HashSet<int> Tier14Ids = new HashSet<int>
+        {
+            -526, // 509 ilvl
+            1124, // 496 ilvl
+            -503,  // 483 ilvl
+        };
+
+        private static readonly HashSet<int> Tier15Ids = new HashSet<int>
+        {
+            1167, // 522 ilvl
+            -740, // 535 ilvl
+            -717,  // 502 ilvl
+        };
+
+        internal static readonly HashSet<int> DoNotUseHealing = new HashSet<int>
+        {
+            142863, //  Red Weak Ancient Barrier
+            142862, // Ancient Barrier
+            142864, // Orange Ancient Barrier 
+            142865,  // Green  Strong Ancient Barrier
+        };
+
+        private static WoWUnit TricksTarget
+        {
+            get
+            {
+                return BestTricksTarget;
+            }
+        }
+
+        public static WoWUnit BestTricksTarget
+        {
+            get
+            {
+                if (!StyxWoW.Me.GroupInfo.IsInParty &&
+                     !StyxWoW.Me.GroupInfo.IsInRaid)
+                {
+                    return null;
+                }
+
+                // If the player has a focus target set, use it instead.
+                if (StyxWoW.Me.FocusedUnitGuid != 0)
+                {
+                    return StyxWoW.Me.FocusedUnit;
+                }
+
+                if (RaFHelper.Leader != null &&
+                     !RaFHelper.Leader.IsMe)
+                {
+                    // Leader first, always. Otherwise, pick a rogue/DK/War pref. Fall back to others just in case.
+                    return RaFHelper.Leader;
+                }
+
+                WoWPlayer bestTank =
+                    StyxWoW.Me.GroupInfo.RaidMembers.Where
+                        (member => member.HasRole(WoWPartyMember.GroupRole.Tank) && member.Health > 0).Select
+                        (member => member.ToPlayer()).Where(player => player != null).OrderBy
+                        (player => player.DistanceSqr).FirstOrDefault();
+
+                if (bestTank != null)
+                {
+                    return bestTank;
+                }
+
+                WoWPlayer bestPlayer =
+                    StyxWoW.Me.GroupInfo.RaidMembers.Where
+                        (member => member.HasRole(WoWPartyMember.GroupRole.Damage) && member.Health > 0).Select
+                        (member => member.ToPlayer()).Where(player => player != null).OrderBy
+                        (player => player.DistanceSqr).FirstOrDefault();
+
+                return bestPlayer;
+            }
+        }
+
+        internal static bool RevealingStrike
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+                WoWAura Reveal = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 84617);
+                return Reveal != null && Reveal.TimeLeft >= TimeSpan.FromMilliseconds(3000);
+            }
+        }
+
+        internal static bool SliceAndDiceEnevenom
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+                WoWAura SilceAndDiceEne = Me.GetAllAuras().FirstOrDefault(u => u.SpellId == 5171);
+                return SilceAndDiceEne != null && SilceAndDiceEne.TimeLeft >= TimeSpan.FromMilliseconds(3000);
+            }
+        }
+        #endregion
+
 
         #region TalentManager Functions
         // Talentmanager - HasGlyphs

@@ -17,6 +17,9 @@ using System;
 using G = YourBuddy.Rotations.Global;
 using WWM = YourBuddy.Rotations.Monk.Windwalker;
 using BMM = YourBuddy.Rotations.Monk.Brewmaster;
+using SR = YourBuddy.Rotations.Rogue.Subtlety;
+using AR = YourBuddy.Rotations.Rogue.Assassination;
+using CR = YourBuddy.Rotations.Rogue.Combat;
 using System.Windows.Forms;
 using BotEvents = Styx.CommonBot.BotEvents;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
@@ -160,14 +163,20 @@ namespace YourBuddy
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkWindwalker, G.InitializePreBuffMonk),
-                new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, G.InitializePreBuffMonk));
+                new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, G.InitializePreBuffMonk),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, G.InitializePreBuffRogue),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, G.InitializePreBuffRogue));
         }
 
         internal Composite CombatSelector()
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkWindwalker, WWM.InitializeWindwalkerCombat),
-                new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, BMM.InitializeBrewmasterCombat));
+                new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, BMM.InitializeBrewmasterCombat),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, G.InitializePreBuffRogue),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, G.InitializePreBuffRogue));
         }
 
         internal static void StopBot(string reason)

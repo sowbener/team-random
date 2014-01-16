@@ -3,7 +3,7 @@ using Styx.Helpers;
 using System.ComponentModel;
 using YourBuddy.Interfaces.Settings;
 
-namespace YourBuddy.Interfaces
+namespace YourBuddy.Interfaces.Settings
 {
     internal class YbSettingsBMM : Styx.Helpers.Settings
     {

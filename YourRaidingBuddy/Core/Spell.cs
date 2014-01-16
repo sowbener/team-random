@@ -347,6 +347,120 @@ namespace YourBuddy.Core
 
         #endregion
 
+
+        #region More AuraShit
+
+        public static double GetAuraTimeLeft(string aura)
+        {
+            return GetAuraTimeLeft(aura, StyxWoW.Me);
+        }
+
+        public static double GetAuraTimeLeft(string aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var result = onUnit.GetAuraByName(aura);
+                if (result != null)
+                {
+                    if (result.TimeLeft.TotalSeconds > 0)
+                        return result.TimeLeft.TotalSeconds;
+                }
+            }
+            return 0;
+        }
+
+        public static double GetAuraTimeLeft(int aura)
+        {
+            return GetAuraTimeLeft(aura, StyxWoW.Me);
+        }
+
+        public static double GetAuraTimeLeftMilli(string aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var result = onUnit.GetAuraByName(aura);
+                if (result != null)
+                {
+                    //  if (result.TimeLeft.Milliseconds > 0)
+                    return result.TimeLeft.Milliseconds;
+                }
+            }
+            return 0;
+        }
+
+
+        public static double GetAuraTimeMilliEnemy(string aura)
+        {
+            return GetAuraTimeLeftMilli(aura, Me.CurrentTarget);
+        }
+
+        public static double GetAuraTimeMilliMe(string aura)
+        {
+            return GetAuraTimeLeftMilli(aura, StyxWoW.Me);
+        }
+
+
+        public static double GetAuraTimeLeft(int aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var result = onUnit.GetAuraById(aura);
+                if (result != null)
+                {
+                    if (result.TimeLeft.TotalSeconds > 0)
+                        return result.TimeLeft.TotalSeconds;
+                }
+            }
+            return 0;
+        }
+
+        public static double GetMyAuraTimeLeft(int aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var result = onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == Me.Guid);
+                if (result != null && result.TimeLeft.TotalSeconds > 0)
+                    return result.TimeLeft.TotalSeconds;
+            }
+            return 0;
+        }
+
+        public static double GetMyAuraTimeLeft(string[] aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var auras = onUnit.GetAllAuras();
+                var hashes = new HashSet<string>(aura);
+                var result = auras.FirstOrDefault(a => hashes.Contains(a.Name) && a.CreatorGuid == Me.Guid);
+                if (result != null && result.TimeLeft.TotalSeconds > 0)
+                    return result.TimeLeft.TotalSeconds;
+            }
+            return 0;
+        }
+
+        public static bool HasMyAura(this WoWUnit unit, string aura)
+        {
+            return unit.GetAllAuras().Any(a => a.Name == aura && a.CreatorGuid == Me.Guid);
+        }
+
+        public static bool HasMyAura(this WoWUnit unit, int spellId)
+        {
+            return unit.GetAllAuras().Any(a => a.SpellId == spellId && a.CreatorGuid == Me.Guid);
+        }
+
+        public static double GetMyAuraTimeLeft(HashSet<int> aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var auras = onUnit.GetAllAuras();
+                var result = auras.FirstOrDefault(a => aura.Contains(a.SpellId) && a.CreatorGuid == Me.Guid);
+                if (result != null && result.TimeLeft.TotalSeconds > 0)
+                    return result.TimeLeft.TotalSeconds;
+            }
+            return 0;
+        }
+        #endregion
+
         #region InterruptShitet
         internal static WoWSpell CastOrChanneledSpell(this WoWUnit u)
         {
@@ -559,15 +673,9 @@ namespace YourBuddy.Core
             return 0;
         }
 
-        public static double GetMyAuraTimeLeft(int aura, WoWUnit onUnit)
+        public static Composite CreateWaitForLagDuration()
         {
-            if (onUnit != null)
-            {
-                var result = onUnit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == Me.Guid);
-                if (result != null && result.TimeLeft.TotalSeconds > 0)
-                    return result.TimeLeft.TotalSeconds;
-            }
-            return 0;
+            return new WaitContinue(TimeSpan.FromMilliseconds((StyxWoW.WoWClient.Latency * 2) + 150), ret => false, new ActionAlwaysSucceed());
         }
         #endregion
 

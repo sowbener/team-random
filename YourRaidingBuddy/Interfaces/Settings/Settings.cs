@@ -33,6 +33,11 @@ namespace YourBuddy.Interfaces.Settings
         private YbSettingsBMM _settingsBMM;
         private YbSettingsWWM _settingsWWM;
 
+        //Rogue Settings
+        private YbSettingsSR _settingsSR;
+        private YbSettingsCR _settingsCR;
+        private YbSettingsAR _settingsAR;
+
 
         // General
         [Browsable(false)]
@@ -41,7 +46,7 @@ namespace YourBuddy.Interfaces.Settings
             get { return _settingsG ?? (_settingsG = new SettingsG()); }
         }
 
-        // PvE
+        // Monk
         [Browsable(false)]
         public YbSettingsBMM Brewmaster
         {
@@ -54,6 +59,21 @@ namespace YourBuddy.Interfaces.Settings
             get { return _settingsWWM ?? (_settingsWWM = new YbSettingsWWM()); }
         }
 
+
+        //Rogue
+
+            public YbSettingsSR Subtlety
+        {
+            get { return _settingsSR ?? (_settingsSR = new YbSettingsSR()); }
+        }
+            public YbSettingsCR Combat
+        {
+            get { return _settingsCR ?? (_settingsCR = new YbSettingsCR()); }
+        }
+            public YbSettingsAR Assassination
+        {
+            get { return _settingsAR ?? (_settingsAR = new YbSettingsAR()); }
+        }
 
         #endregion
     }

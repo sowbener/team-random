@@ -32,11 +32,11 @@ namespace YourBuddy.Core.Helpers
             OnBlTwHr
         }
 
-        public enum BarrierBlock
+        public enum PreperationUsage
         {
-            None,
-            ShieldBlock,
-            ShieldBarrier
+            Never,
+            VanishCooldown,
+            OnBossAndVanishCooldown
         }
 
         public enum InterruptList
@@ -51,11 +51,25 @@ namespace YourBuddy.Core.Helpers
             RandomTimed
         }
 
-        public enum Hamstring
+        public enum PoisonM
         {
-            Never,
-            Always,
-            AddList
+            Deadly,
+            Wound,
+            Leeching,
+            Crippling,
+            Mindnumbing
+
+        }
+
+        public enum PoisonO
+        {
+            Deadly,
+            Wound,
+            Leeching,
+            Crippling,
+            Paralytic,
+            Mindnumbing
+
         }
 
         [Flags]
