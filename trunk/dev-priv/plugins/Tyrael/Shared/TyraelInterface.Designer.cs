@@ -46,9 +46,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.slowbutton = new System.Windows.Forms.Button();
             this.normalbutton = new System.Windows.Forms.Button();
+            this.slowbutton = new System.Windows.Forms.Button();
             this.extremebutton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
@@ -63,18 +64,18 @@
             this.SettingsPanel.Controls.Add(this.TPSTrackBar);
             this.SettingsPanel.Location = new System.Drawing.Point(2, 45);
             this.SettingsPanel.Name = "SettingsPanel";
-            this.SettingsPanel.Size = new System.Drawing.Size(507, 50);
+            this.SettingsPanel.Size = new System.Drawing.Size(761, 50);
             this.SettingsPanel.TabIndex = 0;
             // 
             // TPSTrackBar
             // 
             this.TPSTrackBar.BackColor = System.Drawing.Color.White;
             this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.TPSTrackBar.Location = new System.Drawing.Point(24, 2);
+            this.TPSTrackBar.Location = new System.Drawing.Point(10, 2);
             this.TPSTrackBar.Maximum = 100;
             this.TPSTrackBar.Minimum = 5;
             this.TPSTrackBar.Name = "TPSTrackBar";
-            this.TPSTrackBar.Size = new System.Drawing.Size(449, 45);
+            this.TPSTrackBar.Size = new System.Drawing.Size(742, 45);
             this.TPSTrackBar.SmallChange = 10;
             this.TPSTrackBar.TabIndex = 0;
             this.TPSTrackBar.TickFrequency = 5;
@@ -143,7 +144,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(10, 103);
+            this.checkPlugins.Location = new System.Drawing.Point(9, 103);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -203,10 +204,10 @@
             this.SaveButton.BackColor = System.Drawing.Color.DodgerBlue;
             this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveButton.Location = new System.Drawing.Point(364, 276);
+            this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.SaveButton.Location = new System.Drawing.Point(620, 230);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(135, 22);
+            this.SaveButton.Size = new System.Drawing.Size(143, 23);
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -220,7 +221,7 @@
             this.NamePanel.Controls.Add(this.LabelName);
             this.NamePanel.Location = new System.Drawing.Point(2, 2);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(507, 41);
+            this.NamePanel.Size = new System.Drawing.Size(761, 41);
             this.NamePanel.TabIndex = 0;
             this.NamePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
             // 
@@ -229,7 +230,7 @@
             this.LabelName.AutoSize = true;
             this.LabelName.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelName.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.LabelName.Location = new System.Drawing.Point(85, 2);
+            this.LabelName.Location = new System.Drawing.Point(213, 2);
             this.LabelName.Name = "LabelName";
             this.LabelName.Size = new System.Drawing.Size(352, 36);
             this.LabelName.TabIndex = 0;
@@ -242,7 +243,7 @@
             this.TpsLabel.BackColor = System.Drawing.Color.Transparent;
             this.TpsLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TpsLabel.ForeColor = System.Drawing.Color.White;
-            this.TpsLabel.Location = new System.Drawing.Point(9, 278);
+            this.TpsLabel.Location = new System.Drawing.Point(8, 233);
             this.TpsLabel.Name = "TpsLabel";
             this.TpsLabel.Size = new System.Drawing.Size(43, 17);
             this.TpsLabel.TabIndex = 1;
@@ -292,30 +293,14 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.extremebutton);
             this.panel3.Controls.Add(this.normalbutton);
             this.panel3.Controls.Add(this.slowbutton);
-            this.panel3.Controls.Add(this.extremebutton);
-            this.panel3.Location = new System.Drawing.Point(2, 229);
+            this.panel3.Location = new System.Drawing.Point(511, 97);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(507, 41);
+            this.panel3.Size = new System.Drawing.Size(252, 130);
             this.panel3.TabIndex = 12;
-            // 
-            // slowbutton
-            // 
-            this.slowbutton.BackColor = System.Drawing.Color.White;
-            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.slowbutton.Location = new System.Drawing.Point(9, 7);
-            this.slowbutton.Name = "slowbutton";
-            this.slowbutton.Size = new System.Drawing.Size(160, 26);
-            this.slowbutton.TabIndex = 14;
-            this.slowbutton.Text = "Slow Performance";
-            this.slowbutton.UseVisualStyleBackColor = false;
-            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
-            this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
             // 
             // normalbutton
             // 
@@ -324,15 +309,32 @@
             this.normalbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.normalbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.normalbutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.normalbutton.Location = new System.Drawing.Point(173, 7);
+            this.normalbutton.Location = new System.Drawing.Point(9, 55);
             this.normalbutton.Name = "normalbutton";
-            this.normalbutton.Size = new System.Drawing.Size(160, 26);
+            this.normalbutton.Size = new System.Drawing.Size(235, 26);
             this.normalbutton.TabIndex = 14;
             this.normalbutton.Text = "Normal Performance";
             this.normalbutton.UseVisualStyleBackColor = false;
             this.normalbutton.Click += new System.EventHandler(this.normalbutton_Click);
             this.normalbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.normalbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.normalbutton_MouseMove);
+            // 
+            // slowbutton
+            // 
+            this.slowbutton.BackColor = System.Drawing.Color.White;
+            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.Location = new System.Drawing.Point(9, 23);
+            this.slowbutton.Name = "slowbutton";
+            this.slowbutton.Size = new System.Drawing.Size(235, 26);
+            this.slowbutton.TabIndex = 14;
+            this.slowbutton.Text = "Slow Performance";
+            this.slowbutton.UseVisualStyleBackColor = false;
+            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
+            this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
             // 
             // extremebutton
             // 
@@ -341,9 +343,9 @@
             this.extremebutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.extremebutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.extremebutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.extremebutton.Location = new System.Drawing.Point(337, 7);
+            this.extremebutton.Location = new System.Drawing.Point(9, 87);
             this.extremebutton.Name = "extremebutton";
-            this.extremebutton.Size = new System.Drawing.Size(160, 26);
+            this.extremebutton.Size = new System.Drawing.Size(235, 26);
             this.extremebutton.TabIndex = 13;
             this.extremebutton.Text = "Extreme Performance";
             this.extremebutton.UseVisualStyleBackColor = false;
@@ -351,15 +353,25 @@
             this.extremebutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.extremebutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.extremebutton_MouseMove);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.label1.Location = new System.Drawing.Point(10, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(190, 17);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Quick Configuration Buttons";
+            // 
             // TyraelInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(511, 301);
+            this.ClientSize = new System.Drawing.Size(766, 256);
             this.ControlBox = false;
-            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.TpsLabel);
@@ -385,6 +397,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -413,6 +426,7 @@
         private System.Windows.Forms.Button extremebutton;
         private System.Windows.Forms.Button slowbutton;
         private System.Windows.Forms.Button normalbutton;
+        private System.Windows.Forms.Label label1;
 
     }
 }

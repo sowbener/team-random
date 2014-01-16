@@ -138,17 +138,17 @@ namespace Tyrael.Shared
 
         private void slowbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("15 TPS - Framelock disabled.");
+            TpsLabel.Text = Text = string.Format("15 TPS - Hardlock disabled - Softlock disabled.");
         }
 
         private void normalbutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("30 TPS - Framelock enabled.");
+            TpsLabel.Text = Text = string.Format("30 TPS - Hardlock disabled - Softlock enabled.");
         }
 
         private void extremebutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("60 TPS - Framelock enabled.");
+            TpsLabel.Text = Text = string.Format("60 TPS - Hardlock enabled - Softlock disabled.");
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
@@ -240,8 +240,12 @@ namespace Tyrael.Shared
                     : "[Tyrael] Click to Move disabled!");
             Logging.Write(Colors.DodgerBlue,
                 GlobalSettings.Instance.UseFrameLock
-                    ? "[Tyrael] FrameLock enabled!"
-                    : "[Tyrael] FrameLock disabled!");
+                    ? "[Tyrael] HardLock (Framelock) enabled!"
+                    : "[Tyrael] HardLock (Framelock) disabled!");
+            Logging.Write(Colors.DodgerBlue,
+                TyraelSettings.Instance.CheckSoftLock
+                    ? "[Tyrael] SoftLock (Framelock) enabled!"
+                    : "[Tyrael] SoftLock (Framelock) disabled!");
             Logging.Write(Colors.DodgerBlue,
                 TyraelSettings.Instance.CheckHealingMode
                     ? "[Tyrael] Continues Healing mode enabled!"
@@ -305,7 +309,8 @@ namespace Tyrael.Shared
             TPSTrackBar.Value = 30;
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
-            GlobalSettings.Instance.UseFrameLock = true;
+            GlobalSettings.Instance.UseFrameLock = false;
+            TyraelSettings.Instance.CheckSoftLock = true;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -327,6 +332,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
+            TyraelSettings.Instance.CheckSoftLock = false;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
