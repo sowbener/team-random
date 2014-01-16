@@ -128,7 +128,7 @@ namespace Tyrael
 
         private static Composite CreateFrameFactory(params Composite[] children)
         {
-            return TyraelSettings.Instance.CheckSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);
+            return TyraelSettings.Instance.UseSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
 
         public class FrameLockSelector : PrioritySelector

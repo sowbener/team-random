@@ -243,7 +243,7 @@ namespace Tyrael.Shared
                     ? "[Tyrael] HardLock (Framelock) enabled!"
                     : "[Tyrael] HardLock (Framelock) disabled!");
             Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckSoftLock
+                TyraelSettings.Instance.UseSoftLock
                     ? "[Tyrael] SoftLock (Framelock) enabled!"
                     : "[Tyrael] SoftLock (Framelock) disabled!");
             Logging.Write(Colors.DodgerBlue,
@@ -310,7 +310,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
-            TyraelSettings.Instance.CheckSoftLock = true;
+            TyraelSettings.Instance.UseSoftLock = true;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -332,7 +332,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
-            TyraelSettings.Instance.CheckSoftLock = false;
+            TyraelSettings.Instance.UseSoftLock = false;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();

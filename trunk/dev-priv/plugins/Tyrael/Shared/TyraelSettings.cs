@@ -50,7 +50,7 @@ namespace Tyrael.Shared
 
         #region Manual Settings
         [Setting, DefaultValue(false)]
-        public bool CheckSoftLock { get; set; }
+        public bool UseSoftLock { get; set; }
 
         [Setting, DefaultValue(0)]
         public int CurrentRevision { get; set; }
