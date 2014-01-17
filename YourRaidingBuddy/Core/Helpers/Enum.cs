@@ -61,6 +61,12 @@ namespace YourBuddy.Core.Helpers
 
         }
 
+        public enum LagTolerance
+        {
+            No = 0,
+            Yes
+        }
+
         public enum PoisonO
         {
             Deadly,

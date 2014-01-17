@@ -14,13 +14,13 @@ namespace YourBuddy.Core.Managers
     internal static class Updater
     {
         private static readonly string FuSvnUrl = InternalSettings.Instance.General.SvnUrl == Enum.SvnUrl.Release
-            ? "https://subversion.assembla.com/svn/team-random/trunk/release/routines/YourBuddy/dotnet_4_5/"
-            : "https://subversion.assembla.com/svn/team-random/trunk/dev-pub/routines/YourBuddy/dotnet_4_5/";
+            ? "https://subversion.assembla.com/svn/team-random/YourRaidingBuddy/"
+            : "https://subversion.assembla.com/svn/team-random/YourRaidingBuddy/";
         private static readonly Regex LinkPattern = new Regex(@"<li><a href="".+"">(?<ln>.+(?:..))</a></li>", RegexOptions.CultureInvariant);
 
         public static void CheckForUpdate()
         {
-            CheckForUpdate(Styx.Common.Utilities.AssemblyDirectory + "\\Routines\\YourBuddy\\", true);
+            CheckForUpdate(Styx.Common.Utilities.AssemblyDirectory + "\\Routines\\YourRaidingBuddy\\", true);
         }
 
         public static void CheckForUpdate(string path, bool checkallow)

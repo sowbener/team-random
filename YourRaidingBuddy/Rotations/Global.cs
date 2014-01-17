@@ -360,7 +360,7 @@ namespace YourBuddy.Rotations
 
         internal static bool HasAnticipation
         {
-            get { return TalentManager.HasTalent(18); }
+            get { return TalentManager.IsSelected(18); }
         }
 
         // Booleans for multiple use.

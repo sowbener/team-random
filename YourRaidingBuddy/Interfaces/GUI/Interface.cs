@@ -480,6 +480,15 @@ namespace YourBuddy.Interfaces.GUI
                     //else
                     { selectSpec = internalSettings.Windwalker; }
                     break;
+                case WoWSpec.RogueAssassination:
+                    { selectSpec = internalSettings.Assassination; }
+                    break;
+                case WoWSpec.RogueCombat:
+                    { selectSpec = internalSettings.Combat; }
+                    break;
+                case WoWSpec.RogueSubtlety:
+                    { selectSpec = internalSettings.Subtlety; }
+                    break;
 
             }
 
@@ -651,5 +660,10 @@ namespace YourBuddy.Interfaces.GUI
                 "Select the preferred key to toggle special abilities - Toggle Type - Windwalker: None - Brewmaster: None - Prot: Switch Shield Block or Barrier.";
         }
         #endregion
+
+        private void SpecGrid_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

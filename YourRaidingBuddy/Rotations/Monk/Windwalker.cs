@@ -31,7 +31,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, WindwalkerDefensive()),
@@ -40,7 +40,7 @@ namespace YourBuddy.Rotations.Monk
                                         WindwalkerOffensive(),
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, WindwalkerMt()),
                                             WindwalkerSt())),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, WindwalkerDefensive()),
@@ -58,21 +58,21 @@ namespace YourBuddy.Rotations.Monk
 
         #region BoolsTemp
 
-        internal static bool TalentChiBrewEnabled { get { return TalentManager.HasTalent(9); } }
+        internal static bool TalentChiBrewEnabled { get { return TalentManager.IsSelected(9); } }
         internal static bool FistsofFuryIsCasting { get { return Me.HasAura(113656) && Lua.PlayerPower <= 99; } }
         internal static bool EnergizingBrewDown { get { return !Me.HasAura(115288); } }
         internal static bool RSKCooldown { get { return CooldownTracker.SpellOnCooldown(107428); } }
         internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
         internal static bool ComboBreakerBoKUp { get { return Me.HasAura(116768); } }
-        internal static bool TalentAscensionEnabled { get { return TalentManager.HasTalent(8); } }
-        internal static bool RushingJadeWindTalent { get { return TalentManager.HasTalent(16) && SG.Instance.Windwalker.EnableRJWSingleTarget; } }
+        internal static bool TalentAscensionEnabled { get { return TalentManager.IsSelected(8); } }
+        internal static bool RushingJadeWindTalent { get { return TalentManager.IsSelected(16) && SG.Instance.Windwalker.EnableRJWSingleTarget; } }
         internal static bool ComboBreakerTpUp { get { return Me.HasAura(118864); } }
         internal static double ComboBreakerTpRemains { get { return Spell.GetMyAuraTimeLeft(118864, Me); } }
         internal static double RisingSunKickDebuffRemains { get { return Spell.GetMyAuraTimeLeft(130320, Me.CurrentTarget); } }
         internal static bool TigerEyeUseDown { get { return !Me.HasAura(116740); } }
         internal static double TigerEyeBrewStacks { get { return Spell.GetAuraStack(Me, 125195); } }
 
-        public static int MaxChi { get { return TalentManager.HasTalent(8) ? 5 : 4; } } // 
+        public static int MaxChi { get { return TalentManager.IsSelected(8) ? 5 : 4; } } // 
 #endregion
 
         #region Rotations
@@ -97,7 +97,7 @@ namespace YourBuddy.Rotations.Monk
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Rushing Jade Wind", ret => TalentManager.HasTalent(17) && Lua.RJWOK() >= 20),
+                Spell.Cast("Rushing Jade Wind", ret => TalentManager.IsSelected(17) && Lua.RJWOK() >= 20),
              //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }
@@ -135,7 +135,7 @@ namespace YourBuddy.Rotations.Monk
                     (SG.Instance.Windwalker.EnergizingBrew == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.EnergizingBrew == Enum.AbilityTrigger.Always)
                     )),
-               Spell.Cast("Invoke Xuen, the White Tiger", ret => TalentManager.HasTalent(17) && (
+               Spell.Cast("Invoke Xuen, the White Tiger", ret => TalentManager.IsSelected(17) && (
                     (SG.Instance.Windwalker.Xuen == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Windwalker.Xuen == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.Xuen == Enum.AbilityTrigger.Always)

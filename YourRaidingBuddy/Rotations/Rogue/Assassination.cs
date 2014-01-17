@@ -176,7 +176,7 @@ namespace YourBuddy.Rotations.Rogue
                     Spell.Cast("Kick", ret => (SG.Instance.General.InterruptList == Enum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
                     (SG.Instance.General.InterruptList == Enum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))),
                     new Throttle(1, System.TimeSpan.FromMilliseconds(G._random.Next(SG.Instance.General.InterruptStart, SG.Instance.General.InterruptEnd)), RunStatus.Failure,
-                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.HasTalent(4) && Lua.PlayerComboPts > 2 && (
+                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.IsSelected(4) && Lua.PlayerComboPts > 2 && (
                     (SG.Instance.General.InterruptList == Enum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
                     (SG.Instance.General.InterruptList == Enum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
                     ));

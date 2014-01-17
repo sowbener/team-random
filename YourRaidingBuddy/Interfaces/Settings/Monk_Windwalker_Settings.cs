@@ -155,7 +155,7 @@ namespace YourBuddy.Interfaces.Settings
         [Styx.Helpers.DefaultValue(true)]
         [Category("Windwalker - Selectable Options")]
         [DisplayName("Enable Interrupts")]
-        [Description("Enables interrupts, uses Pummel and Intimidating Shout.")]
+        [Description("Enables interrupts.")]
         public bool CheckInterrupts { get; set; }
 
         [Setting]

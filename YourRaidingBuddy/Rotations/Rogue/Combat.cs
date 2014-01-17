@@ -89,7 +89,7 @@ namespace YourBuddy.Rotations.Rogue
                     Spell.Cast("Kick", ret => (SG.Instance.General.InterruptList == Enum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
                     (SG.Instance.General.InterruptList == Enum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId()))))),
                     new Throttle(1, System.TimeSpan.FromMilliseconds(G._random.Next(SG.Instance.General.InterruptStart, SG.Instance.General.InterruptEnd)), RunStatus.Failure,
-                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.HasTalent(4) && Lua.PlayerComboPts > 2 && (
+                    Spell.Cast("Deadly Throw", ret => G.Kick && TalentManager.IsSelected(4) && Lua.PlayerComboPts > 2 && (
                     (SG.Instance.General.InterruptList == Enum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
                     (SG.Instance.General.InterruptList == Enum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
                     ));
@@ -108,8 +108,8 @@ namespace YourBuddy.Rotations.Rogue
             return new PrioritySelector(
                 Spell.Cast("Recuperate", ret => Lua.PlayerComboPts >= SG.Instance.Combat.NumRecuperateComboPoints && Me.HealthPercent <= SG.Instance.Combat.NumRecuperateHP && SG.Instance.Combat.CheckRecuperate),
                 Spell.Cast("Cloak of Shadows", ret => SG.Instance.Combat.CheckCloakofShadows && Me.HealthPercent <= SG.Instance.Combat.NumCloakofShadowsHP),
-                Spell.Cast("Combat Readiness", ret => SG.Instance.Combat.CheckCombatReadiness && Me.HealthPercent <= SG.Instance.Combat.NumCombatReadiness && T.HasTalent(6)),
-                Spell.Cast("Shadowstep", ret => SG.Instance.Combat.CheckShadowstep && Me.HealthPercent <= SG.Instance.Combat.NumShadowstep && T.HasTalent(11)),
+                Spell.Cast("Combat Readiness", ret => SG.Instance.Combat.CheckCombatReadiness && Me.HealthPercent <= SG.Instance.Combat.NumCombatReadiness && T.IsSelected(6)),
+                Spell.Cast("Shadowstep", ret => SG.Instance.Combat.CheckShadowstep && Me.HealthPercent <= SG.Instance.Combat.NumShadowstep && T.IsSelected(11)),
                 Spell.Cast("Evasion", ret => SG.Instance.Combat.CheckEvasion && Me.HealthPercent <= SG.Instance.Combat.NumEvasion)
              //   I.ComUseHealthStone()
                 );

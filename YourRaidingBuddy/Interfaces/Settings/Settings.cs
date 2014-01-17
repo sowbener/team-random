@@ -61,15 +61,17 @@ namespace YourBuddy.Interfaces.Settings
 
 
         //Rogue
-
+        [Browsable(false)]
             public YbSettingsSR Subtlety
         {
             get { return _settingsSR ?? (_settingsSR = new YbSettingsSR()); }
         }
+        [Browsable(false)]
             public YbSettingsCR Combat
         {
             get { return _settingsCR ?? (_settingsCR = new YbSettingsCR()); }
         }
+        [Browsable(false)]
             public YbSettingsAR Assassination
         {
             get { return _settingsAR ?? (_settingsAR = new YbSettingsAR()); }

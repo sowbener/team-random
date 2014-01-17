@@ -1,5 +1,6 @@
 ﻿// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CompareOfFloatsByEqualityOperator
+#define NO_LATENCY_ISSUES_WITH_GLOBAL_COOLDOWN
 using CommonBehaviors.Actions;
 using YourBuddy.Core.Helpers;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ using System.Text;
 using Styx.Helpers;
 using Styx.Patchables;
 using Styx.WoWInternals.World;
+using Lua = YourBuddy.Core.Helpers.LuaClass;
 
 namespace YourBuddy.Core
 {
@@ -251,39 +253,118 @@ namespace YourBuddy.Core
         #endregion
 
         #region GCD Detection
-        public static bool IsGlobalCooldown()
+        public static bool IsGlobalCooldown(YourBuddy.Core.Helpers.Enum.LagTolerance allow = YourBuddy.Core.Helpers.Enum.LagTolerance.Yes)
         {
-            using (new PerformanceLogger("IsGlobalCooldown"))
+#if NO_LATENCY_ISSUES_WITH_GLOBAL_COOLDOWN
+            uint latency = allow == YourBuddy.Core.Helpers.Enum.LagTolerance.Yes ? StyxWoW.WoWClient.Latency : 0;
+            TimeSpan gcdTimeLeft = GcdTimeLeft;
+            return gcdTimeLeft.TotalMilliseconds > latency;
+#else
+            return Spell.FixGlobalCooldown;
+#endif
+        }
+
+        #region Fix HonorBuddys GCD Handling
+
+#if HONORBUDDY_GCD_IS_WORKING
+#else
+
+        private static WoWSpell _gcdCheck = null;
+
+        public static string FixGlobalCooldownCheckSpell
+        {
+            get
             {
-                return (GlobalCooldownLeft.TotalMilliseconds - 10) > StyxWoW.WoWClient.Latency << 1;
+                return _gcdCheck == null ? null : _gcdCheck.Name;
+            }
+            set
+            {
+                SpellFindResults sfr;
+                if (!SpellManager.FindSpell(value, out sfr))
+                {
+                    _gcdCheck = null;
+                    Logger.DiagLogFb("GCD check fix spell {0} not known", value);
+                }
+                else
+                {
+                    _gcdCheck = sfr.Original;
+                    Logger.DiagLogFb("GCD check fix spell set to: {0}", value);
+                }
             }
         }
 
-        public static void InitGcdSpell()
+#endif
+
+        public static bool GcdActive
         {
-            if (GetGlobalCooldownSpell != null)
+            get
             {
-                Logger.DiagLogWh("Yb: GCD Spell is set to {0}", GetGlobalCooldownSpell);
-                GcdSpell = GetGlobalCooldownSpell;
+#if HONORBUDDY_GCD_IS_WORKING
+                return SpellManager.GlobalCooldown;
+#else
+                if (_gcdCheck == null)
+                    return SpellManager.GlobalCooldown;
+
+                return _gcdCheck.Cooldown;
+#endif
             }
         }
 
-        private static TimeSpan GlobalCooldownLeft
+        public static TimeSpan GcdTimeLeft
         {
-            get { return GcdSpell != null ? GcdSpell.CooldownTimeLeft : SpellManager.GlobalCooldownLeft; }
+            get
+            {
+#if HONORBUDDY_GCD_IS_WORKING
+                return SpellManager.GlobalCooldownLeft;
+#else
+                try
+                {
+                    if (_gcdCheck != null)
+                        return _gcdCheck.CooldownTimeLeft;
+                }
+                catch (System.AccessViolationException)
+                {
+                    Logger.WriteFile("GcdTimeLeft: handled access exception, reinitializing gcd spell");
+                    GcdInitialize();
+                }
+                catch (Styx.InvalidObjectPointerException)
+                {
+                    Logger.WriteFile("GcdTimeLeft: handled invobj exception, reinitializing gcd spell");
+                    GcdInitialize();
+                }
+
+                // use default value here (reinit should fix _gcdCheck for next call)
+                return SpellManager.GlobalCooldownLeft;
+#endif
+            }
         }
 
-        public static WoWSpell GetGlobalCooldownSpell
+        public static void GcdInitialize()
         {
-            get { return SpellManager.Spells.FirstOrDefault(s => GcdSpells.Contains(s.Value.Id)).Value; }
-        }
+#if HONORBUDDY_GCD_IS_WORKING
+            Logger.WriteDebug("GcdInitialize: using HonorBuddy GCD");
+#else
+            Logger.DiagLogFb("FixGlobalCooldownInitialize: using Singular GCD");
+            switch (StyxWoW.Me.Class)
+            {
+                case WoWClass.Monk:
+                    FixGlobalCooldownCheckSpell = "Stance of the Fierce Tiger";
+                    break;
+            }
 
-        private static readonly HashSet<int> GcdSpells = new HashSet<int>
-        {
-            7386, // Sunder Armor
-            78 // Heroic Strike
-        };
+            if (FixGlobalCooldownCheckSpell != null)
+                return;
+
+            switch (StyxWoW.Me.Class)
+            {
+                case WoWClass.Monk:
+                    FixGlobalCooldownCheckSpell = "Stance of the Fierce Tiger";
+                    break;
+            }
+#endif
+        }
         #endregion GCD
+        #endregion
 
         #region CancelAura
 
@@ -347,6 +428,196 @@ namespace YourBuddy.Core
 
         #endregion
 
+        #region Cast Hack - allows casting spells that CanCast returns False
+
+        public static bool CanCastHack(string castName)
+        {
+            return CanCastHack(castName, Me.CurrentTarget, skipWowCheck: false);
+        }
+        public static bool CanCastHack(int castId)
+        {
+            return CanCastHack(castId, Me.CurrentTarget, skipWowCheck: false);
+        }
+        /// <summary>
+        /// CastHack following done because CanCast() wants spell as "Metamorphosis: Doom" while Cast() and aura name are "Doom"
+        /// </summary>
+        /// <param name="castName"></param>
+        /// <param name="onUnit"></param>
+        /// <param name="requirements"></param>
+        /// <returns></returns>
+        public static bool CanCastHack(string castName, WoWUnit unit, bool skipWowCheck = false)
+        {
+            SpellFindResults sfr;
+            if (!SpellManager.FindSpell(castName, out sfr))
+            {
+                Logger.DiagLogFb("CanCast: spell [{0}] not known", castName);
+                return false;
+            }
+
+            return CanCastHack(sfr, unit, skipWowCheck);
+        }
+        /// <summary>
+        /// CastHack following done because CanCast() wants spell as "Metamorphosis: Doom" while Cast() and aura name are "Doom"
+        /// </summary>
+        /// <param name="castName"></param>
+        /// <param name="onUnit"></param>
+        /// <param name="requirements"></param>
+        /// <returns></returns>
+        public static bool CanCastHack(int castId, WoWUnit unit, bool skipWowCheck = false)
+        {
+            SpellFindResults sfr;
+            if (!SpellManager.FindSpell(castId, out sfr))
+            {
+                return false;
+            }
+
+            return CanCastHack(sfr, unit, skipWowCheck);
+        }
+        /// <summary>
+        /// CastHack following done because CanCast() wants spell as "Metamorphosis: Doom" while Cast() and aura name are "Doom"
+        /// </summary>
+        public static bool CanCastHack(SpellFindResults sfr, WoWUnit unit, bool skipWowCheck = false)
+        {
+            WoWSpell spell = sfr.Override ?? sfr.Original;
+            // check range
+            if (unit != null && !spell.IsSelfOnlySpell && !unit.IsMe)
+            {
+                if (spell.IsMeleeSpell && !unit.IsWithinMeleeRange)
+                {
+                    Logger.DiagLogFb("CanCastHack[{0}]: not in melee range", spell.Name);
+                    return false;
+                }
+                if (spell.HasRange)
+                {
+                    if (unit.Distance > spell.ActualMaxRange(unit))
+                    {
+                        //  Logger.DebugLog("CanCastHack[{0}]: out of range - further than {1:F1}", spell.Name, ActualMaxRange(unit));
+                        return false;
+                    }
+                    if (unit.Distance < spell.ActualMinRange(unit))
+                    {
+                        //   Logger.DebugLog("CanCastHack[{0}]: out of range - closer than {1:F1}", spell.Name, ActualMinRange(unit));
+                        return false;
+                    }
+                }
+
+                if (!unit.InLineOfSpellSight)
+                {
+                    Logger.DiagLogFb("CanCastHack[{0}]: not in spell line of {1}", spell.Name, unit.SafeName);
+                    return false;
+                }
+            }
+
+
+
+            if (Me.ChanneledCastingSpellId == 0)
+            {
+                uint num = StyxWoW.WoWClient.Latency * 2u;
+                if (StyxWoW.Me.IsCasting && Me.CurrentCastTimeLeft.TotalMilliseconds > num)
+                {
+                    Logger.DiagLogFb("CanCastHack[{0}]: current cast of [1] has {2:F0} ms left", spell.Name, Me.CurrentCastId, Me.CurrentCastTimeLeft.TotalMilliseconds - num);
+                    return false;
+                }
+
+                if (spell.CooldownTimeLeft.TotalMilliseconds > num)
+                {
+                    return false;
+                }
+            }
+            bool formSwitch = false;
+            double currentPower = Lua.PlayerPower;
+            if (Me.Class == WoWClass.Druid)
+            {
+                if (Me.Shapeshift == ShapeshiftForm.Cat || Me.Shapeshift == ShapeshiftForm.Bear || Me.Shapeshift == ShapeshiftForm.DireBear)
+                {
+                    if (Me.HealingSpellIds.Contains(spell.Id))
+                    {
+                        formSwitch = true;
+                        currentPower = Me.CurrentMana;
+                    }
+                    else if (spell.PowerCost >= 100)
+                    {
+                        formSwitch = true;
+                        currentPower = Me.CurrentMana;
+                    }
+                }
+            }
+
+            if (currentPower < (uint)spell.PowerCost)
+            {
+                Logger.DiagLogFb("CanCast[{0}]: insufficient power (need {1:F0}, have {2:F0} {3})", spell.Name, spell.PowerCost, currentPower, formSwitch ? "Mana in Form" : Me.PowerType.ToString());
+                return false;
+            }
+
+            // override spell will sometimes always have cancast=false, so check original also
+            if (!skipWowCheck && !spell.CanCast && (sfr.Override == null || !sfr.Original.CanCast))
+            {
+                Logger.DiagLogFb("CanCast[{0}]: spell specific CanCast failed (#{1})", spell.Name, spell.Id);
+
+                return false;
+            }
+            return true;
+        }
+
+                public static bool HaveAllowMovingWhileCastingAura(WoWSpell spell = null)
+        {
+            return Me.GetAllAuras().Any(a => a.ApplyAuraType == (WoWApplyAuraType)330 && (spell == null || spell.CastTime < (uint)a.TimeLeft.TotalMilliseconds));
+        }
+
+        public static bool IsFunnel(string name)
+        {
+            SpellFindResults sfr;
+            SpellManager.FindSpell(name, out sfr);
+            WoWSpell spell = sfr.Override ?? sfr.Original;
+            if (spell == null)
+                return false;
+            return IsFunnel(spell);
+        }
+
+  
+        public static bool IsFunnel(WoWSpell spell)
+        {
+            // HV has the answer... ty m8
+            bool IsChanneled = false;
+            var row = StyxWoW.Db[Styx.Patchables.ClientDb.Spell].GetRow((uint)spell.Id);
+            if (row.IsValid)
+            {
+                var spellMiscIdx = row.GetField<uint>(24);
+                row = StyxWoW.Db[Styx.Patchables.ClientDb.SpellMisc].GetRow(spellMiscIdx);
+                var flags = row.GetField<uint>(4);
+                IsChanneled = (flags & 68) != 0;
+            }
+
+            return IsChanneled;
+        }
+
+        public static float ActualMinRange(this WoWSpell spell, WoWUnit unit)
+        {
+            if (spell.MinRange == 0)
+                return 0;
+
+            // some code was using 1.66666675f instead of Me.CombatReach ?
+            return unit != null ? spell.MinRange + unit.CombatReach + StyxWoW.Me.CombatReach : spell.MinRange;
+        }
+
+        public static float ActualMaxRange(this WoWSpell spell, WoWUnit unit)
+        {
+            if (spell.MaxRange == 0)
+                return 0;
+            // 0.1 margin for error
+            return unit != null ? spell.MaxRange + unit.CombatReach + StyxWoW.Me.CombatReach : spell.MaxRange;
+        }
+
+        public static float ActualMaxRange(string name, WoWUnit unit)
+        {
+            SpellFindResults sfr;
+            if (!SpellManager.FindSpell(name, out sfr))
+                return 0f;
+
+            WoWSpell spell = sfr.Override ?? sfr.Original;
+            return spell.ActualMaxRange(unit);
+        }
+        #endregion
 
         #region More AuraShit
 

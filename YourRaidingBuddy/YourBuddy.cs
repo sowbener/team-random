@@ -92,7 +92,11 @@ namespace YourBuddy
                 return;
             }
 
-            if (Me.Class == WoWClass.Monk && !Me.Combat && !Me.HasAura(120267))
+            // intense if does work, so return if true
+            if (TalentManager.Pulse())
+                return;
+
+            if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
                 _initap = StyxWoW.Me.AttackPower;
             _NewAP = Lua.Vengeance(120267);
             _NoModifierAP = StyxWoW.Me.AttackPower;
@@ -102,8 +106,6 @@ namespace YourBuddy
             /* Update TalentManager */
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
-
-            DamageTracker.Pulse();
         }
 
         public override void OnButtonPress()
@@ -134,14 +136,12 @@ namespace YourBuddy
 
 
             /* Update TalentManager */
-            try { TalentManager.Update(); }
-            catch (Exception e) { StopBot(e.ToString()); }
+            TalentManager.Update();
 
             /* Set Characters GUID */
             MyGuid = Me.Guid;
 
             /* Initialize Various Functions */
-            DamageTracker.Initialize();
             HotKeyManager.InitializeBindings();
 
             /* Gather required information */
@@ -152,7 +152,6 @@ namespace YourBuddy
             _NewAP = StyxWoW.Me.AttackPower;
 
             /* Start Combat */
-            Spell.InitGcdSpell();
             PreCombatSelector();
             CombatSelector();
 

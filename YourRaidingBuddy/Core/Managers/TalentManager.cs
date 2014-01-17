@@ -12,6 +12,8 @@ namespace YourBuddy.Core.Managers
 {
     internal static class TalentManager
     {
+        //public const int TALENT_FLAG_ISEXTRASPEC = 0x10000;
+
         public static bool Between(this int value, int min, int max)
         {
             return value >= min && value <= max;
@@ -21,18 +23,16 @@ namespace YourBuddy.Core.Managers
         {
             Talents = new List<Talent>();
             TalentId = new int[6];
-
             Glyphs = new HashSet<string>();
             GlyphId = new int[6];
 
-            Lua.Events.AttachEvent("PLAYER_LEVEL_UP", UpdateTalentManager);
-            Lua.Events.AttachEvent("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
-            Lua.Events.AttachEvent("GLYPH_UPDATED", UpdateTalentManager);
-            Lua.Events.AttachEvent("ACTIVE_Talent_GROUP_CHANGED", UpdateTalentManager);
-            Lua.Events.AttachEvent("PLAYER_SPECIALIZATION_CHANGED", UpdateTalentManager);
-            Lua.Events.AttachEvent("LEARNED_SPELL_IN_TAB", UpdateTalentManager);
+            CombatLogHandler.Register("PLAYER_LEVEL_UP", UpdateTalentManager);
+            CombatLogHandler.Register("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
+            CombatLogHandler.Register("GLYPH_UPDATED", UpdateTalentManager);
+            CombatLogHandler.Register("ACTIVE_TALENT_GROUP_CHANGED", UpdateTalentManager);
+            CombatLogHandler.Register("PLAYER_SPECIALIZATION_CHANGED", UpdateTalentManager);
+            CombatLogHandler.Register("LEARNED_SPELL_IN_TAB", UpdateTalentManager);
         }
-
         public static WoWSpec CurrentSpec { get; private set; }
         public static List<Talent> Talents { get; private set; }
         public static HashSet<string> Glyphs { get; private set; }
@@ -43,59 +43,60 @@ namespace YourBuddy.Core.Managers
         private static readonly WaitTimer EventRebuildTimer = new WaitTimer(TimeSpan.FromSeconds(1));
 
         // ReSharper disable once RedundantDefaultFieldInitializer
-        private static bool _rebuild = false;
+        private static bool _Rebuild = false;
 
         private static bool RebuildNeeded
         {
             get
             {
-                return _rebuild;
+                return _Rebuild;
             }
             set
             {
-                _rebuild = value;
+                _Rebuild = value;
                 EventRebuildTimer.Reset();
             }
         }
 
         public static bool IsSelected(int index)
         {
+            // return Talents.FirstOrDefault(t => t.Index == index).Selected;
             int tier = (index - 1) / 3;
             if (tier.Between(0, 5))
                 return TalentId[tier] == index;
             return false;
         }
 
-        public static bool HasTalent(int index)
-        {
-            return Talents.FirstOrDefault(t => t.Index == index).Count != 0;
-        }
-
+        /// <summary>
+        ///   Checks if we have a glyph or not
+        /// </summary>
+        /// <param name = "glyphName">Name of the glyph without "Glyph of". i.e. HasGlyph("Aquatic Form")</param>
+        /// <returns></returns>
         public static bool HasGlyph(string glyphName)
         {
             return Glyphs.Any() && Glyphs.Contains(glyphName);
         }
 
-        private static void UpdateTalentManager(object sender, LuaEventArgs args)
+        private static void UpdateTalentManager(CombatLogEventArgs args)
         {
             var oldSpec = CurrentSpec;
             int[] oldTalent = TalentId;
             int[] oldGlyph = GlyphId;
 
-            Logger.DiagLogPu("{0} Event Fired!", args.EventName);
+            Logger.CombatLogOr("{0} Event Fired!", args.Event);
 
             Update();
 
-            if (args.EventName == "PLAYER_LEVEL_UP")
+            if (args.Event == "PLAYER_LEVEL_UP")
             {
                 RebuildNeeded = true;
-                Logger.DiagLogPu("Yb TalentManager: Your character has leveled up! Now level {0}", args.Args[0]);
+                Logger.CombatLogOr(" TalentManager: Your character has leveled up! Now level {0}", args.Event);
             }
 
             if (CurrentSpec != oldSpec)
             {
                 RebuildNeeded = true;
-                Logger.DiagLogPu("Yb TalentManager: Your spec has been changed.");
+                Logger.CombatLogOr(" TalentManager: Your spec has been changed.");
             }
 
             int i;
@@ -104,7 +105,7 @@ namespace YourBuddy.Core.Managers
                 if (oldTalent[i] != TalentId[i])
                 {
                     RebuildNeeded = true;
-                    Logger.DiagLogPu("Yb TalentManager: Your Talents have changed.");
+                    Logger.CombatLogOr(" TalentManager: Your talents have changed.");
                     break;
                 }
             }
@@ -114,7 +115,7 @@ namespace YourBuddy.Core.Managers
                 if (oldGlyph[i] != GlyphId[i])
                 {
                     RebuildNeeded = true;
-                    Logger.DiagLogPu("Yb TalentManager: Your glyphs have changed.");
+                    Logger.CombatLogOr(" TalentManager: Your glyphs have changed.");
                     break;
                 }
             }
@@ -122,6 +123,7 @@ namespace YourBuddy.Core.Managers
 
         public static void Update()
         {
+            // Keep the frame stuck so we can do a bunch of injecting at once.
             using (StyxWoW.Memory.AcquireFrame())
             {
                 CurrentSpec = StyxWoW.Me.Specialization;
@@ -129,6 +131,7 @@ namespace YourBuddy.Core.Managers
                 Talents.Clear();
                 TalentId = new int[6];
 
+                // Always 18 talents. 6 rows of 3 talents.
                 for (int index = 1; index <= 6 * 3; index++)
                 {
                     var selected =
@@ -136,7 +139,7 @@ namespace YourBuddy.Core.Managers
                             string.Format(
                                 "local t= select(5,GetTalentInfo({0})) if t == true then return 1 end return nil", index),
                             0);
-                    var t = new Talent { Index = index, Count = 1 };
+                    var t = new Talent { Index = index, Selected = selected };
                     Talents.Add(t);
 
                     if (selected)
@@ -146,16 +149,28 @@ namespace YourBuddy.Core.Managers
                 Glyphs.Clear();
                 GlyphId = new int[6];
 
+                // 6 glyphs all the time. Plain and simple!
                 for (int i = 1; i <= 6; i++)
                 {
                     List<string> glyphInfo = Lua.GetReturnValues(String.Format("return GetGlyphSocketInfo({0})", i));
 
+                    // add check for 4 members before access because empty sockets weren't returning 'nil' as documented
                     if (glyphInfo != null && glyphInfo.Count >= 4 && glyphInfo[3] != "nil" &&
                         !string.IsNullOrEmpty(glyphInfo[3]))
                     {
                         GlyphId[i - 1] = int.Parse(glyphInfo[3]);
                         Glyphs.Add(WoWSpell.FromId(GlyphId[i - 1]).Name.Replace("Glyph of ", ""));
                     }
+                }
+
+                foreach (var glyph in Glyphs)
+                {
+                    Logger.DiagLogFb("Glyph of {0}", glyph);
+                }
+
+                foreach (var talent in Talents)
+                {
+                    Logger.DiagLogFb("{0} : {1}", talent.Index, talent.Selected);
                 }
             }
         }
@@ -167,9 +182,6 @@ namespace YourBuddy.Core.Managers
                 RebuildNeeded = false;
                 Logger.DiagLogPu("Yb TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
-                CombatLogHandler.Shutdown();
-                DamageTracker.Initialize();
-                Root.Instance.PreCombatSelector();
                 Root.Instance.CombatSelector();
                 return true;
             }
@@ -181,9 +193,10 @@ namespace YourBuddy.Core.Managers
 
         public struct Talent
         {
-            public int Count;
+            public bool Selected;
             public int Index;
         }
+
         #endregion Nested type: Talent
     }
 }

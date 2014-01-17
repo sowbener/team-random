@@ -69,7 +69,7 @@
             // 
             this.GeneralGrid.CommandsBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.GeneralGrid.CommandsLinkColor = System.Drawing.Color.Black;
-            this.GeneralGrid.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.GeneralGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.GeneralGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.GeneralGrid.Location = new System.Drawing.Point(3, 104);
             this.GeneralGrid.Name = "GeneralGrid";
@@ -88,7 +88,7 @@
             this.StatusStrip.BackColor = System.Drawing.Color.White;
             this.StatusStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.StatusStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.StatusStrip.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StatusStrip.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusStripText});
             this.StatusStrip.Location = new System.Drawing.Point(4, 585);
@@ -102,9 +102,9 @@
             // 
             // StatusStripText
             // 
-            this.StatusStripText.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.StatusStripText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.StatusStripText.Name = "StatusStripText";
-            this.StatusStripText.Size = new System.Drawing.Size(251, 18);
+            this.StatusStripText.Size = new System.Drawing.Size(213, 18);
             this.StatusStripText.Text = "YourBuddy - The best you can get!";
             // 
             // LogoPicture
@@ -133,7 +133,7 @@
             // 
             this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.SaveButton.Location = new System.Drawing.Point(9, 447);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(321, 23);
@@ -148,7 +148,7 @@
             // 
             this.SpecGrid.CommandsBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.SpecGrid.CommandsLinkColor = System.Drawing.Color.Black;
-            this.SpecGrid.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.SpecGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.SpecGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.SpecGrid.Location = new System.Drawing.Point(340, 104);
             this.SpecGrid.Name = "SpecGrid";
@@ -160,6 +160,7 @@
             this.SpecGrid.ToolbarVisible = false;
             this.SpecGrid.ViewBackColor = System.Drawing.Color.White;
             this.SpecGrid.ViewBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.SpecGrid.Click += new System.EventHandler(this.SpecGrid_Click);
             // 
             // ComboHkDemoralizingBanner
             // 
@@ -169,12 +170,12 @@
             this.ComboHkDemoralizingBanner.DropDownHeight = 110;
             this.ComboHkDemoralizingBanner.DropDownWidth = 140;
             this.ComboHkDemoralizingBanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkDemoralizingBanner.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComboHkDemoralizingBanner.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ComboHkDemoralizingBanner.FormattingEnabled = true;
             this.ComboHkDemoralizingBanner.IntegralHeight = false;
             this.ComboHkDemoralizingBanner.Location = new System.Drawing.Point(181, 29);
             this.ComboHkDemoralizingBanner.Name = "ComboHkDemoralizingBanner";
-            this.ComboHkDemoralizingBanner.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkDemoralizingBanner.Size = new System.Drawing.Size(140, 21);
             this.ComboHkDemoralizingBanner.TabIndex = 0;
             this.ComboHkDemoralizingBanner.SelectedIndexChanged += new System.EventHandler(this.ComboHkDemoralizingBanner_SelectedIndexChanged);
             this.ComboHkDemoralizingBanner.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -183,22 +184,22 @@
             // HkDemoBannerLabel
             // 
             this.HkDemoBannerLabel.AutoSize = true;
-            this.HkDemoBannerLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkDemoBannerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkDemoBannerLabel.Location = new System.Drawing.Point(5, 31);
             this.HkDemoBannerLabel.Name = "HkDemoBannerLabel";
-            this.HkDemoBannerLabel.Size = new System.Drawing.Size(141, 17);
+            this.HkDemoBannerLabel.Size = new System.Drawing.Size(70, 16);
             this.HkDemoBannerLabel.TabIndex = 4;
-            this.HkDemoBannerLabel.Text = "Demoralizing Banner";
+            this.HkDemoBannerLabel.Text = "I said what";
             this.HkDemoBannerLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkDemoBannerLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkDemoralizingBanner_MouseMove);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(4, 4);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(238, 19);
+            this.label2.Size = new System.Drawing.Size(252, 20);
             this.label2.TabIndex = 5;
             this.label2.Text = "Hotkey Options - Casting Type";
             // 
@@ -210,12 +211,12 @@
             this.ComboHkHeroicLeap.DropDownHeight = 110;
             this.ComboHkHeroicLeap.DropDownWidth = 140;
             this.ComboHkHeroicLeap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkHeroicLeap.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkHeroicLeap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkHeroicLeap.FormattingEnabled = true;
             this.ComboHkHeroicLeap.IntegralHeight = false;
             this.ComboHkHeroicLeap.Location = new System.Drawing.Point(181, 59);
             this.ComboHkHeroicLeap.Name = "ComboHkHeroicLeap";
-            this.ComboHkHeroicLeap.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkHeroicLeap.Size = new System.Drawing.Size(140, 21);
             this.ComboHkHeroicLeap.TabIndex = 6;
             this.ComboHkHeroicLeap.SelectedIndexChanged += new System.EventHandler(this.ComboHkHeroicLeap_SelectedIndexChanged);
             this.ComboHkHeroicLeap.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -224,32 +225,32 @@
             // HkHeroicLeapLabel
             // 
             this.HkHeroicLeapLabel.AutoSize = true;
-            this.HkHeroicLeapLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkHeroicLeapLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkHeroicLeapLabel.Location = new System.Drawing.Point(5, 61);
             this.HkHeroicLeapLabel.Name = "HkHeroicLeapLabel";
-            this.HkHeroicLeapLabel.Size = new System.Drawing.Size(85, 17);
+            this.HkHeroicLeapLabel.Size = new System.Drawing.Size(46, 16);
             this.HkHeroicLeapLabel.TabIndex = 7;
-            this.HkHeroicLeapLabel.Text = "Heroic Leap";
+            this.HkHeroicLeapLabel.Text = "What?";
             this.HkHeroicLeapLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkHeroicLeapLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkHeroicLeap_MouseMove);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(4, 185);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(233, 19);
+            this.label4.Size = new System.Drawing.Size(245, 20);
             this.label4.TabIndex = 8;
             this.label4.Text = "Hotkey Options - Toggle Type";
             // 
             // HkModeLabel
             // 
             this.HkModeLabel.AutoSize = true;
-            this.HkModeLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkModeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkModeLabel.Location = new System.Drawing.Point(5, 212);
             this.HkModeLabel.Name = "HkModeLabel";
-            this.HkModeLabel.Size = new System.Drawing.Size(135, 17);
+            this.HkModeLabel.Size = new System.Drawing.Size(130, 16);
             this.HkModeLabel.TabIndex = 9;
             this.HkModeLabel.Text = "Select Hotkey Mode";
             this.HkModeLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -263,12 +264,12 @@
             this.ComboHkMode.DropDownHeight = 110;
             this.ComboHkMode.DropDownWidth = 140;
             this.ComboHkMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkMode.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkMode.FormattingEnabled = true;
             this.ComboHkMode.IntegralHeight = false;
             this.ComboHkMode.Location = new System.Drawing.Point(181, 210);
             this.ComboHkMode.Name = "ComboHkMode";
-            this.ComboHkMode.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkMode.Size = new System.Drawing.Size(140, 21);
             this.ComboHkMode.TabIndex = 10;
             this.ComboHkMode.SelectedIndexChanged += new System.EventHandler(this.ComboHkMode_SelectedIndexChanged);
             this.ComboHkMode.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -282,12 +283,12 @@
             this.ComboHkModifier.DropDownHeight = 110;
             this.ComboHkModifier.DropDownWidth = 140;
             this.ComboHkModifier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkModifier.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkModifier.FormattingEnabled = true;
             this.ComboHkModifier.IntegralHeight = false;
             this.ComboHkModifier.Location = new System.Drawing.Point(181, 240);
             this.ComboHkModifier.Name = "ComboHkModifier";
-            this.ComboHkModifier.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkModifier.Size = new System.Drawing.Size(140, 21);
             this.ComboHkModifier.TabIndex = 11;
             this.ComboHkModifier.SelectedIndexChanged += new System.EventHandler(this.ComboHkModifier_SelectedIndexChanged);
             this.ComboHkModifier.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -301,12 +302,12 @@
             this.ComboHkCooldown.DropDownHeight = 110;
             this.ComboHkCooldown.DropDownWidth = 140;
             this.ComboHkCooldown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkCooldown.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkCooldown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkCooldown.FormattingEnabled = true;
             this.ComboHkCooldown.IntegralHeight = false;
             this.ComboHkCooldown.Location = new System.Drawing.Point(181, 270);
             this.ComboHkCooldown.Name = "ComboHkCooldown";
-            this.ComboHkCooldown.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkCooldown.Size = new System.Drawing.Size(140, 21);
             this.ComboHkCooldown.TabIndex = 12;
             this.ComboHkCooldown.SelectedIndexChanged += new System.EventHandler(this.ComboHkCooldown_SelectedIndexChanged);
             this.ComboHkCooldown.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -320,12 +321,12 @@
             this.ComboHkMultiTgt.DropDownHeight = 110;
             this.ComboHkMultiTgt.DropDownWidth = 140;
             this.ComboHkMultiTgt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkMultiTgt.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkMultiTgt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkMultiTgt.FormattingEnabled = true;
             this.ComboHkMultiTgt.IntegralHeight = false;
             this.ComboHkMultiTgt.Location = new System.Drawing.Point(181, 300);
             this.ComboHkMultiTgt.Name = "ComboHkMultiTgt";
-            this.ComboHkMultiTgt.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkMultiTgt.Size = new System.Drawing.Size(140, 21);
             this.ComboHkMultiTgt.TabIndex = 13;
             this.ComboHkMultiTgt.SelectedIndexChanged += new System.EventHandler(this.ComboHkMultiTgt_SelectedIndexChanged);
             this.ComboHkMultiTgt.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -339,12 +340,12 @@
             this.ComboHkPause.DropDownHeight = 110;
             this.ComboHkPause.DropDownWidth = 140;
             this.ComboHkPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkPause.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkPause.FormattingEnabled = true;
             this.ComboHkPause.IntegralHeight = false;
             this.ComboHkPause.Location = new System.Drawing.Point(181, 330);
             this.ComboHkPause.Name = "ComboHkPause";
-            this.ComboHkPause.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkPause.Size = new System.Drawing.Size(140, 21);
             this.ComboHkPause.TabIndex = 14;
             this.ComboHkPause.SelectedIndexChanged += new System.EventHandler(this.ComboHkPause_SelectedIndexChanged);
             this.ComboHkPause.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -353,10 +354,10 @@
             // HkModifierLabel
             // 
             this.HkModifierLabel.AutoSize = true;
-            this.HkModifierLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkModifierLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkModifierLabel.Location = new System.Drawing.Point(5, 242);
             this.HkModifierLabel.Name = "HkModifierLabel";
-            this.HkModifierLabel.Size = new System.Drawing.Size(127, 17);
+            this.HkModifierLabel.Size = new System.Drawing.Size(123, 16);
             this.HkModifierLabel.TabIndex = 15;
             this.HkModifierLabel.Text = "Select Modifier Key";
             this.HkModifierLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -365,10 +366,10 @@
             // HkCooldownLabel
             // 
             this.HkCooldownLabel.AutoSize = true;
-            this.HkCooldownLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkCooldownLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkCooldownLabel.Location = new System.Drawing.Point(5, 272);
             this.HkCooldownLabel.Name = "HkCooldownLabel";
-            this.HkCooldownLabel.Size = new System.Drawing.Size(146, 17);
+            this.HkCooldownLabel.Size = new System.Drawing.Size(135, 16);
             this.HkCooldownLabel.TabIndex = 16;
             this.HkCooldownLabel.Text = "Select Cooldown Key";
             this.HkCooldownLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -377,10 +378,10 @@
             // HkAoELabel
             // 
             this.HkAoELabel.AutoSize = true;
-            this.HkAoELabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkAoELabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkAoELabel.Location = new System.Drawing.Point(5, 302);
             this.HkAoELabel.Name = "HkAoELabel";
-            this.HkAoELabel.Size = new System.Drawing.Size(169, 17);
+            this.HkAoELabel.Size = new System.Drawing.Size(171, 16);
             this.HkAoELabel.TabIndex = 17;
             this.HkAoELabel.Text = "Select Multi-TGT Key (AoE)";
             this.HkAoELabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -389,10 +390,10 @@
             // HkPauseLabel
             // 
             this.HkPauseLabel.AutoSize = true;
-            this.HkPauseLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkPauseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkPauseLabel.Location = new System.Drawing.Point(5, 332);
             this.HkPauseLabel.Name = "HkPauseLabel";
-            this.HkPauseLabel.Size = new System.Drawing.Size(114, 17);
+            this.HkPauseLabel.Size = new System.Drawing.Size(114, 16);
             this.HkPauseLabel.TabIndex = 18;
             this.HkPauseLabel.Text = "Select Pause Key";
             this.HkPauseLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -406,12 +407,12 @@
             this.ComboHkShatteringThrow.DropDownHeight = 110;
             this.ComboHkShatteringThrow.DropDownWidth = 140;
             this.ComboHkShatteringThrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkShatteringThrow.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkShatteringThrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkShatteringThrow.FormattingEnabled = true;
             this.ComboHkShatteringThrow.IntegralHeight = false;
             this.ComboHkShatteringThrow.Location = new System.Drawing.Point(181, 119);
             this.ComboHkShatteringThrow.Name = "ComboHkShatteringThrow";
-            this.ComboHkShatteringThrow.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkShatteringThrow.Size = new System.Drawing.Size(140, 21);
             this.ComboHkShatteringThrow.TabIndex = 19;
             this.ComboHkShatteringThrow.SelectedIndexChanged += new System.EventHandler(this.ComboHkShatteringThrow_SelectedIndexChanged);
             this.ComboHkShatteringThrow.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -420,12 +421,12 @@
             // HkShattThrowLabel
             // 
             this.HkShattThrowLabel.AutoSize = true;
-            this.HkShattThrowLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkShattThrowLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkShattThrowLabel.Location = new System.Drawing.Point(5, 121);
             this.HkShattThrowLabel.Name = "HkShattThrowLabel";
-            this.HkShattThrowLabel.Size = new System.Drawing.Size(115, 17);
+            this.HkShattThrowLabel.Size = new System.Drawing.Size(30, 16);
             this.HkShattThrowLabel.TabIndex = 20;
-            this.HkShattThrowLabel.Text = "Shattering Throw";
+            this.HkShattThrowLabel.Text = "Butt";
             this.HkShattThrowLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkShattThrowLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkShatteringThrow_MouseMove);
             // 
@@ -437,12 +438,12 @@
             this.ComboHkTier4Ability.DropDownHeight = 110;
             this.ComboHkTier4Ability.DropDownWidth = 140;
             this.ComboHkTier4Ability.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkTier4Ability.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkTier4Ability.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkTier4Ability.FormattingEnabled = true;
             this.ComboHkTier4Ability.IntegralHeight = false;
             this.ComboHkTier4Ability.Location = new System.Drawing.Point(181, 149);
             this.ComboHkTier4Ability.Name = "ComboHkTier4Ability";
-            this.ComboHkTier4Ability.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkTier4Ability.Size = new System.Drawing.Size(140, 21);
             this.ComboHkTier4Ability.TabIndex = 21;
             this.ComboHkTier4Ability.SelectedIndexChanged += new System.EventHandler(this.ComboHkTier4Ability_SelectedIndexChanged);
             this.ComboHkTier4Ability.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -451,12 +452,12 @@
             // HkTier4AbilityLabel
             // 
             this.HkTier4AbilityLabel.AutoSize = true;
-            this.HkTier4AbilityLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkTier4AbilityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkTier4AbilityLabel.Location = new System.Drawing.Point(5, 151);
             this.HkTier4AbilityLabel.Name = "HkTier4AbilityLabel";
-            this.HkTier4AbilityLabel.Size = new System.Drawing.Size(81, 17);
+            this.HkTier4AbilityLabel.Size = new System.Drawing.Size(46, 16);
             this.HkTier4AbilityLabel.TabIndex = 22;
-            this.HkTier4AbilityLabel.Text = "Tier 4 Ability";
+            this.HkTier4AbilityLabel.Text = "What?";
             this.HkTier4AbilityLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkTier4AbilityLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkTier4Ability_MouseMove);
             // 
@@ -469,12 +470,12 @@
             this.ComboHkSpecial.DropDownWidth = 140;
             this.ComboHkSpecial.Enabled = false;
             this.ComboHkSpecial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkSpecial.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkSpecial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkSpecial.FormattingEnabled = true;
             this.ComboHkSpecial.IntegralHeight = false;
             this.ComboHkSpecial.Location = new System.Drawing.Point(181, 360);
             this.ComboHkSpecial.Name = "ComboHkSpecial";
-            this.ComboHkSpecial.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkSpecial.Size = new System.Drawing.Size(140, 21);
             this.ComboHkSpecial.TabIndex = 25;
             this.ComboHkSpecial.SelectedIndexChanged += new System.EventHandler(this.ComboHkSpecial_SelectedIndexChanged);
             this.ComboHkSpecial.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -483,10 +484,10 @@
             // HkSpecialLabel
             // 
             this.HkSpecialLabel.AutoSize = true;
-            this.HkSpecialLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkSpecialLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkSpecialLabel.Location = new System.Drawing.Point(5, 362);
             this.HkSpecialLabel.Name = "HkSpecialLabel";
-            this.HkSpecialLabel.Size = new System.Drawing.Size(122, 17);
+            this.HkSpecialLabel.Size = new System.Drawing.Size(121, 16);
             this.HkSpecialLabel.TabIndex = 26;
             this.HkSpecialLabel.Text = "Select Special Key";
             this.HkSpecialLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -500,12 +501,12 @@
             this.ComboHkMockingBanner.DropDownHeight = 110;
             this.ComboHkMockingBanner.DropDownWidth = 140;
             this.ComboHkMockingBanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ComboHkMockingBanner.Font = new System.Drawing.Font("Century Gothic", 8.25F);
+            this.ComboHkMockingBanner.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkMockingBanner.FormattingEnabled = true;
             this.ComboHkMockingBanner.IntegralHeight = false;
             this.ComboHkMockingBanner.Location = new System.Drawing.Point(181, 89);
             this.ComboHkMockingBanner.Name = "ComboHkMockingBanner";
-            this.ComboHkMockingBanner.Size = new System.Drawing.Size(140, 24);
+            this.ComboHkMockingBanner.Size = new System.Drawing.Size(140, 21);
             this.ComboHkMockingBanner.TabIndex = 27;
             this.ComboHkMockingBanner.SelectedIndexChanged += new System.EventHandler(this.ComboHkMockingBanner_SelectedIndexChanged);
             this.ComboHkMockingBanner.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
@@ -514,12 +515,12 @@
             // HkMockingBannerLabel
             // 
             this.HkMockingBannerLabel.AutoSize = true;
-            this.HkMockingBannerLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkMockingBannerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkMockingBannerLabel.Location = new System.Drawing.Point(5, 91);
             this.HkMockingBannerLabel.Name = "HkMockingBannerLabel";
-            this.HkMockingBannerLabel.Size = new System.Drawing.Size(111, 17);
+            this.HkMockingBannerLabel.Size = new System.Drawing.Size(42, 16);
             this.HkMockingBannerLabel.TabIndex = 28;
-            this.HkMockingBannerLabel.Text = "Mocking Banner";
+            this.HkMockingBannerLabel.Text = "In the ";
             this.HkMockingBannerLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkMockingBannerLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkMockingBanner_MouseMove);
             // 

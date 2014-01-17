@@ -32,7 +32,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
-                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
+                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
                                             Spell.Cast("Elusive Brew", ret => Unit.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
@@ -43,7 +43,7 @@ namespace YourBuddy.Rotations.Monk
                                         BrewmasterOffensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
-                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
                                         BrewmasterDefensive(),
@@ -62,7 +62,7 @@ namespace YourBuddy.Rotations.Monk
 
         #region BoolsTemp
 
-        internal static bool TalentJadeWindEnabled { get { return TalentManager.HasTalent(16); } }
+        internal static bool TalentJadeWindEnabled { get { return TalentManager.IsSelected(16); } }
 
         private static YbSettingsBMM MonkSettings { get { return SG.Instance.Brewmaster; } }
 
@@ -77,12 +77,12 @@ namespace YourBuddy.Rotations.Monk
         internal static bool CanPlaceBlackOxStatue { get { return SG.Instance.Brewmaster.SummonBlackOxStatue && Me.CurrentTarget != null && !Me.HasAura("Sanctuary of the Ox") && !Me.CurrentTarget.IsFlying && !Me.IsOnTransport; } }
 
 
-        public static int MaxChi { get { return TalentManager.HasTalent(8) ? 5 : 4; } } // 
+        public static int MaxChi { get { return TalentManager.IsSelected(8) ? 5 : 4; } } // 
 
 
         private static bool NeedGuard { get { return Me.HasAura(118636) && ShuffleSetting > 2; } }
 
-        private static bool NeedDampenHarm { get { return TalentManager.HasTalent(14) && Me.HealthPercent <= MonkSettings.DampenHarmPercent && !Me.HasAura("Fortifying Brew"); } }
+        private static bool NeedDampenHarm { get { return TalentManager.IsSelected(14) && Me.HealthPercent <= MonkSettings.DampenHarmPercent && !Me.HasAura("Fortifying Brew"); } }
 
         private static bool NeedFortifyingBrew { get { return Me.HealthPercent <= MonkSettings.FortifyingBrewPercent && !Me.HasAura("Fortifying Brew") && !Me.HasAura("Dampen Harm"); } }
 
@@ -90,7 +90,7 @@ namespace YourBuddy.Rotations.Monk
 
         private static bool NeedBuildStacksForGaurd { get { return Lua.PlayerChi >= 1 && !Me.HasAura(118636); } }
 
-        private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && TalentManager.HasTalent(16); } }
+        private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && TalentManager.IsSelected(16); } }
 
         private static bool GuardOK { get { return Lua.PlayerChi >= 2 && (Root._initap + Root._NewAP) > Root._initap + (StyxWoW.Me.MaxHealth * MonkSettings.HPAPScale / 100) && Me.HasAura(118636) && ShuffleSetting >= 1; } }
 
@@ -104,7 +104,7 @@ namespace YourBuddy.Rotations.Monk
 
         private static bool NeedBreathofFire { get { return CanApplyBreathofFire && ShuffleSetting >= 4; } }
 
-        private static bool NeedChiWave { get { return TalentManager.HasTalent(4); } }
+        private static bool NeedChiWave { get { return TalentManager.IsSelected(4); } }
 
         internal static Composite ClearDizzyingHaze()
         {
@@ -113,7 +113,7 @@ namespace YourBuddy.Rotations.Monk
 
         private static bool NeedHealingSphere { get { return Lua.PlayerPower >= 60 && Me.HealthPercent <= MonkSettings.HealingSpherePercent; } }
 
-        private static bool NeedZenSphere { get { return TalentManager.HasTalent(5) && Me.HealthPercent <= MonkSettings.BrewWithZenSphere; } }
+        private static bool NeedZenSphere { get { return TalentManager.IsSelected(5) && Me.HealthPercent <= MonkSettings.BrewWithZenSphere; } }
 
 
 
