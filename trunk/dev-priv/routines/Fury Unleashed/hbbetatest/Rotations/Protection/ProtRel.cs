@@ -98,7 +98,7 @@ namespace FuryUnleashed.Rotations.Protection
 
                 // Added to support and DPS increase.
                 Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && PG.Tier4AbilityUsage),
-                Spell.Cast(SpellBook.Devastate, ret => !G.WeakenedArmor3S), // Builds up 3 sunder stacks.
+                Spell.Cast(SpellBook.Devastate, ret => !G.WeakenedArmor3S || G.FadingSunderArmor(3000)), // Builds up 3 sunder stacks - And keeps it up.
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && PG.Tier6AbilityUsage),
 
                 Spell.Cast(SpellBook.ThunderClap, ret => !G.WeakenedBlowsAura || G.FadingWeakenedBlows(1500)),
