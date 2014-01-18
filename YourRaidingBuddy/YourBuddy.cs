@@ -23,6 +23,14 @@ using CR = YourBuddy.Rotations.Rogue.Combat;
 using BD = YourBuddy.Rotations.Deathknight.Blood;
 using FD = YourBuddy.Rotations.Deathknight.Frost;
 using UD = YourBuddy.Rotations.Deathknight.Unholy;
+using PP = YourBuddy.Rotations.Paladin.Protection;
+using RP = YourBuddy.Rotations.Paladin.Retribution;
+using SV = YourBuddy.Rotations.Hunter.Survival;
+using BM = YourBuddy.Rotations.Hunter.Beastmastery;
+using MM = YourBuddy.Rotations.Hunter.Marksmanship;
+using ES = YourBuddy.Rotations.Shaman.Enhancement;
+using EES = YourBuddy.Rotations.Shaman.Elemental;
+
 using System.Windows.Forms;
 using BotEvents = Styx.CommonBot.BotEvents;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
@@ -195,7 +203,14 @@ namespace YourBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, CR.InitializeCom),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightBlood, BD.InitializeBlood),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightFrost, FD.InitializeFrost),
-                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, UD.InitializeUnholy)
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, UD.InitializeUnholy),
+                new SwitchArgument<WoWSpec>(WoWSpec.ShamanElemental, EES.InitializeElemental),
+                new SwitchArgument<WoWSpec>(WoWSpec.ShamanEnhancement, ES.InitializeEnhancement),
+                new SwitchArgument<WoWSpec>(WoWSpec.HunterBeastMastery, BM.InitializeBeastmastery),
+                new SwitchArgument<WoWSpec>(WoWSpec.HunterMarksmanship, MM.InitializeMarksmanship),
+                new SwitchArgument<WoWSpec>(WoWSpec.HunterSurvival, SV.InitializeSurvival),
+                new SwitchArgument<WoWSpec>(WoWSpec.PaladinRetribution, RP.InitializeRetribution),
+                new SwitchArgument<WoWSpec>(WoWSpec.PaladinProtection, PP.InitializeProtection)
                 
                 );
         }

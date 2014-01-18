@@ -489,6 +489,36 @@ namespace YourBuddy.Interfaces.GUI
                 case WoWSpec.RogueSubtlety:
                     { selectSpec = internalSettings.Subtlety; }
                     break;
+                case WoWSpec.PaladinRetribution:
+                    { selectSpec = internalSettings.Retribution; }
+                    break;
+                case WoWSpec.PaladinProtection:
+                    { selectSpec = internalSettings.Protection; }
+                    break;
+                case WoWSpec.ShamanElemental:
+                    { selectSpec = internalSettings.Elemental; }
+                    break;
+                case WoWSpec.ShamanEnhancement:
+                    { selectSpec = internalSettings.Enhancement; }
+                    break;
+                case WoWSpec.HunterBeastMastery:
+                    { selectSpec = internalSettings.Beastmastery; }
+                    break;
+                case WoWSpec.HunterSurvival:
+                    { selectSpec = internalSettings.Survival; }
+                    break;
+                case WoWSpec.HunterMarksmanship:
+                    { selectSpec = internalSettings.Marksmanship; }
+                    break;
+                case WoWSpec.DeathKnightBlood:
+                    { selectSpec = internalSettings.Blood; }
+                    break;
+                case WoWSpec.DeathKnightFrost:
+                    { selectSpec = internalSettings.Frost; }
+                    break;
+                case WoWSpec.DeathKnightUnholy:
+                    { selectSpec = internalSettings.Unholy; }
+                    break;
 
             }
 
