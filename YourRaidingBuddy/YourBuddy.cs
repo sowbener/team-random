@@ -20,6 +20,9 @@ using BMM = YourBuddy.Rotations.Monk.Brewmaster;
 using SR = YourBuddy.Rotations.Rogue.Subtlety;
 using AR = YourBuddy.Rotations.Rogue.Assassination;
 using CR = YourBuddy.Rotations.Rogue.Combat;
+using BD = YourBuddy.Rotations.Deathknight.Blood;
+using FD = YourBuddy.Rotations.Deathknight.Frost;
+using UD = YourBuddy.Rotations.Deathknight.Unholy;
 using System.Windows.Forms;
 using BotEvents = Styx.CommonBot.BotEvents;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
@@ -103,6 +106,11 @@ namespace YourBuddy
 
             Spell.PulseDoubleCastEntries();
 
+            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
+
+            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
+                DeathStrikeTracker.Pulse();
+
             /* Update TalentManager */
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
@@ -148,8 +156,17 @@ namespace YourBuddy
             Logger.StatCounter();
             Logger.LogTimer(500);
 
+            /* Attack Power For Brewmaster Monks */
             _initap = StyxWoW.Me.AttackPower;
             _NewAP = StyxWoW.Me.AttackPower;
+
+            /* Blood DK DeathStrike Tracker */
+            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
+                DeathStrikeTracker.Initialize();
+
+            /* Unholy DoTTracker */
+            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
+
 
             /* Start Combat */
             PreCombatSelector();
@@ -173,9 +190,14 @@ namespace YourBuddy
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkWindwalker, WWM.InitializeWindwalkerCombat),
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, BMM.InitializeBrewmasterCombat),
-                new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, G.InitializePreBuffRogue),
-                new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),
-                new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, G.InitializePreBuffRogue));
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, SR.InitializeSub),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, AR.InitializeAss),
+                new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, CR.InitializeCom),
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightBlood, BD.InitializeBlood),
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightFrost, FD.InitializeFrost),
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, UD.InitializeUnholy)
+                
+                );
         }
 
         internal static void StopBot(string reason)

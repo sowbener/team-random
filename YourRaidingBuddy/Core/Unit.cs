@@ -307,6 +307,11 @@ namespace YourBuddy.Core
         }
         #endregion
 
+        #region DeathKnight Things
+
+        internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Blood Plague")) > 2; } }
+        #endregion
+
         #region HashSet Checks
         /// <summary>
         /// Checks if Unit is viable and if Unit is on Hashlist for this function.

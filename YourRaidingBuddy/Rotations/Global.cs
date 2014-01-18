@@ -48,7 +48,7 @@ namespace YourBuddy.Rotations
             get
             {
                 return new PrioritySelector(
-        //           new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
+                    //           new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
                     new Decorator(ret => Me.Specialization == WoWSpec.RogueAssassination && Unit.DefaultBuffCheck,
                         new PrioritySelector(
                     new Decorator(ret => SG.Instance.Assassination.CheckPoison, Poisons.CreateApplyPoisonsAss()))),
@@ -72,6 +72,7 @@ namespace YourBuddy.Rotations
                 new Action(delegate { Unit.GetNearbyAggroUnitsCount(); return RunStatus.Failure; })
                 );
         }
+        #endregion
 
         #region ManualCastPause
 
@@ -278,7 +279,9 @@ namespace YourBuddy.Rotations
 
         internal static readonly HashSet<int> InterruptListMoP = new HashSet<int>
        {
-           136797, // Dino-Mending (ToT)
+           145171, // MC spell Garrosh (final phase empowered)
+		   145065, // MC spell Garrosh (P2)
+		   136797, // Dino-Mending (ToT)
            136587, // Venom Bolt Volley (ToT)
            61909, // Fireball (ToT)
            136189, // Sandbolt (ToT)
@@ -313,8 +316,6 @@ namespace YourBuddy.Rotations
         {
 
         };
-
-        #endregion
 
         #endregion
 
@@ -499,6 +500,88 @@ namespace YourBuddy.Rotations
         }
         #endregion
 
+        #region Deathknight Stuff
+
+        internal static int DeathRuneSlotsActive
+        {
+            get { return Me.DeathRuneCount; }
+        }
+
+        internal static int BloodRuneSlotsActive
+        {
+            get
+            {
+                //   DvLogger.InfoLog("DeathRunes: {0}", Me.DeathRuneCount);
+                return StyxWoW.Me.BloodRuneCount;
+            }
+        }
+
+        internal static int FrostRuneSlotsActive
+        {
+            get
+            {
+                //   DvLogger.InfoLog("FrostRunes: {0}", Me.FrostRuneCount);
+                return StyxWoW.Me.FrostRuneCount;
+            }
+        }
+
+        internal static bool DeathRuneSlotsActiveFesterReal { get { return StyxWoW.Me.BloodRuneCount > 1 || StyxWoW.Me.DeathRuneCount > 1; } }
+
+        internal static int UnholyRuneSlotsActive
+        {
+            get
+            {
+                //  DvLogger.InfoLog("UnholyRunes: {0}", Me.UnholyRuneCount);
+                return StyxWoW.Me.UnholyRuneCount;
+            }
+        }
+
+        /// <summary>
+        /// check that we are in the last tick of Frost Fever or Blood Plague on current target and have a fully depleted rune
+        /// </summary>
+        internal static bool CanCastPlagueLeechDW
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+                int bloodPlague = (int)Me.CurrentTarget.GetAuraTimeLeft("Blood Plague").TotalMilliseconds;
+                return TalentManager.IsSelected(2) && Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura(55078) && (BloodRuneSlotsActive == 0 || FrostRuneSlotsActive == 0);
+            }
+        }
+
+
+        internal static bool CanCastPlagueLeech
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+
+                int frostFever = (int)Me.CurrentTarget.GetAuraTimeLeft("Frost Fever").TotalMilliseconds;
+                int bloodPlague = (int)Me.CurrentTarget.GetAuraTimeLeft("Blood Plague").TotalMilliseconds;
+                // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
+                return (frostFever.Between(350, 3000) || bloodPlague.Between(350, 3000))
+                    && (FrostRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0);
+            }
+        }
+
+        internal static bool CanCastPlagueLeechUH
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+
+                int frostFever = (int)Me.CurrentTarget.GetAuraTimeLeft("Frost Fever").TotalMilliseconds;
+                int bloodPlague = (int)Me.CurrentTarget.GetAuraTimeLeft("Blood Plague").TotalMilliseconds;
+                // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
+                return (frostFever.Between(350, 3000) || bloodPlague.Between(350, 3000))
+                    && (BloodRuneSlotsActive == 0 || UnholyRuneSlotsActive == 0) && !CooldownTracker.SpellOnCooldown("Outbreak");
+            }
+        }
+        #endregion
+
 
         #region TalentManager Functions
         // Talentmanager - HasGlyphs
@@ -515,11 +598,11 @@ namespace YourBuddy.Rotations
         }
 
 
-               #endregion
+        #endregion
 
         #region Cooldowntracker
         // Cooldowntracker - Timeleft in TotalMilliseconds
-      
+
         internal static bool VictoryRushOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SpellBook.VictoryRush); } // Victory Rush

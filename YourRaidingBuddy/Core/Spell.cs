@@ -389,6 +389,18 @@ namespace YourBuddy.Core
         }
         #endregion
 
+        #region AuraStuffMore
+
+        public static TimeSpan GetAuraTimeLeft(this WoWUnit onUnit, string auraName, bool fromMyAura = true)
+        {
+            WoWAura wantedAura =
+                onUnit.GetAllAuras().Where(a => a != null && a.Name == auraName && a.TimeLeft > TimeSpan.Zero && (!fromMyAura || a.CreatorGuid == StyxWoW.Me.Guid)).FirstOrDefault();
+
+            return wantedAura != null ? wantedAura.TimeLeft : TimeSpan.Zero;
+        }
+
+        #endregion
+
         #region Buff
         public static Composite CastRaidBuff(string name, CanRunDecoratorDelegate cond)
         {
@@ -939,6 +951,16 @@ namespace YourBuddy.Core
             if (unit != null)
             {
                 var wantedAura = Me.GetAllAuras().FirstOrDefault(a => a.SpellId == spellId && a.StackCount > 0 && a.CreatorGuid == Me.Guid);
+                return wantedAura != null ? wantedAura.StackCount : 0;
+            }
+            return 0;
+        }
+
+        public static uint GetAuraStack(WoWUnit unit, string spellId)
+        {
+            if (unit != null)
+            {
+                var wantedAura = Me.GetAllAuras().FirstOrDefault(a => a.Name == spellId && a.StackCount > 0 && a.CreatorGuid == Me.Guid);
                 return wantedAura != null ? wantedAura.StackCount : 0;
             }
             return 0;

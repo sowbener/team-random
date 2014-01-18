@@ -38,6 +38,11 @@ namespace YourBuddy.Interfaces.Settings
         private YbSettingsCR _settingsCR;
         private YbSettingsAR _settingsAR;
 
+        //Deathknight Settings
+        private YbSettingsBD _settingsBD;
+        private YbSettingsFD _settingsFD;
+        private YbSettingsUD _settingsUD;
+
 
         // General
         [Browsable(false)]
@@ -76,6 +81,26 @@ namespace YourBuddy.Interfaces.Settings
         {
             get { return _settingsAR ?? (_settingsAR = new YbSettingsAR()); }
         }
+
+        [Browsable(false)]
+        public YbSettingsBD Blood
+        {
+            get { return _settingsBD ?? (_settingsBD = new YbSettingsBD()); }
+        }
+
+        [Browsable(false)]
+        public YbSettingsFD Frost
+        {
+            get { return _settingsFD ?? (_settingsFD = new YbSettingsFD()); }
+        }
+
+        [Browsable(false)]
+        public YbSettingsUD Unholy
+        {
+            get { return _settingsUD ?? (_settingsUD = new YbSettingsUD()); }
+        }
+
+
 
         #endregion
     }

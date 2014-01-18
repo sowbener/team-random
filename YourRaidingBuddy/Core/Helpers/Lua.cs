@@ -14,6 +14,109 @@ namespace YourBuddy.Core.Helpers
 {
     internal static class LuaClass
     {
+
+        #region LuaSecondaryStats Credit: Singular
+
+        internal static SecondaryStats _secondaryStats;          //create within frame (does series of LUA calls)
+
+        internal static void PopulateSecondryStats()
+        {
+            using (StyxWoW.Memory.AcquireFrame())
+            {
+                _secondaryStats = new SecondaryStats();
+            }
+
+            // Haste Rating Required Per 1%
+            // Level 60	 Level 70	 Level 80	 Level 85	 Level 90
+            //   10	      15.77	      32.79	      128.125	 425.19
+
+            Logger.InfoLog("");
+            Logger.InfoLog("Health: {0}", StyxWoW.Me.MaxHealth);
+            Logger.InfoLog("Agility: {0}", StyxWoW.Me.Agility);
+            Logger.InfoLog("Intellect: {0}", StyxWoW.Me.Intellect);
+            Logger.InfoLog("Spirit: {0}", StyxWoW.Me.Spirit);
+            Logger.InfoLog("");
+            Logger.InfoLog("Attack Power: {0}", StyxWoW.Me.AttackPower);
+            Logger.InfoLog("Power: {0:F2}", _secondaryStats.Power);
+            Logger.InfoLog("Hit(M/R): {0}/{1}", _secondaryStats.MeleeHit, _secondaryStats.SpellHit);
+            Logger.InfoLog("Expertise: {0}", _secondaryStats.Expertise);
+            Logger.InfoLog("Mastery: {0:F2}", _secondaryStats.Mastery);
+            Logger.InfoLog("Mastery (CR): {0:F2}", _secondaryStats.MasteryCR);
+            Logger.InfoLog("Crit: {0:F2}", _secondaryStats.Crit);
+            Logger.InfoLog("Haste(M/R): {0} (+{1} % Haste) / {2} (+{3} % Haste)", _secondaryStats.MeleeHaste, Math.Round(_secondaryStats.MeleeHaste / 425.19, 2), _secondaryStats.SpellHaste, Math.Round(_secondaryStats.SpellHaste / 425.19, 2));
+            Logger.InfoLog("SpellPen: {0}", _secondaryStats.SpellPen);
+            Logger.InfoLog("PvP Resil: {0}", _secondaryStats.Resilience);
+            Logger.InfoLog("PvP Power: {0}", _secondaryStats.PvpPower);
+            Logger.InfoLog("");
+        }
+
+        internal class SecondaryStats
+        {
+            public float MeleeHit { get; set; }
+
+            public float SpellHit { get; set; }
+
+            public float Expertise { get; set; }
+
+            public float MeleeHaste { get; set; }
+
+            public float SpellHaste { get; set; }
+
+            public float SpellPen { get; set; }
+
+            public float Mastery { get; set; }
+
+            public float MasteryCR { get; set; }
+
+            public float Crit { get; set; }
+
+            public float Resilience { get; set; }
+
+            public float PvpPower { get; set; }
+
+            public float AttackPower { get; set; }
+
+            public float Power { get; set; }
+
+            public float Intellect { get; set; }
+
+            public float SpellPower { get; set; }
+
+            public SecondaryStats()
+            {
+                Refresh();
+            }
+
+            public void Refresh()
+            {
+                try
+                {
+                    MeleeHit = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(CR_HIT_MELEE)", 0);
+                    SpellHit = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(CR_HIT_SPELL)", 0);
+                    Expertise = StyxWoW.Me.Expertise;
+                    MeleeHaste = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(CR_HASTE_MELEE)", 0);
+                    SpellHaste = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(CR_HASTE_SPELL)", 0);
+                    SpellPen = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetSpellPenetration()", 0);
+                    Mastery = StyxWoW.Me.Mastery;
+                    MasteryCR = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(CR_MASTERY)", 0);
+                    Crit = StyxWoW.Me.CritPercent;
+                    Resilience = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(COMBAT_RATING_RESILIENCE_CRIT_TAKEN)", 0);
+                    PvpPower = Styx.WoWInternals.Lua.GetReturnVal<float>("return GetCombatRating(CR_PVP_POWER)", 0);
+                    AttackPower = StyxWoW.Me.AttackPower;
+                    Power = Styx.WoWInternals.Lua.GetReturnVal<float>("return select(7,UnitDamage(\"player\"))", 0);
+                    Intellect = StyxWoW.Me.Intellect;
+                    SpellPower = Styx.WoWInternals.Lua.GetReturnVal<float>("return math.max(GetSpellBonusDamage(1),GetSpellBonusDamage(2),GetSpellBonusDamage(3),GetSpellBonusDamage(4),GetSpellBonusDamage(5),GetSpellBonusDamage(6),GetSpellBonusDamage(7))", 0);
+                }
+                catch
+                {
+                    Logger.DiagLogFb(" Lua Failed in SecondaryStats");
+                }
+
+            }
+        }
+
+        #endregion SecondryStats - Credit: Singular
+
         #region Start AutoAttack
         internal static Composite StartAutoAttack
         {
