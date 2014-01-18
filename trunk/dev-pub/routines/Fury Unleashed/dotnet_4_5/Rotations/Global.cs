@@ -405,34 +405,24 @@ namespace FuryUnleashed.Rotations
             get { return Spell.HasAura(Me, AuraBook.TasteforBlood); }
         }
 
-        internal static bool Tier15TwoPieceBonus
-        {
-            get { return Spell.HasAura(Me, "Item - Warrior T15 DPS 2P Bonus"); } // Works - 138120
-        }
-
-        internal static bool Tier15TwoPieceBonusT
-        {
-            get { return Spell.HasAura(Me, "Item - Warrior T15 Protection 2P Bonus"); } // Works - 138280
-        }
-
-        internal static bool Tier15FourPieceBonusT
-        {
-            get { return Spell.HasAura(Me, "Item - Warrior T15 Protection 4P Bonus"); } // Works - 138281
-        }
-
         internal static bool Tier16TwoPieceBonus
         {
-            get { return Spell.HasAura(Me, "Item - Warrior T16 DPS 2P Bonus"); } // Checked - Works - 144436 is one of the ID's.
+            get { return Spell.HasAura(Me, "Item - Warrior T16 DPS 2P Bonus", 0, 0, true, false, true); }
+        }
+
+        internal static bool Tier16FourPieceBonus
+        {
+            get { return Spell.HasAura(Me, "Item - Warrior T16 DPS 4P Bonus", 0, 0, true, false, true); }
         }
 
         internal static bool Tier16TwoPieceBonusT
         {
-            get { return Spell.HasAura(Me, "Item - Warrior T16 Protection 2P Bonus"); } // Unchecked
+            get { return Spell.HasAura(Me, "Item - Warrior T16 Protection 2P Bonus", 0, 0, true, false, true); }
         }
 
         internal static bool Tier16FourPieceBonusT
         {
-            get { return Spell.HasAura(Me, "Item - Warrior T16 Protection 4P Bonus"); } // Unchecked
+            get { return Spell.HasAura(Me, "Item - Warrior T16 Protection 4P Bonus", 0, 0, true, false, true); }
         }
 
         internal static bool TimeWarpAura
@@ -536,17 +526,17 @@ namespace FuryUnleashed.Rotations
         // StyxWoW.Me.CurrentTarget
         internal static bool WeakenedArmor1S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 1); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 1, 0, false); }
         }
 
         internal static bool WeakenedArmor2S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 2); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 2, 0, false); }
         }
 
         internal static bool WeakenedArmor3S
         {
-            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 3); }
+            get { return Spell.HasAura(Me.CurrentTarget, AuraBook.WeakenedArmor, 3, 0, false); }
         }
 
         // StyxWoW.Me

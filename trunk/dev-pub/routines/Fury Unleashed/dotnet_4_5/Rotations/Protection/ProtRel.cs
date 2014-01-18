@@ -91,6 +91,9 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Rel_ProtSt()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.Devastate, ret => G.WeakenedArmor3S && G.FadingSunderArmor(1500)), // Added to maintain debuff stacks - Not for applying - This happens later on.
+                Spell.Cast(SpellBook.ThunderClap, ret => G.WeakenedBlowsAura && G.FadingWeakenedBlows(1500)), // Added to maintain debuff stacks - Not for applying - This happens later on.
+
                 Spell.Cast(SpellBook.Execute, ret => G.ExecutePhase && Lua.PlayerPower >= Lua.PlayerPowerMax - 10),
 
                 Spell.Cast(SpellBook.ShieldSlam),
@@ -98,10 +101,10 @@ namespace FuryUnleashed.Rotations.Protection
 
                 // Added to support and DPS increase.
                 Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && PG.Tier4AbilityUsage),
-                Spell.Cast(SpellBook.Devastate, ret => !G.WeakenedArmor3S), // Builds up 3 sunder stacks.
+                Spell.Cast(SpellBook.Devastate, ret => !G.WeakenedArmor3S), // Builds up 3 sunder stacks - And keeps it up.
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && PG.Tier6AbilityUsage),
 
-                Spell.Cast(SpellBook.ThunderClap, ret => !G.WeakenedBlowsAura || G.FadingWeakenedBlows(1500)),
+                Spell.Cast(SpellBook.ThunderClap, ret => !G.WeakenedBlowsAura),
                 new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, ret => Lua.PlayerPower <= Lua.PlayerPowerMax - 25)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, ret => Lua.PlayerPower <= Lua.PlayerPowerMax - 25))),
@@ -114,7 +117,7 @@ namespace FuryUnleashed.Rotations.Protection
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && PG.Tier4AbilityAoEUsage),
-                Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && PG.Tier4AbilityAoEUsage),
+                Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && PG.Tier6AbilityAoEUsage),
 
                 Spell.Cast(SpellBook.ThunderClap),
