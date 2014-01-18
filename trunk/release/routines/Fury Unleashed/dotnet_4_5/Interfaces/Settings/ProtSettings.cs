@@ -33,7 +33,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(Enum.MsrTrigger.Never)]
         [Category("Protection - Ability Options")]
         [DisplayName("Mass Spell Reflection")]
-        [Description("Select the usage of Mass Spell Reflection.")]
+        [Description("Select the usage of Mass Spell Reflection (Talent).")]
         public Enum.MsrTrigger MassSpellReflection { get; set; }
 
         [Setting]
@@ -194,8 +194,8 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.MsrTrigger.Never)]
         [Category("Protection - Defensive Options")]
-        [DisplayName("Mass Spell Reflection")]
-        [Description("Select the usage of Mass Spell Reflection.")]
+        [DisplayName("Spell Reflection")]
+        [Description("Select the usage of Spell Reflection.")]
         public Enum.MsrTrigger SpellReflection { get; set; }
         #endregion
 

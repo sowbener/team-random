@@ -215,18 +215,13 @@ namespace FuryUnleashed.Core.Utilities
             WriteFile("Storm Bolt Talent: {0}", Global.StormBoltTalent);
             WriteFile("");
             WriteFile("====== Tier Bonuses ======");
-            WriteFile("Tier 15 DPS 2P: {0}", Global.Tier15TwoPieceBonus);
-            WriteFile("Tier 15 DPS 4P: {0}", Global.SkullBannerAuraT15);
-            WriteFile("Tier 15 Prot 2P: {0}", Global.Tier15TwoPieceBonusT);
-            WriteFile("Tier 15 Prot 4P: {0}", Global.Tier15FourPieceBonusT);
             WriteFile("Tier 16 DPS 2P: {0}", Global.Tier16TwoPieceBonus);
-            WriteFile("Tier 16 DPS 4P: {0}", Global.DeathSentenceAuraT16);
+            WriteFile("Tier 16 DPS 4P: {0}", Global.Tier16FourPieceBonus);
             WriteFile("Tier 16 Prot 2P: {0}", Global.Tier16TwoPieceBonusT);
             WriteFile("Tier 16 Prot 4P: {0}", Global.Tier16FourPieceBonusT);
             WriteFile("");
             WriteFile("======= Other Info =======");
             WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
-            //WriteFile("Weapon Speed: {0}", Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0));
         }
 
         private static Timer _fuTimer;
