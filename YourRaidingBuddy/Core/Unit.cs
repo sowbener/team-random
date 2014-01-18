@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enum = YourBuddy.Core.Helpers.Enum;
+using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Core
 {
@@ -201,20 +202,6 @@ namespace YourBuddy.Core
             }
         }
 
-        /// <summary>
-        /// Retrieves the count (Integer) of nearby units 
-        /// </summary>
-        public static int InterruptableUnitsCount;
-        public static void GetInterruptableUnitsCount()
-        {
-            using (new PerformanceLogger("GetInterruptableUnitsCount"))
-            {
-                if (IsViable(Me.CurrentTarget))
-                {
-                    InterruptableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
-                }
-            }
-        }
 
         /// <summary>
         /// Retrieves the count (Integer & Float) of nearby units (8y) - Used in YourBuddy.Rotations.Global.InitializeCaching()
@@ -360,7 +347,7 @@ namespace YourBuddy.Core
 
         #region Range Checks
         /// <summary>
-        /// Using Math.Abs calculating the actual maximum range for spell cast on unit.
+        /// Using Math.Abs calculating the actual maximum range for spell cast on U.
         /// </summary>
         public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
         {
@@ -368,7 +355,7 @@ namespace YourBuddy.Core
         }
 
         /// <summary>
-        /// Using Math.Abs calculating the actual minimum range for spell cast on unit.
+        /// Using Math.Abs calculating the actual minimum range for spell cast on U.
         /// </summary>
         public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
         {

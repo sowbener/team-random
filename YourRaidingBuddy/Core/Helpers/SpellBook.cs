@@ -9,7 +9,7 @@
                             Bladestorm = 46924,
                             DragonRoar = 118000,
                             Safeguard = 114029,
-                            Vigilance = 114030,
+                            Vigilance = 23123,
                             Avatar = 107574,
                             Bloodbath = 12292,
                             StormBolt = 107570,

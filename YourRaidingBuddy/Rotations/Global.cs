@@ -34,7 +34,7 @@ namespace YourBuddy.Rotations
             get
             {
                 return new PrioritySelector(
-                new Decorator(ret => Unit.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat,
+                new Decorator(ret => U.DefaultBuffCheck && (SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat,
                 new PrioritySelector(
                 Spell.CastRaidBuff("Legacy of the White Tiger", ret => Me.Specialization == WoWSpec.MonkWindwalker && !Me.HasAnyAura(LegacyoftheWhiteTiger)),
                 Spell.Cast("Stance of the Sturdy Ox", ret => Me.Specialization == WoWSpec.MonkBrewmaster && !Me.HasAura("Stance of the Sturdy Ox")),
@@ -49,14 +49,14 @@ namespace YourBuddy.Rotations
             {
                 return new PrioritySelector(
                     //           new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
-                    new Decorator(ret => Me.Specialization == WoWSpec.RogueAssassination && Unit.DefaultBuffCheck,
+                    new Decorator(ret => Me.Specialization == WoWSpec.RogueAssassination && U.DefaultBuffCheck,
                         new PrioritySelector(
                     new Decorator(ret => SG.Instance.Assassination.CheckPoison, Poisons.CreateApplyPoisonsAss()))),
                     new Decorator(ret => Me.Specialization == WoWSpec.RogueSubtlety,
                         new PrioritySelector(
                             Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && Me.HasAura("Vanish")),
                             new Decorator(ret => SG.Instance.Subtlety.CheckPoison, Poisons.CreateApplyPoisonsSub()))),
-                    new Decorator(ret => Me.Specialization == WoWSpec.RogueCombat && Unit.DefaultBuffCheck,
+                    new Decorator(ret => Me.Specialization == WoWSpec.RogueCombat && U.DefaultBuffCheck,
                         new PrioritySelector(
                    new Decorator(ret => SG.Instance.Combat.CheckPoison, Poisons.CreateApplyPoisonsCom()))));
             }
@@ -68,8 +68,8 @@ namespace YourBuddy.Rotations
         {
             return new PrioritySelector(
                 // new Action(delegate { XISpell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { Unit.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
-                new Action(delegate { Unit.GetNearbyAggroUnitsCount(); return RunStatus.Failure; })
+                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Action(delegate { U.GetNearbyAggroUnitsCount(); return RunStatus.Failure; })
                 );
         }
         #endregion
@@ -582,7 +582,47 @@ namespace YourBuddy.Rotations
         }
         #endregion
 
+        #region Paladin Stuff
 
+        #region DevastatingAbilities
+
+        internal static readonly HashSet<int> DevastatingAbilities = new HashSet<int>
+       {
+
+           143502, // Execute General Nazgrim HC 
+
+       };
+
+
+        #endregion
+        #endregion
+
+        #region Shaman Stuff
+
+        internal static Composite InitializePreBuffShaman
+        {
+            get
+            {
+                return new PrioritySelector(
+                    //    new Decorator(ret => SG.Instance.General.CheckPreCombatHk, InitializeOnKeyActions()),
+                    new Decorator(ret => Me.Specialization == WoWSpec.ShamanEnhancement && Unit.DefaultBuffCheck && ((SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                        new PrioritySelector(
+                        Spell.Cast("Lightning Shield", ret => Me, ret => SG.Instance.Elemental.PrebuffPet && !Me.HasAura("Lightning Shield")),
+                     WeaponImbue.CreateWeaponImbueEnhancement())),
+                       new Decorator(ret => Me.Specialization == WoWSpec.ShamanElemental && Unit.DefaultBuffCheck && ((SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                        new PrioritySelector(
+                     Spell.Cast("Lightning Shield", ret => Me, ret => SG.Instance.Elemental.PrebuffPet && !Me.HasAura("Lightning Shield")),
+                     WeaponImbue.CreateWeaponImbueElemental())));
+            }
+        }
+
+        #region FlameShockTargets
+
+        internal static bool TargetsHaveFlameShock4 { get { return Unit.NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Flame Shock")) >= 3; } }
+        internal static bool TargetsHaveFlameShock1 { get { return Unit.NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Flame Shock")) >= 1; } }
+
+        #endregion FlameShockTargets
+        #endregion
         #region TalentManager Functions
         // Talentmanager - HasGlyphs
 

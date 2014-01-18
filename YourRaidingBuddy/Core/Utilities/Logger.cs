@@ -321,12 +321,12 @@ namespace YourBuddy.Core.Utilities
         //                        new Action(delegate
         //                        {
         //                            CombatLogPu("Cached Unit Counts:");
-        //                            CombatLogWh("Units - In Range (2Y - SlamCleave): {0}",Unit.NearbySlamCleaveUnitsCount);
-        //                            CombatLogWh("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
-        //                            CombatLogWh("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
-        //                            CombatLogWh("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
-        //                            CombatLogWh("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
-        //                            CombatLogWh("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
+        //                            CombatLogWh("Units - In Range (2Y - SlamCleave): {0}",U.NearbySlamCleaveUnitsCount);
+        //                            CombatLogWh("Units - In Range (5Y - Melee): {0}", U.AttackableMeleeUnitsCount);
+        //                            CombatLogWh("Units - In Range (8Y - AoE): {0}", U.NearbyAttackableUnitsCount);
+        //                            CombatLogWh("Units - Interrupts (10Y): {0}", U.InterruptableUnitsCount);
+        //                            CombatLogWh("Units - Rallying Cry (30Y): {0}", U.RaidMembersNeedCryCount);
+        //                            CombatLogWh("Units - Deep Wounds (8Y): {0}", U.NeedThunderclapUnitsCount);
         //                            CombatLogPu("Units - Slam Viable: {0}", Global.SlamViable);
         //                            CombatLogPu("Units - Whirlwind viable: {0}", Global.WhirlwindViable);
         //                        }

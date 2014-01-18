@@ -30,7 +30,7 @@ namespace YourBuddy.Rotations.Rogue
                 return new PrioritySelector(
                  //   new Decorator(ret => SG.Instance.General.CheckTreePerformance,
                 //        WaLogger.TreePerformance("InitializeSub")),
-                    new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
+                    new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                   //      G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
                         //new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),    
@@ -150,7 +150,7 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                    Spell.Cast("Shadow Dance", ret => Me.CurrentTarget != null && Lua.PlayerPower > 74 && !Me.HasAura("Stealth") && G.RuptureSetting > 2 && G.SNDSetting > 2 && !Me.HasAura("Vanish") && (G.FindWeaknessOff || G.FindWeakness < 3) && (
-                    (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.Always)
                     )));
@@ -160,27 +160,27 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 Spell.Cast("Shadow Blades", ret => (G.FindWeaknessOff || G.FindWeakness < 3) || (G.SpeedBuffsAura || Me.HasAura(105697)) && (
-                    (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
-                    (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
-                    (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
-                    (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Marked for Death", ret => G.IloveyouSND && (
-                    (SG.Instance.Subtlety.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Subtlety.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )));

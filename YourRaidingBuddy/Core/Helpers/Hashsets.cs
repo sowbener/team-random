@@ -983,7 +983,7 @@ namespace YourBuddy.Core.Helpers
             32857, //Stormcaller Brundir
             32930, //Kologarn
             33515, //Auriaya
-            34035, //Feral Defender
+            34215, //Feral Defender
             32933, //Left Arm
             32934, //Right Arm
             33524, //Saronite Animus

@@ -15,6 +15,7 @@ using SH = YourBuddy.Interfaces.Settings.SettingsH;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
 using G = YourBuddy.Rotations.Global;
 using YourBuddy.Interfaces.Settings;
+using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Rotations.Monk
 {
@@ -35,7 +36,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
-                                            Spell.Cast("Elusive Brew", ret => Unit.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
+                                            Spell.Cast("Elusive Brew", ret => U.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
                                             BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
@@ -49,7 +50,7 @@ namespace YourBuddy.Rotations.Monk
                                         BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
-                                        Spell.Cast("Elusive Brew", ret => Unit.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
+                                        Spell.Cast("Elusive Brew", ret => U.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                    //     I.BrewmasterUseItems(),
@@ -70,9 +71,9 @@ namespace YourBuddy.Rotations.Monk
 
         internal static bool CanUsePurifyingBrew { get { return ((Lua.PlayerChi >= 3 || Me.HasAura(138237)) && Me.HasAura(124273)) || (MonkSettings.PurifyingModerate && Lua.PurifyingBrew(124274) > (StyxWoW.Me.MaxHealth * MonkSettings.HPModerateScale / 100) && Me.HasAura(124274) && (ShuffleSetting > 4 || Lua.PlayerChi > 3)) || (MonkSettings.PurifyingLight && Me.HasAura(124275) && (ShuffleSetting > 10 || Lua.PlayerChi > 3)); } }
 
-        internal static bool CanApplyDizzyingHaze { get { return Unit.NearbyAttackableUnits(Me.CurrentTarget.Location, 8).Any(x => !x.HasAura("Dizzying Haze") && !x.IsBoss && !x.IsFlying) && Me.HasAura("Shuffle"); } }
+        internal static bool CanApplyDizzyingHaze { get { return U.NearbyAttackableUnits(Me.CurrentTarget.Location, 8).Any(x => !x.HasAura("Dizzying Haze") && !x.IsBoss && !x.IsFlying) && Me.HasAura("Shuffle"); } }
 
-        internal static bool CanApplyBreathofFire { get { return Unit.NearbyAttackableUnits(Me.CurrentTarget.Location, 12).Any(x => !x.HasAura("Breath of Fire") && Me.IsSafelyFacing(x)); } }
+        internal static bool CanApplyBreathofFire { get { return U.NearbyAttackableUnits(Me.CurrentTarget.Location, 12).Any(x => !x.HasAura("Breath of Fire") && Me.IsSafelyFacing(x)); } }
 
         internal static bool CanPlaceBlackOxStatue { get { return SG.Instance.Brewmaster.SummonBlackOxStatue && Me.CurrentTarget != null && !Me.HasAura("Sanctuary of the Ox") && !Me.CurrentTarget.IsFlying && !Me.IsOnTransport; } }
 
@@ -154,7 +155,7 @@ namespace YourBuddy.Rotations.Monk
             new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
             Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
             ClearDizzyingHaze(), // hackish but that fucking circle shit pisses me off.. -- wulf.
-            Spell.Cast("Spinning Crane Kick", ret => Unit.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && (ShuffleSetting >= 1 && Me.HasAura(118636) && Me.HasAura(125359) || (ShuffleSetting >= 1 && Me.HealthPercent < 70 && CooldownTracker.GetSpellCooldown(115295).TotalSeconds > 1))),
+            Spell.Cast("Spinning Crane Kick", ret => U.NearbyAttackableUnitsCount >= MonkSettings.RJWCount && (ShuffleSetting >= 1 && Me.HasAura(118636) && Me.HasAura(125359) || (ShuffleSetting >= 1 && Me.HealthPercent < 70 && CooldownTracker.GetSpellCooldown(115295).TotalSeconds > 1))),
             Spell.Cast("Breath of Fire", ret => NeedBreathofFire && MonkSettings.CheckBreathofFire),
             new Decorator(ret => Me.CurrentChi < Me.MaxChi, ChiBuilder())
                   );
@@ -187,17 +188,17 @@ namespace YourBuddy.Rotations.Monk
         {
             return new PrioritySelector(
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
-                    (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (
-                    (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (
-                    (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Brewmaster.ClassRacials == Enum.AbilityTrigger.Always)
                     )));

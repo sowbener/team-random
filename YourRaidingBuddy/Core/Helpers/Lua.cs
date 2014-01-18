@@ -276,6 +276,27 @@ namespace YourBuddy.Core.Helpers
 
         #endregion
 
+        public static double HolyPower
+        {
+            get
+            {
+                //return Me.CurrentChi;
+                try
+                {
+                    // return Me.CurrentChi;
+                    //using (Memory.AcquireFrame())
+                    {
+                        return Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitPower(\"player\", SPELL_POWER_HOLY_POWER);", 0);
+                    }
+                }
+                catch
+                {
+                    Logger.DebugLog("Failed in Me.CurrentHolyPower");
+                    return 0;
+                }
+            }
+        }
+
         public static double PlayerComboPts
         {
             get

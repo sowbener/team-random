@@ -43,6 +43,21 @@ namespace YourBuddy.Interfaces.Settings
         private YbSettingsFD _settingsFD;
         private YbSettingsUD _settingsUD;
 
+        
+        // Hunter Settings
+        private YbSettingsSV  _settingsSV;
+        private YbSettingsMM  _settingsMM;
+        private YbSettingsBM  _settingsBM;
+
+        //Shaman Settings
+        private YbSettingsES  _settingsES;
+        private YbSettingsENS _settingsENS;
+
+        //Paladin Settings
+        private YbSettingsPR _settingsPR;
+        private YbSettingsRE _settingsRE;
+
+
 
         // General
         [Browsable(false)]
@@ -82,6 +97,7 @@ namespace YourBuddy.Interfaces.Settings
             get { return _settingsAR ?? (_settingsAR = new YbSettingsAR()); }
         }
 
+        //DeathKnight
         [Browsable(false)]
         public YbSettingsBD Blood
         {
@@ -100,6 +116,48 @@ namespace YourBuddy.Interfaces.Settings
             get { return _settingsUD ?? (_settingsUD = new YbSettingsUD()); }
         }
 
+        
+// Hunter Settings
+    [Browsable(false)]
+        public YbSettingsSV Survival
+        {
+            get { return _settingsSV ?? (_settingsSV = new YbSettingsSV()); }
+        }
+    [Browsable(false)]
+        public YbSettingsMM Marksmanship
+        {
+            get { return _settingsMM ?? (_settingsMM = new YbSettingsMM()); }
+        }
+    [Browsable(false)]
+        public YbSettingsBM Beastmastery
+        {
+            get { return _settingsBM ?? (_settingsBM = new YbSettingsBM()); }
+        }
+
+//Shaman Settings
+        [Browsable(false)]
+        public YbSettingsES Elemental
+        {
+            get { return _settingsES ?? (_settingsES = new YbSettingsES()); }
+        }
+
+        [Browsable(false)]
+        public YbSettingsENS Enhancement
+        {
+            get { return _settingsENS ?? (_settingsENS = new YbSettingsENS()); }
+        }
+
+//Paladin Settings
+          [Browsable(false)]
+        public YbSettingsPR Protection
+        {
+            get { return _settingsPR ?? (_settingsPR = new YbSettingsPR()); }
+        }
+          [Browsable(false)]
+          public YbSettingsRE Retribution
+        {
+            get { return _settingsRE ?? (_settingsRE = new YbSettingsRE()); }
+        }
 
 
         #endregion

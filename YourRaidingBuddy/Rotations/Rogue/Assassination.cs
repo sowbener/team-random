@@ -28,7 +28,7 @@ namespace YourBuddy.Rotations.Rogue
             get
             {
                 return new PrioritySelector(
-                    new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),           
+                    new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),           
                         G.ManualCastPause(),
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
                    //    new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
@@ -83,13 +83,13 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
           //      Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
                 Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
-                    (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.Always)
                     ))),
                 Spell.Cast("Preparation", ret => G.Vanishisoncooldown && (
                     (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.VanishCooldown) ||
-                    (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.OnBossAndVanishCooldown && Unit.IsTargetBoss))),
+                    (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.OnBossAndVanishCooldown && U.IsTargetBoss))),
                 Spell.Cast("Dispatch", ret => G._anticipationCount < 4 && (G.YourGoingDownBoss && Lua.PlayerComboPts < 5) || (G.IloveyouSND && G.DispatchProc)),
                 Spell.Cast("Mutilate", ret => G._anticipationCount < 4 && (Me.IsStealthed || Me.IsBehind(Me.CurrentTarget) || G.MeHasShadowFocus || (G.NoDispatchLove && Lua.PlayerComboPts < 5 && G.ImDpsingYou))),
                 Spell.Cast("Rupture", ret => (Lua.PlayerComboPts > 1 && G.TargetRuptureFalling) || (Lua.PlayerComboPts > 4 && G.TargetRuptureFalling5Cps)),
@@ -131,32 +131,32 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 Spell.Cast("Shadow Blades", ret => (G.SpeedBuffsAura || G.ShadowBladesSND) && (
-                    (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
-                    (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
-                    (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura && G.TargetIsClose) && (
-                    (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Vendetta", ret => (G.IloveyouSND || G.ShadowbladesAura || G.SpeedBuffsAura) && G.TargetIsClose && (
-                    (SG.Instance.Assassination.Vendetta == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.Vendetta == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.Vendetta == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.Vendetta == Enum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Marked for Death", ret => G.IloveyouSND && (
-                    (SG.Instance.Assassination.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Assassination.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )));

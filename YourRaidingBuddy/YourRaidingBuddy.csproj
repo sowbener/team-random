@@ -62,9 +62,17 @@
     <Compile Include="Core\Helpers\DotTracker.cs" />
     <Compile Include="Core\Helpers\DeathTracker.cs" />
     <Compile Include="Core\Helpers\Poisons.cs" />
+    <Compile Include="Core\Helpers\Totems.cs" />
+    <Compile Include="Core\Helpers\WeaponImbue.cs" />
     <Compile Include="Core\Item.cs" />
+    <Compile Include="Core\Managers\PetManager.cs" />
     <Compile Include="Core\Spell.cs" />
     <Compile Include="Core\Unit.cs" />
+    <Compile Include="Interfaces\Settings\Paladin_Protection_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Paladin_Retribution_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Hunter_Beastmastery_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Markmanship_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Survival_Settings.cs" />
     <Compile Include="Interfaces\Settings\Deathknight_Blood_Settings.cs" />
     <Compile Include="Interfaces\Settings\Deathknight_Frost_Settings.cs" />
     <Compile Include="Interfaces\Settings\Deathknight_Unholy_Settings.cs" />
@@ -73,14 +81,23 @@
     <Compile Include="Interfaces\Settings\Rogue_Assassination_Settings.cs" />
     <Compile Include="Interfaces\Settings\Rogue_Combat_Settings.cs" />
     <Compile Include="Interfaces\Settings\Rogue_Subtlety_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Shaman_Elemental_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Shaman_Enhancement_Settings.cs" />
     <Compile Include="Rotations\Deathknight\Blood.cs" />
     <Compile Include="Rotations\Deathknight\Frost.cs" />
     <Compile Include="Rotations\Deathknight\Unholy.cs" />
+    <Compile Include="Rotations\Hunter\Beastmastery.cs" />
+    <Compile Include="Rotations\Hunter\Markmanship.cs" />
+    <Compile Include="Rotations\Hunter\Survival.cs" />
     <Compile Include="Rotations\Monk\Brewmaster.cs" />
     <Compile Include="Rotations\Monk\Windwalker.cs" />
+    <Compile Include="Rotations\Paladin\Protection.cs" />
+    <Compile Include="Rotations\Paladin\Retribution.cs" />
     <Compile Include="Rotations\Rogue\Assassination.cs" />
     <Compile Include="Rotations\Rogue\Combat.cs" />
     <Compile Include="Rotations\Rogue\Subtlety.cs" />
+    <Compile Include="Rotations\Shaman\Elemental.cs" />
+    <Compile Include="Rotations\Shaman\Enhancement.cs" />
     <Compile Include="YourBuddy.cs" />
     <Compile Include="Core\Helpers\BotEvents.cs" />
     <Compile Include="Core\Helpers\SpellBook.cs" />
@@ -122,9 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Rotations\Hunter\" />
-    <Folder Include="Rotations\Paladin\" />
-    <Folder Include="Rotations\Shaman\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Interfaces\Images\RoutineLogo.png" />

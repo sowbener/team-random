@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
 using Enum = YourBuddy.Core.Helpers.Enum;
+using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Core
 {
@@ -34,7 +35,7 @@ namespace YourBuddy.Core
             switch (usage)
             {
                 case Enum.AbilityTrigger.OnBossDummy:
-                    return canUseTrinket && Unit.IsTargetBoss;
+                    return canUseTrinket && U.IsTargetBoss;
                 case Enum.AbilityTrigger.OnBlTwHr:
                     return canUseTrinket;
                 case Enum.AbilityTrigger.Always:

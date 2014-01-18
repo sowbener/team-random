@@ -74,7 +74,7 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Revealing Strike", ret => Lua.PlayerComboPts < 5 && !G.RevealingStrike),
                 Spell.Cast("Sinister Strike", ret => Lua.PlayerComboPts < 5),
                 Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
-                   (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                   (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.Always))),
                 Spell.Cast("Eviscerate", ret => Lua.PlayerComboPts > 4 && Me.HasAura("Slice and Dice")),
@@ -126,22 +126,22 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 Spell.Cast("Killing Spree", ret => (Lua.PlayerPower < 35 && G.SNDSetting > 4 && !Me.HasAura(13750)) && (
-                   (SG.Instance.Combat.KillingSpree == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                   (SG.Instance.Combat.KillingSpree == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Combat.KillingSpree == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Combat.KillingSpree == Enum.AbilityTrigger.Always)
                    )),
                 Spell.Cast("Adrenaline Rush", ret => (Lua.PlayerPower < 35 || Me.HasAura(121471)) && (
-                    (SG.Instance.Combat.AdrenalineRush == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Combat.AdrenalineRush == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Combat.AdrenalineRush == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                    (SG.Instance.Combat.AdrenalineRush == Enum.AbilityTrigger.Always)
                    )),
                 Spell.Cast("Shadow Blades", ret => G.SNDSetting > 4 && (
-                    (SG.Instance.Combat.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Combat.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Combat.ShadowBlades == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Combat.ShadowBlades == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Marked for Death", ret => G.IloveyouSND && (
-                    (SG.Instance.Combat.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Combat.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Combat.Tier6Abilities == Enum.AbilityTrigger.OnBossDummy && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Combat.Tier6Abilities == Enum.AbilityTrigger.Always)
                     )));
@@ -154,7 +154,7 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 new Decorator(
-                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (Unit.NearbyAggroUnitsCount > 7),
+                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAggroUnitsCount > 7),
                     new Sequence(
                         new Styx.TreeSharp.Action(ret => Logger.DiagLogFb("/cancel Blade Flurry")),
                         new Styx.TreeSharp.Action(ret => Me.CancelAura("Blade Flurry")),

@@ -14,6 +14,7 @@ using G = YourBuddy.Rotations.Global;
 using SH = YourBuddy.Interfaces.Settings.SettingsH;
 using YourBuddy.Core.Helpers;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
+using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Rotations.Deathknight
 {
@@ -93,7 +94,7 @@ namespace YourBuddy.Rotations.Deathknight
             return new PrioritySelector(
                      Spell.Cast("Unholy Blight", ret => TalentManager.IsSelected(3) && Me.IsWithinMeleeRange && NeedBothDisUpAoE),
                      Spell.PreventDoubleCast("Plague Strike", 0.7, ret => NeedBothDisUpAoE && UnholyBlightCheck),
-                     Spell.PreventDoubleCast("Pestilence", 1, ret => Unit.AoeBPCheck && UnholyBlightCheck && OutBreakCooldown),
+                     Spell.PreventDoubleCast("Pestilence", 1, ret => U.AoeBPCheck && UnholyBlightCheck && OutBreakCooldown),
                      Spell.Cast("Summon Gargoyle", ret => SG.Instance.Unholy.UseGargoyleInAoE),
                      Spell.Cast("Dark Transformation"),
                      Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks5 && ShadowInfusionStack5),
@@ -201,7 +202,7 @@ namespace YourBuddy.Rotations.Deathknight
         private const int KillingMachine = 51124;
         private static bool HowlingBlastProc { get { return Me.HasAura("Freezing Fog"); } }
         private static bool ObliterateProc { get { return Me.HasAura(51124); } }
-        private static bool EmpowerRuneWeapon { get { return Me.CurrentTarget != null && Me.IsWithinMeleeRange && Unit.IsTargetBoss && CooldownTracker.GetSpellCooldown(85948).TotalMilliseconds > 1200 && CooldownTracker.GetSpellCooldown(55090).TotalMilliseconds > 1200 && Lua.PlayerPower < 32; } }
+        private static bool EmpowerRuneWeapon { get { return Me.CurrentTarget != null && Me.IsWithinMeleeRange && U.IsTargetBoss && CooldownTracker.GetSpellCooldown(85948).TotalMilliseconds > 1200 && CooldownTracker.GetSpellCooldown(55090).TotalMilliseconds > 1200 && Lua.PlayerPower < 32; } }
 
         //RunesCheck
         private static bool ObliterateRunes6 { get { return G.DeathRuneSlotsActive + G.FrostRuneSlotsActive + G.UnholyRuneSlotsActive == 6; } }

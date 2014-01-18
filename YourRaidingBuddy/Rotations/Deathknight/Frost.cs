@@ -14,6 +14,7 @@ using G = YourBuddy.Rotations.Global;
 using SH = YourBuddy.Interfaces.Settings.SettingsH;
 using YourBuddy.Core.Helpers;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
+using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Rotations.Deathknight
 {
@@ -125,7 +126,7 @@ namespace YourBuddy.Rotations.Deathknight
             return new PrioritySelector(
                         Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && UnholyBlightCheck && NeedBothDisUpAoE),
                         Spell.Cast("Outbreak", ret => NeedBothDisUpAoE && UnholyBlightCheck || !TalentManager.IsSelected(3)),
-                        Spell.PreventDoubleCast("Pestilence", 1, ret => Me.DeathRuneCount > 1 && Unit.AoeBPCheck && CooldownTracker.SpellOnCooldown(77575)),
+                        Spell.PreventDoubleCast("Pestilence", 1, ret => Me.DeathRuneCount > 1 && U.AoeBPCheck && CooldownTracker.SpellOnCooldown(77575)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => Me.UnholyRuneCount > 0),
@@ -149,32 +150,32 @@ namespace YourBuddy.Rotations.Deathknight
         {
             return new PrioritySelector(
                 Spell.Cast("Pillar of Frost", ret => Me.CurrentTarget != null && (
-                    (SG.Instance.Frost.PillarofFrost == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Frost.PillarofFrost == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.PillarofFrost == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.PillarofFrost == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Raise Dead", ret => Me.CurrentTarget != null && Me.HasAura("Pillar of Frost") && (
-                    (SG.Instance.Frost.RaiseDead == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Frost.RaiseDead == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.RaiseDead == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.RaiseDead == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
-                    (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                     Spell.Cast("Empower Rune Weapon", ret => ((Item.WieldsTwoHandedWeapons && CanEmpowerRuneWeapon) || (!Item.WieldsTwoHandedWeapons && CanEmpowerRuneWeaponDW)) && (
-                    (SG.Instance.Frost.EmpowerRuneWeapon == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Frost.EmpowerRuneWeapon == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.EmpowerRuneWeapon == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.EmpowerRuneWeapon == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (
-                    (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (
-                    (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Frost.ClassRacials == Enum.AbilityTrigger.Always)
                     )));

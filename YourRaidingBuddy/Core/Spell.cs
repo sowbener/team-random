@@ -132,6 +132,16 @@ namespace YourBuddy.Core
         }
 
         /// <summary>
+        /// Allows waiting for SleepForLagDuration() but ending sooner if condition is met
+        /// </summary>
+        /// <param name="orUntil">if true will stop waiting sooner than lag maximum</param>
+        /// <returns></returns>
+        public static Composite CreateWaitForLagDuration(CanRunDecoratorDelegate orUntil = null)
+        {
+            return new WaitContinue(TimeSpan.FromMilliseconds((StyxWoW.WoWClient.Latency * 2) + 150), orUntil, new ActionAlwaysSucceed());
+        }
+
+        /// <summary>
         /// Casting method for casting on Ground location - string
         /// </summary>
         /// <param name="spellname">String Spellname</param>
@@ -757,6 +767,16 @@ namespace YourBuddy.Core
 
             return u.IsCasting ? u.CastingSpellId : (u.IsChanneling ? u.ChanneledCastingSpellId : 0);
         }
+
+        public static double GetSpellCastTime(int spell)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                return results.Override != null ? results.Override.CastTime / 1000.0 : results.Original.CastTime / 1000.0;
+            }
+            return 99999.9;
+        }
         #endregion
 
         #region MeHasAnyAura (Credits millz)
@@ -954,6 +974,62 @@ namespace YourBuddy.Core
                 return wantedAura != null ? wantedAura.StackCount : 0;
             }
             return 0;
+        }
+
+        public static double GetSpellCastTime(string spell)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                return results.Override != null ? results.Override.CastTime / 1000.0 : results.Original.CastTime / 1000.0;
+            }
+
+            return 99999.9;
+        }
+
+        public static float SpellDistance(this WoWUnit unit, WoWUnit other = null)
+        {
+            // abort if mob null
+            if (unit == null)
+                return 0;
+
+            // optional arg implying Me, then make sure not Mob also
+            if (other == null)
+                other = StyxWoW.Me;
+
+            // pvp, then keep it close
+            float dist = other.Location.Distance(unit.Location);
+            dist -= other.CombatReach + unit.CombatReach;
+            return Math.Max(0, dist);
+        }
+
+        public static Composite CastHunterTrap(string trapName, LocationRetriever onLocation, CanRunDecoratorDelegate req = null)
+        {
+            const bool useLauncher = true;
+            return new PrioritySelector(
+                new Decorator(
+                    ret => onLocation != null
+                        && (req == null || req(ret))
+                        && StyxWoW.Me.Location.Distance(onLocation(ret)) < (40 * 40)
+                        && SpellManager.HasSpell(trapName) && CooldownTracker.GetSpellCooldown(trapName) == TimeSpan.Zero,
+                    new Sequence(
+                        new Action(ret => Logger.DebugLog("Trap: use trap launcher requested: {0}", useLauncher)),
+                        new PrioritySelector(
+                            new Decorator(ret => useLauncher && Me.HasAura("Trap Launcher"), new ActionAlwaysSucceed()),
+                            Cast("Trap Launcher", ret => useLauncher && !Me.HasAura("Trap Launcher")),
+                            new Decorator(ret => !useLauncher, new Action(ret => Me.CancelAura("Trap Launcher")))
+                            ),
+                        new Wait(TimeSpan.FromMilliseconds(500),
+                            ret => (useLauncher && Me.HasAura("Trap Launcher")),
+                            new ActionAlwaysSucceed()),
+                        new Action(ret => Logger.DebugLog("Trap: launcher aura present = {0}", Me.HasAura("Trap Launcher"))),
+                        new Action(ret => Logger.DebugLog("^{0} trap: {1}", useLauncher ? "Launch" : "Set", trapName)),
+                        new Action(ret => SpellManager.Cast(trapName)),
+                        new Action(ret => { SpellManager.ClickRemoteLocation(onLocation(ret)); }),
+                        new Action(ret => Logger.DebugLog("Trap: Complete!"))
+                        )
+                    )
+                );
         }
 
         public static uint GetAuraStack(WoWUnit unit, string spellId)

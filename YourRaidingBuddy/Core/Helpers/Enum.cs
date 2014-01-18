@@ -23,6 +23,18 @@ namespace YourBuddy.Core.Helpers
         }
         #endregion
 
+        #region PetStuff
+        public enum CallPet
+        {
+            None,
+            Pet1 = 1,
+            Pet2 = 2,
+            Pet3 = 3,
+            Pet4 = 4,
+            Pet5 = 5
+        }
+        #endregion
+
         #region General ENUMS
         public enum AbilityTrigger
         {
@@ -75,6 +87,24 @@ namespace YourBuddy.Core.Helpers
             Crippling,
             Paralytic,
             Mindnumbing
+
+        }
+
+        public enum WeaponImbueM
+        {
+            Windfury,
+            Flametongue,
+            Frostbrand,
+            Rockbiter
+
+        }
+
+        public enum WeaponImbueO
+        {
+            Windfury,
+            Flametongue,
+            Frostbrand,
+            Rockbiter
 
         }
 
