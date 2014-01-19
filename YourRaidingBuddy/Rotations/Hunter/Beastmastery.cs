@@ -18,12 +18,12 @@ using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Rotations.Hunter
 {
-    class Beastmastery
+    class BeastMastery
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         #region Initialize Rotations
-        internal static Composite InitializeBeastmastery
+        internal static Composite InitializeBeastMastery
         {
             get
             {
@@ -218,7 +218,7 @@ namespace YourBuddy.Rotations.Hunter
         {
             get
             {
-                return Spell.GetAuraStack(Me, "Frenzy");
+                return Spell.GetAuraStackCount("Frenzy");
             }
         }
 
@@ -235,17 +235,17 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
         internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && (!Me.CurrentTarget.HasMyAura("Serpent Sting") || Spell.GetAuraTimeMilliEnemy("Serpent Sting") < 2000); } }
-        internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
-        internal static bool KillCommandCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(34026).Cooldown; } }
+        internal static bool ExplosiveShotOffCooldown { get { return !CooldownTracker.SpellOnCooldown(53301); } }
+        internal static bool KillCommandCooldown { get { return CooldownTracker.SpellOnCooldown(34026); } }
         internal static bool FocusFireFiveStacks { get { return FocusFireStackCount == 5; } }
         internal static bool BestialWrathNotUp { get { return Lua.PlayerPower > 60 && !Me.HasAura(34471); } }
         internal static bool BestialWrathUp { get { return Me.HasAura(34471); } }
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
         internal static bool MultiShotThrillProc { get { return Me.HasAura("Thrill of the Hunt") && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura("Thrill of the Hunt"); } }
-        internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
-        internal static bool BestialWrathIsNotOnCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(19574).Cooldown; } }
-        internal static bool BWSpellCoolDown2Seconds { get { return Styx.WoWInternals.WoWSpell.FromId(19574).CooldownTimeLeft.Milliseconds < 2000; } }
+        internal static bool BlackArrowIsOnCooldown { get { return CooldownTracker.SpellOnCooldown(3674); } }
+        internal static bool BestialWrathIsNotOnCooldown { get { return !CooldownTracker.SpellOnCooldown(19574); } }
+        internal static bool BWSpellCoolDown2Seconds { get { return CooldownTracker.GetSpellCooldown(19574).Milliseconds < 2000; } }
         internal static bool Focus60 { get { return Lua.PlayerPower < 64; } }
         internal static bool Focus61 { get { return Lua.PlayerPower >= 61; } }
 

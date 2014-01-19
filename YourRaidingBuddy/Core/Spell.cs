@@ -401,6 +401,33 @@ namespace YourBuddy.Core
 
         #region AuraStuffMore
 
+        public static uint GetAuraStackCount(string aura)
+        {
+            var result = StyxWoW.Me.GetAuraFromName(aura);
+
+            if (result != null)
+            {
+                if (result.StackCount > 0)
+                    return result.StackCount;
+            }
+
+            return 0;
+        }
+
+        public static uint GetAuraStackCount(int spellId)
+        {
+            var result = StyxWoW.Me.GetAuraFromID(spellId);
+
+            if (result != null)
+            {
+                if (result.StackCount > 0)
+                    return result.StackCount;
+            }
+
+            return 0;
+        }
+
+
         public static TimeSpan GetAuraTimeLeft(this WoWUnit onUnit, string auraName, bool fromMyAura = true)
         {
             WoWAura wantedAura =
