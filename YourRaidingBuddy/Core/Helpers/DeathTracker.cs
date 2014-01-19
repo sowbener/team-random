@@ -207,8 +207,8 @@ namespace YourBuddy.Core.Helpers
 
                 //Logger.DebugLog("DSTracker: Total Damage [{0}]", damageOverFiveSeconds);
 
-                scentBloodStacks = Spell.GetAuraStack(StyxWoW.Me, "Scent of Blood");
-                bloodChargeStacks = Spell.GetAuraStack(StyxWoW.Me, "Blood Charge");
+                scentBloodStacks = Spell.GetAuraStackCount("Scent of Blood");
+                bloodChargeStacks = Spell.GetAuraStackCount("Blood Charge");
                 var healthDeficit = (StyxWoW.Me.MaxHealth - StyxWoW.Me.CurrentHealth);
 
                 // This should return the predicted shield over the last 5 seconds
@@ -260,7 +260,7 @@ namespace YourBuddy.Core.Helpers
                 // Luck of the Draw - MoP Dungeon bonus
                 if (StyxWoW.Me.HasAura("Luck of the Draw"))
                 {
-                    lotDStackcount = Spell.GetAuraStack(StyxWoW.Me, "Luck of the Draw");
+                    lotDStackcount = Spell.GetAuraStackCount("Luck of the Draw");
                 }
                 luckOfTheDrawAmt = LUCK_OF_THE_DRAW_MOD * lotDStackcount;
 
