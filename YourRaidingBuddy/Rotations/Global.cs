@@ -336,6 +336,8 @@ namespace YourBuddy.Rotations
 
         #region RogueStuff
 
+        internal static bool WeakenedBlowsAura { get { return !Me.CurrentTarget.HasAura(113746); } }
+
         internal static int AnticipationCount
         {
             get

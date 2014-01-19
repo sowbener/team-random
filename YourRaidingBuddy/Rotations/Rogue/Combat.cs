@@ -37,7 +37,7 @@ namespace YourBuddy.Rotations.Rogue
                  //       G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
                //         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
-                        CreateBladeFlurryBehavior(),
+          //              CreateBladeFlurryBehavior(),
                         new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
@@ -68,7 +68,7 @@ namespace YourBuddy.Rotations.Rogue
        internal static Composite ComSt()
         {
             return new PrioritySelector(
-           //     Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
+                Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
                 Spell.Cast("Revealing Strike", ret => Lua.PlayerComboPts < 5 && !G.RevealingStrike),

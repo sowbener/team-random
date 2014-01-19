@@ -35,6 +35,7 @@ namespace YourBuddy.Rotations.Rogue
                         G.ManualCastPause(),
                         //new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),    
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
+                     Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                             new PrioritySelector(

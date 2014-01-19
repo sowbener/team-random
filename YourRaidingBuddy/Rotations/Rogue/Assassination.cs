@@ -81,7 +81,7 @@ namespace YourBuddy.Rotations.Rogue
                     Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 4)
                     )),
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
-          //      Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
+                Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
                 Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
                     (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
@@ -108,7 +108,7 @@ namespace YourBuddy.Rotations.Rogue
         static Composite AssaMt()
         {
             return new PrioritySelector(
-           //   new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Assassination.EnableFeintUsage && !Me.HasAura("Feint")))),
+              new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Assassination.EnableFeintUsage && !Me.HasAura("Feint")))),
               new Decorator(ret => U.NearbyAttackableUnitsCount > 2,
               new PrioritySelector(
               Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 5),
