@@ -39,159 +39,20 @@ namespace YourBuddy.Core.Helpers
     // 00.00.00.000
 
     [UsedImplicitly]
-    public static class CooldownTracker
+
+    internal static class CooldownTracker
     {
-        public delegate T Selection<out T>(object context);
+        // ReSharper disable once InconsistentNaming
+        internal static Dictionary<WoWSpell, DateTime> cooldowns = new Dictionary<WoWSpell, DateTime>();
 
-        private static readonly Dictionary<WoWSpell, DateTime> Cooldowns = new Dictionary<WoWSpell, DateTime>();
-
-        private static bool IsOnCooldown(int spell, int buffer = 2)
-        {
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                WoWSpell result = results.Override ?? results.Original;
-                try
-                {
-                    DateTime lastUsed;
-                    if (Cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
-                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
-                        {
-                            //Logger.Output("Checked cooldown for {0} at {1}", spell, DateTime.Now);
-                            return result.Cooldown;
-                        }
-
-                        //Logger.Output("Found {0} but not ready to check at {1}", spell, DateTime.Now);
-                        return true;
-                    }
-                }
-                catch
-                {
-                    //Logger.Output("FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
-                    return false;
-                }
-            }
-            else
-            {
-                Logger.DebugLog("FindSpell {0} failed at {1}", spell, DateTime.Now);
-            }
-            return false;
-        }
-
-        private static bool IsOnCooldown(string spell, int buffer = 2)
-        {
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                WoWSpell result = results.Override ?? results.Original;
-                try
-                {
-                    DateTime lastUsed;
-                    if (Cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
-                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
-                        {
-                            //Logger.Output("Checked cooldown for {0} at {1}", spell, DateTime.Now);
-                            return result.Cooldown;
-                        }
-
-                        //Logger.Output("Found {0} but not ready to check at {1}", spell, DateTime.Now);
-                        return true;
-                    }
-                }
-                catch
-                {
-                    //Logger.Output("FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
-                    return false;
-                }
-            }
-            else
-            {
-                Logger.DebugLog("FindSpell {0} failed at {1}", spell, DateTime.Now);
-            }
-            return false;
-        }
-
-        private static TimeSpan CooldownTimeLeft(int spell, int buffer = 2)
-        {
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                WoWSpell result = results.Override ?? results.Original;
-                try
-                {
-                    DateTime lastUsed;
-                    if (Cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
-                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
-                        {
-                            //Logger.Output("Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
-                            return result.CooldownTimeLeft;
-                        }
-
-                        //Logger.Output("Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
-                        return TimeSpan.FromSeconds(10);
-                    }
-                }
-                catch
-                {
-                    //Logger.Output("FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
-                    return TimeSpan.MaxValue;
-                }
-            }
-            else
-            {
-                Logger.DebugLog("FindSpell {0} failed at {1}", spell, DateTime.Now);
-            }
-            return TimeSpan.MaxValue;
-        }
-
-        private static TimeSpan CooldownTimeLeft(string spell, int buffer = 2)
-        {
-            SpellFindResults results;
-            if (SpellManager.FindSpell(spell, out results))
-            {
-                WoWSpell result = results.Override ?? results.Original;
-                try
-                {
-                    DateTime lastUsed;
-                    if (Cooldowns.TryGetValue(result, out lastUsed))
-                    {
-                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
-                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
-                        {
-                            //Logger.Output("Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
-                            return result.CooldownTimeLeft;
-                        }
-
-                        //Logger.Output("Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
-                        return TimeSpan.FromSeconds(10);
-                    }
-                }
-                catch
-                {
-                    //Logger.Output("FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
-                    return TimeSpan.MaxValue;
-                }
-            }
-            else
-            {
-                Logger.DebugLog("FindSpell {0} failed at {1}", spell, DateTime.Now);
-            }
-            return TimeSpan.MaxValue;
-        }
-
+        // Adding casted spells to dictionary with datetime
         internal static void SpellUsed(string spell)
         {
             SpellFindResults results;
             if (SpellManager.FindSpell(spell, out results))
             {
                 WoWSpell result = results.Override ?? results.Original;
-                Cooldowns[result] = DateTime.Now.Add(result.CooldownTimeLeft);
+                cooldowns[result] = DateTime.Now.Add(result.CooldownTimeLeft);
             }
         }
 
@@ -201,85 +62,215 @@ namespace YourBuddy.Core.Helpers
             if (SpellManager.FindSpell(spell, out results))
             {
                 WoWSpell result = results.Override ?? results.Original;
-                Cooldowns[result] = DateTime.Now.Add(result.CooldownTimeLeft);
+                cooldowns[result] = DateTime.Now.Add(result.CooldownTimeLeft);
             }
         }
 
-        #region LogSpellUsed
-
-        private static Composite LogSpellUsed(int spell)
+        // Get the CooldownTimeLeft on a spell, by default it will only return the true result at less than a second.
+        public static TimeSpan GetSpellCooldown(string spell, int buffer = 1, bool cdoverride = true)
         {
-            return new Sequence(
-                // if spell was in progress before cast (we queued this one) then wait for the in progress one to finish
-                            new WaitContinue(
-                                new TimeSpan(0, 0, 0, 0, (int)StyxWoW.WoWClient.Latency << 1),
-                                ret => !(Spell.IsGlobalCooldown() || StyxWoW.Me.IsCasting || StyxWoW.Me.ChanneledSpell != null),
-                                new ActionAlwaysSucceed()
-                                ),
-                // wait for this cast to appear on the GCD or Spell Casting indicators
-                            new WaitContinue(
-                                new TimeSpan(0, 0, 0, 0, (int)StyxWoW.WoWClient.Latency << 1),
-                                ret => Spell.IsGlobalCooldown() || StyxWoW.Me.IsCasting || StyxWoW.Me.ChanneledSpell != null,
-                                new ActionAlwaysSucceed()
-                                ),
-                // Log the spell used in cooldowns dictionary
-                           new Styx.TreeSharp.Action(ret => SpellUsed(spell)));
+            using (new PerformanceLogger("GetSpellCooldown"))
+            {
+                if (cdoverride) return CooldownTimeLeft(spell);
+
+                SpellFindResults results;
+                if (SpellManager.FindSpell(spell, out results))
+                {
+                    return results.Override != null ? results.Override.CooldownTimeLeft : results.Original.CooldownTimeLeft;
+                }
+
+                return TimeSpan.MaxValue;
+            }
         }
 
-        private static Composite LogSpellUsed(string spell)
+        public static TimeSpan GetSpellCooldown(int spell, int buffer = 1, bool cdoverride = true)
         {
-            return new Sequence(
-                // if spell was in progress before cast (we queued this one) then wait for the in progress one to finish
-                            new WaitContinue(
-                                new TimeSpan(0, 0, 0, 0, (int)StyxWoW.WoWClient.Latency << 1),
-                                ret => !(Spell.IsGlobalCooldown() || StyxWoW.Me.IsCasting || StyxWoW.Me.ChanneledSpell != null),
-                                new ActionAlwaysSucceed()
-                                ),
-                // wait for this cast to appear on the GCD or Spell Casting indicators
-                            new WaitContinue(
-                                new TimeSpan(0, 0, 0, 0, (int)StyxWoW.WoWClient.Latency << 1),
-                                ret => Spell.IsGlobalCooldown() || StyxWoW.Me.IsCasting || StyxWoW.Me.ChanneledSpell != null,
-                                new ActionAlwaysSucceed()
-                                ),
-                // Log the spell used in cooldowns dictionary
-                           new Styx.TreeSharp.Action(ret => SpellUsed(spell)));
-        }
-#endregion
+            using (new PerformanceLogger("GetSpellCooldown"))
+            {
+                if (cdoverride) return CooldownTimeLeft(spell);
 
-        #region Spells - methods to handle Spells such as cooldowns
+                SpellFindResults results;
+                if (SpellManager.FindSpell(spell, out results))
+                {
+                    return results.Override != null ? results.Override.CooldownTimeLeft : results.Original.CooldownTimeLeft;
+                }
 
-        /// <summary>
-        /// Get the CooldownTimeLeft on a spell, by default it will only return the true result at less than a second.
-        /// </summary>
-        /// <param name="spell">the spell to check for</param>
-        /// <param name="buffer">the amount of time to left to begin checking HB for the cooldown</param>
-        /// <returns>the time left or Maxtime</returns>
-        public static TimeSpan GetSpellCooldown(string spell, int buffer = 1)
-        {
-            return CooldownTimeLeft(spell);
+                return TimeSpan.MaxValue;
+            }
         }
 
-        /// <summary>
-        /// Get the CooldownTimeLeft on a spell, by default it will only return the true result at less than a second.
-        /// </summary>
-        /// <param name="spell">the spell to check for</param>
-        /// <param name="buffer">the amount of time to left to begin checking HB for the cooldown</param>
-        /// <returns>the time left or Maxtime</returns>
-        public static TimeSpan GetSpellCooldown(int spell, int buffer = 1)
+        // Checks if spell is on cooldown.
+        public static bool SpellOnCooldown(string spell, bool cdoverride = true)
         {
-            return CooldownTimeLeft(spell);
+            using (new PerformanceLogger("SpellOnCooldown"))
+            {
+                if (cdoverride) return IsOnCooldown(spell);
+
+                SpellFindResults results;
+                if (SpellManager.FindSpell(spell, out results))
+                {
+                    return results.Override != null ? results.Override.Cooldown : results.Original.Cooldown;
+                }
+
+                return false;
+            }
+
         }
 
-        public static bool SpellOnCooldown(string spell)
+        public static bool SpellOnCooldown(int spell, bool cdoverride = true)
         {
-            return IsOnCooldown(spell);
+            using (new PerformanceLogger("SpellOnCooldown"))
+            {
+                if (cdoverride) return IsOnCooldown(spell);
+
+                SpellFindResults results;
+                if (SpellManager.FindSpell(spell, out results))
+                {
+                    return results.Override != null ? results.Override.Cooldown : results.Original.Cooldown;
+                }
+
+                return false;
+            }
         }
 
-        public static bool SpellOnCooldown(int spell)
+        // Magic behind it ...
+        private static bool IsOnCooldown(int spell, int buffer = 1)
         {
-            return IsOnCooldown(spell);
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                WoWSpell result = results.Override ?? results.Original;
+                try
+                {
+                    DateTime lastUsed;
+                    if (cooldowns.TryGetValue(result, out lastUsed))
+                    {
+                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
+                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
+                        {
+                            Logger.CooldownTrackerLog("FU: Checked cooldown for {0} at {1}", spell, DateTime.Now);
+                            return result.Cooldown;
+                        }
+                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check at {1}", spell, DateTime.Now);
+                        return true;
+                    }
+                }
+                catch
+                {
+                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    return false;
+                }
+            }
+            else
+            {
+                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+            }
+            return false;
         }
 
-        #endregion Spells - methods to handle Spells such as cooldowns
+        private static bool IsOnCooldown(string spell, int buffer = 1)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                WoWSpell result = results.Override ?? results.Original;
+                try
+                {
+                    DateTime lastUsed;
+                    if (cooldowns.TryGetValue(result, out lastUsed))
+                    {
+                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
+                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
+                        {
+                            Logger.CooldownTrackerLog("FU: Checked cooldown for {0} at {1}", spell, DateTime.Now);
+                            return result.Cooldown;
+                        }
+
+                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check at {1}", spell, DateTime.Now);
+                        return true;
+                    }
+                }
+                catch
+                {
+                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    return false;
+                }
+            }
+            else
+            {
+                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+            }
+            return false;
+        }
+
+        private static TimeSpan CooldownTimeLeft(int spell, int buffer = 1)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                WoWSpell result = results.Override ?? results.Original;
+                try
+                {
+                    DateTime lastUsed;
+                    if (cooldowns.TryGetValue(result, out lastUsed))
+                    {
+                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
+                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
+                        {
+                            Logger.CooldownTrackerLog("FU: Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
+                            return result.CooldownTimeLeft;
+                        }
+
+                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
+                        return TimeSpan.FromSeconds(10);
+                    }
+                }
+                catch
+                {
+                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    return TimeSpan.MaxValue;
+                }
+            }
+            else
+            {
+                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+            }
+            return TimeSpan.MaxValue;
+        }
+
+        private static TimeSpan CooldownTimeLeft(string spell, int buffer = 1)
+        {
+            SpellFindResults results;
+            if (SpellManager.FindSpell(spell, out results))
+            {
+                WoWSpell result = results.Override ?? results.Original;
+                try
+                {
+                    DateTime lastUsed;
+                    if (cooldowns.TryGetValue(result, out lastUsed))
+                    {
+                        var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
+                        if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
+                        {
+                            Logger.CooldownTrackerLog("FU: Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
+                            return result.CooldownTimeLeft;
+                        }
+
+                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
+                        return TimeSpan.FromSeconds(10);
+                    }
+                }
+                catch
+                {
+                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    return TimeSpan.MaxValue;
+                }
+            }
+            else
+            {
+                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+            }
+            return TimeSpan.MaxValue;
+        }
     }
 }

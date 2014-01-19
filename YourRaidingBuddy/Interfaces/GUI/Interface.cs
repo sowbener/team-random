@@ -58,6 +58,7 @@ namespace YourBuddy.Interfaces.GUI
             InitializeComponent();
             InternalSettings.Instance.Load();
             SettingsH.Instance.Load();
+            RebuildGUI();
 
             // Key library: http://msdn.microsoft.com/en-us/library/aa245676(v=vs.60).aspx
             // Hotkey - Demoralizing Banner
@@ -463,6 +464,9 @@ namespace YourBuddy.Interfaces.GUI
                                   Utilities.AssemblyDirectory);
         }
 
+
+
+
         private void FuInterface_Load(object sender, EventArgs e)
         {
             GeneralGrid.SelectedObject = InternalSettings.Instance.General;
@@ -697,6 +701,16 @@ namespace YourBuddy.Interfaces.GUI
         }
 
         private void HkDemoBannerLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HotkeyPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void HotkeyPanel_Paint_1(object sender, PaintEventArgs e)
         {
 
         }

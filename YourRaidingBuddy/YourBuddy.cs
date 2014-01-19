@@ -45,7 +45,7 @@ namespace YourBuddy
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static readonly Version Revision = new Version(1, 0, 0);
-        public static readonly string YbName = "YourRaidingBuddy" + Revision;
+        public static readonly string YbName = "YourRaidingBuddy"  + Revision;
         public static readonly string WoWVersion = "5.4.2";
 
         internal static double _initap = 0;
@@ -194,6 +194,7 @@ namespace YourBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, G.InitializePreBuffRogue));
         }
+     
 
         internal Composite CombatSelector()
         {

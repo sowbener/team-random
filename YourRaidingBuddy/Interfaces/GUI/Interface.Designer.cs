@@ -1,4 +1,5 @@
-﻿namespace YourBuddy.Interfaces.GUI
+﻿using Styx;
+namespace YourBuddy.Interfaces.GUI
 {
     partial class Interface
     {
@@ -18,6 +19,83 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public bool RebuildGUI()
+        {
+            switch (StyxWoW.Me.Specialization)
+            {
+                //DeathKnight
+                case WoWSpec.DeathKnightBlood:
+                    this.HkTier4AbilityLabel.Text = "LOL";
+                    // etc
+                    Refresh();
+                    return true;
+                case WoWSpec.DeathKnightFrost:
+                    //Form.Text = " ";
+                    // etc
+                    Refresh();
+                    return true;
+                case WoWSpec.DeathKnightUnholy:
+                    this.HkTier4AbilityLabel.Text = "LOL";
+                    Refresh();
+                    return true;
+                    //Monk
+                case WoWSpec.MonkWindwalker:
+                    this.HkTier4AbilityLabel.Text = "WTF";
+                    Refresh();
+                    return true;
+                case WoWSpec.MonkBrewmaster:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                    //Hunter
+                case WoWSpec.HunterBeastMastery:
+                    this.HkTier4AbilityLabel.Text = "WTF";
+                    Refresh();
+                    return true;
+                case WoWSpec.HunterSurvival:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                case WoWSpec.HunterMarksmanship:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                    //Rogue
+                case WoWSpec.RogueAssassination:
+                    this.HkTier4AbilityLabel.Text = "WTF";
+                    Refresh();
+                    return true;
+                case WoWSpec.RogueCombat:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                case WoWSpec.RogueSubtlety:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                    //Shaman
+                case WoWSpec.ShamanElemental:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                case WoWSpec.ShamanEnhancement:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                    //Paladin
+                case WoWSpec.PaladinProtection:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+                case WoWSpec.PaladinRetribution:
+                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    Refresh();
+                    return true;
+
+            }
+            return false;
         }
 
         #region Windows Form Designer generated code
@@ -187,9 +265,9 @@
             this.HkDemoBannerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkDemoBannerLabel.Location = new System.Drawing.Point(5, 31);
             this.HkDemoBannerLabel.Name = "HkDemoBannerLabel";
-            this.HkDemoBannerLabel.Size = new System.Drawing.Size(70, 16);
+            this.HkDemoBannerLabel.Size = new System.Drawing.Size(74, 16);
             this.HkDemoBannerLabel.TabIndex = 4;
-            this.HkDemoBannerLabel.Text = "I said what";
+            this.HkDemoBannerLabel.Text = "I\'m a retard";
             this.HkDemoBannerLabel.Click += new System.EventHandler(this.HkDemoBannerLabel_Click);
             this.HkDemoBannerLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkDemoBannerLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkDemoralizingBanner_MouseMove);
@@ -278,6 +356,7 @@
             // 
             // ComboHkModifier
             // 
+           
             this.ComboHkModifier.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkModifier.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ComboHkModifier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
@@ -456,9 +535,8 @@
             this.HkTier4AbilityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkTier4AbilityLabel.Location = new System.Drawing.Point(5, 151);
             this.HkTier4AbilityLabel.Name = "HkTier4AbilityLabel";
-            this.HkTier4AbilityLabel.Size = new System.Drawing.Size(46, 16);
+            this.HkTier4AbilityLabel.Size = new System.Drawing.Size(0, 16);
             this.HkTier4AbilityLabel.TabIndex = 22;
-            this.HkTier4AbilityLabel.Text = "What?";
             this.HkTier4AbilityLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkTier4AbilityLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkTier4Ability_MouseMove);
             // 
@@ -558,6 +636,7 @@
             this.HotkeyPanel.Name = "HotkeyPanel";
             this.HotkeyPanel.Size = new System.Drawing.Size(334, 477);
             this.HotkeyPanel.TabIndex = 3;
+            this.HotkeyPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HotkeyPanel_Paint_1);
             // 
             // Interface
             // 
@@ -614,11 +693,11 @@
         private System.Windows.Forms.ComboBox ComboHkShatteringThrow;
         private System.Windows.Forms.Label HkShattThrowLabel;
         private System.Windows.Forms.ComboBox ComboHkTier4Ability;
-        private System.Windows.Forms.Label HkTier4AbilityLabel;
         private System.Windows.Forms.ComboBox ComboHkSpecial;
         private System.Windows.Forms.Label HkSpecialLabel;
         private System.Windows.Forms.ComboBox ComboHkMockingBanner;
         private System.Windows.Forms.Label HkMockingBannerLabel;
         private System.Windows.Forms.Panel HotkeyPanel;
+        internal System.Windows.Forms.Label HkTier4AbilityLabel;
     }
 }
