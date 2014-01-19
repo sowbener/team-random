@@ -695,5 +695,10 @@ namespace YourBuddy.Interfaces.GUI
         {
 
         }
+
+        private void HkDemoBannerLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

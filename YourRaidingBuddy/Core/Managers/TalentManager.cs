@@ -83,20 +83,20 @@ namespace YourBuddy.Core.Managers
             int[] oldTalent = TalentId;
             int[] oldGlyph = GlyphId;
 
-            Logger.CombatLogOr("{0} Event Fired!", args.Event);
+            Logger.DebugLog("{0} Event Fired!", args.Event);
 
             Update();
 
             if (args.Event == "PLAYER_LEVEL_UP")
             {
                 RebuildNeeded = true;
-                Logger.CombatLogOr(" TalentManager: Your character has leveled up! Now level {0}", args.Event);
+                Logger.DebugLog(" TalentManager: Your character has leveled up! Now level {0}", args.Event);
             }
 
             if (CurrentSpec != oldSpec)
             {
                 RebuildNeeded = true;
-                Logger.CombatLogOr(" TalentManager: Your spec has been changed.");
+                Logger.DebugLog(" TalentManager: Your spec has been changed.");
             }
 
             int i;
@@ -105,7 +105,7 @@ namespace YourBuddy.Core.Managers
                 if (oldTalent[i] != TalentId[i])
                 {
                     RebuildNeeded = true;
-                    Logger.CombatLogOr(" TalentManager: Your talents have changed.");
+                    Logger.DebugLog(" TalentManager: Your talents have changed.");
                     break;
                 }
             }
@@ -115,7 +115,7 @@ namespace YourBuddy.Core.Managers
                 if (oldGlyph[i] != GlyphId[i])
                 {
                     RebuildNeeded = true;
-                    Logger.CombatLogOr(" TalentManager: Your glyphs have changed.");
+                    Logger.DebugLog(" TalentManager: Your glyphs have changed.");
                     break;
                 }
             }
@@ -165,12 +165,12 @@ namespace YourBuddy.Core.Managers
 
                 foreach (var glyph in Glyphs)
                 {
-                    Logger.DiagLogFb("Glyph of {0}", glyph);
+                    Logger.DebugLog("Glyph of {0}", glyph);
                 }
 
                 foreach (var talent in Talents)
                 {
-                    Logger.DiagLogFb("{0} : {1}", talent.Index, talent.Selected);
+                    Logger.DebugLog("{0} : {1}", talent.Index, talent.Selected);
                 }
             }
         }
@@ -180,7 +180,7 @@ namespace YourBuddy.Core.Managers
             if (EventRebuildTimer.IsFinished && RebuildNeeded)
             {
                 RebuildNeeded = false;
-                Logger.DiagLogPu("Yb TalentManager: Rebuilding behaviors due to changes detected.");
+                Logger.DebugLog("Yb TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
                 Root.Instance.CombatSelector();
                 return true;

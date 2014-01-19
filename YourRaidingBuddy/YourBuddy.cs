@@ -118,10 +118,6 @@ namespace YourBuddy
 
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
                 DeathStrikeTracker.Pulse();
-
-            /* Update TalentManager */
-            try { TalentManager.Update(); }
-            catch (Exception e) { StopBot(e.ToString()); }
         }
 
         public override void OnButtonPress()
@@ -152,7 +148,8 @@ namespace YourBuddy
 
 
             /* Update TalentManager */
-            TalentManager.Update();
+            try { TalentManager.Update(); }
+            catch (Exception e) { StopBot(e.ToString()); }
 
             /* Set Characters GUID */
             MyGuid = Me.Guid;
@@ -167,6 +164,11 @@ namespace YourBuddy
             /* Attack Power For Brewmaster Monks */
             _initap = StyxWoW.Me.AttackPower;
             _NewAP = StyxWoW.Me.AttackPower;
+
+            CombatLogHandler.Initialize();
+
+            /* Lua SecondaryStats */
+            Lua.PopulateSecondryStats();
 
             /* Blood DK DeathStrike Tracker */
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)

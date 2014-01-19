@@ -190,6 +190,7 @@
             this.HkDemoBannerLabel.Size = new System.Drawing.Size(70, 16);
             this.HkDemoBannerLabel.TabIndex = 4;
             this.HkDemoBannerLabel.Text = "I said what";
+            this.HkDemoBannerLabel.Click += new System.EventHandler(this.HkDemoBannerLabel_Click);
             this.HkDemoBannerLabel.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.HkDemoBannerLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ComboHkDemoralizingBanner_MouseMove);
             // 

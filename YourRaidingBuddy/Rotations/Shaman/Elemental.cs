@@ -50,13 +50,13 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterruptsPvP()),
                                         ElementalUtility(),
                                //         I.ElementalUseItems(),
-                                        ElementalOffensive())),
-                               //         new Decorator(ret => HotKeyManager.IsSpecialKey, 
-                                //        new PrioritySelector(
-                              //           PurgeShit(),
-                             //            TotemsShit(),
-                              //           HexFocusTarget())),
-                             //           ElementalStPvP())),
+                                        ElementalOffensive(),
+                                       new Decorator(ret => HotKeyManager.IsSpecial, 
+                                        new PrioritySelector(
+                                         PurgeShit(),
+                                         TotemsShit(),
+                                        HexFocusTarget())),
+                                        ElementalStPvP())),
 //EndPvPElemental
                         new Decorator(ret => !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
