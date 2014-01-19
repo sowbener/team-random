@@ -253,6 +253,14 @@ namespace YourBuddy.Core
             }
         }
 
+        internal static bool DefaultCheckRanged
+        {
+            get
+            {
+                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead;
+            }
+        }
+
         /// <summary>
         /// Default check before buffing - Checks various things like if StyxWoW.Me is viable, self not mounted and more.
         /// </summary>
