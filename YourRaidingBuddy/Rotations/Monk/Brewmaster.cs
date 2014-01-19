@@ -40,7 +40,7 @@ namespace YourBuddy.Rotations.Monk
                                             BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
-                                      //  I.BrewmasterUseItems(),
+                                      new Action(ret => { Item.UseBrewmasterItems(); return RunStatus.Failure; }),
                                         BrewmasterOffensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
@@ -53,7 +53,7 @@ namespace YourBuddy.Rotations.Monk
                                         Spell.Cast("Elusive Brew", ret => U.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew))),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                                   //     I.BrewmasterUseItems(),
+                                                   new Action(ret => { Item.UseBrewmasterItems(); return RunStatus.Failure; }),
                                                         BrewmasterOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, BrewmasterMt()),
                                         BrewmasterSt());

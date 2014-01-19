@@ -37,7 +37,7 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => Me.HealthPercent < 100, RetributionDefensive()),
                                         new Decorator(ret => SG.Instance.Retribution.CheckInterrupts, RetributionInterrupts()),
                                         RetributionUtility(),
-                           //             I.RetributionUseItems(),
+                                        new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
                                         RetributionOffensive(),
                                         new Decorator(ret => SG.Instance.Retribution.CheckAoE && Unit.NearbyAttackableUnitsCount > 3, RetributionMt()),
                                             RetributionSt())),
@@ -49,7 +49,7 @@ namespace YourBuddy.Rotations.Paladin
                                         RetributionUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                     //                   I.RetributionUseItems(),
+                                        new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
                                                         RetributionOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, RetributionMt()),
                                         RetributionSt())));

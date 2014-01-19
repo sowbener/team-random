@@ -33,7 +33,7 @@ namespace YourBuddy.Rotations.Rogue
             {
                 return new PrioritySelector(
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
-                    //    new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
+                       new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                  //       G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
                //         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
@@ -44,7 +44,7 @@ namespace YourBuddy.Rotations.Rogue
                                         new Decorator(ret => Me.HealthPercent < 100, ComDefensive()),
                                         new Decorator(ret => SG.Instance.Combat.CheckInterrupts, ComInterrupts()),
                                         ComUtility(),
-                                //        I.ComUseItems(),
+                                       new Styx.TreeSharp.Action(ret => { Item.UseCombatItems(); return RunStatus.Failure; }),
                                         ComOffensive(),
                                         new Decorator(ret => SG.Instance.Combat.CheckAoE && U.NearbyAttackableUnitsCount > 7, ComMt()),
                                             ComSt())),
@@ -56,7 +56,7 @@ namespace YourBuddy.Rotations.Rogue
                                         ComUtility(),
                                          new Decorator(ret => HotKeyManager.IsCooldown,
                                          new PrioritySelector(
-                                          //              I.ComUseItems(),
+                                          new Styx.TreeSharp.Action(ret => { Item.UseCombatItems(); return RunStatus.Failure; }),
                                                         ComOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ComMt()),
                                         ComSt())));

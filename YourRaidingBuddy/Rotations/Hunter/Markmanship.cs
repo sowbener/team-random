@@ -36,7 +36,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => Me.HealthPercent < 100, MarksmanshipDefensive()),
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckInterrupts && Unit.CanInterrupt, MarksmanshipInterrupts()),
                                         MarksmanshipUtility(),
-                                        //I.MarksmanshipUseItems(),
+                                        new Action(ret => { Item.UseMarksmanshipItems(); return RunStatus.Failure; }),
                                         MarksmanshipOffensive(),
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), MarksmanshipMt()),
                                         MarksmanshipSt())),
@@ -48,7 +48,7 @@ namespace YourBuddy.Rotations.Hunter
                                         MarksmanshipUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                                        //I.MarksmanshipUseItems(),
+                                                        new Action(ret => { Item.UseMarksmanshipItems(); return RunStatus.Failure; }),
                                                         MarksmanshipOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Marksmanship.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, MarksmanshipMt()),
                                         MarksmanshipSt())));

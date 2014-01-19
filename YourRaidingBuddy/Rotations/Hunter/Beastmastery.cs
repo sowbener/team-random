@@ -41,7 +41,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => Me.HealthPercent < 100, BeastmasteryDefensive()),
                                         new Decorator(ret => SG.Instance.Beastmastery.CheckInterrupts, BeastmasteryInterrupts()),
                                         BeastmasteryUtility(),
-                                        //I.BeastmasteryUseItems(),
+                                        new Action(ret => { Item.UseBeastmasteryItems(); return RunStatus.Failure; }),
                                         BeastmasteryOffensive(),
                                        new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, BeastmasteryMt()),
                             new Decorator(ret => Me.CurrentTarget != null && (U.NearbyAttackableUnitsCount < SG.Instance.Beastmastery.AoECount || !SG.Instance.Beastmastery.CheckAoE),
@@ -58,7 +58,7 @@ namespace YourBuddy.Rotations.Hunter
                                         BeastmasteryUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                         new PrioritySelector(
-                                        //I.BeastmasteryUseItems(),
+                                        new Action(ret => { Item.UseBeastmasteryItems(); return RunStatus.Failure; }),
                                         BeastmasteryOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, BeastmasteryMt()),
                                          new Decorator

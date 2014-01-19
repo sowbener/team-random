@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
 using Enum = YourBuddy.Core.Helpers.Enum;
+using G = YourBuddy.Rotations.Global;
+using SG = YourBuddy.Interfaces.Settings.InternalSettings;
 using U = YourBuddy.Core.Unit;
 
 namespace YourBuddy.Core
@@ -25,7 +27,26 @@ namespace YourBuddy.Core
             if (string.IsNullOrEmpty(itemSpell))
                 return false;
 
-            return item.Usable && item.Cooldown <= 0;
+            return item.Usable && item.Cooldown == 0;
+        }
+
+        public static Composite UseBagItem(int name, CanRunDecoratorDelegate cond, string reason)
+        {
+            WoWItem item = null;
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!cond(a)) return false;
+
+
+                    item = Me.BagItems.FirstOrDefault(x => x != null && x.Entry == name && x.Usable && x.Cooldown <= 0 && x.ItemInfo.RequiredLevel <= StyxWoW.Me.Level);
+
+                    return item != null;
+                },
+                new Sequence(
+                    new Action(a => Logger.CombatLog("[Using Item: {0}] [Reason: {1}]", name, reason)),
+                    new Action(a => item.Use()),
+                    new Action(a => RunStatus.Failure)));
         }
 
         private static bool CanUseTrinket(Enum.AbilityTrigger usage, WoWItem trinket)
@@ -61,11 +82,15 @@ namespace YourBuddy.Core
             return false;
         }
 
-        private static void UseWindwalkerItems()
+        //Monk
+
+        internal static void UseWindwalkerItems()
         {
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
 
             if (InternalSettings.Instance.Windwalker.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Windwalker.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -91,11 +116,13 @@ namespace YourBuddy.Core
             }
         }
 
-        private static void UseBrewmasterItems()
+        internal static void UseBrewmasterItems()
         {
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
 
             if (InternalSettings.Instance.Brewmaster.Trinket1 == Enum.AbilityTrigger.Never && 
                 InternalSettings.Instance.Brewmaster.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -115,6 +142,420 @@ namespace YourBuddy.Core
             }
 
             if (CanUseHands(InternalSettings.Instance.Brewmaster.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+
+        //Deathknight
+        internal static void UseBloodItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
+
+            if (InternalSettings.Instance.Blood.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Blood.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Blood.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Blood.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Blood.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Blood.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseUnholyItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
+
+            if (InternalSettings.Instance.Unholy.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Unholy.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Unholy.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Unholy.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Unholy.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Unholy.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseFrostItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
+
+            if (InternalSettings.Instance.Frost.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Frost.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Frost.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Frost.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Frost.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Frost.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+
+        //Paladin
+        internal static void UseRetributionItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
+
+            if (InternalSettings.Instance.Retribution.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Retribution.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Retribution.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Retribution.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Retribution.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Retribution.UseHands, hands) && Me.HasAura("Inquisition") && (!Me.HasAura("Anicent Power") || Spell.GetAuraStack(Me, "Ancient Power") == 12))//buff.inquisition.up&(buff.ancient_power.down|buff.ancient_power.stack=12))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseProtectionItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
+
+            if (InternalSettings.Instance.Protection.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Protection.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Protection.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Protection.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Protection.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Protection.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+
+        //Rogue
+
+        internal static void UseAssassinationItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Assassination.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Assassination.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Assassination.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Assassination.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Assassination.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Assassination.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseCombatItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Combat.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Combat.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Combat.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Combat.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Combat.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Combat.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseSubtletyItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Subtlety.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Subtlety.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Subtlety.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Subtlety.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Subtlety.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Subtlety.UseHands, hands) && Me.HasAura("Shadow Dance"))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+
+        //Hunter
+        internal static void UseSurvivalItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Survival.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Survival.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Survival.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Survival.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Survival.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Survival.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseMarksmanshipItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Marksmanship.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Marksmanship.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Marksmanship.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Marksmanship.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Marksmanship.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Marksmanship.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseBeastmasteryItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Beastmastery.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Beastmastery.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Beastmastery.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Beastmastery.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Beastmastery.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Beastmastery.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+
+        //Shaman
+        internal static void UseEnhancementItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
+
+            if (InternalSettings.Instance.Enhancement.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Enhancement.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Enhancement.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Enhancement.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Enhancement.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Enhancement.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseElementalItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion"));
+
+            if (InternalSettings.Instance.Elemental.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Elemental.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Elemental.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Elemental.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Elemental.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Elemental.UseHands, hands))
             {
                 hands.Use();
                 Logger.CombatLogFb("Using: Engineering hands are used.");

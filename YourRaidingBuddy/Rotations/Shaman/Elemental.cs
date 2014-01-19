@@ -38,7 +38,7 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterrupts()),
                                         ElementalUtility(),
                                         new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
-                                        //I.ElementalUseItems(),
+                                         new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                         ElementalOffensive(),
                                         new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
                                             ElementalSt())),
@@ -49,7 +49,7 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Elemental.EnableSelfHealing && Me.HealthPercent < 100, ElementalDefensive()),
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterruptsPvP()),
                                         ElementalUtility(),
-                               //         I.ElementalUseItems(),
+                                new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                         ElementalOffensive(),
                                        new Decorator(ret => HotKeyManager.IsSpecial, 
                                         new PrioritySelector(
@@ -67,7 +67,7 @@ namespace YourBuddy.Rotations.Shaman
                                         ElementalUtility(),
                                          new Decorator(ret => HotKeyManager.IsCooldown,
                                          new PrioritySelector(
-                                            //            I.ElementalUseItems(),
+                                             new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                                         ElementalOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ElementalMt()),
                                         ElementalSt())));

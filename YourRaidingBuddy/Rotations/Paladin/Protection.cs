@@ -37,7 +37,7 @@ namespace YourBuddy.Rotations.Paladin
                                             ProtectionDefensive(),
                                         new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
                                         ProtectionUtility(),
-                                        //I.ProtectionUseItems(),
+                                        new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
                                         ProtectionOffensive(),
                                         new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, ProtectionMt()),
                                             ProtectionSt())),
@@ -50,7 +50,7 @@ namespace YourBuddy.Rotations.Paladin
                                       //  new Decorator(ret => HotKeyManager.ElusiveBrew, new PrioritySelector(Spell.Cast("Elusive Brew"))),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                                        //I.ProtectionUseItems(),
+                                                        new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
                                                         ProtectionOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ProtectionMt()),
                                         ProtectionSt())));

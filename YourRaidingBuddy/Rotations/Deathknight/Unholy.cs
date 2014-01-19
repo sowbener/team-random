@@ -38,7 +38,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         new Decorator(ret => Me.HealthPercent < 100, UnholyDefensive()),
                                         new Decorator(ret => SG.Instance.Unholy.CheckInterrupts, UnholyInterrupts()),
                                         UnholyUtility(),
-                                        //I.UnholyUseItems(),
+                                        new Action(ret => { Item.UseUnholyItems(); return RunStatus.Failure; }),
                                         UnholyOffensive(),
                                         new Decorator(ret => SG.Instance.Unholy.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, UnholyMt()),
                                             UnholySt())),
@@ -50,7 +50,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         UnholyUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                    //                    I.UnholyUseItems(),
+                                           new Action(ret => { Item.UseUnholyItems(); return RunStatus.Failure; }),
                                                         UnholyOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, UnholyMt()),
                                         UnholySt())));

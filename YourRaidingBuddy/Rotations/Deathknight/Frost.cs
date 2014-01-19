@@ -37,7 +37,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         new Decorator(ret => Me.HealthPercent < 100, FrostDefensive()),
                                         new Decorator(ret => SG.Instance.Frost.CheckInterrupts, FrostInterrupts()),
                                         FrostUtility(),
-                                        //I.FrostUseItems(),
+                                        new Action(ret => { Item.UseFrostItems(); return RunStatus.Failure; }),
                                         FrostOffensive(),
                                         new Decorator(ret => SG.Instance.Frost.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, FrostMt()),
                                         new Decorator(ret => !Item.WieldsTwoHandedWeapons, FrostDWSt()),
@@ -61,7 +61,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         FrostUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown, 
                                         new PrioritySelector(
-                               //         I.FrostUseItems(),
+                                        new Action(ret => { Item.UseFrostItems(); return RunStatus.Failure; }),
                                         FrostOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, FrostMt()),
                                         new Decorator(ret => !Item.WieldsTwoHandedWeapons, FrostDWSt()),

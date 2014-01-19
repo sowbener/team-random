@@ -38,7 +38,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         new Decorator(ret => Me.HealthPercent < 100, BloodDefensive()),
                                         new Decorator(ret => SG.Instance.Blood.CheckInterrupts, BloodInterrupts()),
                                         BloodUtility(),
-                                        //I.BloodUseItems(),
+                                        new Action(ret => { Item.UseBloodItems(); return RunStatus.Failure; }),
                                         BloodOffensive(),
                                         new Decorator(ret => SG.Instance.Blood.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BloodMt()),
                                             BloodSt())),
@@ -50,7 +50,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         BloodUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                              //          I.BloodUseItems(),
+                                                        new Action(ret => { Item.UseBloodItems(); return RunStatus.Failure; }),
                                                         BloodOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, BloodMt()),
                                         BloodSt())));

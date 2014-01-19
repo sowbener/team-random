@@ -38,6 +38,7 @@ namespace YourBuddy.Rotations.Monk
                                         new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts, WindwalkerInterrupts()),
                                         WindwalkerUtility(),
                                         WindwalkerOffensive(),
+                                        new Action(ret => { Item.UseWindwalkerItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, WindwalkerMt()),
                                             WindwalkerSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
@@ -48,7 +49,7 @@ namespace YourBuddy.Rotations.Monk
                                         WindwalkerUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                                    //    I.WindwalkerUseItems(),
+                                                    new Action(ret => { Item.UseWindwalkerItems(); return RunStatus.Failure; }),
                                                         WindwalkerOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, WindwalkerMt()),
                                         WindwalkerSt())));

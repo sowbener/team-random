@@ -39,7 +39,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => Me.HealthPercent < 100, SurvivalDefensive()),
                                         new Decorator(ret => SG.Instance.Survival.CheckInterrupts, SurvivalInterrupts()),
                                         SurvivalUtility(),
-                                        //I.SurvivalUseItems(),
+                                        new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                         SurvivalOffensive(),
                                         new Decorator(ret => SG.Instance.Survival.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, SurvivalMt()),
                                             SurvivalSt())),
@@ -51,7 +51,7 @@ namespace YourBuddy.Rotations.Hunter
                                         SurvivalUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
-                                                        //I.SurvivalUseItems(),
+                                                        new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                                         SurvivalOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, SurvivalMt()),
                                         SurvivalSt())));

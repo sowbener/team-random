@@ -39,7 +39,7 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Enhancement.EnableSelfHealing && Me.HealthPercent < 100, EnhancementDefensive()),
                                         new Decorator(ret => SG.Instance.Enhancement.CheckInterrupts && Unit.CanInterrupt, EnhancementInterrupts()),
                                         EnhancementUtility(),
-                                        //I.EnhancementUseItems(),
+                                         new Styx.TreeSharp.Action(ret => { Item.UseEnhancementItems(); return RunStatus.Failure; }),
                                         EnhancementOffensive(),
                                         new Decorator(ret => SG.Instance.Enhancement.RecallTotemsEnable, Totems.CreateRecallTotems()),
                                         new Decorator(ret => SG.Instance.Enhancement.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), EnhancementMt()),
@@ -53,7 +53,7 @@ namespace YourBuddy.Rotations.Shaman
                                         EnhancementUtilityPvP(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                         new PrioritySelector(
-                                        //I.EnhancementUseItems(),
+                                         new Styx.TreeSharp.Action(ret => { Item.UseEnhancementItems(); return RunStatus.Failure; }),
                                         EnhancementOffensive())),
                                         EnhancementSingleTargetPvP())),
                     //EndPvPEnhancement
@@ -65,7 +65,7 @@ namespace YourBuddy.Rotations.Shaman
                                         EnhancementUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                         new PrioritySelector(
-                                    //    I.EnhancementUseItems(),
+                                    new Styx.TreeSharp.Action(ret => { Item.UseEnhancementItems(); return RunStatus.Failure; }),
                                         EnhancementOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe && (Unit.NearbyAttackableUnitsCount > 1), EnhancementMt()),
                                         EnhancementSingleTarget())));

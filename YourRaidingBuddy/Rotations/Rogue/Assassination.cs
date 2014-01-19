@@ -32,7 +32,7 @@ namespace YourBuddy.Rotations.Rogue
                         G.ManualCastPause(),
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
                    //    new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
-                   //    new Decorator(ret => WaHotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Assassination.EnableFeintUsage && !Me.HasAura("Feint")))),
+                       new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Assassination.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => SG.Instance.Assassination.CheckAutoAttack,
@@ -42,7 +42,7 @@ namespace YourBuddy.Rotations.Rogue
                                 new Decorator(ret => SG.Instance.Assassination.CheckInterrupts,
                                     AssaInterrupts()),
                                 AssaUtility(),
-                          //      I.AssaUseItems(),
+                          new Action(ret => { Item.UseAssassinationItems(); return RunStatus.Failure; }),
                                 AssaOffensive(),
                                 new Decorator(ret => SG.Instance.Assassination.CheckAoE && U.NearbyAttackableUnitsCount >= 2, AssaMt()),
                                     AssaSt())),
@@ -57,7 +57,7 @@ namespace YourBuddy.Rotations.Rogue
                                 AssaUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                              //          I.AssaUseItems(),
+                               new Action(ret => { Item.UseAssassinationItems(); return RunStatus.Failure; }),
                                         AssaOffensive())),
                                 new Decorator(ret => HotKeyManager.IsAoe, AssaMt()),
                                 new Decorator(ret => !HotKeyManager.IsAoe, AssaSt()))));

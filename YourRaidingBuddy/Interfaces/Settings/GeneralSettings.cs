@@ -79,6 +79,15 @@ namespace YourBuddy.Interfaces.Settings
         public bool AutoDetectManualCast { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General Settings")]
+        [DisplayName("Enable Potion Usage on Bloodlust.")]
+        [Description("When enabled, the routine uses Potion on Bloodlust..")]
+        public bool CheckPotionUsage { get; set; }
+
+        
+
+        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("General")]
         [DisplayName("Enables Raid Buffing")]

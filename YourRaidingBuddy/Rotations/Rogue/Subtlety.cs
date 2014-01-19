@@ -35,7 +35,7 @@ namespace YourBuddy.Rotations.Rogue
                         G.ManualCastPause(),
                         //new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),    
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
-                    //   new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
+                       new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAutoAttack,
@@ -45,7 +45,7 @@ namespace YourBuddy.Rotations.Rogue
                                 new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts,
                                     SubInterrupts()),
                                 SubUtility(),
-                     //           I.SubUseItems(),
+                            new Styx.TreeSharp.Action(ret => { Item.UseSubtletyItems(); return RunStatus.Failure; }),
                                 SubOffensive(),
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAoE && U.NearbyAttackableUnitsCount > 4, SubMt()),
                                 new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
@@ -64,7 +64,7 @@ namespace YourBuddy.Rotations.Rogue
                                  new Decorator(ret => HotKeyManager.IsCooldown, SubShadowDance()),
                                  new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
-                          //              I.SubUseItems(),
+                                new Styx.TreeSharp.Action(ret => { Item.UseSubtletyItems(); return RunStatus.Failure; }),
                                         Spell.Cast("Vanish", ret => Lua.PlayerPower > 59 && G.ShadowDanceOffline && G.PremeditationOnline && Lua.PlayerComboPts <= 3 && (G.FindWeaknessOff || G.FindWeakness < 3) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713) && Me.IsFacing(Me.CurrentTarget)),
                                         SubOffensive())),
                                 new Decorator(ret => HotKeyManager.IsAoe, SubMt()),
