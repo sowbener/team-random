@@ -354,11 +354,26 @@ namespace YourBuddy.Core
 #if HONORBUDDY_GCD_IS_WORKING
             Logger.WriteDebug("GcdInitialize: using HonorBuddy GCD");
 #else
-            Logger.DiagLogFb("FixGlobalCooldownInitialize: using Singular GCD");
+            Logger.DiagLogFb("FixGlobalCooldownInitialize: using YourBuddy GCD");
             switch (StyxWoW.Me.Class)
             {
+                case WoWClass.DeathKnight:
+                    FixGlobalCooldownCheckSpell = "Frost Presence";
+                    break;
+                case WoWClass.Hunter:
+                    FixGlobalCooldownCheckSpell = "Hunter's Mark";
+                    break;
                 case WoWClass.Monk:
                     FixGlobalCooldownCheckSpell = "Stance of the Fierce Tiger";
+                    break;
+                case WoWClass.Paladin:
+                    FixGlobalCooldownCheckSpell = "Righteous Fury";
+                    break;
+                case WoWClass.Rogue:
+                    FixGlobalCooldownCheckSpell = "Sap";
+                    break;
+                case WoWClass.Shaman:
+                    FixGlobalCooldownCheckSpell = "Lightning Shield";
                     break;
             }
 
@@ -367,8 +382,23 @@ namespace YourBuddy.Core
 
             switch (StyxWoW.Me.Class)
             {
+                case WoWClass.DeathKnight:
+                    // FixGlobalCooldownCheckSpell = "";
+                    break;
+                case WoWClass.Hunter:
+                    FixGlobalCooldownCheckSpell = "Arcane Shot";
+                    break;
                 case WoWClass.Monk:
-                    FixGlobalCooldownCheckSpell = "Stance of the Fierce Tiger";
+                    //FixGlobalCooldownCheckSpell = "";
+                    break;
+                case WoWClass.Paladin:
+                    FixGlobalCooldownCheckSpell = "Seal of Command";
+                    break;
+                case WoWClass.Rogue:
+                    FixGlobalCooldownCheckSpell = "Sinister Strike";
+                    break;
+                case WoWClass.Shaman:
+                    FixGlobalCooldownCheckSpell = "Lightning Bolt";
                     break;
             }
 #endif
@@ -398,7 +428,7 @@ namespace YourBuddy.Core
             return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.TimeLeft > TimeSpan.Zero);
         }
         #endregion
-
+        
         #region AuraStuffMore
 
         public static uint GetAuraStackCount(string aura)
