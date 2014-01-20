@@ -378,8 +378,8 @@ namespace YourBuddy.Rotations
         internal static bool ShadowbladesAuraActive { get { return Me.HasAura(121471); } }
         internal static bool DispatchProc { get { return Me.HasAura(121153); } }
         internal static bool NoDispatchLove { get { return !Me.HasAura(121153); } }
-        internal static bool TargetNoRupture { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(1943); } }
-        internal static bool TargetHaveRupture { get { return Me.CurrentTarget != null & Me.CurrentTarget.HasAura(1943); } }
+        internal static bool TargetNoRupture { get { return !Me.CurrentTarget.HasMyAura(1943); } }
+        internal static bool TargetHaveRupture { get { return Me.CurrentTarget.HasMyAura(1943); } }
         internal static bool TargetRuptureFalling { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft(1943, Me.CurrentTarget) < 2; } }
         internal static bool HemorrhageDebuffFalling { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Hemorrhage"); } }
         internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft(1943, Me.CurrentTarget) < 3; } }
