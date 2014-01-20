@@ -132,6 +132,7 @@ namespace FuryUnleashed
             /* Initialize Various Functions */
             DamageTracker.Initialize();
             HotKeyManager.InitializeBindings();
+            Item.RefreshSecondaryStats();
 
             /* Gather required information */
             Logger.StatCounter();

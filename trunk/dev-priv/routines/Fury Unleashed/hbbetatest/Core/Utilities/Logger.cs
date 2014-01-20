@@ -173,6 +173,8 @@ namespace FuryUnleashed.Core.Utilities
 
         public static void WriteInfoToLogFile()
         {
+            Item.RefreshSecondaryStats();
+
             WriteFile("Fury Unleashed: Diagnostic Logging");
             WriteFile("");
             WriteFile("{0} is the used revision.", Root.Revision);
@@ -214,14 +216,18 @@ namespace FuryUnleashed.Core.Utilities
             WriteFile("Bloodbath Talent: {0}", Global.BloodbathTalent);
             WriteFile("Storm Bolt Talent: {0}", Global.StormBoltTalent);
             WriteFile("");
-            WriteFile("====== Tier Bonuses ======");
+            WriteFile("======= Item Info =======");
+            WriteFile("Crit Chance: {0}", Item.CritChance);
+            WriteFile("Crit Rating: {0}", Item.CritRating);
+            WriteFile("Expertise: {0}", Item.Expertise);
+            WriteFile("Mastery: {0}", Item.Mastery);
+            WriteFile("Haste: {0}", Item.MeleeHaste);
+            WriteFile("Hit: {0}", Item.MeleeHit);
+            WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
             WriteFile("Tier 16 DPS 2P: {0}", Global.Tier16TwoPieceBonus);
             WriteFile("Tier 16 DPS 4P: {0}", Global.Tier16FourPieceBonus);
             WriteFile("Tier 16 Prot 2P: {0}", Global.Tier16TwoPieceBonusT);
             WriteFile("Tier 16 Prot 4P: {0}", Global.Tier16FourPieceBonusT);
-            WriteFile("");
-            WriteFile("======= Other Info =======");
-            WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
         }
 
         private static Timer _fuTimer;
