@@ -99,7 +99,7 @@ namespace YourBuddy.Rotations.Rogue
                     new PrioritySelector(
                         Spell.Cast("Envenom")
                         )),
-                new Decorator(ret => G._anticipationCount > 4 || (G._anticipationCount < 4 && Lua.PlayerComboPts > 4 && (!Me.HasAura(32645) || G.EnvenomRemains2Seconds)) || (Lua.PlayerComboPts >= 2 && G.MySNDBabyIsFalling),
+                new Decorator(ret => Lua.PlayerComboPts > 4 && (!Me.HasAura(32645) || G.EnvenomRemains2Seconds) || (Lua.PlayerComboPts >= 2 && G.MySNDBabyIsFalling),
                         new PrioritySelector(
                         Spell.Cast("Envenom")
                         )));
