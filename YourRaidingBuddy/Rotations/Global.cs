@@ -384,7 +384,7 @@ namespace YourBuddy.Rotations
         internal static bool HemorrhageDebuffFalling { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Hemorrhage"); } }
         internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && RuptureSetting < 3; } }
         internal static bool CrimsonTempestNotUp { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(121411); } }
-        internal static bool EnvenomRemains2Seconds { get { return !Me.HasAura(32645, 0, 2000); } }
+        internal static bool EnvenomRemains2Seconds { get { return SNDSetting < 2; } }
         internal static bool ShadowBladesSND { get { return Me.HasAura(5171, 0, 12000); } }
         internal static bool FucknoSND { get { return !Me.HasAura(5171); } }
         internal static bool IloveyouSND { get { return Me.HasAura(5171); } }
