@@ -74,7 +74,7 @@ namespace YourBuddy.Rotations.Rogue
                 new Decorator(ret => G.FucknoSND,
                     new PrioritySelector(
                         Spell.Cast("Mutilate", ret => Lua.PlayerComboPts < 2),
-                        Spell.Cast("Slice and Dice", ret => Lua.PlayerComboPts > 1 && G.FucknoSND)
+                        Spell.Cast("Slice and Dice", ret => Lua.PlayerComboPts > 1)
                         )),
                 new Decorator(ret => G.TargetNoRupture && G.IloveyouSND,
                 new PrioritySelector(
@@ -82,8 +82,8 @@ namespace YourBuddy.Rotations.Rogue
                     Spell.Cast("Dispatch", ret => Lua.PlayerComboPts < 5 && G.DispatchProc),
                     Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 4)
                     )),
-                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
-                Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
+             //   Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
+            //    Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
                 //      Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
                 //         (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
                 //        (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
@@ -92,8 +92,8 @@ namespace YourBuddy.Rotations.Rogue
                 //    Spell.Cast("Preparation", ret => G.Vanishisoncooldown && (
                 //         (SG.Instance.Assassination.PreperationUsage == WaEnum.PreperationUsage.VanishCooldown) ||
                 //          (SG.Instance.Assassination.PreperationUsage == WaEnum.PreperationUsage.OnBossAndVanishCooldown && WaUnit.IsTargetBoss))),
-                Spell.Cast("Dispatch", ret => (G.YourGoingDownBoss && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5)) || (G.IloveyouSND && G.DispatchProc)),
-                Spell.Cast("Mutilate", ret => (G.NoDispatchLove && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5) && G.ImDpsingYou)),
+                Spell.Cast("Dispatch", ret => (G._anticipationCount < 4 || Lua.PlayerComboPts < 5) || (G.IloveyouSND && G.DispatchProc)),
+                Spell.Cast("Mutilate", ret => !SpellManager.CanCast("Dispatch") && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5)),
                 Spell.Cast("Rupture", ret => (Lua.PlayerComboPts > 1 && G.TargetRuptureFalling) || (Lua.PlayerComboPts > 4 && G.TargetRuptureFalling5Cps)),
                 new Decorator(ret => Lua.PlayerComboPts > 4 && (G.ShadowbladesAuraActive || G.SpeedBuffsAura),
                     new PrioritySelector(

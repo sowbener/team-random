@@ -154,9 +154,6 @@ namespace YourBuddy
             /* Set Characters GUID */
             MyGuid = Me.Guid;
 
-            /* Initialize Various Functions */
-            HotKeyManager.InitializeBindings();
-
             /* Gather required information */
             Logger.StatCounter();
             Logger.LogTimer(500);
@@ -181,6 +178,7 @@ namespace YourBuddy
             /* Start Combat */
             PreCombatSelector();
             CombatSelector();
+            G.GetBinding();
 
             Logger.CombatLogOr("Routine initialized with " + Me.Specialization.ToString().CamelToSpaced() + " as rotation. \r\n");
         }

@@ -625,6 +625,7 @@ namespace YourBuddy.Rotations
 
         #endregion FlameShockTargets
         #endregion
+
         #region TalentManager Functions
         // Talentmanager - HasGlyphs
 
