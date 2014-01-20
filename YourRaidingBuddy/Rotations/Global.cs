@@ -374,26 +374,26 @@ namespace YourBuddy.Rotations
 
         // Cached Aura's - Can only be used with MY aura's (HasCachedAura).
         internal static bool VendettaAura { get { return Me.HasAura(79140); } }
-        internal static bool ShadowbladesAura { get { return !Me.HasAura(121471); } }
-        internal static bool ShadowbladesAuraActive { get { return Me.HasAura("Shadow Blades"); } }
+        internal static bool ShadowbladesAura { get { return Me.HasAura(121471); } }
+        internal static bool ShadowbladesAuraActive { get { return Me.HasAura(121471); } }
         internal static bool DispatchProc { get { return Me.HasAura(121153); } }
         internal static bool NoDispatchLove { get { return !Me.HasAura(121153); } }
         internal static bool TargetNoRupture { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(1943); } }
         internal static bool TargetHaveRupture { get { return Me.CurrentTarget != null & Me.CurrentTarget.HasAura(1943); } }
-        internal static bool TargetRuptureFalling { get { return Me.CurrentTarget != null && RuptureSetting < 2; } }
+        internal static bool TargetRuptureFalling { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft(1943) < 2; } }
         internal static bool HemorrhageDebuffFalling { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Hemorrhage"); } }
-        internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && RuptureSetting < 3; } }
+        internal static bool TargetRuptureFalling5Cps { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft(1943) < 3; } }
         internal static bool CrimsonTempestNotUp { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(121411); } }
-        internal static bool EnvenomRemains2Seconds { get { return SNDSetting < 2; } }
-        internal static bool ShadowBladesSND { get { return Me.HasAura(5171, 0, 12000); } }
+        internal static bool EnvenomRemains2Seconds { get { return Spell.GetAuraTimeLeft(32645) < 2; } }
+        internal static bool ShadowBladesSND { get { return Spell.GetAuraTimeLeft(5171, StyxWoW.Me) > 10; } }
         internal static bool FucknoSND { get { return !Me.HasAura(5171); } }
         internal static bool IloveyouSND { get { return Me.HasAura(5171); } }
         internal static double SNDSetting { get { return Spell.GetAuraTimeLeft(5171, Me); } }
         internal static double RuptureSetting { get { return Spell.GetAuraTimeLeft("Rupture", Me.CurrentTarget); } }
-        internal static bool MySNDBabyIsFalling { get { return SNDSetting < 2; } }
-        internal static bool SliceandDiceSub { get { return SNDSetting < 4; } }
-        internal static bool SliceAndDiceSubGenerator { get { return SNDSetting < 6; } }
-        internal static bool TargetHaveRupture4 { get { return RuptureSetting < 4; } }
+        internal static bool MySNDBabyIsFalling { get { return Spell.GetAuraTimeLeft(5171, Me) < 2; } }
+        internal static bool SliceandDiceSub { get { return Spell.GetAuraTimeLeft(5171, Me) < 4; } }
+        internal static bool SliceAndDiceSubGenerator { get { return Spell.GetAuraTimeLeft(5171, Me) < 6; } }
+        internal static bool TargetHaveRupture4 { get { return Spell.GetAuraTimeLeft(1943) < 4; } }
         internal static bool MeHasShadowFocus { get { return Me.HasAura(108209); } }
         internal static bool Vanishisoncooldown { get { return CooldownTracker.SpellOnCooldown(1856); } }
         internal static bool ShadowDanceOnline { get { return !CooldownTracker.SpellOnCooldown(51713); } }

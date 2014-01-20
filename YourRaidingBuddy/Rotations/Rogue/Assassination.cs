@@ -132,7 +132,7 @@ namespace YourBuddy.Rotations.Rogue
         static Composite AssaOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Shadow Blades", ret => (G.SpeedBuffsAura || G.ShadowBladesSND) && (
+                Spell.Cast("Shadow Blades", ret => (G.SpeedBuffsAura || G.IloveyouSND) && (
                     (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Assassination.ShadowBlades == Enum.AbilityTrigger.Always)
