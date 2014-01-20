@@ -38,7 +38,7 @@ namespace YourBuddy.Rotations.Rogue
                         G.ManualCastPause(),
                //         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
           //              CreateBladeFlurryBehavior(),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, ComDefensive()),
@@ -49,7 +49,7 @@ namespace YourBuddy.Rotations.Rogue
                                         ComOffensive(),
                                         new Decorator(ret => SG.Instance.Combat.CheckAoE && U.NearbyAttackableUnitsCount > 7, ComMt()),
                                             ComSt())),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, ComDefensive()),

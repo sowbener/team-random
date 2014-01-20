@@ -31,27 +31,27 @@ namespace YourBuddy.Rotations.Shaman
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheckRanged), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
-                        new Decorator(ret => !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Elemental.EnableSelfHealing && Me.HealthPercent < 100, ElementalDefensive()),
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterrupts()),
                                         ElementalUtility(),
                                         new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
-                                                    new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
+                                                    new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                          new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                         ElementalOffensive(),
                                         new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
                                             ElementalSt())),
 //FirstPvPElemental
-                   new Decorator(ret => SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
+                   new Decorator(ret => !Spell.IsGlobalCooldown() && SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Elemental.EnableSelfHealing && Me.HealthPercent < 100, ElementalDefensive()),
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterruptsPvP()),
                                         ElementalUtility(),
                                 new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
-                                            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
+                                            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                         ElementalOffensive(),
                                        new Decorator(ret => HotKeyManager.IsSpecial, 
                                         new PrioritySelector(
@@ -60,7 +60,7 @@ namespace YourBuddy.Rotations.Shaman
                                         HexFocusTarget())),
                                         ElementalStPvP())),
 //EndPvPElemental
-                        new Decorator(ret => !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Elemental.EnableSelfHealing &&  Me.HealthPercent < 100, ElementalDefensive()),
@@ -70,7 +70,7 @@ namespace YourBuddy.Rotations.Shaman
                                          new Decorator(ret => HotKeyManager.IsCooldown,
                                          new PrioritySelector(
                                              new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
-                                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
+                                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                                         ElementalOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ElementalMt()),
                                         ElementalSt())));

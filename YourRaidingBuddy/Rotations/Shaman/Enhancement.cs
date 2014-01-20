@@ -33,7 +33,7 @@ namespace YourBuddy.Rotations.Shaman
                  //       new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Enhancement.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Enhancement.EnableSelfHealing && Me.HealthPercent < 100, EnhancementDefensive()),
@@ -46,7 +46,7 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Enhancement.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), EnhancementMt()),
                                         EnhancementSingleTarget())),
                     //FirstPvPEnhancement
-                   new Decorator(ret => SG.Instance.Enhancement.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                   new Decorator(ret => !Spell.IsGlobalCooldown() && SG.Instance.Enhancement.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, EnhancementDefensivePvP()),
@@ -59,7 +59,7 @@ namespace YourBuddy.Rotations.Shaman
                                         EnhancementOffensive())),
                                         EnhancementSingleTargetPvP())),
                     //EndPvPEnhancement
-                        new Decorator(ret => !SpellManager.GlobalCooldown &&  SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Enhancement.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Enhancement.EnableSelfHealing && Me.HealthPercent < 100, EnhancementDefensive()),
