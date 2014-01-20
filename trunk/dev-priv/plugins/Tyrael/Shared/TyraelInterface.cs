@@ -98,9 +98,10 @@ namespace Tyrael.Shared
             checkAutomaticUpdater.Checked = TyraelSettings.Instance.CheckAutoUpdate;
             checkChatOutput.Checked = TyraelSettings.Instance.CheckChatOutput;
             checkClicktoMove.Checked = TyraelSettings.Instance.CheckClickToMove;
-            checkFrameLock.Checked = GlobalSettings.Instance.UseFrameLock;
+            CheckHardLock.Checked = GlobalSettings.Instance.UseFrameLock;
             checkHealingMode.Checked = TyraelSettings.Instance.CheckHealingMode;
             checkPlugins.Checked = TyraelSettings.Instance.CheckPluginPulsing;
+            checkSoftLock.Checked = TyraelSettings.Instance.UseSoftLock;
 
             HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
             TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
@@ -121,9 +122,14 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Enables click to move in WoW.");
         }
 
-        private void checkFrameLock_MouseMove(object sender, MouseEventArgs e)
+        private void CheckHardLock_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Enables framelock - Read the Tyrael FAQ for more info!");
+            TpsLabel.Text = Text = string.Format("Enables HonorBuddy's HardLock (Framelock)");
+        }
+
+        private void checkSoftLock_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Enables Tyrael's SoftLock (Framelock)");
         }
 
         private void checkHealingMode_MouseMove(object sender, MouseEventArgs e)
@@ -144,6 +150,11 @@ namespace Tyrael.Shared
         private void normalbutton_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("30 TPS - Hardlock disabled - Softlock enabled.");
+        }
+
+        private void fastbutton_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("60 TPS - Hardlock disabled - Softlock enabled.");
         }
 
         private void extremebutton_MouseMove(object sender, MouseEventArgs e)
@@ -188,9 +199,14 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.CheckAutoUpdate = checkAutomaticUpdater.Checked;
         }
 
-        private void checkFrameLock_CheckedChanged(object sender, EventArgs e)
+        private void checkHardLock_CheckedChanged(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.UseFrameLock = checkFrameLock.Checked;
+            GlobalSettings.Instance.UseFrameLock = CheckHardLock.Checked;
+        }
+
+        private void checkSoftLock_CheckedChanged(object sender, EventArgs e)
+        {
+            TyraelSettings.Instance.UseSoftLock = checkSoftLock.Checked;
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
@@ -289,6 +305,7 @@ namespace Tyrael.Shared
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
+            TyraelSettings.Instance.UseSoftLock = false;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -307,6 +324,28 @@ namespace Tyrael.Shared
         private void normalbutton_Click(object sender, EventArgs e)
         {
             TPSTrackBar.Value = 30;
+
+            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            GlobalSettings.Instance.UseFrameLock = false;
+            TyraelSettings.Instance.UseSoftLock = true;
+
+            GlobalSettings.Instance.Save();
+            TyraelSettings.Instance.Save();
+
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ReRegisterHotkeys();
+            Tyrael.PluginPulsing();
+
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+
+            ButtonLogging();
+
+            Close();
+        }
+
+        private void fastbutton_Click(object sender, EventArgs e)
+        {
+            TPSTrackBar.Value = 60;
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
