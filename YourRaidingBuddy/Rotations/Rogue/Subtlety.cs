@@ -47,6 +47,7 @@ namespace YourBuddy.Rotations.Rogue
                                     SubInterrupts()),
                                 SubUtility(),
                             new Styx.TreeSharp.Action(ret => { Item.UseSubtletyItems(); return RunStatus.Failure; }),
+                            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                 SubOffensive(),
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAoE && U.NearbyAttackableUnitsCount > 4, SubMt()),
                                 new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
@@ -66,7 +67,8 @@ namespace YourBuddy.Rotations.Rogue
                                  new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                 new Styx.TreeSharp.Action(ret => { Item.UseSubtletyItems(); return RunStatus.Failure; }),
-                                        Spell.Cast("Vanish", ret => Lua.PlayerPower > 59 && G.ShadowDanceOffline && G.PremeditationOnline && Lua.PlayerComboPts <= 3 && (G.FindWeaknessOff || G.FindWeakness < 3) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713) && Me.IsFacing(Me.CurrentTarget)),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                Spell.Cast("Vanish", ret => Lua.PlayerPower > 59 && G.ShadowDanceOffline && G.PremeditationOnline && Lua.PlayerComboPts <= 3 && (G.FindWeaknessOff || G.FindWeakness < 3) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713) && Me.IsFacing(Me.CurrentTarget)),
                                         SubOffensive())),
                                 new Decorator(ret => HotKeyManager.IsAoe, SubMt()),
                                 new Decorator(ret => !HotKeyManager.IsAoe, SubSt()))));

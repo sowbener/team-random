@@ -45,6 +45,7 @@ namespace YourBuddy.Rotations.Rogue
                                         new Decorator(ret => SG.Instance.Combat.CheckInterrupts, ComInterrupts()),
                                         ComUtility(),
                                        new Styx.TreeSharp.Action(ret => { Item.UseCombatItems(); return RunStatus.Failure; }),
+                                       new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         ComOffensive(),
                                         new Decorator(ret => SG.Instance.Combat.CheckAoE && U.NearbyAttackableUnitsCount > 7, ComMt()),
                                             ComSt())),
@@ -57,6 +58,7 @@ namespace YourBuddy.Rotations.Rogue
                                          new Decorator(ret => HotKeyManager.IsCooldown,
                                          new PrioritySelector(
                                           new Styx.TreeSharp.Action(ret => { Item.UseCombatItems(); return RunStatus.Failure; }),
+                                          new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         ComOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ComMt()),
                                         ComSt())));

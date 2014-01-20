@@ -38,6 +38,7 @@ namespace YourBuddy.Rotations.Monk
                                         new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts, WindwalkerInterrupts()),
                                         WindwalkerUtility(),
                                         WindwalkerOffensive(),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         new Action(ret => { Item.UseWindwalkerItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, WindwalkerMt()),
                                             WindwalkerSt())),
@@ -50,6 +51,7 @@ namespace YourBuddy.Rotations.Monk
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                     new Action(ret => { Item.UseWindwalkerItems(); return RunStatus.Failure; }),
+                                                    new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         WindwalkerOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, WindwalkerMt()),
                                         WindwalkerSt())));

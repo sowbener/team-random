@@ -90,8 +90,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
-
             if (InternalSettings.Instance.Windwalker.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Windwalker.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Windwalker.UseHands == Enum.AbilityTrigger.Never)
@@ -121,8 +119,6 @@ namespace YourBuddy.Core
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
-
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
 
             if (InternalSettings.Instance.Brewmaster.Trinket1 == Enum.AbilityTrigger.Never && 
                 InternalSettings.Instance.Brewmaster.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -155,8 +151,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
-
             if (InternalSettings.Instance.Blood.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Blood.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Blood.UseHands == Enum.AbilityTrigger.Never)
@@ -186,8 +180,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
-
             if (InternalSettings.Instance.Unholy.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Unholy.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Unholy.UseHands == Enum.AbilityTrigger.Never)
@@ -216,8 +208,6 @@ namespace YourBuddy.Core
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
-
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
 
             if (InternalSettings.Instance.Frost.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Frost.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -250,8 +240,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
-
             if (InternalSettings.Instance.Retribution.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Retribution.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Retribution.UseHands == Enum.AbilityTrigger.Never)
@@ -280,8 +268,6 @@ namespace YourBuddy.Core
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
-
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76095, ret => true, "Using Mogu Power Potion"));
 
             if (InternalSettings.Instance.Protection.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Protection.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -315,8 +301,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
-
             if (InternalSettings.Instance.Assassination.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Assassination.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Assassination.UseHands == Enum.AbilityTrigger.Never)
@@ -346,8 +330,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
-
             if (InternalSettings.Instance.Combat.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Combat.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Combat.UseHands == Enum.AbilityTrigger.Never)
@@ -376,8 +358,6 @@ namespace YourBuddy.Core
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
-
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
 
             if (InternalSettings.Instance.Subtlety.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Subtlety.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -410,8 +390,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
-
             if (InternalSettings.Instance.Survival.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Survival.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Survival.UseHands == Enum.AbilityTrigger.Never)
@@ -441,8 +419,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
-
             if (InternalSettings.Instance.Marksmanship.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Marksmanship.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Marksmanship.UseHands == Enum.AbilityTrigger.Never)
@@ -471,8 +447,6 @@ namespace YourBuddy.Core
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
-
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
 
             if (InternalSettings.Instance.Beastmastery.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Beastmastery.Trinket2 == Enum.AbilityTrigger.Never &&
@@ -505,8 +479,6 @@ namespace YourBuddy.Core
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
 
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76089, ret => true, "Using Virmen's Bite Potion"));
-
             if (InternalSettings.Instance.Enhancement.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Enhancement.Trinket2 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Enhancement.UseHands == Enum.AbilityTrigger.Never)
@@ -535,8 +507,6 @@ namespace YourBuddy.Core
             var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
             var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
             var hands = StyxWoW.Me.Inventory.Equipped.Hands;
-
-            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion"));
 
             if (InternalSettings.Instance.Elemental.Trinket1 == Enum.AbilityTrigger.Never &&
                 InternalSettings.Instance.Elemental.Trinket2 == Enum.AbilityTrigger.Never &&

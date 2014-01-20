@@ -38,6 +38,7 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterrupts()),
                                         ElementalUtility(),
                                         new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
+                                                    new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                          new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                         ElementalOffensive(),
                                         new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
@@ -50,6 +51,7 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterruptsPvP()),
                                         ElementalUtility(),
                                 new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
+                                            new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                         ElementalOffensive(),
                                        new Decorator(ret => HotKeyManager.IsSpecial, 
                                         new PrioritySelector(
@@ -68,6 +70,7 @@ namespace YourBuddy.Rotations.Shaman
                                          new Decorator(ret => HotKeyManager.IsCooldown,
                                          new PrioritySelector(
                                              new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
+                                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                                         ElementalOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ElementalMt()),
                                         ElementalSt())));

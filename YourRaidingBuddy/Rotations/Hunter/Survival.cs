@@ -40,6 +40,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => SG.Instance.Survival.CheckInterrupts, SurvivalInterrupts()),
                                         SurvivalUtility(),
                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         SurvivalOffensive(),
                                         new Decorator(ret => SG.Instance.Survival.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, SurvivalMt()),
                                             SurvivalSt())),
@@ -52,6 +53,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
+                                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         SurvivalOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, SurvivalMt()),
                                         SurvivalSt())));

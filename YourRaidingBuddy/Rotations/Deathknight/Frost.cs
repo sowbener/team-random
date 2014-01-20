@@ -39,6 +39,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         FrostUtility(),
                                         new Action(ret => { Item.UseFrostItems(); return RunStatus.Failure; }),
                                         FrostOffensive(),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         new Decorator(ret => SG.Instance.Frost.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, FrostMt()),
                                         new Decorator(ret => !Item.WieldsTwoHandedWeapons, FrostDWSt()),
                                         new Decorator(ret => Item.WieldsTwoHandedWeapons, FrostTHSt()))),
@@ -62,6 +63,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         new Decorator(ret => HotKeyManager.IsCooldown, 
                                         new PrioritySelector(
                                         new Action(ret => { Item.UseFrostItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         FrostOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, FrostMt()),
                                         new Decorator(ret => !Item.WieldsTwoHandedWeapons, FrostDWSt()),

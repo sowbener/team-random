@@ -38,6 +38,7 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
                                         ProtectionUtility(),
                                         new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         ProtectionOffensive(),
                                         new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, ProtectionMt()),
                                             ProtectionSt())),
@@ -51,6 +52,7 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                         new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
+                                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                                         ProtectionOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, ProtectionMt()),
                                         ProtectionSt())));

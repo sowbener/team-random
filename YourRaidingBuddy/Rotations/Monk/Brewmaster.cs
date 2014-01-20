@@ -33,7 +33,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Auto,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
                                             Spell.Cast("Elusive Brew", ret => U.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
@@ -41,10 +41,11 @@ namespace YourBuddy.Rotations.Monk
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
                                       new Action(ret => { Item.UseBrewmasterItems(); return RunStatus.Failure; }),
+                                      new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         BrewmasterOffensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BrewmasterMt()),
                                             BrewmasterSt())),
-                        new Decorator(ret => SH.Instance.ModeSelection == Enum.Mode.Hotkey,
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
                                         BrewmasterDefensive(),
@@ -54,6 +55,7 @@ namespace YourBuddy.Rotations.Monk
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                    new Action(ret => { Item.UseBrewmasterItems(); return RunStatus.Failure; }),
+                                                   new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         BrewmasterOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, BrewmasterMt()),
                                         BrewmasterSt());

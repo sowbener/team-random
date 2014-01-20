@@ -39,6 +39,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         new Decorator(ret => SG.Instance.Blood.CheckInterrupts, BloodInterrupts()),
                                         BloodUtility(),
                                         new Action(ret => { Item.UseBloodItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         BloodOffensive(),
                                         new Decorator(ret => SG.Instance.Blood.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BloodMt()),
                                             BloodSt())),
@@ -51,6 +52,7 @@ namespace YourBuddy.Rotations.Deathknight
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                                         new Action(ret => { Item.UseBloodItems(); return RunStatus.Failure; }),
+                                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                                         BloodOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, BloodMt()),
                                         BloodSt())));

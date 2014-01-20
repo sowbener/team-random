@@ -37,6 +37,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckInterrupts && Unit.CanInterrupt, MarksmanshipInterrupts()),
                                         MarksmanshipUtility(),
                                         new Action(ret => { Item.UseMarksmanshipItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         MarksmanshipOffensive(),
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), MarksmanshipMt()),
                                         MarksmanshipSt())),

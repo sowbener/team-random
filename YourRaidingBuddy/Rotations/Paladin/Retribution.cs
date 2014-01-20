@@ -38,6 +38,7 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Retribution.CheckInterrupts, RetributionInterrupts()),
                                         RetributionUtility(),
                                         new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         RetributionOffensive(),
                                         new Decorator(ret => SG.Instance.Retribution.CheckAoE && Unit.NearbyAttackableUnitsCount > 3, RetributionMt()),
                                             RetributionSt())),
@@ -50,6 +51,7 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                         new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                                         RetributionOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, RetributionMt()),
                                         RetributionSt())));
