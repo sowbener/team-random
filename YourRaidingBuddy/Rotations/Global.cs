@@ -24,7 +24,7 @@ namespace YourBuddy.Rotations
     class Global
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
-        internal static int? _anticipationCount;
+        internal static int ? _anticipationCount;
 
 
 
@@ -389,7 +389,7 @@ namespace YourBuddy.Rotations
         internal static bool FucknoSND { get { return !Me.HasAura(5171); } }
         internal static bool IloveyouSND { get { return Me.HasAura(5171); } }
         internal static double SNDSetting { get { return Spell.GetAuraTimeLeft(5171, Me); } }
-        internal static Double RuptureSetting { get { return Spell.GetAuraTimeLeft("Rupture", Me.CurrentTarget); } }
+        internal static double RuptureSetting { get { return Spell.GetAuraTimeLeft("Rupture", Me.CurrentTarget); } }
         internal static bool MySNDBabyIsFalling { get { return SNDSetting < 2; } }
         internal static bool SliceandDiceSub { get { return SNDSetting < 4; } }
         internal static bool SliceAndDiceSubGenerator { get { return SNDSetting < 6; } }

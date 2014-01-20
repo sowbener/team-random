@@ -68,7 +68,7 @@ namespace YourBuddy.Rotations.Rogue
         #endregion
 
         #region Rotations
-        static Composite AssaSt()
+        internal static Composite AssaSt()
         {
             return new PrioritySelector(
                 new Decorator(ret => G.FucknoSND,
