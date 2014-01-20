@@ -84,14 +84,14 @@ namespace YourBuddy.Rotations.Rogue
                     )),
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Assassination.CheckExposeArmor),
-                Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
-                    (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
-                    (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
-                    (SG.Instance.Assassination.Vanish == Enum.AbilityTrigger.Always)
-                    ))),
-                Spell.Cast("Preparation", ret => G.Vanishisoncooldown && (
-                    (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.VanishCooldown) ||
-                    (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.OnBossAndVanishCooldown && U.IsTargetBoss))),
+                //      Spell.Cast("Vanish", ret => (Lua.PlayerPower > 20 && (G.ShadowbladesAura || Me.IsStealthed) && G.IloveyouSND && (
+                //         (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.OnBossDummy && WaUnit.IsTargetBoss) ||
+                //        (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
+                //      (SG.Instance.Assassination.Vanish == WaEnum.AbilityTrigger.Always)
+                //      ))),
+                //    Spell.Cast("Preparation", ret => G.Vanishisoncooldown && (
+                //         (SG.Instance.Assassination.PreperationUsage == WaEnum.PreperationUsage.VanishCooldown) ||
+                //          (SG.Instance.Assassination.PreperationUsage == WaEnum.PreperationUsage.OnBossAndVanishCooldown && WaUnit.IsTargetBoss))),
                 Spell.Cast("Dispatch", ret => (G.YourGoingDownBoss && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5)) || (G.IloveyouSND && G.DispatchProc)),
                 Spell.Cast("Mutilate", ret => (G.NoDispatchLove && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5) && G.ImDpsingYou) && ((Me.IsStealthed || Me.IsBehind(Me.CurrentTarget) || G.MeHasShadowFocus))),
                 Spell.Cast("Rupture", ret => (Lua.PlayerComboPts > 1 && G.TargetRuptureFalling) || (Lua.PlayerComboPts > 4 && G.TargetRuptureFalling5Cps)),
