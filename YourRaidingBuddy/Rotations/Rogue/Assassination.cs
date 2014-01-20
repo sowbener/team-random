@@ -93,7 +93,7 @@ namespace YourBuddy.Rotations.Rogue
                     (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.VanishCooldown) ||
                     (SG.Instance.Assassination.PreperationUsage == Enum.PreperationUsage.OnBossAndVanishCooldown && U.IsTargetBoss))),
                 Spell.Cast("Dispatch", ret => (G.YourGoingDownBoss && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5)) || (G.IloveyouSND && G.DispatchProc)),
-                Spell.Cast("Mutilate", ret => (G.NoDispatchLove && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5) && G.ImDpsingYou) && ((Me.IsStealthed || Me.IsBehind(Me.CurrentTarget) || G.MeHasShadowFocus)),
+                Spell.Cast("Mutilate", ret => (G.NoDispatchLove && (G._anticipationCount < 4 || Lua.PlayerComboPts < 5) && G.ImDpsingYou) && ((Me.IsStealthed || Me.IsBehind(Me.CurrentTarget) || G.MeHasShadowFocus))),
                 Spell.Cast("Rupture", ret => (Lua.PlayerComboPts > 1 && G.TargetRuptureFalling) || (Lua.PlayerComboPts > 4 && G.TargetRuptureFalling5Cps)),
                 new Decorator(ret => Lua.PlayerComboPts > 4 && (G.ShadowbladesAuraActive || G.SpeedBuffsAura),
                     new PrioritySelector(
