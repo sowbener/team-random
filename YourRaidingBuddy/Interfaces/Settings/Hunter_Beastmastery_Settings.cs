@@ -15,6 +15,7 @@ namespace YourBuddy.Interfaces.Settings
 
         #region Ability Options
        
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Beastmastery - Ability Options")]
         [DisplayName("A Murder of Crows")]

@@ -71,8 +71,8 @@
     <Compile Include="Interfaces\Settings\Paladin_Protection_Settings.cs" />
     <Compile Include="Interfaces\Settings\Paladin_Retribution_Settings.cs" />
     <Compile Include="Interfaces\Settings\Hunter_Beastmastery_Settings.cs" />
-    <Compile Include="Interfaces\Settings\Markmanship_Settings.cs" />
-    <Compile Include="Interfaces\Settings\Survival_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Hunter_Markmanship_Settings.cs" />
+    <Compile Include="Interfaces\Settings\Hunter_Survival_Settings.cs" />
     <Compile Include="Interfaces\Settings\Deathknight_Blood_Settings.cs" />
     <Compile Include="Interfaces\Settings\Deathknight_Frost_Settings.cs" />
     <Compile Include="Interfaces\Settings\Deathknight_Unholy_Settings.cs" />
