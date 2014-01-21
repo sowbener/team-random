@@ -109,10 +109,8 @@ namespace YourBuddy
 
             if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
                 _initap = StyxWoW.Me.AttackPower;
-            if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
+            if (Me.Specialization == WoWSpec.MonkBrewmaster)
             _NewAP = Lua.Vengeance(120267);
-            if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
-            _NoModifierAP = StyxWoW.Me.AttackPower;
 
             Spell.PulseDoubleCastEntries();
 
