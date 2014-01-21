@@ -33,6 +33,14 @@ namespace YourBuddy.Core
             }
         }
 
+        internal static IEnumerable<WoWUnit> AttackableBosses
+        {
+            get
+            {
+                return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && U.IsTargetBoss && u.Distance <= 60);
+            }
+        }
+
         /// <summary>
         /// Core check on Friendly Units (60 yards) - Further filtering should be applied.
         /// </summary>
@@ -62,6 +70,20 @@ namespace YourBuddy.Core
         {
             if (Me.CurrentTarget != null)
                 NearbyAggroUnitsCount = NearbyAggroUnits(StyxWoW.Me.Location, 20).Count();
+        }
+
+        public static void GetNearbyBossesUnitsCount()
+        {
+            if (Me.CurrentTarget != null)
+                NearbyBossesUnitsCount = NearbyBossesUnits(StyxWoW.Me.Location, 20).Count();
+        }
+        public static int NearbyBossesUnitsCount;
+
+        internal static IEnumerable<WoWUnit> NearbyBossesUnits(WoWPoint fromLocation, double radius)
+        {
+            var hostile = AttackableBosses;
+            var maxDistance = radius * radius;
+            return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
         }
 
         /// <summary>

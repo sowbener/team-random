@@ -37,7 +37,7 @@ namespace YourBuddy.Rotations.Rogue
                  //       G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
                //         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
-          //              CreateBladeFlurryBehavior(),
+                        CreateBladeFlurryBehavior(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
@@ -156,7 +156,7 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 new Decorator(
-                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAggroUnitsCount > 7),
+                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAttackableUnitsCount > 7 || (U.IsTargetBoss && U.NearbyAttackableUnitsCount <= 1 && U.NearbyBossesUnitsCount <= 1)),
                     new Sequence(
                         new Styx.TreeSharp.Action(ret => Logger.DiagLogFb("/cancel Blade Flurry")),
                         new Styx.TreeSharp.Action(ret => Me.CancelAura("Blade Flurry")),
