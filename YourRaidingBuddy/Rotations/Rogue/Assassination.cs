@@ -111,13 +111,11 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
               new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Assassination.EnableFeintUsage && !Me.HasAura("Feint")))),
-              new Decorator(ret => U.NearbyAttackableUnitsCount > 2,
-              new PrioritySelector(
               Spell.Cast("Fan of Knives", ret => Lua.PlayerComboPts < 5),
-              Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 1 && G.TargetRuptureFalling),
+              Spell.Cast("Rupture", ret => Lua.PlayerComboPts > 1 && G.TargetRuptureFalling && U.NearbyAttackableUnitsCount <= 2),
               Spell.Cast("Envenom", ret => Lua.PlayerComboPts > 4),
               Spell.Cast("Slice and Dice", ret => Lua.PlayerComboPts > 1 && G.FucknoSND)
-                )));
+                );
         }
 
         static Composite AssaDefensive()

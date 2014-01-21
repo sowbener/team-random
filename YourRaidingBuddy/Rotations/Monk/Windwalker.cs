@@ -100,7 +100,9 @@ namespace YourBuddy.Rotations.Monk
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Rushing Jade Wind", ret => TalentManager.IsSelected(17) && Lua.RJWOK() >= 20),
+                Spell.Cast("Rushing Jade Wind", ret => TalentManager.IsSelected(17) && !CooldownTracker.SpellOnCooldown("Rising Sun Kick")),
+                new Decorator(ret => CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds < 1000, new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If Rising Sun Kick is coming off cooldown, STOP
+                Spell.Cast("Spinning Crane Kick", ret => !TalentManager.IsSelected(17) && CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds > 1000),
              //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }
