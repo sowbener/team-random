@@ -93,8 +93,7 @@ namespace YourBuddy.Rotations.Deathknight
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower >= 40),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
                         Spell.PreventDoubleCast("Blood Tap", 0.6, ret => NeedBloodTapThirdCheckDW),
-                        Spell.Cast("Plague Leech", ret => G.CanCastPlagueLeechDW),
-                        Spell.Cast("Plague Strike", ret => G.UnholyRuneSlotsActive > 0 && SG.Instance.Frost.MasterSimple));
+                        Spell.Cast("Plague Leech", ret => G.CanCastPlagueLeechDW));
         }
 
         internal static Composite FrostTHSt()
