@@ -86,7 +86,7 @@ namespace YourBuddy.Rotations.Deathknight
                         Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague)),
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
-                        Spell.Cast("Obliterate", ret => G.UnholyRuneSlotsActive > 0 && !Me.HasAura(51124)),
+                        Spell.Cast("Obliterate", ret => !SG.Instance.Frost.MasterSimple && G.UnholyRuneSlotsActive > 0 && !Me.HasAura(51124)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Frost Strike", ret => TalentManager.IsSelected(14) && G.FrostRuneSlotsActive == 0 || G.DeathRuneSlotsActive == 0),
                         Spell.PreventDoubleCast("Blood Tap", 0.6, ret => NeedBloodTapSecondCheckDW),
