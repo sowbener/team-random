@@ -49,11 +49,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.fastbutton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.extremebutton = new System.Windows.Forms.Button();
             this.normalbutton = new System.Windows.Forms.Button();
             this.slowbutton = new System.Windows.Forms.Button();
-            this.fastbutton = new System.Windows.Forms.Button();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
@@ -294,9 +294,9 @@
             this.label3.ForeColor = System.Drawing.Color.DodgerBlue;
             this.label3.Location = new System.Drawing.Point(10, 66);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(113, 16);
+            this.label3.Size = new System.Drawing.Size(135, 16);
             this.label3.TabIndex = 11;
-            this.label3.Text = "Regular Options";
+            this.label3.Text = "Additional Features";
             // 
             // checkSoftLock
             // 
@@ -320,9 +320,9 @@
             this.label2.ForeColor = System.Drawing.Color.DodgerBlue;
             this.label2.Location = new System.Drawing.Point(10, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(130, 16);
+            this.label2.Size = new System.Drawing.Size(134, 16);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Framelock Options";
+            this.label2.Text = "Framelock Features";
             // 
             // panel2
             // 
@@ -348,6 +348,23 @@
             this.panel3.Size = new System.Drawing.Size(252, 189);
             this.panel3.TabIndex = 12;
             // 
+            // fastbutton
+            // 
+            this.fastbutton.BackColor = System.Drawing.Color.White;
+            this.fastbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.fastbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fastbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.fastbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.fastbutton.Location = new System.Drawing.Point(9, 87);
+            this.fastbutton.Name = "fastbutton";
+            this.fastbutton.Size = new System.Drawing.Size(235, 26);
+            this.fastbutton.TabIndex = 16;
+            this.fastbutton.Text = "Quick Performance";
+            this.fastbutton.UseVisualStyleBackColor = false;
+            this.fastbutton.Click += new System.EventHandler(this.fastbutton_Click);
+            this.fastbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.fastbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.fastbutton_MouseMove);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -370,7 +387,7 @@
             this.extremebutton.Name = "extremebutton";
             this.extremebutton.Size = new System.Drawing.Size(235, 26);
             this.extremebutton.TabIndex = 13;
-            this.extremebutton.Text = "Extreme Performance";
+            this.extremebutton.Text = "Maximum Performance";
             this.extremebutton.UseVisualStyleBackColor = false;
             this.extremebutton.Click += new System.EventHandler(this.extremebutton_Click);
             this.extremebutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -404,28 +421,11 @@
             this.slowbutton.Name = "slowbutton";
             this.slowbutton.Size = new System.Drawing.Size(235, 26);
             this.slowbutton.TabIndex = 14;
-            this.slowbutton.Text = "Slow Performance";
+            this.slowbutton.Text = "Casual Performance";
             this.slowbutton.UseVisualStyleBackColor = false;
             this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
             this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
-            // 
-            // fastbutton
-            // 
-            this.fastbutton.BackColor = System.Drawing.Color.White;
-            this.fastbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.fastbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fastbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.fastbutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.fastbutton.Location = new System.Drawing.Point(9, 87);
-            this.fastbutton.Name = "fastbutton";
-            this.fastbutton.Size = new System.Drawing.Size(235, 26);
-            this.fastbutton.TabIndex = 16;
-            this.fastbutton.Text = "Fast Performance";
-            this.fastbutton.UseVisualStyleBackColor = false;
-            this.fastbutton.Click += new System.EventHandler(this.fastbutton_Click);
-            this.fastbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.fastbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.fastbutton_MouseMove);
             // 
             // TyraelInterface
             // 
