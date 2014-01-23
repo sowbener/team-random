@@ -91,6 +91,7 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Rel_ProtSt()
         {
             return new PrioritySelector(
+                //is this actions+=/run_action_list,name=dps_cds,if=buff.vengeance.value>health.max*0.20 
                 Spell.Cast(SpellBook.Devastate, ret => G.WeakenedArmor3S && G.FadingSunderArmor(1500)), // Added to maintain debuff stacks - Not for applying - This happens later on.
                 Spell.Cast(SpellBook.ThunderClap, ret => G.WeakenedBlowsAura && G.FadingWeakenedBlows(1500)), // Added to maintain debuff stacks - Not for applying - This happens later on.
 
@@ -115,12 +116,13 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Rel_ProtMt()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.ThunderClap),
+
                 Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && PG.Tier4AbilityAoEUsage),
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && PG.Tier6AbilityAoEUsage),
 
-                Spell.Cast(SpellBook.ThunderClap),
                 Rel_ProtSt()
                 );
         }
