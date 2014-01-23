@@ -567,6 +567,10 @@ namespace FuryUnleashed.Interfaces.GUI
                 ((Styx.Helpers.Settings)SpecGrid.SelectedObject).Save();
             }
             Logger.CombatLogOr("Settings for Fury Unleashed saved!");
+            if (InternalSettings.Instance.General.InterruptMode == Enum.Interrupts.Constant)
+            {
+                MessageBox.Show("You have selected Constant as Interrupt mode.\r\n Due to the increased banrisk, I HIGHLY recommend using Random instead!");
+            }
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             HotKeyManager.HotkeyTimer(500);

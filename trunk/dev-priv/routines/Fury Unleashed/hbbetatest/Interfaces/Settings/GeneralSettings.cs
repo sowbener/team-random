@@ -91,7 +91,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public int RacialNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Combat Settings")]
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
