@@ -249,7 +249,7 @@ namespace YourBuddy.Core.Utilities
                 if (!statcounterDate.Equals(InternalSettings.Instance.General.LastStatCounted))
                 {
                     Parallel.Invoke(
-                        () => new WebClient().DownloadData("http://c.statcounter.com/9163286/0/396c7d29/1/"),
+                        () => new WebClient().DownloadData("http://c.statcounter.com/9560658/0/960771f5/1/"),
                         () => DiagLogWh("Yb: StatCounter has been updated!"));
                     InternalSettings.Instance.General.LastStatCounted = statcounterDate;
                     InternalSettings.Instance.Save();

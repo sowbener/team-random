@@ -133,8 +133,8 @@ namespace YourBuddy.Rotations.Deathknight
         internal static Composite FrostMt()
         {
             return new PrioritySelector(
-                        Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && UnholyBlightCheck && NeedBothDisUpAoE),
-                        Spell.Cast("Outbreak", ret => NeedBothDisUpAoE && UnholyBlightCheck || !TalentManager.IsSelected(3)),
+                 //       Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && UnholyBlightCheck && NeedBothDisUpAoE),
+                        Spell.Cast("Outbreak", ret => (NeedBothDisUpAoE && UnholyBlightCheck) || !TalentManager.IsSelected(3)),
                         Spell.PreventDoubleCast("Pestilence", 1, ret => Me.DeathRuneCount > 1 && U.AoeBPCheck && CooldownTracker.SpellOnCooldown(77575)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Frost Strike", ret => _currentRunicPower > 76),

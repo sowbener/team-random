@@ -33,6 +33,7 @@ namespace YourBuddy.Rotations.Hunter
                         new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Decorator(ret => SG.Instance.Survival.EnablePetStuff, HandleCommon()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Survival.CheckAutoAttack, Lua.StartAutoAttack),
@@ -83,6 +84,12 @@ namespace YourBuddy.Rotations.Hunter
             Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
+        internal static Composite HandleCommon()
+        {
+            return new PrioritySelector(
+                Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= SG.Instance.Beastmastery.MendPetHP && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
+        }
+
 
         internal static Composite SurvivalMt()
         {
@@ -101,12 +108,6 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
-
-        internal static Composite HandleCommon()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Mend Pet", ret => Me.Pet != null && Me.Pet.HealthPercent <= 40 && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
-        }
 
         internal static Composite SurvivalDefensive()
         {

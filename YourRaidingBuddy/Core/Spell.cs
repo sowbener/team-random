@@ -1067,7 +1067,7 @@ namespace YourBuddy.Core
                 new Decorator(
                     ret => onLocation != null
                         && (req == null || req(ret))
-                        && StyxWoW.Me.Location.Distance(onLocation(ret)) < (40 * 40)
+                        && StyxWoW.Me.Location.DistanceSqr(onLocation(ret)) < (40 * 40)
                         && SpellManager.HasSpell(trapName) && CooldownTracker.GetSpellCooldown(trapName) == TimeSpan.Zero,
                     new Sequence(
                         new Action(ret => Logger.DebugLog("Trap: use trap launcher requested: {0}", useLauncher)),

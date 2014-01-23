@@ -63,6 +63,13 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Select the usage of Focus Target only for Black Arrow (adds)")]
         public bool UseBlackArrowFocusTarget { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Beastmastery - Selectable Options")]
+        [DisplayName("Enable Pet Stuff")]
+        [Description("Enables Pet Stuff (Auto Mend Pet)")]
+        public bool EnablePetStuff { get; set; }
+
 
         #endregion
 

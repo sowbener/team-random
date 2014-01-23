@@ -243,7 +243,6 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool BestialWrathNotUp { get { return Lua.PlayerPower > 60 && !Me.HasAura(34471); } }
         internal static bool BestialWrathUp { get { return Me.HasAura(34471); } }
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
-        internal static bool MultiShotThrillProc { get { return Me.HasAura("Thrill of the Hunt") && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura("Thrill of the Hunt"); } }
         internal static bool BlackArrowIsOnCooldown { get { return CooldownTracker.SpellOnCooldown(3674); } }
         internal static bool BestialWrathIsNotOnCooldown { get { return !CooldownTracker.SpellOnCooldown(19574); } }
