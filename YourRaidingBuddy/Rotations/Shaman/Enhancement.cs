@@ -93,10 +93,10 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.Cast("Lava Lash"),
                 Spell.Cast("Flame Shock", ret => Me.HasAura("Unleash Flame") || (!Me.HasAura("Unleash Flame") && !Me.CurrentTarget.HasAura("Flame Shock") && CooldownTracker.GetSpellCooldown("Unleash Elements").TotalMilliseconds > 5000)),
                 Spell.Cast("Unleash Elements"),
-                Spell.PreventDoubleCast("Chain Lightning", 1, ret => MaelstormStacks3 && !Me.HasAura(128201)),
-                Spell.PreventDoubleCast("Chain Lightning", 1, ret => Me.HasAura("Ancestral Swiftness")),
+                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => MaelstormStacks3 && !Me.HasAura(128201)),
+                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => Me.HasAura("Ancestral Swiftness")),
                 Spell.Cast("Earth Shock", ret => !FlameShock5),
-                Spell.PreventDoubleCast("Chain Lightning", 1, ret => EverythingOnCooldown && MaelstormStacks1 && !Me.HasAura(128201)));
+                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => EverythingOnCooldown && MaelstormStacks1 && !Me.HasAura(128201)));
         }
 
         // SpellID = "Fire Nova" (Fire Nova)

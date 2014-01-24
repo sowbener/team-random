@@ -36,7 +36,7 @@ namespace YourBuddy.Rotations.Rogue
                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                  //       G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
-               //         new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
+                        new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
                         CreateBladeFlurryBehavior(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
