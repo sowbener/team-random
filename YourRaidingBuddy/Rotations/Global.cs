@@ -502,6 +502,72 @@ namespace YourBuddy.Rotations
         }
         #endregion
 
+        #region Hunterstuff
+
+       internal static int TrapSwitchingBM
+        {
+            get
+            {
+                switch (InternalSettings.Instance.Beastmastery.TrapSwitch)
+                {
+
+                    case Enum.Traps.ExplosiveTrap:
+                        return 13813;
+                    case Enum.Traps.FreezingTrap:
+                        return 1499;
+                    case Enum.Traps.IceTrap:
+                        return 13809;
+                    case Enum.Traps.SnakeTrap:
+                        return 34600;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        internal static int TrapSwitchingSV
+        {
+            get
+            {
+                switch (InternalSettings.Instance.Survival.TrapSwitch)
+                {
+
+                    case Enum.Traps.ExplosiveTrap:
+                        return 13813;
+                    case Enum.Traps.FreezingTrap:
+                        return 1499;
+                    case Enum.Traps.IceTrap:
+                        return 13809;
+                    case Enum.Traps.SnakeTrap:
+                        return 34600;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        internal static int TrapSwitchingMM
+        {
+            get
+            {
+                switch (InternalSettings.Instance.Marksmanship.TrapSwitch)
+                {
+
+                    case Enum.Traps.ExplosiveTrap:
+                        return 13813;
+                    case Enum.Traps.FreezingTrap:
+                        return 1499;
+                    case Enum.Traps.IceTrap:
+                        return 13809;
+                    case Enum.Traps.SnakeTrap:
+                        return 34600;
+                    default:
+                        return 0;
+                }
+            }
+        }
+        #endregion
+
         #region Deathknight Stuff
 
         internal static int DeathRuneSlotsActive

@@ -73,6 +73,15 @@ namespace YourBuddy.Core.Helpers
 
         }
 
+        public enum Traps
+        {
+            FreezingTrap,
+            ExplosiveTrap,
+            IceTrap,
+            SnakeTrap
+
+        }
+
         public enum LagTolerance
         {
             No = 0,

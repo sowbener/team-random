@@ -77,6 +77,16 @@ namespace YourBuddy.Rotations.Shaman
         #endregion
 
         #region RotationPvE
+        
+       //actions.single+=/flame_shock,if=(buff.unleash_flame.up&(dot.flame_shock.remains<10|set_bonus.tier16_2pc_melee=0))|!ticking
+       //actions.single+=/unleash_elements
+       //actions.single+=/frost_shock,if=glyph.frost_shock.enabled&set_bonus.tier14_4pc_melee=0
+       //actions.single+=/lightning_bolt,if=buff.maelstrom_weapon.react>=3&!buff.ascendance.up
+       //actions.single+=/ancestral_swiftness,if=talent.ancestral_swiftness.enabled&buff.maelstrom_weapon.react<2
+       //actions.single+=/lightning_bolt,if=buff.ancestral_swiftness.up
+       //actions.single+=/earth_shock,if=(!glyph.frost_shock.enabled|set_bonus.tier14_4pc_melee=1)
+       //actions.single+=/feral_spirit
+        //actions.single+=/earth_elemental_totem,if=!active
 
         internal static Composite EnhancementSingleTarget()
         {
@@ -84,19 +94,19 @@ namespace YourBuddy.Rotations.Shaman
                 // Add Stormlash totem during Heroism. Once it's on CD, go back to Searing totem. (not sure how to code)
                 Spell.PreventDoubleCast("Stormlash Totem", 1, ret => SG.Instance.Enhancement.EnableStormLashTotem && G.SpeedBuffsAura && !Totems.Exist(WoWTotemType.Air)),
                 Spell.PreventDoubleCast("Searing Totem", 1, ret => NeedSearingTotem),
-                Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16)),
-                Spell.PreventDoubleCast("Elemental Blast", 1, ret => TalentManager.IsSelected(18) && Me.HasAura(53817, 1)),
-                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => MaelstormStacks5),
-                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => Me.HasAura(138136) && MaelstormStacks4 && !Me.HasAura(128201)),
+                Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) || Me.HasAura(144962)),
+                Spell.PreventDoubleCast("Elemental Blast", 1, ret => TalentManager.IsSelected(18) && MaelstormStacks1),
+                Spell.Cast("Lightning Bolt", ret => MaelstormStacks5),
                 Spell.Cast("Primal Strike"),
                 Spell.Cast("Flame Shock", ret => Me.HasAura("Unleash Flame") && !Me.CurrentTarget.HasAura("Flame Shock")),
                 Spell.Cast("Lava Lash"),
-                Spell.Cast("Flame Shock", ret => Me.HasAura("Unleash Flame") || (!Me.HasAura("Unleash Flame") && !Me.CurrentTarget.HasAura("Flame Shock") && CooldownTracker.GetSpellCooldown("Unleash Elements").TotalMilliseconds > 5000)),
+                Spell.Cast("Flame Shock", ret => (Me.HasAura("Unleash Flame") && (Spell.GetAuraTimeLeft("Flame Shock", Me.CurrentTarget) < 10)) || !Me.CurrentTarget.HasAura("Flame Shock")),
                 Spell.Cast("Unleash Elements"),
+                Spell.Cast("Frost Shock", ret => TalentManager.HasGlyph("Frost Shock")),
                 Spell.PreventDoubleCast("Lightning Bolt", 1, ret => MaelstormStacks3 && !Me.HasAura(128201)),
+                Spell.Cast("Ancestral Swiftness", ret => TalentManager.IsSelected(11) && MaelstormStacks1),
                 Spell.PreventDoubleCast("Lightning Bolt", 1, ret => Me.HasAura("Ancestral Swiftness")),
-                Spell.Cast("Earth Shock", ret => !FlameShock5),
-                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => EverythingOnCooldown && MaelstormStacks1 && !Me.HasAura(128201)));
+                Spell.Cast("Earth Shock", ret => !TalentManager.HasGlyph("Frost Shock")));
         }
 
         // SpellID = "Fire Nova" (Fire Nova)
@@ -147,13 +157,18 @@ namespace YourBuddy.Rotations.Shaman
         internal static Composite EnhancementOffensive()
         {
             return new PrioritySelector(
-              Spell.Cast(114049, ret => CooldownTracker.GetSpellCooldown("Primal Strike").TotalMilliseconds >= 3000 && !Me.HasAura(128201) && !CooldownTracker.SpellOnCooldown(114049) && (
+              Spell.Cast("Ascendance", ret => CooldownTracker.GetSpellCooldown("Primal Strike").TotalMilliseconds >= 3000 && !Me.HasAura(128201) && !CooldownTracker.SpellOnCooldown(114049) && (
                     (SG.Instance.Enhancement.Ascendance == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Enhancement.Ascendance == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Enhancement.Ascendance == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast(2894, ret => (
+                Spell.Cast("Fire Elemental Totem", ret => (
                  (SG.Instance.Enhancement.FireElemental == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Enhancement.FireElemental == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Enhancement.FireElemental == Enum.AbilityTrigger.Always)
+                    )),
+                Spell.Cast("Earth Elemental Totem", ret => CooldownTracker.SpellOnCooldown("Fire Elemental Totem") && (
+                    (SG.Instance.Enhancement.FireElemental == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Enhancement.FireElemental == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Enhancement.FireElemental == Enum.AbilityTrigger.Always)
                     )),
@@ -162,14 +177,14 @@ namespace YourBuddy.Rotations.Shaman
                     (SG.Instance.Enhancement.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Enhancement.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast(16166, ret => Me.CurrentTarget != null && (Totems.Exist(WoWTotem.FireElemental) || CooldownTracker.GetSpellCooldown("Fire Elemental Totem").TotalSeconds > 70) &&
+                Spell.Cast("Elemental Mastery", ret => Me.CurrentTarget != null && (Totems.Exist(WoWTotem.FireElemental) || CooldownTracker.GetSpellCooldown("Fire Elemental Totem").TotalSeconds > 70) &&
                         (
                         (SG.Instance.Enhancement.ElementalMastery == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (SG.Instance.Enhancement.ElementalMastery == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                         (SG.Instance.Enhancement.ElementalMastery == Enum.AbilityTrigger.Always)
                         )
                     ),
-                 Spell.Cast(51533, ret => (
+                 Spell.Cast("Feral Spirit", ret => (
                  (SG.Instance.Enhancement.FeralSpirit == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Enhancement.FeralSpirit == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Enhancement.FeralSpirit == Enum.AbilityTrigger.Always)
@@ -368,8 +383,8 @@ namespace YourBuddy.Rotations.Shaman
         private static bool MaelstormStacks2 { get { return Me.HasAura(53817) && Spell.GetAuraStack(Me, 53817) >= 2; } }
         private static bool MaelstormStacks3 { get { return Me.HasAura(53817) && Spell.GetAuraStack(Me, 53817) >= 3; } }
         private static bool MaelstormStacks1 { get { return Me.HasAura(53817) && Spell.GetAuraStack(Me, 53817) > 1; } }
-        private static bool NeedFlameShockRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Flame Shock", 0, 3000); } }
-        private static bool FlameShock5 { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Flame Shock", 0, 4000); } }
+        private static bool NeedFlameShockRefresh { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft("Flame Shock", Me.CurrentTarget) < 3; } }
+        private static bool FlameShock5 { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft("Flame Shock", Me.CurrentTarget) < 4; } }
 
 
 

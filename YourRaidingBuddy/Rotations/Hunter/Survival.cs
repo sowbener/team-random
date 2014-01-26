@@ -67,7 +67,7 @@ namespace YourBuddy.Rotations.Hunter
         {
             return new PrioritySelector
             (
-            Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
+            Spell.CastHunterTrap(G.TrapSwitchingSV, loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
             Spell.Cast("Fervor", ret => FervorReqs),
             Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
             Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),

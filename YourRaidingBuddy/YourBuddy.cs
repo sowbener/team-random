@@ -103,9 +103,11 @@ namespace YourBuddy
                 return;
             }
 
-            // intense if does work, so return if true
             if (TalentManager.Pulse())
+            {
+                // ReSharper disable once RedundantJumpStatement
                 return;
+            }
 
             if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
                 _initap = StyxWoW.Me.AttackPower;

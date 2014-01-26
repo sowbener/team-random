@@ -180,8 +180,10 @@ namespace YourBuddy.Core.Managers
             if (EventRebuildTimer.IsFinished && RebuildNeeded)
             {
                 RebuildNeeded = false;
-                Logger.DebugLog("Yb TalentManager: Rebuilding behaviors due to changes detected.");
+                Logger.DiagLogPu("FU TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
+                CombatLogHandler.Shutdown();
+                Root.Instance.PreCombatSelector();
                 Root.Instance.CombatSelector();
                 return true;
             }

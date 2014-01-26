@@ -100,7 +100,7 @@ namespace YourBuddy.Rotations.Monk
         internal static Composite WindwalkerMt()
         {
             return new PrioritySelector(
-                Spell.Cast("Rushing Jade Wind", ret => TalentManager.IsSelected(17) && !CooldownTracker.SpellOnCooldown("Rising Sun Kick")),
+                Spell.Cast("Rushing Jade Wind", ret => TalentManager.IsSelected(16) && !CooldownTracker.SpellOnCooldown("Rising Sun Kick")),
                 new Decorator(ret => CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds < 1000, new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If Rising Sun Kick is coming off cooldown, STOP
                 Spell.Cast("Spinning Crane Kick", ret => CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds > 1000),
              //   Spell.Cast("Storm, Earth, and Fire"),
@@ -140,7 +140,7 @@ namespace YourBuddy.Rotations.Monk
                     (SG.Instance.Windwalker.EnergizingBrew == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.EnergizingBrew == Enum.AbilityTrigger.Always)
                     )),
-               Spell.Cast("Invoke Xuen, the White Tiger", ret => TalentManager.IsSelected(17) && (
+               Spell.Cast("Invoke Xuen, the White Tiger", ret => (TalentManager.IsSelected(17) || !TalentManager.IsSelected(16)) && (
                     (SG.Instance.Windwalker.Xuen == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Windwalker.Xuen == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.Xuen == Enum.AbilityTrigger.Always)

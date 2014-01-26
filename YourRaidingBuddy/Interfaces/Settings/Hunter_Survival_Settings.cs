@@ -20,6 +20,13 @@ namespace YourBuddy.Interfaces.Settings
         [DisplayName("A Murder of Crows")]
         [Description("Select the usage of A Murder of Crows.")]
         public Enum.AbilityTrigger MurderofCrows { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.Traps.ExplosiveTrap)]
+        [Category("Survival - Item Options")]
+        [DisplayName("Select Trap to Use")]
+        [Description("Select which trap to use auto.")]
+        public Enum.Traps TrapSwitch { get; set; }
        
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]

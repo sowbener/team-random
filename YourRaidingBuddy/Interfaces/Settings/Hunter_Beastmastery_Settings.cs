@@ -90,6 +90,13 @@ namespace YourBuddy.Interfaces.Settings
         public bool EnableTraps { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(Enum.Traps.ExplosiveTrap)]
+        [Category("Beastmastery - Item Options")]
+        [DisplayName("Select Trap to Use")]
+        [Description("Select which trap to use auto.")]
+        public Enum.Traps TrapSwitch { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.CallPet.Pet1)]
         [Category("General")]
         [DisplayName("Which Pet To Call?")]

@@ -29,6 +29,13 @@ namespace YourBuddy.Interfaces.Settings
         public Enum.AbilityTrigger LynxRush { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(Enum.Traps.ExplosiveTrap)]
+        [Category("Marksmanship - Item Options")]
+        [DisplayName("Select Trap to Use")]
+        [Description("Select which trap to use auto.")]
+        public Enum.Traps TrapSwitch { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Marksmanship - Ability Options")]
         [DisplayName("Rapid Fire")]

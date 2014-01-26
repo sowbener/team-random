@@ -1089,6 +1089,35 @@ namespace YourBuddy.Core
                 );
         }
 
+        public static Composite CastHunterTrap(int trapName, LocationRetriever onLocation, CanRunDecoratorDelegate req = null)
+        {
+            const bool useLauncher = true;
+            return new PrioritySelector(
+                new Decorator(
+                    ret => onLocation != null
+                        && (req == null || req(ret))
+                        && StyxWoW.Me.Location.DistanceSqr(onLocation(ret)) < (40 * 40)
+                        && SpellManager.HasSpell(trapName) && CooldownTracker.GetSpellCooldown(trapName) == TimeSpan.Zero,
+                    new Sequence(
+                        new Action(ret => Logger.DebugLog("Trap: use trap launcher requested: {0}", useLauncher)),
+                        new PrioritySelector(
+                            new Decorator(ret => useLauncher && Me.HasAura("Trap Launcher"), new ActionAlwaysSucceed()),
+                            Cast("Trap Launcher", ret => useLauncher && !Me.HasAura("Trap Launcher")),
+                            new Decorator(ret => !useLauncher, new Action(ret => Me.CancelAura("Trap Launcher")))
+                            ),
+                        new Wait(TimeSpan.FromMilliseconds(500),
+                            ret => (useLauncher && Me.HasAura("Trap Launcher")),
+                            new ActionAlwaysSucceed()),
+                        new Action(ret => Logger.DebugLog("Trap: launcher aura present = {0}", Me.HasAura("Trap Launcher"))),
+                        new Action(ret => Logger.DebugLog("^{0} trap: {1}", useLauncher ? "Launch" : "Set", trapName)),
+                        new Action(ret => SpellManager.Cast(trapName)),
+                        new Action(ret => { SpellManager.ClickRemoteLocation(onLocation(ret)); }),
+                        new Action(ret => Logger.DebugLog("Trap: Complete!"))
+                        )
+                    )
+                );
+        }
+
         public static uint GetAuraStack(WoWUnit unit, string spellId)
         {
             if (unit != null)

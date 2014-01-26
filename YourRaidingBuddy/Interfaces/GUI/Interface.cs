@@ -317,6 +317,8 @@ namespace YourBuddy.Interfaces.GUI
             ComboHkCooldown.Items.Add(new Enum.FuCboItem((int)Keys.P, "P"));
             ComboHkCooldown.Items.Add(new Enum.FuCboItem((int)Keys.F, "F"));
             ComboHkCooldown.Items.Add(new Enum.FuCboItem((int)Keys.R, "R"));
+            ComboHkCooldown.Items.Add(new Enum.FuCboItem((int)Keys.Z, "Z"));
+            ComboHkCooldown.Items.Add(new Enum.FuCboItem((int)Keys.C, "C"));
             ComboHkCooldown.Items.Add(new Enum.FuCboItem((int)Keys.None, "No Hotkey"));
 
             // Hotkey - AoE
@@ -359,6 +361,8 @@ namespace YourBuddy.Interfaces.GUI
             ComboHkMultiTgt.Items.Add(new Enum.FuCboItem((int)Keys.P, "P"));
             ComboHkMultiTgt.Items.Add(new Enum.FuCboItem((int)Keys.F, "F"));
             ComboHkMultiTgt.Items.Add(new Enum.FuCboItem((int)Keys.R, "R"));
+            ComboHkMultiTgt.Items.Add(new Enum.FuCboItem((int)Keys.Z, "Z"));
+            ComboHkMultiTgt.Items.Add(new Enum.FuCboItem((int)Keys.C, "C"));
             ComboHkMultiTgt.Items.Add(new Enum.FuCboItem((int)Keys.None, "No Hotkey"));
 
             // Hotkey - Pause
@@ -443,6 +447,8 @@ namespace YourBuddy.Interfaces.GUI
             ComboHkSpecial.Items.Add(new Enum.FuCboItem((int)Keys.P, "P"));
             ComboHkSpecial.Items.Add(new Enum.FuCboItem((int)Keys.F, "F"));
             ComboHkSpecial.Items.Add(new Enum.FuCboItem((int)Keys.R, "R"));
+            ComboHkSpecial.Items.Add(new Enum.FuCboItem((int)Keys.Z, "Z"));
+            ComboHkSpecial.Items.Add(new Enum.FuCboItem((int)Keys.C, "C"));
             ComboHkSpecial.Items.Add(new Enum.FuCboItem((int)Keys.None, "No Hotkey"));
 
             SetComboBoxEnum(ComboHkDemoralizingBanner, (int)SettingsH.Instance.DemoBannerChoice);

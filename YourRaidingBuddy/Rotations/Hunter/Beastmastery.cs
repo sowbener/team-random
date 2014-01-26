@@ -31,7 +31,7 @@ namespace YourBuddy.Rotations.Hunter
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheckRanged), new ActionAlwaysSucceed()),
                   //      new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
                         new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
-                //        new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
+                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
                         new Decorator(ret => SG.Instance.Beastmastery.EnablePetStuff, HandleCommon()),
@@ -77,7 +77,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasterySt()
         {
             return new PrioritySelector(
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
+                Spell.CastHunterTrap(G.TrapSwitchingBM, loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => !SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
