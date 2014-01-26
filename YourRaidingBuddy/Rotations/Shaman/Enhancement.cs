@@ -106,7 +106,8 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.PreventDoubleCast("Lightning Bolt", 1, ret => MaelstormStacks3 && !Me.HasAura(128201)),
                 Spell.Cast("Ancestral Swiftness", ret => TalentManager.IsSelected(11) && MaelstormStacks1),
                 Spell.PreventDoubleCast("Lightning Bolt", 1, ret => Me.HasAura("Ancestral Swiftness")),
-                Spell.Cast("Earth Shock", ret => !TalentManager.HasGlyph("Frost Shock")));
+                Spell.Cast("Earth Shock", ret => !TalentManager.HasGlyph("Frost Shock")),
+                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => MaelstormStacks1 && !Me.HasAura(114051) && EverythingOnCooldown));
         }
 
         // SpellID = "Fire Nova" (Fire Nova)
