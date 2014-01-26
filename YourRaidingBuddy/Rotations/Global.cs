@@ -336,6 +336,14 @@ namespace YourBuddy.Rotations
 
         #region RogueStuff
 
+        internal static Composite InitializeOnKeyActionsR()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
+                    new PrioritySelector(
+                        Spell.Cast("Tricks of the Trade", ret => BestTricksTarget))));
+        }
+
         internal static bool WeakenedBlowsAura { get { return !Me.CurrentTarget.HasAura(113746); } }
 
         internal static int AnticipationCount
@@ -566,9 +574,57 @@ namespace YourBuddy.Rotations
                 }
             }
         }
+
+        internal static Composite InitializeOnKeyActionsH()
+        {
+            return new PrioritySelector(
+                //     new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice) && SpellManager.CanCast("Anti-Magic Zone"),
+                //      new Action(ret =>
+                //       {
+                //           SpellManager.Cast("Anti-Magic Zone");
+                //            Styx.WoWInternals.Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
+                //           Logger.CombatLog("Casting: Anti-Magic Zone - On Mouse Location");
+                //         })),
+            new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice) && !Me.FocusedUnit.HasAura(34477),
+               new PrioritySelector(
+                   Spell.Cast("Misdirect", ret => StyxWoW.Me.FocusedUnit))),
+             new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice),
+                new PrioritySelector(
+                    Spell.Cast("Deterrence", ret => !Me.HasAura(19263)))));
+         //   new Decorator(ret => Me.CurrentTarget != null && KP.IsKeyAsyncDown(SettingsH.Instance.MockingBannerChoice),
+        //       new PrioritySelector(
+        //           Spell.Cast("Gorefiend's Grasp", ret => TalentManager.IsSelected(16)),
+        //            Spell.Cast("Remorseless Winter", ret => TalentManager.IsSelected(17)),
+        //           Spell.Cast("Desecrated Ground", ret => TalentManager.IsSelected(18)))));
+        }
         #endregion
 
         #region Deathknight Stuff
+
+        #region AMZ stuff
+        internal static Composite InitializeOnKeyActionsDK()
+        {
+            return new PrioritySelector(
+              new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice) && SpellManager.CanCast("Anti-Magic Zone"),
+                new Action(ret =>
+                {
+                    SpellManager.Cast("Anti-Magic Zone");
+                    Styx.WoWInternals.Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
+                    Logger.CombatLog("Casting: Anti-Magic Zone - On Mouse Location");
+                })),
+            new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice),
+               new PrioritySelector(
+                   Spell.Cast("Raise Ally", ret => Me.FocusedUnit))),
+             new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.HeroicLeapChoice),
+                new PrioritySelector(
+                    Spell.Cast("Army of the Dead"))),
+            new Decorator(ret => Me.CurrentTarget != null && KP.IsKeyAsyncDown(SettingsH.Instance.MockingBannerChoice),
+               new PrioritySelector(
+                   Spell.Cast("Gorefiend's Grasp", ret => TalentManager.IsSelected(16)),
+                    Spell.Cast("Remorseless Winter", ret => TalentManager.IsSelected(17)),
+                   Spell.Cast("Desecrated Ground", ret => TalentManager.IsSelected(18)))));
+        }
+        #endregion
 
         internal static int DeathRuneSlotsActive
         {

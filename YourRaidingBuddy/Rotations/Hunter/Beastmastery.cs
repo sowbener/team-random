@@ -29,7 +29,7 @@ namespace YourBuddy.Rotations.Hunter
             {
                 return new PrioritySelector(
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheckRanged), new ActionAlwaysSucceed()),
-                  //      new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActions()),
+                        new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsH()),
                         new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),

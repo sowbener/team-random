@@ -30,6 +30,7 @@ namespace YourBuddy.Rotations.Rogue
                 return new PrioritySelector(
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),           
                         G.ManualCastPause(),
+                       new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsR()),
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
                    //    new Decorator(ret => SG.Instance.General.CheckAWaancedLogging, WaLogger.AWaancedLogging),
                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Assassination.EnableFeintUsage && !Me.HasAura("Feint")))),

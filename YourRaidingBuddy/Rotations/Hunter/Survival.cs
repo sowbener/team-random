@@ -33,6 +33,7 @@ namespace YourBuddy.Rotations.Hunter
                         new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsH()),
                         new Decorator(ret => SG.Instance.Survival.EnablePetStuff, HandleCommon()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(

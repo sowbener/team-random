@@ -27,70 +27,130 @@ namespace YourBuddy.Interfaces.GUI
             {
                 //DeathKnight
                 case WoWSpec.DeathKnightBlood:
-                    this.HkTier4AbilityLabel.Text = "LOL";
+                    this.HkTier4AbilityLabel.Text = "Anti Magic-Zone";
+                    this.HkDemoBannerLabel.Text = "Raise Ally";
+                    this.HkHeroicLeapLabel.Text = "Army of the Dead";
+                    this.HkMockingBannerLabel.Text = "Tier 6 Ability";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     // etc
                     Refresh();
                     return true;
                 case WoWSpec.DeathKnightFrost:
-                    //Form.Text = " ";
+                   this.HkTier4AbilityLabel.Text = "Anti Magic-Zone";
+                    this.HkDemoBannerLabel.Text = "Raise Ally";
+                    this.HkHeroicLeapLabel.Text = "Army of the Dead";
+                    this.HkMockingBannerLabel.Text = "Tier 6 Ability";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     // etc
                     Refresh();
                     return true;
                 case WoWSpec.DeathKnightUnholy:
-                    this.HkTier4AbilityLabel.Text = "LOL";
+                    this.HkTier4AbilityLabel.Text = "Anti Magic-Zone";
+                    this.HkDemoBannerLabel.Text = "Raise Ally";
+                    this.HkHeroicLeapLabel.Text = "Army of the Dead";
+                    this.HkMockingBannerLabel.Text = "Tier 6 Ability";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                     //Monk
                 case WoWSpec.MonkWindwalker:
-                    this.HkTier4AbilityLabel.Text = "WTF";
+                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.MonkBrewmaster:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                     //Hunter
                 case WoWSpec.HunterBeastMastery:
-                    this.HkTier4AbilityLabel.Text = "WTF";
+                    this.HkTier4AbilityLabel.Text = "Misdirect (Focus)";
+                    this.HkDemoBannerLabel.Text = "Deterrence";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.HunterSurvival:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "Misdirect (Focus)";
+                    this.HkDemoBannerLabel.Text = "Deterrence";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.HunterMarksmanship:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "Misdirect (Focus)";
+                    this.HkDemoBannerLabel.Text = "Deterrence";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                     //Rogue
                 case WoWSpec.RogueAssassination:
-                    this.HkTier4AbilityLabel.Text = "WTF";
+                    this.HkTier4AbilityLabel.Text = "Tricks of the Trade";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.RogueCombat:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "Tricks of the Trade";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.RogueSubtlety:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "Tricks of the Trade";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                     //Shaman
                 case WoWSpec.ShamanElemental:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.ShamanEnhancement:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                     //Paladin
                 case WoWSpec.PaladinProtection:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
                 case WoWSpec.PaladinRetribution:
-                    this.HkTier4AbilityLabel.Text = "WHAT";
+                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkDemoBannerLabel.Text = "NOT IN USE";
+                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();
                     return true;
 

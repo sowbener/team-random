@@ -167,7 +167,7 @@ namespace YourBuddy
             CombatLogHandler.Initialize();
 
             /* Lua SecondaryStats */
-            Lua.PopulateSecondryStats();
+           if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy) Lua.PopulateSecondryStats();
 
             /* Blood DK DeathStrike Tracker */
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)

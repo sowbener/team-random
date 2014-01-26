@@ -30,6 +30,7 @@ namespace YourBuddy.Rotations.Hunter
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheckRanged), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsH()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAutoAttack, Lua.StartAutoAttack),

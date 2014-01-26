@@ -32,6 +32,7 @@ namespace YourBuddy.Rotations.Deathknight
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),                
                  //        G.InitializeOnKeyActions(),
                          G.ManualCastPause(),
+                         new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsDK()),
                          G.InitializeCaching(),
                          new Action(delegate { CacheLocalVars(); return RunStatus.Failure; }),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,

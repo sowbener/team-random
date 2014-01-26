@@ -30,6 +30,7 @@ namespace YourBuddy.Rotations.Deathknight
                 return new PrioritySelector(
             //            new Decorator(ret => SG.Instance.General.CheckTreePerformance, DvLogger.TreePerformance("InitializeUnholy")),
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
+                        new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsDK()),
                    //     G.InitializeOnKeyActions(),
                         G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,

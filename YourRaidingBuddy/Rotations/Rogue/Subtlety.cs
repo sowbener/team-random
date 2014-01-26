@@ -31,7 +31,7 @@ namespace YourBuddy.Rotations.Rogue
                  //   new Decorator(ret => SG.Instance.General.CheckTreePerformance,
                 //        WaLogger.TreePerformance("InitializeSub")),
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
-                  //      G.InitializeOnKeyActions(),
+                        new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsR()),
                         G.ManualCastPause(),
                         //new Action(delegate { WaLogger.DumpAuraTables(StyxWoW.Me); return RunStatus.Failure; }),    
                     //   new Action(delegate { YBLogger.AdvancedLogP("PoisonNo: = {0}", Poisons.CreateApplyPoisons()); return RunStatus.Failure; }),
