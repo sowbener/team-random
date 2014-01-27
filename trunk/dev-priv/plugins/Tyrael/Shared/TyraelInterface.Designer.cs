@@ -40,6 +40,7 @@
             this.checkChatOutput = new System.Windows.Forms.CheckBox();
             this.SaveButton = new System.Windows.Forms.Button();
             this.NamePanel = new System.Windows.Forms.Panel();
+            this.TyraelForumTopicLabel = new System.Windows.Forms.LinkLabel();
             this.LabelName = new System.Windows.Forms.Label();
             this.TpsLabel = new System.Windows.Forms.Label();
             this.checkAutomaticUpdater = new System.Windows.Forms.CheckBox();
@@ -54,7 +55,6 @@
             this.extremebutton = new System.Windows.Forms.Button();
             this.normalbutton = new System.Windows.Forms.Button();
             this.slowbutton = new System.Windows.Forms.Button();
-            this.TyraelForumTopicLabel = new System.Windows.Forms.LinkLabel();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
@@ -232,6 +232,23 @@
             this.NamePanel.TabIndex = 0;
             this.NamePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
             // 
+            // TyraelForumTopicLabel
+            // 
+            this.TyraelForumTopicLabel.ActiveLinkColor = System.Drawing.Color.SteelBlue;
+            this.TyraelForumTopicLabel.AutoSize = true;
+            this.TyraelForumTopicLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TyraelForumTopicLabel.LinkColor = System.Drawing.Color.DodgerBlue;
+            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(674, 19);
+            this.TyraelForumTopicLabel.Name = "TyraelForumTopicLabel";
+            this.TyraelForumTopicLabel.Size = new System.Drawing.Size(79, 16);
+            this.TyraelForumTopicLabel.TabIndex = 13;
+            this.TyraelForumTopicLabel.TabStop = true;
+            this.TyraelForumTopicLabel.Text = "Tyrael FAQ";
+            this.TyraelForumTopicLabel.VisitedLinkColor = System.Drawing.Color.DodgerBlue;
+            this.TyraelForumTopicLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.TyraelForumTopicLabel_LinkClicked);
+            this.TyraelForumTopicLabel.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.TyraelForumTopicLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TyraelForumTopicLabel_MouseMove);
+            // 
             // LabelName
             // 
             this.LabelName.AutoSize = true;
@@ -259,7 +276,6 @@
             // checkAutomaticUpdater
             // 
             this.checkAutomaticUpdater.AutoSize = true;
-            this.checkAutomaticUpdater.Enabled = false;
             this.checkAutomaticUpdater.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkAutomaticUpdater.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkAutomaticUpdater.Location = new System.Drawing.Point(10, 85);
@@ -428,23 +444,6 @@
             this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
             this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
-            // 
-            // TyraelForumTopicLabel
-            // 
-            this.TyraelForumTopicLabel.ActiveLinkColor = System.Drawing.Color.SteelBlue;
-            this.TyraelForumTopicLabel.AutoSize = true;
-            this.TyraelForumTopicLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TyraelForumTopicLabel.LinkColor = System.Drawing.Color.DodgerBlue;
-            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(674, 19);
-            this.TyraelForumTopicLabel.Name = "TyraelForumTopicLabel";
-            this.TyraelForumTopicLabel.Size = new System.Drawing.Size(79, 16);
-            this.TyraelForumTopicLabel.TabIndex = 13;
-            this.TyraelForumTopicLabel.TabStop = true;
-            this.TyraelForumTopicLabel.Text = "Tyrael FAQ";
-            this.TyraelForumTopicLabel.VisitedLinkColor = System.Drawing.Color.DodgerBlue;
-            this.TyraelForumTopicLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.TyraelForumTopicLabel_LinkClicked);
-            this.TyraelForumTopicLabel.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.TyraelForumTopicLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TyraelForumTopicLabel_MouseMove);
             // 
             // TyraelInterface
             // 

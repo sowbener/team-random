@@ -377,11 +377,11 @@ namespace Tyrael.Shared
 
         private void extremebutton_Click(object sender, EventArgs e)
         {
-            TPSTrackBar.Value = 60;
+            TPSTrackBar.Value = 100;
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
-            GlobalSettings.Instance.UseFrameLock = true;
-            TyraelSettings.Instance.UseSoftLock = false;
+            GlobalSettings.Instance.UseFrameLock = false;
+            TyraelSettings.Instance.UseSoftLock = true;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
