@@ -36,7 +36,7 @@ namespace YourBuddy.Rotations.Rogue
                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
                         new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsR()),
                         G.ManualCastPause(),
-                        new Decorator(ret => U.NearbyAttackableUnitsCount > 1, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && U.NearbyAttackableUnitsCount < 8))),
+                        new Decorator(ret => U.NearbyAttackableUnitsCount > 1 || U.NearbyAttackableUnitsCount < 8, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry))),
                         CreateBladeFlurryBehavior(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
@@ -156,7 +156,7 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 new Decorator(
-                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAttackableUnitsCount > 7 || (U.IsTargetBoss && U.NearbyAttackableUnitsCount <= 1 && U.NearbyBossesUnitsCount <= 1)),
+                    ret => SG.Instance.Combat.AutoTurnOffBladeFlurry && Me.HasAura("Blade Flurry") && (U.NearbyAttackableUnitsCount > 7 || U.NearbyAttackableUnitsCount < 2),
                     new Sequence(
                         new Styx.TreeSharp.Action(ret => Logger.DiagLogFb("/cancel Blade Flurry")),
                         new Styx.TreeSharp.Action(ret => Me.CancelAura("Blade Flurry")),
