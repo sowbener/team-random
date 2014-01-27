@@ -107,6 +107,11 @@ namespace Tyrael.Shared
             TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
         }
 
+        private void TyraelForumTopicLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/honorbuddy-forum/botbases/102004-bot-tyrael-raiding-botbase.html");
+        }
+
         private void checkAutomaticUpdater_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables the automatic updater.");
@@ -165,6 +170,11 @@ namespace Tyrael.Shared
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Save the current settings and close the interface.");
+        }
+
+        private void TyraelForumTopicLabel_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Opens the Tyrael Topic in your default browser.");
         }
 
         private readonly int _var = GlobalSettings.Instance.TicksPerSecond;

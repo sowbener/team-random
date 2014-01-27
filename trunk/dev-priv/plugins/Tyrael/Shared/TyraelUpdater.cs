@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace Tyrael.Shared
 {
-    internal static class Updater
+    internal static class TyraelUpdater
     {
         private static readonly string TyraelSvnUrl = TyraelSettings.Instance.SvnUrl == TyraelUtilities.SvnUrl.Release
             ? "https://subversion.assembla.com/svn/team-random/trunk/release/plugins/Tyrael/"
