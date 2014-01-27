@@ -252,11 +252,11 @@
             // LabelName
             // 
             this.LabelName.AutoSize = true;
-            this.LabelName.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelName.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelName.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.LabelName.Location = new System.Drawing.Point(213, 2);
+            this.LabelName.Location = new System.Drawing.Point(195, 1);
             this.LabelName.Name = "LabelName";
-            this.LabelName.Size = new System.Drawing.Size(352, 36);
+            this.LabelName.Size = new System.Drawing.Size(388, 38);
             this.LabelName.TabIndex = 0;
             this.LabelName.Text = "Tyrael - Raiding BotBase";
             this.LabelName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
