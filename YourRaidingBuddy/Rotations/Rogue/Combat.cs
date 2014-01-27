@@ -34,10 +34,10 @@ namespace YourBuddy.Rotations.Rogue
                 return new PrioritySelector(
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Feint", ret => SG.Instance.Subtlety.EnableFeintUsage && !Me.HasAura("Feint")))),
-                        new Decorator(ret => !SG.Instance.General.CheckPreCombatHk, G.InitializeOnKeyActionsR()),
+                        G.InitializeOnKeyActionsR(),
                         G.ManualCastPause(),
-                //        new Decorator(ret => U.NearbyAttackableUnitsCount > 1 || U.NearbyAttackableUnitsCount < 8, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry))),
-                  //      CreateBladeFlurryBehavior(),
+                        new Decorator(ret => U.NearbyAttackableUnitsCount > 1 || U.NearbyAttackableUnitsCount < 8, new PrioritySelector(Spell.Cast("Blade Flurry", ret => SG.Instance.Combat.AutoTurnOffBladeFlurry))),
+                       CreateBladeFlurryBehavior(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Combat.CheckAutoAttack, Lua.StartAutoAttack),
