@@ -607,7 +607,7 @@ namespace YourBuddy.Interfaces.GUI
             this.ComboHkSpecial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.ComboHkSpecial.DropDownHeight = 110;
             this.ComboHkSpecial.DropDownWidth = 140;
-            this.ComboHkSpecial.Enabled = false;
+            this.ComboHkSpecial.Enabled = true;
             this.ComboHkSpecial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ComboHkSpecial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkSpecial.FormattingEnabled = true;

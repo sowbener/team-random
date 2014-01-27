@@ -266,6 +266,7 @@ namespace YourBuddy.Rotations
          126690, // Call of Conquest
          146312, // Celestial Trinket
          126649, // Terror in the Mists
+         146250, // STR - Thok's Tail
          138737, // Blades
          138756, // Blades
          138938, // Juju Madness
