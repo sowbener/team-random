@@ -245,6 +245,7 @@ namespace YourBuddy.Interfaces.GUI
             this.StatusStrip.Size = new System.Drawing.Size(1007, 23);
             this.StatusStrip.SizingGrip = false;
             this.StatusStrip.TabIndex = 2;
+            this.StatusStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.StatusStrip_ItemClicked);
             this.StatusStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Fu_GuiDragDrop);
             // 
             // StatusStripText
@@ -736,7 +737,7 @@ namespace YourBuddy.Interfaces.GUI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(1015, 612);
+            this.ClientSize = new System.Drawing.Size(1014, 612);
             this.Controls.Add(this.SpecGrid);
             this.Controls.Add(this.HotkeyPanel);
             this.Controls.Add(this.StatusStrip);

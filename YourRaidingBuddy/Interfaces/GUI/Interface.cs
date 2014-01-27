@@ -720,5 +720,10 @@ namespace YourBuddy.Interfaces.GUI
         {
 
         }
+
+        private void StatusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }
