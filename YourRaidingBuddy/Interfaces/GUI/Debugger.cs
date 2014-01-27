@@ -91,14 +91,6 @@ namespace YourBuddy.Interfaces.GUI
             }
         }
 
-        private void UpdateVigilanceTarget()
-        {
-            if (Unit.IsViable(StyxWoW.Me))
-            {
-                vigilancetargettextbox.Text = Core.Utilities.Logger.PrintVigilanceTarget;
-            }
-        }
-
         private void UpdateCachedAttackableUnitsList()
         {
             if (Unit.IsViable(StyxWoW.Me))
@@ -184,10 +176,6 @@ namespace YourBuddy.Interfaces.GUI
             UpdateDamageTaken();
         }
 
-        private void updatevigilancetargetbutton_Click(object sender, EventArgs e)
-        {
-            UpdateVigilanceTarget();
-        }
 
         private void cachedattackableunitsbutton_Click(object sender, EventArgs e)
         {

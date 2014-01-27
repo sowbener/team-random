@@ -174,28 +174,6 @@ namespace YourBuddy.Core.Utilities
             }
         }
 
-        public static string PrintVigilanceTarget
-        {
-            get
-            {
-                if (StyxWoW.Me.GroupInfo.IsInParty || StyxWoW.Me.GroupInfo.IsInRaid)
-                {
-                    Unit.GetVigilanceTarget();
-
-                    var vigilancetarget = Unit.VigilanceTarget;
-
-                    if (vigilancetarget == null)
-                    {
-                        return "No Suitable Target";
-                    }
-
-                    CombatLogLg("Yb: Vigilance target is {0}", vigilancetarget);
-                    return vigilancetarget.ToString();
-                }
-                return "No Suitable Target";
-            }
-        }
-
         public static void WriteFileLog(string message, params object[] args)
         {
             if (message == null) return;

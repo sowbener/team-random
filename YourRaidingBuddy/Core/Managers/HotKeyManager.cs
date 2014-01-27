@@ -220,7 +220,7 @@ namespace YourBuddy.Core.Managers
                     //    KeySystemtoKeyBind(key.ToString()),
                     //    THSettings.Instance.AutoDetectManualCastMS);
 
-                    Logger.CombatLogWh("Yb: Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.ResumeTime);
+                    Logger.CombatLogWh("Yb: Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.InterruptStart);
                     return true;
                 }
             }

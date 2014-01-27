@@ -187,27 +187,6 @@ namespace YourBuddy.Core
         /// Retrieves the target which requires Vigilance - Not StyxWoW.Me
         /// </summary>
         /// <returns>Viable unit to cast Vigilance on - Based on Settings</returns>
-        public static bool GetVigilanceTarget()
-        {
-            using (new PerformanceLogger("VigilanceTarget"))
-            {
-                VigilanceTarget = null;
-
-                var tankOnly = InternalSettings.Instance.General.Vigilance == Enum.VigilanceTrigger.OnTank;
-
-                switch (InternalSettings.Instance.General.Vigilance)
-                {
-                    case Enum.VigilanceTrigger.Never:
-                        return false;
-                    default:
-                        VigilanceTarget = (from u in NearbyRaidMembers(StyxWoW.Me.Location, 30)
-                            where IsViable(u) && u.Guid != Root.MyGuid && (!tankOnly || u.HasAura(AuraBook.Vengeance)) && u.HealthPercent <= InternalSettings.Instance.General.VigilanceNum
-                            select u).FirstOrDefault();
-
-                        return VigilanceTarget != null;
-                }
-            }
-        }
 
         /// <summary>
         /// Retrieves the count (Integer) of melee units (5y) - Used in YourBuddy.Rotations.Global.InitializeCaching()

@@ -205,20 +205,29 @@ namespace YourBuddy.Interfaces.GUI
             // 
             // GeneralGrid
             // 
-            this.GeneralGrid.CommandsBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.GeneralGrid.CommandsLinkColor = System.Drawing.Color.Black;
+            this.GeneralGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.GeneralGrid.CategoryForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
+            this.GeneralGrid.CategorySplitterColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.GeneralGrid.CommandsBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.GeneralGrid.CommandsForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.GeneralGrid.CommandsLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.GeneralGrid.DisabledItemForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.GeneralGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.GeneralGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.GeneralGrid.HelpBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.GeneralGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.GeneralGrid.HelpForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.GeneralGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.GeneralGrid.Location = new System.Drawing.Point(3, 104);
             this.GeneralGrid.Name = "GeneralGrid";
             this.GeneralGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.GeneralGrid.SelectedItemWithFocusBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.GeneralGrid.SelectedItemWithFocusBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.GeneralGrid.SelectedItemWithFocusForeColor = System.Drawing.Color.Black;
             this.GeneralGrid.Size = new System.Drawing.Size(334, 478);
             this.GeneralGrid.TabIndex = 1;
             this.GeneralGrid.ToolbarVisible = false;
-            this.GeneralGrid.ViewBackColor = System.Drawing.Color.White;
-            this.GeneralGrid.ViewBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.GeneralGrid.ViewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.GeneralGrid.ViewBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.GeneralGrid.ViewForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             // 
             // StatusStrip
             // 
@@ -241,13 +250,14 @@ namespace YourBuddy.Interfaces.GUI
             // StatusStripText
             // 
             this.StatusStripText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.StatusStripText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.StatusStripText.Name = "StatusStripText";
             this.StatusStripText.Size = new System.Drawing.Size(213, 18);
             this.StatusStripText.Text = "YourBuddy - The best you can get!";
             // 
             // LogoPicture
             // 
-            this.LogoPicture.BackColor = System.Drawing.Color.White;
+            this.LogoPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.LogoPicture.Location = new System.Drawing.Point(4, 4);
             this.LogoPicture.Name = "LogoPicture";
             this.LogoPicture.Size = new System.Drawing.Size(1007, 97);
@@ -260,7 +270,8 @@ namespace YourBuddy.Interfaces.GUI
             // 
             // debuggerpanel
             // 
-            this.debuggerpanel.BackColor = System.Drawing.Color.White;
+            this.debuggerpanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.debuggerpanel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.debuggerpanel.Location = new System.Drawing.Point(9, 415);
             this.debuggerpanel.Name = "debuggerpanel";
             this.debuggerpanel.Size = new System.Drawing.Size(321, 26);
@@ -269,9 +280,10 @@ namespace YourBuddy.Interfaces.GUI
             // 
             // SaveButton
             // 
-            this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.SaveButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.SaveButton.Location = new System.Drawing.Point(9, 447);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(321, 23);
@@ -284,27 +296,37 @@ namespace YourBuddy.Interfaces.GUI
             // 
             // SpecGrid
             // 
-            this.SpecGrid.CommandsBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.SpecGrid.CommandsLinkColor = System.Drawing.Color.Black;
+            this.SpecGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.SpecGrid.CategoryForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
+            this.SpecGrid.CategorySplitterColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.SpecGrid.CommandsBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.SpecGrid.CommandsDisabledLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
+            this.SpecGrid.CommandsForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.SpecGrid.CommandsLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.SpecGrid.DisabledItemForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.SpecGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.SpecGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.SpecGrid.HelpBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.SpecGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.SpecGrid.HelpForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.SpecGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.SpecGrid.Location = new System.Drawing.Point(340, 104);
             this.SpecGrid.Name = "SpecGrid";
             this.SpecGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.SpecGrid.SelectedItemWithFocusBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.SpecGrid.SelectedItemWithFocusBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.SpecGrid.SelectedItemWithFocusForeColor = System.Drawing.Color.Black;
             this.SpecGrid.Size = new System.Drawing.Size(334, 478);
             this.SpecGrid.TabIndex = 4;
             this.SpecGrid.ToolbarVisible = false;
-            this.SpecGrid.ViewBackColor = System.Drawing.Color.White;
-            this.SpecGrid.ViewBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.SpecGrid.ViewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.SpecGrid.ViewBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.SpecGrid.ViewForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.SpecGrid.Click += new System.EventHandler(this.SpecGrid_Click);
             // 
             // ComboHkDemoralizingBanner
             // 
             this.ComboHkDemoralizingBanner.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkDemoralizingBanner.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkDemoralizingBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkDemoralizingBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkDemoralizingBanner.DropDownHeight = 110;
             this.ComboHkDemoralizingBanner.DropDownWidth = 140;
             this.ComboHkDemoralizingBanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -323,6 +345,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkDemoBannerLabel.AutoSize = true;
             this.HkDemoBannerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkDemoBannerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkDemoBannerLabel.Location = new System.Drawing.Point(5, 31);
             this.HkDemoBannerLabel.Name = "HkDemoBannerLabel";
             this.HkDemoBannerLabel.Size = new System.Drawing.Size(74, 16);
@@ -336,6 +359,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.label2.Location = new System.Drawing.Point(4, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(252, 20);
@@ -346,7 +370,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkHeroicLeap.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkHeroicLeap.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkHeroicLeap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkHeroicLeap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkHeroicLeap.DropDownHeight = 110;
             this.ComboHkHeroicLeap.DropDownWidth = 140;
             this.ComboHkHeroicLeap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -365,6 +389,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkHeroicLeapLabel.AutoSize = true;
             this.HkHeroicLeapLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkHeroicLeapLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkHeroicLeapLabel.Location = new System.Drawing.Point(5, 61);
             this.HkHeroicLeapLabel.Name = "HkHeroicLeapLabel";
             this.HkHeroicLeapLabel.Size = new System.Drawing.Size(46, 16);
@@ -377,6 +402,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.label4.Location = new System.Drawing.Point(4, 185);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(245, 20);
@@ -387,6 +413,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkModeLabel.AutoSize = true;
             this.HkModeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkModeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkModeLabel.Location = new System.Drawing.Point(5, 212);
             this.HkModeLabel.Name = "HkModeLabel";
             this.HkModeLabel.Size = new System.Drawing.Size(130, 16);
@@ -399,7 +426,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkMode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkMode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkMode.DropDownHeight = 110;
             this.ComboHkMode.DropDownWidth = 140;
             this.ComboHkMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -416,10 +443,9 @@ namespace YourBuddy.Interfaces.GUI
             // 
             // ComboHkModifier
             // 
-           
             this.ComboHkModifier.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkModifier.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkModifier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkModifier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkModifier.DropDownHeight = 110;
             this.ComboHkModifier.DropDownWidth = 140;
             this.ComboHkModifier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -438,7 +464,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkCooldown.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkCooldown.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkCooldown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkCooldown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkCooldown.DropDownHeight = 110;
             this.ComboHkCooldown.DropDownWidth = 140;
             this.ComboHkCooldown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -457,7 +483,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkMultiTgt.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkMultiTgt.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkMultiTgt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkMultiTgt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkMultiTgt.DropDownHeight = 110;
             this.ComboHkMultiTgt.DropDownWidth = 140;
             this.ComboHkMultiTgt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -476,7 +502,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkPause.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkPause.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkPause.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkPause.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkPause.DropDownHeight = 110;
             this.ComboHkPause.DropDownWidth = 140;
             this.ComboHkPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -495,6 +521,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkModifierLabel.AutoSize = true;
             this.HkModifierLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkModifierLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkModifierLabel.Location = new System.Drawing.Point(5, 242);
             this.HkModifierLabel.Name = "HkModifierLabel";
             this.HkModifierLabel.Size = new System.Drawing.Size(123, 16);
@@ -507,6 +534,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkCooldownLabel.AutoSize = true;
             this.HkCooldownLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkCooldownLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkCooldownLabel.Location = new System.Drawing.Point(5, 272);
             this.HkCooldownLabel.Name = "HkCooldownLabel";
             this.HkCooldownLabel.Size = new System.Drawing.Size(135, 16);
@@ -519,6 +547,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkAoELabel.AutoSize = true;
             this.HkAoELabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkAoELabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkAoELabel.Location = new System.Drawing.Point(5, 302);
             this.HkAoELabel.Name = "HkAoELabel";
             this.HkAoELabel.Size = new System.Drawing.Size(171, 16);
@@ -531,6 +560,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkPauseLabel.AutoSize = true;
             this.HkPauseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkPauseLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkPauseLabel.Location = new System.Drawing.Point(5, 332);
             this.HkPauseLabel.Name = "HkPauseLabel";
             this.HkPauseLabel.Size = new System.Drawing.Size(114, 16);
@@ -543,7 +573,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkShatteringThrow.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkShatteringThrow.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkShatteringThrow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkShatteringThrow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkShatteringThrow.DropDownHeight = 110;
             this.ComboHkShatteringThrow.DropDownWidth = 140;
             this.ComboHkShatteringThrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -562,6 +592,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkShattThrowLabel.AutoSize = true;
             this.HkShattThrowLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkShattThrowLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkShattThrowLabel.Location = new System.Drawing.Point(5, 121);
             this.HkShattThrowLabel.Name = "HkShattThrowLabel";
             this.HkShattThrowLabel.Size = new System.Drawing.Size(30, 16);
@@ -574,7 +605,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkTier4Ability.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkTier4Ability.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkTier4Ability.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkTier4Ability.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkTier4Ability.DropDownHeight = 110;
             this.ComboHkTier4Ability.DropDownWidth = 140;
             this.ComboHkTier4Ability.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -594,6 +625,7 @@ namespace YourBuddy.Interfaces.GUI
             this.HkTier4AbilityLabel.AutoSize = true;
             this.HkTier4AbilityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HkTier4AbilityLabel.Location = new System.Drawing.Point(5, 151);
+            this.HkTier4AbilityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkTier4AbilityLabel.Name = "HkTier4AbilityLabel";
             this.HkTier4AbilityLabel.Size = new System.Drawing.Size(0, 16);
             this.HkTier4AbilityLabel.TabIndex = 22;
@@ -604,10 +636,9 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkSpecial.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkSpecial.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkSpecial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkSpecial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkSpecial.DropDownHeight = 110;
             this.ComboHkSpecial.DropDownWidth = 140;
-            this.ComboHkSpecial.Enabled = true;
             this.ComboHkSpecial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ComboHkSpecial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ComboHkSpecial.FormattingEnabled = true;
@@ -624,6 +655,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkSpecialLabel.AutoSize = true;
             this.HkSpecialLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkSpecialLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkSpecialLabel.Location = new System.Drawing.Point(5, 362);
             this.HkSpecialLabel.Name = "HkSpecialLabel";
             this.HkSpecialLabel.Size = new System.Drawing.Size(121, 16);
@@ -636,7 +668,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.ComboHkMockingBanner.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ComboHkMockingBanner.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ComboHkMockingBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ComboHkMockingBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.ComboHkMockingBanner.DropDownHeight = 110;
             this.ComboHkMockingBanner.DropDownWidth = 140;
             this.ComboHkMockingBanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -655,6 +687,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkMockingBannerLabel.AutoSize = true;
             this.HkMockingBannerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HkMockingBannerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.HkMockingBannerLabel.Location = new System.Drawing.Point(5, 91);
             this.HkMockingBannerLabel.Name = "HkMockingBannerLabel";
             this.HkMockingBannerLabel.Size = new System.Drawing.Size(42, 16);
@@ -665,7 +698,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             // HotkeyPanel
             // 
-            this.HotkeyPanel.BackColor = System.Drawing.Color.White;
+            this.HotkeyPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.HotkeyPanel.Controls.Add(this.debuggerpanel);
             this.HotkeyPanel.Controls.Add(this.HkMockingBannerLabel);
             this.HotkeyPanel.Controls.Add(this.ComboHkMockingBanner);
@@ -692,9 +725,9 @@ namespace YourBuddy.Interfaces.GUI
             this.HotkeyPanel.Controls.Add(this.label2);
             this.HotkeyPanel.Controls.Add(this.HkDemoBannerLabel);
             this.HotkeyPanel.Controls.Add(this.ComboHkDemoralizingBanner);
-            this.HotkeyPanel.Location = new System.Drawing.Point(677, 105);
+            this.HotkeyPanel.Location = new System.Drawing.Point(680, 105);
             this.HotkeyPanel.Name = "HotkeyPanel";
-            this.HotkeyPanel.Size = new System.Drawing.Size(334, 477);
+            this.HotkeyPanel.Size = new System.Drawing.Size(331, 477);
             this.HotkeyPanel.TabIndex = 3;
             this.HotkeyPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HotkeyPanel_Paint_1);
             // 
@@ -702,7 +735,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.ClientSize = new System.Drawing.Size(1015, 612);
             this.Controls.Add(this.SpecGrid);
             this.Controls.Add(this.HotkeyPanel);

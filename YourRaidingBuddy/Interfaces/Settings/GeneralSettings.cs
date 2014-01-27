@@ -95,13 +95,6 @@ namespace YourBuddy.Interfaces.Settings
         public bool EnableRaidPartyBuffing { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(100)]
-        [Category("General Settings")]
-        [DisplayName("Manual Cast Resume Time")]
-        [Description("Amount of time in miliseconds before resuming normal operation after manual cast.")]
-        public int ResumeTime { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("General Settings")]
         [DisplayName("Enable Hotkey ChatOutput")]
@@ -131,42 +124,41 @@ namespace YourBuddy.Interfaces.Settings
         [Description("This enables shouts pre-combat, also keeps the buff up.")]
         public bool CheckPreCombatBuff { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Combat Settings")]
-        [DisplayName("Enable Heroic Leap Usage")]
-        [Description("This enables the routine to cast Heroic Leap when applicable on your target - EXPERIMENTAL!")]
-        public bool CheckHeroicLeap { get; set; }
+      //  [Styx.Helpers.DefaultValue(false)]
+      //  [Category("Combat Settings")]
+     //   [DisplayName("Enable Heroic Leap Usage")]
+     //   [Description("This enables the routine to cast Heroic Leap when applicable on your target - EXPERIMENTAL!")]
+    //    public bool CheckHeroicLeap { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
-        [Category("Combat Settings")]
-        [DisplayName("Vigilance Usage")]
-        [Description("Select the usage of Vigilance.")]
-        public Enum.VigilanceTrigger Vigilance { get; set; }
+    //    [Setting]
+     //   [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
+    //    [Category("Combat Settings")]
+   //     [DisplayName("Vigilance Usage")]
+   //     [Description("Select the usage of Vigilance.")]
+   //     public Enum.VigilanceTrigger Vigilance { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(15)]
-        [Category("Combat Settings")]
-        [DisplayName("Vigilance HP %")]
-        [Description("Select the use-on HP for Vigilance usage.")]
-        public int VigilanceNum { get; set; }
+     //   [Setting]
+    //    [Styx.Helpers.DefaultValue(15)]
+    //    [Category("Combat Settings")]
+   //     [DisplayName("Vigilance HP %")]
+   //     [Description("Select the use-on HP for Vigilance usage.")]
+  //      public int VigilanceNum { get; set; }
         #endregion
 
         #region Rotational Settings
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.WindwalkerRotationVersion.Release)]
-        [Category("Rotational Settings")]
-        [DisplayName("Windwalker Rotation Version")]
-        [Description("Select which rotations you prefer - Development, PvP or Release.")]
-        public Enum.WindwalkerRotationVersion CrWindwalkerRotVersion { get; set; }
+    //    [Setting]
+   //     [Styx.Helpers.DefaultValue(Enum.WindwalkerRotationVersion.Release)]
+   //     [Category("Rotational Settings")]
+   //     [DisplayName("Windwalker Rotation Version")]
+  //      [Description("Select which rotations you prefer - Development, PvP or Release.")]
+  //      public Enum.WindwalkerRotationVersion CrWindwalkerRotVersion { get; set; }
 
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.BrewmasterRotationVersion.Release)]
-        [Category("Rotational Settings")]
-        [DisplayName("Brewmaster Rotation Version")]
-        [Description("Select which rotations you prefer - Development or Release.")]
-        public Enum.BrewmasterRotationVersion CrBrewmasterRotVersion { get; set; }
+  //      [Setting]
+  //      [Styx.Helpers.DefaultValue(Enum.BrewmasterRotationVersion.Release)]
+ //       [Category("Rotational Settings")]
+ //       [DisplayName("Brewmaster Rotation Version")]
+ //       [Description("Select which rotations you prefer - Development or Release.")]
+//        public Enum.BrewmasterRotationVersion CrBrewmasterRotVersion { get; set; }
 
         #endregion
 

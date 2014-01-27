@@ -952,15 +952,6 @@
             // 
             // updatevigilancetargetbutton
             // 
-            this.updatevigilancetargetbutton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.updatevigilancetargetbutton.Location = new System.Drawing.Point(3, 169);
-            this.updatevigilancetargetbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.updatevigilancetargetbutton.Name = "updatevigilancetargetbutton";
-            this.updatevigilancetargetbutton.Size = new System.Drawing.Size(201, 28);
-            this.updatevigilancetargetbutton.TabIndex = 6;
-            this.updatevigilancetargetbutton.Text = "Update Vigilance Target";
-            this.updatevigilancetargetbutton.UseVisualStyleBackColor = true;
-            this.updatevigilancetargetbutton.Click += new System.EventHandler(this.updatevigilancetargetbutton_Click);
             // 
             // label1
             // 
