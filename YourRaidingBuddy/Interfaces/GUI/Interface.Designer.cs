@@ -241,7 +241,6 @@ namespace YourBuddy.Interfaces.GUI
             this.StatusStrip.Location = new System.Drawing.Point(4, 585);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
-            this.StatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.StatusStrip.Size = new System.Drawing.Size(1007, 23);
             this.StatusStrip.SizingGrip = false;
             this.StatusStrip.TabIndex = 2;
