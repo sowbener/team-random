@@ -232,7 +232,7 @@ namespace YourBuddy.Interfaces.GUI
             // StatusStrip
             // 
             this.StatusStrip.AutoSize = false;
-            this.StatusStrip.BackColor = System.Drawing.Color.White;
+            this.StatusStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.StatusStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.StatusStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.StatusStrip.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -624,8 +624,8 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.HkTier4AbilityLabel.AutoSize = true;
             this.HkTier4AbilityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HkTier4AbilityLabel.Location = new System.Drawing.Point(5, 151);
             this.HkTier4AbilityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.HkTier4AbilityLabel.Location = new System.Drawing.Point(5, 151);
             this.HkTier4AbilityLabel.Name = "HkTier4AbilityLabel";
             this.HkTier4AbilityLabel.Size = new System.Drawing.Size(0, 16);
             this.HkTier4AbilityLabel.TabIndex = 22;
