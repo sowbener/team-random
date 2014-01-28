@@ -53,7 +53,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
-                    Logging.Write(Colors.Red, "[Tyrael] Rotation Resumed!");
+                    Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
             });
