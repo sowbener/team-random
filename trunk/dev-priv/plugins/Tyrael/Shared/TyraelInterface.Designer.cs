@@ -236,11 +236,11 @@
             // 
             this.TyraelForumTopicLabel.ActiveLinkColor = System.Drawing.Color.SteelBlue;
             this.TyraelForumTopicLabel.AutoSize = true;
-            this.TyraelForumTopicLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TyraelForumTopicLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TyraelForumTopicLabel.LinkColor = System.Drawing.Color.DodgerBlue;
-            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(674, 19);
+            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(679, 21);
             this.TyraelForumTopicLabel.Name = "TyraelForumTopicLabel";
-            this.TyraelForumTopicLabel.Size = new System.Drawing.Size(79, 16);
+            this.TyraelForumTopicLabel.Size = new System.Drawing.Size(73, 17);
             this.TyraelForumTopicLabel.TabIndex = 13;
             this.TyraelForumTopicLabel.TabStop = true;
             this.TyraelForumTopicLabel.Text = "Tyrael FAQ";
@@ -252,11 +252,11 @@
             // LabelName
             // 
             this.LabelName.AutoSize = true;
-            this.LabelName.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelName.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelName.ForeColor = System.Drawing.Color.DodgerBlue;
             this.LabelName.Location = new System.Drawing.Point(195, 1);
             this.LabelName.Name = "LabelName";
-            this.LabelName.Size = new System.Drawing.Size(388, 38);
+            this.LabelName.Size = new System.Drawing.Size(385, 39);
             this.LabelName.TabIndex = 0;
             this.LabelName.Text = "Tyrael - Raiding BotBase";
             this.LabelName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
