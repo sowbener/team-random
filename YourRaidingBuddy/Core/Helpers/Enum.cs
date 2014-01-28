@@ -44,6 +44,15 @@ namespace YourBuddy.Core.Helpers
             OnBlTwHr
         }
 
+        public enum TriggerTarget
+        {
+            FocusTarget,
+            OnMe,
+            OnRaidMember,
+            OnTrash,
+            OnRaid
+        }
+
         public enum PreperationUsage
         {
             Never,

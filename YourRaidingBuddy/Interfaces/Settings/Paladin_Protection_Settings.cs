@@ -84,6 +84,13 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Select the usage of your class racials - Only DPS abilities (Buffs & Attacks).")]
         public Enum.AbilityTrigger ClassRacials { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.TriggerTarget.OnMe)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Light Hammer Location")]
+        [Description("Select the usage of Light's Hammer")]
+        public Enum.TriggerTarget LightHammerLocation { get; set; }
+
 
         
         #endregion

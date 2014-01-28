@@ -118,14 +118,15 @@ namespace YourBuddy.Rotations.Paladin
               Spell.Cast("Hammer of Wrath"),
               Spell.Cast("Execution Sentence"),
               Spell.Cast("Holy Prism"),
-              Spell.Cast("Light's Hammer"),
+              Spell.CastOnGround("Light's Hammer", ret => Me.Location, ret => true), //(SG.Instance.Protection.LightHammerLocation == Enum.TriggerTarget.OnMe && Me.Location), ret => true), /*this could need a conditional use .. put it inot your raidgroup for healing / or put it into the mobs for threat / or put it on your feets for healing u and your tank mate*/
               Spell.Cast("Holy Wrath"));
         }
 
         internal static Composite ProtectionUtility()
         {
             return new PrioritySelector(
-                Spell.Cast("Eternal Flame", ret => (EternalFlameSetting < 2 && BastionofGloryCount > 2 && (Lua.HolyPower >= 3 || DivinePurposeProc))));
+                Spell.Cast("Eternal Flame", ret => (EternalFlameSetting < 2 && BastionofGloryCount > 2 && (Lua.HolyPower >= 3 || DivinePurposeProc))),
+                Spell.Cast("Sacred Shield",ret=> TalentManager.IsSelected(9) && !Me.Auras.ContainsKey("Sacred Shield")));
         }
 
 
