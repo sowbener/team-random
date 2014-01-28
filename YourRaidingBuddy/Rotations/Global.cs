@@ -68,8 +68,7 @@ namespace YourBuddy.Rotations
         {
             return new PrioritySelector(
                 // new Action(delegate { XISpell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
-                new Action(delegate { U.GetNearbyAggroUnitsCount(); return RunStatus.Failure; })
+                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; })
                 );
         }
         #endregion

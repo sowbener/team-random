@@ -33,6 +33,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Decorator(ret => Me.Specialization == WoWSpec.MonkBrewmaster, new Action(delegate { U.GetNearbyAggroUnitsCount(); return RunStatus.Failure; })),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),

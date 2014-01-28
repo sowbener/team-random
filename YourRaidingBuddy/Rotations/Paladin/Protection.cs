@@ -100,7 +100,8 @@ namespace YourBuddy.Rotations.Paladin
               Spell.Cast("Execution Sentence"),
               Spell.Cast("Holy Prism"),
               Spell.Cast("Holy Wrath"),
-              Spell.Cast("Consecration"));
+              Spell.Cast("Consecration", ret => !TalentManager.HasGlyph("Consecration")),
+              Spell.CastOnGround("Consecration", ret => Me.CurrentTarget != null ? Me.CurrentTarget.Location : Me.Location, ret => TalentManager.HasGlyph("Consecration")));
 
         }
 

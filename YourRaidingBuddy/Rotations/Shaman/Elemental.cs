@@ -31,13 +31,13 @@ namespace YourBuddy.Rotations.Shaman
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheckRanged), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Elemental.EnableSelfHealing && Me.HealthPercent < 100, ElementalDefensive()),
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterrupts()),
                                         ElementalUtility(),
-                                        new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                                                     new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                          new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                         ElementalOffensive(),
@@ -64,7 +64,6 @@ namespace YourBuddy.Rotations.Shaman
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => SG.Instance.Elemental.EnableSelfHealing &&  Me.HealthPercent < 100, ElementalDefensive()),
-                                        new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                                         new Decorator(ret => SG.Instance.Elemental.CheckInterrupts && Unit.CanInterrupt, ElementalInterrupts()),
                                         ElementalUtility(),
                                          new Decorator(ret => HotKeyManager.IsCooldown,
@@ -82,15 +81,19 @@ namespace YourBuddy.Rotations.Shaman
         internal static Composite ElementalSt()
         {
             return new PrioritySelector(
-            //    new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector(Spell.PreventDoubleCast("Spiritwalker's Grace", 1, target => Me, ret => Me.IsMoving, true))),
+              
+                Spell.PreventDoubleCast("Stormlash Totem", 1, ret => SG.Instance.Elemental.EnableStormLashTotem && G.SpeedBuffsAura && !Totems.Exist(WoWTotemType.Air)),
+                new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.PreventDoubleCast("Spiritwalker's Grace", 1, target => Me, ret => Me.IsMoving, true))),
                 Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                Spell.Cast("Lava Burst", ret => !NeedFlameShock && (Me.HasAura(114050) || Me.HasAura(77756))),
-                Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => !FlameShock5 && (Me.HasAura(77756) || Me.HasAura("Spiritwalker's Grace")), true),
-                Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasAura("Flame Shock") || NeedFlameShockRefresh),
-                Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18) && !FlameShock5),
-                Spell.Cast("Earth Shock", ret => LightningShield7Stacks && !FlameShock5),
+                Spell.Cast("Lava Burst", ret => FlameShockRemains > Spell.GetSpellCastTime("Lava Burst") && (Me.HasAura(114050) || Me.HasAura(77756))),
+                Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasMyAura("Flame Shock") || FlameShockRemains < 2),
+                Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
+                Spell.Cast("Earth Shock", ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
+                Spell.Cast("Flame Shock", ret => SG.Instance.Elemental.UseFlameShockRefreshAscendance && Unit.IsTargetBoss && (CooldownTracker.GetSpellCooldown(114049).Seconds < 15 || !CooldownTracker.SpellOnCooldown(114049)) && FlameShockRemains <= 15),
                 Spell.PreventDoubleCast("Searing Totem", 1, ret => NeedSearingTotem),
-                Spell.PreventDoubleCast("Lightning Bolt", 1, target => Me.CurrentTarget, ret => !FlameShock5 && (ElementalBlastAndLavaBurstIsOnCoolDown || !Me.ActiveAuras.ContainsKey("Lava Surge") || Me.CurrentTarget.HasAura("Flame Shock")), true));
+                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 1 || CooldownTracker.GetSpellCooldown("Unleash Elements").Seconds > 1 || (TalentManager.IsSelected(18) && CooldownTracker.GetSpellCooldown("Elemental Blast").Seconds > 1)));
+
+
         }
       
 
@@ -112,7 +115,7 @@ namespace YourBuddy.Rotations.Shaman
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
                     new PrioritySelector(
              //       Spell.PreventDoubleMultiDoT("Flame Shock", 1, Me, 20, 3, ret => U.NearbyAttackableUnitsCount < 4 && seedTarget == null),
-                    Spell.Cast("Earth Shock", ret => LightningShield7Stacks && !FlameShock5),
+                    Spell.Cast("Earth Shock", ret => LightningShieldStacks >= 6),
                      Spell.Cast("Lava Burst", ret => !NeedFlameShock && (Me.HasAura(114050) || Me.HasAura(77756))),
                     Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => !FlameShock5 && (Me.HasAura(77756) || Me.HasAura("Spiritwalker's Grace")), true),
                     Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
@@ -141,6 +144,32 @@ namespace YourBuddy.Rotations.Shaman
         internal static Composite ElementalOffensive()
         {
             return new PrioritySelector(
+                Spell.Cast("Ascendance", ret => FlameShockRemains >= 15 && CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 0 && (
+                    (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.Always)
+                    )),
+                Spell.Cast("Fire Elemental Totem", ret => (
+                    (SG.Instance.Elemental.FireElemental == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Elemental.FireElemental == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Elemental.FireElemental == Enum.AbilityTrigger.Always)
+                    )),
+                Spell.Cast("Elemental Mastery", ret => TalentManager.IsSelected(10) && (!G.SpeedBuffsAura || !Me.HasAura("Berserking") || Me.HasAura(114050) || Me.Level < 87) && (
+                    (SG.Instance.Elemental.ElementalMastery == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Elemental.ElementalMastery == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Elemental.ElementalMastery == Enum.AbilityTrigger.Always)
+                    )),
+                Spell.Cast("Ancestral Swiftness", ret => TalentManager.IsSelected(11) && !Me.HasAura(114050) && (
+                    (SG.Instance.Elemental.AncestralSwiftness == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Elemental.AncestralSwiftness == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Elemental.AncestralSwiftness == Enum.AbilityTrigger.Always)
+                    )),
+                //actions.single+=/earth_elemental_totem,if=!active&cooldown.fire_elemental_totem.remains>=60
+                Spell.Cast("Earth Elemental Totem", ret => CooldownTracker.GetSpellCooldown("Fire Elemental Totem").Seconds >= 60 && (
+                    (SG.Instance.Elemental.EarthElemental == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                    (SG.Instance.Elemental.EarthElemental == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Elemental.EarthElemental == Enum.AbilityTrigger.Always)
+                    )),
                 Spell.Cast("Lifeblood", ret => SpellManager.HasSpell(121279) && (
                     (SG.Instance.Elemental.ClassRacials == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Elemental.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
@@ -211,7 +240,7 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasAura("Flame Shock") || NeedFlameShock),                
                 Spell.PreventDoubleCast("Searing Totem", 1, ret => !Totems.Exist(WoWTotemType.Fire) && FireElementalOnCooldown),
                 Spell.PreventDoubleCast("Chain Lightning", 1),
-                Spell.Cast("Earth Shock", ret => LightningShield7Stacks)
+                Spell.Cast("Earth Shock", ret => LightningShieldStacks >= 6)
                 );
         }
 
@@ -240,6 +269,7 @@ namespace YourBuddy.Rotations.Shaman
 
 
         private static bool NeedFlameShock { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Flame Shock", 0, 1000); } }
+        private static double  FlameShockRemains { get { return Spell.GetAuraTimeLeft("Flame Shock", Me.CurrentTarget);}}
         private static bool NeedFlameShockRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Flame Shock", 0, 3000); } }
         private static bool FlameShock5 { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Flame Shock", 0, 4000); } }
 
@@ -252,6 +282,7 @@ namespace YourBuddy.Rotations.Shaman
                             && !Totems.Exist(WoWTotemType.Fire);
             }
         }
+
 
         private static bool NeedMagmaTotem
         {
@@ -278,12 +309,11 @@ namespace YourBuddy.Rotations.Shaman
             }
         }
 
-        private static bool LightningShield7Stacks { get { return Me.HasAura("Lightning Shield") && Spell.GetAuraStack(Me, 324) == 7; } }
-        private static bool LightningShield4Stacks { get { return Me.HasAura("Lightning Shield") && Spell.GetAuraStack(Me, 324) > 3; } }
+        private static double LightningShieldStacks { get { return Spell.GetAuraStackCount(324); } }
         internal static bool ElementalBlastAndLavaBurstIsOnCoolDown { get { return Styx.WoWInternals.WoWSpell.FromId(51505).Cooldown || (TalentManager.IsSelected(18) && Styx.WoWInternals.WoWSpell.FromId(117014).Cooldown); } }
         private static bool FireElementalOnCooldown { get { return CooldownTracker.SpellOnCooldown("Fire Elemental Totem"); } }
         private static bool EarthShockOnCooldown { get { return CooldownTracker.SpellOnCooldown("Earth Shock"); } }
-        private static bool ChannelingLightingBolt { get { return ((Me.CurrentCastEndTime - Me.CurrentCastStartTime).TotalMilliseconds / 2) <= Me.CurrentCastTimeLeft.TotalMilliseconds && Me.CastingSpellId == 403 && Me.ActiveAuras.ContainsKey("Lava Surge"); } }
+        private static bool ChannelingLightingBolt { get { return ((Me.CurrentCastEndTime - Me.CurrentCastStartTime).TotalMilliseconds / 2) <= Me.CurrentCastTimeLeft.TotalMilliseconds && Me.CastingSpellId == 403 && (Me.HasAura(77762) || !CooldownTracker.SpellOnCooldown("Lava Burst")); } }
 
         #endregion Booleans
 

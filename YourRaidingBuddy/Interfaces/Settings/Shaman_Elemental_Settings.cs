@@ -24,9 +24,23 @@ namespace YourBuddy.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Elemental - Ability Options")]
-        [DisplayName("Raise Dead")]
-        [Description("Select the usage of Auto-Raise Dead")]
+        [DisplayName("Prebuff Lightning-Shield")]
+        [Description("Select the usage of Lightning-Shield")]
         public bool PrebuffPet { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Elemental - Ability Options")]
+        [DisplayName("Storm Lash Totem")]
+        [Description("Enable to use Storm Lash Totem on Bloodlust/Heroism similar effects.")]
+        public bool EnableStormLashTotem { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Elemental - Ability Options")]
+        [DisplayName("Flame Shock Refresh Before Ascendance")]
+        [Description("Enable/Disable Refresh Flame Shock Before Ascendance.")]
+        public bool UseFlameShockRefreshAscendance { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
@@ -38,9 +52,38 @@ namespace YourBuddy.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
         [Category("Elemental - Ability Options")]
-        [DisplayName("Elemental Frenzy")]
-        [Description("Select the usage of Elemental Frenzy.")]
-        public Enum.AbilityTrigger ElementalFrenzy { get; set; }
+        [DisplayName("Ascendance")]
+        [Description("Select the usage of Ascendance.")]
+        public Enum.AbilityTrigger Ascendance { get; set; }
+      
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Category("Elemental - Ability Options")]
+        [DisplayName("Ancestral Swiftness")]
+        [Description("Select the usage of Ancestral Swiftness")]
+        public Enum.AbilityTrigger AncestralSwiftness { get; set; }
+       
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Category("Elemental - Ability Options")]
+        [DisplayName("Elemental Mastery")]
+        [Description("Select the usage of Elemental Mastery")]
+        public Enum.AbilityTrigger ElementalMastery { get; set; }
+       
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Category("Elemental - Ability Options")]
+        [DisplayName("Fire Elemental Totem")]
+        [Description("Select the usage of Fire Elemental.")]
+        public Enum.AbilityTrigger FireElemental { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
+        [Category("Elemental - Ability Options")]
+        [DisplayName("Earth Elemental Totem")]
+        [Description("Select the usage of Earth Elemental.")]
+        public Enum.AbilityTrigger EarthElemental { get; set; }
+
         #endregion
 
         #region Item Options
