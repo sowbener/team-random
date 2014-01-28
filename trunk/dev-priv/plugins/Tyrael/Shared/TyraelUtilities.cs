@@ -1,4 +1,5 @@
-﻿using Styx;
+﻿using System.Windows.Media;
+using Styx;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
@@ -43,6 +44,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
+                    Logging.Write(Colors.Red, "[Tyrael] Rotation Paused!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
                 else
@@ -51,6 +53,7 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
+                    Logging.Write(Colors.Red, "[Tyrael] Rotation Resumed!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
             });
