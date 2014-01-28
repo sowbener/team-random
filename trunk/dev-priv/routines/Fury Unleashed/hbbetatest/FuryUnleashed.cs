@@ -62,11 +62,6 @@ namespace FuryUnleashed
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
-                if (!GlobalSettings.Instance.UseFrameLock)
-                {
-                    MessageBox.Show("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!");
-                }
-
                 Unleash();
             }
             catch (Exception exception)
@@ -113,8 +108,6 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Thanks list is available in the topic!");
             Logger.CombatLogOr("Special thanks to: Stormchasing, Wulf, Mirabis, Alxaw, Weischbier & Millz!\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".\r\n");
-            //if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
-            //else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogFb("Recommended rotations are (Selectable in the GUI):");
             Logger.CombatLogOr("Arms: Release");
             Logger.CombatLogOr("Fury: Release");
