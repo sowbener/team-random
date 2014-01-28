@@ -20,7 +20,7 @@ namespace FuryUnleashed.Core.Helpers
             _damageTaken = new Dictionary<DateTime, double>();
             CombatLogHandler.Initialize();
             AttachCombatLogEvent();
-            Logger.CombatLogFb("FU: Damage Tracker Initialized.");
+            Logger.CombatLogFb("Damage Tracker Initialized.");
         }
 
         public static void Pulse()
