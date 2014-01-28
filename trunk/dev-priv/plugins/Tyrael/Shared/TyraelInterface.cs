@@ -82,6 +82,7 @@ namespace Tyrael.Shared
             comboModifierKey.Items.Add(new CboItem((int)ModifierKeys, "Disable HK"));
             SetComboBoxEnum(comboModifierKey, (int)TyraelSettings.Instance.ModKeyChoice);
 
+            comboPauseKey.Items.Add(new CboItem((int)Keys.None, "Modifier Only"));
             comboPauseKey.Items.Add(new CboItem((int)Keys.XButton1, "Mouse button 4"));
             comboPauseKey.Items.Add(new CboItem((int)Keys.XButton2, "Mouse button 5"));
             comboPauseKey.Items.Add(new CboItem((int)Keys.D1, "1 (no numpad)"));
