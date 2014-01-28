@@ -363,7 +363,7 @@
             this.panel3.Controls.Add(this.slowbutton);
             this.panel3.Location = new System.Drawing.Point(511, 97);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(252, 189);
+            this.panel3.Size = new System.Drawing.Size(252, 188);
             this.panel3.TabIndex = 12;
             // 
             // fastbutton
