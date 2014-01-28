@@ -135,13 +135,13 @@ namespace FuryUnleashed.Rotations.Protection
                 Item.ProtUseHealthStone(),
 
                 // Defensive
-                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && IS.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= IS.Instance.Protection.CheckDemoBannerNum, true),
-                Spell.Cast(SpellBook.DemoralizingShout, on => Me, ret => PG.DemoralizingShoutUsage && U.IsTargettingMe && Me.HealthPercent <= IS.Instance.Protection.DemoShoutNum, true),
-                Spell.Cast(SpellBook.LastStand, on => Me, ret => IS.Instance.Protection.CheckLastStand && Me.HealthPercent <= IS.Instance.Protection.CheckLastStandNum, true),
-                Spell.Cast(SpellBook.ShieldWall, on => Me, ret => IS.Instance.Protection.CheckShieldWall && Me.HealthPercent <= IS.Instance.Protection.CheckShieldWallNum, true),
+                Spell.CastOnGround(SpellBook.DemoralizingBanner, loc => Me.Location, ret => SettingsH.Instance.DemoBannerChoice == Keys.None && IS.Instance.Protection.CheckDemoBanner && Me.HealthPercent <= IS.Instance.Protection.CheckDemoBannerNum),
+                Spell.Cast(SpellBook.DemoralizingShout, on => Me, ret => PG.DemoralizingShoutUsage && U.IsTargettingMe && Me.HealthPercent <= IS.Instance.Protection.DemoShoutNum),
+                Spell.Cast(SpellBook.LastStand, on => Me, ret => IS.Instance.Protection.CheckLastStand && Me.HealthPercent <= IS.Instance.Protection.CheckLastStandNum),
+                Spell.Cast(SpellBook.ShieldWall, on => Me, ret => IS.Instance.Protection.CheckShieldWall && Me.HealthPercent <= IS.Instance.Protection.CheckShieldWallNum),
 
-                Spell.Cast(SpellBook.SpellReflection, ret => PG.SpellReflectionUsage && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting, true),
-                Spell.Cast(SpellBook.MassSpellReflection, ret => G.MassSpellReflectionTalent && PG.MassSpellReflectionUsage && G.SpellReflectionSpellCooldown > 0 && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting, true),
+                Spell.Cast(SpellBook.SpellReflection, ret => PG.SpellReflectionUsage && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
+                Spell.Cast(SpellBook.MassSpellReflection, ret => G.MassSpellReflectionTalent && PG.MassSpellReflectionUsage && G.SpellReflectionSpellCooldown > 0 && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
 
                 new Decorator(ret => IS.Instance.Protection.CheckShieldBarrierBlock && !IS.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower >= IS.Instance.Protection.ShieldBarrierBlockNum,
                     new PrioritySelector(
@@ -171,7 +171,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget), true),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss, true),
                 Spell.Cast(SpellBook.Taunt, ret => IS.Instance.Protection.CheckAutoTaunt && !U.IsTargettingMe, true),
-                Spell.Cast(SpellBook.RallyingCry, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry, true),
+                Spell.Cast(SpellBook.RallyingCry, on => Me, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry, true),
                 Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum, true),
                 Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum, true),
                 new Decorator(ret => U.VigilanceTarget != null,
