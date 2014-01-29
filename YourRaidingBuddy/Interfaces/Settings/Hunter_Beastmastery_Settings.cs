@@ -84,28 +84,28 @@ namespace YourBuddy.Interfaces.Settings
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("General")]
+        [Category("Beastmastery - Ability Options")]
         [DisplayName("Enable or Disable Trap Usage")]
         [Description("This enables Trap Usage")]
         public bool EnableTraps { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.Traps.ExplosiveTrap)]
-        [Category("Beastmastery - Item Options")]
+        [Category("Beastmastery - Ability Options")]
         [DisplayName("Select Trap to Use")]
         [Description("Select which trap to use auto.")]
         public Enum.Traps TrapSwitch { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.CallPet.Pet1)]
-        [Category("General")]
+        [Category("Beastmastery Pet")]
         [DisplayName("Which Pet To Call?")]
         [Description("Select the Pet you want to cast.")]
         public Enum.CallPet CallPet { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(40)]
-        [Category("General")]
+        [Category("Beastmastery Pet")]
         [DisplayName("Mend Pet HP %")]
         [Description("Chooose which HP in % to use Mend Pet. Default is 40%")]
         public int MendPetHP { get; set; }

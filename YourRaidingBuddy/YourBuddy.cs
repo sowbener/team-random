@@ -192,6 +192,8 @@ namespace YourBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, G.InitializePreBuffMonk),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, G.InitializePreBuffRogue),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),
+                new SwitchArgument<WoWSpec>(WoWSpec.ShamanElemental, G.InitializePreBuffShaman),
+                new SwitchArgument<WoWSpec>(WoWSpec.ShamanEnhancement, G.InitializePreBuffShaman),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, G.InitializePreBuffRogue));
         }
      

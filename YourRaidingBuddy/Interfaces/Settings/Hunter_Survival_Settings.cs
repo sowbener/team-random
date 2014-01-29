@@ -72,7 +72,7 @@ namespace YourBuddy.Interfaces.Settings
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("Beastmastery - Selectable Options")]
+        [Category("Survival - Selectable Options")]
         [DisplayName("Enable Pet Stuff")]
         [Description("Enables Pet Stuff (Auto Mend Pet)")]
         public bool EnablePetStuff { get; set; }

@@ -202,11 +202,11 @@ namespace YourBuddy.Interfaces.Settings
         #endregion
 
         #region KeyPush
-                [Setting]
+        [Setting]
         [Styx.Helpers.DefaultValue(0)]
         [Category("General")]
-        [DisplayName("Logs if you press key to pause")]
-        [Description("This enables logging for pause key.")]
+        [DisplayName("Pause Value MS")]
+        [Description("Set the amount of MS you want the rotation to pause for.")]
         public int DetectKeyPress { get; set; }
 
 #endregion
