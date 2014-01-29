@@ -113,8 +113,8 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite SurvivalDefensive()
         {
             return new PrioritySelector(
-                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Survival.EnableRevivePet && (Me.Pet == null || (Me.Pet != null && !Me.Pet.IsAlive)))
-                //I.SurvivalUseHealthStone()
+                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Survival.EnableRevivePet && (Me.Pet == null || (Me.Pet != null && !Me.Pet.IsAlive))),
+                Item.SurvivalUseHealthStone()
                 );
         }
 

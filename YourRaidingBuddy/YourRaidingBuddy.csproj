@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Clusters.cs" />
     <Compile Include="Core\Helpers\AuraBook.cs" />
     <Compile Include="Core\Helpers\CombatLogHandler.cs" />
     <Compile Include="Core\Helpers\CooldownTracker.cs" />

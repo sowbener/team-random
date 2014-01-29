@@ -31,6 +31,11 @@ namespace YourBuddy.Rotations.Paladin
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Action(r =>
+                        {
+                            LHLoc = LightsHammerLocation;
+                            return RunStatus.Failure;
+                        }),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Protection.CheckAutoAttack, Lua.StartAutoAttack), 
@@ -83,9 +88,6 @@ namespace YourBuddy.Rotations.Paladin
 
         #region Rotations
 
-
-       
-
         internal static Composite ProtectionSt()
         {
             return new PrioritySelector(
@@ -101,7 +103,9 @@ namespace YourBuddy.Rotations.Paladin
               Spell.Cast("Holy Prism"),
               Spell.Cast("Holy Wrath"),
               Spell.Cast("Consecration", ret => !TalentManager.HasGlyph("Consecration")),
-              Spell.CastOnGround("Consecration", ret => Me.CurrentTarget != null ? Me.CurrentTarget.Location : Me.Location, ret => TalentManager.HasGlyph("Consecration")));
+              Spell.CastOnGround("Consecration", ret => Me.CurrentTarget != null ? Me.CurrentTarget.Location : Me.Location, ret => TalentManager.HasGlyph("Consecration")),
+              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty)
+              );
 
         }
 
@@ -118,7 +122,7 @@ namespace YourBuddy.Rotations.Paladin
               Spell.Cast("Hammer of Wrath"),
               Spell.Cast("Execution Sentence"),
               Spell.Cast("Holy Prism"),
-              Spell.CastOnGround("Light's Hammer", ret => Me.Location, ret => true), //(SG.Instance.Protection.LightHammerLocation == Enum.TriggerTarget.OnMe && Me.Location), ret => true), /*this could need a conditional use .. put it inot your raidgroup for healing / or put it into the mobs for threat / or put it on your feets for healing u and your tank mate*/
+              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty),
               Spell.Cast("Holy Wrath"));
         }
 
@@ -133,7 +137,7 @@ namespace YourBuddy.Rotations.Paladin
         private static Composite HandleHealingCooldowns()
         {
             return new PrioritySelector(
-                   
+                   Item.ProtectionUseHealthStone()
                    );
         }
 
@@ -187,6 +191,75 @@ namespace YourBuddy.Rotations.Paladin
         }
         #endregion
 
+        #region internal stuff
+        /* The logic to get the Location */
+        static WoWPoint LightsHammerLocation
+        {
+            get
+            {
+                WoWPoint _loc = WoWPoint.Empty;
+                WoWUnit s = null;
+                switch (SG.Instance.Protection.LightHammerLocation)
+                { 
+                    case Enum.TriggerTarget.FocusTarget:
+                        //self-explaining
+                        if (Me.FocusedUnit != null && Me.FocusedUnit.Distance <= 30) _loc = Me.FocusedUnit.Location;
+                        break;
+                    case Enum.TriggerTarget.OnMe:
+                        //self-explaining we wanne heal ourself or we need aggro on the units
+                        if (Me.HealthPercent < 85 || Unit.AttackableMeleeUnitsCount > 3) _loc = Me.Location;
+                        break;
+                    case Enum.TriggerTarget.OnRaid:
+                        //we need heal for our group, so only use unit-list with raidmembers that could need healing
+                        s = Clusters.GetBestUnitForCluster(Unit.NearbyRaidMembers(Me.Location,40f).Where(q=>q.HealthPercent<95), Enum.ClusterType.Radius, 8f);
+                        if (s != null) _loc = s.Location;
+                        //Cast on my raidgroup - biggest cluster of players
+                        break;
+                    case Enum.TriggerTarget.OnRaidMember:
+                        //same as OnRaid
+                        s = Clusters.GetBestUnitForCluster(Unit.NearbyRaidMembers(Me.Location,40f).Where(q=>q.HealthPercent<95), Enum.ClusterType.Radius, 8f);
+                        if (s != null) _loc = s.Location;
+                        break;
+                    case Enum.TriggerTarget.OnTrash:
+                        //biggest pack of mobs
+                        s = Clusters.GetBestUnitForCluster(Unit.AttackableUnits.Where(u => u.Combat), Enum.ClusterType.Radius, 8f);
+                        if (s != null) _loc = s.Location;
+                        break;
+                    case Enum.TriggerTarget.OnTarget:
+                        //on the feets of my target
+                        if (Me.CurrentTarget != null && Me.CurrentTarget.IsAlive) _loc = Me.CurrentTarget.Location;
+                        break;
+                    case Enum.TriggerTarget.Automatic:
+                        //do i need heal
+                        if (Me.HealthPercent < 85 || Unit.AttackableMeleeUnitsCount > 3) _loc = Me.Location;
+                        //does someone else need heal
+                        if (_loc == WoWPoint.Empty)
+                        {
+                            s = Clusters.GetBestUnitForCluster(Unit.NearbyRaidMembers(Me.Location, 40f).Where(q => q.HealthPercent < 95), Enum.ClusterType.Radius, 8f);
+                            if (s != null) _loc = s.Location;
+                        }
+                        //do we have trash
+                        if (_loc == WoWPoint.Empty)
+                        {
+                            s = Clusters.GetBestUnitForCluster(Unit.AttackableUnits.Where(u => u.Combat), Enum.ClusterType.Radius, 8f);
+                            if (s != null) _loc = s.Location;
+                        }
+                        //do we have trash
+                        if (_loc == WoWPoint.Empty)
+                        {
+                            if (Me.CurrentTarget != null && Me.CurrentTarget.IsAlive) _loc = Me.CurrentTarget.Location;
+                        }
+                        break;
+                    default:
+                        _loc = WoWPoint.Empty;
+                        break;
+                }
+                return _loc;
+            }
+        }
+        /* The cached value of the Location, we only want to calc it once per traverse*/
+        static WoWPoint LHLoc = WoWPoint.Empty;
+        #endregion internal stuff
 
         #region Booleans
         //thanks PR

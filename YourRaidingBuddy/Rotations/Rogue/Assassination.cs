@@ -123,8 +123,8 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 Spell.Cast("Shadowstep", ret => SG.Instance.Assassination.CheckShadowstep && Me.HealthPercent < SG.Instance.Assassination.NumShadowstep),
-                Spell.Cast("Recuperate", ret => SG.Instance.Assassination.CheckRecuperate && Me.HealthPercent < SG.Instance.Assassination.NumRecuperate && Lua.PlayerComboPts >= SG.Instance.Assassination.NumRecuperateCombo)
-             //   I.AssaUseHealthStone()
+                Spell.Cast("Recuperate", ret => SG.Instance.Assassination.CheckRecuperate && Me.HealthPercent < SG.Instance.Assassination.NumRecuperate && Lua.PlayerComboPts >= SG.Instance.Assassination.NumRecuperateCombo),
+                I.AssassinationUseHealthStone()
                 );
         }
 

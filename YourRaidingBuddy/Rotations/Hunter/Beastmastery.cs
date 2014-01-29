@@ -137,8 +137,8 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasteryDefensive()
         {
             return new PrioritySelector(
-                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && Me.Pet != null && !Me.Pet.IsAlive)
-                //I.BeastmasteryUseHealthStone()
+                PetManager.CreateCastPetAction("Heart of the Phoenix", ret => SG.Instance.Beastmastery.EnableRevivePet && Me.Pet != null && !Me.Pet.IsAlive),
+                Item.BeastmasteryUseHealthStone()
                 );
         }
 

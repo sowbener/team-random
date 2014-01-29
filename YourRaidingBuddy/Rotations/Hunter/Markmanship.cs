@@ -108,7 +108,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite MarksmanshipDefensive()
         {
             return new PrioritySelector(
-                //I.MarksmanshipUseHealthStone()
+                Item.MarksmanshipUseHealthStone()
                 );
         }
 

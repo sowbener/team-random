@@ -147,9 +147,8 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 Spell.Cast("Shadowstep", ret => SG.Instance.Subtlety.CheckShadowstep && Me.HealthPercent < SG.Instance.Subtlety.NumShadowstep),
-                Spell.Cast("Recuperate", ret => SG.Instance.Subtlety.CheckRecuperate && Me.HealthPercent < SG.Instance.Subtlety.NumRecuperate && Lua.PlayerComboPts >= SG.Instance.Subtlety.NumRecuperateCombo)
-            //    I.SubUseHealthStone()
-                );
+                Spell.Cast("Recuperate", ret => SG.Instance.Subtlety.CheckRecuperate && Me.HealthPercent < SG.Instance.Subtlety.NumRecuperate && Lua.PlayerComboPts >= SG.Instance.Subtlety.NumRecuperateCombo),
+                Item.SubtletyUseHealthStone());
         }
 
 

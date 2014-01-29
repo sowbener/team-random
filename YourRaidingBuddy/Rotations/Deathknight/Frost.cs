@@ -150,8 +150,8 @@ namespace YourBuddy.Rotations.Deathknight
         {
             return new PrioritySelector(
                 Spell.Cast("Death Strike", ret => Me.HasAura(101568) && Me.HealthPercent <= SG.Instance.Frost.DeathstrikeHP),
-                Spell.Cast("Death Siphon", ret => TalentManager.IsSelected(11) && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP)
-                //I.FrostUseHealthStone()
+                Spell.Cast("Death Siphon", ret => TalentManager.IsSelected(11) && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP),
+                Item.FrostUseHealthStone()
                 );
         }
 

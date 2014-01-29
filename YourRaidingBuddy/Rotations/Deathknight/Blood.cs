@@ -116,8 +116,8 @@ namespace YourBuddy.Rotations.Deathknight
                                   Spell.Cast("Vampiric Blood", on => Me, ret => NeedVampiricBlood), // 1 min cooldown - default 60 percentHP
                                   Spell.Cast("Icebound Fortitude", on => Me, ret => NeedIceboundFortitude), // 3 min cooldown - default 60 percentHP
                                   Spell.Cast("Dancing Rune Weapon", ret => NeedDancingRuneWeapon), // 1.5 min cooldown - default 80 percentHP
-                                  Spell.Cast("Empower Rune Weapon", on => Me, ret => NeedEmpowerRuneWeapon) // 5 min cooldown
-                //I.BloodUseHealthStone()
+                                  Spell.Cast("Empower Rune Weapon", on => Me, ret => NeedEmpowerRuneWeapon), // 5 min cooldown
+                Item.BloodUseHealthStone()
                 );
         }
 

@@ -126,7 +126,7 @@ namespace YourBuddy.Rotations.Paladin
         internal static Composite RetributionDefensive()
         {
             return new PrioritySelector(
-            //    I.RetributionUseHealthStone()
+                Item.RetributionUseHealthStone()
                 );
         }
 

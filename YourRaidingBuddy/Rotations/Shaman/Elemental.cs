@@ -135,8 +135,8 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.Cast("Ancestral Guidance", ret => PVEAncestralGuidance),
                 Spell.Cast("Stone Bulwark Totem", ret => PVEStoneBulwarkTotem),
                 Spell.Cast("Healing Surge", ret => PVEHealingSurge),
-                Spell.Cast("Gift of the Naaru", ret => PVEGiftOfTheNaaru)
-                //I.ElementalUseHealthStone()
+                Spell.Cast("Gift of the Naaru", ret => PVEGiftOfTheNaaru),
+                Item.ElementalUseHealthStone()
                 );
         }
 

@@ -121,8 +121,8 @@ namespace YourBuddy.Rotations.Deathknight
         {
             return new PrioritySelector(
                 Spell.PreventDoubleCast("Death Strike", 0.5, ret => Me.HasAura(101568)),
-                Spell.Cast("Death Siphon", ret => TalentManager.IsSelected(11) && Me.HealthPercent <= SG.Instance.Unholy.DeathSiphonHP)
-                //I.UnholyUseHealthStone()
+                Spell.Cast("Death Siphon", ret => TalentManager.IsSelected(11) && Me.HealthPercent <= SG.Instance.Unholy.DeathSiphonHP),
+                Item.UnholyUseHealthStone()
                 );
         }
 

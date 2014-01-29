@@ -50,7 +50,19 @@ namespace YourBuddy.Core.Helpers
             OnMe,
             OnRaidMember,
             OnTrash,
-            OnRaid
+            OnRaid,
+            OnTarget,
+            Automatic
+        }
+
+        public enum ClusterType
+        {
+            // Circular cluster centered around 'target'
+            Radius,
+            Chained,
+            Cone,
+            // returns a cluster of units that are between LocalPlayer location and 'target'
+            PathToUnit
         }
 
         public enum PreperationUsage

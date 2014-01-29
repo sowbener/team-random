@@ -559,6 +559,7 @@ namespace YourBuddy.Core
                     select i).FirstOrDefault();
         }
 
+        //Monk
         public static Composite WindwalkerUseHealthStone()
         {
             return new PrioritySelector(
@@ -576,6 +577,168 @@ namespace YourBuddy.Core
         {
             return new PrioritySelector(
                 new Decorator(ret => InternalSettings.Instance.Brewmaster.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Brewmaster.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+
+        //Rogue
+        public static Composite AssassinationUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Assassination.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Assassination.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite CombatUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Combat.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Combat.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite SubtletyUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Subtlety.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Subtlety.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        //Hunter
+        public static Composite BeastmasteryUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Beastmastery.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Beastmastery.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite SurvivalUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Survival.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Survival.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite MarksmanshipUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Marksmanship.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Marksmanship.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        //Paladin
+        public static Composite ProtectionUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Protection.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Protection.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite RetributionUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Retribution.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Retribution.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        //Deathknight
+        public static Composite BloodUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Blood.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Blood.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite FrostUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Frost.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Frost.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite UnholyUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Unholy.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Unholy.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        //Shaman
+        public static Composite ElementalUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Elemental.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Elemental.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite EnhancementUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Enhancement.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Enhancement.CheckHealthStoneNum,
                     new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
                         new Decorator(ret => ret != null,
                             new Action(ret =>

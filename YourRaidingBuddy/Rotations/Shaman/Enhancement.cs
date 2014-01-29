@@ -144,7 +144,7 @@ namespace YourBuddy.Rotations.Shaman
         internal static Composite EnhancementDefensive()
         {
             return new PrioritySelector(
-                //I.EnhancementUseHealthStone(),
+                Item.EnhancementUseHealthStone(),
                 Spell.Cast("Shamanistic Rage", ret => PVEShamanisticRage),
                 Spell.Cast("Ancestral Guidance", ret => PVEAncestralGuidance),
                 Spell.PreventDoubleCast("Healing Tide Totem", 1, ret => PVEHealingTideTotem),
