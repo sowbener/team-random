@@ -110,7 +110,7 @@ namespace Tyrael
             return new PrioritySelector(
                 new Decorator(ret => IsPaused, new ActionAlwaysSucceed()),
                 new Decorator(ret => SanityCheckCombat(),
-                    CreateLockMethod(
+                    SelectLockMethod(
                         RoutineManager.Current.HealBehavior,
                         RoutineManager.Current.CombatBuffBehavior ?? new ActionAlwaysFail(),
                         RoutineManager.Current.CombatBehavior)),
@@ -123,7 +123,7 @@ namespace Tyrael
             return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
         }
 
-        private static Composite CreateLockMethod(params Composite[] children)
+        private static Composite SelectLockMethod(params Composite[] children)
         {
             return TyraelSettings.Instance.UseSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
