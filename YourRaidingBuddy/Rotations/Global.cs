@@ -339,6 +339,9 @@ namespace YourBuddy.Rotations
         internal static Composite InitializeOnKeyActionsR()
         {
             return new PrioritySelector(
+            new Decorator(ret => SG.Instance.General.UseTricksAutoRogue,
+                new PrioritySelector(
+                    Spell.Cast("Tricks of the Trade", ret => BestTricksTarget))),
                 new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast("Tricks of the Trade", ret => BestTricksTarget))));

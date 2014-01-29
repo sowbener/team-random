@@ -85,6 +85,13 @@ namespace YourBuddy.Interfaces.Settings
         [Description("When enabled, the routine uses Potion on Bloodlust..")]
         public bool CheckPotionUsage { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General Rogue Settings")]
+        [DisplayName("Enable Tricks of the Trade Auto")]
+        [Description("When enabled, the routine uses Tricks of the Trade on FocusTarget")]
+        public bool UseTricksAutoRogue { get; set; }
+
         
 
         [Setting]
