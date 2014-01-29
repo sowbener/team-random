@@ -59,7 +59,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool AutoDetectManualCast { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(100)]
+        [Styx.Helpers.DefaultValue(250)]
         [Category("General Settings")]
         [DisplayName("Manual Cast Resume Time")]
         [Description("Amount of time in miliseconds before resuming normal operation after manual cast.")]

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
 using FuryUnleashed.Core.Helpers;
@@ -118,7 +117,6 @@ namespace FuryUnleashed.Core.Managers
             Logger.DiagLogPu("Fury Unleashed: Hotkeys removed!");
         }
 
-        
         #region ManualCastPause
         private static string KeySystemtoKeyBind(string key)
         {
@@ -178,23 +176,10 @@ namespace FuryUnleashed.Core.Managers
 
                     if (HashSets.MovementKeysHash.Contains(blackListKey))
                     {
-                        //Logging.Write("Movement Key: " + BlackListKey + " = " + key);
-                        //Logging.Write(key + " Binding to " + BlackListKey + "  Blacklist it");
-                        //Logging.Write("Add {0} to BlackListKeyHS", key.ToString());
                         HashSets.MovementKey.Add(key);
                     }
                 }
             }
-        }
-
-        internal static bool MovementKeyPressed()
-        {
-            if (GetAsyncKeyState(Keys.LButton) < 0 && GetAsyncKeyState(Keys.RButton) < 0)
-            {
-                //Logging.Write("MovementKeyPressed: LButton and RButton Pressed");
-                return true;
-            }
-            return HashSets.MovementKey.Any(key => GetAsyncKeyState(key) < 0);
         }
 
         internal static bool AnyKeyPressed()
@@ -219,17 +204,21 @@ namespace FuryUnleashed.Core.Managers
                     key != Keys.CapsLock &&
                     !HashSets.MovementKey.Contains(key))
             {
-                    //Logging.Write(Colors.Gray,
-                    //    "Key {0} is pressed. Manual CastPause Activated. Combat Routine Pause for {1} ms",
-                    //    KeySystemtoKeyBind(key.ToString()),
-                    //    THSettings.Instance.AutoDetectManualCastMS);
-
                     Logger.CombatLogWh("FU: Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.ResumeTime);
                     return true;
                 }
             }
             return false;
         }
+
+        //internal static bool MovementKeyPressed()
+        //{
+        //    if (GetAsyncKeyState(Keys.LButton) < 0 && GetAsyncKeyState(Keys.RButton) < 0)
+        //    {
+        //        return true;
+        //    }
+        //    return HashSets.MovementKey.Any(key => GetAsyncKeyState(key) < 0);
+        //}
         #endregion
 
     }
