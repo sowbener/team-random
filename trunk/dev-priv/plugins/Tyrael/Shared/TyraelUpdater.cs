@@ -58,11 +58,18 @@ namespace Tyrael.Shared
 
         private static int GetRevision()
         {
-            var wc = new WebClient();
-            var webData = wc.DownloadString(TyraelSvnUrl + "version");
-            Logging.WriteDiagnostic(Colors.MediumPurple, "[Tyrael] Current SVN version: {0}", int.Parse(webData));
-            return int.Parse(webData);
-            //throw new Exception("[Tyrael] Unable to retrieve revision");
+            try
+            {
+                var wc = new WebClient();
+                var webData = wc.DownloadString(TyraelSvnUrl + "version");
+
+                Logging.WriteDiagnostic(Colors.MediumPurple, "[Tyrael] Current SVN version: {0}", int.Parse(webData));
+                return int.Parse(webData);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)
