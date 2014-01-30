@@ -36,19 +36,25 @@
             this.PauseLabel = new System.Windows.Forms.Label();
             this.checkPlugins = new System.Windows.Forms.CheckBox();
             this.checkHealingMode = new System.Windows.Forms.CheckBox();
-            this.checkFrameLock = new System.Windows.Forms.CheckBox();
+            this.CheckHardLock = new System.Windows.Forms.CheckBox();
             this.checkChatOutput = new System.Windows.Forms.CheckBox();
             this.SaveButton = new System.Windows.Forms.Button();
             this.NamePanel = new System.Windows.Forms.Panel();
+            this.TyraelForumTopicLabel = new System.Windows.Forms.LinkLabel();
             this.LabelName = new System.Windows.Forms.Label();
             this.TpsLabel = new System.Windows.Forms.Label();
-            this.checkMinify = new System.Windows.Forms.CheckBox();
+            this.checkAutomaticUpdater = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.checkSoftLock = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.slowbutton = new System.Windows.Forms.Button();
-            this.normalbutton = new System.Windows.Forms.Button();
+            this.fastbutton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.extremebutton = new System.Windows.Forms.Button();
+            this.normalbutton = new System.Windows.Forms.Button();
+            this.slowbutton = new System.Windows.Forms.Button();
             this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TPSTrackBar)).BeginInit();
             this.NamePanel.SuspendLayout();
@@ -63,23 +69,23 @@
             this.SettingsPanel.Controls.Add(this.TPSTrackBar);
             this.SettingsPanel.Location = new System.Drawing.Point(2, 45);
             this.SettingsPanel.Name = "SettingsPanel";
-            this.SettingsPanel.Size = new System.Drawing.Size(507, 50);
+            this.SettingsPanel.Size = new System.Drawing.Size(761, 50);
             this.SettingsPanel.TabIndex = 0;
             // 
             // TPSTrackBar
             // 
             this.TPSTrackBar.BackColor = System.Drawing.Color.White;
             this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.TPSTrackBar.Location = new System.Drawing.Point(24, 2);
+            this.TPSTrackBar.Location = new System.Drawing.Point(10, 2);
             this.TPSTrackBar.Maximum = 100;
             this.TPSTrackBar.Minimum = 5;
             this.TPSTrackBar.Name = "TPSTrackBar";
-            this.TPSTrackBar.Size = new System.Drawing.Size(449, 45);
+            this.TPSTrackBar.Size = new System.Drawing.Size(742, 45);
             this.TPSTrackBar.SmallChange = 10;
             this.TPSTrackBar.TabIndex = 0;
             this.TPSTrackBar.TickFrequency = 5;
             this.TPSTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.TPSTrackBar.Value = 30;
+            this.TPSTrackBar.Value = 10;
             this.TPSTrackBar.Scroll += new System.EventHandler(this.TPSTrackBar_Scroll);
             // 
             // checkClicktoMove
@@ -87,7 +93,7 @@
             this.checkClicktoMove.AutoSize = true;
             this.checkClicktoMove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkClicktoMove.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkClicktoMove.Location = new System.Drawing.Point(10, 23);
+            this.checkClicktoMove.Location = new System.Drawing.Point(10, 125);
             this.checkClicktoMove.Name = "checkClicktoMove";
             this.checkClicktoMove.Size = new System.Drawing.Size(162, 21);
             this.checkClicktoMove.TabIndex = 8;
@@ -130,10 +136,11 @@
             // PauseLabel
             // 
             this.PauseLabel.AutoSize = true;
+            this.PauseLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PauseLabel.ForeColor = System.Drawing.Color.DodgerBlue;
             this.PauseLabel.Location = new System.Drawing.Point(10, 3);
             this.PauseLabel.Name = "PauseLabel";
-            this.PauseLabel.Size = new System.Drawing.Size(227, 17);
+            this.PauseLabel.Size = new System.Drawing.Size(226, 16);
             this.PauseLabel.TabIndex = 5;
             this.PauseLabel.Text = "Select Pause Hotkey Combination";
             this.PauseLabel.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -143,7 +150,7 @@
             this.checkPlugins.AutoSize = true;
             this.checkPlugins.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkPlugins.Location = new System.Drawing.Point(10, 103);
+            this.checkPlugins.Location = new System.Drawing.Point(10, 165);
             this.checkPlugins.Name = "checkPlugins";
             this.checkPlugins.Size = new System.Drawing.Size(116, 21);
             this.checkPlugins.TabIndex = 4;
@@ -158,7 +165,7 @@
             this.checkHealingMode.AutoSize = true;
             this.checkHealingMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkHealingMode.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkHealingMode.Location = new System.Drawing.Point(10, 43);
+            this.checkHealingMode.Location = new System.Drawing.Point(10, 145);
             this.checkHealingMode.Name = "checkHealingMode";
             this.checkHealingMode.Size = new System.Drawing.Size(240, 21);
             this.checkHealingMode.TabIndex = 3;
@@ -168,27 +175,27 @@
             this.checkHealingMode.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.checkHealingMode.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkHealingMode_MouseMove);
             // 
-            // checkFrameLock
+            // CheckHardLock
             // 
-            this.checkFrameLock.AutoSize = true;
-            this.checkFrameLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkFrameLock.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkFrameLock.Location = new System.Drawing.Point(10, 63);
-            this.checkFrameLock.Name = "checkFrameLock";
-            this.checkFrameLock.Size = new System.Drawing.Size(139, 21);
-            this.checkFrameLock.TabIndex = 2;
-            this.checkFrameLock.Text = "Enable Framelock";
-            this.checkFrameLock.UseVisualStyleBackColor = false;
-            this.checkFrameLock.CheckedChanged += new System.EventHandler(this.checkFrameLock_CheckedChanged);
-            this.checkFrameLock.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.checkFrameLock.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkFrameLock_MouseMove);
+            this.CheckHardLock.AutoSize = true;
+            this.CheckHardLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CheckHardLock.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.CheckHardLock.Location = new System.Drawing.Point(10, 22);
+            this.CheckHardLock.Name = "CheckHardLock";
+            this.CheckHardLock.Size = new System.Drawing.Size(133, 21);
+            this.CheckHardLock.TabIndex = 2;
+            this.CheckHardLock.Text = "Enable HardLock";
+            this.CheckHardLock.UseVisualStyleBackColor = false;
+            this.CheckHardLock.CheckedChanged += new System.EventHandler(this.checkHardLock_CheckedChanged);
+            this.CheckHardLock.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.CheckHardLock.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CheckHardLock_MouseMove);
             // 
             // checkChatOutput
             // 
             this.checkChatOutput.AutoSize = true;
             this.checkChatOutput.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkChatOutput.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkChatOutput.Location = new System.Drawing.Point(10, 3);
+            this.checkChatOutput.Location = new System.Drawing.Point(10, 105);
             this.checkChatOutput.Name = "checkChatOutput";
             this.checkChatOutput.Size = new System.Drawing.Size(149, 21);
             this.checkChatOutput.TabIndex = 1;
@@ -203,10 +210,10 @@
             this.SaveButton.BackColor = System.Drawing.Color.DodgerBlue;
             this.SaveButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveButton.Location = new System.Drawing.Point(374, 263);
+            this.SaveButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.SaveButton.Location = new System.Drawing.Point(620, 288);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(135, 22);
+            this.SaveButton.Size = new System.Drawing.Size(143, 23);
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -217,21 +224,40 @@
             // NamePanel
             // 
             this.NamePanel.BackColor = System.Drawing.Color.White;
+            this.NamePanel.Controls.Add(this.TyraelForumTopicLabel);
             this.NamePanel.Controls.Add(this.LabelName);
             this.NamePanel.Location = new System.Drawing.Point(2, 2);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(507, 41);
+            this.NamePanel.Size = new System.Drawing.Size(761, 41);
             this.NamePanel.TabIndex = 0;
             this.NamePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
+            // 
+            // TyraelForumTopicLabel
+            // 
+            this.TyraelForumTopicLabel.ActiveLinkColor = System.Drawing.Color.SteelBlue;
+            this.TyraelForumTopicLabel.AutoSize = true;
+            this.TyraelForumTopicLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TyraelForumTopicLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.TyraelForumTopicLabel.LinkColor = System.Drawing.Color.DodgerBlue;
+            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(685, 21);
+            this.TyraelForumTopicLabel.Name = "TyraelForumTopicLabel";
+            this.TyraelForumTopicLabel.Size = new System.Drawing.Size(73, 17);
+            this.TyraelForumTopicLabel.TabIndex = 13;
+            this.TyraelForumTopicLabel.TabStop = true;
+            this.TyraelForumTopicLabel.Text = "Tyrael FAQ";
+            this.TyraelForumTopicLabel.VisitedLinkColor = System.Drawing.Color.DodgerBlue;
+            this.TyraelForumTopicLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.TyraelForumTopicLabel_LinkClicked);
+            this.TyraelForumTopicLabel.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.TyraelForumTopicLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TyraelForumTopicLabel_MouseMove);
             // 
             // LabelName
             // 
             this.LabelName.AutoSize = true;
-            this.LabelName.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelName.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelName.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.LabelName.Location = new System.Drawing.Point(85, 2);
+            this.LabelName.Location = new System.Drawing.Point(195, 1);
             this.LabelName.Name = "LabelName";
-            this.LabelName.Size = new System.Drawing.Size(354, 36);
+            this.LabelName.Size = new System.Drawing.Size(385, 39);
             this.LabelName.TabIndex = 0;
             this.LabelName.Text = "Tyrael - Raiding BotBase";
             this.LabelName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
@@ -242,41 +268,80 @@
             this.TpsLabel.BackColor = System.Drawing.Color.Transparent;
             this.TpsLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TpsLabel.ForeColor = System.Drawing.Color.White;
-            this.TpsLabel.Location = new System.Drawing.Point(9, 265);
+            this.TpsLabel.Location = new System.Drawing.Point(9, 291);
             this.TpsLabel.Name = "TpsLabel";
             this.TpsLabel.Size = new System.Drawing.Size(43, 17);
             this.TpsLabel.TabIndex = 1;
             this.TpsLabel.Text = "Tyrael";
             // 
-            // checkMinify
+            // checkAutomaticUpdater
             // 
-            this.checkMinify.AutoSize = true;
-            this.checkMinify.Enabled = false;
-            this.checkMinify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkMinify.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.checkMinify.Location = new System.Drawing.Point(10, 83);
-            this.checkMinify.Name = "checkMinify";
-            this.checkMinify.Size = new System.Drawing.Size(107, 21);
-            this.checkMinify.TabIndex = 9;
-            this.checkMinify.Text = "Enable Minify";
-            this.checkMinify.UseVisualStyleBackColor = false;
-            this.checkMinify.CheckedChanged += new System.EventHandler(this.checkMinify_CheckedChanged);
-            this.checkMinify.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.checkMinify.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkMinify_MouseMove);
+            this.checkAutomaticUpdater.AutoSize = true;
+            this.checkAutomaticUpdater.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkAutomaticUpdater.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.checkAutomaticUpdater.Location = new System.Drawing.Point(10, 85);
+            this.checkAutomaticUpdater.Name = "checkAutomaticUpdater";
+            this.checkAutomaticUpdater.Size = new System.Drawing.Size(197, 21);
+            this.checkAutomaticUpdater.TabIndex = 9;
+            this.checkAutomaticUpdater.Text = "Enable Automatic Updater";
+            this.checkAutomaticUpdater.UseVisualStyleBackColor = false;
+            this.checkAutomaticUpdater.CheckedChanged += new System.EventHandler(this.checkAutomaticUpdater_CheckedChanged);
+            this.checkAutomaticUpdater.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.checkAutomaticUpdater.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkAutomaticUpdater_MouseMove);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.checkMinify);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.checkSoftLock);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.checkAutomaticUpdater);
             this.panel1.Controls.Add(this.checkChatOutput);
             this.panel1.Controls.Add(this.checkClicktoMove);
             this.panel1.Controls.Add(this.checkHealingMode);
-            this.panel1.Controls.Add(this.checkFrameLock);
+            this.panel1.Controls.Add(this.CheckHardLock);
             this.panel1.Controls.Add(this.checkPlugins);
             this.panel1.Location = new System.Drawing.Point(2, 97);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(253, 130);
+            this.panel1.Size = new System.Drawing.Size(253, 188);
             this.panel1.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.label3.Location = new System.Drawing.Point(10, 66);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(135, 16);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Additional Features";
+            // 
+            // checkSoftLock
+            // 
+            this.checkSoftLock.AutoSize = true;
+            this.checkSoftLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkSoftLock.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.checkSoftLock.Location = new System.Drawing.Point(10, 42);
+            this.checkSoftLock.Name = "checkSoftLock";
+            this.checkSoftLock.Size = new System.Drawing.Size(126, 21);
+            this.checkSoftLock.TabIndex = 10;
+            this.checkSoftLock.Text = "Enable SoftLock";
+            this.checkSoftLock.UseVisualStyleBackColor = false;
+            this.checkSoftLock.CheckedChanged += new System.EventHandler(this.checkSoftLock_CheckedChanged);
+            this.checkSoftLock.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.checkSoftLock.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkSoftLock_MouseMove);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.label2.Location = new System.Drawing.Point(10, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(134, 16);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Framelock Features";
             // 
             // panel2
             // 
@@ -286,53 +351,49 @@
             this.panel2.Controls.Add(this.comboModifierKey);
             this.panel2.Location = new System.Drawing.Point(257, 97);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(252, 130);
+            this.panel2.Size = new System.Drawing.Size(252, 188);
             this.panel2.TabIndex = 11;
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.slowbutton);
-            this.panel3.Controls.Add(this.normalbutton);
+            this.panel3.Controls.Add(this.fastbutton);
+            this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.extremebutton);
-            this.panel3.Location = new System.Drawing.Point(2, 229);
+            this.panel3.Controls.Add(this.normalbutton);
+            this.panel3.Controls.Add(this.slowbutton);
+            this.panel3.Location = new System.Drawing.Point(511, 97);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(507, 32);
+            this.panel3.Size = new System.Drawing.Size(252, 188);
             this.panel3.TabIndex = 12;
             // 
-            // slowbutton
+            // fastbutton
             // 
-            this.slowbutton.BackColor = System.Drawing.Color.White;
-            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.slowbutton.Location = new System.Drawing.Point(3, 3);
-            this.slowbutton.Name = "slowbutton";
-            this.slowbutton.Size = new System.Drawing.Size(162, 26);
-            this.slowbutton.TabIndex = 14;
-            this.slowbutton.Text = "Slow Performance";
-            this.slowbutton.UseVisualStyleBackColor = false;
-            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
-            this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
+            this.fastbutton.BackColor = System.Drawing.Color.White;
+            this.fastbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.fastbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fastbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.fastbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.fastbutton.Location = new System.Drawing.Point(9, 87);
+            this.fastbutton.Name = "fastbutton";
+            this.fastbutton.Size = new System.Drawing.Size(235, 26);
+            this.fastbutton.TabIndex = 16;
+            this.fastbutton.Text = "Quick Performance";
+            this.fastbutton.UseVisualStyleBackColor = false;
+            this.fastbutton.Click += new System.EventHandler(this.fastbutton_Click);
+            this.fastbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.fastbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.fastbutton_MouseMove);
             // 
-            // normalbutton
+            // label1
             // 
-            this.normalbutton.BackColor = System.Drawing.Color.White;
-            this.normalbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.normalbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.normalbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.normalbutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.normalbutton.Location = new System.Drawing.Point(173, 3);
-            this.normalbutton.Name = "normalbutton";
-            this.normalbutton.Size = new System.Drawing.Size(162, 26);
-            this.normalbutton.TabIndex = 14;
-            this.normalbutton.Text = "Normal Performance";
-            this.normalbutton.UseVisualStyleBackColor = false;
-            this.normalbutton.Click += new System.EventHandler(this.normalbutton_Click);
-            this.normalbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
-            this.normalbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.normalbutton_MouseMove);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.label1.Location = new System.Drawing.Point(10, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(190, 16);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Quick Configuration Buttons";
             // 
             // extremebutton
             // 
@@ -341,25 +402,59 @@
             this.extremebutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.extremebutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.extremebutton.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.extremebutton.Location = new System.Drawing.Point(342, 3);
+            this.extremebutton.Location = new System.Drawing.Point(9, 119);
             this.extremebutton.Name = "extremebutton";
-            this.extremebutton.Size = new System.Drawing.Size(162, 26);
+            this.extremebutton.Size = new System.Drawing.Size(235, 26);
             this.extremebutton.TabIndex = 13;
-            this.extremebutton.Text = "Extreme Performance";
+            this.extremebutton.Text = "Maximum Performance";
             this.extremebutton.UseVisualStyleBackColor = false;
             this.extremebutton.Click += new System.EventHandler(this.extremebutton_Click);
             this.extremebutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.extremebutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.extremebutton_MouseMove);
+            // 
+            // normalbutton
+            // 
+            this.normalbutton.BackColor = System.Drawing.Color.White;
+            this.normalbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.normalbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.normalbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.normalbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.normalbutton.Location = new System.Drawing.Point(9, 55);
+            this.normalbutton.Name = "normalbutton";
+            this.normalbutton.Size = new System.Drawing.Size(235, 26);
+            this.normalbutton.TabIndex = 14;
+            this.normalbutton.Text = "Normal Performance";
+            this.normalbutton.UseVisualStyleBackColor = false;
+            this.normalbutton.Click += new System.EventHandler(this.normalbutton_Click);
+            this.normalbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.normalbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.normalbutton_MouseMove);
+            // 
+            // slowbutton
+            // 
+            this.slowbutton.BackColor = System.Drawing.Color.White;
+            this.slowbutton.FlatAppearance.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.slowbutton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.slowbutton.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.slowbutton.Location = new System.Drawing.Point(9, 23);
+            this.slowbutton.Name = "slowbutton";
+            this.slowbutton.Size = new System.Drawing.Size(235, 26);
+            this.slowbutton.TabIndex = 14;
+            this.slowbutton.Text = "Casual Performance";
+            this.slowbutton.UseVisualStyleBackColor = false;
+            this.slowbutton.Click += new System.EventHandler(this.slowbutton_Click);
+            this.slowbutton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
+            this.slowbutton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.slowbutton_MouseMove);
             // 
             // TyraelInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(511, 287);
+            this.ClientSize = new System.Drawing.Size(766, 314);
             this.ControlBox = false;
-            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.TpsLabel);
@@ -385,6 +480,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -401,18 +497,24 @@
         private System.Windows.Forms.CheckBox checkChatOutput;
         private System.Windows.Forms.CheckBox checkPlugins;
         private System.Windows.Forms.CheckBox checkHealingMode;
-        private System.Windows.Forms.CheckBox checkFrameLock;
+        private System.Windows.Forms.CheckBox CheckHardLock;
         private System.Windows.Forms.Label PauseLabel;
         private System.Windows.Forms.ComboBox comboModifierKey;
         private System.Windows.Forms.ComboBox comboPauseKey;
         private System.Windows.Forms.CheckBox checkClicktoMove;
-        private System.Windows.Forms.CheckBox checkMinify;
+        private System.Windows.Forms.CheckBox checkAutomaticUpdater;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button extremebutton;
         private System.Windows.Forms.Button slowbutton;
         private System.Windows.Forms.Button normalbutton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkSoftLock;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button fastbutton;
+        private System.Windows.Forms.LinkLabel TyraelForumTopicLabel;
 
     }
 }

@@ -24,33 +24,33 @@ namespace Tyrael.Shared
 
         #region UI Settings
         [Setting, DefaultValue(true)]
-        public bool ChatOutput { get; set; }
+        public bool CheckAutoUpdate { get; set; }
 
         [Setting, DefaultValue(true)]
-        public bool ClickToMove { get; set; }
+        public bool CheckChatOutput { get; set; }
+
+        [Setting, DefaultValue(true)]
+        public bool CheckClickToMove { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool HealingMode { get; set; }
+        public bool CheckHealingMode { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool PluginPulsing { get; set; }
+        public bool CheckPluginPulsing { get; set; }
 
-        [Setting, DefaultValue(TyraelUtilities.Minify.False)]
-        public TyraelUtilities.Minify Minify { get; set; }
-
-        [Setting, DefaultValue(TyraelUtilities.SvnUrl.Release)]
+        [Setting, DefaultValue(TyraelUtilities.SvnUrl.Development)]
         public TyraelUtilities.SvnUrl SvnUrl { get; set; }
-
-        [Setting, DefaultValue(ModifierKeys.Alt)]
-        public ModifierKeys ModKeyChoice { get; set; }
 
         [Setting, DefaultValue(Keys.X)]
         public Keys PauseKeyChoice { get; set; }
+
+        [Setting, DefaultValue(ModifierKeys.Alt)]
+        public ModifierKeys ModKeyChoice { get; set; }
         #endregion
 
         #region Manual Settings
-        [Setting, DefaultValue(true)]
-        public bool CheckAutoUpdate { get; set; }
+        [Setting, DefaultValue(false)]
+        public bool UseSoftLock { get; set; }
 
         [Setting, DefaultValue(0)]
         public int CurrentRevision { get; set; }

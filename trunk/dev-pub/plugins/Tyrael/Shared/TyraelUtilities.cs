@@ -1,4 +1,5 @@
-﻿using Styx;
+﻿using System.Windows.Media;
+using Styx;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
@@ -39,18 +40,20 @@ namespace Tyrael.Shared
                 IsTyraelPaused = !IsTyraelPaused;
                 if (IsTyraelPaused)
                 {
-                    if (TyraelSettings.Instance.ChatOutput)
+                    if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
+                    Logging.Write(Colors.Red, "[Tyrael] Rotation Paused!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
                 else
                 {
-                    if (TyraelSettings.Instance.ChatOutput)
+                    if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
+                    Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
             });
@@ -71,19 +74,13 @@ namespace Tyrael.Shared
         #region Click-To-Move (CTM)
         public static void ClickToMove()
         {
-            Lua.DoString(TyraelSettings.Instance.ClickToMove
+            Lua.DoString(TyraelSettings.Instance.CheckClickToMove
                 ? "SetCVar('autoInteract', '1')"
                 : "SetCVar('autoInteract', '0')");
         }
         #endregion
 
         #region Others
-        public enum Minify
-        {
-            True,
-            False
-        }
-
         public enum SvnUrl
         {
             Release,
