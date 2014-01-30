@@ -65,8 +65,8 @@ namespace YourBuddy.Rotations.Deathknight
         {
             return new PrioritySelector(
                 //  Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks10 && RP32),
-               Spell.PreventDoubleCast("Outbreak", 1, ret => SG.Instance.Unholy.EnablePowerDots && DoTTracker.NeedMeleeRefresh(Me.CurrentTarget, 55078)),
-               Spell.PreventDoubleCast("Plague Strike", 0.7, ret => SG.Instance.Unholy.EnablePowerDots && CooldownTracker.SpellOnCooldown("Outbreak") && DoTTracker.NeedMeleeRefresh(Me.CurrentTarget, 55078)),
+       //        Spell.PreventDoubleCast("Outbreak", 1, ret => SG.Instance.Unholy.EnablePowerDots && DoTTracker.NeedMeleeRefresh(Me.CurrentTarget, 55078)),
+       //        Spell.PreventDoubleCast("Plague Strike", 0.7, ret => SG.Instance.Unholy.EnablePowerDots && CooldownTracker.SpellOnCooldown("Outbreak") && DoTTracker.NeedMeleeRefresh(Me.CurrentTarget, 55078)),
                Spell.PreventDoubleCast("Blood Tap", 0.5, ret => CanBloodTap && BloodTapStacks10 && Lua.PlayerPower > 31),
                Spell.Cast("Unholy Blight", ret => TalentManager.IsSelected(3) && Me.IsWithinMeleeRange && (NeedBothDisUp || NeedUnholyBlight)),
                Spell.Cast("Outbreak", ret => (NeedUnholyBlight || NeedBothDisUp) && UnholyBlightCheck),

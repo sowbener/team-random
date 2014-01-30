@@ -168,13 +168,14 @@ namespace YourBuddy
 
             /* Lua SecondaryStats */
            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy) Lua.PopulateSecondryStats();
+           if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood) Lua.PopulateSecondryStats();
 
             /* Blood DK DeathStrike Tracker */
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
                 DeathStrikeTracker.Initialize();
 
             /* Unholy DoTTracker */
-            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
+        //    if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
 
 
             /* Start Combat */
