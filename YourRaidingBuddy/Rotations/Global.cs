@@ -290,8 +290,11 @@ namespace YourBuddy.Rotations
          138699, // Valor Trinket
          148896, // Sigil of Rampage
          146310, // Ticking Ebon Detonator
+         146311, // Ticking Ebon Detonator
          146308, // Assurance of Consequence
          148903, // Haromm's Talisman
+         148903, // haromm's HC Talisman
+
 
         };
 

@@ -31,7 +31,6 @@ namespace YourBuddy.Rotations.Shaman
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheckRanged), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
-                        new Decorator(a => ChannelingLightingBolt, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Elemental.CheckAutoAttack, Lua.StartAutoAttack),
@@ -85,7 +84,7 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.PreventDoubleCast("Stormlash Totem", 1, ret => SG.Instance.Elemental.EnableStormLashTotem && G.SpeedBuffsAura && !Totems.Exist(WoWTotemType.Air)),
                 new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.PreventDoubleCast("Spiritwalker's Grace", 1, target => Me, ret => Me.IsMoving, true))),
                 Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                Spell.Cast("Lava Burst", ret => FlameShockRemains > Spell.GetSpellCastTime("Lava Burst") && (Me.HasAura(114050) || Me.HasAura(77756))),
+                Spell.Cast("Lava Burst", ret => FlameShockRemains > Spell.GetSpellCastTime("Lava Burst")),
                 Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasMyAura("Flame Shock") || FlameShockRemains < 2),
                 Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
                 Spell.Cast("Earth Shock", ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
