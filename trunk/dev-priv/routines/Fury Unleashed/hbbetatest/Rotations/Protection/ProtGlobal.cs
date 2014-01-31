@@ -9,6 +9,7 @@ using Styx.WoWInternals.WoWObjects;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using U = FuryUnleashed.Core.Unit;
+using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations.Protection
 {

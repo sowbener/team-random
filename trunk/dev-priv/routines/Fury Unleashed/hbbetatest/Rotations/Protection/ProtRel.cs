@@ -143,12 +143,19 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.SpellReflection, ret => PG.SpellReflectionUsage && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
                 Spell.Cast(SpellBook.MassSpellReflection, ret => G.MassSpellReflectionTalent && PG.MassSpellReflectionUsage && G.SpellReflectionSpellCooldown > 0 && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
 
-                new Decorator(ret => IS.Instance.Protection.CheckShieldBarrierBlock && !IS.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower >= IS.Instance.Protection.ShieldBarrierBlockNum,
+                new Decorator(ret => IS.Instance.Protection.CheckShieldBbAdvancedLogics && IS.Instance.Protection.CheckShieldBbThreatLogics && Lua.PlayerPower >= IS.Instance.Protection.ShieldBarrierBlockNum,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBarrier, true),
-                        Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => IS.Instance.Protection.BarrierBlockSelection == Enum.BarrierBlock.ShieldBlock, true))),
+                        new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent < 100 && Me.HealthPercent > IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
+                            new PrioritySelector(
+                                Spell.Cast(SpellBook.HeroicStrike, ret => !IS.Instance.Protection.CheckAoE || U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, true),
+                                Spell.Cast(SpellBook.Cleave, ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, true))),
+                        new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent >= 100 || Me.HealthPercent <= IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
+                            new PrioritySelector(
+                                Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
+                                Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true)
+                                )))),
 
-                new Decorator(ret => IS.Instance.Protection.CheckShieldBarrierBlock && IS.Instance.Protection.CheckShieldBbAdvancedLogics && Lua.PlayerPower >= IS.Instance.Protection.ShieldBarrierBlockNum,
+                new Decorator(ret => IS.Instance.Protection.CheckShieldBbAdvancedLogics && !IS.Instance.Protection.CheckShieldBbThreatLogics && Lua.PlayerPower >= IS.Instance.Protection.ShieldBarrierBlockNum,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
                         Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true))));
