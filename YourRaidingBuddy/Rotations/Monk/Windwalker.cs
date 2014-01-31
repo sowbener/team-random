@@ -31,6 +31,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        G.InitializeOnKeyActionsM(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
@@ -102,7 +103,7 @@ namespace YourBuddy.Rotations.Monk
             return new PrioritySelector(
                 Spell.Cast("Rushing Jade Wind", ret => TalentManager.IsSelected(16) && !CooldownTracker.SpellOnCooldown("Rising Sun Kick")),
                 new Decorator(ret => CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds < 1000, new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If Rising Sun Kick is coming off cooldown, STOP
-                Spell.Cast("Spinning Crane Kick", ret => CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds > 1000),
+                Spell.Cast("Spinning Crane Kick", ret => CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalMilliseconds > 1000 && Unit.NearbyAttackableUnitsCount > 3),
              //   Spell.Cast("Storm, Earth, and Fire"),
                 WindwalkerSt());
         }

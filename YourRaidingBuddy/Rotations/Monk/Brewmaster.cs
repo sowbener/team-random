@@ -37,7 +37,8 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
-                                            Spell.Cast("Elusive Brew", ret => U.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),    
+                                            Spell.Cast("Elusive Brew", ret => U.NearbyAggroUnitsCount >= 1 && Spell.GetAuraStack(Me, 128939) >= MonkSettings.ElusiveBrew),
+                                            BrewmasterShuffle(),
                                             BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
@@ -49,6 +50,7 @@ namespace YourBuddy.Rotations.Monk
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckAutoAttack, Lua.StartAutoAttack),
+                                        BrewmasterShuffle(),
                                         BrewmasterDefensive(),
                                         new Decorator(ret => SG.Instance.Brewmaster.CheckInterrupts, BrewmasterInterrupts()),
                                         BrewmasterUtility(),
@@ -98,7 +100,7 @@ namespace YourBuddy.Rotations.Monk
 
         private static bool GuardOK { get { return Lua.PlayerChi >= 2 && (Root._initap + Root._NewAP) > Root._initap + (StyxWoW.Me.MaxHealth * MonkSettings.HPAPScale / 100) && Me.HasAura(118636) && ShuffleSetting >= 1; } }
 
-        private static bool NeedBlackoutKick { get { return (!Me.HasAura(115307) && Lua.PlayerChi >= 2) || Lua.PlayerChi > 3 || (ShuffleSetting <= 3 && Lua.PlayerChi >= 2); } }
+        private static bool NeedBlackoutKick { get { return !Me.HasAura(115307) || ShuffleSetting < 3; } }
 
         private static bool NeedTouchofDeath { get { return Me.HasAura("Death Note") && (Me.HealthPercent > 60 || TalentManager.HasGlyph("Touch of Death")); } }
 
@@ -136,12 +138,19 @@ namespace YourBuddy.Rotations.Monk
 
         }
 
+        internal static Composite BrewmasterShuffle()
+        {
+            return new PrioritySelector(
+                
+                Spell.Cast("Blackout Kick", ret => NeedBlackoutKick)); // Apply shuffle if not active or MaxChi)
+        }
+
        
 
         internal static Composite BrewmasterSt()
         {
             return new PrioritySelector(
-            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply shuffle if not active or MaxChi
+            Spell.Cast("Blackout Kick", ret => Lua.PlayerChi >= 4),
             Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and
             Spell.Cast("Rushing Jade Wind", ret =>  ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
             Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
@@ -153,7 +162,6 @@ namespace YourBuddy.Rotations.Monk
         internal static Composite BrewmasterMt()
         {
             return new PrioritySelector(
-            Spell.Cast("Blackout Kick", ret => NeedBlackoutKick), // Apply fhuffle if not active or MaxChi
             Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and TP for Guard
             new Decorator(ret => !Me.HasAura("Shuffle"), new Action(delegate { Me.CancelAura("Spinning Crane Kick"); return RunStatus.Failure; })), // If we loose shuffle, STOP
             Spell.CastOnGround("Dizzying Haze", ret => Me.CurrentTarget.Location, ret => NeedDizzyingHaze),
@@ -178,8 +186,8 @@ namespace YourBuddy.Rotations.Monk
                         return new PrioritySelector(
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
-                     Spell.Cast("Guard", ret => GuardOK),
-                     Spell.Cast("Chi Wave"),
+                     Spell.Cast("Guard", ret => Me.HealthPercent < MonkSettings.GuardHPPercent),
+                     Spell.Cast("Chi Wave", ret => Me.HealthPercent < 85),
                      new Decorator(ret => Me.HealthPercent < 100, HandleHealingCooldowns()),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),

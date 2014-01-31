@@ -18,6 +18,7 @@ using U = YourBuddy.Core.Unit;
 using SG = YourBuddy.Interfaces.Settings.InternalSettings;
 using System.Windows.Forms;
 using KP = YourBuddy.Core.Managers.HotKeyManager;
+using System.Globalization;
 
 namespace YourBuddy.Rotations
 {
@@ -25,6 +26,7 @@ namespace YourBuddy.Rotations
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         internal static int ? _anticipationCount;
+        private static ulong MouseOverTarget;
 
 
 
@@ -361,6 +363,41 @@ namespace YourBuddy.Rotations
                 new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast("Tricks of the Trade", ret => BestTricksTarget))));
+        }
+
+        internal static Composite InitializeOnKeyActionsM()
+        {
+            return new PrioritySelector(
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
+        }
+
+        internal static void HandleMouseOverTarget(object sender, LuaEventArgs args)
+        {          
+
+            var unitName = Lua.GetReturnVal<string>("return GetUnitName(\"mouseover\");", 0);
+            if (unitName != "")
+            {
+                var unitGuid = Lua.GetReturnVal<string>("return UnitGUID(\"mouseover\");", 0);
+                if (unitGuid != "")
+                {
+                    try
+                    {
+                        unitGuid = unitGuid.Replace("0x", String.Empty);
+                        MouseOverTarget = ulong.Parse(unitGuid, NumberStyles.HexNumber);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                else
+                {
+                    MouseOverTarget = 0;
+                }
+            }
+            else
+            {
+                MouseOverTarget = 0;
+            }
         }
 
         internal static bool WeakenedBlowsAura { get { return !Me.CurrentTarget.HasAura(113746); } }

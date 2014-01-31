@@ -54,7 +54,7 @@ namespace YourBuddy.Interfaces.GUI
                     return true;
                     //Monk
                 case WoWSpec.MonkWindwalker:
-                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
+                    this.HkTier4AbilityLabel.Text = "SEF Hotkey";
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
