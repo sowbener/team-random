@@ -39,7 +39,7 @@ namespace FuryUnleashed.Rotations.Protection
                                     new PrioritySelector(
                                         Rel_ProtGcdUtility(),
                                         new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, Rel_ProtMt()),
-                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, Rel_ProtSt())
+                                        Rel_ProtSt()
                                 )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
@@ -56,7 +56,7 @@ namespace FuryUnleashed.Rotations.Protection
                                     new PrioritySelector(
                                         Rel_ProtGcdUtility(),
                                         new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, Rel_ProtMt()),
-                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, Rel_ProtSt())
+                                        Rel_ProtSt()
                                 )))),
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
@@ -73,7 +73,7 @@ namespace FuryUnleashed.Rotations.Protection
                                     new PrioritySelector(
                                         Rel_ProtGcdUtility(),
                                         new Decorator(ret => IS.Instance.Protection.CheckAoE && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, Rel_ProtMt()),
-                                        new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, Rel_ProtSt())
+                                        Rel_ProtSt()
                                 ))))));
             }
         }
@@ -81,7 +81,7 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Rel_ProtRageDump()
         {
             return new PrioritySelector(
-                new Decorator(ret => U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum,
+                new Decorator(ret => !IS.Instance.Protection.CheckAoE || U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum,
                     Spell.Cast(SpellBook.HeroicStrike, ret => (Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && G.NormalPhase) || G.UltimatumAura, true)),
                 new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum,
                     Spell.Cast(SpellBook.Cleave, ret => (Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && G.NormalPhase) || G.UltimatumAura, true))
