@@ -143,7 +143,7 @@ namespace YourBuddy.Rotations.Shaman
         internal static Composite ElementalOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Ascendance", ret => FlameShockRemains >= 15 && CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 0 && (
+                Spell.Cast("Ascendance", ret => !CooldownTracker.SpellOnCooldown("Ascendance") && FlameShockRemains >= 15 && CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 0 && (
                     (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.Always)
@@ -164,7 +164,7 @@ namespace YourBuddy.Rotations.Shaman
                     (SG.Instance.Elemental.AncestralSwiftness == Enum.AbilityTrigger.Always)
                     )),
                 //actions.single+=/earth_elemental_totem,if=!active&cooldown.fire_elemental_totem.remains>=60
-                Spell.Cast("Earth Elemental Totem", ret => CooldownTracker.GetSpellCooldown("Fire Elemental Totem").Seconds >= 60 && (
+                Spell.Cast(2062, ret => CooldownTracker.GetSpellCooldown(2894).Milliseconds > 60000 && (
                     (SG.Instance.Elemental.EarthElemental == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Elemental.EarthElemental == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Elemental.EarthElemental == Enum.AbilityTrigger.Always)
