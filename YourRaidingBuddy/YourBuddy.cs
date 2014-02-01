@@ -116,7 +116,7 @@ namespace YourBuddy
 
             Spell.PulseDoubleCastEntries();
 
-            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
+         //   if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
 
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
                 DeathStrikeTracker.Pulse();
@@ -168,7 +168,7 @@ namespace YourBuddy
             CombatLogHandler.Initialize();
 
             /* Lua SecondaryStats */
-           if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy) Lua.PopulateSecondryStats();
+      //     if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy) Lua.PopulateSecondryStats();
            if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood) Lua.PopulateSecondryStats();
 
             /* Blood DK DeathStrike Tracker */
