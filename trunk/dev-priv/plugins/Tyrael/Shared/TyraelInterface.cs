@@ -165,7 +165,7 @@ namespace Tyrael.Shared
 
         private void extremebutton_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("60 TPS - Hardlock enabled - Softlock disabled.");
+            TpsLabel.Text = Text = string.Format("90 TPS - Hardlock enabled - Softlock disabled.");
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
@@ -378,11 +378,11 @@ namespace Tyrael.Shared
 
         private void extremebutton_Click(object sender, EventArgs e)
         {
-            TPSTrackBar.Value = 100;
+            TPSTrackBar.Value = 90;
 
             GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
-            GlobalSettings.Instance.UseFrameLock = false;
-            TyraelSettings.Instance.UseSoftLock = true;
+            GlobalSettings.Instance.UseFrameLock = true;
+            TyraelSettings.Instance.UseSoftLock = false;
 
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
