@@ -120,6 +120,16 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
+        internal static bool ShatteringThrowUsage
+        {
+            get
+            {
+                return ((IS.Instance.Arms.ShatteringThrow == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.ShatteringThrow == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.ShatteringThrow == Enum.AbilityTrigger.Always));
+            }
+        }
+
         internal static bool SkullBannerUsage
         {
             get

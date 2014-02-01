@@ -305,7 +305,7 @@ namespace FuryUnleashed.Rotations.Arms
                 Spell.Cast(SpellBook.IntimidatingShout,
                     ret => IS.Instance.Arms.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
                 Spell.Cast(SpellBook.ShatteringThrow,
-                    ret => IS.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss)
+                    ret => AG.ShatteringThrowUsage)
                 );
         }
 

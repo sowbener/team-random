@@ -147,6 +147,7 @@ namespace FuryUnleashed.Rotations.Protection
                     new PrioritySelector(
                         new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent < 100 && Me.HealthPercent > IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
                             new PrioritySelector(
+                                Spell.Cast(SpellBook.Execute, ret => G.ExecutePhase, true),
                                 Spell.Cast(SpellBook.HeroicStrike, ret => !IS.Instance.Protection.CheckAoE || U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, true),
                                 Spell.Cast(SpellBook.Cleave, ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, true))),
                         new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent >= 100 || Me.HealthPercent <= IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
@@ -167,7 +168,8 @@ namespace FuryUnleashed.Rotations.Protection
                 //138279 Victorious - T15 Proc ID (Victory Rush & Impending Victory).
                 //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
                 Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && Me.HealthPercent <= IS.Instance.Protection.ImpendingVictoryNum),
-                Spell.Cast(SpellBook.VictoryRush, ret => G.VictoriousAura && Me.HealthPercent <= IS.Instance.Protection.VictoryRushNum)
+                Spell.Cast(SpellBook.VictoryRush, ret => G.VictoriousAura && Me.HealthPercent <= IS.Instance.Protection.VictoryRushNum),
+                Spell.Cast(SpellBook.ShatteringThrow, ret => PG.ShatteringThrowUsage)
                 );
         }
 

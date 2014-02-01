@@ -214,7 +214,7 @@ namespace FuryUnleashed.Rotations.Arms
                 Spell.Cast(SpellBook.ImpendingVictory, ret => !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && IS.Instance.Arms.CheckImpVic && Me.HealthPercent <= IS.Instance.Arms.CheckImpVicNum),
                 Spell.Cast(SpellBook.VictoryRush, ret => !G.VictoryRushOnCooldown && G.VictoriousAura && IS.Instance.Arms.CheckVicRush && Me.HealthPercent <= IS.Instance.Arms.CheckVicRushNum),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Arms.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
-                Spell.Cast(SpellBook.ShatteringThrow, ret => IS.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss && (G.ColossusSmashSpellCooldown <= 3000 || G.SkullBannerSpellCooldown <= 3000)));
+                Spell.Cast(SpellBook.ShatteringThrow, ret => AG.ShatteringThrowUsage && G.ColossusSmashSpellCooldown > 5));
         }
 
         internal static Composite Rel_ArmsRacials()

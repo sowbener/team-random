@@ -334,8 +334,8 @@ namespace FuryUnleashed.Rotations.Fury
                 Spell.Cast(SpellBook.ImpendingVictory, ret => !Global.ImpendingVictoryOnCooldown && Global.ImpendingVictoryTalent && FG.ImpendingVictoryUsage && Me.HealthPercent <= IS.Instance.Fury.CheckImpVicNum),
                 Spell.Cast(SpellBook.VictoryRush, ret => !Global.VictoryRushOnCooldown && Global.VictoriousAura && FG.VictoryRushUsage && Me.HealthPercent <= IS.Instance.Fury.CheckVicRushNum),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => FG.IntimidatingShoutUsage && Global.IntimidatingShoutGlyph && !U.IsTargetBoss),
-                Spell.Cast(SpellBook.ShatteringThrow, ret => FG.ShatteringThrowUsage && U.IsTargetBoss && (Global.ColossusSmashSpellCooldown <= 3000 || Global.SkullBannerSpellCooldown <= 3000))
-                );
+                //actions.single_target+=/shattering_throw,if=cooldown.colossus_smash.remains>5
+                Spell.Cast(SpellBook.ShatteringThrow, ret => FG.ShatteringThrowUsage && G.ColossusSmashSpellCooldown > 5));
         }
 
         internal static Composite Dev_FuryRacials()

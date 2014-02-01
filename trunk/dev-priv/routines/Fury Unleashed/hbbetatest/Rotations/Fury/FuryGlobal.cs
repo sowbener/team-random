@@ -181,7 +181,9 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return IS.Instance.Fury.CheckShatteringThrow;
+                return ((IS.Instance.Fury.ShatteringThrow == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Fury.ShatteringThrow == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Fury.ShatteringThrow == Enum.AbilityTrigger.Always));
             }
         }
 
