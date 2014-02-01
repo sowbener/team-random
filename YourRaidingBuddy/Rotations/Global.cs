@@ -371,7 +371,7 @@ namespace YourBuddy.Rotations
         internal static Composite InitializeOnKeyActionsM()
         {
             return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover,harm] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
         }
 
         internal static void HandleMouseOverTarget(object sender, LuaEventArgs args)

@@ -84,7 +84,7 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.PreventDoubleCast("Stormlash Totem", 1, ret => SG.Instance.Elemental.EnableStormLashTotem && G.SpeedBuffsAura && !Totems.Exist(WoWTotemType.Air)),
                 new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.PreventDoubleCast("Spiritwalker's Grace", 1, target => Me, ret => Me.IsMoving, true))),
                 Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                Spell.Cast("Lava Burst", ret => FlameShockRemains > Spell.GetSpellCastTime("Lava Burst")),
+                Spell.Cast("Lava Burst"),
                 Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasMyAura("Flame Shock") || FlameShockRemains < 2),
                 Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
                 Spell.Cast("Earth Shock", ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
