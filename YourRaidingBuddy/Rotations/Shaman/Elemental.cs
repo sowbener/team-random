@@ -83,22 +83,19 @@ namespace YourBuddy.Rotations.Shaman
               
                 Spell.PreventDoubleCast("Stormlash Totem", 1, ret => SG.Instance.Elemental.EnableStormLashTotem && G.SpeedBuffsAura && !Totems.Exist(WoWTotemType.Air)),
                 new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.PreventDoubleCast("Spiritwalker's Grace", 1, target => Me, ret => Me.IsMoving, true))),
-                Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                Spell.Cast("Lava Burst"),
+                Spell.PreventDoubleCast("Unleash Elements", 0.5, ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
+                Spell.PreventDoubleCast("Lava Burst", 0.5, ret => NeedLavaBurst),
+                Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => NeedLavaBurstMoving, true),
                 Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasMyAura("Flame Shock") || FlameShockRemains < 2),
-                Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
-                Spell.Cast("Earth Shock", ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
-                Spell.Cast("Flame Shock", ret => SG.Instance.Elemental.UseFlameShockRefreshAscendance && Unit.IsTargetBoss && (CooldownTracker.GetSpellCooldown(114049).Seconds < 15 || !CooldownTracker.SpellOnCooldown(114049)) && FlameShockRemains <= 15),
+                Spell.PreventDoubleCast("Elemental Blast", 0.5, ret => TalentManager.IsSelected(18)),
+                Spell.PreventDoubleCast("Earth Shock", 0.5, ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
+                Spell.PreventDoubleCast("Flame Shock", 0.5, ret => SG.Instance.Elemental.UseFlameShockRefreshAscendance && Unit.IsTargetBoss && (CooldownTracker.GetSpellCooldown(114049).Seconds < 15 || !CooldownTracker.SpellOnCooldown(114049)) && FlameShockRemains <= 15),
                 Spell.PreventDoubleCast("Searing Totem", 1, ret => NeedSearingTotem),
                 Spell.PreventDoubleCast("Lightning Bolt", 1, ret => CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 1 || CooldownTracker.GetSpellCooldown("Unleash Elements").Seconds > 1 || (TalentManager.IsSelected(18) && CooldownTracker.GetSpellCooldown("Elemental Blast").Seconds > 1)));
 
 
         }
       
-
-        
-               //actions.aoe+=/flame_shock,cycle_targets=1,if=!ticking&active_enemies<3
-               //actions.aoe+=/thunderstorm,if=mana.pct_nonproc<80
         internal static Composite ElementalMt()
         {
             WoWUnit seedTarget = null;
@@ -143,7 +140,7 @@ namespace YourBuddy.Rotations.Shaman
         internal static Composite ElementalOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Ascendance", ret => !CooldownTracker.SpellOnCooldown("Ascendance") && FlameShockRemains >= 15 && CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 0 && (
+                Spell.PreventDoubleCast ("Ascendance", 2, ret => !CooldownTracker.SpellOnCooldown("Ascendance") && !Me.HasAura(114050) && FlameShockRemains >= 15 && CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 0 && (
                     (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Elemental.Ascendance == Enum.AbilityTrigger.Always)
@@ -266,6 +263,25 @@ namespace YourBuddy.Rotations.Shaman
 
         #region Booleans
 
+
+        private static bool NeedLavaBurst
+        {
+            get
+            {
+                return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura("Flame Shock") &&
+                       (Spell.GetMyAuraTimeLeft(8050, Me.CurrentTarget) > Spell.GetSpellCastTime("Lava Burst")) &&
+                       !Me.IsMoving;
+            }
+        }
+
+        private static bool NeedLavaBurstMoving
+        {
+            get
+            {
+                return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura("Flame Shock") && Me.IsMoving &&
+                       Me.HasAnyAura("Lava Surge", "Spiritwalker's Grace");
+            }
+        }
 
         private static bool NeedFlameShock { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Flame Shock", 0, 1000); } }
         private static double  FlameShockRemains { get { return Spell.GetAuraTimeLeft("Flame Shock", Me.CurrentTarget);}}
