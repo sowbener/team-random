@@ -17,10 +17,20 @@ namespace FuryUnleashed.Core.Helpers
 
         public static void Initialize()
         {
-            _damageTaken = new Dictionary<DateTime, double>();
-            CombatLogHandler.Initialize();
-            AttachCombatLogEvent();
-            Logger.CombatLogFb("Damage Tracker Initialized.");
+            try
+            {
+                if (StyxWoW.Me.Specialization == WoWSpec.WarriorProtection)
+                {
+                    _damageTaken = new Dictionary<DateTime, double>();
+                    CombatLogHandler.Initialize();
+                    AttachCombatLogEvent();
+                    Logger.CombatLogFb("Damage Tracker Initialized.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.DiagLogFb("FU: Damage Tracker failed to initialize - {0}", ex);
+            }
         }
 
         public static void Pulse()
@@ -193,31 +203,6 @@ namespace FuryUnleashed.Core.Helpers
             }
             return 1;
         }
-        #endregion
-
-        #region Fury-Spec Functions
-        //public static bool StanceTracker()
-        //{
-        //    using (new PerformanceLogger("StanceTracker"))
-        //    {
-        //        try
-        //        {
-        //            // Battle: You gain rage from auto-attacking: 3.5 Rage for a 1.00 Weapon Speed for each hit. Offhand weapons generate half the rage of the main-hand.
-        //            // Berserker: You gain rage from damage taken. The formula is 1 rage for 1% of health lost, and 50% of the rage generation of auto-attacks when compared to Battle Stance.
-
-        //            var weaponspeed = 3.6;
-        //            var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Datetime 3 seconds - retrieves damage received over 3 seconds.
-        //            var healthperpercent = StyxWoW.Me.MaxHealth / 100; // Calculates amount of health per percent.
-        //            var battlestanceregen = (weaponspeed * 3.5) + (weaponspeed * 1.75);
-        //            //var berserkerstanceregen = ;
-        //        }
-        //        catch (Exception exstancetrack)
-        //        {
-        //            Logger.DiagLogFb("FU: Failed CalculateEstimatedBlockValue - {0}", exstancetrack);
-        //        }
-        //    }
-        //    return false;
-        //}
         #endregion
     }
 }
