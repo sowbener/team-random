@@ -203,7 +203,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
-        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
+        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
         internal static bool MultiShotThrillProc { get { return Me.HasAura(34720) && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura(34720); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
