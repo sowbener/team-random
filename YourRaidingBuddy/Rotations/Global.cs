@@ -571,7 +571,7 @@ namespace YourBuddy.Rotations
 
         #region Hunterstuff
 
-       internal static int TrapSwitchingBM
+       internal static string TrapSwitchingBM
         {
             get
             {
@@ -579,20 +579,20 @@ namespace YourBuddy.Rotations
                 {
 
                     case Enum.Traps.ExplosiveTrap:
-                        return 82939;
+                        return "Explosive Trap";
                     case Enum.Traps.FreezingTrap:
-                        return 60192;
+                        return "Freezing Trap";
                     case Enum.Traps.IceTrap:
-                        return 82941;
+                        return "Ice Trap";
                     case Enum.Traps.SnakeTrap:
-                        return 82948;
+                        return "Snake Trap";
                     default:
-                        return 0;
+                        return null;
                 }
             }
         }
 
-        internal static int TrapSwitchingSV
+        internal static string TrapSwitchingSV
         {
             get
             {
@@ -600,20 +600,20 @@ namespace YourBuddy.Rotations
                 {
 
                     case Enum.Traps.ExplosiveTrap:
-                        return 82939;
+                        return "Explosive Trap";
                     case Enum.Traps.FreezingTrap:
-                        return 60192;
+                        return "Freezing Trap";
                     case Enum.Traps.IceTrap:
-                        return 82941;
+                        return "Ice Trap";
                     case Enum.Traps.SnakeTrap:
-                        return 82948;
+                        return "Snake Trap";
                     default:
-                        return 0;
+                        return null;
                 }
             }
         }
 
-        internal static int TrapSwitchingMM
+        internal static string TrapSwitchingMM
         {
             get
             {
@@ -621,15 +621,15 @@ namespace YourBuddy.Rotations
                 {
 
                     case Enum.Traps.ExplosiveTrap:
-                        return 82939;
+                        return "Explosive Trap";
                     case Enum.Traps.FreezingTrap:
-                        return 60192;
+                        return "Freezing Trap";
                     case Enum.Traps.IceTrap:
-                        return 82941;
+                        return "Ice Trap";
                     case Enum.Traps.SnakeTrap:
-                        return 82948;
+                        return "Snake Trap";
                     default:
-                        return 0;
+                        return null;
                 }
             }
         }
