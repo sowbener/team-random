@@ -79,7 +79,7 @@ namespace YourBuddy.Rotations.Hunter
             return new PrioritySelector(
                 Spell.CastHunterTrap(G.TrapSwitchingBM, loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
-                Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => !SerpentStingRefresh),
+                Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
@@ -236,7 +236,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasAura("Serpent Sting", 0, 6000); } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
-        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && (!Me.CurrentTarget.HasMyAura("Serpent Sting") || Spell.GetAuraTimeMilliEnemy("Serpent Sting") < 2000); } }
+        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
         internal static bool ExplosiveShotOffCooldown { get { return !CooldownTracker.SpellOnCooldown(53301); } }
         internal static bool KillCommandCooldown { get { return CooldownTracker.SpellOnCooldown(34026); } }
         internal static bool FocusFireFiveStacks { get { return FocusFireStackCount == 5; } }
