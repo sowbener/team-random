@@ -579,13 +579,13 @@ namespace YourBuddy.Rotations
                 {
 
                     case Enum.Traps.ExplosiveTrap:
-                        return 13813;
+                        return 82939;
                     case Enum.Traps.FreezingTrap:
-                        return 1499;
+                        return 60192;
                     case Enum.Traps.IceTrap:
-                        return 13809;
+                        return 82941;
                     case Enum.Traps.SnakeTrap:
-                        return 34600;
+                        return 82948;
                     default:
                         return 0;
                 }
@@ -600,13 +600,13 @@ namespace YourBuddy.Rotations
                 {
 
                     case Enum.Traps.ExplosiveTrap:
-                        return 13813;
+                        return 82939;
                     case Enum.Traps.FreezingTrap:
-                        return 1499;
+                        return 60192;
                     case Enum.Traps.IceTrap:
-                        return 13809;
+                        return 82941;
                     case Enum.Traps.SnakeTrap:
-                        return 34600;
+                        return 82948;
                     default:
                         return 0;
                 }
@@ -621,13 +621,13 @@ namespace YourBuddy.Rotations
                 {
 
                     case Enum.Traps.ExplosiveTrap:
-                        return 13813;
+                        return 82939;
                     case Enum.Traps.FreezingTrap:
-                        return 1499;
+                        return 60192;
                     case Enum.Traps.IceTrap:
-                        return 13809;
+                        return 82941;
                     case Enum.Traps.SnakeTrap:
-                        return 34600;
+                        return 82948;
                     default:
                         return 0;
                 }
