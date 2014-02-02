@@ -644,7 +644,7 @@ namespace YourBuddy.Rotations
                 //            Styx.WoWInternals.Lua.DoString("if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end");
                 //           Logger.CombatLog("Casting: Anti-Magic Zone - On Mouse Location");
                 //         })),
-            new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice) && !Me.FocusedUnit.HasAura(34477),
+            new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice) && Me.FocusedUnit != null && !Me.FocusedUnit.HasAura(34477),
                new PrioritySelector(
                    Spell.Cast("Misdirect", ret => StyxWoW.Me.FocusedUnit))),
              new Decorator(ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice),
