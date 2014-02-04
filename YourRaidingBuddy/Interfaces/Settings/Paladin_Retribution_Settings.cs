@@ -15,11 +15,26 @@ namespace YourBuddy.Interfaces.Settings
 
         #region Ability Options
        
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Retribution - Ability Options")]
-        [DisplayName("Not in USE")]
-        [Description("Select the usage of XXXX")]
-        public Enum.AbilityTrigger XXXX { get; set; }
+        [DisplayName("Holy Avenger")]
+        [Description("Select the usage of Holy Avenger")]
+        public Enum.AbilityTrigger HolyAvenger { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Guardian of Ancient Kings")]
+        [Description("Select the usage of Guardian of Ancient Kings")]
+        public Enum.AbilityTrigger GuardianofAnicentKings { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Avenging Wrath")]
+        [Description("Select the usage of Avenging Wrath")]
+        public Enum.AbilityTrigger AvengingWrath { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
@@ -29,11 +44,18 @@ namespace YourBuddy.Interfaces.Settings
         public Enum.AbilityTrigger ClassRacials { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(20)]
-        [Category("Retribution - Item Options")]
-        [DisplayName("NOT IN USE %")]
-        [Description("Select the use-on HP for NOT IN USE usage.")]
-        public int xxxx { get; set; }
+        [Styx.Helpers.DefaultValue(4)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Seal of Righteousness Count")]
+        [Description("Select the use count for Righteousness Seal")]
+        public int SealofRighteousnessCount { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Seal Swapping")]
+        [Description("Enable / Disable Seal Swapping")]
+        public bool UseSealSwapping { get; set; }
 
 
 

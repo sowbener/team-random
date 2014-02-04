@@ -278,8 +278,8 @@ namespace YourBuddy.Rotations.Shaman
         {
             get
             {
-                return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura("Flame Shock") && Me.IsMoving &&
-                       Me.HasAnyAura("Lava Surge", "Spiritwalker's Grace");
+                return Me.CurrentTarget != null && Me.CurrentTarget.HasAura("Flame Shock") && Me.IsMoving &&
+                       (Me.HasAura("Lava Surge") || Me.HasAura("Spiritwalker's Grace"));
             }
         }
 

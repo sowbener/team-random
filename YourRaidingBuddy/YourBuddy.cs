@@ -163,7 +163,7 @@ namespace YourBuddy
             /* Attack Power For Brewmaster Monks */
             _initap = StyxWoW.Me.AttackPower;
             _NewAP = StyxWoW.Me.AttackPower;
-            Styx.WoWInternals.Lua.Events.AttachEvent("UPDATE_MOUSEOVER_UNIT", G.HandleMouseOverTarget);
+        //    Styx.WoWInternals.Lua.Events.AttachEvent("UPDATE_MOUSEOVER_UNIT", G.HandleMouseOverTarget);
 
             CombatLogHandler.Initialize();
 

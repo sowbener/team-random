@@ -230,7 +230,7 @@ namespace YourBuddy.Core.Helpers
         {
             if (u != null)
             {
-                bool raisedAP = (SpellStats(u, spellId).AttackPower + SG.Instance.Unholy.AttackPowerDot < Lua._secondaryStats.AttackPower);
+                bool raisedAP = (SpellStats(u, spellId).AttackPower + 3000 < Lua._secondaryStats.AttackPower);
                 bool raisedCrit = (SpellStats(u, spellId).CritChance + 1000 < Lua._secondaryStats.Crit);
                 bool raisedHaste = (SpellStats(u, spellId).MeleeHaste + 1000 < Lua._secondaryStats.MeleeHaste);
                 bool raisedMastery = (SpellStats(u, spellId).Mastery + 1000 < Lua._secondaryStats.Mastery);
