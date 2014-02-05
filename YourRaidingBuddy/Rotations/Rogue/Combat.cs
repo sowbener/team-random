@@ -73,10 +73,9 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
-                //actions+=/slice_and_dice,if=buff.slice_and_dice.remains<2
-                Spell.Cast("Slice and Dice", ret => !Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 2),
-                Spell.Cast("Revealing Strike", ret => Lua.PlayerComboPts < 5 && !G.RevealingStrike),
-                Spell.Cast("Sinister Strike", ret => Lua.PlayerComboPts < 5),
+                Spell.Cast("Slice and Dice", ret => !Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 3),
+                Spell.Cast("Revealing Strike", ret => Lua.PlayerComboPts < 5 && Spell.GetAuraTimeLeft("Revealing Strike") < 3),
+                Spell.Cast("Sinister Strike", ret => Lua.PlayerComboPts < 5 && Spell.GetAuraTimeLeft("Revealing Strike") > 3),
                 Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
