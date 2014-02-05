@@ -258,7 +258,8 @@ namespace YourBuddy.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead;
+                return !Me.Mounted && Me.CurrentTarget != null && Me.CurrentTarget.Attackable &&
+                      !Me.CurrentTarget.IsDead;
             }
         }
 
@@ -305,7 +306,7 @@ namespace YourBuddy.Core
 
         #region DeathKnight Things
 
-        internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasMyAura("Blood Plague")) > 2; } }
+        internal static bool AoeBPCheck { get { return NearbyAttackableUnits(Me.CurrentTarget.Location, 10).Count(x => !x.HasAura("Blood Plague")) > 2; } }
         #endregion
 
         #region HashSet Checks

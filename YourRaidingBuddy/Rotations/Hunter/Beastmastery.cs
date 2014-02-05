@@ -232,11 +232,11 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool DireBeastEnabled { get { return TalentManager.IsSelected(11); } }
         internal static bool UseQuasiAoE { get { return  SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoEMultiShotCount; } }
         internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
-        internal static bool SerpentStingAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(1978); } }
+        internal static bool SerpentStingAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(1978); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasAura("Serpent Sting", 0, 6000); } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
-        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
+        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Serpent Sting"); } }
         internal static bool ExplosiveShotOffCooldown { get { return !CooldownTracker.SpellOnCooldown(53301); } }
         internal static bool KillCommandCooldown { get { return CooldownTracker.SpellOnCooldown(34026); } }
         internal static bool FocusFireFiveStacks { get { return FocusFireStackCount == 5; } }

@@ -86,7 +86,7 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.PreventDoubleCast("Unleash Elements", 0.5, ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
                 Spell.PreventDoubleCast("Lava Burst", 0.5, ret => NeedLavaBurst),
                 Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => NeedLavaBurstMoving, true),
-                Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasMyAura("Flame Shock") || FlameShockRemains < 2),
+                Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasAura("Flame Shock") || FlameShockRemains < 2),
                 Spell.PreventDoubleCast("Elemental Blast", 0.5, ret => TalentManager.IsSelected(18)),
                 Spell.PreventDoubleCast("Earth Shock", 0.5, ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
                 Spell.PreventDoubleCast("Flame Shock", 0.5, ret => SG.Instance.Elemental.UseFlameShockRefreshAscendance && Unit.IsTargetBoss && (CooldownTracker.GetSpellCooldown(114049).Seconds < 15 || !CooldownTracker.SpellOnCooldown(114049)) && FlameShockRemains <= 15),
@@ -268,7 +268,7 @@ namespace YourBuddy.Rotations.Shaman
         {
             get
             {
-                return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura("Flame Shock") &&
+                return Me.CurrentTarget != null && Me.CurrentTarget.HasAura("Flame Shock") &&
                        (Spell.GetMyAuraTimeLeft(8050, Me.CurrentTarget) > Spell.GetSpellCastTime("Lava Burst")) &&
                        !Me.IsMoving;
             }
