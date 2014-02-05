@@ -67,6 +67,24 @@ namespace YourBuddy.Core
                     }));
         }
 
+
+        public static Composite CastHack(string spellname, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
+        {
+            return
+                new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret)) && CanCastHack(spellname, onUnit(ret))),
+                    new Action(ret =>
+                    {
+                        if (SpellManager.Cast(spellname, onUnit(ret)))
+                        {
+                            CooldownTracker.SpellUsed(spellname);
+                            Logger.CombatLogOr("Casting: " + spellname + " on " + onUnit(ret).SafeName);
+                            if (!failThrough)
+                                return RunStatus.Success;
+                        }
+                        return RunStatus.Failure;
+                    }));
+        }
+
         /// <summary>
         /// Casting method for regular casting - int
         /// </summary>
