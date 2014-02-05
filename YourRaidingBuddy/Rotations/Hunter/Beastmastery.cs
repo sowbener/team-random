@@ -77,7 +77,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasterySt()
         {
             return new PrioritySelector(
-                Spell.CastHunterTrap(G.TrapSwitchingBM, loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
+                HunterTrapBehavior(),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
@@ -96,6 +96,15 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
+
+        internal static Composite HunterTrapBehavior()
+        {
+            return new PrioritySelector(
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.ExplosiveTrap),
+                Spell.CastHunterTrap("Freezing Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.FreezingTrap),
+                Spell.CastHunterTrap("Ice Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.IceTrap),
+                Spell.CastHunterTrap("Snake Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.SnakeTrap));
+        }
 
         internal static Composite BeastmasteryCleave()
         {
