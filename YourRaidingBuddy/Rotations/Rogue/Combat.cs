@@ -75,7 +75,7 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
                 Spell.Cast("Slice and Dice", ret => !Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 3),
                 Spell.Cast("Revealing Strike", ret => Lua.PlayerComboPts < 5 && Spell.GetAuraTimeLeft("Revealing Strike") < 3),
-                Spell.Cast("Sinister Strike", ret => Lua.PlayerComboPts < 5 && Spell.GetAuraTimeLeft("Revealing Strike") > 3),
+                Spell.Cast("Sinister Strike", ret => Lua.PlayerComboPts < 5 && Spell.GetAuraTimeLeft("Revealing Strike", Me.CurrentTarget) > 3),
                 Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
