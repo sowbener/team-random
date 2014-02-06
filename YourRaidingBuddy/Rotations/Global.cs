@@ -546,6 +546,17 @@ namespace YourBuddy.Rotations
             }
         }
 
+        internal static bool RevealingStrike
+        {
+            get
+            {
+                if (!Me.GotTarget)
+                    return false;
+                WoWAura Reveal = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 84617);
+                return Reveal != null && Reveal.TimeLeft >= TimeSpan.FromMilliseconds(3000);
+            }
+        }
+
 
         internal static bool SliceAndDiceEnevenom
         {
