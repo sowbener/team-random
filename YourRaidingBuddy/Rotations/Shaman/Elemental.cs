@@ -70,7 +70,7 @@ namespace YourBuddy.Rotations.Shaman
                                              new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                                          new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                                         ElementalOffensive())),
-                                        new Decorator(ret => HotKeyManager.IsAoe, ElementalMt()),
+                                        new Decorator(ret => HotKeyManager.IsAoe && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
                                         ElementalSt())));
             }
         }
