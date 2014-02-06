@@ -1057,6 +1057,67 @@ namespace YourBuddy.Core
 
         #endregion Double Cast Shit
 
+        #region Cast - Multi DoT
+
+        /// <summary> Multi-DoT targets within range of target</summary>
+        public static Composite MultiDoT(string spellName, WoWUnit unit, Selection<bool> reqs = null)
+        {
+            return MultiDoT(spellName, unit, 15, 1, reqs);
+        }
+
+        /// <summary> Multi-DoT targets within range of target</summary>
+        public static Composite MultiDoT(string spellName, WoWUnit unit, double radius, double refreshDurationRemaining, Selection<bool> reqs = null)
+        {
+            WoWUnit dotTarget = null;
+            return new PrioritySelector(
+                        new Decorator(ret => unit != null && ((reqs != null && reqs(ret)) || reqs == null),
+                              new PrioritySelector(ctx => dotTarget = GetMultiDoTTarget(unit, spellName, radius, refreshDurationRemaining),
+                                  PreventDoubleCast(spellName, GetSpellCastTime(spellName) + 0.5, on => dotTarget, ret => dotTarget != null))));
+        }
+
+        /// <summary> Multi-DoT targets within range of target</summary>
+        public static Composite PreventDoubleMultiDoT(string spellName, double expiryTime, WoWUnit unit, double radius, double refreshDurationRemaining, Selection<bool> reqs = null)
+        {
+            WoWUnit dotTarget = null;
+            return new PrioritySelector(
+                        new Decorator(ret => unit != null && ((reqs != null && reqs(ret)) || reqs == null),
+                              new PrioritySelector(ctx => dotTarget = GetMultiDoTTarget(unit, spellName, radius, refreshDurationRemaining),
+                                  PreventDoubleCast(spellName, expiryTime, on => dotTarget, ret => dotTarget != null))));
+        }
+
+        public static double GetMyAuraTimeLeft(string aura, WoWUnit onUnit)
+        {
+            if (onUnit != null)
+            {
+                var result = onUnit.GetAllAuras().FirstOrDefault(a => a.Name == aura && a.CreatorGuid == Me.Guid);
+                if (result != null && result.TimeLeft.TotalSeconds > 0)
+                    return result.TimeLeft.TotalSeconds;
+            }
+            return 0;
+        }
+
+        internal static WoWUnit GetMultiDoTTarget(WoWUnit unit, string debuff, double radius, double refreshDurationRemaining)
+        {
+            // find unit without our debuff
+            var dotTarget = Unit.NearbyAttackableUnits(unit.Location, radius)
+                .Where(x => x != null)
+                .OrderByDescending(x => x.HealthPercent)
+                .FirstOrDefault(x => !x.HasMyAura(debuff) && x.InLineOfSpellSight);
+
+            if (dotTarget == null)
+            {
+                // If we couldn't find one without our debuff, then find ones where debuff is about to expire.
+                dotTarget = Unit.NearbyAttackableUnits(unit.Location, radius)
+                            .Where(x => x != null)
+                            .OrderByDescending(x => x.HealthPercent)
+                            .FirstOrDefault(x => (x.HasMyAura(debuff) && GetMyAuraTimeLeft(debuff, x) < refreshDurationRemaining) && x.InLineOfSpellSight);
+            }
+            return dotTarget;
+        }
+
+        #endregion
+
+
         #region StackCount and other various of things --Alex
         public static uint GetAuraStack(WoWUnit unit, int spellId)
         {

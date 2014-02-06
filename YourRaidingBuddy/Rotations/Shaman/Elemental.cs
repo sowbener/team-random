@@ -100,27 +100,26 @@ namespace YourBuddy.Rotations.Shaman
         {
             WoWUnit seedTarget = null;
             return new PrioritySelector(
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 4,
+                    new PrioritySelector(
+                     Spell.Cast("Chain Lightning"))),
+                     new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
+                    new PrioritySelector(
+                    Spell.PreventDoubleMultiDoT("Flame Shock", 1, Me, 20, 3, ret => Unit.NearbyAttackableUnitsCount < 4 && seedTarget == null),
+                    Spell.PreventDoubleCastHack("Earth Shock", 0.5, ret=> Me.CurrentTarget, ret => LightningShieldStacks >= 6, true),
+                    Spell.Cast("Lava Burst", ret => NeedLavaBurst),
+                    Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => (Me.HasAura(77756) || Me.HasAura("Spiritwalker's Grace")), true),
+                    Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
+                    Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
+                    Spell.Cast("Chain Lightning"))),
                 new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
                     new PrioritySelector(
                 Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                Spell.Cast("Lava Burst", ret => !NeedFlameShock && (Me.HasAura(114050) || Me.HasAura(77756))),
-                Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => !FlameShock5 && (Me.HasAura(77756) || Me.HasAura("Spiritwalker's Grace")), true),
-                Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasAura("Flame Shock") || NeedFlameShockRefresh),
-                Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18) && !FlameShock5),
-                Spell.Cast("Chain Lightning"))),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
-                    new PrioritySelector(
-             //       Spell.PreventDoubleMultiDoT("Flame Shock", 1, Me, 20, 3, ret => U.NearbyAttackableUnitsCount < 4 && seedTarget == null),
-                    Spell.Cast("Earth Shock", ret => LightningShieldStacks >= 6),
-                     Spell.Cast("Lava Burst", ret => !NeedFlameShock && (Me.HasAura(114050) || Me.HasAura(77756))),
-                    Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => !FlameShock5 && (Me.HasAura(77756) || Me.HasAura("Spiritwalker's Grace")), true),
-                    Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                    Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18) && !FlameShock5),
-                    Spell.Cast("Chain Lightning"))),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 4,
-                    new PrioritySelector(
-                     Spell.Cast("Chain Lightning")
-                     )));
+                Spell.Cast("Lava Burst", ret => NeedLavaBurst),
+                Spell.PreventDoubleCastHack("Lava Burst", 0.5, target => Me.CurrentTarget, ret => !FlameShock5 && (Me.HasAura(77756) || Me.HasAura("Spiritwalker's Grace")), true),
+                Spell.PreventDoubleCastHack("Flame Shock", 1, ret => Me.CurrentTarget, ret => !Me.CurrentTarget.HasAura("Flame Shock") || NeedFlameShockRefresh, true),
+                Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
+                Spell.Cast("Chain Lightning"))));
         }
 
 
