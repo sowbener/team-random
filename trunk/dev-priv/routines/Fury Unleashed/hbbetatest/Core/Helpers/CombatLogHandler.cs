@@ -48,7 +48,8 @@ namespace FuryUnleashed.Core.Helpers
                 // Kinda unused. No real reason to bother with it.
                 if (index < args.Args.Length) a.HideCaster = args.Args[2].ToString() == "true";
 
-                if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()))
+                //if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()))
+                if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()) && args.Args[3].ToString().Length > 4)
                 {
                     if (index < args.Args.Length) a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
                 }
@@ -62,7 +63,8 @@ namespace FuryUnleashed.Core.Helpers
                 if (index < args.Args.Length) a.SourceFlags = (SourceFlags)(double)args.Args[5];
                 if (index < args.Args.Length) a.SourceRaidFlags = (SourceFlags)(double)args.Args[6];
 
-                if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length)
+                //if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length)
+                if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length && args.Args[7].ToString().Length > 4)
                 {
                     a.DestGuid = ulong.Parse(args.Args[7].ToString().Remove(0, 2), NumberStyles.HexNumber);
                 }

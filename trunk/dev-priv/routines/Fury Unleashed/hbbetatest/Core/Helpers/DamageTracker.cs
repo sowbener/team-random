@@ -19,13 +19,12 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (StyxWoW.Me.Specialization == WoWSpec.WarriorProtection)
-                {
-                    _damageTaken = new Dictionary<DateTime, double>();
-                    CombatLogHandler.Initialize();
-                    AttachCombatLogEvent();
-                    Logger.CombatLogFb("Damage Tracker Initialized.");
-                }
+                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection) return;
+
+                _damageTaken = new Dictionary<DateTime, double>();
+                CombatLogHandler.Initialize();
+                AttachCombatLogEvent();
+                Logger.CombatLogFb("Damage Tracker Initialized.");
             }
             catch (Exception ex)
             {
