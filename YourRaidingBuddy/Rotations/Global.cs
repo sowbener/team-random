@@ -546,16 +546,19 @@ namespace YourBuddy.Rotations
             }
         }
 
-        internal static bool RevealingStrike
+        internal static bool RevealingStrike1
         {
             get
             {
                 if (!Me.GotTarget)
                     return false;
-                WoWAura Reveal = Me.CurrentTarget.GetAllAuras().FirstOrDefault(u => u.CreatorGuid == Me.Guid && u.SpellId == 84617);
-                return Reveal != null && Reveal.TimeLeft >= TimeSpan.FromMilliseconds(3000);
+
+                int RevealingStrike = (int)Me.CurrentTarget.GetAuraTimeLeft("Revealing Strike").TotalMilliseconds;
+                // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
+                return RevealingStrike.Between(1000, 3000);
             }
         }
+
 
         internal static bool SliceAndDiceEnevenom
         {
