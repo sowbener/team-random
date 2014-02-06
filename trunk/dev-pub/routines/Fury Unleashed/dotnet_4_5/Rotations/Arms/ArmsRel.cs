@@ -214,7 +214,7 @@ namespace FuryUnleashed.Rotations.Arms
                 Spell.Cast(SpellBook.ImpendingVictory, ret => !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && IS.Instance.Arms.CheckImpVic && Me.HealthPercent <= IS.Instance.Arms.CheckImpVicNum),
                 Spell.Cast(SpellBook.VictoryRush, ret => !G.VictoryRushOnCooldown && G.VictoriousAura && IS.Instance.Arms.CheckVicRush && Me.HealthPercent <= IS.Instance.Arms.CheckVicRushNum),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Arms.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
-                Spell.Cast(SpellBook.ShatteringThrow, ret => IS.Instance.Arms.CheckShatteringThrow && U.IsTargetBoss && (G.ColossusSmashSpellCooldown <= 3000 || G.SkullBannerSpellCooldown <= 3000)));
+                Spell.Cast(SpellBook.ShatteringThrow, ret => AG.ShatteringThrowUsage && G.ColossusSmashSpellCooldown > 5));
         }
 
         internal static Composite Rel_ArmsRacials()
@@ -227,8 +227,20 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsDefensive()
         {
             return new PrioritySelector(
+                new Decorator(ret => G.EnragedRegenerationTalent && AG.EnragedRegenerationUsage && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum,
+                    new PrioritySelector(
+                        new Decorator(ret => G.EnrageAura,
+                            Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
+                        new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
+                            new PrioritySelector(
+                                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true),
+                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me))),
+                        new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
+                            Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
+
+                //Spell.Cast(SpellBook.EnragedRegeneration, ret => G.EnragedRegenerationTalent && IS.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum),
+
                 Spell.Cast(SpellBook.DiebytheSword, ret => IS.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= IS.Instance.Arms.CheckDiebytheSwordNum),
-                Spell.Cast(SpellBook.EnragedRegeneration, ret => G.EnragedRegenerationTalent && IS.Instance.Arms.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum),
                 Spell.Cast(SpellBook.ShieldWall, ret => IS.Instance.Arms.CheckShieldWall && Me.HealthPercent <= IS.Instance.Arms.CheckShieldWallNum),
                 Spell.Cast(SpellBook.SpellReflection, ret => IS.Instance.Arms.CheckSpellReflect && U.IsViable(Me.CurrentTarget) && U.IsTargettingMe && Me.CurrentTarget.IsCasting),
                 Item.ArmsUseHealthStone());

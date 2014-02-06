@@ -8,11 +8,9 @@ using Styx;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.CommonBot.Routines;
-using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using System.Windows.Forms;
 using A = FuryUnleashed.Rotations.Arms.ArmsGlobal;
 using BotEvents = Styx.CommonBot.BotEvents;
 using F = FuryUnleashed.Rotations.Fury.FuryGlobal;
@@ -27,7 +25,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 5, 8);
+        public static readonly Version Revision = new Version(1, 5, 6, 1);
         public static readonly string FuName = "Fury Unleashed - IR " + Revision;
         public static readonly string WoWVersion = "5.4.2";
 
@@ -61,11 +59,6 @@ namespace FuryUnleashed
             {
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
-
-                if (!GlobalSettings.Instance.UseFrameLock)
-                {
-                    MessageBox.Show("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!");
-                }
 
                 Unleash();
             }
@@ -112,9 +105,7 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Support will be handled via the HB Forums.");
             Logger.CombatLogOr("Thanks list is available in the topic!");
             Logger.CombatLogOr("Special thanks to: Stormchasing, Wulf, Mirabis, Alxaw, Weischbier & Millz!\r\n");
-            Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
-            if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
-            else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
+            Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".\r\n");
             Logger.CombatLogFb("Recommended rotations are (Selectable in the GUI):");
             Logger.CombatLogOr("Arms: Release");
             Logger.CombatLogOr("Fury: Release");
@@ -132,6 +123,7 @@ namespace FuryUnleashed
             /* Initialize Various Functions */
             DamageTracker.Initialize();
             HotKeyManager.InitializeBindings();
+            Item.RefreshSecondaryStats();
 
             /* Gather required information */
             Logger.StatCounter();

@@ -278,11 +278,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckRotImpVic { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
         [Category("Fury - Selectable Options")]
         [DisplayName("Enable Shattering Throw")]
-        [Description("Checked enables Shattering Throw.")]
-        public bool CheckShatteringThrow { get; set; }
+        [Description("Select the usage of Shattering Throw.")]
+        public Enum.AbilityTrigger ShatteringThrow { get; set; }
         #endregion
 
         // ========================================================================================

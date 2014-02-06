@@ -59,7 +59,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool AutoDetectManualCast { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(100)]
+        [Styx.Helpers.DefaultValue(250)]
         [Category("General Settings")]
         [DisplayName("Manual Cast Resume Time")]
         [Description("Amount of time in miliseconds before resuming normal operation after manual cast.")]
@@ -91,7 +91,7 @@ namespace FuryUnleashed.Interfaces.Settings
         public int RacialNum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Combat Settings")]
         [DisplayName("Enable Pre-Combat Buff")]
         [Description("This enables shouts pre-combat, also keeps the buff up.")]

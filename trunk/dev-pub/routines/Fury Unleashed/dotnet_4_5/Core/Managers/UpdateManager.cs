@@ -55,11 +55,18 @@ namespace FuryUnleashed.Core.Managers
 
         private static int GetRevision()
         {
-            var wc = new WebClient();
-            var webData = wc.DownloadString(FuSvnUrl + "version");
-            Logger.DiagLogPu("Current SVN version: {0}", int.Parse(webData));
-            return int.Parse(webData);
-            //throw new Exception("FU: Unable to retrieve revision");
+            try
+            {
+                var wc = new WebClient();
+                var webData = wc.DownloadString(FuSvnUrl + "version");
+
+                Logger.DiagLogPu("Current SVN version: {0}", int.Parse(webData));
+                return int.Parse(webData);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)

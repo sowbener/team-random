@@ -25,6 +25,8 @@ namespace FuryUnleashed.Core.Managers
             Glyphs = new HashSet<string>();
             GlyphId = new int[6];
 
+            CurrentSpec = StyxWoW.Me.Specialization;
+
             Lua.Events.AttachEvent("PLAYER_LEVEL_UP", UpdateTalentManager);
             Lua.Events.AttachEvent("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("GLYPH_UPDATED", UpdateTalentManager);
@@ -34,16 +36,18 @@ namespace FuryUnleashed.Core.Managers
         }
 
         public static WoWSpec CurrentSpec { get; private set; }
+
         public static List<Talent> Talents { get; private set; }
+
         public static HashSet<string> Glyphs { get; private set; }
 
         private static int[] GlyphId { get; set; }
+
         private static int[] TalentId { get; set; }
 
         private static readonly WaitTimer EventRebuildTimer = new WaitTimer(TimeSpan.FromSeconds(1));
 
-        // ReSharper disable once RedundantDefaultFieldInitializer
-        private static bool _rebuild = false;
+        private static bool _rebuild;
 
         private static bool RebuildNeeded
         {
@@ -157,6 +161,17 @@ namespace FuryUnleashed.Core.Managers
                         Glyphs.Add(WoWSpell.FromId(GlyphId[i - 1]).Name.Replace("Glyph of ", ""));
                     }
                 }
+
+                foreach (var glyph in Glyphs)
+                {
+                    Logger.DiagLogPu("Glyph of {0}", glyph);
+                }
+
+                foreach (var talent in Talents)
+                {
+                    Logger.DiagLogPu("{0} : {1}", talent.Index, talent.Selected);
+                }
+
             }
         }
 

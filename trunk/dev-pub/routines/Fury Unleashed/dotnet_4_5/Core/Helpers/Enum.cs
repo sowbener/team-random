@@ -32,13 +32,6 @@ namespace FuryUnleashed.Core.Helpers
             OnBlTwHr
         }
 
-        public enum BarrierBlock
-        {
-            None,
-            ShieldBlock,
-            ShieldBarrier
-        }
-
         public enum Interrupts
         {
             Constant,
@@ -85,20 +78,6 @@ namespace FuryUnleashed.Core.Helpers
             BattleShout,
             CommandingShout,
             None
-        }
-
-        public enum SunderArmor
-        {
-            Never,
-            Always,
-            OnBossDummy
-        }
-
-        public enum SunderStacks
-        {
-            OneStack,
-            TwoStacks,
-            ThreeStacks
         }
 
         public enum SvnUrl

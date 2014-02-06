@@ -67,6 +67,14 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
+        internal static bool EnragedRegenerationUsage
+        {
+            get
+            {
+                return IS.Instance.Arms.CheckEnragedRegen;
+            }
+        }
+
         internal static bool HeroicThrowUsage
         {
             get
@@ -117,6 +125,16 @@ namespace FuryUnleashed.Rotations.Arms
             get
             {
                 return IS.Instance.Arms.CheckRotImpVic;
+            }
+        }
+
+        internal static bool ShatteringThrowUsage
+        {
+            get
+            {
+                return ((IS.Instance.Arms.ShatteringThrow == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                        (IS.Instance.Arms.ShatteringThrow == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
+                        (IS.Instance.Arms.ShatteringThrow == Enum.AbilityTrigger.Always));
             }
         }
 
