@@ -67,6 +67,14 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
+        internal static bool EnragedRegenerationUsage
+        {
+            get
+            {
+                return IS.Instance.Arms.CheckEnragedRegen;
+            }
+        }
+
         internal static bool HeroicThrowUsage
         {
             get
