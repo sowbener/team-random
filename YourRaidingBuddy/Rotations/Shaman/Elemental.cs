@@ -84,14 +84,14 @@ namespace YourBuddy.Rotations.Shaman
                 Spell.PreventDoubleCast("Stormlash Totem", 1, ret => SG.Instance.Elemental.EnableStormLashTotem && G.SpeedBuffsAura && !Totems.Exist(WoWTotemType.Air)),
                 new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.PreventDoubleCast("Spiritwalker's Grace", 1, target => Me, ret => Me.IsMoving, true))),
                 Spell.PreventDoubleCast("Unleash Elements", 0.5, ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
-                Spell.CastHack("Lava Burst", ret => Me.CurrentTarget, ret => NeedLavaBurst),
-                Spell.PreventDoubleCast("Lava Burst", 0.5, target => Me.CurrentTarget, ret => NeedLavaBurstMoving, true),
-                Spell.PreventDoubleCast("Flame Shock", 1, ret => !Me.CurrentTarget.HasAura("Flame Shock") || FlameShockRemains < 2),
+                Spell.Cast("Lava Burst", ret => NeedLavaBurst),
+                Spell.PreventDoubleCastHack("Lava Burst", 0.5, target => Me.CurrentTarget, ret => NeedLavaBurstMoving, true),
+                Spell.PreventDoubleCastHack("Flame Shock", 1, ret => Me.CurrentTarget, ret => !Me.CurrentTarget.HasAura("Flame Shock") || FlameShockRemains < 2, true),
                 Spell.PreventDoubleCast("Elemental Blast", 0.5, ret => TalentManager.IsSelected(18)),
-                Spell.PreventDoubleCast("Earth Shock", 0.5, ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6)),
-                Spell.PreventDoubleCast("Flame Shock", 0.5, ret => SG.Instance.Elemental.UseFlameShockRefreshAscendance && Unit.IsTargetBoss && (CooldownTracker.GetSpellCooldown(114049).Seconds < 15 || !CooldownTracker.SpellOnCooldown(114049)) && FlameShockRemains <= 15),
+                Spell.PreventDoubleCastHack("Earth Shock", 0.5, ret => Me.CurrentTarget, ret => Me.HasAura("Lightning Shield") && (LightningShieldStacks > 6 || LightningShieldStacks >= 6), true),
+                Spell.PreventDoubleCastHack("Flame Shock", 0.5, ret => Me.CurrentTarget, ret => SG.Instance.Elemental.UseFlameShockRefreshAscendance && Unit.IsTargetBoss && (CooldownTracker.GetSpellCooldown(114049).Seconds < 15 || !CooldownTracker.SpellOnCooldown(114049)) && FlameShockRemains <= 15, true),
                 Spell.PreventDoubleCast("Searing Totem", 1, ret => NeedSearingTotem),
-                Spell.PreventDoubleCast("Lightning Bolt", 1, ret => CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 1 || CooldownTracker.GetSpellCooldown("Unleash Elements").Seconds > 1 || (TalentManager.IsSelected(18) && CooldownTracker.GetSpellCooldown("Elemental Blast").Seconds > 1)));
+                Spell.PreventDoubleCastHack("Lightning Bolt", 1, ret => Me.CurrentTarget, ret => CooldownTracker.GetSpellCooldown("Lava Burst").Seconds > 1 || CooldownTracker.GetSpellCooldown("Unleash Elements").Seconds > 1 || (TalentManager.IsSelected(18) && CooldownTracker.GetSpellCooldown("Elemental Blast").Seconds > 1), true));
 
 
         }

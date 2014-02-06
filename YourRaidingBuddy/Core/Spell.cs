@@ -1008,6 +1008,23 @@ namespace YourBuddy.Core
                         new Action(ret => UpdateDoubleCastEntries(spell.ToString(CultureInfo.InvariantCulture) + onUnit(ret).GetHashCode(), expiryTime))));
         }
 
+        public static Composite PreventDoubleCastHack(string spell, double expiryTime, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool ignoreMoving = false)
+        {
+            return
+                new Decorator(
+                    ret =>
+                        ((reqs != null && reqs(ret)) || (reqs == null))
+                        && onUnit != null
+                        && onUnit(ret) != null
+                        && CanCastHack(spell, onUnit(ret), !ignoreMoving)//CanCastHack(spell, onUnit(ret), !ignoreMoving)
+                        && !DoubleCastEntries.ContainsKey(spell + onUnit(ret).GetHashCode()),
+                    new Sequence(
+                        new Action(ret => SpellManager.Cast(spell, onUnit(ret))),
+                        new Action(ret => Logger.DiagLogFb(String.Format("*{0} on {1} at {2:F1} yds at {3:F1}%", spell, onUnit(ret).SafeName(), onUnit(ret).Distance, onUnit(ret).HealthPercent))),
+                //new Action(ret => Logger.InfoLog(String.Format("*{0} on {1} at {2:F1} yds at {3:F1}% PH: {4:F1}%", spell, onUnit(ret).SafeName(), onUnit(ret).Distance, onUnit(ret).HealthPercent, HealManager.PredictedHealthPercent(onUnit(ret), PRSettings.Instance.includeMyHeals)))),
+                        new Action(ret => UpdateDoubleCastEntries(spell.ToString(CultureInfo.InvariantCulture) + onUnit(ret).GetHashCode(), expiryTime))));
+        }
+
 
         public static Composite PreventDoubleHeal(int spell, double expiryTime, UnitSelectionDelegate onUnit, int HP = 100, Selection<bool> reqs = null)
         {
