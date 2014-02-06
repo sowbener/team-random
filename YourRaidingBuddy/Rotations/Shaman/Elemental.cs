@@ -70,7 +70,7 @@ namespace YourBuddy.Rotations.Shaman
                                              new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                                          new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                                         ElementalOffensive())),
-                                        new Decorator(ret => HotKeyManager.IsAoe && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
+                                        new Decorator(ret => HotKeyManager.IsAoe, ElementalMt()),
                                         ElementalSt())));
             }
         }
@@ -100,10 +100,10 @@ namespace YourBuddy.Rotations.Shaman
         {
             WoWUnit seedTarget = null;
             return new PrioritySelector(
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount >= 4,
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount > 4,
                     new PrioritySelector(
                      Spell.Cast("Chain Lightning"))),
-                     new Decorator(ret => Unit.NearbyAttackableUnitsCount == 3,
+                     new Decorator(ret => Unit.NearbyAttackableUnitsCount.Between(2,3),
                     new PrioritySelector(
                     Spell.PreventDoubleMultiDoT("Flame Shock", 1, Me, 20, 3, ret => Unit.NearbyAttackableUnitsCount < 4 && seedTarget == null),
                     Spell.PreventDoubleCastHack("Earth Shock", 0.5, ret=> Me.CurrentTarget, ret => LightningShieldStacks >= 6, true),
@@ -112,7 +112,7 @@ namespace YourBuddy.Rotations.Shaman
                     Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
                     Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
                     Spell.Cast("Chain Lightning"))),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount == 2,
+                new Decorator(ret => Unit.NearbyAttackableUnitsCount.Between(2,2),
                     new PrioritySelector(
                 Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
                 Spell.Cast("Lava Burst", ret => NeedLavaBurst),
