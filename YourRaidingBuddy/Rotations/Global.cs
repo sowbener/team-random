@@ -546,19 +546,6 @@ namespace YourBuddy.Rotations
             }
         }
 
-        internal static bool RevealingStrike1
-        {
-            get
-            {
-                if (!Me.GotTarget)
-                    return false;
-
-                int RevealingStrike = (int)Me.CurrentTarget.GetAuraTimeLeft("Revealing Strike").TotalMilliseconds;
-                // if there is 3 or less seconds left on the diseases and we have a fully depleted rune then return true.
-                return RevealingStrike.Between(1000, 3000);
-            }
-        }
-
 
         internal static bool SliceAndDiceEnevenom
         {
