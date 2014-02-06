@@ -15,7 +15,15 @@ namespace FuryUnleashed.Core
 {
     internal static class Item
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } } 
+        public static float MeleeHaste { get; set; }
+        public static float MeleeHit { get; set; }
+
+        public static float CritRating { get; set; }
+        public static float CritChance { get; set; }
+        public static float Expertise { get; set; }
+        public static float Mastery { get; set; }
+
+        private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         #region Equipped Item Usage Wrappers
         private static bool CanUseEquippedItem(WoWItem item)
@@ -244,6 +252,17 @@ namespace FuryUnleashed.Core
                 }
                 return false;
             }
+        }
+
+        internal static void RefreshSecondaryStats()
+        {
+            CritChance = Lua.GetReturnVal<float>("return GetCritChance()", 0);
+            CritRating = Lua.GetReturnVal<float>("return GetCombatRating(CR_CRIT_MELEE)", 0);
+            Mastery = Lua.GetReturnVal<float>("return GetCombatRating(CR_MASTERY)", 0);
+            Expertise = Lua.GetReturnVal<float>("return GetCombatRating(CR_EXPERTISE)", 0);
+            MeleeHit = Lua.GetReturnVal<float>("return GetCombatRating(CR_HIT_MELEE)", 0);
+            MeleeHaste = Lua.GetReturnVal<float>("return GetCombatRating(CR_HASTE_MELEE)", 0);
+            
         }
         #endregion
     }

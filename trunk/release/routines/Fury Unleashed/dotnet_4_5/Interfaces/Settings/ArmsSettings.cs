@@ -270,11 +270,11 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAutoAttack { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
         [Category("Arms - Selectable Options")]
-        [DisplayName("Enable Shattering Throw")]
-        [Description("Checked enables Shattering Throw.")]
-        public bool CheckShatteringThrow { get; set; }
+        [DisplayName("Shattering Throw")]
+        [Description("Select the usage of Shattering Throw.")]
+        public Enum.AbilityTrigger ShatteringThrow { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]

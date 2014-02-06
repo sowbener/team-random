@@ -9,6 +9,7 @@ using Styx.WoWInternals.WoWObjects;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using U = FuryUnleashed.Core.Unit;
+using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 
 namespace FuryUnleashed.Rotations.Protection
 {
@@ -56,6 +57,14 @@ namespace FuryUnleashed.Rotations.Protection
                 return ((IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Protection.BerserkerRage == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        internal static bool CustomExecuteUsage
+        {
+            get
+            {
+                return (IS.Instance.Protection.CheckCustomExecuteLogic && Lua.PlayerPower >= IS.Instance.Protection.CheckCustomExecuteLogicNum);
             }
         }
 

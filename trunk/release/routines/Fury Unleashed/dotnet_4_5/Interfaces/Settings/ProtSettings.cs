@@ -92,23 +92,16 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Shield Block & Barrier")]
-        [DisplayName("Enable Block/Barrier")]
-        [Description("Checked enables the usage of Shield Block and Barrier - See further options!")]
-        public bool CheckShieldBarrierBlock { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Protection - Shield Block & Barrier")]
         [DisplayName("Advanced Logics")]
         [Description("Checked enables Shield Block or Barrier's advanced logics - Calculates which is best to use!")]
         public bool CheckShieldBbAdvancedLogics { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.BarrierBlock.None)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Shield Block & Barrier")]
-        [DisplayName("Select Block/Barrier")]
-        [Description("Manually select which is used - Will not work with advanced logics enabled!")]
-        public Enum.BarrierBlock BarrierBlockSelection { get; set; }
+        [DisplayName("Threat Based Logics")]
+        [Description("Checked enables a Threat Based extension on the logic - Increases DPS.")]
+        public bool CheckShieldBbThreatLogics { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(60)]
@@ -116,6 +109,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Use Above Rage %")]
         [Description("Select the amount of rage required before the Shield Block and Barrier logic kicks in - I suggest 60 or higher!")]
         public int ShieldBarrierBlockNum { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(80)]
+        [Category("Protection - Shield Block & Barrier")]
+        [DisplayName("HP Threshold")]
+        [Description("HP % before Thread Based logics get temporarily disabled (If enabled) - Higher # Increases survivability.")]
+        public int ShieldBarrierBlockThresholdNum { get; set; }
         #endregion
 
         // ========================================================================================
@@ -321,6 +321,20 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Auto Attack")]
         [Description("Enables auto attack, persistent combat while tabbing units.")]
         public bool CheckAutoAttack { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Selectable Options")]
+        [DisplayName("Custom Execute Logic")]
+        [Description("Enables custom Execute logic - Set proper rage when you want Execute to be used!")]
+        public bool CheckCustomExecuteLogic { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(80)]
+        [Category("Protection - Selectable Options")]
+        [DisplayName("Custom Execute Rage")]
+        [Description("Select the amount of rage before Execute kicks in - Only works with Custom Execute Logic!")]
+        public int CheckCustomExecuteLogicNum { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
