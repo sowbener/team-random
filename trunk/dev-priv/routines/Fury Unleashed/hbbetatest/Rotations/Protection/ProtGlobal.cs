@@ -60,6 +60,14 @@ namespace FuryUnleashed.Rotations.Protection
             }
         }
 
+        internal static bool CustomExecuteUsage
+        {
+            get
+            {
+                return (IS.Instance.Protection.CheckCustomExecuteLogic && Lua.PlayerPower >= IS.Instance.Protection.CheckCustomExecuteLogicNum);
+            }
+        }
+
         internal static bool DemoralizingShoutUsage
         {
             get

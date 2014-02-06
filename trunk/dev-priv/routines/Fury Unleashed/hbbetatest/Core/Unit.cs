@@ -1,5 +1,6 @@
 ﻿
 using FuryUnleashed.Core.Helpers;
+using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -197,7 +198,7 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
-        /// Retrieves the count (Integer & Float) of nearby units (8y) - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
+        /// Retrieves the count (Integer & Float) of nearby units (8y or 12y) - Used in FuryUnleashed.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int NearbyAttackableUnitsCount;
         public static float NearbyAttackableUnitsFloat;
@@ -207,9 +208,23 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
-                    NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                    if (TalentManager.HasGlyph("Whirlwind"))
+                    {
+                        NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 12).Count();
+                        NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 12).Count();
+                    }
+                    else
+                    {
+                        NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                        NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                    }
                 }
+
+                //if (IsViable(Me.CurrentTarget))
+                //{
+                //    NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                //    NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                //}
             }
         }
 

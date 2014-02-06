@@ -323,6 +323,20 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckAutoAttack { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Selectable Options")]
+        [DisplayName("Custom Execute Logic")]
+        [Description("Enables custom Execute logic - Set proper rage when you want Execute to be used!")]
+        public bool CheckCustomExecuteLogic { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(80)]
+        [Category("Protection - Selectable Options")]
+        [DisplayName("Custom Execute Rage")]
+        [Description("Select the amount of rage before Execute kicks in - Only works with Custom Execute Logic!")]
+        public int CheckCustomExecuteLogicNum { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
         [Category("Protection - Ability Options")]
         [DisplayName("Shattering Throw")]

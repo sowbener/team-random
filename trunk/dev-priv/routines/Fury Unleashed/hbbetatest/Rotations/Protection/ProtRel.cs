@@ -96,6 +96,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.ThunderClap, ret => G.WeakenedBlowsAura && G.FadingWeakenedBlows(1500)), // Added to maintain debuff stacks - Not for applying - This happens later on.
 
                 Spell.Cast(SpellBook.Execute, ret => G.ExecutePhase && Lua.PlayerPower >= Lua.PlayerPowerMax - 10),
+                Spell.Cast(SpellBook.Execute, ret => G.ExecutePhase && PG.CustomExecuteUsage),
 
                 Spell.Cast(SpellBook.ShieldSlam),
                 Spell.Cast(SpellBook.Revenge, ret => Lua.PlayerPower <= Lua.PlayerPowerMax - 10),
@@ -131,7 +132,18 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 // HP Regeneration
-                Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
+                new Decorator(ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum,
+                    new PrioritySelector(
+                        new Decorator(ret => G.EnrageAura,
+                            Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
+                        new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
+                            new PrioritySelector(
+                                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true),
+                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me))),
+                        new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
+                            Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
+
+                //Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
                 Item.ProtUseHealthStone(),
 
                 // Defensive
@@ -169,14 +181,14 @@ namespace FuryUnleashed.Rotations.Protection
                 //32216	Victorious - Regular Kill Proc ID (Victory Rush & Impending Victory).
                 Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && Me.HealthPercent <= IS.Instance.Protection.ImpendingVictoryNum),
                 Spell.Cast(SpellBook.VictoryRush, ret => G.VictoriousAura && Me.HealthPercent <= IS.Instance.Protection.VictoryRushNum),
-                Spell.Cast(SpellBook.ShatteringThrow, ret => PG.ShatteringThrowUsage)
-                );
+                Spell.Cast(SpellBook.ShatteringThrow, ret => PG.ShatteringThrowUsage));
         }
 
         internal static Composite Rel_ProtNonGcdUtility()
         {
             return new PrioritySelector(
                 // Need to improve hamstring method
+                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),
                 Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget), true),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss, true),
                 Spell.Cast(SpellBook.Taunt, ret => IS.Instance.Protection.CheckAutoTaunt && !U.IsTargettingMe, true),
@@ -184,27 +196,23 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum, true),
                 Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum, true),
                 new Decorator(ret => U.VigilanceTarget != null,
-                    Spell.Cast(SpellBook.Vigilance, on => U.VigilanceTarget, ret => true, true))
-                );
+                    Spell.Cast(SpellBook.Vigilance, on => U.VigilanceTarget, ret => true, true)));
         }
 
         internal static Composite Rel_ProtRacials()
         {
             return new PrioritySelector(
                 new Decorator(ret => PG.RacialUsage,
-                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
-                    ));
+                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))));
         }
 
         internal static Composite Rel_ProtOffensive()
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.Avatar, on => Me, ret => G.AvatarTalent && PG.Tier6AbilityUsage, true),
-                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),
                 Spell.Cast(SpellBook.Bloodbath, on => Me, ret => G.BloodbathTalent && PG.Tier6AbilityUsage, true),
                 Spell.Cast(SpellBook.Recklessness, on => Me, ret => PG.RecklessnessUsage, true),
-                Spell.Cast(SpellBook.SkullBanner, ret => !G.SkullBannerAura && PG.SkullBannerUsage, true)
-                );
+                Spell.Cast(SpellBook.SkullBanner, ret => !G.SkullBannerAura && PG.SkullBannerUsage, true));
         }
     }
 }
