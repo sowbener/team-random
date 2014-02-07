@@ -79,10 +79,10 @@ namespace YourBuddy.Rotations.Hunter
             Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget),
             Spell.Cast("Arcane Shot", ret => ThrillProc && BlackArrowIsOnCooldown),
             Spell.Cast("Dire Beast"),
-            Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
+            Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => SerpentStingRefresh6Seconds, true),
             Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67),
-            Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
-            Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+            Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
+            Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
         internal static Composite HandleCommon()
@@ -198,12 +198,12 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool TalentBarrage { get { return TalentManager.IsSelected(18); } }
         internal static bool DireBeastEnabled { get { return TalentManager.IsSelected(11); } }
         internal static bool RapidFireAura { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(3045, 0, 2000); } }
-        internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasAura("Serpent Sting", 0, 6000); } }
+        internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft("Serpent Sting", Me.CurrentTarget) < 6; } }
         internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
-        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
+        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Serpent Sting"); } }
         internal static bool MultiShotThrillProc { get { return Me.HasAura(34720) && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura(34720); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
