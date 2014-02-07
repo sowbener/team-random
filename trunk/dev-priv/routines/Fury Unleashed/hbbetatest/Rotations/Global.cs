@@ -637,6 +637,16 @@ namespace FuryUnleashed.Rotations
             get { return TalentManager.HasGlyph("Intimidating Shout"); }
         }
 
+        internal static bool ResonatingPowerGlyph
+        {
+            get { return TalentManager.HasGlyph("Resonating Power"); }
+        }
+
+        internal static bool WhirlwindGlyph
+        {
+            get { return TalentManager.HasGlyph("Whirlwind"); }
+        }
+
         // Talentmanager CurrentSpec
         internal static bool IsArmsSpec
         {

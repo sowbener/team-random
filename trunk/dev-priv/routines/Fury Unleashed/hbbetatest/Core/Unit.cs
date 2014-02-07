@@ -208,7 +208,7 @@ namespace FuryUnleashed.Core
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    if (TalentManager.HasGlyph("Whirlwind"))
+                    if (Global.WhirlwindGlyph)
                     {
                         NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 12).Count();
                         NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 12).Count();
