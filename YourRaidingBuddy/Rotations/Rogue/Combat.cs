@@ -74,14 +74,32 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
                 Spell.Cast("Slice and Dice", ret => !Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 3),
-                Spell.Cast("Revealing Strike", ret => Lua.PlayerComboPts < 5 && (!Me.CurrentTarget.HasAura("Revealing Strike") || !G.RevealingStrike)),
-                Spell.Cast("Sinister Strike", ret => Lua.PlayerComboPts < 5 && G.RevealingStrike),
-                Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
+                // actions+=/run_action_list,name=generator,if=combo_points<5|(talent.anticipation.enabled&anticipation_charges<=4&!dot.revealing_strike.ticking)
+                new Decorator(ret => Lua.PlayerComboPts < 5 || (TalentManager.IsSelected(18) && (Me.HasAura(115189) && Spell.GetAuraStackCount(115189) <= 4) && !Me.CurrentTarget.HasAura(84617)), new PrioritySelector(ComGen())),
+                // actions+=/run_action_list,name=finisher,if=!talent.anticipation.enabled|buff.deep_insight.up|cooldown.shadow_blades.remains<=11|anticipation_charges>=4|(buff.shadow_blades.up&anticipation_charges>=3)
+                new Decorator(ret => !TalentManager.IsSelected(18) || (Me.HasAura(84747) && (Lua.PlayerComboPts > 4 || (Lua.PlayerComboPts >= 2 && Spell.GetAuraStack(Me, 115189) > 2)))|| (Me.HasAura(115189) && Spell.GetAuraStack(Me, 115189) >= 4) || (Me.HasAura(121471) && (Me.HasAura(115189) && Spell.GetAuraStack(Me, 115189) >= 3)), new PrioritySelector(ComFin())),
+                // actions+=/run_action_list,name=generator,if=energy>60|buff.deep_insight.down|buff.deep_insight.remains>5-combo_points
+                new Decorator(ret => Lua.PlayerPower > 60 || !Me.HasAura(84747), new PrioritySelector(ComGen())));
+                 
+        }
+
+       internal static Composite ComGen()
+       {
+           return new PrioritySelector(
+               Spell.Cast("Revealing Strike", ret => !G.RevealingStrike),
+               Spell.Cast("Sinister Strike")
+               );
+       }
+
+       internal static Composite ComFin()
+       {
+           return new PrioritySelector(
+               Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.Always))),
-                Spell.Cast("Eviscerate", ret => Lua.PlayerComboPts > 4 && Me.HasAura("Slice and Dice")));
-        }
+                 Spell.Cast("Eviscerate"));          
+       }
 
 
         internal static Composite ComInterrupts()
