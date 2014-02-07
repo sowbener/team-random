@@ -73,12 +73,9 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
                 Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
-                Spell.Cast("Slice and Dice", ret => !Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 3),
-                // actions+=/run_action_list,name=generator,if=combo_points<5|(talent.anticipation.enabled&anticipation_charges<=4&!dot.revealing_strike.ticking)
+                Spell.Cast("Slice and Dice", ret => (!Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 3) || (Me.HasAura(84745) && Spell.GetAuraTimeLeft("Slice and Dice") < 15 && Lua.PlayerComboPts >= 4)),
                 new Decorator(ret => Lua.PlayerComboPts < 5 || (TalentManager.IsSelected(18) && (Me.HasAura(115189) && Spell.GetAuraStackCount(115189) <= 4) && !Me.CurrentTarget.HasAura(84617)), new PrioritySelector(ComGen())),
-                // actions+=/run_action_list,name=finisher,if=!talent.anticipation.enabled|buff.deep_insight.up|cooldown.shadow_blades.remains<=11|anticipation_charges>=4|(buff.shadow_blades.up&anticipation_charges>=3)
                 new Decorator(ret => !TalentManager.IsSelected(18) || (Me.HasAura(84747) && (Lua.PlayerComboPts > 4 || (Lua.PlayerComboPts >= 2 && Spell.GetAuraStack(Me, 115189) > 2)))|| (Me.HasAura(115189) && Spell.GetAuraStack(Me, 115189) >= 4) || (Me.HasAura(121471) && (Me.HasAura(115189) && Spell.GetAuraStack(Me, 115189) >= 3)), new PrioritySelector(ComFin())),
-                // actions+=/run_action_list,name=generator,if=energy>60|buff.deep_insight.down|buff.deep_insight.remains>5-combo_points
                 new Decorator(ret => Lua.PlayerPower > 60 || !Me.HasAura(84747), new PrioritySelector(ComGen())));
                  
         }
