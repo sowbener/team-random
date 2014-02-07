@@ -484,6 +484,51 @@ namespace YourBuddy.Core
             return wantedAura != null ? wantedAura.TimeLeft : TimeSpan.Zero;
         }
 
+        public static Composite CreateHunterTrapBehavior(string trapName, bool useLauncher, UnitSelectionDelegate onUnit, YourBuddy.Core.Helpers.PetManager.SimpleBooleanDelegate require = null)
+        {
+            return new PrioritySelector(
+                new Decorator(
+                    ret => onUnit != null && onUnit(ret) != null
+                        && (require == null || require(ret))
+                        && onUnit(ret).DistanceSqr < (40 * 40)
+                        && SpellManager.HasSpell(trapName) && CooldownTracker.GetSpellCooldown(trapName) == TimeSpan.Zero,
+                    new Sequence(
+                        new Action(ret => Logger.DebugLog("Trap: use trap launcher requested: {0}", useLauncher)),
+
+                        // add or remove trap launcher based upon parameter 
+                        new PrioritySelector(
+                            new Decorator(ret => useLauncher && Me.HasAura("Trap Launcher"), new ActionAlwaysSucceed()),
+                            Spell.Cast("Trap Launcher", req => useLauncher),
+                            new Decorator(ret => !useLauncher, new Action(ret => Me.CancelAura("Trap Launcher")))
+                            ),
+
+                        // wait for launcher to appear (or dissappear) as required
+                        new PrioritySelector(
+                            new Wait(TimeSpan.FromMilliseconds(500),
+                                until => (!useLauncher && !Me.HasAura("Trap Launcher")) || (useLauncher && Me.HasAura("Trap Launcher")),
+                                new ActionAlwaysSucceed()),
+                            new Action(ret =>
+                            {
+                                Logger.DebugLog("Trap: FAILURE! unable to {0} the Trap Launcher aura", useLauncher ? "Buff" : "Cancel");
+                                return RunStatus.Failure;
+                            })
+                            ),
+
+                        new Action(ret => Logger.DebugLog("Trap: launcher aura present = {0}", Me.HasAura("Trap Launcher"))),
+                        new Action(ret => Logger.DebugLog("Trap: cancast = {0}", Spell.CanCastHack(trapName, onUnit(ret)))),
+
+                        new Action(ret => Logger.CombatLog("^{0} trap: {1} on {2}", useLauncher ? "Launch" : "Set", trapName, onUnit(ret).SafeName())),
+                // Spell.Cast( trapName, ctx => onUnit(ctx)),
+                        new Action(ret => SpellManager.Cast(trapName, onUnit(ret))),
+
+                        Spell.CreateWaitForLagDuration(),
+                        new Action(ctx => SpellManager.ClickRemoteLocation(onUnit(ctx).Location)),
+                        new Action(ret => Logger.DebugLog("Trap: Complete!"))
+                        )
+                    )
+                );
+        }
+
         #endregion
 
         #region Buff
