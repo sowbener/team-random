@@ -79,7 +79,7 @@ namespace YourBuddy.Rotations.Hunter
             return new PrioritySelector(
                 HunterTrapBehavior(),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
-                Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => SerpentStingRefresh),
+                Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),

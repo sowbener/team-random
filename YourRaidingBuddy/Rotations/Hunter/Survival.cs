@@ -68,11 +68,11 @@ namespace YourBuddy.Rotations.Hunter
         {
             return new PrioritySelector
             (
-            Spell.CastHunterTrap(G.TrapSwitchingSV, loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
+            HunterTrapBehavior(),
             Spell.Cast("Fervor", ret => FervorReqs),
             Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
             Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
-            Spell.PreventDoubleCast("Serpent Sting", 0.7, ret => SerpentStingRefresh),
+            Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh),
             Spell.Cast("Explosive Shot"),
             Spell.Cast("Kill Shot", ret => TargetSoonDead),
             Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
@@ -83,6 +83,15 @@ namespace YourBuddy.Rotations.Hunter
             Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67),
             Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
             Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+        }
+
+        internal static Composite HunterTrapBehavior()
+        {
+            return new PrioritySelector(
+                Spell.CreateHunterTrapBehavior("Explosive Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.ExplosiveTrap),
+                Spell.CreateHunterTrapBehavior("Freezing Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.FreezingTrap),
+                Spell.CreateHunterTrapBehavior("Ice Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.IceTrap),
+                Spell.CreateHunterTrapBehavior("Snake Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.SnakeTrap));
         }
 
         internal static Composite HandleCommon()
@@ -197,14 +206,13 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool TalentPowershot { get { return TalentManager.IsSelected(17); } }
         internal static bool TalentBarrage { get { return TalentManager.IsSelected(18); } }
         internal static bool DireBeastEnabled { get { return TalentManager.IsSelected(11); } }
-        internal static bool RapidFireAura { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(3045, 0, 2000); } }
+        internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft("Serpent Sting", Me.CurrentTarget) < 6; } }
         internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
         internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Serpent Sting"); } }
-        internal static bool MultiShotThrillProc { get { return Me.HasAura(34720) && !SerpentStingRefresh; } }
         internal static bool ThrillProc { get { return Me.HasAura(34720); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
         internal static bool Focus66 { get { return Lua.PlayerPower < 66; } }

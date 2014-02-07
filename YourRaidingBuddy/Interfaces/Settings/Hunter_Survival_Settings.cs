@@ -27,6 +27,14 @@ namespace YourBuddy.Interfaces.Settings
         [DisplayName("Select Trap to Use")]
         [Description("Select which trap to use auto.")]
         public Enum.Traps TrapSwitch { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Survival - Item Options")]
+        [DisplayName("Enable / Disable Trap usage")]
+        [Description("Enable / Disable Trap usage Auto")]
+        public bool EnableTraps { get; set; }
+
        
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
