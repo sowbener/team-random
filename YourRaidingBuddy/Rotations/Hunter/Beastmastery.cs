@@ -78,7 +78,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasterySt()
         {
             return new PrioritySelector(
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
+                Spell.CreateHunterTrapBehavior("Explosive Trap", true,  loc => Me.CurrentTarget, ret => SG.Instance.Beastmastery.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
