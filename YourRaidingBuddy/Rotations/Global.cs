@@ -581,7 +581,7 @@ namespace YourBuddy.Rotations
         {
             return new Styx.TreeSharp.Action(delegate
             {
-                if (!SG.Instance.Beastmastery.AutoTarget ||
+                if (SG.Instance.Beastmastery.AutoTarget ||
                     LastAutoTarget > DateTime.Now)
                 {
                     return RunStatus.Failure;
@@ -593,7 +593,7 @@ namespace YourBuddy.Rotations
                     UnitBestTarget != null &&
                     UnitBestTarget.IsValid &&
                     Me.CurrentTarget != UnitBestTarget)
-                {
+                    {
                     UnitBestTarget.Target();
                     Logger.DebugLog("Switch to Best Unit");
                     LastAutoTarget = DateTime.Now + TimeSpan.FromMilliseconds(100);
