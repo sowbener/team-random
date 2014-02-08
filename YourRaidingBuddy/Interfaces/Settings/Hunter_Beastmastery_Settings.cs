@@ -59,10 +59,17 @@ namespace YourBuddy.Interfaces.Settings
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]
-        [Category("Beastmastery - Selectable Options")]
+        [Category("Beastmastery - Ability Options")]
         [DisplayName("Enable Tier4 Abilities (AoE)")]
         [Description("Enables Tier4 Abilities to be used on AoE. Default is Enabled")]
         public bool UseTier4AoE { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Beastmastery - Ability Options")]
+        [DisplayName("Enable Auto-Target")]
+        [Description("Enables Auto-Target, default is False")]
+        public bool AutoTarget { get; set; }
 
 
         [Setting]

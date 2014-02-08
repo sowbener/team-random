@@ -30,6 +30,7 @@ namespace YourBuddy.Rotations.Hunter
                 return new PrioritySelector(
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheckRanged), new ActionAlwaysSucceed()),
                         G.InitializeOnKeyActionsH(),
+                        G.AutoTarget(),
                         new Decorator(ret => SG.Instance.Beastmastery.EnableCallPet, PetManager.CreateHunterCallPetBehavior()),
                         new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
@@ -77,7 +78,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasterySt()
         {
             return new PrioritySelector(
-                HunterTrapBehavior(),
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh),
                 Spell.Cast("Fervor", ret => FervorReqs),
@@ -89,10 +90,10 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
+                Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => !SerpentStingRefresh6Seconds, true),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
+                Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus60, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 

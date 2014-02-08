@@ -86,7 +86,8 @@ namespace YourBuddy.Rotations
         {
             return new PrioritySelector(
                 // new Action(delegate { XISpell.GetCachedAuras(); return RunStatus.Failure; }),
-                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; })
+                new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Decorator(ret => StyxWoW.Me.Specialization == WoWSpec.HunterBeastMastery && SG.Instance.Beastmastery.AutoTarget, Unit.GetUnits())
                 );
         }
         #endregion
@@ -572,7 +573,105 @@ namespace YourBuddy.Rotations
 
         #region Hunterstuff
 
-       internal static string TrapSwitchingBM
+        #region AutoTarget
+
+        private static DateTime LastAutoTarget;
+
+        internal static Composite AutoTarget()
+        {
+            return new Styx.TreeSharp.Action(delegate
+            {
+                if (!SG.Instance.Beastmastery.AutoTarget ||
+                    LastAutoTarget > DateTime.Now)
+                {
+                    return RunStatus.Failure;
+                }
+
+                if (Me.CurrentTarget != null && Me.CurrentTarget.IsValid &&
+                    !AttackableNoLoS(Me.CurrentTarget, 50) &&
+                    GetBestTarget() &&
+                    UnitBestTarget != null &&
+                    UnitBestTarget.IsValid &&
+                    Me.CurrentTarget != UnitBestTarget)
+                {
+                    UnitBestTarget.Target();
+                    Logger.DebugLog("Switch to Best Unit");
+                    LastAutoTarget = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                    return RunStatus.Failure;
+                }
+
+                if (Me.CurrentTarget == null &&
+                    GetBestTarget() &&
+                    UnitBestTarget != null &&
+                    UnitBestTarget.IsValid)
+                {
+                    UnitBestTarget.Target();
+                    Logger.DebugLog("Target  Best Unit");
+                    LastAutoTarget = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                    return RunStatus.Failure;
+                }
+                LastAutoTarget = DateTime.Now + TimeSpan.FromMilliseconds(100);
+                return RunStatus.Failure;
+            });
+        }
+
+        #endregion
+
+        #region GetBestTarget
+
+        private static bool AttackableNoLoS(WoWUnit target, int range)
+        {
+            if (target == null ||
+                !target.IsValid ||
+                !target.Attackable ||
+                !target.CanSelect ||
+                !target.IsAlive ||
+                //target.IsCritter ||
+                //Blacklist.Contains(target.Guid, BlacklistFlags.All) ||
+                Spell.SpellDistance(target) > range)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static WoWUnit UnitBestTarget;
+
+        private static bool GetBestTarget()
+        {
+            //using (StyxWoW.Memory.AcquireFrame())
+            {
+                UnitBestTarget = null;
+                //     if (Me.CurrentMap.IsBattleground || Me.CurrentMap.IsArena)
+                //     {
+                //          UnitBestTarget = BsUnit.NearbyUnFriendlyUnits.OrderBy(unit => unit.CurrentHealth).FirstOrDefault(
+                //               unit => unit != null && unit.IsValid &&
+                //                      BsUnit.Attackable(unit, 40));
+
+                //           if (UnitBestTarget == null)
+                //            {
+                // //                 UnitBestTarget = BsUnit.NearbyUnFriendlyUnits.OrderBy(unit => unit.Distance).FirstOrDefault(
+                //                      unit => unit != null && unit.IsValid &&
+                //                              BsUnit.Attackable(unit, 80));
+                //           }
+                //        }
+
+                if (UnitBestTarget == null)
+                {
+                    UnitBestTarget = Unit.NearbyUnFriendlyUnits.OrderBy(unit => unit.ThreatInfo.RawPercent).FirstOrDefault(
+                        unit => unit.IsValid &&
+                                Me.IsFacing(unit) &&
+                                (unit.IsTargetingMyPartyMember || unit.IsTargetingMyRaidMember ||
+                                 unit.IsTargetingMeOrPet) &&
+                                Unit.Attackable(unit, 40));
+                }
+
+                return UnitBestTarget != null && !UnitBestTarget.IsDisabled;
+            }
+        }
+        #endregion
+
+        internal static string TrapSwitchingBM
         {
             get
             {
