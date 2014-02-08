@@ -1209,13 +1209,13 @@ namespace YourBuddy.Core
                 new Decorator(
                     ret => onLocation != null
                         && (req == null || req(ret))
-                        && StyxWoW.Me.Location.DistanceSqr(onLocation(ret)) < (40 * 40)
+                        && StyxWoW.Me.Location.Distance(onLocation(ret)) < (40 * 40)
                         && SpellManager.HasSpell(trapName) && CooldownTracker.GetSpellCooldown(trapName) == TimeSpan.Zero,
                     new Sequence(
                         new Action(ret => Logger.DebugLog("Trap: use trap launcher requested: {0}", useLauncher)),
                         new PrioritySelector(
                             new Decorator(ret => useLauncher && Me.HasAura("Trap Launcher"), new ActionAlwaysSucceed()),
-                            Cast("Trap Launcher", ret => useLauncher && !Me.HasAura("Trap Launcher")),
+                            CastHack("Trap Launcher", ret => Me.CurrentTarget, ret => useLauncher && !Me.HasAura("Trap Launcher")),
                             new Decorator(ret => !useLauncher, new Action(ret => Me.CancelAura("Trap Launcher")))
                             ),
                         new Wait(TimeSpan.FromMilliseconds(500),
