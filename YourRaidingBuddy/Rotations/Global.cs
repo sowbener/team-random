@@ -891,6 +891,8 @@ namespace YourBuddy.Rotations
         // Talentmanager - HasGlyphs
 
         // Talentmanager CurrentSpec
+
+        //Monk
         internal static bool IsWWSpec
         {
             get { return TalentManager.CurrentSpec == WoWSpec.MonkWindwalker; }
@@ -900,6 +902,74 @@ namespace YourBuddy.Rotations
         {
             get { return TalentManager.CurrentSpec == WoWSpec.MonkBrewmaster; }
         }
+
+
+        //Deathknight
+        internal static bool IsFDSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.DeathKnightFrost; }
+        }
+        internal static bool IsBDSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.DeathKnightBlood; }
+        }
+        internal static bool IsUDSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.DeathKnightUnholy; }
+        }
+
+        //Rogue
+
+        internal static bool IsARSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.RogueAssassination; }
+        }
+        internal static bool IsCRSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.RogueCombat; }
+        }
+        internal static bool IsSRSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.RogueSubtlety; }
+        }
+
+
+        //Hunter
+
+        internal static bool IsBMSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.HunterBeastMastery; }
+        }
+        internal static bool IsSVSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.HunterSurvival; }
+        }
+        internal static bool IsMMSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.HunterMarksmanship; }
+        }
+
+
+        //Paladin
+        internal static bool IsPPSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.PaladinProtection; }
+        }
+        internal static bool IsPRSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.PaladinRetribution; }
+        }
+
+        //Shaman
+        internal static bool IsESpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.ShamanElemental; }
+        }
+        internal static bool IsESSpec
+        {
+            get { return TalentManager.CurrentSpec == WoWSpec.ShamanEnhancement; }
+        }
+
 
 
         #endregion

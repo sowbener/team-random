@@ -196,10 +196,43 @@ namespace YourBuddy.Core.Utilities
             WriteFile("");
             LogSettings("General Settings (SettingsG)", InternalSettings.Instance.General);
             LogSettings("Hotkey Settings (SettingsH)", SettingsH.Instance);
+            //Monk
             if (Global.IsWWSpec)
                 LogSettings("Windwalker Settings (SettingsWWM)", InternalSettings.Instance.Windwalker);
             if (Global.IsBMMSpec)
                 LogSettings("Brewmaster Settings (SettingsBMM)", InternalSettings.Instance.Brewmaster);
+            //Hunter
+            if (Global.IsBMSpec)
+                LogSettings("Beastmaster Settings (SettingsBM)", InternalSettings.Instance.Beastmastery);
+            if (Global.IsSVSpec)
+                LogSettings("Survival Settings (SettingsSV)", InternalSettings.Instance.Survival);
+            if (Global.IsMMSpec)
+                LogSettings("Marksmanship Settings (SettingsMM)", InternalSettings.Instance.Marksmanship);
+            //Deathknight
+            if (Global.IsFDSpec)
+                LogSettings("Frost Settings (SettingsFD)", InternalSettings.Instance.Frost);
+            if (Global.IsBDSpec)
+                LogSettings("Blood Settings (SettingsBD)", InternalSettings.Instance.Blood);
+            if (Global.IsUDSpec)
+                LogSettings("Unholy Settings (SettingsUD)", InternalSettings.Instance.Unholy);
+            //Rogue
+            if (Global.IsARSpec)
+                LogSettings("Assassination Settings (SettingsAR)", InternalSettings.Instance.Assassination);
+            if (Global.IsCRSpec)
+                LogSettings("Combat Settings (SettingsCR)", InternalSettings.Instance.Combat);
+            if (Global.IsSRSpec)
+                LogSettings("Subtlety Settings (SettingsSR)", InternalSettings.Instance.Subtlety);
+            //Deathknight
+            if (Global.IsESpec)
+                LogSettings("Elemental Settings (SettingsES)", InternalSettings.Instance.Elemental);
+            if (Global.IsESSpec)
+                LogSettings("Enhancement Settings (SettingsEES)", InternalSettings.Instance.Enhancement);
+            //Deathknight
+            if (Global.IsPPSpec)
+                LogSettings("Protection Settings (SettingsPP)", InternalSettings.Instance.Protection);
+            if (Global.IsPRSpec)
+                LogSettings("Retribution Settings (SettingsRP)", InternalSettings.Instance.Retribution);
+
             WriteFile("======= Other Info =======");
             //WriteFile("Weapon Speed: {0}", Styx.WoWInternals.Lua.GetReturnVal<int>("return UnitAttackSpeed(player)", 0));
         }
