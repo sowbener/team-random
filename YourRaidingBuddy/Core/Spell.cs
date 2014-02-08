@@ -29,6 +29,7 @@ namespace YourBuddy.Core
         // Public delegates
         public delegate WoWUnit UnitSelectionDelegate(object context);
         public delegate WoWPoint LocationRetriever(object context);
+        public delegate bool SimpleBooleanDelegate(object context);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static WoWSpell GcdSpell { get; set; }
 
@@ -484,7 +485,7 @@ namespace YourBuddy.Core
             return wantedAura != null ? wantedAura.TimeLeft : TimeSpan.Zero;
         }
 
-        public static Composite CreateHunterTrapBehavior(string trapName, bool useLauncher, UnitSelectionDelegate onUnit, YourBuddy.Core.Helpers.PetManager.SimpleBooleanDelegate require = null)
+        public static Composite CreateHunterTrapBehavior(string trapName, bool useLauncher, UnitSelectionDelegate onUnit, SimpleBooleanDelegate require = null)
         {
             return new PrioritySelector(
                 new Decorator(
