@@ -110,6 +110,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasteryCleave()
         {
             return new PrioritySelector(
+                Spell.CastHunterTrap("Explosive Trap", on => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
                 Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
@@ -132,6 +133,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite BeastmasteryMt()
         {
             return new PrioritySelector(
+                Spell.CastHunterTrap("Explosive Trap", on => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
