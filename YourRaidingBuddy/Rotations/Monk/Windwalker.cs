@@ -43,6 +43,19 @@ namespace YourBuddy.Rotations.Monk
                                         new Action(ret => { Item.UseWindwalkerItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, WindwalkerMt()),
                                             WindwalkerSt())),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, WindwalkerDefensive()),
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckInterrupts, WindwalkerInterrupts()),
+                                        WindwalkerUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                    new Action(ret => { Item.UseWindwalkerItems(); return RunStatus.Failure; }),
+                                                    new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                                        WindwalkerOffensive())),
+                                        new Decorator(ret => SG.Instance.Windwalker.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, WindwalkerMt()),
+                                            WindwalkerSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),

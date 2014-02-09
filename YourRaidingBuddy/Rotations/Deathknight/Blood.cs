@@ -44,6 +44,19 @@ namespace YourBuddy.Rotations.Deathknight
                                         BloodOffensive(),
                                         new Decorator(ret => SG.Instance.Blood.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BloodMt()),
                                             BloodSt())),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Blood.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, BloodDefensive()),
+                                        new Decorator(ret => SG.Instance.Blood.CheckInterrupts, BloodInterrupts()),
+                                        BloodUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                        new Action(ret => { Item.UseBloodItems(); return RunStatus.Failure; }),
+                                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
+                                                        BloodOffensive())),
+                                        new Decorator(ret => SG.Instance.Blood.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, BloodMt()),
+                                            BloodSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Blood.CheckAutoAttack, Lua.StartAutoAttack),

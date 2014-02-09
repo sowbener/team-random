@@ -42,6 +42,19 @@ namespace YourBuddy.Rotations.Paladin
                                         RetributionOffensive(),
                                         new Decorator(ret => SG.Instance.Retribution.CheckAoE && Unit.NearbyAttackableUnitsCount > 3, RetributionMt()),
                                             RetributionSt())),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Retribution.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, RetributionDefensive()),
+                                        new Decorator(ret => SG.Instance.Retribution.CheckInterrupts, RetributionInterrupts()),
+                                        RetributionUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                        new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
+                                                        RetributionOffensive())),
+                                        new Decorator(ret => SG.Instance.Retribution.CheckAoE && Unit.NearbyAttackableUnitsCount > 3, RetributionMt()),
+                                            RetributionSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Retribution.CheckAutoAttack, Lua.StartAutoAttack),

@@ -138,9 +138,9 @@ namespace YourBuddy.Interfaces.GUI
                     return true;
                     //Paladin
                 case WoWSpec.PaladinProtection:
-                    this.HkTier4AbilityLabel.Text = "NOT IN USE";
-                    this.HkDemoBannerLabel.Text = "NOT IN USE";
-                    this.HkHeroicLeapLabel.Text = "NOT IN USE";
+                    this.HkTier4AbilityLabel.Text = "Light's Hammer";
+                    this.HkDemoBannerLabel.Text = "Lay on Hands Mouseover";
+                    this.HkHeroicLeapLabel.Text = "Hand of Salvation Mouseover";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
                     this.HkShattThrowLabel.Text = "NOT IN USE";
                     Refresh();

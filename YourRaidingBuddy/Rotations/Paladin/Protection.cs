@@ -15,6 +15,7 @@ using SH = YourBuddy.Interfaces.Settings.SettingsH;
 using YourBuddy.Core.Helpers;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
 using YourBuddy.Interfaces.Settings;
+using KP = YourBuddy.Core.Managers.HotKeyManager;
 
 namespace YourBuddy.Rotations.Paladin
 {
@@ -31,6 +32,9 @@ namespace YourBuddy.Rotations.Paladin
                         new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheck), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        G.InitializeOnKeyActionsHandofSalvation(),
+                        G.InitializeOnKeyActionsLayonHands(),
+                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Fist of Justice", ret => ProtectionSettings.EnableFistofJustice))),
                         new Action(r =>
                         {
                             LHLoc = LightsHammerLocation;
@@ -45,6 +49,19 @@ namespace YourBuddy.Rotations.Paladin
                                         new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         ProtectionOffensive(),
+                                        new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, ProtectionMt()),
+                                            ProtectionSt())),
+                       new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Protection.CheckAutoAttack, Lua.StartAutoAttack),
+                                            ProtectionDefensive(),
+                                        new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
+                                        ProtectionUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                        new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
+                                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
+                                                        ProtectionOffensive())),
                                         new Decorator(ret => SG.Instance.Protection.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, ProtectionMt()),
                                             ProtectionSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
@@ -104,7 +121,8 @@ namespace YourBuddy.Rotations.Paladin
               Spell.Cast("Holy Wrath"),
               Spell.Cast("Consecration", ret => !TalentManager.HasGlyph("Consecration")),
               Spell.CastOnGround("Consecration", ret => Me.CurrentTarget != null ? Me.CurrentTarget.Location : Me.Location, ret => TalentManager.HasGlyph("Consecration")),
-              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty)
+              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && !ProtectionSettings.UseLightsHammerHotkey),
+              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && ProtectionSettings.UseLightsHammerHotkey && KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice))
               );
 
         }
@@ -122,15 +140,17 @@ namespace YourBuddy.Rotations.Paladin
               Spell.Cast("Hammer of Wrath"),
               Spell.Cast("Execution Sentence"),
               Spell.Cast("Holy Prism"),
-              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty),
+              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && !ProtectionSettings.UseLightsHammerHotkey),
+              Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && ProtectionSettings.UseLightsHammerHotkey && KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)),
               Spell.Cast("Holy Wrath"));
         }
 
         internal static Composite ProtectionUtility()
         {
             return new PrioritySelector(
-                Spell.Cast("Eternal Flame", ret => (EternalFlameSetting < 2 && BastionofGloryCount > 2 && (Lua.HolyPower >= 3 || DivinePurposeProc))),
-                Spell.Cast("Sacred Shield",ret=> TalentManager.IsSelected(9) && !Me.Auras.ContainsKey("Sacred Shield")));
+                Spell.Cast("Eternal Flame", ret => TalentManager.IsSelected(8) && (EternalFlameSetting < 2 && BastionofGloryCount > 2 && (Lua.HolyPower >= 3 || DivinePurposeProc))),
+                Spell.Cast("Word of Glory", ret => !TalentManager.IsSelected(8) && ProtectionSettings.EnableWordofGlory && (BastionofGloryCount > 2 && (Lua.HolyPower >= 3 || DivinePurposeProc))),
+                Spell.Cast("Sacred Shield", ret=> TalentManager.IsSelected(9) && !Me.Auras.ContainsKey("Sacred Shield")));
         }
 
 

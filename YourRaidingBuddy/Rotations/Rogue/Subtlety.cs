@@ -53,6 +53,27 @@ namespace YourBuddy.Rotations.Rogue
                                 new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()),
                                 SubShadowDance(),
                                     SubSt())),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                            new PrioritySelector(
+                                new Decorator(ret => SG.Instance.Subtlety.CheckAutoAttack,
+                                    Lua.StartAutoAttack),
+                                new Decorator(ret => Me.HealthPercent < 100,
+                                    SubDefensive()),
+                                new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts,
+                                    SubInterrupts()),
+                                SubUtility(),
+                           new Decorator(ret => HotKeyManager.IsCooldown,
+                                    new PrioritySelector(
+                                        SubShadowDance(),
+                                new Styx.TreeSharp.Action(ret => { Item.UseSubtletyItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                         Spell.Cast("Vanish", ret => G.ShadowDanceOffline && G.PremeditationOnline && Lua.PlayerComboPts <= 3 && (G.FindWeaknessOff || G.FindWeakness < 3) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713) && Me.IsFacing(Me.CurrentTarget) && (
+                                         (SG.Instance.Subtlety.Vanish == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
+                                         (SG.Instance.Subtlety.Vanish == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
+                                         (SG.Instance.Subtlety.Vanish == Enum.AbilityTrigger.Always)
+                                          )),
+                                        SubOffensive())),
+                                    SubSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAutoAttack,

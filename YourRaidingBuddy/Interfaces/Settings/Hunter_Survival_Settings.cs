@@ -85,6 +85,20 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Enables Pet Stuff (Auto Mend Pet)")]
         public bool EnablePetStuff { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Survival - Ability Options")]
+        [DisplayName("Cleave Number")]
+        [Description("Select amount of units to use the cleave rotation for 3-4 targets")]
+        public int AoEMultiShotCount { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(2)]
+        [Category("Survival - Ability Options")]
+        [DisplayName("AoE Number")]
+        [Description("Select amount of units to use the AoE Rotation")]
+        public int AoECount { get; set; }
+
 
         #endregion
 

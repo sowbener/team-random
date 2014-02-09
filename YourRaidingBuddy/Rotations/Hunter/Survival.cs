@@ -44,8 +44,31 @@ namespace YourBuddy.Rotations.Hunter
                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         SurvivalOffensive(),
-                                        new Decorator(ret => SG.Instance.Survival.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, SurvivalMt()),
-                                            SurvivalSt())),
+                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, SurvivalMt()),
+                            new Decorator(ret => Me.CurrentTarget != null && (Unit.NearbyAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
+                                new PrioritySelector
+                                (
+                                    new Decorator(ret => !UseQuasiAoE, SurvivalSt()),
+                                    new Decorator(ret => UseQuasiAoE, HandleQuasiAoE())
+                                )))),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Survival.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, SurvivalDefensive()),
+                                        new Decorator(ret => SG.Instance.Survival.CheckInterrupts, SurvivalInterrupts()),
+                                        SurvivalUtility(),
+                                         new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                        new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
+                                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                                        SurvivalOffensive())),
+                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, SurvivalMt()),
+                            new Decorator(ret => Me.CurrentTarget != null && (Unit.NearbyAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
+                                new PrioritySelector
+                                (
+                                    new Decorator(ret => !UseQuasiAoE, SurvivalSt()),
+                                    new Decorator(ret => UseQuasiAoE, HandleQuasiAoE())
+                                )))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Survival.CheckAutoAttack, Lua.StartAutoAttack),
@@ -58,7 +81,12 @@ namespace YourBuddy.Rotations.Hunter
                                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         SurvivalOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, SurvivalMt()),
-                                        SurvivalSt())));
+                                         new Decorator
+                                   (ret => !HotKeyManager.IsAoe, new PrioritySelector
+                                   (
+                                    new Decorator(ret => !HotKeyManager.IsSpecial, SurvivalSt()),
+                                    new Decorator(ret => HotKeyManager.IsSpecial, HandleQuasiAoE())
+                                )))));
             }
         }
         #endregion
@@ -83,6 +111,37 @@ namespace YourBuddy.Rotations.Hunter
             Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67),
             Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
             Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+        }
+
+        private static Composite HandleQuasiAoE()
+        {
+            return new PrioritySelector
+            (
+                // Rotation based on icy-veins 2-3 targets.
+                // Replaces black arrow with explosive trap, and Arcane Shot with Multi-shot when
+                // number of mobs is >= SurvMultiShotCount (but less than AoECount, when the AoE
+                // rotation takes over)
+
+                // If a big shot is close to being available, delay following less important shots
+
+                // Keep black arrow up for LnL procs
+                Spell.Cast("Black Arrow"), //, ret => TimeToLive > 8
+                // Explosive trap for AoE damage
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location), // , ret => TimeToLive > 15
+
+                Spell.Cast("Glaive Toss", ret => TalentGlaiveToss && CooldownTracker.SpellOnCooldown("Explosive Shot")),
+                Spell.Cast("Dire Beast", ret => DireBeastEnabled), // && TimeToLive > 15
+                Spell.Cast("Powershot", ret => TalentManager.IsSelected(17)),
+                Spell.Cast("Barrage", ret => TalentManager.IsSelected(18)),
+                Spell.Cast("Explosive Shot"),
+                Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
+                Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget),
+
+                // Use MultiShot as our focus dump
+                Spell.Cast("Multi-Shot", ret => AoEMulti),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower < 60, true)
+            );
         }
 
         internal static Composite HunterTrapBehavior()
@@ -205,8 +264,10 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool TalentGlaiveToss { get { return TalentManager.IsSelected(16); } }
         internal static bool TalentPowershot { get { return TalentManager.IsSelected(17); } }
         internal static bool TalentBarrage { get { return TalentManager.IsSelected(18); } }
+        internal static bool UseQuasiAoE { get { return SG.Instance.Survival.CheckAoE && Unit.NearbyAttackableUnitsCount >= SG.Instance.Survival.AoEMultiShotCount; } }
         internal static bool DireBeastEnabled { get { return TalentManager.IsSelected(11); } }
         internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
+        internal static bool AoEMulti { get { return Lua.PlayerPower > 40 || (ThrillProc && Lua.PlayerPower > 20); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft("Serpent Sting", Me.CurrentTarget) < 6; } }
         internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }

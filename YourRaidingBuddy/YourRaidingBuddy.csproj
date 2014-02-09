@@ -140,10 +140,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Interfaces\Images\" />
     <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Interfaces\Images\RoutineLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

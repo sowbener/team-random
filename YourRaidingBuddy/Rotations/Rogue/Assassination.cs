@@ -48,6 +48,22 @@ namespace YourBuddy.Rotations.Rogue
                                 AssaOffensive(),
                                 new Decorator(ret => SG.Instance.Assassination.CheckAoE && U.NearbyAttackableUnitsCount >= 2, AssaMt()),
                                     AssaSt())),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                            new PrioritySelector(
+                                new Decorator(ret => SG.Instance.Assassination.CheckAutoAttack,
+                                    Lua.StartAutoAttack),
+                                new Decorator(ret => Me.HealthPercent < 100,
+                                    AssaDefensive()),
+                                new Decorator(ret => SG.Instance.Assassination.CheckInterrupts,
+                                    AssaInterrupts()),
+                                AssaUtility(),
+                           new Decorator(ret => HotKeyManager.IsCooldown,
+                                    new PrioritySelector(
+                               new Action(ret => { Item.UseAssassinationItems(); return RunStatus.Failure; }),
+                               new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                        AssaOffensive())),
+                                new Decorator(ret => SG.Instance.Assassination.CheckAoE && U.NearbyAttackableUnitsCount >= 2, AssaMt()),
+                                    AssaSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => SG.Instance.Assassination.CheckAutoAttack,

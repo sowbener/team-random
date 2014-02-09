@@ -356,6 +356,37 @@ namespace YourBuddy.Rotations
         };
         #endregion
 
+        #region MonkStuff
+
+        internal static Composite InitializeOnKeyActionsM()
+        {
+            return new PrioritySelector(
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover,harm] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
+        }
+
+        #endregion
+
+
+        #region PaladinStuff
+
+        internal static Composite InitializeOnKeyActionsLayonHands()
+        {
+            return new PrioritySelector(
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Lay on Hands", ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice) && SG.Instance.Protection.UseLayonHandsMouseover),
+                     new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusTarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)));
+        }
+
+        internal static Composite InitializeOnKeyActionsHandofSalvation()
+        {
+            return new PrioritySelector(
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Hand of Salvation", ret => KP.IsKeyAsyncDown(SettingsH.Instance.HeroicLeapChoice) && SG.Instance.Protection.UseHandofSalvationMouseover),
+                     new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseHandofSalvationFocusTarget, Spell.Cast("Hand of Salvation", on => Me.FocusedUnit)));
+        
+        }            
+
+
+        #endregion
+
         #region RogueStuff
 
         internal static Composite InitializeOnKeyActionsR()
@@ -369,11 +400,6 @@ namespace YourBuddy.Rotations
                         Spell.Cast("Tricks of the Trade", ret => BestTricksTarget))));
         }
 
-        internal static Composite InitializeOnKeyActionsM()
-        {
-            return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover,harm] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
-        }
 
         internal static void HandleMouseOverTarget(object sender, LuaEventArgs args)
         {          

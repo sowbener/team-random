@@ -41,7 +41,25 @@ namespace YourBuddy.Rotations.Hunter
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         MarksmanshipOffensive(),
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), MarksmanshipMt()),
-                                        MarksmanshipSt())),
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent > 80,
+                                        new PrioritySelector(MarksmanshipStOver80())), 
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 80,
+                                        new PrioritySelector(MarksmanshipSt())))),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Marksmanship.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, MarksmanshipDefensive()),
+                                        new Decorator(ret => SG.Instance.Marksmanship.CheckInterrupts && Unit.CanInterrupt, MarksmanshipInterrupts()),
+                                        MarksmanshipUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                                        new Action(ret => { Item.UseMarksmanshipItems(); return RunStatus.Failure; }),
+                                                        MarksmanshipOffensive())),
+                                        new Decorator(ret => SG.Instance.Marksmanship.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), MarksmanshipMt()),
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent > 80,
+                                        new PrioritySelector(MarksmanshipStOver80())),
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 80,
+                                        new PrioritySelector(MarksmanshipSt())))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAutoAttack, Lua.StartAutoAttack),
@@ -53,7 +71,10 @@ namespace YourBuddy.Rotations.Hunter
                                                         new Action(ret => { Item.UseMarksmanshipItems(); return RunStatus.Failure; }),
                                                         MarksmanshipOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe && SG.Instance.Marksmanship.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, MarksmanshipMt()),
-                                        MarksmanshipSt())));
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent > 80,
+                                        new PrioritySelector(MarksmanshipStOver80())), 
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 80,
+                                        new PrioritySelector(MarksmanshipSt())))));
             }
         }
         #endregion
@@ -62,10 +83,6 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite MarksmanshipSt()
         {
             return new PrioritySelector(
-                new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 80,
-                 new PrioritySelector(MarksmanshipStOver80())),
-                 new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 80,
-                 new PrioritySelector(
               //  Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.General.EnableTraps),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Fervor", ret => FervorReqs),
@@ -80,7 +97,7 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.PreventDoubleCast("Aimed Shot", 0.7, ret => MasterMarksManFire),
                 Spell.Cast("Aimed Shot", ret => AimedshotEnough),
                 Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => EnoughForArcaneShot),
-                Spell.PreventDoubleCast("Steady Shot", 1))));
+                Spell.PreventDoubleCast("Steady Shot", 1));
 
         }
 

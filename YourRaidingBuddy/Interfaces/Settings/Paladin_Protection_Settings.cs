@@ -63,6 +63,55 @@ namespace YourBuddy.Interfaces.Settings
         public bool LayonHandsEnable { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Light's Hammer Hotkey Enable")]
+        [Description("Checked enables Light Hammer on Hotkey")]
+        public bool UseLightsHammerHotkey { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Fist of Justice Enable")]
+        [Description("Checked enables Fist of Justice Hotkey")]
+        public bool EnableFistofJustice { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Word of Glory Enable")]
+        [Description("Checked enables Word of Glory")]
+        public bool EnableWordofGlory { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Lay on Hands Mouseover Enable")]
+        [Description("Checked enables Lay on Hands Mouseover")]
+        public bool UseLayonHandsMouseover { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Lay on Hands Forcus-Target Enable")]
+        [Description("Checked enables Lay on Hands Forcus-Target")]
+        public bool UseLayonHandsFocusTarget { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Hands of Salvation Mouseover Enable")]
+        [Description("Checked enables Hands of Salvation Mouseover")]
+        public bool UseHandofSalvationMouseover { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Hands of Salvation Focus-Target Enable")]
+        [Description("Checked enables Hands of Salvation Focus-Target")]
+        public bool UseHandofSalvationFocusTarget { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(40)]
         [Category("Protection - Ability Options")]
         [DisplayName("Divine Protection % HP")]

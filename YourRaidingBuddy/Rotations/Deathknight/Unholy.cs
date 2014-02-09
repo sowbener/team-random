@@ -44,6 +44,19 @@ namespace YourBuddy.Rotations.Deathknight
                                         UnholyOffensive(),
                                         new Decorator(ret => SG.Instance.Unholy.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, UnholyMt()),
                                             UnholySt())),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Unholy.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, UnholyDefensive()),
+                                        new Decorator(ret => SG.Instance.Unholy.CheckInterrupts, UnholyInterrupts()),
+                                        UnholyUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                                new PrioritySelector(
+                                           new Action(ret => { Item.UseUnholyItems(); return RunStatus.Failure; }),
+                                           new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
+                                                        UnholyOffensive())),
+                                        new Decorator(ret => SG.Instance.Unholy.CheckAoE && Unit.NearbyAttackableUnitsCount > 2, UnholyMt()),
+                                            UnholySt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Unholy.CheckAutoAttack, Lua.StartAutoAttack),

@@ -45,6 +45,20 @@ namespace YourBuddy.Rotations.Shaman
                                         new Decorator(ret => SG.Instance.Enhancement.RecallTotemsEnable, Totems.CreateRecallTotems()),
                                         new Decorator(ret => SG.Instance.Enhancement.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), EnhancementMt()),
                                         EnhancementSingleTarget())),
+                    new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Enhancement.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => SG.Instance.Enhancement.EnableSelfHealing && Me.HealthPercent < 100, EnhancementDefensive()),
+                                        new Decorator(ret => SG.Instance.Enhancement.CheckInterrupts && Unit.CanInterrupt, EnhancementInterrupts()),
+                                        EnhancementUtility(),
+                                         new Decorator(ret => HotKeyManager.IsCooldown,
+                                        new PrioritySelector(
+                                    new Styx.TreeSharp.Action(ret => { Item.UseEnhancementItems(); return RunStatus.Failure; }),
+                                    new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                        EnhancementOffensive())),
+                                        new Decorator(ret => SG.Instance.Enhancement.RecallTotemsEnable, Totems.CreateRecallTotems()),
+                                        new Decorator(ret => SG.Instance.Enhancement.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), EnhancementMt()),
+                                        EnhancementSingleTarget())),
                     //FirstPvPEnhancement
                    new Decorator(ret => !Spell.IsGlobalCooldown() && SG.Instance.Enhancement.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(

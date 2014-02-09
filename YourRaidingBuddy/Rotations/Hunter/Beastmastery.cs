@@ -1,4 +1,4 @@
-﻿using CommonBehaviors.Actions;
+﻿    using CommonBehaviors.Actions;
 using YourBuddy.Core;
 using System.Linq;
 using Styx;
@@ -45,6 +45,24 @@ namespace YourBuddy.Rotations.Hunter
                                         new Action(ret => { Item.UseBeastmasteryItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         BeastmasteryOffensive(),
+                                       new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, BeastmasteryMt()),
+                            new Decorator(ret => Me.CurrentTarget != null && (U.NearbyAttackableUnitsCount < SG.Instance.Beastmastery.AoECount || !SG.Instance.Beastmastery.CheckAoE),
+                                new PrioritySelector
+                                (
+                                    new Decorator(ret => !UseQuasiAoE, BeastmasterySt()),
+                                    new Decorator(ret => UseQuasiAoE, BeastmasteryCleave())
+                                )))),
+                        new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
+                                new PrioritySelector(
+                                        new Decorator(ret => SG.Instance.Beastmastery.CheckAutoAttack, Lua.StartAutoAttack),
+                                        new Decorator(ret => Me.HealthPercent < 100, BeastmasteryDefensive()),
+                                        new Decorator(ret => SG.Instance.Beastmastery.CheckInterrupts, BeastmasteryInterrupts()),
+                                        BeastmasteryUtility(),
+                                        new Decorator(ret => HotKeyManager.IsCooldown,
+                                        new PrioritySelector(
+                                        new Action(ret => { Item.UseBeastmasteryItems(); return RunStatus.Failure; }),
+                                        new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
+                                        BeastmasteryOffensive())),
                                        new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, BeastmasteryMt()),
                             new Decorator(ret => Me.CurrentTarget != null && (U.NearbyAttackableUnitsCount < SG.Instance.Beastmastery.AoECount || !SG.Instance.Beastmastery.CheckAoE),
                                 new PrioritySelector
