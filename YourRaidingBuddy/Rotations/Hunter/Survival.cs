@@ -44,7 +44,7 @@ namespace YourBuddy.Rotations.Hunter
                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         SurvivalOffensive(),
-                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, SurvivalMt()),
+                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Survival.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Survival.AoECount, SurvivalMt()),
                             new Decorator(ret => Me.CurrentTarget != null && (Unit.NearbyAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
                                 new PrioritySelector
                                 (
@@ -62,7 +62,7 @@ namespace YourBuddy.Rotations.Hunter
                                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         SurvivalOffensive())),
-                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Beastmastery.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Beastmastery.AoECount, SurvivalMt()),
+                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Survival.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Survival.AoECount, SurvivalMt()),
                             new Decorator(ret => Me.CurrentTarget != null && (Unit.NearbyAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
                                 new PrioritySelector
                                 (
@@ -133,7 +133,7 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.Cast("Dire Beast", ret => DireBeastEnabled), // && TimeToLive > 15
                 Spell.Cast("Powershot", ret => TalentManager.IsSelected(17)),
                 Spell.Cast("Barrage", ret => TalentManager.IsSelected(18)),
-                Spell.Cast("Explosive Shot"),
+                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
                 Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget),
@@ -172,6 +172,7 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.Cast("Explosive Shot"),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Multi-Shot"),
+                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
@@ -273,7 +274,7 @@ namespace YourBuddy.Rotations.Hunter
         internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
-        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Serpent Sting"); } }
+        internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
         internal static bool ThrillProc { get { return Me.HasAura(34720); } }
         internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
         internal static bool Focus66 { get { return Lua.PlayerPower < 66; } }

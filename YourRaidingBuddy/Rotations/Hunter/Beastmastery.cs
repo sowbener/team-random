@@ -121,7 +121,7 @@ namespace YourBuddy.Rotations.Hunter
             return new PrioritySelector(
                 Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.ExplosiveTrap),
                 Spell.CastHunterTrap("Freezing Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.FreezingTrap),
-                Spell.CastHunterTrap("Ice Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.BeastmasteryTrapSwitch == Enum.Traps.IceTrap),
+                Spell.CastHunterTrap("Ice Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.IceTrap),
                 Spell.CastHunterTrap("Snake Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps && SG.Instance.Beastmastery.TrapSwitch == Enum.Traps.SnakeTrap));
         }
 
