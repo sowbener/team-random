@@ -147,10 +147,10 @@ namespace YourBuddy.Rotations.Hunter
         internal static Composite HunterTrapBehavior()
         {
             return new PrioritySelector(
-                Spell.CreateHunterTrapBehavior("Explosive Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.ExplosiveTrap),
-                Spell.CreateHunterTrapBehavior("Freezing Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.FreezingTrap),
-                Spell.CreateHunterTrapBehavior("Ice Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.IceTrap),
-                Spell.CreateHunterTrapBehavior("Snake Trap", true, loc => Me.CurrentTarget, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.SnakeTrap));
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.ExplosiveTrap),
+                Spell.CastHunterTrap("Freezing Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.FreezingTrap),
+                Spell.CastHunterTrap("Ice Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.IceTrap),
+                Spell.CastHunterTrap("Snake Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.SnakeTrap));
         }
 
         internal static Composite HandleCommon()

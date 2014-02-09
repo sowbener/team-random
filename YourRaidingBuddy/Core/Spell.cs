@@ -1210,7 +1210,8 @@ namespace YourBuddy.Core
                     ret => onLocation != null
                         && (req == null || req(ret))
                         && StyxWoW.Me.Location.Distance(onLocation(ret)) < (40 * 40)
-                        && SpellManager.HasSpell(trapName) && CooldownTracker.GetSpellCooldown(trapName) == TimeSpan.Zero,
+                        && SpellManager.HasSpell(trapName)
+                        && !CooldownTracker.SpellOnCooldown(trapName),
                     new Sequence(
                         new Action(ret => Logger.DebugLog("Trap: use trap launcher requested: {0}", useLauncher)),
                         new PrioritySelector(
@@ -1225,11 +1226,13 @@ namespace YourBuddy.Core
                         new Action(ret => Logger.DebugLog("^{0} trap: {1}", useLauncher ? "Launch" : "Set", trapName)),
                         new Action(ret => SpellManager.Cast(trapName)),
                         new Action(ret => { SpellManager.ClickRemoteLocation(onLocation(ret)); }),
+                        new Action(ret => CooldownTracker.SpellUsed(trapName)),
                         new Action(ret => Logger.DebugLog("Trap: Complete!"))
                         )
                     )
                 );
         }
+
 
         public static Composite CastHunterTrap(int trapName, LocationRetriever onLocation, CanRunDecoratorDelegate req = null)
         {
