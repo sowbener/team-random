@@ -19,7 +19,8 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection) return;
+                if (Unit.IgnoreDamageTracker) 
+                    return;
 
                 _damageTaken = new Dictionary<DateTime, double>();
                 CombatLogHandler.Initialize();
@@ -34,7 +35,17 @@ namespace FuryUnleashed.Core.Helpers
 
         public static void Pulse()
         {
-            RemoveDamageTaken(DateTime.Now);
+            try
+            {
+                if (Unit.IgnoreDamageTracker)
+                    return;
+
+                RemoveDamageTaken(DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                Logger.DiagLogFb("FU: Damage Tracker failed to RemoveDamageTaken - {0}", ex);
+            }
         }
 
         private static void AttachCombatLogEvent()
@@ -111,7 +122,6 @@ namespace FuryUnleashed.Core.Helpers
                 RemovingDamageTaken = true;
                 Dictionary<DateTime, double> removeList = new Dictionary<DateTime, double>();
 
-                // Remove any data older than lastSeconds + 3
                 foreach (var entry in _damageTaken.Where(entry => timestamp - entry.Key > lastSeconds + TimeSpan.FromSeconds(3)))
                 {
                     removeList.Add(entry.Key, entry.Value);

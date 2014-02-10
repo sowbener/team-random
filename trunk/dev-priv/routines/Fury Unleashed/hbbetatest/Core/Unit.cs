@@ -1,6 +1,5 @@
 ﻿
 using FuryUnleashed.Core.Helpers;
-using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -294,6 +293,14 @@ namespace FuryUnleashed.Core
                             ((InternalSettings.Instance.General.InterruptMode == Enum.Interrupts.RandomTimed && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= Random.Next(250, 1500)) ||
                             (InternalSettings.Instance.General.InterruptMode == Enum.Interrupts.Constant && Me.CurrentTarget.CurrentCastTimeLeft.TotalMilliseconds <= InternalSettings.Instance.General.InterruptNum));
                 }
+            }
+        }
+
+        internal static bool IgnoreDamageTracker
+        {
+            get
+            {
+                return StyxWoW.Me.Specialization != WoWSpec.WarriorProtection;
             }
         }
 
