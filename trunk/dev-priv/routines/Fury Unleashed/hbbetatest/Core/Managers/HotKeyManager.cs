@@ -27,11 +27,7 @@ namespace FuryUnleashed.Core.Managers
         private static extern short GetAsyncKeyState(Keys vKey);
         public static bool IsKeyAsyncDown(Keys key)
         {
-            if (key != Keys.None)
-            {
-                return (GetAsyncKeyState(key)) != 0;
-            }
-            return (GetAsyncKeyState(key)) == 0;
+            return (GetAsyncKeyState(key)) != 0;
         }
 
         /* Keystates - One press without Spell Queueing */
