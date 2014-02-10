@@ -155,9 +155,9 @@ namespace FuryUnleashed
 
         internal static void StopBot(string reason)
         {
-            Logger.CombatLogWh(reason);
-            CombatLogHandler.Shutdown();
+            DamageTracker.Stop();
             TreeRoot.Stop();
+            Logger.CombatLogWh(reason);
         }
         #endregion
 

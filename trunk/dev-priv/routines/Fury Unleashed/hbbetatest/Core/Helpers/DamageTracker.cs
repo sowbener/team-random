@@ -33,6 +33,19 @@ namespace FuryUnleashed.Core.Helpers
             }
         }
 
+        public static void Stop()
+        {
+            try
+            {
+                CombatLogHandler.Shutdown();
+                Logger.CombatLogFb("Damage Tracker Stopped - Possibly for reinitialize.");
+            }
+            catch (Exception ex)
+            {
+                Logger.DiagLogFb("FU: Damage Tracker failed to stop - {0}", ex);
+            }
+        }
+
         public static void Pulse()
         {
             try
