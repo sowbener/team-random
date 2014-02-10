@@ -16,7 +16,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 6, 0);
+        public static readonly Version Revision = new Version(5, 6, 1);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static bool IsPaused;
 
@@ -53,18 +53,8 @@ namespace Tyrael
         {
             try
             {
-                TyraelUpdater.CheckForUpdate();
-                TyraelSettings.Instance.Load();
-
-                TyraelUtilities.ClickToMove();
-                TyraelUtilities.StatCounter();
-                TyraelUtilities.RegisterHotkeys();
-
-                ProfileManager.LoadEmpty();
-                GlobalSettings.Instance.LogoutForInactivity = false;
-                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
-                PluginPulsing();
+                InitializeComponents();
+                InitializePlugins();
 
                 Logging.Write(Colors.White, "------------------------------------------");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
@@ -73,6 +63,11 @@ namespace Tyrael
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] Special thanks to the following persons:");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] PureRotation Team");
                 Logging.Write(Colors.White, "-------------------------------------------\r\n");
+
+                if (!GlobalSettings.Instance.UseFrameLock && !TyraelSettings.Instance.UseSoftLock)
+                {
+                    Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
+                }
             }
             catch (Exception initExept)
             {
@@ -80,6 +75,9 @@ namespace Tyrael
             }
         }
 
+        /// <summary>
+        /// Runs when the bot stops. Unloads several Tyrael functions and resets basic settings.
+        /// </summary>
         public override void Stop()
         {
             Logging.Write(Colors.White, "------------------------------------------");
@@ -90,21 +88,13 @@ namespace Tyrael
             Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
             Logging.Write(Colors.White, "-------------------------------------------\r\n");
         }
-
-        public static void PluginPulsing()
-        {
-            if (TyraelSettings.Instance.CheckPluginPulsing)
-            {
-                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-            }
-            else
-            {
-                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-            }
-        }
         #endregion
 
-        #region Selectors
+        #region Privates
+        /// <summary>
+        /// Actual Root Composite - Within this the RoutineManager runs the routines behaviors.
+        /// </summary>
+        /// <returns>Routines Behaviors</returns>
         private static Composite CreateRoot()
         {
             return new PrioritySelector(
@@ -118,11 +108,51 @@ namespace Tyrael
                     RoutineManager.Current.RestBehavior);
         }
 
+        /// <summary>
+        /// Initializes the proper plugins based on the Setting CheckPluginPulsing.
+        /// </summary>
+        private static void InitializePlugins()
+        {
+            if (TyraelSettings.Instance.CheckPluginPulsing)
+            {
+                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+            }
+            else
+            {
+                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+            }
+        }
+
+        /// <summary>
+        /// Initializes all the required components for Tyrael to run.
+        /// </summary>
+        private static void InitializeComponents()
+        {
+            TyraelUpdater.CheckForUpdate();
+
+            TyraelSettings.Instance.Load();
+
+            TyraelUtilities.ClickToMove();
+            TyraelUtilities.StatCounter();
+            TyraelUtilities.RegisterHotkeys();
+
+            ProfileManager.LoadEmpty();
+
+            GlobalSettings.Instance.LogoutForInactivity = false;
+            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+        }
+
+        /// <summary>
+        /// SanityCheck - Checks if we are actually ingame and able to control the character.
+        /// </summary>
+        /// <returns>true / false</returns>
         private static bool SanityCheckCombat()
         {
             return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
         }
+        #endregion
 
+        #region Softlock
         private static Composite SelectLockMethod(params Composite[] children)
         {
             return TyraelSettings.Instance.UseSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);

@@ -301,7 +301,7 @@ namespace Tyrael.Shared
 
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
+            Tyrael.InitializePlugins();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -323,7 +323,7 @@ namespace Tyrael.Shared
 
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
+            Tyrael.InitializePlugins();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -345,7 +345,7 @@ namespace Tyrael.Shared
 
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
+            Tyrael.InitializePlugins();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -367,7 +367,7 @@ namespace Tyrael.Shared
 
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
+            Tyrael.InitializePlugins();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
@@ -389,7 +389,7 @@ namespace Tyrael.Shared
 
             TyraelUtilities.ClickToMove();
             TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.PluginPulsing();
+            Tyrael.InitializePlugins();
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
