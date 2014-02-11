@@ -188,6 +188,9 @@ namespace YourBuddy.Interfaces.GUI
             ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.None, "No Hotkey"));
             ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.Q, "Q"));
             ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.E, "E"));
+            ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.MButton, "Middle Mouse Button"));
+            ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.XButton1, "Mouse Button 4"));
+            ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.XButton2, "Mouse Button 5"));
             ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.LControlKey, "Left Control"));
             ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.RControlKey, "Right Control"));
             ComboHkShatteringThrow.Items.Add(new Enum.FuCboItem((int)Keys.LShiftKey, "Left Shift"));
