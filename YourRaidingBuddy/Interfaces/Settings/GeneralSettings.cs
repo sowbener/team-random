@@ -59,7 +59,7 @@ namespace YourBuddy.Interfaces.Settings
         [Category("General")]
         [DisplayName("Minimum Ability Start")]
         [Description("Select the Minimum Ability Start For Some Classes.")]
-        public uint MinHPAbility { get; set; }
+        public int MinHPAbility { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(1800)]
