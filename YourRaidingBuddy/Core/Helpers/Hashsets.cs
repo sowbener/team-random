@@ -55,6 +55,63 @@ namespace YourBuddy.Core.Helpers
             "CAMERAORSELECTORMOVE",
         };
 
+        #region DontDoThings
+
+        internal static readonly HashSet<uint> DontAoEUnits = new HashSet<uint>
+       {
+
+           //Dark Shamans
+              71859,
+              71858,
+
+           //Klaxxi's
+              71161,
+              71157,
+              71156,
+              71155,
+              71160,
+              71154,
+              71152,
+              71158,
+              71153,
+              71161,
+
+
+       };
+
+
+        internal static readonly HashSet<uint> DontApplyDot = new HashSet<uint>
+       {
+
+           145065, 	// -- Touch of Y'Shaarj
+           145171,  // -- Empowered Touch of Y'Shaarj
+
+       };
+
+        public static bool DontUseAoE
+        {
+            get { return Me.CurrentTarget.DontAoEUnitsList(); }
+        }
+
+        public static bool DontAoEUnitsList(this WoWUnit unit)
+        {
+            return unit != null && (DontAoEUnitsIds.Contains(unit.Entry));
+        }
+
+        public static bool DontApplyDotUnit
+        {
+            get { return Me.CurrentTarget.DontDotUnitsList(); }
+        }
+
+        public static bool DontDotUnitsList(this WoWUnit unit)
+        {
+            return unit != null && (DontApplyDot.Contains(unit.Entry));
+        }
+
+        public static HashSet<uint> DontAoEUnitsIds { get { return DontAoEUnits; } }
+
+        #endregion
+
         public static bool HamstringUnitsList(this WoWUnit unit)
         {
             return unit != null && (HamstringListIds.Contains(unit.Entry));

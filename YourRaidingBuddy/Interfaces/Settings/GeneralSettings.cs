@@ -54,6 +54,12 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Select the interrupt start timer, DO NOT USE BELOW 700 MS.")]
         public int InterruptStart { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(500000)]
+        [Category("General")]
+        [DisplayName("Minimum Ability Start")]
+        [Description("Select the Minimum Ability Start For Some Classes.")]
+        public uint MinHPAbility { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(1800)]

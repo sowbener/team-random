@@ -51,6 +51,11 @@ namespace YourBuddy.Core
             return Cast(spellname, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
         }
 
+        public static Composite CastHack(string spellname, Selection<bool> reqs = null, bool failThrough = false)
+        {
+            return CastHack(spellname, ret => StyxWoW.Me.CurrentTarget, reqs, failThrough);
+        }
+
         public static Composite Cast(string spellname, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
             return

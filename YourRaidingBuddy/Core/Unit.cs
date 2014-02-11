@@ -13,6 +13,7 @@ using Enum = YourBuddy.Core.Helpers.Enum;
 using U = YourBuddy.Core.Unit;
 using Styx.TreeSharp;
 using Styx.CommonBot;
+using G = YourBuddy.Rotations.Global;
 
 namespace YourBuddy.Core
 {
@@ -219,6 +220,21 @@ namespace YourBuddy.Core
                 {
                     NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
                     NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the count (Integer) of nearby units of my target (8y) - Used in YourBuddy.Rotations.Global.InitializeCaching()
+        /// </summary>
+        public static int NearbyTargetAttackableUnitsCount;
+        public static void GetNearbyTargetAttackableUnitsCount()
+        {
+            using (new PerformanceLogger("GetNearbyTargetAttackableUnitsCount"))
+            {
+                if (IsViable(StyxWoW.Me.CurrentTarget))
+                {
+                    NearbyTargetAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.CurrentTarget.Location, 8).Count();
                 }
             }
         }

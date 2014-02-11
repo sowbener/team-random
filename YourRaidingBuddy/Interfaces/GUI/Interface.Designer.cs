@@ -31,7 +31,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Raise Ally";
                     this.HkHeroicLeapLabel.Text = "Army of the Dead";
                     this.HkMockingBannerLabel.Text = "Tier 6 Ability";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     // etc
                     Refresh();
                     return true;
@@ -40,7 +40,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Raise Ally";
                     this.HkHeroicLeapLabel.Text = "Army of the Dead";
                     this.HkMockingBannerLabel.Text = "Tier 6 Ability";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     // etc
                     Refresh();
                     return true;
@@ -49,7 +49,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Raise Ally";
                     this.HkHeroicLeapLabel.Text = "Army of the Dead";
                     this.HkMockingBannerLabel.Text = "Tier 6 Ability";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                     //Monk
@@ -58,7 +58,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.MonkBrewmaster:
@@ -66,7 +66,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                     //Hunter
@@ -75,7 +75,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Deterrence";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.HunterSurvival:
@@ -83,7 +83,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Deterrence";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.HunterMarksmanship:
@@ -91,7 +91,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Deterrence";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                     //Rogue
@@ -100,7 +100,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.RogueCombat:
@@ -108,7 +108,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.RogueSubtlety:
@@ -116,7 +116,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                     //Shaman
@@ -125,7 +125,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.ShamanEnhancement:
@@ -133,7 +133,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                     //Paladin
@@ -142,7 +142,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "Lay on Hands Mouseover";
                     this.HkHeroicLeapLabel.Text = "Hand of Salvation Mouseover";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
                 case WoWSpec.PaladinRetribution:
@@ -150,7 +150,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
                     this.HkMockingBannerLabel.Text = "NOT IN USE";
-                    this.HkShattThrowLabel.Text = "NOT IN USE";
+                    this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;
 

@@ -44,8 +44,8 @@ namespace YourBuddy.Rotations.Hunter
                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         SurvivalOffensive(),
-                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Survival.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Survival.AoECount, SurvivalMt()),
-                            new Decorator(ret => Me.CurrentTarget != null && (Unit.NearbyAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
+                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Survival.CheckAoE && !Me.CurrentTarget.DontAoEUnitsList() && U.NearbyTargetAttackableUnitsCount >= SG.Instance.Survival.AoECount, SurvivalMt()),
+                            new Decorator(ret => Me.CurrentTarget != null && (U.NearbyTargetAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
                                 new PrioritySelector
                                 (
                                     new Decorator(ret => !UseQuasiAoE, SurvivalSt()),
@@ -62,8 +62,8 @@ namespace YourBuddy.Rotations.Hunter
                                                         new Action(ret => { Item.UseSurvivalItems(); return RunStatus.Failure; }),
                                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                                         SurvivalOffensive())),
-                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Survival.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Survival.AoECount, SurvivalMt()),
-                            new Decorator(ret => Me.CurrentTarget != null && (Unit.NearbyAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
+                                         new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Survival.CheckAoE && !Me.CurrentTarget.DontAoEUnitsList() && U.NearbyTargetAttackableUnitsCount >= SG.Instance.Survival.AoECount, SurvivalMt()),
+                            new Decorator(ret => Me.CurrentTarget != null && (U.NearbyTargetAttackableUnitsCount < SG.Instance.Survival.AoECount || !SG.Instance.Survival.CheckAoE),
                                 new PrioritySelector
                                 (
                                     new Decorator(ret => !UseQuasiAoE, SurvivalSt()),
@@ -96,58 +96,75 @@ namespace YourBuddy.Rotations.Hunter
         {
             return new PrioritySelector
             (
-            HunterTrapBehavior(),
-            Spell.Cast("Fervor", ret => FervorReqs),
-            Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
-            Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
-            Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh),
-            Spell.Cast("Explosive Shot"),
-            Spell.Cast("Kill Shot", ret => TargetSoonDead),
-            Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
-            Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget),
-            Spell.Cast("Arcane Shot", ret => ThrillProc && BlackArrowIsOnCooldown),
-            Spell.Cast("Dire Beast"),
-            Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => SerpentStingRefresh6Seconds, true),
-            Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Focus67),
-            Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
-            Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+                HunterTrapBehavior(),
+                Spell.Cast("Fervor", ret => FervorReqs),
+                Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => Lua.PlayerPower >= 90 && LockAndLoadProc),
+                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
+                Spell.CastHack("Dire Beast", ret => TalentManager.IsSelected(11) && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Glaive Toss", ret => TalentManager.IsSelected(16)),
+                Spell.Cast("Powershot", ret => TalentManager.IsSelected(17)),
+                Spell.Cast("Barrage", ret => TalentManager.IsSelected(18)),
+                Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => Me.CurrentTarget != null && !Me.CurrentTarget.DontDotUnitsList() && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility && SerpentStingRefresh),// add minHP
+                Spell.Cast("Explosive Shot"),
+                Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
+                Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Arcane Shot", ret => ThrillProc && Lua.PlayerPower >= 46 || FervorAura && Lua.PlayerPower >= 56),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Lua.PlayerPower >= 66),
+                Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 65, true),
+                Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true)
+            );
         }
 
         private static Composite HandleQuasiAoE()
         {
             return new PrioritySelector
             (
-                // Rotation based on icy-veins 2-3 targets.
-                // Replaces black arrow with explosive trap, and Arcane Shot with Multi-shot when
-                // number of mobs is >= SurvMultiShotCount (but less than AoECount, when the AoE
-                // rotation takes over)
-
-                // If a big shot is close to being available, delay following less important shots
-
-                // Keep black arrow up for LnL procs
-                Spell.Cast("Black Arrow"), //, ret => TimeToLive > 8
-                // Explosive trap for AoE damage
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location), // , ret => TimeToLive > 15
-
-                Spell.Cast("Glaive Toss", ret => TalentGlaiveToss && CooldownTracker.SpellOnCooldown("Explosive Shot")),
-                Spell.Cast("Dire Beast", ret => DireBeastEnabled), // && TimeToLive > 15
+                Spell.Cast("Fervor", ret => FervorReqs),
+                Spell.Cast("Multi-Shot", ret => Lua.PlayerPower >= 90 && LockAndLoadProc),
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
+                Spell.CastHack("Dire Beast", ret => TalentManager.IsSelected(11) && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Glaive Toss", ret => TalentManager.IsSelected(16)),
                 Spell.Cast("Powershot", ret => TalentManager.IsSelected(17)),
                 Spell.Cast("Barrage", ret => TalentManager.IsSelected(18)),
-                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
+                Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Explosive Shot"),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
-                Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget),
+                Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Multi-Shot", ret => ThrillProc && Lua.PlayerPower >= 56 || FervorAura && Lua.PlayerPower >= 66),
+                Spell.PreventDoubleCast("Multi-Shot", 0.7, ret => Lua.PlayerPower >= 76),
+                Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
+                Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true)
+            );
+        }
 
-                // Use MultiShot as our focus dump
-                Spell.Cast("Multi-Shot", ret => AoEMulti),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower < 60, true)
+        internal static Composite SurvivalMt()
+        {
+            return new PrioritySelector
+            (
+                Spell.Cast("Fervor", ret => FervorReqs),
+                Spell.Cast("Multi-Shot", ret => ThrillProc && Lua.PlayerPower >= 56 || FervorAura && Lua.PlayerPower >= 71),
+                Spell.PreventDoubleCast("Multi-Shot", 0.7, ret => Lua.PlayerPower >= 76),
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.CastHack("Dire Beast", ret => TalentManager.IsSelected(11) && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Glaive Toss", ret => TalentManager.IsSelected(16)),
+                Spell.Cast("Powershot", ret => TalentManager.IsSelected(17)),
+                Spell.Cast("Barrage", ret => TalentManager.IsSelected(18)),
+                Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
+                Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility),// add minHP
+                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
+                Spell.Cast("Kill Shot", ret => TargetSoonDead),
+                Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
+                Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true)
             );
         }
 
         internal static Composite HunterTrapBehavior()
         {
             return new PrioritySelector(
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.ExplosiveTrap),
+                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && Me.CurrentTarget.HealthPercent >= SG.Instance.General.MinHPAbility && SG.Instance.Survival.TrapSwitch == Enum.Traps.ExplosiveTrap),
                 Spell.CastHunterTrap("Freezing Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.FreezingTrap),
                 Spell.CastHunterTrap("Ice Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.IceTrap),
                 Spell.CastHunterTrap("Snake Trap", loc => Me.CurrentTarget.Location, ret => SG.Instance.Survival.EnableTraps && SG.Instance.Survival.TrapSwitch == Enum.Traps.SnakeTrap));
@@ -159,26 +176,6 @@ namespace YourBuddy.Rotations.Hunter
                 Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= SG.Instance.Beastmastery.MendPetHP && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
         }
 
-
-        internal static Composite SurvivalMt()
-        {
-            return new PrioritySelector(
-                Spell.Cast("Glaive Toss"),
-                Spell.Cast("Powershot"),
-                Spell.Cast("Barrage"),
-                Spell.Cast("Multi-Shot", ret => Lua.PlayerPower > 79),
-                Spell.Cast("Black Arrow", on => Me.FocusedUnit, ret => SG.Instance.Survival.UseBlackArrowFocusTarget && Me.FocusedUnit != null),
-                Spell.Cast("Black Arrow", ret => !SG.Instance.Survival.UseBlackArrowFocusTarget),
-                Spell.Cast("Explosive Shot"),
-                Spell.Cast("Kill Shot", ret => TargetSoonDead),
-                Spell.Cast("Multi-Shot"),
-                Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
-                Spell.CastHunterTrap("Explosive Trap", loc => Me.CurrentTarget.Location),
-                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Focus66, true),
-                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
-        }
-
-
         internal static Composite SurvivalDefensive()
         {
             return new PrioritySelector(
@@ -186,7 +183,6 @@ namespace YourBuddy.Rotations.Hunter
                 Item.SurvivalUseHealthStone()
                 );
         }
-
 
         internal static Composite SurvivalOffensive()
         {
@@ -261,26 +257,15 @@ namespace YourBuddy.Rotations.Hunter
         #region Booleans
 
         internal static bool FervorReqs { get { return TalentManager.IsSelected(10) && Lua.PlayerPower <= 50; } }
+        internal static bool FervorAura { get { return Me.HasAura("Fervor"); } }
         internal static bool LockAndLoadProc { get { return Me.HasAura("Lock and Load"); } }
-        internal static bool TalentGlaiveToss { get { return TalentManager.IsSelected(16); } }
-        internal static bool TalentPowershot { get { return TalentManager.IsSelected(17); } }
-        internal static bool TalentBarrage { get { return TalentManager.IsSelected(18); } }
-        internal static bool UseQuasiAoE { get { return SG.Instance.Survival.CheckAoE && Unit.NearbyAttackableUnitsCount >= SG.Instance.Survival.AoEMultiShotCount; } }
-        internal static bool DireBeastEnabled { get { return TalentManager.IsSelected(11); } }
+        internal static bool UseQuasiAoE { get { return SG.Instance.Survival.CheckAoE && U.NearbyTargetAttackableUnitsCount >= SG.Instance.Survival.AoEMultiShotCount; } }
         internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
-        internal static bool AoEMulti { get { return Lua.PlayerPower > 40 || (ThrillProc && Lua.PlayerPower > 20); } }
-        internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Spell.GetAuraTimeLeft("Serpent Sting", Me.CurrentTarget) < 6; } }
-        internal static bool ExplosiveShotOffCooldown { get { return !Styx.WoWInternals.WoWSpell.FromId(53301).Cooldown; } }
-        internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 21; } }
+        internal static bool TargetSoonDead { get { return Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 20; } }
         internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
         internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura("Serpent Sting"); } }
         internal static bool ThrillProc { get { return Me.HasAura(34720); } }
-        internal static bool BlackArrowIsOnCooldown { get { return Styx.WoWInternals.WoWSpell.FromId(3674).Cooldown; } }
-        internal static bool Focus66 { get { return Lua.PlayerPower < 66; } }
-        internal static bool Focus67 { get { return Lua.PlayerPower >= 67; } }
-
-
 
         #endregion Booleans
 

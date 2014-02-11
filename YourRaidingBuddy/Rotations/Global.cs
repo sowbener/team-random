@@ -87,6 +87,7 @@ namespace YourBuddy.Rotations
             return new PrioritySelector(
                 // new Action(delegate { XISpell.GetCachedAuras(); return RunStatus.Failure; }),
                 new Action(delegate { U.GetNearbyAttackableUnitsCount(); return RunStatus.Failure; }),
+                new Decorator(ret => StyxWoW.Me.Class == WoWClass.Hunter, new Action(delegate { U.GetNearbyTargetAttackableUnitsCount(); return RunStatus.Failure; })),
                 new Decorator(ret => StyxWoW.Me.Specialization == WoWSpec.HunterBeastMastery && SG.Instance.Beastmastery.AutoTarget, Unit.GetUnits())
                 );
         }
@@ -160,6 +161,7 @@ namespace YourBuddy.Rotations
                     //Logging.Write(key + " Binding to " + BlackListKey + "  Blacklist it");
                     //Logging.Write("Add {0} to BlackListKeyHS", key.ToString());
                     MovementKey.Add(key);
+
                 }
             }
             //Logging.Write("----------------------------------");
@@ -195,6 +197,7 @@ namespace YourBuddy.Rotations
                     key != Keys.RButton &&
                     key != Keys.LWin &&
                     key != Keys.RWin &&
+                    key != SettingsH.Instance.ShatteringThrowChoice &&
                     key != Keys.ShiftKey &&
                     key != Keys.LShiftKey &&
                     key != Keys.RShiftKey &&
@@ -245,6 +248,7 @@ namespace YourBuddy.Rotations
         #endregion
 
         internal static bool SpeedBuffsAura { get { return Me.HasAura(2825) || Me.HasAura(80353) || Me.HasAura(32182) || Me.HasAura(90355); } }
+
 
         #region InterruptList
 
