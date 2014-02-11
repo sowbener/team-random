@@ -328,8 +328,8 @@ namespace FuryUnleashed.Core.Helpers
                     Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
-                // General catch to dispose start-up error ... workaround, no fix! tnx stormchasin!
-                catch (Exception) { }
+                catch (Exception ex)
+                { /* Catch all errors */ }
 
                 var sb = new StringBuilder();
                 sb.Append("return ");
