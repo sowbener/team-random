@@ -85,7 +85,7 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "RANGE_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                    if (args.DestGuid == Root.MyGuid)
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
@@ -94,12 +94,11 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "SPELL_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid)
+                    if (args.DestGuid == Root.MyGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                     {
-                        object damage = args.Amount;
-
                         bool countDamage = args.SourceName != null || (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
+                        object damage = args.Amount;
                         if (countDamage && !AddingDamageTaken)
                             AddDamageTaken(DateTime.Now, (int)damage);
                     }
