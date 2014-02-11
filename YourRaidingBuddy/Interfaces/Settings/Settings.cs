@@ -57,6 +57,9 @@ namespace YourBuddy.Interfaces.Settings
         private YbSettingsPR _settingsPR;
         private YbSettingsRE _settingsRE;
 
+        //Druid Settings
+        private YbSettingsDF _settingsDF;
+
 
 
         // General
@@ -158,6 +161,14 @@ namespace YourBuddy.Interfaces.Settings
         {
             get { return _settingsRE ?? (_settingsRE = new YbSettingsRE()); }
         }
+
+//Druid Settings
+        [Browsable(false)]
+        public YbSettingsDF Feral
+        {
+            get { return _settingsDF ?? (_settingsDF = new YbSettingsDF()); }
+        }
+
 
 
         #endregion

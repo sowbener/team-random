@@ -35,6 +35,7 @@ namespace YourBuddy.Core
 
         // Internal delegates
         internal delegate T Selection<out T>(object context);
+        public static readonly Dictionary<ulong, double> RakeTargets = new Dictionary<ulong, double>();
         internal static readonly uint ClientLatency = StyxWoW.WoWClient.Latency;
         #endregion
 
@@ -452,7 +453,31 @@ namespace YourBuddy.Core
             return isMyAura ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.CreatorGuid == StyxWoW.Me.Guid && a.TimeLeft > TimeSpan.Zero) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == aura && a.TimeLeft > TimeSpan.Zero);
         }
         #endregion
-        
+
+        #region DruidStuff
+
+        public static void UpdateRakeTargets(ulong guid, double strength)
+        {
+            if (RakeTargets.ContainsKey(guid))
+                RakeTargets[guid] = strength;
+            if (!RakeTargets.ContainsKey(guid))
+                RakeTargets.Add(guid, strength);
+        }
+
+        internal static void PulseRakeTargets()
+        {
+            foreach (var rakeTarget in RakeTargets.Where(rakeTarget => rakeTarget.Value == 0))
+            {
+                RakeTargets.Remove(rakeTarget.Key);
+            }
+        }
+
+        internal static double GetRakeStrength(ulong guid)
+        {
+            return !RakeTargets.ContainsKey(guid) ? 0 : RakeTargets.FirstOrDefault(t => t.Key == guid).Value;
+        }
+        #endregion
+
         #region AuraStuffMore
 
         public static uint GetAuraStackCount(string aura)

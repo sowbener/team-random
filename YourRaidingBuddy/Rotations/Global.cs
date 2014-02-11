@@ -356,6 +356,7 @@ namespace YourBuddy.Rotations
          WoWClass.DeathKnight, //DeathKnight Class
          WoWClass.Monk, //Monk Class
          WoWClass.Paladin, //Paladin Class
+         WoWClass.Druid,
 
         };
         #endregion

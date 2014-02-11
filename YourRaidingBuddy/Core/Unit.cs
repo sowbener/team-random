@@ -594,7 +594,7 @@ namespace YourBuddy.Core
             }
         }
 
-        private static bool IsDummy(WoWUnit target)
+        internal static bool IsDummy(WoWUnit target)
         {
             if (!DefaultCheck)
             {

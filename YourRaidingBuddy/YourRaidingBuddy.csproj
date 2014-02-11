@@ -64,12 +64,14 @@
     <Compile Include="Core\Helpers\DotTracker.cs" />
     <Compile Include="Core\Helpers\DeathTracker.cs" />
     <Compile Include="Core\Helpers\Poisons.cs" />
+    <Compile Include="Core\Helpers\TimeToDie.cs" />
     <Compile Include="Core\Helpers\Totems.cs" />
     <Compile Include="Core\Helpers\WeaponImbue.cs" />
     <Compile Include="Core\Item.cs" />
     <Compile Include="Core\Managers\PetManager.cs" />
     <Compile Include="Core\Spell.cs" />
     <Compile Include="Core\Unit.cs" />
+    <Compile Include="Interfaces\Settings\Druid_Feral_Settings.cs" />
     <Compile Include="Interfaces\Settings\Paladin_Protection_Settings.cs" />
     <Compile Include="Interfaces\Settings\Paladin_Retribution_Settings.cs" />
     <Compile Include="Interfaces\Settings\Hunter_Beastmastery_Settings.cs" />
@@ -88,6 +90,9 @@
     <Compile Include="Rotations\Deathknight\Blood.cs" />
     <Compile Include="Rotations\Deathknight\Frost.cs" />
     <Compile Include="Rotations\Deathknight\Unholy.cs" />
+    <Compile Include="Rotations\Druid\FeralTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Rotations\Hunter\Beastmastery.cs" />
     <Compile Include="Rotations\Hunter\Markmanship.cs" />
     <Compile Include="Rotations\Hunter\Survival.cs" />

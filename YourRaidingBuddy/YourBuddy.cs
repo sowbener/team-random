@@ -24,6 +24,7 @@ using BD = YourBuddy.Rotations.Deathknight.Blood;
 using FD = YourBuddy.Rotations.Deathknight.Frost;
 using UD = YourBuddy.Rotations.Deathknight.Unholy;
 using PP = YourBuddy.Rotations.Paladin.Protection;
+using DF = YourBuddy.Rotations.Druid.Feral;
 using RP = YourBuddy.Rotations.Paladin.Retribution;
 using SV = YourBuddy.Rotations.Hunter.Survival;
 using BMH = YourBuddy.Rotations.Hunter.BeastMastery;
@@ -34,6 +35,7 @@ using EES = YourBuddy.Rotations.Shaman.Elemental;
 using System.Windows.Forms;
 using BotEvents = Styx.CommonBot.BotEvents;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
+using YourRaidingBuddy.Core.Helpers;
 
 // HB API Documentation: http://docs.honorbuddy.com/
 
@@ -51,6 +53,7 @@ namespace YourBuddy
         internal static double _initap = 0;
         internal static double _NewAP = 0;
         internal static double _NoModifierAP = 0;
+        public static double dps;
 
         public override string Name { get { return YbName; } }
         public override bool WantButton { get { return true; } }
@@ -108,11 +111,15 @@ namespace YourBuddy
                 // ReSharper disable once RedundantJumpStatement
                 return;
             }
+            if (StyxWoW.Me.CurrentTarget != null)
+                DpsMeter.Update();
 
             if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
                 _initap = StyxWoW.Me.AttackPower;
             if (Me.Specialization == WoWSpec.MonkBrewmaster)
             _NewAP = Lua.Vengeance(120267);
+
+            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) SnapShotStats();
 
             Spell.PulseDoubleCastEntries();
 
@@ -160,10 +167,15 @@ namespace YourBuddy
             Logger.StatCounter();
             Logger.LogTimer(500);
 
+            DF._dot_rip_multiplier = DF.Rip_sDamage;
+
             /* Attack Power For Brewmaster Monks */
             _initap = StyxWoW.Me.AttackPower;
             _NewAP = StyxWoW.Me.AttackPower;
         //    Styx.WoWInternals.Lua.Events.AttachEvent("UPDATE_MOUSEOVER_UNIT", G.HandleMouseOverTarget);
+            DpsMeter.Initialize();
+
+            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) grabMainHandDPS();
 
             CombatLogHandler.Initialize();
 
@@ -208,6 +220,7 @@ namespace YourBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, SR.InitializeSub),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, AR.InitializeAss),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, CR.InitializeCom),
+                new SwitchArgument<WoWSpec>(WoWSpec.DruidFeral, DF.InitializeFeral),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightBlood, BD.InitializeBlood),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightFrost, FD.InitializeFrost),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, UD.InitializeUnholy),
@@ -220,6 +233,33 @@ namespace YourBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.PaladinProtection, PP.InitializeProtection)
                 
                 );
+        }
+
+        public static double AP { get; set; }
+        public static double Mastery { get; set; }
+        public static double Multiplier { get; set; }
+
+        private void SnapShotStats()
+        {
+            var DoCSID = Me.HasAura(145152);
+            AP = StyxWoW.Me.AttackPower;
+
+            using (StyxWoW.Memory.AcquireFrame())
+            {
+                Multiplier = Styx.WoWInternals.Lua.GetReturnVal<double>("return UnitDamage(\"player\");", 6);
+                Mastery = (1 + (Styx.WoWInternals.Lua.GetReturnVal<double>("return GetMasteryEffect()", 0) / 100));
+            }
+
+            if (DoCSID)
+                Multiplier = Multiplier * 1.3;
+        }
+
+        private void grabMainHandDPS()
+        {
+            var swingMin = Styx.WoWInternals.Lua.GetReturnVal<float>("return UnitDamage(\"player\");", 0);
+            var swingMax = Styx.WoWInternals.Lua.GetReturnVal<float>("return UnitDamage(\"player\");", 1);
+            var swingAvg = (swingMin + swingMax) / 2;
+            dps = swingAvg / 2;
         }
 
         internal static void StopBot(string reason)
