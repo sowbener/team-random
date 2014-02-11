@@ -300,6 +300,7 @@ namespace FuryUnleashed.Core.Helpers
                     Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once UnusedVariable
                 catch (Exception ex)
                 { /* Catch all errors */ }
 
@@ -334,6 +335,7 @@ namespace FuryUnleashed.Core.Helpers
                     Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once UnusedVariable
                 catch (Exception ex)
                 { /* Catch all errors */ }
 
