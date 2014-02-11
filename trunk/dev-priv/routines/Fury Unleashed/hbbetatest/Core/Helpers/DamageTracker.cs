@@ -15,7 +15,7 @@ namespace FuryUnleashed.Core.Helpers
         private static bool AddingDamageTaken { get; set; }
         private static bool RemovingDamageTaken { get; set; }
 
-        public static bool PulseDamageTracker = false;
+        private static bool _pulseDamageTracker;
 
         public static void Initialize()
         {
@@ -28,7 +28,7 @@ namespace FuryUnleashed.Core.Helpers
                 CombatLogHandler.Initialize();
                 AttachCombatLogEvent();
                 Logger.CombatLogFb("Damage Tracker Initialized.");
-                PulseDamageTracker = true;
+                _pulseDamageTracker = true;
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (Unit.IgnoreDamageTracker)
+                if (Unit.IgnoreDamageTracker || _pulseDamageTracker == false)
                     return;
 
                 RemoveDamageTaken(DateTime.Now);
