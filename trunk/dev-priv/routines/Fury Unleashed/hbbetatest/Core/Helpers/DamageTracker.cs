@@ -10,10 +10,12 @@ namespace FuryUnleashed.Core.Helpers
     public class DamageTracker
     {
         #region DamageTracker
-        private static Dictionary<DateTime, double> _damageTaken;
 
+        private static Dictionary<DateTime, double> _damageTaken;
         private static bool AddingDamageTaken { get; set; }
         private static bool RemovingDamageTaken { get; set; }
+
+        public static bool PulseDamageTracker = false;
 
         public static void Initialize()
         {
@@ -26,6 +28,7 @@ namespace FuryUnleashed.Core.Helpers
                 CombatLogHandler.Initialize();
                 AttachCombatLogEvent();
                 Logger.CombatLogFb("Damage Tracker Initialized.");
+                PulseDamageTracker = true;
             }
             catch (Exception ex)
             {
