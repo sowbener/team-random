@@ -46,7 +46,7 @@ namespace YourBuddy
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 0, 0);
+        public static readonly Version Revision = new Version(1, 0, 1);
         public static readonly string YbName = "YourRaidingBuddy"  + Revision;
         public static readonly string WoWVersion = "5.4.2";
 
