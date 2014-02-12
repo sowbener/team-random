@@ -31,7 +31,7 @@ namespace YourBuddy.Rotations.Druid
                 return new PrioritySelector(
                         new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
           //              G.InitializeOnKeyActionsH(),
-                        new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
+         //               new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
@@ -82,7 +82,7 @@ namespace YourBuddy.Rotations.Druid
                 Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
                 Spell.PreventDoubleCast("Healing Touch", 0.7, On => Me, ret => TalentManager.IsSelected(17) && PredatorySwiftnessUp && DreamDown && (PredatorySwiftnessRemains1 || Lua.PlayerComboPts >= 4)),
                 Spell.Cast("Savage Roar", ret => SavageRoardown),
-                Spell.Cast("Thrash", ret => !OmenofClarityDown && (ThrashDown || ThrashSetting < 3) && TimeToDie >= 6),
+                Spell.Cast("Thrash", ret => OmenofClarityUp && (ThrashDown || ThrashSetting < 3) && TimeToDie >= 6),
                 Spell.Cast("Ferocious Bite", ret => TimeToDie <= 1 && Lua.PlayerComboPts >= 3),
                 Spell.Cast("Savage Roar", ret => SavageRoarSetting <= 3 && Lua.PlayerComboPts > 0 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 25)),
                 Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && rip_ratio() >= 1.15 && TimeToDie > 30),
@@ -96,26 +96,20 @@ namespace YourBuddy.Rotations.Druid
                 Spell.Cast("Rake", ret => RuneofReoriginationUp && RakeRemains < 9 && RuneofReoriginationRemains <= 1.5),
                 //# Rake if we can apply a stronger Rake or if it's about to fall off and clipping the last tick won't waste too much damage.
                 //actions.advanced+=/rake,cycle_targets=1,if=target.time_to_die-dot.rake.remains>3&(action.rake.tick_damage>dot.rake.tick_dmg|(dot.rake.remains<3&action.rake.tick_damage%dot.rake.tick_dmg>=0.75))
+                Spell.Cast("Rake", ret => TimeToDie - RakeRemains > 3 && (Rake_sDamage > Spell.GetRakeStrength(Me.CurrentTarget.Guid) * 1.12) || (RakeRemains < 3 && rake_ratio(Me.CurrentTarget) >= 0.75)),
                 new Decorator(ret => TimeToDie >= 6 && ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSetting >= 12 || BerserkUp || Lua.PlayerComboPts >= 5) && RipUp, new ActionAlwaysSucceed()),
                 Spell.Cast("Thrash", ret => TimeToDie >= 6 && ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSetting >= 12 || BerserkUp || Lua.PlayerComboPts >= 5) && RipUp),
                 new Decorator(ret => TimeToDie >= 6 && ThrashSetting < 9 && RuneofReoriginationUp && RuneofReoriginationRemains <= 1.5 && RipUp, new ActionAlwaysSucceed()),
                 Spell.Cast("Thrash", ret => TimeToDie >= 6 && ThrashSetting < 9 && RuneofReoriginationUp && RuneofReoriginationRemains <= 1.5 && RipUp),
                 new Decorator(ret => Lua.PlayerComboPts >= 5 && !(Lua.TimeToEnergyCap() <= 1 || (BerserkUp && Lua.PlayerPower >= 25) || (FeralRageUp && FeralRageRemains <= 1)) && RipUp, new ActionAlwaysSucceed()),
                 Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && RipUp),
-                new Decorator(ret => !OmenofClarityDown, FeralFiller()),
+                new Decorator(ret => OmenofClarityUp, FeralFiller()),
                 new Decorator(ret => FeralFuryUp, FeralFiller()),
                 new Decorator(ret => (Lua.PlayerComboPts < 5 && RipSetting < 3) || (Lua.PlayerComboPts < 1 && SavageRoarSetting < 2), FeralFiller()),
                 new Decorator(ret => TimeToDie <= 8.5, FeralFiller()),
                 new Decorator(ret => TigersFuryUp || BerserkUp, FeralFiller()),
                 new Decorator(ret => CooldownTracker.GetSpellCooldown("Tiger's Fury").TotalSeconds <= 3, FeralFiller()),
                 new Decorator(ret => Lua.TimeToEnergyCap() <= 1, FeralFiller())
-                //actions.advanced+=/run_action_list,name=filler,if=buff.omen_of_clarity.react
-                //actions.advanced+=/run_action_list,name=filler,if=buff.feral_fury.react
-                //actions.advanced+=/run_action_list,name=filler,if=(combo_points<5&dot.rip.remains<3.0)|(combo_points=0&buff.savage_roar.remains<2)
-                //actions.advanced+=/run_action_list,name=filler,if=target.time_to_die<=8.5
-                //actions.advanced+=/run_action_list,name=filler,if=buff.tigers_fury.up|buff.berserk.up
-                //actions.advanced+=/run_action_list,name=filler,if=cooldown.tigers_fury.remains<=3
-                //actions.advanced+=/run_action_list,name=filler,if=energy.time_to_max<=1.0
                 );
         }
 
@@ -125,7 +119,7 @@ namespace YourBuddy.Rotations.Druid
             return new PrioritySelector(
                Spell.Cast("Ravage"),
                Spell.Cast("Rake", ret => (TimeToDie - RakeRemains > 3 && Rake_sDamage * (RakeRemains + 1) - Spell.GetRakeStrength(StyxWoW.Me.CurrentTarget.Guid) * RakeRemains > Mangle_sDamage)),
-               Spell.Cast("Shred", ret => (!OmenofClarityDown || BerserkUp || Lua.LuaGetEnergyRegen() >= 15) && KingoftheJungleDown),
+               Spell.Cast("Shred", ret => (OmenofClarityUp || BerserkUp || Lua.LuaGetEnergyRegen() >= 15) && KingoftheJungleDown),
                 Spell.Cast("Mangle", ret => KingoftheJungleDown)
                 );
         }
@@ -133,24 +127,18 @@ namespace YourBuddy.Rotations.Druid
           internal static Composite FeralMt()
         {
             return new PrioritySelector(
-                //actions.aoe=swap_action_list,name=default,if=active_enemies<5
-                //actions.aoe+=/auto_attack
-                //actions.aoe+=/faerie_fire,cycle_targets=1,if=debuff.weakened_armor.stack<3
                 Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
-                //actions.aoe+=/savage_roar,if=buff.savage_roar.down|(buff.savage_roar.remains<3&combo_points>0)
-                Spell.Cast("Savage Roar", ret => SavageRoardown || (SavageRoarSetting < 3 && Lua.PlayerComboPts > 0))
-                //actions.aoe+=/pool_resource,for_next=1
-                //actions.aoe+=/thrash_cat,if=buff.rune_of_reorigination.up
-                //actions.aoe+=/pool_resource,wait=0.1,for_next=1
-                //actions.aoe+=/thrash_cat,if=dot.thrash_cat.remains<3|(buff.tigers_fury.up&dot.thrash_cat.remains<9)
-                //actions.aoe+=/savage_roar,if=buff.savage_roar.remains<9&combo_points>=5
-                //actions.aoe+=/rip,if=combo_points>=5
-                //actions.aoe+=/rake,cycle_targets=1,if=(active_enemies<8|buff.rune_of_reorigination.up)&dot.rake.remains<3&target.time_to_die>=15
-                //actions.aoe+=/swipe_cat,if=buff.savage_roar.remains<=5
-                //actions.aoe+=/swipe_cat,if=buff.tigers_fury.up|buff.berserk.up
-                //actions.aoe+=/swipe_cat,if=cooldown.tigers_fury.remains<3
-                //actions.aoe+=/swipe_cat,if=buff.omen_of_clarity.react
-                //actions.aoe+=/swipe_cat,if=energy.time_to_max<=1
+                Spell.Cast("Savage Roar", ret => SavageRoardown || (SavageRoarSetting < 3 && Lua.PlayerComboPts > 0)),
+                new Decorator(ret => ThrashSetting < 3 || (TigersFuryUp && ThrashSetting < 9), new ActionAlwaysSucceed()),
+                Spell.Cast("Thrash", ret => (ThrashDown || ThrashSetting < 3) || (TigersFuryUp && ThrashSetting < 9)),
+                Spell.Cast("Savage Roar", ret => SavageRoarSetting < 9 && Lua.PlayerComboPts >= 5),
+                Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5),
+             //   Spell.Cast("Rake", ret => (Unit.NearbyAttackableUnitsCount < 8 || RuneofReoriginationUp)),
+                Spell.Cast("Swipe", ret => SavageRoarSetting <= 5 || SavageRoardown),
+                Spell.Cast("Swipe", ret => TigersFuryUp || BerserkUp),
+                Spell.Cast("Swipe", ret => CooldownTracker.GetSpellCooldown("Tiger's Fury").TotalSeconds <= 3),
+                Spell.Cast("Swipe", ret => OmenofClarityUp),
+                Spell.Cast("Swipe", ret => Lua.TimeToEnergyCap() <= 1)
                 );
         }
 
@@ -222,6 +210,7 @@ namespace YourBuddy.Rotations.Druid
         internal static bool PredatorySwiftnessRemains1 { get { return Spell.GetAuraTimeLeft(16974, Me) < 1.5; } }
         internal static bool SavageRoardown { get { return !Me.HasAura(52610); } }
         internal static bool OmenofClarityDown { get { return !Me.HasAura(135700); } }
+        internal static bool OmenofClarityUp { get { return Me.HasAura(135700); } }
         internal static bool KingoftheJungleDown { get { return !Me.HasAura(102543); } }
         internal static bool TigersFuryUp { get { return Me.HasAura(5217); } }
         internal static bool TigersFuryCooldown6 { get { return CooldownTracker.GetSpellCooldown(5217).TotalSeconds > 6; } }
@@ -285,6 +274,13 @@ namespace YourBuddy.Rotations.Druid
                 double Rip_sMult = YourBuddy.Root.Multiplier;
                 return (((113 * Rip_sMastery) + 320 * 5 * Rip_sMastery + 0.0484 * 5 * Rip_sAP * Rip_sMastery) * Rip_sMult);
             }
+        }
+
+        public static double rake_ratio(WoWUnit unit)
+        {
+            if (Spell.GetMyAuraTimeLeft(1822, unit) == 0)
+                return 2;
+            return Rake_sDamage / Spell.GetRakeStrength(unit.Guid);
         }
 
         // 16974 Predatory Swiftness Aura

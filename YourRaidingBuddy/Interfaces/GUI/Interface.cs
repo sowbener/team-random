@@ -493,6 +493,9 @@ namespace YourBuddy.Interfaces.GUI
                     //else
                     { selectSpec = internalSettings.Windwalker; }
                     break;
+                case WoWSpec.DruidFeral:
+                    { selectSpec = internalSettings.Feral; }
+                    break;
                 case WoWSpec.RogueAssassination:
                     { selectSpec = internalSettings.Assassination; }
                     break;
