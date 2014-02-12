@@ -164,6 +164,8 @@ namespace FuryUnleashed.Rotations.Protection
                                 Spell.Cast(SpellBook.Cleave, ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, true))),
                         new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent >= 100 || Me.HealthPercent <= IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
                             new PrioritySelector(
+                                new Decorator(ret => U.IsCastingAtMe,
+                                    Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => Lua.PlayerPower > 30, true)),
                                 Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
                                 Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true)
                                 )))),
