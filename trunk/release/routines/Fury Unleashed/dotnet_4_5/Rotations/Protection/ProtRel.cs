@@ -106,7 +106,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.Devastate, ret => !G.WeakenedArmor3S), // Builds up 3 sunder stacks - And keeps it up.
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && PG.Tier6AbilityUsage),
 
-                Spell.Cast(SpellBook.ThunderClap, ret => !G.WeakenedBlowsAura),
+                Spell.Cast(SpellBook.ThunderClap, ret => !G.WeakenedBlowsAura || G.ResonatingPowerGlyph),
                 new Switch<Enum.Shouts>(ctx => IS.Instance.Protection.ShoutSelection,
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, ret => Lua.PlayerPower <= Lua.PlayerPowerMax - 25)),
                     new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, ret => Lua.PlayerPower <= Lua.PlayerPowerMax - 25))),

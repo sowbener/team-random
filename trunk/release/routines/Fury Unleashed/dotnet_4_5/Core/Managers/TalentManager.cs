@@ -182,13 +182,12 @@ namespace FuryUnleashed.Core.Managers
                 RebuildNeeded = false;
                 Logger.DiagLogPu("FU TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
-                CombatLogHandler.Shutdown();
+                DamageTracker.Stop();
                 DamageTracker.Initialize();
                 Root.Instance.PreCombatSelector();
                 Root.Instance.CombatSelector();
                 return true;
             }
-
             return false;
         }
 
