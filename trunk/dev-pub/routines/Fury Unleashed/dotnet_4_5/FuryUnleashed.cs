@@ -25,7 +25,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 6, 1);
+        public static readonly Version Revision = new Version(1, 5, 6, 2);
         public static readonly string FuName = "Fury Unleashed - IR " + Revision;
         public static readonly string WoWVersion = "5.4.2";
 
@@ -81,7 +81,7 @@ namespace FuryUnleashed
 				return;
 			}
 
-            DamageTracker.Pulse();
+            DamageTracker.Pulse();   
         }
 
         public override void OnButtonPress()
@@ -155,9 +155,9 @@ namespace FuryUnleashed
 
         internal static void StopBot(string reason)
         {
-            Logger.CombatLogWh(reason);
-            CombatLogHandler.Shutdown();
+            DamageTracker.Stop();
             TreeRoot.Stop();
+            Logger.CombatLogWh(reason);
         }
         #endregion
 

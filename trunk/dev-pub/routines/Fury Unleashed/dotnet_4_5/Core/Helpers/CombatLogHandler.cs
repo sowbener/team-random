@@ -295,7 +295,14 @@ namespace FuryUnleashed.Core.Helpers
                 EventHandlers.Add(combatLogEventName, new List<CombatLogEventHandler> { handler });
 
                 // Remove the old filter.
-                Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
+                try
+                {
+                    Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
+                }
+                // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once UnusedVariable
+                catch (Exception ex)
+                { /* Catch all errors */ }
 
                 var sb = new StringBuilder();
                 sb.Append("return ");
@@ -323,7 +330,14 @@ namespace FuryUnleashed.Core.Helpers
                 EventHandlers.Remove(combatLogEventName);
 
                 // Remove the old filter.
-                Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
+                try
+                {
+                    Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
+                }
+                // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once UnusedVariable
+                catch (Exception ex)
+                { /* Catch all errors */ }
 
                 var sb = new StringBuilder();
                 sb.Append("return ");

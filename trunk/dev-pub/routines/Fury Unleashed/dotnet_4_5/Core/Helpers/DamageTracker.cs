@@ -10,21 +10,25 @@ namespace FuryUnleashed.Core.Helpers
     public class DamageTracker
     {
         #region DamageTracker
-        private static Dictionary<DateTime, double> _damageTaken;
 
+        private static Dictionary<DateTime, double> _damageTaken;
         private static bool AddingDamageTaken { get; set; }
         private static bool RemovingDamageTaken { get; set; }
+
+        private static bool _pulseDamageTracker;
 
         public static void Initialize()
         {
             try
             {
-                if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection) return;
+                if (Unit.IgnoreDamageTracker) 
+                    return;
 
                 _damageTaken = new Dictionary<DateTime, double>();
                 CombatLogHandler.Initialize();
                 AttachCombatLogEvent();
                 Logger.CombatLogFb("Damage Tracker Initialized.");
+                _pulseDamageTracker = true;
             }
             catch (Exception ex)
             {
@@ -32,9 +36,32 @@ namespace FuryUnleashed.Core.Helpers
             }
         }
 
+        public static void Stop()
+        {
+            try
+            {
+                CombatLogHandler.Shutdown();
+                Logger.CombatLogFb("Damage Tracker Stopped - Possibly for reinitialize.");
+            }
+            catch (Exception ex)
+            {
+                Logger.DiagLogFb("FU: Damage Tracker failed to stop - {0}", ex);
+            }
+        }
+
         public static void Pulse()
         {
-            RemoveDamageTaken(DateTime.Now);
+            try
+            {
+                if (Unit.IgnoreDamageTracker || _pulseDamageTracker == false)
+                    return;
+
+                RemoveDamageTaken(DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                Logger.DiagLogFb("FU: Damage Tracker failed to RemoveDamageTaken - {0}", ex);
+            }
         }
 
         private static void AttachCombatLogEvent()
@@ -58,7 +85,7 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "RANGE_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                    if (args.DestGuid == Root.MyGuid)
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
@@ -67,12 +94,11 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "SPELL_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid)
+                    if (args.DestGuid == Root.MyGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                     {
-                        object damage = args.Amount;
-
                         bool countDamage = args.SourceName != null || (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
+                        object damage = args.Amount;
                         if (countDamage && !AddingDamageTaken)
                             AddDamageTaken(DateTime.Now, (int)damage);
                     }
@@ -111,7 +137,6 @@ namespace FuryUnleashed.Core.Helpers
                 RemovingDamageTaken = true;
                 Dictionary<DateTime, double> removeList = new Dictionary<DateTime, double>();
 
-                // Remove any data older than lastSeconds + 3
                 foreach (var entry in _damageTaken.Where(entry => timestamp - entry.Key > lastSeconds + TimeSpan.FromSeconds(3)))
                 {
                     removeList.Add(entry.Key, entry.Value);

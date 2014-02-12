@@ -14,6 +14,26 @@ using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using U = FuryUnleashed.Core.Unit;
 
+
+//Disarm
+//[17:00:42] KROKS: http://www.wowhead.com/spell=51271
+//http://www.wowhead.com/spell=49016
+//http://www.wowhead.com/spell=3045
+//http://www.wowhead.com/spell=34692
+//http://www.wowhead.com/spell=106952
+//http://www.wowhead.com/spell=116740
+//http://www.wowhead.com/spell=31884
+//http://www.wowhead.com/spell=84747
+//http://www.wowhead.com/spell=51713
+//http://www.wowhead.com/spell=121471
+//http://www.wowhead.com/spell=114049
+//http://www.wowhead.com/spell=1719
+//http://www.wowhead.com/spell=107574
+//http://www.wowhead.com/spell=12292
+//http://www.wowhead.com/spell=114207
+//[17:01:10] KROKS: but i guess this is not all abilities
+//[17:01:38] KROKS: but the most obvious )
+
 namespace FuryUnleashed.Rotations.Arms
 {
     internal class ArmsPvP
