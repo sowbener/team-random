@@ -7,12 +7,18 @@ using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
 using Styx.WoWInternals;
+using DF = YourBuddy.Rotations.Druid.Feral;
 
 namespace YourBuddy.Core.Helpers
 {
     [UsedImplicitly]
     internal class CombatLogHandler
+
     {
+        public static DateTime RipAppliedDateTime;
+        public static double RealRipTimeLeft;
+        public static double Ripextends;
+        public static double ClipTime;
         //Credits to Apoc and Wulf for this class!!!
 
         internal static void Initialize()
@@ -107,6 +113,27 @@ namespace YourBuddy.Core.Helpers
                     switch (GetSuffix(a.Event))
                     {
                         case "DAMAGE":
+                            if (a.SourceGuid != 1 && a.SourceGuid == StyxWoW.Me.Guid)
+                    {
+                        if (DF.RipUp)
+                        {
+                            if (a.SpellId == 5221 || a.SpellId == 114236 || a.SpellId == 102545 || a.SpellId == 6785 ||
+                                a.SpellId == 33876)
+                                //Normal Shred, Glyphed Shred, Ravage, other Ravage, Mangle 		
+                                if (Ripextends < 3)
+                                    Ripextends ++;
+                            if (a.SpellId == 22568 &&  StyxWoW.Me.CurrentTarget != null &&
+                                StyxWoW.Me.CurrentTarget.HealthPercent < 25)
+                            {
+                                ClipTime =
+                                    CalcClipTime((16 + CalcExtensionsTime() + ClipTime) -
+                                                 (-1*(RipAppliedDateTime - DateTime.Now).TotalSeconds));
+                                RipAppliedDateTime = DateTime.Now;
+                                Ripextends = 0;
+                            }
+                        }
+                    }
+                    break;
                         case "SHIELD": // DAMAGE_SHIELD
                         case "SPLIT": // DAMAGE_SPLIT
                             if (index < args.Args.Length) a.Amount = (int)(double)args.Args[index++];
@@ -168,8 +195,53 @@ namespace YourBuddy.Core.Helpers
                             break;
 
                         case "AURA_APPLIED":
+                            if (a.SourceGuid != 1 && a.SourceGuid == StyxWoW.Me.Guid)
+                    {
+                        if (a.SpellId == 1822)
+                        {
+                            Spell.UpdateRakeTargets(a.DestGuid, DF.Rake_sDamage);
+                        }
+                        if (a.SpellId == 1079)
+                        {
+                            RipAppliedDateTime = DateTime.Now;
+                            DF._dot_rip_multiplier = DF.Rip_sDamage;
+                            Ripextends = 0;
+                        }
+                    }
+                    break;
                         case "AURA_REMOVED":
+                            if (a.SourceGuid != 1 && a.SourceGuid == StyxWoW.Me.Guid)
+                    {
+                        if (a.SpellId == 1822)
+                        {
+                            Spell.UpdateRakeTargets(a.DestGuid, 0);
+                        }
+                        if (a.SpellId == 1079)
+                        {
+                            DF._dot_rip_multiplier = 0;
+                            Ripextends = 0;
+                            ClipTime = 0;
+                        }
+                    }
+                    break;
                         case "AURA_REFRESH":
+                            if (a.SourceGuid != 1 && a.SourceGuid == StyxWoW.Me.Guid)
+                    {
+                        if (a.SpellId == 1822)
+                        {
+                            Spell.UpdateRakeTargets(a.DestGuid, DF.Rake_sDamage);
+                        }
+                        if (a.SpellId == 1079)
+                        {
+                            ClipTime =
+                                CalcClipTime((16 + CalcExtensionsTime() + ClipTime) -
+                                             (-1*(RipAppliedDateTime - DateTime.Now).TotalSeconds));
+                            RipAppliedDateTime = DateTime.Now;
+                            DF._dot_rip_multiplier = DF.Rip_sDamage;
+                            Ripextends = 0;
+                        }
+                    }
+                    break;
                         case "AURA_BROKEN":
                             if (index < args.Args.Length) a.AuraType = (AuraType)System.Enum.Parse(typeof(AuraType), args.Args[index++].ToString(), true);
                             break;
@@ -310,6 +382,57 @@ namespace YourBuddy.Core.Helpers
             {
                 handlers.Add(handler);
             }
+        }
+
+        private static double CalcClipTime(double time)
+        {
+            if (time < 2)
+                return time;
+            if (time < 4)
+                return time - 2;
+            if (time < 6)
+                return time - 4;
+            if (time < 8)
+                return time - 6;
+            if (time < 10)
+                return time - 8;
+            if (time < 12)
+                return time - 10;
+            if (time < 14)
+                return time - 12;
+            if (time < 16)
+                return time - 14;
+            if (time < 18)
+                return time - 16;
+            if (time < 20)
+                return time - 18;
+            if (time < 22)
+                return time - 20;
+            if (time < 24)
+                return time - 22;
+            if (time < 26)
+                return time - 24;
+            if (time < 28)
+                return time - 26;
+            return 0;
+        }
+
+        public static double CalcExtensionsTime()
+        {
+            if (Ripextends == 3)
+                return 8;
+            if (Ripextends == 2)
+                return 6;
+            if (Ripextends == 1)
+                return 2;
+            return 0;
+        }
+
+        public static void CalcRealTimeOfRip()
+        {
+            RealRipTimeLeft = !DF.RipUp
+                ? 0
+                : (16 + CalcExtensionsTime() + ClipTime) - (-1*(RipAppliedDateTime - DateTime.Now).TotalSeconds);
         }
 
         public static void Remove(string combatLogEventName)

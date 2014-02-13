@@ -167,8 +167,6 @@ namespace YourBuddy
             Logger.StatCounter();
             Logger.LogTimer(500);
 
-            DF._dot_rip_multiplier = DF.Rip_sDamage;
-
             /* Attack Power For Brewmaster Monks */
             _initap = StyxWoW.Me.AttackPower;
             _NewAP = StyxWoW.Me.AttackPower;
