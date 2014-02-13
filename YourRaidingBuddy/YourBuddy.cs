@@ -85,9 +85,9 @@ namespace YourBuddy
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
-                if (!GlobalSettings.Instance.UseFrameLock)
+                if (GlobalSettings.Instance.UseFrameLock)
                 {
-                    MessageBox.Show("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!");
+                    MessageBox.Show("Hard Framelock is Enabled - I suggest disable it for Soft Lock in Tyrael!");
                 }
 
                 Unleash();
