@@ -388,6 +388,9 @@ namespace YourBuddy.Core
                 case WoWClass.Hunter:
                     FixGlobalCooldownCheckSpell = "Hunter's Mark";
                     break;
+                case WoWClass.Druid:
+                    FixGlobalCooldownCheckSpell = "Cat Form";
+                    break;
                 case WoWClass.Monk:
                     FixGlobalCooldownCheckSpell = "Stance of the Fierce Tiger";
                     break;
@@ -412,6 +415,9 @@ namespace YourBuddy.Core
                     break;
                 case WoWClass.Hunter:
                     FixGlobalCooldownCheckSpell = "Arcane Shot";
+                    break;
+                case WoWClass.Druid:
+                    FixGlobalCooldownCheckSpell = "Wrath";
                     break;
                 case WoWClass.Monk:
                     //FixGlobalCooldownCheckSpell = "";
