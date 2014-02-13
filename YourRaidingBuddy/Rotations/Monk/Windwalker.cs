@@ -144,7 +144,7 @@ namespace YourBuddy.Rotations.Monk
                     (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.Always)
                     )),
                 
-               Spell.Cast("Chi Brew", ret => ((TalentChiBrewEnabled && Lua.PlayerChi <= 2) && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || (Lua.LuaGetSpellCharges() == 1 && Lua.GetSpellRechargeTime(115399, 45) <= 10) || Lua.LuaGetSpellCharges() == 2 || (Lua.LuaGetSpellCharges() > 1 && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10))) && (
+               Spell.Cast("Chi Brew", ret => ((TalentChiBrewEnabled && Lua.PlayerChi <= 2) && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || (Lua.LuaGetSpellChargesWW() == 1 && Lua.GetSpellRechargeTime(115399, 45) <= 10) || Lua.LuaGetSpellChargesWW() == 2 || (Lua.LuaGetSpellChargesWW() > 1 && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10))) && (
                     (SG.Instance.Windwalker.ChiBrew == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                     (SG.Instance.Windwalker.ChiBrew == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.ChiBrew == Enum.AbilityTrigger.Always)

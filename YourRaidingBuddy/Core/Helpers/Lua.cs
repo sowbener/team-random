@@ -224,9 +224,14 @@ namespace YourBuddy.Core.Helpers
 
 
 
-        public static double LuaGetSpellCharges()
+        public static double LuaGetSpellChargesWW()
         {
             return Styx.WoWInternals.Lua.GetReturnVal<int>("return GetSpellCharges(115399)", 0);
+        }
+
+        public static double LuaGetSpellChargesDF()
+        {
+            return Styx.WoWInternals.Lua.GetReturnVal<int>("return GetSpellCharges(106737)", 0);
         }
 
         public static double GetSpellRechargeTime(int spellId, int rechargeTime)

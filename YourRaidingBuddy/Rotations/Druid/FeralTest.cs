@@ -70,7 +70,7 @@ namespace YourBuddy.Rotations.Druid
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         FeralOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, FeralMt()),
-                                        FeralSt())));
+                                        new Decorator(ret => !HotKeyManager.IsAoe, FeralSt()))));
             }
         }
 
@@ -129,12 +129,11 @@ namespace YourBuddy.Rotations.Druid
             return new PrioritySelector(
                 Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
                 Spell.Cast("Savage Roar", ret => SavageRoardown || (SavageRoarSetting < 3 && Lua.PlayerComboPts > 0)),
-                new Decorator(ret => ThrashSetting < 3 || (TigersFuryUp && ThrashSetting < 9), new ActionAlwaysSucceed()),
-                Spell.Cast("Thrash", ret => (ThrashDown || ThrashSetting < 3) || (TigersFuryUp && ThrashSetting < 9)),
+                Spell.Cast("Thrash", ret => ThrashDown || ThrashSetting < 3 || (TigersFuryUp && ThrashSetting < 9)),
                 Spell.Cast("Savage Roar", ret => SavageRoarSetting < 9 && Lua.PlayerComboPts >= 5),
                 Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5),
-             //   Spell.Cast("Rake", ret => (Unit.NearbyAttackableUnitsCount < 8 || RuneofReoriginationUp)),
-                Spell.Cast("Swipe", ret => SavageRoarSetting <= 5 || SavageRoardown),
+                Spell.Cast("Rake", ret => RakeRemains < 3 || RakeNotUp) ,
+                Spell.Cast("Swipe", ret => SavageRoarSetting <= 5 || SavageRoardown || Lua.PlayerComboPts < 5),
                 Spell.Cast("Swipe", ret => TigersFuryUp || BerserkUp),
                 Spell.Cast("Swipe", ret => CooldownTracker.GetSpellCooldown("Tiger's Fury").TotalSeconds <= 3),
                 Spell.Cast("Swipe", ret => OmenofClarityUp),
@@ -154,6 +153,7 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite FeralOffensive()
         {
             return new PrioritySelector(
+                Spell.Cast("Force of Nature", ret => Lua.LuaGetSpellChargesDF() == 3 || Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId))),
                 Spell.Cast("Tiger's Fury", ret => Lua.PlayerPower <= 35 && OmenofClarityDown),
                 Spell.Cast("Berserk", ret => TigersFuryUp || (TimeToDie < 18 && TigersFuryCooldown6)),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
@@ -213,6 +213,7 @@ namespace YourBuddy.Rotations.Druid
         internal static bool OmenofClarityUp { get { return Me.HasAura(135700); } }
         internal static bool KingoftheJungleDown { get { return !Me.HasAura(102543); } }
         internal static bool TigersFuryUp { get { return Me.HasAura(5217); } }
+        internal static bool RakeNotUp { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(1822); } }
         internal static bool TigersFuryCooldown6 { get { return CooldownTracker.GetSpellCooldown(5217).TotalSeconds > 6; } }
         internal static bool ThrashDown { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(106830); } }
         internal static double ThrashSetting { get { return Spell.GetMyAuraTimeLeft(106830, Me.CurrentTarget); } }
