@@ -84,7 +84,7 @@ namespace YourBuddy.Rotations.Rogue
         {
             return new PrioritySelector(
                 Spell.Cast("Expose Armor", ret => G.WeakenedBlowsAura && SG.Instance.Combat.CheckExposeArmor),
-                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1),
+                Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Lua.PlayerComboPts < 1 && SG.Instance.General.EnableRedirectRogue),
                 Spell.Cast("Ambush", ret => Me.IsStealthed),
                 Spell.Cast("Slice and Dice", ret => (!Me.HasAura("Slice and Dice") || Spell.GetAuraTimeLeft("Slice and Dice") < 3) || (Me.HasAura(84745) && Spell.GetAuraTimeLeft("Slice and Dice") < 15 && Lua.PlayerComboPts >= 4)),
                 new Decorator(ret => Lua.PlayerComboPts < 5 || (TalentManager.IsSelected(18) && (Me.HasAura(115189) && Spell.GetAuraStackCount(115189) <= 4) && !Me.CurrentTarget.HasAura(84617)), new PrioritySelector(ComGen())),

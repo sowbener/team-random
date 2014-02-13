@@ -38,6 +38,13 @@ namespace YourBuddy.Interfaces.Settings
         public bool CheckAutoUpdate { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General - Rogue")]
+        [DisplayName("Enable Redirect Ability for Rogues.")]
+        [Description("Enables Redirect Ability for Rogues.")]
+        public bool EnableRedirectRogue { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
         [Category("Updater")]
         [DisplayName("Auto Update Version")]
