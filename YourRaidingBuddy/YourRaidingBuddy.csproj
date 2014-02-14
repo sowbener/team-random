@@ -71,6 +71,7 @@
     <Compile Include="Core\Managers\PetManager.cs" />
     <Compile Include="Core\Spell.cs" />
     <Compile Include="Core\Unit.cs" />
+    <Compile Include="Interfaces\Settings\Druid_Boomkin_Settings.cs" />
     <Compile Include="Interfaces\Settings\Druid_Feral_Settings.cs" />
     <Compile Include="Interfaces\Settings\Paladin_Protection_Settings.cs" />
     <Compile Include="Interfaces\Settings\Paladin_Retribution_Settings.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Rotations\Deathknight\Blood.cs" />
     <Compile Include="Rotations\Deathknight\Frost.cs" />
     <Compile Include="Rotations\Deathknight\Unholy.cs" />
+    <Compile Include="Rotations\Druid\BoomkinTest.cs" />
     <Compile Include="Rotations\Druid\FeralTest.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -90,8 +90,8 @@ namespace YourBuddy.Rotations.Druid
                 new Decorator(ret => Lua.PlayerComboPts >= 5 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25) && RipUp && !(Lua.PlayerPower >= 50 || (BerserkUp && Lua.PlayerPower >= 25)), new ActionAlwaysSucceed()),
                 Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && RipUp && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25)),
                 Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && TimeToDie >= 6 && RipSetting < 2 && (BerserkUp || RipSetting + 1.9 <= CooldownTracker.GetSpellCooldown("Tigers Fury").TotalSeconds)),
-                Spell.Cast("Savage Roar", ret => SavageRoarSetting <= 3 && Lua.PlayerComboPts > 0 && (SavageRoarSetting + 2 > RipSetting)),
-                Spell.Cast("Savage Roar", ret => SavageRoarSetting <= 6 && Lua.PlayerComboPts >= 5 && (SavageRoarSetting + 2 <= RipSetting && RipUp)),
+                Spell.Cast("Savage Roar", ret => SavageRoarSetting <= 3 && Lua.PlayerComboPts > 0 && (SavageRoarSetting + 2) > RipSetting),
+                Spell.Cast("Savage Roar", ret => SavageRoarSetting <= 6 && Lua.PlayerComboPts >= 5 && (SavageRoarSetting + 2) <= RipSetting && RipUp),
                 Spell.Cast("Savage Roar", ret => SavageRoarSetting <= 12 && Lua.PlayerComboPts >= 5 && Lua.TimeToEnergyCap() <= 1 && SavageRoarSetting <= RipSetting && RipUp),
                 Spell.Cast("Rake", ret => RuneofReoriginationUp && RakeRemains < 9 && RuneofReoriginationRemains <= 1.5),
                 //# Rake if we can apply a stronger Rake or if it's about to fall off and clipping the last tick won't waste too much damage.
@@ -194,14 +194,6 @@ namespace YourBuddy.Rotations.Druid
         #endregion
 
         #region Booleans
-
-        private static uint FocusFireStackCount
-        {
-            get
-            {
-                return Spell.GetAuraStackCount("Frenzy");
-            }
-        }
 
         internal static bool RipUp { get { return Me.CurrentTarget!= null && Me.CurrentTarget.HasMyAura(1079); } }
         internal static double RipSetting { get { return Spell.GetMyAuraTimeLeft(1079, Me.CurrentTarget); } }

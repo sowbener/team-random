@@ -25,6 +25,7 @@ using FD = YourBuddy.Rotations.Deathknight.Frost;
 using UD = YourBuddy.Rotations.Deathknight.Unholy;
 using PP = YourBuddy.Rotations.Paladin.Protection;
 using DF = YourBuddy.Rotations.Druid.Feral;
+using DB = YourBuddy.Rotations.Druid.Boomkin;
 using RP = YourBuddy.Rotations.Paladin.Retribution;
 using SV = YourBuddy.Rotations.Hunter.Survival;
 using BMH = YourBuddy.Rotations.Hunter.BeastMastery;
@@ -219,6 +220,7 @@ namespace YourBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, AR.InitializeAss),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, CR.InitializeCom),
                 new SwitchArgument<WoWSpec>(WoWSpec.DruidFeral, DF.InitializeFeral),
+                new SwitchArgument<WoWSpec>(WoWSpec.DruidBalance, DB.InitializeBoomkin),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightBlood, BD.InitializeBlood),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightFrost, FD.InitializeFrost),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, UD.InitializeUnholy),

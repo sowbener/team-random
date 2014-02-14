@@ -59,6 +59,7 @@ namespace YourBuddy.Interfaces.Settings
 
         //Druid Settings
         private YbSettingsDF _settingsDF;
+        private YbSettingsDB _settingsDB;
 
 
 
@@ -167,6 +168,11 @@ namespace YourBuddy.Interfaces.Settings
         public YbSettingsDF Feral
         {
             get { return _settingsDF ?? (_settingsDF = new YbSettingsDF()); }
+        }
+        [Browsable(false)]
+        public YbSettingsDB Boomkin
+        {
+            get { return _settingsDB ?? (_settingsDB = new YbSettingsDB()); }
         }
 
 

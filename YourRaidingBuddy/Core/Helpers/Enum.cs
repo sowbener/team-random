@@ -44,6 +44,13 @@ namespace YourBuddy.Core.Helpers
             OnBlTwHr
         }
 
+        public enum EclipseType
+        {
+            None,
+            Solar,
+            Lunar
+        };
+
         public enum TriggerTarget
         {
             FocusTarget,

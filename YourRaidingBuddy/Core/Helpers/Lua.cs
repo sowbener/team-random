@@ -203,6 +203,21 @@ namespace YourBuddy.Core.Helpers
             }
         }
 
+        public static YourBuddy.Core.Helpers.Enum.EclipseType GetEclipseDirection()
+        {
+            var dir = Styx.WoWInternals.Lua.GetReturnVal<string>("return GetEclipseDirection();", 0);
+
+            switch (dir)
+            {
+                case "moon":
+                    return YourBuddy.Core.Helpers.Enum.EclipseType.Lunar;
+                case "sun":
+                    return YourBuddy.Core.Helpers.Enum.EclipseType.Solar;
+                default:
+                    return YourBuddy.Core.Helpers.Enum.EclipseType.None;
+            }
+        }
+
         //local stagger = select(14, UnitAura("player", "moderate stagger", nil, "HARMFUL"));
         public static double PurifyingBrew(int spellid)
         {
@@ -322,6 +337,27 @@ namespace YourBuddy.Core.Helpers
                 }
             }
         }
+
+    public static double PlayerEclipsePower
+        {
+            get
+            {
+                try
+                {
+                    using (StyxWoW.Memory.AcquireFrame())
+                    {
+                        return Styx.WoWInternals.Lua.GetReturnVal<int>(String.Format("return UnitPower(\"player\", {0})", "SPELL_POWER_ECLIPSE"), 0);
+                    }
+                }
+                catch
+                {
+                    //  Logger.FailLog(" Lua Failed in PlayerComboPts");
+                    return 0;
+                }
+            }
+        }
+
+      //  Lua.GetReturnVal<int>(String.Format("return UnitPower(\"player\", {0})", "SPELL_POWER_ECLIPSE"), 0)
 
         #region Taken From SuperBad //YouKnowILoveYouNavi <3
 
