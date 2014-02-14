@@ -117,7 +117,11 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite FeralNormalSt()
         {
             return new PrioritySelector(
-               Spell.Cast("Ferocious Bite", ret => RipUp && RipSetting <= 3 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25)),
+                Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts > 4 && (Lua.TimeToEnergyCap() >= 1 || (!BerserkUp && Lua.PlayerPower <= 25) || (!FeralRageUp && FeralRageRemains >= 1)) && RipUp),
+                new Decorator(ret => Lua.PlayerComboPts > 4 && (Lua.TimeToEnergyCap() >= 1 || (!BerserkUp && Lua.PlayerPower <= 25) || (!FeralRageUp && FeralRageRemains >= 1)) && RipUp, new ActionAlwaysSucceed()),
+                 Spell.Cast("Thrash", ret => ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5)),
+                new Decorator(ret => ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5), new ActionAlwaysSucceed()),
+                Spell.Cast("Ferocious Bite", ret => RipUp && RipSetting <= 3 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25)),
               Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
               Spell.PreventDoubleCast("Healing Touch", 0.7, On => Me, ret => TalentManager.IsSelected(17) && PredatorySwiftnessUp && DreamDown && (PredatorySwiftnessRemains1 || Lua.PlayerComboPts >= 4)),
               Spell.Cast("Savage Roar", ret => SavageRoarGlyphDown),
@@ -126,10 +130,6 @@ namespace YourBuddy.Rotations.Druid
               Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && RipSetting < 2),
               Spell.Cast("Thrash", ret => OmenofClarityUp && (ThrashDown || ThrashSetting <3)),
               Spell.Cast("Rake", ret => (RakeNotUp || RakeRemains <3) || (Rake_sDamage > Spell.GetRakeStrength(Me.CurrentTarget.Guid) * 1.12)),
-              new Decorator(ret => ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5), new ActionAlwaysSucceed()),
-              Spell.Cast("Thrash", ret => ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5)),
-              new Decorator(ret => Lua.PlayerComboPts >= 5 && (Lua.TimeToEnergyCap() >= 1 || (!BerserkUp && Lua.PlayerPower <= 25) || (!FeralRageUp && FeralRageRemains >= 1)) && RipUp, new ActionAlwaysSucceed()),
-              Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && RipUp),
                 new Decorator(ret => OmenofClarityUp, FeralFiller()),
                 new Decorator(ret => FeralFuryUp, FeralFiller()),
                 new Decorator(ret => (Lua.PlayerComboPts < 5 && RipSetting < 3) || (Lua.PlayerComboPts == 0 && SavageRoarSettingGlyph < 2), FeralFiller()),
