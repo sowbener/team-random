@@ -32,7 +32,6 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
-                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Rel_FuryNonGcdUtility(),
                                 Rel_FuryRacials(),
                                 Rel_FuryOffensive(),
@@ -40,6 +39,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 Rel_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
+                                        new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                         Rel_FuryGcdUtility(),
                                         new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Rel_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
@@ -48,7 +48,6 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
-                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Rel_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
@@ -58,6 +57,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 Rel_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
+                                        new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                         Rel_FuryGcdUtility(),
                                         new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Rel_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
@@ -66,7 +66,6 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
-                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Rel_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
@@ -76,6 +75,7 @@ namespace FuryUnleashed.Rotations.Fury
                                 Rel_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
+                                        new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                         Rel_FuryGcdUtility(),
                                         new Decorator(ret => FG.MultiTargetUsage && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Rel_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Rel_FuryExec()),
@@ -143,8 +143,8 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryStanceDance()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.BattleStance, ret => !DamageTracker.CalculateBerserkerStance()),
-                Spell.Cast(SpellBook.BerserkerStance, ret => DamageTracker.CalculateBerserkerStance()));
+                Spell.Cast(SpellBook.BattleStance, ret => !G.BattleStanceAura && !DamageTracker.CalculateBerserkerStance(), true),
+                Spell.Cast(SpellBook.BerserkerStance, ret => !G.BerserkerStanceAura && DamageTracker.CalculateBerserkerStance(), true));
         }
 
         internal static Composite Rel_FuryHeroicStrike()
