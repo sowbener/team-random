@@ -32,6 +32,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_FuryDefensive()),
+                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Dev_FuryNonGcdUtility(),
                                 Dev_FuryRacials(),
                                 Dev_FuryOffensive(),
@@ -39,7 +40,6 @@ namespace FuryUnleashed.Rotations.Fury
                                 Dev_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
-                                        new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
@@ -48,6 +48,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_FuryDefensive()),
+                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Dev_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
@@ -57,7 +58,6 @@ namespace FuryUnleashed.Rotations.Fury
                                 Dev_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
-                                        new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
@@ -66,6 +66,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Dev_FuryDefensive()),
+                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Dev_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
@@ -75,7 +76,6 @@ namespace FuryUnleashed.Rotations.Fury
                                 Dev_FuryHeroicStrike(),
                                 new Decorator(ret => !Spell.IsGlobalCooldown(),
                                     new PrioritySelector(
-                                        new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                         Dev_FuryGcdUtility(),
                                         new Decorator(ret => FG.MultiTargetUsage && HotKeyManager.IsAoe && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum, Dev_FuryMt()),
                                         new Decorator(ret => G.ExecutePhase, Dev_FuryExec()),
