@@ -184,6 +184,7 @@ namespace FuryUnleashed.Core.Managers
                 Update();
                 DamageTracker.Stop();
                 DamageTracker.Initialize();
+                Item.RefreshSecondaryStats();
                 Root.Instance.PreCombatSelector();
                 Root.Instance.CombatSelector();
                 return true;

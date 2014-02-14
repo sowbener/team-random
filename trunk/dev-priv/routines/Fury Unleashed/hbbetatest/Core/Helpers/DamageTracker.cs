@@ -176,8 +176,8 @@ namespace FuryUnleashed.Core.Helpers
                     var healthtopercent = StyxWoW.Me.MaxHealth / 100; // Calculate Health per 1%.
                     var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Retrieve damage taken over 3 seconds.
                     var damagetorage = (damageoverthreeseconds / healthtopercent) / 3; // Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds.
-                    const double battlestancetgrageregen = 3.6 * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
-                    const double battlestancesmfrageregen = 2.6 * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
+                    var battlestancetgrageregen = Item.AttackSpeed * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
+                    var battlestancesmfrageregen = Item.AttackSpeed * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
                     var berserkerstancetgrageregen = (battlestancetgrageregen * 0.5) + damagetorage; // Half of normalized rage  + Rage from Damage.
                     var berserkerstancesmfrageregen = (battlestancesmfrageregen * 0.5) + damagetorage; // Half of normalized rage  + Rage from Damage.
 
