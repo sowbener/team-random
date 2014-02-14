@@ -97,10 +97,10 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckShieldBbAdvancedLogics { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("Protection - Shield Block & Barrier")]
         [DisplayName("Threat Based Logics")]
-        [Description("Checked enables a Threat Based extension on the logic - Increases DPS.")]
+        [Description("Checked enables a Threat Based extension on the logic - Increases DPS slightly.")]
         public bool CheckShieldBbThreatLogics { get; set; }
 
         [Setting]

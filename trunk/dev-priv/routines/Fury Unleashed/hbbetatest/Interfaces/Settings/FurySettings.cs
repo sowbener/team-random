@@ -14,6 +14,17 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
+        #region Experimental Options
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Fury - Experimental Options")]
+        [DisplayName("Enable Stance Dance")]
+        [Description("Enabled allows the routine to make a prediction which Stance will be best - Battle or Berserker.")]
+        public bool CheckStanceDance { get; set; }
+        #endregion
+
+        // ========================================================================================
+
         #region Ability Options
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]

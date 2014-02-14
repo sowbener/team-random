@@ -315,6 +315,11 @@ namespace FuryUnleashed.Rotations
             get { return Spell.HasAura(Me, AuraBook.DeathSentence); }
         }
 
+        internal static bool DefensiveStanceAura
+        {
+            get { return Spell.HasAura(Me, AuraBook.DefensiveStance); }
+        }
+
         internal static bool DeterminationAura
         {
             get { return Spell.HasAura(Me, AuraBook.Determination); }

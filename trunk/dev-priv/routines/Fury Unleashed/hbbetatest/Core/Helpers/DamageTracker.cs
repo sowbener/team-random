@@ -137,7 +137,7 @@ namespace FuryUnleashed.Core.Helpers
                 RemovingDamageTaken = true;
                 Dictionary<DateTime, double> removeList = new Dictionary<DateTime, double>();
 
-                foreach (var entry in _damageTaken.Where(entry => timestamp - entry.Key > lastSeconds + TimeSpan.FromSeconds(3)))
+                foreach (var entry in _damageTaken.Where(entry => timestamp - entry.Key > lastSeconds + TimeSpan.FromSeconds(4)))
                 {
                     removeList.Add(entry.Key, entry.Value);
                 }
@@ -163,6 +163,46 @@ namespace FuryUnleashed.Core.Helpers
                     let diff = current - entry.Key
                     where diff <= lastSeconds && diff >= TimeSpan.FromSeconds(0)
                     select entry).Aggregate<KeyValuePair<DateTime, double>, double>(0, (current1, entry) => current1 + entry.Value);
+        }
+        #endregion
+
+        #region Fury-Spec Functions
+        public static bool CalculateBerserkerStance()
+        {
+            using (new PerformanceLogger("CalculateBerserkerStance"))
+            {
+                try
+                {
+                    var healthtopercent = StyxWoW.Me.MaxHealth / 100; // Calculate Health per 1%.
+                    var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Retrieve damage taken over 3 seconds.
+                    var damagetorage = (damageoverthreeseconds / healthtopercent) / 3; // Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds.
+                    const double battlestancetgrageregen = 3.6 * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
+                    const double battlestancesmfrageregen = 2.6 * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
+                    var berserkerstancetgrageregen = (battlestancetgrageregen * 0.5) + damagetorage; // Half of normalized rage  + Rage from Damage.
+                    var berserkerstancesmfrageregen = (battlestancesmfrageregen * 0.5) + damagetorage; // Half of normalized rage  + Rage from Damage.
+
+                    if (Item.WieldsTwoHandedWeapons)
+                    {
+                        if (berserkerstancetgrageregen > battlestancetgrageregen)
+                            return true;
+
+                        return false;
+                    }
+
+                    if (Item.WieldsOneHandedWeapons)
+                    {
+                        if (berserkerstancesmfrageregen > battlestancesmfrageregen)
+                            return true;
+
+                        return false;
+                    }
+                }
+                catch (Exception exstancecalc)
+                {
+                    Logger.DiagLogFb("FU: Failed CalculateBerserkerStance - {0}", exstancecalc);
+                }
+            }
+            return false;
         }
         #endregion
 

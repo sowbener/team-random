@@ -15,6 +15,7 @@
                             CommandingShout = 469,
                             DeathSentence = 144442,
                             DeepWounds = 115767,
+                            DefensiveStance = 71,
                             Determination = 146250, // Thok trinket Aura - Multi-ID ...
                             EnrageUnknown = 13046, // Uknown where this comes from.
                             EnrageNormal = 12880, // Non-Tier Enrage Aura - Normal Enrage

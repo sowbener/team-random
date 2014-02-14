@@ -149,7 +149,6 @@ namespace FuryUnleashed.Rotations.Protection
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 
-                //Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
                 Item.ProtUseHealthStone(),
 
                 // Defensive

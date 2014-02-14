@@ -323,7 +323,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static bool IgnoreDamageTracker
         {
-            get { return StyxWoW.Me.Specialization != WoWSpec.WarriorProtection; }
+            get { return StyxWoW.Me.Specialization == WoWSpec.WarriorArms; }
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
@@ -31,6 +32,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Auto,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
+                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Rel_FuryNonGcdUtility(),
                                 Rel_FuryRacials(),
                                 Rel_FuryOffensive(),
@@ -46,6 +48,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
+                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Rel_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
@@ -63,6 +66,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new SwitchArgument<Enum.Mode>(Enum.Mode.Hotkey,
                             new PrioritySelector(
                                 new Decorator(ret => Me.HealthPercent < 100, Rel_FuryDefensive()),
+                                new Decorator(ret => FG.StanceDanceUsage, Rel_FuryStanceDance()),
                                 Rel_FuryNonGcdUtility(),
                                 new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
@@ -95,6 +99,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && !G.ReadinessAura && G.ColossusSmashAura && FG.Tier6AbilityUsage),
                 //actions.single_target+=/bloodthirst,if=!(target.health.pct<20&debuff.colossus_smash.up&rage>=30&buff.enrage.up)
+                Spell.MultiDoT(SpellBook.Bloodbath, AuraBook.DeepWounds, 1500, 5, 160, ret => FG.MultiTargetUsage),
                 Spell.Cast(SpellBook.Bloodthirst),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
                 Spell.Cast(SpellBook.WildStrike, ret => G.BloodsurgeAura && G.NormalPhase && G.BloodthirstSpellCooldown <= 1000),
@@ -133,6 +138,13 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/impending_victory,if=enabled&target.health.pct>=20&cooldown.colossus_smash.remains>=2
                 Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && !G.ImpendingVictoryOnCooldown && G.NormalPhase && G.ColossusSmashSpellCooldown >= 2000 && FG.RotationalImpendingVictoryUsage)
                 );
+        }
+
+        internal static Composite Rel_FuryStanceDance()
+        {
+            return new PrioritySelector(
+                Spell.Cast(SpellBook.BattleStance, ret => !DamageTracker.CalculateBerserkerStance()),
+                Spell.Cast(SpellBook.BerserkerStance, ret => DamageTracker.CalculateBerserkerStance()));
         }
 
         internal static Composite Rel_FuryHeroicStrike()
@@ -334,18 +346,18 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryDefensive()
         {
             return new PrioritySelector(
-                new Decorator(ret => G.EnragedRegenerationTalent && FG.EnragedRegenerationUsage && Me.HealthPercent <= IS.Instance.Fury.CheckEnragedRegenNum,
+                // HP Regeneration
+                new Decorator(ret => G.EnragedRegenerationTalent && IS.Instance.Fury.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Fury.CheckEnragedRegenNum,
                     new PrioritySelector(
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new PrioritySelector(
-                                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true),
-                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me))),
+                            new Sequence(
+                                new Action(ctx => Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration")),
+                                new Action(ctx => Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true)),
+                                new Action(ctx => Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
-
-                //Spell.Cast(SpellBook.EnragedRegeneration, ret => G.EnragedRegenerationTalent && FG.EnragedRegenerationUsage && Me.HealthPercent <= IS.Instance.Fury.CheckEnragedRegenNum),
 
                 Spell.Cast(SpellBook.DiebytheSword, ret => FG.DiebytheSwordUsage && Me.HealthPercent <= IS.Instance.Fury.CheckDiebytheSwordNum),
                 Spell.Cast(SpellBook.ShieldWall, ret => FG.ShieldWallUsage && Me.HealthPercent <= IS.Instance.Fury.CheckShieldWallNum),

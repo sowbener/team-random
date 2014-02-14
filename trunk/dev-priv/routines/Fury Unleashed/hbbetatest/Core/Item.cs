@@ -229,6 +229,30 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Other Item Functions
+        internal static bool WieldsOneHandedWeapons
+        {
+            get
+            {
+                try
+                {
+                    switch (Me.Inventory.Equipped.MainHand.ItemInfo.WeaponClass)
+                    {
+                        case WoWItemWeaponClass.Axe:
+                        case WoWItemWeaponClass.Exotic:
+                        case WoWItemWeaponClass.Mace:
+                        case WoWItemWeaponClass.Sword:
+                            return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Logger.DiagLogPu("Wielding TwoHander: {0}", ex);
+                }
+                return false;
+            }
+        }
+
         internal static bool WieldsTwoHandedWeapons
         {
             get
