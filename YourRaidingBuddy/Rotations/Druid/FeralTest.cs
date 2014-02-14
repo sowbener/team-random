@@ -57,7 +57,8 @@ namespace YourBuddy.Rotations.Druid
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         FeralOffensive())),
                                        new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Feral.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Feral.AoECount, FeralMt()),
-                                         FeralSt())),
+                                       new Decorator(ret => SG.Instance.Feral.RuneofOrginationRotation, FeralSt()),
+                                       new Decorator(ret => !SG.Instance.Feral.RuneofOrginationRotation, FeralNormalSt()))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Feral.CheckAutoAttack, Lua.StartAutoAttack),
@@ -106,6 +107,32 @@ namespace YourBuddy.Rotations.Druid
                 new Decorator(ret => OmenofClarityUp, FeralFiller()),
                 new Decorator(ret => FeralFuryUp, FeralFiller()),
                 new Decorator(ret => (Lua.PlayerComboPts < 5 && RipSetting < 3) || (Lua.PlayerComboPts < 1 && SavageRoarSettingGlyph < 2), FeralFiller()),
+                new Decorator(ret => TimeToDie <= 8.5, FeralFiller()),
+                new Decorator(ret => TigersFuryUp || BerserkUp, FeralFiller()),
+                new Decorator(ret => CooldownTracker.GetSpellCooldown("Tiger's Fury").TotalSeconds <= 3, FeralFiller()),
+                new Decorator(ret => Lua.TimeToEnergyCap() <= 1, FeralFiller())
+                );
+        }
+
+        internal static Composite FeralNormalSt()
+        {
+            return new PrioritySelector(
+               Spell.Cast("Ferocious Bite", ret => RipUp && RipSetting <= 3 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25)),
+              Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
+              Spell.PreventDoubleCast("Healing Touch", 0.7, On => Me, ret => TalentManager.IsSelected(17) && PredatorySwiftnessUp && DreamDown && (PredatorySwiftnessRemains1 || Lua.PlayerComboPts >= 4)),
+              Spell.Cast("Savage Roar", ret => SavageRoarGlyphDown),
+              Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25) && rip_ratio() >= 1.15),
+              Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25) && RipUp),
+              Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && RipSetting < 2),
+              Spell.Cast("Thrash", ret => OmenofClarityUp && (ThrashDown || ThrashSetting <3)),
+              Spell.Cast("Rake", ret => (RakeNotUp || RakeRemains <3) || (Rake_sDamage > Spell.GetRakeStrength(Me.CurrentTarget.Guid) * 1.12)),
+              new Decorator(ret => ThrashSetting <3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5), new ActionAlwaysSucceed()),
+              Spell.Cast("Thrash", ret => ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5)),
+              new Decorator(ret => Lua.PlayerComboPts >= 5 && !(Lua.TimeToEnergyCap() <= 1 || (BerserkUp && Lua.PlayerPower >= 25) || (FeralRageUp && FeralRageRemains <= 1)) && RipUp, new ActionAlwaysSucceed()),
+              Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && RipUp),
+                new Decorator(ret => OmenofClarityUp, FeralFiller()),
+                new Decorator(ret => FeralFuryUp, FeralFiller()),
+                new Decorator(ret => (Lua.PlayerComboPts < 5 && RipSetting < 3) || (Lua.PlayerComboPts == 0 && SavageRoarSettingGlyph < 2), FeralFiller()),
                 new Decorator(ret => TimeToDie <= 8.5, FeralFiller()),
                 new Decorator(ret => TigersFuryUp || BerserkUp, FeralFiller()),
                 new Decorator(ret => CooldownTracker.GetSpellCooldown("Tiger's Fury").TotalSeconds <= 3, FeralFiller()),

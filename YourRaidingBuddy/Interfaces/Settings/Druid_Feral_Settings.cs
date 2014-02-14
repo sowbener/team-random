@@ -18,37 +18,16 @@ namespace YourBuddy.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Feral - Ability Options")]
-        [DisplayName("A Murder of Crows")]
-        [Description("Select the usage of A Murder of Crows.")]
-        public Enum.AbilityTrigger MurderofCrows { get; set; }
+        [DisplayName("xxxxx")]
+        [Description("xxxxx")]
+        public Enum.AbilityTrigger xxx { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
+        [Styx.Helpers.DefaultValue(false)]
         [Category("Feral - Ability Options")]
-        [DisplayName("Lynx Rush")]
-        [Description("Select the usage of Lynx Rush.")]
-        public Enum.AbilityTrigger LynxRush { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
-        [Category("Feral - Ability Options")]
-        [DisplayName("Rapid Fire")]
-        [Description("Select the usage of Rapid Fire")]
-        public Enum.AbilityTrigger RapidFire { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
-        [Category("Feral - Ability Options")]
-        [DisplayName("Rabid")]
-        [Description("Select the usage of Rabid")]
-        public Enum.AbilityTrigger Rabid { get; set; }
-
-        [Setting]
-        [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
-        [Category("Feral - Ability Options")]
-        [DisplayName("Stampede")]
-        [Description("Select the usage of Stampede.")]
-        public Enum.AbilityTrigger Stampede { get; set; }
+        [DisplayName("Enable Advance Rotation (Rune or Orgination REQUIRED)")]
+        [Description("Enables the Rune of Orgination Rotation")]
+        public bool RuneofOrginationRotation { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
