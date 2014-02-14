@@ -27,8 +27,8 @@ namespace FuryUnleashed.Core.Helpers
                 _damageTaken = new Dictionary<DateTime, double>();
                 CombatLogHandler.Initialize();
                 AttachCombatLogEvent();
-                Logger.CombatLogFb("Damage Tracker Initialized.");
                 _pulseDamageTracker = true;
+                Logger.CombatLogFb("Damage Tracker Initialized.");
             }
             catch (Exception ex)
             {
@@ -40,7 +40,9 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
+                DetachCombatLogEvent();
                 CombatLogHandler.Shutdown();
+                _pulseDamageTracker = false;
                 Logger.CombatLogFb("Damage Tracker Stopped - Possibly for reinitialize.");
             }
             catch (Exception ex)
@@ -69,6 +71,13 @@ namespace FuryUnleashed.Core.Helpers
             CombatLogHandler.Register("SWING_DAMAGE", HandleCombatLog);
             CombatLogHandler.Register("SPELL_DAMAGE", HandleCombatLog);
             CombatLogHandler.Register("RANGE_DAMAGE", HandleCombatLog);
+        }
+
+        private static void DetachCombatLogEvent()
+        {
+            CombatLogHandler.Remove("SWING_DAMAGE");
+            CombatLogHandler.Remove("SPELL_DAMAGE");
+            CombatLogHandler.Remove("RANGE_DAMAGE");
         }
 
         private static void HandleCombatLog(CombatLogEventArgs args)

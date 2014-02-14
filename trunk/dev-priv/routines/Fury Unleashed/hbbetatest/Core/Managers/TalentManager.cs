@@ -180,13 +180,25 @@ namespace FuryUnleashed.Core.Managers
             if (EventRebuildTimer.IsFinished && RebuildNeeded)
             {
                 RebuildNeeded = false;
-                Logger.DiagLogPu("FU TalentManager: Rebuilding behaviors due to changes detected.");
+                Logger.DiagLogPu("FU: Rebuilding behaviors due to changes detected - TalentManager.");
+
+                /* Updating Talents and Glyphs */
                 Update();
+
+                /* Restarting the DamageTracker */
                 DamageTracker.Stop();
                 DamageTracker.Initialize();
+
+                /* Refreshing Stats and Setting GCD Spell */
                 Item.RefreshSecondaryStats();
+                Spell.InitGcdSpell();
+
+                /* Restarting Rotations */
                 Root.Instance.PreCombatSelector();
                 Root.Instance.CombatSelector();
+
+                /* Done! */
+                Logger.DiagLogPu("FU: Rebuilding behaviors completed - TalentManager.");
                 return true;
             }
             return false;
