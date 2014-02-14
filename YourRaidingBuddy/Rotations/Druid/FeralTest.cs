@@ -81,7 +81,7 @@ namespace YourBuddy.Rotations.Druid
                 Spell.Cast("Ferocious Bite", ret => RipUp && RipSetting <= 3 && Me.CurrentTarget.HealthPercent <= 25),
                 Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
                 Spell.PreventDoubleCast("Healing Touch", 0.7, On => Me, ret => TalentManager.IsSelected(17) && PredatorySwiftnessUp && DreamDown && (PredatorySwiftnessRemains1 || Lua.PlayerComboPts >= 4)),
-                Spell.Cast("Savage Roar", ret => SavageRoardown),
+                Spell.Cast("Savage Roar", ret => SavageRoardown || SavageRoarSetting <= 3),
                 Spell.Cast("Thrash", ret => OmenofClarityUp && (ThrashDown || ThrashSetting < 3) && TimeToDie >= 6),
                 Spell.Cast("Ferocious Bite", ret => TimeToDie <= 1 && Lua.PlayerComboPts >= 3),
                 Spell.Cast("Savage Roar", ret => (SavageRoarUp && SavageRoarSetting <= 3) && Lua.PlayerComboPts > 0 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 25)),
@@ -90,9 +90,9 @@ namespace YourBuddy.Rotations.Druid
                 new Decorator(ret => Lua.PlayerComboPts >= 5 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25) && RipUp && !(Lua.PlayerPower >= 50 || (BerserkUp && Lua.PlayerPower >= 25)), new ActionAlwaysSucceed()),
                 Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && RipUp && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25)),
                 Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && TimeToDie >= 6 && RipSetting < 2 && (BerserkUp || RipSetting + 1.9 <= CooldownTracker.GetSpellCooldown("Tigers Fury").TotalSeconds)),
-                Spell.Cast("Savage Roar", ret => (SavageRoarUp && SavageRoarSetting <= 3) && Lua.PlayerComboPts > 0 && (SavageRoarSetting + 2) > RipSetting),
+              //  Spell.Cast("Savage Roar", ret => (SavageRoarUp && SavageRoarSetting <= 3) && Lua.PlayerComboPts > 0 && (SavageRoarSetting + 2) > RipSetting),
                 Spell.Cast("Savage Roar", ret => (SavageRoarUp && SavageRoarSetting <= 6 && Lua.PlayerComboPts >= 5) && (SavageRoarSetting + 2) <= RipSetting && RipUp),
-                Spell.Cast("Savage Roar", ret => (SavageRoarUp && SavageRoarSetting <= 12 && Lua.PlayerComboPts >= 5) && Lua.TimeToEnergyCap() <= 1 && SavageRoarSetting <= RipSetting && RipUp),
+                Spell.Cast("Savage Roar", ret => (SavageRoarUp && SavageRoarSetting <= 12 && Lua.PlayerComboPts >= 5) && Lua.TimeToEnergyCap() <= 1 && SavageRoarSetting + 1 <= RipSetting + 6 && RipUp),
                 Spell.Cast("Rake", ret => RuneofReoriginationUp && RakeRemains < 9 && RuneofReoriginationRemains <= 1.5),
                 //# Rake if we can apply a stronger Rake or if it's about to fall off and clipping the last tick won't waste too much damage.
                 //actions.advanced+=/rake,cycle_targets=1,if=target.time_to_die-dot.rake.remains>3&(action.rake.tick_damage>dot.rake.tick_dmg|(dot.rake.remains<3&action.rake.tick_damage%dot.rake.tick_dmg>=0.75))
