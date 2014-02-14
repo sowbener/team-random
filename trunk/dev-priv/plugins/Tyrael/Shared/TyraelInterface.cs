@@ -72,6 +72,11 @@ namespace Tyrael.Shared
 
         public TyraelInterface()
         {
+            if (TreeRoot.IsRunning)
+            {
+                Logging.Write(Colors.Red, "[Tyrael] You must stop the bot in order to enable or disable FrameLock Functions (HardLock & SoftLock).");
+            }
+
             InitializeComponent();
             GlobalSettings.Instance.Load();
             TyraelSettings.Instance.Load();

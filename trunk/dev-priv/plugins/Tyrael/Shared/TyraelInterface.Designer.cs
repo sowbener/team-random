@@ -1,4 +1,6 @@
-﻿namespace Tyrael.Shared
+﻿using Styx.CommonBot;
+
+namespace Tyrael.Shared
 {
     partial class TyraelInterface
     {
@@ -178,6 +180,8 @@
             // CheckHardLock
             // 
             this.CheckHardLock.AutoSize = true;
+            if (TreeRoot.IsRunning) { this.CheckHardLock.Enabled = false; }
+            else { this.CheckHardLock.Enabled = true; }
             this.CheckHardLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CheckHardLock.ForeColor = System.Drawing.Color.DodgerBlue;
             this.CheckHardLock.Location = new System.Drawing.Point(10, 22);
@@ -320,6 +324,8 @@
             // checkSoftLock
             // 
             this.checkSoftLock.AutoSize = true;
+            if (TreeRoot.IsRunning) { this.checkSoftLock.Enabled = false; }
+            else { this.checkSoftLock.Enabled = true; }
             this.checkSoftLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkSoftLock.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkSoftLock.Location = new System.Drawing.Point(10, 42);

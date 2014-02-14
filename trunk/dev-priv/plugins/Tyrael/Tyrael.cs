@@ -90,7 +90,22 @@ namespace Tyrael
         }
         #endregion
 
-        #region Privates
+        #region Privates & Internals
+        /// <summary>
+        /// Initializes the proper plugins based on the Setting CheckPluginPulsing.
+        /// </summary>
+        internal static void InitializePlugins()
+        {
+            if (TyraelSettings.Instance.CheckPluginPulsing)
+            {
+                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+            }
+            else
+            {
+                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+            }
+        }
+
         /// <summary>
         /// Actual Root Composite - Within this the RoutineManager runs the routines behaviors.
         /// </summary>
@@ -106,21 +121,6 @@ namespace Tyrael
                         RoutineManager.Current.CombatBehavior)),
                     RoutineManager.Current.PreCombatBuffBehavior,
                     RoutineManager.Current.RestBehavior);
-        }
-
-        /// <summary>
-        /// Initializes the proper plugins based on the Setting CheckPluginPulsing.
-        /// </summary>
-        private static void InitializePlugins()
-        {
-            if (TyraelSettings.Instance.CheckPluginPulsing)
-            {
-                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-            }
-            else
-            {
-                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-            }
         }
 
         /// <summary>
