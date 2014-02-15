@@ -58,8 +58,33 @@ namespace YourBuddy.Interfaces.Settings
         public bool UseSealSwapping { get; set; }
 
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Light's Hammer Hotkey Enable")]
+        [Description("Checked enables Light Hammer on Hotkey")]
+        public bool UseLightsHammerHotkey { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.TriggerTarget.OnMe)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Light Hammer Location")]
+        [Description("Select the usage of Light's Hammer")]
+        public Enum.TriggerTarget LightHammerLocation { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Fist of Justice Enable")]
+        [Description("Checked enables Fist of Justice Hotkey")]
+        public bool EnableFistofJustice { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Word of Glory Enable")]
+        [Description("Checked enables Word of Glory")]
+        public bool EnableWordofGlory { get; set; }
         #endregion
 
         #region Item Options
