@@ -97,8 +97,10 @@ namespace YourBuddy.Rotations.Druid
                Spell.Cast("Starsurge", ret => ShootingStarsUp && (Unit.NearbyAttackableUnitsCount < 5 || !SolarEclipseUp)),
                // actions+=/moonfire,cycle_targets=1,if=buff.lunar_eclipse.up&ticks_remain<2
                Spell.Cast("Moonfire", ret => LunarEclipseUp && (MoonFireDown || MoonSetting < 2)),
+               Spell.Cast("Moonfire", ret => MoonFireDown || MoonSetting < 2),
                // actions+=/sunfire,cycle_targets=1,if=buff.solar_eclipse.up&ticks_remain<2
                Spell.Cast("Sunfire", ret => SolarEclipseUp && (SunFireDown || SunSetting < 2)),
+               Spell.Cast("Sunfire", ret => SunFireDown || SunSetting < 2),
                // actions+=/starsurge,if=cooldown_react
                Spell.Cast("Starsurge", ret => StarsurgeCooldown),
                // actions+=/starfire,if=buff.celestial_alignment.up&cast_time<buff.celestial_alignment.remains
