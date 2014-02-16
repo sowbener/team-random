@@ -92,7 +92,7 @@ namespace FuryUnleashed.Core.Managers
                     });
                 }
 
-                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
+                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key and {3} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
