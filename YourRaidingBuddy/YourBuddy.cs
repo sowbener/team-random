@@ -175,6 +175,7 @@ namespace YourBuddy
             DpsMeter.Initialize();
 
             if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) grabMainHandDPS();
+            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) YourBuddy.Rotations.Druid.CommonDruid.Initialize();
 
             CombatLogHandler.Initialize();
 
