@@ -14,17 +14,6 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
-        #region Experimental Options
-        [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Fury - Experimental Options")]
-        [DisplayName("Enable Stance Dance")]
-        [Description("Enabled allows the routine to make a prediction which Stance will be best - Battle or Berserker.")]
-        public bool CheckStanceDance { get; set; }
-        #endregion
-
-        // ========================================================================================
-
         #region Ability Options
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
@@ -162,6 +151,17 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Spell Reflection")]
         [Description("Checked enables Spell Reflection.")]
         public bool CheckSpellReflect { get; set; }
+        #endregion
+
+        // ========================================================================================
+
+        #region Experimental Options
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Fury - Experimental Options")]
+        [DisplayName("Enable Stance Dance")]
+        [Description("Enabled allows the routine to make a prediction which Stance will be best - Battle or Berserker.")]
+        public bool CheckStanceDance { get; set; }
         #endregion
 
         // ========================================================================================
