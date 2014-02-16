@@ -53,44 +53,35 @@ namespace FuryUnleashed.Core.Managers
         {
             if (SettingsH.Instance.ModeSelection == Enum.Mode.Hotkey || SettingsH.Instance.ModeSelection == Enum.Mode.SemiHotkey)
             {
-                if (SettingsH.Instance.PauseKeyChoice != Keys.None)
+                HotkeysManager.Register("Pause", SettingsH.Instance.PauseKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
                 {
-                    HotkeysManager.Register("Pause", SettingsH.Instance.PauseKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
-                    {
-                        IsPaused = !IsPaused;
-                        LogKey("Pause", SettingsH.Instance.PauseKeyChoice, SettingsH.Instance.ModKeyChoice, IsPaused);
-                        if (InternalSettings.Instance.General.CheckHotkeyChatOutput)
-                            Lua.DoString(IsPaused
-                                ? @"print('Rotation \124cFFE61515 Paused!')"
-                                : @"print('Rotation \124cFF15E61C Resumed!')");
-                    });   
-                }
+                    IsPaused = !IsPaused;
+                    LogKey("Pause", SettingsH.Instance.PauseKeyChoice, SettingsH.Instance.ModKeyChoice, IsPaused);
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput)
+                        Lua.DoString(IsPaused
+                            ? @"print('Rotation \124cFFE61515 Paused!')"
+                            : @"print('Rotation \124cFF15E61C Resumed!')");
+                });
 
-                if (SettingsH.Instance.CooldownKeyChoice != Keys.None)
+                HotkeysManager.Register("Cooldown", SettingsH.Instance.CooldownKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
                 {
-                    HotkeysManager.Register("Cooldown", SettingsH.Instance.CooldownKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
-                    {
-                        IsCooldown = !IsCooldown;
-                        LogKey("Cooldown", SettingsH.Instance.CooldownKeyChoice, SettingsH.Instance.ModKeyChoice, IsCooldown);
-                        if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused)
-                            Lua.DoString(IsCooldown
-                                ? @"print('Cooldowns \124cFF15E61C Enabled!')"
-                                : @"print('Cooldowns \124cFFE61515 Disabled!')");
-                    });                    
-                }
+                    IsCooldown = !IsCooldown;
+                    LogKey("Cooldown", SettingsH.Instance.CooldownKeyChoice, SettingsH.Instance.ModKeyChoice, IsCooldown);
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused)
+                        Lua.DoString(IsCooldown
+                            ? @"print('Cooldowns \124cFF15E61C Enabled!')"
+                            : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                });
 
-                if (SettingsH.Instance.MultiTgtKeyChoice != Keys.None)
+                HotkeysManager.Register("AoE", SettingsH.Instance.MultiTgtKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
                 {
-                    HotkeysManager.Register("AoE", SettingsH.Instance.MultiTgtKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
-                    {
-                        IsAoe = !IsAoe;
-                        LogKey("AoE", SettingsH.Instance.MultiTgtKeyChoice, SettingsH.Instance.ModKeyChoice, IsAoe);
-                        if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused)
-                            Lua.DoString(IsAoe
-                                ? @"print('Aoe \124cFF15E61C Enabled!')"
-                                : @"print('Aoe \124cFFE61515 Disabled!')");
-                    });
-                }
+                    IsAoe = !IsAoe;
+                    LogKey("AoE", SettingsH.Instance.MultiTgtKeyChoice, SettingsH.Instance.ModKeyChoice, IsAoe);
+                    if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused)
+                        Lua.DoString(IsAoe
+                            ? @"print('Aoe \124cFF15E61C Enabled!')"
+                            : @"print('Aoe \124cFFE61515 Disabled!')");
+                });
 
                 Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,

@@ -282,14 +282,13 @@ namespace FuryUnleashed.Core
 
         internal static void RefreshSecondaryStats()
         {
-            AttackSpeed = Lua.GetReturnVal<float>("return UnitAttackSpeed(player)", 0);
+            AttackSpeed = Lua.GetReturnVal<float>("return UnitAttackSpeed('player')", 0);
             CritChance = Lua.GetReturnVal<float>("return GetCritChance()", 0);
             CritRating = Lua.GetReturnVal<float>("return GetCombatRating(CR_CRIT_MELEE)", 0);
             Mastery = Lua.GetReturnVal<float>("return GetCombatRating(CR_MASTERY)", 0);
             Expertise = Lua.GetReturnVal<float>("return GetCombatRating(CR_EXPERTISE)", 0);
             MeleeHit = Lua.GetReturnVal<float>("return GetCombatRating(CR_HIT_MELEE)", 0);
             MeleeHaste = Lua.GetReturnVal<float>("return GetCombatRating(CR_HASTE_MELEE)", 0);
-            
         }
         #endregion
     }
