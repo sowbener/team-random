@@ -38,7 +38,7 @@ namespace YourBuddy.Rotations.Hunter
                     new Decorator(ret => SG.Instance.Survival.EnablePetStuff, HandleCommon()),
                     new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                         new PrioritySelector(
-                            new Decorator(ret => !Me.IsMoving && !Me.IsSafelyFacing(Me.CurrentTarget), new Action(ret => { Me.CurrentTarget.Face(); return RunStatus.Failure; })), //ret => SG.Instance.Survival.EnableFacing
+                            new Decorator(ret => SG.Instance.Survival.EnableFacing && !Me.IsMoving && !Me.IsSafelyFacing(Me.CurrentTarget), new Action(ret => { Me.CurrentTarget.Face(); return RunStatus.Failure; })), //ret => SG.Instance.Survival.EnableFacing
                             new Decorator(ret => SG.Instance.Survival.CheckAutoAttack, Lua.StartAutoAttack),
                             new Decorator(ret => Me.HealthPercent < 100, SurvivalDefensive()),
                             new Decorator(ret => SG.Instance.Survival.CheckInterrupts, SurvivalInterrupts()),

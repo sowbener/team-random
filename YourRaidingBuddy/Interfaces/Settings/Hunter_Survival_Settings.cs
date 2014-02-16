@@ -35,6 +35,13 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Enable / Disable Trap usage Auto")]
         public bool EnableTraps { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Survival - Item Options")]
+        [DisplayName("Enable / Disable Facing Auto")]
+        [Description("Enable / Disable Facing Auto")]
+        public bool EnableFacing { get; set; }
+
        
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
