@@ -276,7 +276,7 @@ namespace YourBuddy.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.Distance <= 40;
+                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.Distance <= 45;
             }
         }
 

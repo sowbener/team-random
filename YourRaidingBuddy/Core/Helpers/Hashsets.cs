@@ -81,7 +81,6 @@ namespace YourBuddy.Core.Helpers
            73454,   //Manifestation (Harbinger of Y'Shaarj)
        };
 
-
         internal static readonly HashSet<int> MindControlAuras = new HashSet<int>
        {
            145065,  //Touch of Y'Shaarj (Garrosh Hellscream - SoO)

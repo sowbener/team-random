@@ -215,7 +215,7 @@ namespace YourBuddy.Rotations.Hunter
         {
             return new PrioritySelector(
                 new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
-                    Spell.Cast("Tranquilizing Shot", ret => Me.CurrentTarget.HasAura(145974)))); //Enrage from Kor'kron Jailer (Thok the Bloodthirsty - SoO)
+                    Spell.Cast("Tranquilizing Shot", ret => Me.CurrentTarget.HasAnyAura(G.EnrageEffectList))));
         }
 
         internal static Composite SurvivalInterrupts()

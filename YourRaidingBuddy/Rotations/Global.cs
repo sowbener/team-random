@@ -250,99 +250,94 @@ namespace YourBuddy.Rotations
         internal static bool SpeedBuffsAura { get { return Me.HasAura(2825) || Me.HasAura(80353) || Me.HasAura(32182) || Me.HasAura(90355); } }
 
 
-        #region InterruptList
-
+        #region Lists
         internal static Random _random = new Random();
 
         internal static readonly HashSet<int> LegacyoftheEmperor = new HashSet<int>
-       {
-
-           117666, // Legacy of the Emperor
-           115921, // Legacy of the emperor
-           1126, // Mark of the Wild
-           20217, // Blessing of Kings
-           90363, // Embrace of the Shale Spider	
-
-       };
+        {
+            117666, // Legacy of the Emperor
+            115921, // Legacy of the emperor
+            1126, // Mark of the Wild
+            20217, // Blessing of Kings
+            90363, // Embrace of the Shale Spider	
+        };
 
         internal static readonly HashSet<int> LegacyoftheWhiteTiger = new HashSet<int>
-       {
-
-         116781, // Legacy of the White Tiger
-         17007, // Leader of the Pack
-         1459, // Arcane Brilliance
-         61316, // Dalaran Brilliance
-         24604, // Furious Howl
-         90309, // Terrifying Roar	
-         126373, // Fearless Roar
-         126309, // Still Water
-       };
+        {
+            116781, // Legacy of the White Tiger
+            17007, // Leader of the Pack
+            1459, // Arcane Brilliance
+            61316, // Dalaran Brilliance
+            24604, // Furious Howl
+            90309, // Terrifying Roar	
+            126373, // Fearless Roar
+            126309, // Still Water
+        };
 
         internal static readonly HashSet<int> AgilityProcList = new HashSet<int>
         {
+            126489, // Searing Words
+            126554, // Bottle of Infinite Stars
+            128984, // Relic of Xuen
+            126707, // Tyrannical
+            126690, // Call of Conquest
+            146312, // Celestial Trinket
+            126649, // Terror in the Mists
+            146250, // STR - Thok's Tail
+            138737, // Blades
+            138756, // Blades
+            138938, // Juju Madness
+            138699, // Valor Trinket
+            148896, // Sigil of Rampage
+            146310, // Ticking Ebon Detonator
+            146311, // Ticking Ebon Detonator
+            146308, // Assurance of Consequence
+            148903, // Haromm's Talisman
+            148903, // Haromm's HC Talisman
+        };
 
-         126489, // Searing Words
-         126554, // Bottle of Infinite Stars
-         128984, // Relic of Xuen
-         126707, // Tyrannical
-         126690, // Call of Conquest
-         146312, // Celestial Trinket
-         126649, // Terror in the Mists
-         146250, // STR - Thok's Tail
-         138737, // Blades
-         138756, // Blades
-         138938, // Juju Madness
-         138699, // Valor Trinket
-         148896, // Sigil of Rampage
-         146310, // Ticking Ebon Detonator
-         146311, // Ticking Ebon Detonator
-         146308, // Assurance of Consequence
-         148903, // Haromm's Talisman
-         148903, // haromm's HC Talisman
-
-
+        internal static readonly HashSet<int> EnrageEffectList = new HashSet<int>
+        {
+            145974, //Kor'kron Jailer (Thok the Bloodthirsty - SoO)
         };
 
         internal static readonly HashSet<int> InterruptListMoP = new HashSet<int>
-       {
-           145171, // MC spell Garrosh (final phase empowered)
-		   145065, // MC spell Garrosh (P2)
-		   136797, // Dino-Mending (ToT)
-           136587, // Venom Bolt Volley (ToT)
-           61909, // Fireball (ToT)
-           136189, // Sandbolt (ToT)
-           144583, // Wulf Healing (SoO)
-           144018, // Corruption (SoO)
-           144649, // Hurl Corruption (SoO)
-           143473, // Empowered Chain Heal (SoO)
-           145555, // Empowered Chain Heal (SoO)
-           143432, // Arcane Shock (SoO)
-           143431, // Magistrike (SoO)
-           145230, // Forbidden Magic (SoO)
-           144922, // Harden Flesh
-           143958, // Corruption Shock
-           145631, // Corruption Chain
-           144923, // Earthen Shard
-           144379, // Mocking Blast (Manifestation of Pride)
-           144468, // Inspiring Song (Chi Ji Timeless Isle)
-           146728, // Chain-Heal (SoO)
-           146757, // Chain-Heal (SoO)
-           143423, // Sha Sear
-           123654, // Ming (5man HC instance)
-           121284, // Wing Leader (5man HC instance)
-           117833, // Crazy Thought (MSV)
-           117628, // Shadow Blast (MSV)
-           125877, // Dispatch (HoF)
-           124077, // Dispatch (HoF)
-
-
-       };
+        {
+            145171, // MC spell Garrosh (final phase empowered)
+            145065, // MC spell Garrosh (P2)
+		    136797, // Dino-Mending (ToT)
+            136587, // Venom Bolt Volley (ToT)
+            61909,  // Fireball (ToT)
+            136189, // Sandbolt (ToT)
+            144583, // Wulf Healing (SoO)
+            144018, // Corruption (SoO)
+            144649, // Hurl Corruption (SoO)
+            143473, // Empowered Chain Heal (SoO)
+            145555, // Empowered Chain Heal (SoO)
+            143432, // Arcane Shock (SoO)
+            143431, // Magistrike (SoO)
+            145230, // Forbidden Magic (SoO)
+            144922, // Harden Flesh
+            143958, // Corruption Shock
+            145631, // Corruption Chain
+            144923, // Earthen Shard
+            144379, // Mocking Blast (Manifestation of Pride)
+            144468, // Inspiring Song (Chi Ji Timeless Isle)
+            146728, // Chain-Heal (SoO)
+            146757, // Chain-Heal (SoO)
+            143423, // Sha Sear
+            123654, // Ming (5man HC instance)
+            121284, // Wing Leader (5man HC instance)
+            117833, // Crazy Thought (MSV)
+            117628, // Shadow Blast (MSV)
+            125877, // Dispatch (HoF)
+            124077, // Dispatch (HoF)
+        };
 
         internal static readonly HashSet<int> InterruptListTBA = new HashSet<int>
         {
 
         };
-
         #endregion
 
         #region AllowedClasses
