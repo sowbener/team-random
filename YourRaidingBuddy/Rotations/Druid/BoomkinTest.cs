@@ -4,6 +4,7 @@ using System.Linq;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
+using System.Collections.Generic;
 using SG = YourBuddy.Interfaces.Settings.InternalSettings;
 using System.Windows.Forms;
 using Styx.CommonBot;
@@ -22,7 +23,7 @@ namespace YourBuddy.Rotations.Druid
 {
     class Boomkin
     {
-        private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static LocalPlayer Me { get { return StyxWoW.Me; } }   
 
         #region Initialize Rotations
         internal static Composite InitializeBoomkin
@@ -78,6 +79,18 @@ namespace YourBuddy.Rotations.Druid
         }
 
 
+
+        private static Composite MultiDoT()
+        {
+            return new PrioritySelector(
+                //Unit.NearbyUnfriendlyUnits.Where(u => (u.Combat || u.IsDummy()) && !u.IsCrowdControlled()).ToList();
+                ctx => Unit.NearbyUnfriendlyUnits.Where(u => (u.Combat || Unit.IsDummy(Me.CurrentTarget)) && !u.IsCrowdControlled() && Me.IsSafelyFacing(u)).ToList(),
+                Spell.Cast("Sunfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => u.HasAuraExpired("Sunfire", 2))),
+                Spell.Cast("Moonfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => u.HasAuraExpired("Moonfire", 2)))
+             );
+        }
+
+
         internal static Composite BoomkinSt()
         {
             return new PrioritySelector(
@@ -88,9 +101,6 @@ namespace YourBuddy.Rotations.Druid
                // actions+=/natures_swiftness,if=talent.dream_of_cenarius.enabled
                // actions+=/healing_touch,if=talent.dream_of_cenarius.enabled&!buff.dream_of_cenarius.up&mana.pct>25
                // actions+=/incarnation,if=talent.incarnation.enabled&(buff.lunar_eclipse.up|buff.solar_eclipse.up)
-               Spell.Cast("Incarnation", ret => LunarEclipseUp || SolarEclipseUp),
-               // actions+=/celestial_alignment,if=(!buff.lunar_eclipse.up&!buff.solar_eclipse.up)&(buff.chosen_of_elune.up|!talent.incarnation.enabled|cooldown.incarnation.remains>10)
-               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10))),
                // actions+=/natures_vigil,if=talent.natures_vigil.enabled
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                // actions+=/starsurge,if=buff.shooting_stars.react&(active_enemies<5|!buff.solar_eclipse.up)
@@ -108,7 +118,8 @@ namespace YourBuddy.Rotations.Druid
                // actions+=/wrath,if=buff.celestial_alignment.up&cast_time<buff.celestial_alignment.remains
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
                // actions+=/starfire,if=eclipse_dir=1|(eclipse_dir=0&eclipse>0)
-               Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))), //Spell.GetSpellCastTime("Starfire") <= TimeToDie && (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
+               Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
+               MultiDoT(), //Spell.GetSpellCastTime("Starfire") <= TimeToDie && (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
                // actions+=/wrath,if=eclipse_dir=-1|(eclipse_dir=0&eclipse<=0)
                Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0))) //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
                // actions+=/moonfire,moving=1,cycle_targets=1,if=ticks_remain<2
@@ -131,9 +142,10 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite BoomkinMt()
         {
             return new PrioritySelector(
+                new Decorator(ret=> true, MultiDoT())
                 // actions+=/hurricane,if=active_enemies>4&buff.solar_eclipse.up&buff.natures_grace.up
                 // actions+=/hurricane,if=active_enemies>5&buff.solar_eclipse.up&mana.pct>25
-                // actions+=/hurricane,if=active_enemies>4&buff.solar_eclipse.up&mana.pct>25
+                // actions+=/hurricane,if=active_senemies>4&buff.solar_eclipse.up&mana.pct>25
                 );
         }
 
@@ -149,6 +161,9 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite BoomkinOffensive()
         {
             return new PrioritySelector(
+                 Spell.Cast("Incarnation", ret => LunarEclipseUp || SolarEclipseUp),
+                // actions+=/celestial_alignment,if=(!buff.lunar_eclipse.up&!buff.solar_eclipse.up)&(buff.chosen_of_elune.up|!talent.incarnation.enabled|cooldown.incarnation.remains>10)
+               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10))),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||

@@ -57,58 +57,49 @@ namespace YourBuddy.Core.Helpers
 
         #region DontDoThings
 
-        internal static readonly HashSet<uint> DontAoEUnits = new HashSet<uint>
+        internal static readonly HashSet<uint> DontCountForAoEUnits = new HashSet<uint>
        {
+           //Paragons of the Klaxxi (SoO)
+           71152,   //Skeer the Bloodseeker
+           71153,   //Hisek the Swarmkeeper
+           71154,   //Ka'roz the Locust
+           71155,   //Korven the Prime
+           71156,   //Kaz'tik the Manipulator
+           71157,   //Xaril the Poisoned Mind
+           71158,   //Rik'kal the Dissector
+           71160,   //Iyyokuk the Lucid
+           71161,   //Kil'ruk the Wind-Reaver
 
-           //Dark Shamans
-              71859,
-              71858,
+           //Iron Juggernaut (SoO)
+           72050,   //Crawler Mine
+           72889,   //Superheated Crawler Mine
 
-           //Klaxxi's
-              71161,
-              71157,
-              71156,
-              71155,
-              71160,
-              71154,
-              71152,
-              71158,
-              71153,
-              71161,
+           //Garrosh Hellscream (SoO)
+           72272,   //Minion of Y'Shaarj
 
-
+           //Trash (SoO)
+           73454,   //Manifestation (Harbinger of Y'Shaarj)
        };
 
 
-        internal static readonly HashSet<uint> DontApplyDot = new HashSet<uint>
+        internal static readonly HashSet<int> MindControlAuras = new HashSet<int>
        {
-
-           145065, 	// -- Touch of Y'Shaarj
-           145171,  // -- Empowered Touch of Y'Shaarj
-
+           145065,  //Touch of Y'Shaarj (Garrosh Hellscream - SoO)
+           145171,  //Empowered Touch of Y'Shaarj (Garrosh Hellscream - SoO)
+           145553,  //Bribe (Mokvar the Treasurer - SoO)
        };
 
-        public static bool DontUseAoE
+        public static bool ExcludeFromAoE(this WoWUnit unit)
         {
-            get { return Me.CurrentTarget.DontAoEUnitsList(); }
+            return unit != null && (DontCountForAoEUnitsIds.Contains(unit.Entry) || unit.HasAnyAura(MindControlAuras));
         }
 
-        public static bool DontAoEUnitsList(this WoWUnit unit)
+        public static bool DontDotUnit(this WoWUnit unit)
         {
-            return unit != null && (DontAoEUnitsIds.Contains(unit.Entry));
+            return unit != null && unit.HasAnyAura(MindControlAuras);
         }
 
-        public static bool DontApplyDotUnit
-        {
-            get { return Me.CurrentTarget.DontDotUnitsList(); }
-        }
-
-        public static bool DontDotUnitsList(this WoWUnit unit)
-        {
-            return unit != null && (DontApplyDot.Contains(unit.Entry));
-        }
-
-        public static HashSet<uint> DontAoEUnitsIds { get { return DontAoEUnits; } }
+        public static HashSet<uint> DontCountForAoEUnitsIds { get { return DontCountForAoEUnits; } }
 
         #endregion
 
@@ -1448,6 +1439,7 @@ namespace YourBuddy.Core.Helpers
             71734, // Sha of Pride
             72249, // Galakras
             71466, // Iron Juggernaut
+            71858, // Wavebinder Kardris
             71859, // Earthbreaker Haromm - Kor'kron Dark Shaman
             71515, // General Nazgrim
             71454, // Malkorok

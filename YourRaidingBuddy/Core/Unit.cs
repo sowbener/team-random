@@ -111,7 +111,7 @@ namespace YourBuddy.Core
             var hostile = AttackableUnits;
             var maxDistance = radius * radius;
 
-            return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance);
+            return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance && !x.ExcludeFromAoE());
         }
 
         /// <summary>
@@ -276,8 +276,7 @@ namespace YourBuddy.Core
         {
             get
             {
-                return !Me.Mounted && Me.CurrentTarget != null && Me.CurrentTarget.Attackable &&
-                      !Me.CurrentTarget.IsDead;
+                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.Distance <= 40;
             }
         }
 
@@ -592,6 +591,206 @@ namespace YourBuddy.Core
 
                 return false;
             }
+        }
+
+        public static IEnumerable<WoWUnit> NearbyUnfriendlyUnits
+        {
+            get
+            {
+                return UnfriendlyUnits(40);
+            }
+        }
+
+        public static HashSet<uint> IgnoreMobs = new HashSet<uint>
+            {
+                52288, // Venomous Effusion (NPC near the snake boss in ZG. Its the green lines on the ground. We want to ignore them.)
+                52302, // Venomous Effusion Stalker (Same as above. A dummy unit)
+                52320, // Pool of Acid
+                52525, // Bloodvenom
+
+                52387, // Cave in stalker - Kilnara
+            };
+
+        public static WoWUnit GetPlayerParent(WoWUnit unit)
+        {
+            // If it is a pet/minion/totem, lets find the root of ownership chain
+            WoWUnit pOwner = unit;
+            while (true)
+            {
+                if (pOwner.OwnedByUnit != null)
+                    pOwner = pOwner.OwnedByRoot;
+                else if (pOwner.CreatedByUnit != null)
+                    pOwner = pOwner.CreatedByUnit;
+                else if (pOwner.SummonedByUnit != null)
+                    pOwner = pOwner.SummonedByUnit;
+                else
+                    break;
+            }
+
+            if (unit != pOwner && pOwner.IsPlayer)
+                return pOwner;
+
+            return null;
+        }
+
+        public static bool ValidUnit(WoWUnit p, bool showReason = false)
+        {
+            if (p == null || !p.IsValid)
+                return false;
+
+            if (StyxWoW.Me.IsInInstance && IgnoreMobs.Contains(p.Entry))
+            {
+                if (showReason) Logger.InfoLog("invalid attack unit {0} is an Instance Ignore Mob", p.SafeName);
+                return false;
+            }
+
+            // Ignore shit we can't select
+            if (!p.CanSelect)
+            {
+                if (showReason) Logger.InfoLog("invalid attack unit {0} cannot be Selected", p.SafeName);
+                return false;
+            }
+
+            // Ignore shit we can't attack
+            if (!p.Attackable)
+            {
+                if (showReason) Logger.InfoLog("invalid attack unit {0} cannot be Attacked", p.SafeName);
+                return false;
+            }
+
+            // Duh
+            if (p.IsDead)
+            {
+                if (showReason) Logger.InfoLog("invalid attack unit {0} is already Dead", p.SafeName);
+                return false;
+            }
+
+            // check for enemy players here as friendly only seems to work on npc's
+            if (p.IsPlayer)
+                return p.ToPlayer().IsHorde != StyxWoW.Me.IsHorde;
+
+            // Ignore friendlies!
+            if (p.IsFriendly)
+            {
+                if (showReason) Logger.InfoLog("invalid attack unit {0} is Friendly", p.SafeName);
+                return false;
+            }
+
+            // Dummies/bosses are valid by default. Period.
+            if (Unit.IsDummy(Me.CurrentTarget) || p.TargetIsBoss())
+                return true;
+
+            // If it is a pet/minion/totem, lets find the root of ownership chain
+            WoWUnit pOwner = GetPlayerParent(p);
+
+            // ignore if owner is player, alive, and not blacklisted then ignore (since killing owner kills it)
+            if (pOwner != null && pOwner.IsAlive && !Blacklist.Contains(pOwner, BlacklistFlags.Combat))
+            {
+                if (showReason) Logger.InfoLog("invalid attack unit {0} has a Player as Parent", p.SafeName);
+                return false;
+            }
+
+            // And ignore critters (except for those ferocious ones) /non-combat pets
+            if (p.IsNonCombatPet)
+            {
+                if (showReason) Logger.InfoLog("{0} is a Noncombat Pet", p.SafeName);
+                return false;
+            }
+
+            // And ignore critters (except for those ferocious ones) /non-combat pets
+            if (p.IsCritter && p.ThreatInfo.ThreatValue == 0 && !p.IsTargetingMyRaidMember)
+            {
+                if (showReason) Logger.InfoLog("{0} is a Critter", p.SafeName);
+                return false;
+            }
+            if (p.IsCrowdControlled())
+            {
+                if (showReason) Logger.InfoLog("{0} is a crowd controlled", p.SafeName);
+                return false;
+            }
+            /*
+                        if (p.CreatedByUnitGuid != 0 || p.SummonedByUnitGuid != 0)
+                            return false;
+            */
+            return true;
+        }
+
+        public static IEnumerable<WoWUnit> UnfriendlyUnits(int maxSpellDist)
+        {
+            Type typeWoWUnit = typeof(WoWUnit);
+            Type typeWoWPlayer = typeof(WoWPlayer);
+            List<WoWUnit> list = new List<WoWUnit>();
+            List<WoWObject> objectList = ObjectManager.ObjectList;
+            for (int i = 0; i < objectList.Count; i++)
+            {
+                Type type = objectList[i].GetType();
+                if (type == typeWoWUnit || type == typeWoWPlayer)
+                {
+                    WoWUnit t = objectList[i] as WoWUnit;
+                    if (t != null && ValidUnit(t) && t.SpellDistance() < maxSpellDist)
+                    {
+                        list.Add(t);
+                    }
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// aura considered expired if spell of same name as aura is known and aura not present or has less than specified time remaining
+        /// </summary>
+        /// <param name="u">unit</param>
+        /// <param name="aura">name of aura with spell of same name that applies</param>
+        /// <returns>true if spell known and aura missing or less than 'secs' time left, otherwise false</returns>
+        public static bool HasAuraExpired(this WoWUnit u, string aura, int secs = 3, bool myAura = true)
+        {
+            return u.HasAuraExpired(aura, aura, secs, myAura);
+        }
+
+        private static IEnumerable<WoWAura> AllAuras(this WoWUnit u)
+        {
+            return u.GetAllAuras();
+        }
+
+        internal static bool IsCrowdControlled(this WoWUnit unit)
+        {
+            if (unit != null)
+            {
+                return unit.AllAuras().Any(a =>
+                                                    a.IsHarmful && (
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Banished ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Disoriented ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Charmed ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Horrified ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Incapacitated ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Polymorphed ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Sapped ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Shackled ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Asleep ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Frozen ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Invulnerable ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Invulnerable2 ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Turned ||
+                                                    a.Spell.Mechanic == WoWSpellMechanic.Fleeing ||
+
+                                                    // Really want to ignore hexed mobs.
+                                                    a.Spell.Name == "Hex"));
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// aura considered expired if spell is known and aura not present or has less than specified time remaining
+        /// </summary>
+        /// <param name="u">unit</param>
+        /// <param name="spell">spell that applies aura</param>
+        /// <param name="aura">aura</param>
+        /// <returns>true if spell known and aura missing or less than 'secs' time left, otherwise false</returns>
+        public static bool HasAuraExpired(this WoWUnit u, string spell, string aura, int secs = 3, bool myAura = true)
+        {
+            // need to compare millisecs even though seconds are provided.  otherwise see it as expired 999 ms early because
+            // .. of loss of precision
+            return SpellManager.HasSpell(spell) && u.GetAuraTimeLeft(aura, myAura).TotalSeconds <= (double)secs;
         }
 
         internal static bool IsDummy(WoWUnit target)
