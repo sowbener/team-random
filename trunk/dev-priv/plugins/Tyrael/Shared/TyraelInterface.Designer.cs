@@ -180,8 +180,8 @@ namespace Tyrael.Shared
             // CheckHardLock
             // 
             this.CheckHardLock.AutoSize = true;
-            if (TreeRoot.IsRunning) { this.CheckHardLock.Enabled = false; }
-            else { this.CheckHardLock.Enabled = true; }
+            //if (TreeRoot.IsRunning) { this.CheckHardLock.Enabled = false; }
+            //else { this.CheckHardLock.Enabled = true; }
             this.CheckHardLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CheckHardLock.ForeColor = System.Drawing.Color.DodgerBlue;
             this.CheckHardLock.Location = new System.Drawing.Point(10, 22);
@@ -221,7 +221,7 @@ namespace Tyrael.Shared
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            this.SaveButton.Click += new System.EventHandler(this.SaveSettings);
             this.SaveButton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.SaveButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SaveButton_MouseMove);
             // 
@@ -324,8 +324,8 @@ namespace Tyrael.Shared
             // checkSoftLock
             // 
             this.checkSoftLock.AutoSize = true;
-            if (TreeRoot.IsRunning) { this.checkSoftLock.Enabled = false; }
-            else { this.checkSoftLock.Enabled = true; }
+            //if (TreeRoot.IsRunning) { this.checkSoftLock.Enabled = false; }
+            //else { this.checkSoftLock.Enabled = true; }
             this.checkSoftLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkSoftLock.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkSoftLock.Location = new System.Drawing.Point(10, 42);

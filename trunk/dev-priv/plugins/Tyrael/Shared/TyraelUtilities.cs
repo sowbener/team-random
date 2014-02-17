@@ -74,9 +74,25 @@ namespace Tyrael.Shared
         #region Click-To-Move (CTM)
         public static void ClickToMove()
         {
-            Lua.DoString(TyraelSettings.Instance.CheckClickToMove
-                ? "SetCVar('autoInteract', '1')"
-                : "SetCVar('autoInteract', '0')");
+            if (!TyraelSettings.Instance.CheckClickToMove)
+            {
+                Lua.DoString("SetCVar('autoInteract', '0')");
+            }
+
+            if (TyraelSettings.Instance.CheckClickToMove)
+            {
+                Lua.DoString("SetCVar('autoInteract', '1')");
+            }
+        }
+
+        public static void DisableClickToMove()
+        {
+            Lua.DoString("SetCVar('autoInteract', '0')");
+        }
+
+        public static void EnableClickToMove()
+        {
+            Lua.DoString("SetCVar('autoInteract', '1')");
         }
         #endregion
 

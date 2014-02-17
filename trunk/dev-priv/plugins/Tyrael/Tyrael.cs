@@ -49,6 +49,9 @@ namespace Tyrael
             get { return _root ?? (_root = CreateRoot()); }
         }
 
+        /// <summary>
+        /// Runs when the bot starts. Loads several Tyrael functions and sets some basic settings.
+        /// </summary>
         public override void Start()
         {
             try
@@ -69,9 +72,9 @@ namespace Tyrael
                     Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
                 }
             }
-            catch (Exception initExept)
+            catch (Exception startexception)
             {
-                Logging.WriteDiagnostic(initExept.ToString());
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", startexception);
             }
         }
 
@@ -80,30 +83,29 @@ namespace Tyrael
         /// </summary>
         public override void Stop()
         {
-            Logging.Write(Colors.White, "------------------------------------------");
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");
-            TyraelUtilities.RemoveHotkeys();
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Reconfiguring Honorbuddy.");
-            GlobalSettings.Instance.LogoutForInactivity = true;
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
-            Logging.Write(Colors.White, "-------------------------------------------\r\n");
+            try
+            {
+                Logging.Write(Colors.White, "------------------------------------------");
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Performing required actions.");
+                StopComponents();
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
+                Logging.Write(Colors.White, "-------------------------------------------\r\n");
+            }
+            catch (Exception stopexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", stopexception);
+            }
         }
         #endregion
 
         #region Privates & Internals
         /// <summary>
-        /// Initializes the proper plugins based on the Setting CheckPluginPulsing.
+        /// SanityCheck - Checks if we are actually ingame and able to control the character.
         /// </summary>
-        internal static void InitializePlugins()
+        /// <returns>true / false</returns>
+        private static bool SanityCheckCombat()
         {
-            if (TyraelSettings.Instance.CheckPluginPulsing)
-            {
-                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-            }
-            else
-            {
-                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-            }
+            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
         }
 
         /// <summary>
@@ -128,27 +130,66 @@ namespace Tyrael
         /// </summary>
         private static void InitializeComponents()
         {
-            TyraelUpdater.CheckForUpdate();
+            try
+            {
+                TyraelUpdater.CheckForUpdate();
 
-            TyraelSettings.Instance.Load();
+                TyraelSettings.Instance.Load();
 
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.StatCounter();
-            TyraelUtilities.RegisterHotkeys();
+                TyraelUtilities.ClickToMove();
+                TyraelUtilities.StatCounter();
+                TyraelUtilities.RegisterHotkeys();
 
-            ProfileManager.LoadEmpty();
+                ProfileManager.LoadEmpty();
 
-            GlobalSettings.Instance.LogoutForInactivity = false;
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                GlobalSettings.Instance.LogoutForInactivity = false;
+                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+            }
+            catch (Exception initializecomponentsexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", initializecomponentsexception);
+            }
         }
 
         /// <summary>
-        /// SanityCheck - Checks if we are actually ingame and able to control the character.
+        /// Stops components for Tyrael.
         /// </summary>
-        /// <returns>true / false</returns>
-        private static bool SanityCheckCombat()
+        private static void StopComponents()
         {
-            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
+            try
+            {
+                TyraelUtilities.EnableClickToMove();
+                TyraelUtilities.RemoveHotkeys();
+
+                GlobalSettings.Instance.LogoutForInactivity = true;
+                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+            }
+            catch (Exception stopcomponentsexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", stopcomponentsexception);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the proper plugins based on the Setting CheckPluginPulsing.
+        /// </summary>
+        internal static void InitializePlugins()
+        {
+            try
+            {
+                if (TyraelSettings.Instance.CheckPluginPulsing)
+                {
+                    _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                }
+                else
+                {
+                    _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                }
+            }
+            catch (Exception initializepluginsexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", initializepluginsexception);
+            }
         }
         #endregion
 

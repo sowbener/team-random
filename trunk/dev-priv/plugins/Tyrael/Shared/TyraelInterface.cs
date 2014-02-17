@@ -217,12 +217,26 @@ namespace Tyrael.Shared
 
         private void checkHardLock_CheckedChanged(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.UseFrameLock = CheckHardLock.Checked;
+            if (TreeRoot.IsRunning)
+            {
+                MessageBox.Show("[Tyrael] You cannot change the HardLock option when Honorbuddy is running. Please stop Honorbuddy first.");
+            }
+            else
+            {
+                GlobalSettings.Instance.UseFrameLock = CheckHardLock.Checked;
+            }
         }
 
         private void checkSoftLock_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.UseSoftLock = checkSoftLock.Checked;
+            if (TreeRoot.IsRunning)
+            {
+                MessageBox.Show("[Tyrael] You cannot change the SoftLock option when Honorbuddy is running. Please stop Honorbuddy first.");
+            }
+            else
+            {
+                TyraelSettings.Instance.UseSoftLock = checkSoftLock.Checked;   
+            }
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
@@ -299,7 +313,7 @@ namespace Tyrael.Shared
             Logging.Write(Colors.White, "------------------------------------------");
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private void SaveSettings(object sender, EventArgs e)
         {
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
