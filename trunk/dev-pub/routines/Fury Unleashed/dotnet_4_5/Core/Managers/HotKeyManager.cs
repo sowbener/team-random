@@ -63,7 +63,7 @@ namespace FuryUnleashed.Core.Managers
                             Lua.DoString(IsPaused
                                 ? @"print('Rotation \124cFFE61515 Paused!')"
                                 : @"print('Rotation \124cFF15E61C Resumed!')");
-                    });   
+                    });
                 }
 
                 if (SettingsH.Instance.CooldownKeyChoice != Keys.None)
@@ -76,7 +76,7 @@ namespace FuryUnleashed.Core.Managers
                             Lua.DoString(IsCooldown
                                 ? @"print('Cooldowns \124cFF15E61C Enabled!')"
                                 : @"print('Cooldowns \124cFFE61515 Disabled!')");
-                    });                    
+                    });
                 }
 
                 if (SettingsH.Instance.MultiTgtKeyChoice != Keys.None)
@@ -92,7 +92,7 @@ namespace FuryUnleashed.Core.Managers
                     });
                 }
 
-                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
+                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key and {3} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
@@ -194,22 +194,13 @@ namespace FuryUnleashed.Core.Managers
                     key != Keys.Tab &&
                     key != Keys.CapsLock &&
                     !HashSets.MovementKey.Contains(key))
-            {
+                {
                     Logger.CombatLogWh("FU: Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.ResumeTime);
                     return true;
                 }
             }
             return false;
         }
-
-        //internal static bool MovementKeyPressed()
-        //{
-        //    if (GetAsyncKeyState(Keys.LButton) < 0 && GetAsyncKeyState(Keys.RButton) < 0)
-        //    {
-        //        return true;
-        //    }
-        //    return HashSets.MovementKey.Any(key => GetAsyncKeyState(key) < 0);
-        //}
         #endregion
 
     }

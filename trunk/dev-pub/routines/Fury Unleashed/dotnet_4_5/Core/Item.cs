@@ -15,9 +15,11 @@ namespace FuryUnleashed.Core
 {
     internal static class Item
     {
+
         public static float MeleeHaste { get; set; }
         public static float MeleeHit { get; set; }
 
+        public static float AttackSpeed { get; set; }
         public static float CritRating { get; set; }
         public static float CritChance { get; set; }
         public static float Expertise { get; set; }
@@ -229,6 +231,30 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region Other Item Functions
+        internal static bool WieldsOneHandedWeapons
+        {
+            get
+            {
+                try
+                {
+                    switch (Me.Inventory.Equipped.MainHand.ItemInfo.WeaponClass)
+                    {
+                        case WoWItemWeaponClass.Axe:
+                        case WoWItemWeaponClass.Exotic:
+                        case WoWItemWeaponClass.Mace:
+                        case WoWItemWeaponClass.Sword:
+                            return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Logger.DiagLogPu("Wielding TwoHander: {0}", ex);
+                }
+                return false;
+            }
+        }
+
         internal static bool WieldsTwoHandedWeapons
         {
             get
@@ -256,13 +282,13 @@ namespace FuryUnleashed.Core
 
         internal static void RefreshSecondaryStats()
         {
+            AttackSpeed = Lua.GetReturnVal<float>("return UnitAttackSpeed('player')", 0);
             CritChance = Lua.GetReturnVal<float>("return GetCritChance()", 0);
             CritRating = Lua.GetReturnVal<float>("return GetCombatRating(CR_CRIT_MELEE)", 0);
             Mastery = Lua.GetReturnVal<float>("return GetCombatRating(CR_MASTERY)", 0);
             Expertise = Lua.GetReturnVal<float>("return GetCombatRating(CR_EXPERTISE)", 0);
             MeleeHit = Lua.GetReturnVal<float>("return GetCombatRating(CR_HIT_MELEE)", 0);
             MeleeHaste = Lua.GetReturnVal<float>("return GetCombatRating(CR_HASTE_MELEE)", 0);
-            
         }
         #endregion
     }

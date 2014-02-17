@@ -1,6 +1,7 @@
 ﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
@@ -137,13 +138,13 @@ namespace FuryUnleashed.Rotations.Protection
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new PrioritySelector(
-                                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true),
-                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me))),
+                            new Sequence(
+                                new Action(ctx => Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration")),
+                                new Action(ctx => Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true)),
+                                new Action(ctx => Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 
-                //Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => G.EnragedRegenerationTalent && IS.Instance.Protection.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Protection.CheckEnragedRegenNum),
                 Item.ProtUseHealthStone(),
 
                 // Defensive
@@ -164,6 +165,8 @@ namespace FuryUnleashed.Rotations.Protection
                                 Spell.Cast(SpellBook.Cleave, ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, true))),
                         new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent >= 100 || Me.HealthPercent <= IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
                             new PrioritySelector(
+                                new Decorator(ret => U.IsCastingAtMe,
+                                    Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => Lua.PlayerPower > 30, true)),
                                 Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
                                 Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true)
                                 )))),
