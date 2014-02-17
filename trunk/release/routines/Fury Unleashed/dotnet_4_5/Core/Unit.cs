@@ -296,14 +296,6 @@ namespace FuryUnleashed.Core
             }
         }
 
-        internal static bool IgnoreDamageTracker
-        {
-            get
-            {
-                return StyxWoW.Me.Specialization != WoWSpec.WarriorProtection;
-            }
-        }
-
         /// <summary>
         /// Default check before casting - Checks various things like if StyxWoW.Me.CurrentTarget is viable, self not mounted and more.
         /// </summary>
@@ -324,6 +316,22 @@ namespace FuryUnleashed.Core
             {
                 return IsViable(Me) && !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink");
             }
+        }
+
+        /// <summary>
+        /// Used in the Damage Tracker to determine by specialization to Initialize or not
+        /// </summary>
+        internal static bool IgnoreDamageTracker
+        {
+            get { return StyxWoW.Me.Specialization == WoWSpec.WarriorArms; }
+        }
+
+        /// <summary>
+        /// Used to see if a BOSS is targetting me with a spellcast.
+        /// </summary>
+        internal static bool IsCastingAtMe
+        {
+            get { return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && IsTargettingMe; }
         }
 
         /// <summary>

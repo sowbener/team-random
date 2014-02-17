@@ -217,6 +217,7 @@ namespace FuryUnleashed.Core.Utilities
             WriteFile("Storm Bolt Talent: {0}", Global.StormBoltTalent);
             WriteFile("");
             WriteFile("======= Item Info =======");
+            WriteFile("AttackSpeed: {0}", Item.AttackSpeed);
             WriteFile("Crit Chance: {0}", Item.CritChance);
             WriteFile("Crit Rating: {0}", Item.CritRating);
             WriteFile("Expertise: {0}", Item.Expertise);

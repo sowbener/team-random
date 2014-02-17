@@ -221,6 +221,14 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
+        internal static bool StanceDanceUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckStanceDance && !G.DefensiveStanceAura;
+            }
+        }
+
         internal static bool Tier4AbilityUsage
         {
             get
