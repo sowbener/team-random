@@ -217,26 +217,12 @@ namespace Tyrael.Shared
 
         private void checkHardLock_CheckedChanged(object sender, EventArgs e)
         {
-            if (TreeRoot.IsRunning)
-            {
-                MessageBox.Show("[Tyrael] You cannot change the HardLock option when Honorbuddy is running. Please stop Honorbuddy first.");
-            }
-            else
-            {
-                GlobalSettings.Instance.UseFrameLock = CheckHardLock.Checked;
-            }
+            GlobalSettings.Instance.UseFrameLock = CheckHardLock.Checked;
         }
 
         private void checkSoftLock_CheckedChanged(object sender, EventArgs e)
         {
-            if (TreeRoot.IsRunning)
-            {
-                MessageBox.Show("[Tyrael] You cannot change the SoftLock option when Honorbuddy is running. Please stop Honorbuddy first.");
-            }
-            else
-            {
-                TyraelSettings.Instance.UseSoftLock = checkSoftLock.Checked;   
-            }
+            TyraelSettings.Instance.UseSoftLock = checkSoftLock.Checked;   
         }
 
         private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
