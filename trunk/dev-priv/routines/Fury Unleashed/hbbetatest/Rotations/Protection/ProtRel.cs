@@ -142,10 +142,6 @@ namespace FuryUnleashed.Rotations.Protection
                                 new Action(ctx => Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration")),
                                 new Action(ctx => Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true)),
                                 new Action(ctx => Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
-                        //new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                        //    new PrioritySelector(
-                        //        Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true),
-                        //        Spell.Cast(SpellBook.EnragedRegeneration, on => Me))),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 
