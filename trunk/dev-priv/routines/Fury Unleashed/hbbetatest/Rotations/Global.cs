@@ -282,12 +282,12 @@ namespace FuryUnleashed.Rotations
 
         internal static bool BattleStanceAura
         {
-            get { return Spell.HasAura(Me, AuraBook.BattleStance); }
+            get { return Spell.HasAura(Me, AuraBook.BattleStance, 0, 0, true, false, true); }
         }
 
         internal static bool BerserkerStanceAura
         {
-            get { return Spell.HasAura(Me, AuraBook.BerserkerStance); }
+            get { return Spell.HasAura(Me, AuraBook.BerserkerStance, 0, 0, true, false, true); }
         }
 
         internal static bool BloodbathAura
