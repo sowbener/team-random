@@ -18,7 +18,7 @@ namespace Tyrael.Shared
         public TyraelSettings()
             : base(
                 Path.Combine(Utilities.AssemblyDirectory,
-                             string.Format(@"Settings/Tyrael/Tyrael-Settings-{0}-Rev{1}.xml", StyxWoW.Me.Name, Tyrael.Revision)))
+                             string.Format(@"Settings/Tyrael/Tyrael-Settings-{0}-Rev{1}_{2}.xml", StyxWoW.Me.Name, Tyrael.Revision, StyxWoW.Me.Name)))
         {
         }
 
