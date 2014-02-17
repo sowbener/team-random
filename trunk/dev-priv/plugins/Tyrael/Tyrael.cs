@@ -59,6 +59,11 @@ namespace Tyrael
                 InitializeComponents();
                 InitializePlugins();
 
+                if (!GlobalSettings.Instance.UseFrameLock && !TyraelSettings.Instance.UseSoftLock)
+                {
+                    Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
+                }
+
                 Logging.Write(Colors.White, "------------------------------------------");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} {1} has been started.", Name, Revision);
@@ -66,11 +71,6 @@ namespace Tyrael
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] Special thanks to the following persons:");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] PureRotation Team");
                 Logging.Write(Colors.White, "-------------------------------------------\r\n");
-
-                if (!GlobalSettings.Instance.UseFrameLock && !TyraelSettings.Instance.UseSoftLock)
-                {
-                    Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
-                }
             }
             catch (Exception startexception)
             {
