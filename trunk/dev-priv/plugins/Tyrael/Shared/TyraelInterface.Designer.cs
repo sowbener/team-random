@@ -221,7 +221,7 @@ namespace Tyrael.Shared
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveSettings);
+            this.SaveButton.Click += new System.EventHandler(this.savebutton_Click);
             this.SaveButton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.SaveButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SaveButton_MouseMove);
             // 

@@ -125,6 +125,12 @@ namespace Tyrael.Shared
             // ReSharper disable once EmptyGeneralCatchClause
             catch { /* Catch all errors */ }
         }
+
+        internal static void DiagnosticLogging()
+        {
+            Logging.WriteDiagnostic(Colors.White, "------------------------------------------");
+            Logging.WriteDiagnostic("[Tyrael] {0}", TreeRoot.Current);
+        }
         #endregion
     }
 }

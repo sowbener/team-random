@@ -269,7 +269,7 @@ namespace Tyrael.Shared
             TyraelSettings.Instance.PauseKeyChoice = (Keys)GetComboBoxEnum(comboPauseKey);
         }
 
-        private void ButtonLogging()
+        private void CloseFormLogging()
         {
             Logging.Write(Colors.White, "------------------------------------------");
             Logging.Write(Colors.DodgerBlue,
@@ -313,7 +313,7 @@ namespace Tyrael.Shared
             Logging.Write(Colors.White, "------------------------------------------");
         }
 
-        private void SaveSettings(object sender, EventArgs e)
+        private void SaveSettings()
         {
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
@@ -324,9 +324,14 @@ namespace Tyrael.Shared
 
             TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
 
-            ButtonLogging();
+            CloseFormLogging();
 
             Close();
+        }
+
+        private void savebutton_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
         }
 
         private void slowbutton_Click(object sender, EventArgs e)
@@ -337,18 +342,7 @@ namespace Tyrael.Shared
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = false;
 
-            GlobalSettings.Instance.Save();
-            TyraelSettings.Instance.Save();
-
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.InitializePlugins();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
-            ButtonLogging();
-
-            Close();
+            SaveSettings();
         }
 
         private void normalbutton_Click(object sender, EventArgs e)
@@ -359,18 +353,7 @@ namespace Tyrael.Shared
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = true;
 
-            GlobalSettings.Instance.Save();
-            TyraelSettings.Instance.Save();
-
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.InitializePlugins();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
-            ButtonLogging();
-
-            Close();
+            SaveSettings();
         }
 
         private void fastbutton_Click(object sender, EventArgs e)
@@ -381,18 +364,7 @@ namespace Tyrael.Shared
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = true;
 
-            GlobalSettings.Instance.Save();
-            TyraelSettings.Instance.Save();
-
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.InitializePlugins();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
-            ButtonLogging();
-
-            Close();
+            SaveSettings();
         }
 
         private void extremebutton_Click(object sender, EventArgs e)
@@ -403,18 +375,7 @@ namespace Tyrael.Shared
             GlobalSettings.Instance.UseFrameLock = true;
             TyraelSettings.Instance.UseSoftLock = false;
 
-            GlobalSettings.Instance.Save();
-            TyraelSettings.Instance.Save();
-
-            TyraelUtilities.ClickToMove();
-            TyraelUtilities.ReRegisterHotkeys();
-            Tyrael.InitializePlugins();
-
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
-            ButtonLogging();
-
-            Close();
+            SaveSettings();
         }
     }
 }
