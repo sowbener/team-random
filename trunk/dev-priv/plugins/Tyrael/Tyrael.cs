@@ -61,6 +61,7 @@ namespace Tyrael
 
                 if (!GlobalSettings.Instance.UseFrameLock && !TyraelSettings.Instance.UseSoftLock)
                 {
+                    Logging.Write(Colors.White, "------------------------------------------");
                     Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
                 }
 
