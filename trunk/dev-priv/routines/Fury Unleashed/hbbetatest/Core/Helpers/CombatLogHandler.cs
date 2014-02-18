@@ -51,7 +51,13 @@ namespace FuryUnleashed.Core.Helpers
                 //if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()))
                 if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()) && args.Args[3].ToString().Length > 4)
                 {
-                    if (index < args.Args.Length) a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
+                    try
+                    {
+                        if (index < args.Args.Length) a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch (Exception)
+                    { /* Catch all errors */ }
                 }
 
                 if (args.Args[4] != null && index < args.Args.Length)
@@ -66,7 +72,13 @@ namespace FuryUnleashed.Core.Helpers
                 //if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length)
                 if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length && args.Args[7].ToString().Length > 4)
                 {
-                    a.DestGuid = ulong.Parse(args.Args[7].ToString().Remove(0, 2), NumberStyles.HexNumber);
+                    try
+                    {
+                        a.DestGuid = ulong.Parse(args.Args[7].ToString().Remove(0, 2), NumberStyles.HexNumber);
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch (Exception)
+                    { /* Catch all errors */ }
                 }
 
                 if (index < args.Args.Length) a.DestName = args.Args[8].ToString();
@@ -300,8 +312,7 @@ namespace FuryUnleashed.Core.Helpers
                     Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
-                // ReSharper disable once UnusedVariable
-                catch (Exception ex)
+                catch (Exception)
                 { /* Catch all errors */ }
 
                 var sb = new StringBuilder();
@@ -335,8 +346,7 @@ namespace FuryUnleashed.Core.Helpers
                     Lua.Events.RemoveFilter("COMBAT_LOG_EVENT_UNFILTERED");
                 }
                 // ReSharper disable once EmptyGeneralCatchClause
-                // ReSharper disable once UnusedVariable
-                catch (Exception ex)
+                catch (Exception)
                 { /* Catch all errors */ }
 
                 var sb = new StringBuilder();
