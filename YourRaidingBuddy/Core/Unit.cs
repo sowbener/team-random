@@ -32,9 +32,11 @@ namespace YourBuddy.Core
         {
             get
             {
-                return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter && u.Distance <= 60);
+                return ObjectManager.GetObjectsOfType<WoWUnit>(true, false).Where(u => IsViable(u) && u.Attackable && u.CanSelect && !u.IsFriendly && !u.IsDead && !u.IsNonCombatPet && !u.IsCritter && u.Distance <= 45);
             }
         }
+
+
 
         internal static IEnumerable<WoWUnit> AttackableBosses
         {
@@ -113,6 +115,8 @@ namespace YourBuddy.Core
 
             return hostile.Where(x => x.Location.DistanceSqr(fromLocation) < maxDistance && !x.ExcludeFromAoE());
         }
+
+
 
         /// <summary>
         /// Core check on Nearby Casting Units which can be interrupted and not casted on StyxWoW.Me - Further filtering should be applied.
@@ -239,8 +243,27 @@ namespace YourBuddy.Core
             }
         }
 
+        public static void AquireRangedTarget()
+        {
+            WoWUnit bestTarget = null;
+            int bestClusterSize = 0;
+            IEnumerable<WoWUnit> units = AttackableUnits.OrderByDescending(u => u.Distance);
 
+            foreach (WoWUnit unit in units)
+            {
+                if ((unit.IsTargetingMyPartyMember || unit.IsTargetingMyRaidMember || unit.IsTargetingMeOrPet) && (bestTarget == null || NearbyAttackableUnits(unit.Location, 8).Count() > bestClusterSize))
+                {
+                    bestTarget = unit;
+                    bestClusterSize = NearbyAttackableUnits(unit.Location, 8).Count();
+                }
+            }
 
+            if (bestTarget != null)
+            {
+                bestTarget.Target();
+                return;
+            }
+        }
         #endregion
 
         #region Global Functions
@@ -261,6 +284,8 @@ namespace YourBuddy.Core
             }
         }
 
+
+
         /// <summary>
         /// Default check before casting - Checks various things like if StyxWoW.Me.CurrentTarget is viable, self not mounted and more.
         /// </summary>
@@ -276,7 +301,15 @@ namespace YourBuddy.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.Distance <= 45;
+                return !Me.Mounted && !Me.IsDead && DefaultTargetCheck;
+            }
+        }
+
+        internal static bool DefaultTargetCheck
+        {
+            get
+            {
+                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.Distance <= 45;
             }
         }
 
@@ -319,6 +352,7 @@ namespace YourBuddy.Core
                 ObjectManager.Update();
             }
         }
+
         #endregion
 
         #region Hunter Things

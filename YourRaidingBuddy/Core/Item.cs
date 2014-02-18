@@ -531,6 +531,65 @@ namespace YourBuddy.Core
                 Logger.CombatLogFb("Using: Engineering hands are used.");
             }
         }
+        //Druid
+        internal static void UseFeralItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            if (InternalSettings.Instance.Feral.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Feral.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Feral.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Feral.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Feral.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Feral.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
+        internal static void UseBoomkinItems()
+        {
+            var firstTrinket = StyxWoW.Me.Inventory.Equipped.Trinket1;
+            var secondTrinket = StyxWoW.Me.Inventory.Equipped.Trinket2;
+            var hands = StyxWoW.Me.Inventory.Equipped.Hands;
+
+            if (InternalSettings.Instance.Boomkin.Trinket1 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Boomkin.Trinket2 == Enum.AbilityTrigger.Never &&
+                InternalSettings.Instance.Boomkin.UseHands == Enum.AbilityTrigger.Never)
+                return;
+
+            if (CanUseTrinket(InternalSettings.Instance.Boomkin.Trinket1, firstTrinket))
+            {
+                firstTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 1 trinket is used.");
+            }
+
+            if (CanUseTrinket(InternalSettings.Instance.Boomkin.Trinket2, secondTrinket))
+            {
+                secondTrinket.Use();
+                Logger.CombatLogFb("Using: Slot 2 trinket is used.");
+            }
+
+            if (CanUseHands(InternalSettings.Instance.Boomkin.UseHands, hands))
+            {
+                hands.Use();
+                Logger.CombatLogFb("Using: Engineering hands are used.");
+            }
+        }
 
 
         public static Composite CreateItemBehaviour()
@@ -739,6 +798,31 @@ namespace YourBuddy.Core
         {
             return new PrioritySelector(
                 new Decorator(ret => InternalSettings.Instance.Enhancement.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Enhancement.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        //Druid
+        public static Composite FeralUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Feral.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Feral.CheckHealthStoneNum,
+                    new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
+                        new Decorator(ret => ret != null,
+                            new Action(ret =>
+                            {
+                                ((WoWItem)ret).UseContainerItem();
+                                Logger.CombatLogLg("Using {0}", ((WoWItem)ret).Name);
+                            })))));
+        }
+        public static Composite BoomkinUseHealthStone()
+        {
+            return new PrioritySelector(
+                new Decorator(ret => InternalSettings.Instance.Boomkin.CheckHealthStone && Me.HealthPercent < InternalSettings.Instance.Boomkin.CheckHealthStoneNum,
                     new PrioritySelector(ctx => FindFirstUsableItemBySpell("Healthstone"),
                         new Decorator(ret => ret != null,
                             new Action(ret =>

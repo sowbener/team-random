@@ -60,8 +60,8 @@ namespace YourBuddy.Rotations.Druid
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         FeralOffensive())),
                                        new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Feral.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Feral.AoECount, FeralMt()),
-                                       new Decorator(ret => SG.Instance.Feral.RuneofOrginationRotation, FeralSt()),
-                                       new Decorator(ret => !SG.Instance.Feral.RuneofOrginationRotation, FeralNormalSt()))),
+                                       new Decorator(ret => SG.Instance.Feral.RuneofOrginationRotation && U.NearbyAttackableUnitsCount <= SG.Instance.Feral.AoECount, FeralSt()),
+                                       new Decorator(ret => !SG.Instance.Feral.RuneofOrginationRotation && U.NearbyAttackableUnitsCount <= SG.Instance.Feral.AoECount, FeralNormalSt()))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Feral.CheckAutoAttack, Lua.StartAutoAttack),
@@ -97,8 +97,6 @@ namespace YourBuddy.Rotations.Druid
                 Spell.Cast("Savage Roar", ret => ((TalentManager.HasGlyph("Savagery") && SavageRoarSettingGlyph <= 6) || (!TalentManager.HasGlyph("Savagery") && SavageRoarSetting <= 6)) && Lua.PlayerComboPts >= 5 && SavageRoarSettingGlyph + 2 <= RipSetting && RipUp),
                 Spell.Cast("Savage Roar", ret => ((TalentManager.HasGlyph("Savagery") && SavageRoarSettingGlyph <= 12 || (!TalentManager.HasGlyph("Savagery") && SavageRoarSetting <= 12)) && Lua.PlayerComboPts >= 5) && Lua.TimeToEnergyCap() <= 1 && SavageRoarSettingGlyph + 1 <= RipSetting + 6 && RipUp),
                 Spell.Cast("Rake", ret => RuneofReoriginationUp && RakeRemains < 9 && RuneofReoriginationRemains <= 1.5),
-                //# Rake if we can apply a stronger Rake or if it's about to fall off and clipping the last tick won't waste too much damage.
-                //actions.advanced+=/rake,cycle_targets=1,if=target.time_to_die-dot.rake.remains>3&(action.rake.tick_damage>dot.rake.tick_dmg|(dot.rake.remains<3&action.rake.tick_damage%dot.rake.tick_dmg>=0.75))
                 Spell.Cast("Rake", ret => TimeToDie - RakeRemains > 3 && (Rake_sDamage > Spell.GetRakeStrength(Me.CurrentTarget.Guid)*1.12) || (RakeRemains < 3 && rake_ratio(Me.CurrentTarget) >= 0.75)),
                 Spell.Cast("Thrash", ret => TimeToDie >= 6 && ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5) && RipUp),
                 Spell.Cast("Thrash", ret => TimeToDie >= 6 && ThrashSetting < 9 && RuneofReoriginationUp && RuneofReoriginationRemains <= 1.5 && RipUp),
@@ -116,14 +114,14 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite FeralNormalSt()
         {
             return new PrioritySelector(
-                Spell.Cast("Ferocious Bite", ret => RipUp && RipSetting <= 3 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25)),
+                Spell.Cast("Ferocious Bite", ret => RipUp && RipSetting <= 3 && Me.CurrentTarget.HealthPercent <= 25),
               Spell.Cast("Faerie Fire", ret => G.WeakenedBlowsAura),
               Spell.PreventDoubleCast("Healing Touch", 0.7, On => Me, ret => TalentManager.IsSelected(17) && PredatorySwiftnessUp && DreamDown && (PredatorySwiftnessRemains1 || Lua.PlayerComboPts >= 4)),
               Spell.Cast("Savage Roar", ret => SavageRoarGlyphDown),
-              Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25) && rip_ratio() >= 1.15),
-              Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 25) && RipUp),
+              Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && Me.CurrentTarget.HealthPercent <= 25 && rip_ratio() >= 1.15),
+              Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts >= 5 && Me.CurrentTarget.HealthPercent <= 25 && RipUp),
               Spell.Cast("Rip", ret => Lua.PlayerComboPts >= 5 && RipSetting < 2),
-              Spell.Cast("Thrash", ret => OmenofClarityUp && (ThrashDown || ThrashSetting <3)),
+              Spell.Cast("Thrash", ret => OmenofClarityUp && (ThrashDown || ThrashSetting < 3)),
               Spell.Cast("Rake", ret => (RakeNotUp || RakeRemains < 3) || (Rake_sDamage > Spell.GetRakeStrength(Me.CurrentTarget.Guid)*1.12)),
                Spell.Cast("Thrash", ret => ThrashSetting < 3 && (RipSetting >= 8 && SavageRoarSettingGlyph >= 12 || BerserkUp || Lua.PlayerComboPts >= 5)),
                 Spell.Cast("Ferocious Bite", ret => Lua.PlayerComboPts > 4 && RipUp),

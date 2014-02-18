@@ -36,6 +36,7 @@ namespace YourBuddy.Rotations.Druid
                     //               new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        new Decorator(ret => SG.Instance.Boomkin.EnableFacing && !Me.IsMoving && !Me.IsSafelyFacing(Me.CurrentTarget), new Action(ret => { Me.CurrentTarget.Face(); return RunStatus.Failure; })),
                         new Decorator(a => CastingStarfire && EclipseDirMoon && !CelestialalignmentUp, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                         new Decorator(a => CastingWrath && EclipseDirSun && !CelestialalignmentUp, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
@@ -44,7 +45,7 @@ namespace YourBuddy.Rotations.Druid
                                         new Decorator(ret => Me.HealthPercent < 100, BoomkinDefensive()),
                                         new Decorator(ret => SG.Instance.Boomkin.CheckInterrupts, BoomkinInterrupts()),
                                         BoomkinUtility(),
-                    //      new Action(ret => { Item.UseBoomkinItems(); return RunStatus.Failure; }),
+                          new Action(ret => { Item.UseBoomkinItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         BoomkinOffensive(),
                                        new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Boomkin.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Boomkin.AoECount, BoomkinMt()),
@@ -57,7 +58,7 @@ namespace YourBuddy.Rotations.Druid
                                         BoomkinUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                         new PrioritySelector(
-                    //         new Action(ret => { Item.UseBoomkinItems(); return RunStatus.Failure; }),
+                             new Action(ret => { Item.UseBoomkinItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         BoomkinOffensive())),
                                        new Decorator(ret => Me.CurrentTarget != null && SG.Instance.Boomkin.CheckAoE && U.NearbyAttackableUnitsCount >= SG.Instance.Boomkin.AoECount, BoomkinMt()),
@@ -70,7 +71,7 @@ namespace YourBuddy.Rotations.Druid
                                         BoomkinUtility(),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                         new PrioritySelector(
-                    //            new Action(ret => { Item.UseBoomkinItems(); return RunStatus.Failure; }),
+                                new Action(ret => { Item.UseBoomkinItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                         BoomkinOffensive())),
                                         new Decorator(ret => HotKeyManager.IsAoe, BoomkinMt()),
@@ -83,7 +84,6 @@ namespace YourBuddy.Rotations.Druid
         private static Composite MultiDoT()
         {
             return new PrioritySelector(
-                //Unit.NearbyUnfriendlyUnits.Where(u => (u.Combat || u.IsDummy()) && !u.IsCrowdControlled()).ToList();
                 ctx => Unit.NearbyUnfriendlyUnits.Where(u => (u.Combat || Unit.IsDummy(Me.CurrentTarget)) && !u.IsCrowdControlled() && Me.IsSafelyFacing(u)).ToList(),
                 Spell.Cast("Sunfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => u.HasAuraExpired("Sunfire", 2))),
                 Spell.Cast("Moonfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => u.HasAuraExpired("Moonfire", 2)))
@@ -94,50 +94,27 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite BoomkinSt()
         {
             return new PrioritySelector(
-               // actions+=/starfall,if=!buff.starfall.up
+
                Spell.Cast("Starfall", ret => StarfallDown),
-               // actions+=/force_of_nature,if=talent.force_of_nature.enabled
-               // actions+=/wild_mushroom_detonate,moving=0,if=buff.wild_mushroom.stack>0&buff.solar_eclipse.up
-               // actions+=/natures_swiftness,if=talent.dream_of_cenarius.enabled
                // actions+=/healing_touch,if=talent.dream_of_cenarius.enabled&!buff.dream_of_cenarius.up&mana.pct>25
-               // actions+=/incarnation,if=talent.incarnation.enabled&(buff.lunar_eclipse.up|buff.solar_eclipse.up)
-               // actions+=/natures_vigil,if=talent.natures_vigil.enabled
+               Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
-               // actions+=/starsurge,if=buff.shooting_stars.react&(active_enemies<5|!buff.solar_eclipse.up)
                Spell.Cast("Starsurge", ret => ShootingStarsUp && (Unit.NearbyAttackableUnitsCount < 5 || !SolarEclipseUp)),
-               // actions+=/moonfire,cycle_targets=1,if=buff.lunar_eclipse.up&ticks_remain<2
                Spell.Cast("Moonfire", ret => LunarEclipseUp && (MoonFireDown || MoonSetting < 2)),
                Spell.Cast("Moonfire", ret => MoonFireDown || MoonSetting < 2),
-               // actions+=/sunfire,cycle_targets=1,if=buff.solar_eclipse.up&ticks_remain<2
                Spell.Cast("Sunfire", ret => SolarEclipseUp && (SunFireDown || SunSetting < 2)),
                Spell.Cast("Sunfire", ret => SunFireDown || SunSetting < 2),
-               // actions+=/starsurge,if=cooldown_react
                Spell.Cast("Starsurge", ret => StarsurgeCooldown),
-               // actions+=/starfire,if=buff.celestial_alignment.up&cast_time<buff.celestial_alignment.remains
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
-               // actions+=/wrath,if=buff.celestial_alignment.up&cast_time<buff.celestial_alignment.remains
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
-               // actions+=/starfire,if=eclipse_dir=1|(eclipse_dir=0&eclipse>0)
                Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
-               MultiDoT(), //Spell.GetSpellCastTime("Starfire") <= TimeToDie && (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
-               // actions+=/wrath,if=eclipse_dir=-1|(eclipse_dir=0&eclipse<=0)
+               MultiDoT(),
                Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0))) //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
-               // actions+=/moonfire,moving=1,cycle_targets=1,if=ticks_remain<2
-               // actions+=/sunfire,moving=1,cycle_targets=1,if=ticks_remain<2
-               // actions+=/wild_mushroom,moving=1,if=buff.wild_mushroom.stack<buff.wild_mushroom.max_stack
-               // actions+=/starsurge,moving=1,if=buff.shooting_stars.react
-               // actions+=/moonfire,moving=1,if=buff.lunar_eclipse.up
-                // actions+=/sunfire,moving=1
  
                 );
         }
 
 
-        internal static Composite BoomkinFiller()
-        {
-            return new PrioritySelector(
-                );
-        }
 
         internal static Composite BoomkinMt()
         {
@@ -152,8 +129,12 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite BoomkinDefensive()
         {
             return new PrioritySelector(
-
-            //    Item.BoomkinUseHealthStone()
+                Spell.Cast("Barkskin", ret => SG.Instance.Boomkin.EnableBarkskin && Me.HealthPercent <= SG.Instance.Boomkin.BarkskinHP),
+                Spell.Cast("Healing Touch", ret => SG.Instance.Boomkin.EnableHealingTouch && (Me.HealthPercent <= SG.Instance.Boomkin.HealingTouchHP || Me.HasAura(132158))),
+                Spell.Cast("Rejuvenation", ret => SG.Instance.Boomkin.EnableRejuvenation && Me.HealthPercent <= SG.Instance.Boomkin.RejuvenationHP),
+                Spell.Cast("Nature's Swiftness", ret => SG.Instance.Boomkin.EnableNatureSwiftness && Me.HealthPercent <= SG.Instance.Boomkin.NatureSwiftnessHP),
+                Spell.Cast("Innervate", ret => SG.Instance.Boomkin.EnableInnervate && Me.ManaPercent <= SG.Instance.Boomkin.InnervateMP),
+                Item.BoomkinUseHealthStone()
                 );
         }
 
@@ -161,9 +142,16 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite BoomkinOffensive()
         {
             return new PrioritySelector(
-                 Spell.Cast("Incarnation", ret => LunarEclipseUp || SolarEclipseUp),
-                // actions+=/celestial_alignment,if=(!buff.lunar_eclipse.up&!buff.solar_eclipse.up)&(buff.chosen_of_elune.up|!talent.incarnation.enabled|cooldown.incarnation.remains>10)
-               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10))),
+                 Spell.Cast("Incarnation", ret => (LunarEclipseUp || SolarEclipseUp) && (
+                    (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.Always)
+                    )),
+               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10)) && (
+                    (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.Always)
+                    )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
@@ -208,6 +196,7 @@ namespace YourBuddy.Rotations.Druid
         internal static bool SolarEclipseUp { get { return Me.HasAura(48517); } }
         internal static bool ChoenofEluneUp { get { return Me.HasAura(102560); } }
         internal static bool ShootingStarsUp { get { return Me.HasAura(93400);  } }
+        internal static bool DreamDown { get { return !Me.HasAura(145152); } }
         internal static bool StarsurgeCooldown { get { return !CooldownTracker.SpellOnCooldown("Starsurge"); } }
         internal static bool StarfallDown { get { return !Me.HasAura(48505); } }
         internal static double Eclipse { get { return Lua.PlayerEclipsePower; } }
