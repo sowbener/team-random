@@ -354,6 +354,13 @@ namespace YourBuddy.Rotations
          WoWClass.Druid,
 
         };
+
+        internal static readonly HashSet<WoWClass> AllowedClassListDie = new HashSet<WoWClass>
+        {
+
+         WoWClass.Druid,
+
+        };
         #endregion
 
         #region DruidStuff

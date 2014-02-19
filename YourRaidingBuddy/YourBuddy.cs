@@ -112,7 +112,7 @@ namespace YourBuddy
                 // ReSharper disable once RedundantJumpStatement
                 return;
             }
-            if (StyxWoW.Me.CurrentTarget != null)
+            if (G.AllowedClassListDie.Contains(StyxWoW.Me.Class) && StyxWoW.Me.CurrentTarget != null)
                 DpsMeter.Update();
 
             if (Me.Specialization == WoWSpec.MonkBrewmaster && !Me.Combat && !Me.HasAura(120267))
@@ -160,6 +160,7 @@ namespace YourBuddy
             /* Update TalentManager */
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
+
 
             /* Set Characters GUID */
             MyGuid = Me.Guid;
