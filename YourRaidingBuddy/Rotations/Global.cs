@@ -356,6 +356,24 @@ namespace YourBuddy.Rotations
         };
         #endregion
 
+        #region DruidStuff
+        internal static readonly HashSet<int> IntTrinketProcs = new HashSet<int>
+        {
+
+            139134, //Cha-Ye's Essence of Brillance
+            138896, //Breath of the Hydra
+            138790, //Wushoolay's Final Choice
+            138964, //Unerring Vision of Lei Shen
+            148898, //Frinzied Crystal of Rage
+            146047, //Purified Bindings of Immerseus
+            148907, //Kardris Toxic Totem
+            146183, //Black Blood of Y'Shaarj
+            146219, //Yu'lon's Bite
+            137592, //Legendary Meta-Gem Procc
+
+        };
+        #endregion
+
         #region MonkStuff
 
         internal static Composite InitializeOnKeyActionsM()

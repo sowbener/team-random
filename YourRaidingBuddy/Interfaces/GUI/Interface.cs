@@ -496,6 +496,9 @@ namespace YourBuddy.Interfaces.GUI
                 case WoWSpec.DruidFeral:
                     { selectSpec = internalSettings.Feral; }
                     break;
+                case WoWSpec.DruidBalance:
+                    { selectSpec = internalSettings.Boomkin; }
+                    break;
                 case WoWSpec.RogueAssassination:
                     { selectSpec = internalSettings.Assassination; }
                     break;

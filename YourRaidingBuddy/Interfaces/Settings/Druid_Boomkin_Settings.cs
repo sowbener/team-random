@@ -91,7 +91,7 @@ namespace YourBuddy.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Healing")]
-        [DisplayName("Innervate")]
+        [DisplayName("Barkskin")]
         [Description("Enable / Disable Innervate")]
         public bool EnableBarkskin { get; set; }
 
@@ -129,6 +129,13 @@ namespace YourBuddy.Interfaces.Settings
         [DisplayName("Nature's Swiftness HP %")]
         [Description("Chooose which HP in % to use Nature's Swiftness. Default is 20%")]
         public int NatureSwiftnessHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.TriggerTarget.FocusTarget)]
+        [Category("Boomkin - Ability Options")]
+        [DisplayName("Rebirth")]
+        [Description("Select the usage of Rebirth")]
+        public Enum.TriggerTarget RebrithLogic { get; set; }
 
         #region Item Options
         [Setting]

@@ -51,6 +51,7 @@ namespace YourBuddy.Core.Helpers
             Lunar
         };
 
+
         public enum TriggerTarget
         {
             FocusTarget,

@@ -95,8 +95,7 @@ namespace YourBuddy.Rotations.Druid
         {
             return new PrioritySelector(
 
-               Spell.Cast("Starfall", ret => StarfallDown),
-               // actions+=/healing_touch,if=talent.dream_of_cenarius.enabled&!buff.dream_of_cenarius.up&mana.pct>25
+               Spell.Cast("Starfall", ret => TimeToDie > 2 && StarfallDown),
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && (Unit.NearbyAttackableUnitsCount < 5 || !SolarEclipseUp)),
@@ -112,6 +111,20 @@ namespace YourBuddy.Rotations.Druid
                Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0))) //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
  
                 );
+        }
+
+        internal static Composite BoomkinRebirth()
+        {
+            return new PrioritySelector(
+
+                //new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusTarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)
+             new Decorator(ret => SG.Instance.Boomkin.RebrithLogic == Enum.TriggerTarget.FocusTarget && Me.FocusedUnit != null && Me.FocusedUnit.Distance <= 30, Spell.Cast("Rebirth", ret => Me.FocusedUnit)
+        //    (SG.Instance.Boomkin.RebrithLogic == Enum.DruidRebirth.OnTank && U.IsTargetBoss) ||
+        //    (SG.Instance.Boomkin.RebrithLogic == Enum.TriggerTarget.FocusTarget && Me.FocusedUnit != null && Me.FocusedUnit.Distance <= 30)
+       //    (SG.Instance.Boomkin.RebrithLogic == Enum.DruidRebirth.OnHealer) ||
+      //     (SG.Instance.Boomkin.RebrithLogic == Enum.DruidRebirth.OnRaidMembers) ||
+      //     (SG.Instance.Boomkin.RebirthLogic == Enum.DruidRebirth.OnMouseOver)
+                    ));
         }
 
 
@@ -131,7 +144,7 @@ namespace YourBuddy.Rotations.Druid
             return new PrioritySelector(
                 Spell.Cast("Barkskin", ret => SG.Instance.Boomkin.EnableBarkskin && Me.HealthPercent <= SG.Instance.Boomkin.BarkskinHP),
                 Spell.Cast("Healing Touch", ret => SG.Instance.Boomkin.EnableHealingTouch && (Me.HealthPercent <= SG.Instance.Boomkin.HealingTouchHP || Me.HasAura(132158))),
-                Spell.Cast("Rejuvenation", ret => SG.Instance.Boomkin.EnableRejuvenation && Me.HealthPercent <= SG.Instance.Boomkin.RejuvenationHP),
+                Spell.Cast("Rejuvenation", ret => SG.Instance.Boomkin.EnableRejuvenation && Me.HealthPercent <= SG.Instance.Boomkin.RejuvenationHP && !Me.HasAura(774)),
                 Spell.Cast("Nature's Swiftness", ret => SG.Instance.Boomkin.EnableNatureSwiftness && Me.HealthPercent <= SG.Instance.Boomkin.NatureSwiftnessHP),
                 Spell.Cast("Innervate", ret => SG.Instance.Boomkin.EnableInnervate && Me.ManaPercent <= SG.Instance.Boomkin.InnervateMP),
                 Item.BoomkinUseHealthStone()
@@ -142,15 +155,20 @@ namespace YourBuddy.Rotations.Druid
         internal static Composite BoomkinOffensive()
         {
             return new PrioritySelector(
-                 Spell.Cast("Incarnation", ret => (LunarEclipseUp || SolarEclipseUp) && (
+                 Spell.Cast("Incarnation", ret =>  (LunarEclipseUp || SolarEclipseUp) && (
                     (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.Always)
                     )),
-               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10)) && (
+               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || !SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10)) && (
                     (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.Always)
+                    )),
+                Spell.Cast("Force of Nature", ret => Me.GetAllAuras().Any(a => G.IntTrinketProcs.Contains(a.SpellId)) && TalentManager.IsSelected(12) && (
+                    (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                    (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
+                    (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.Always)
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
