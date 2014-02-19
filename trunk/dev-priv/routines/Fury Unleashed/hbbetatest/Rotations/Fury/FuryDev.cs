@@ -157,8 +157,8 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryStanceDance()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.BattleStance, ret => !G.BattleStanceAura && !DamageTracker.CalculateBerserkerStance(), true),
-                Spell.Cast(SpellBook.BerserkerStance, ret => !G.BerserkerStanceAura && DamageTracker.CalculateBerserkerStance(), true));
+                Spell.Cast(SpellBook.BattleStance, ret => !G.BattleStanceAura && !DamageTracker.CalculatePreferredStance(), true),
+                Spell.Cast(SpellBook.BerserkerStance, ret => !G.BerserkerStanceAura && DamageTracker.CalculatePreferredStance(), true));
         }
 
         internal static Composite Dev_FuryHeroicStrike()

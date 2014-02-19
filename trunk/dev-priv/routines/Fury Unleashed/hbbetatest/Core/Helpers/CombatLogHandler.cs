@@ -51,13 +51,7 @@ namespace FuryUnleashed.Core.Helpers
                 //if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()))
                 if (args.Args[3] != null && !string.IsNullOrEmpty(args.Args[3].ToString()) && args.Args[3].ToString().Length > 4)
                 {
-                    try
-                    {
-                        if (index < args.Args.Length) a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
-                    }
-                    // ReSharper disable once EmptyGeneralCatchClause
-                    catch (Exception)
-                    { /* Catch all errors */ }
+                    if (index < args.Args.Length) a.SourceGuid = ulong.Parse(args.Args[3].ToString().Remove(0, 2), NumberStyles.HexNumber);
                 }
 
                 if (args.Args[4] != null && index < args.Args.Length)
@@ -72,13 +66,7 @@ namespace FuryUnleashed.Core.Helpers
                 //if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length)
                 if (args.Args[7] != null && !string.IsNullOrEmpty(args.Args[7].ToString()) && index < args.Args.Length && args.Args[7].ToString().Length > 4)
                 {
-                    try
-                    {
-                        a.DestGuid = ulong.Parse(args.Args[7].ToString().Remove(0, 2), NumberStyles.HexNumber);
-                    }
-                    // ReSharper disable once EmptyGeneralCatchClause
-                    catch (Exception)
-                    { /* Catch all errors */ }
+                    a.DestGuid = ulong.Parse(args.Args[7].ToString().Remove(0, 2), NumberStyles.HexNumber);
                 }
 
                 if (index < args.Args.Length) a.DestName = args.Args[8].ToString();

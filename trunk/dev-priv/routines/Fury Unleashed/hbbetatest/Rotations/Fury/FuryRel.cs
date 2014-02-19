@@ -143,9 +143,9 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryStanceDance()
         {
             return new PrioritySelector(
-                new Decorator(ret => !G.BattleStanceAura && !DamageTracker.CalculateBerserkerStance(),
+                new Decorator(ret => !G.BattleStanceAura && !DamageTracker.CalculatePreferredStance(),
                     Spell.Cast(SpellBook.BattleStance, on => Me,  ret => true, true)),
-                new Decorator(ret => !G.BerserkerStanceAura && DamageTracker.CalculateBerserkerStance(),
+                new Decorator(ret => !G.BerserkerStanceAura && DamageTracker.CalculatePreferredStance(),
                     Spell.Cast(SpellBook.BerserkerStance, on => Me, ret => true, true)));
         }
 
