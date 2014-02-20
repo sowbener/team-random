@@ -108,7 +108,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && !G.ReadinessAura && G.ColossusSmashAura && FG.Tier6AbilityUsage),
                 //actions.single_target+=/bloodthirst
-                Spell.MultiDoT(SpellBook.Bloodbath, AuraBook.DeepWounds, 1500, 5, 160, ret => FG.MultiTargetUsage),
+                Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, 160, ret => FG.MultiTargetUsage),
                 Spell.Cast(SpellBook.Bloodthirst),
                 //# The GCD reduction of the Bloodsurge buff allows 3 Wild Strikes in-between Bloodthirst.
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
