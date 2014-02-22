@@ -68,13 +68,13 @@ namespace AntiAFK
                 }
 
                 AFKLogging("\r\n-------------------------------------------");
-                AFKLogging("AntiAFK Bot - Version {0}", Version);
-                AFKLogging("This BotBase is written by nomnomnom");
+                AFKLogging("[AntiAFK Bot] AntiAFK Bot - Version {0}", Version);
+                AFKLogging("[AntiAFK Bot] This BotBase is written by nomnomnom");
                 AFKLogging("-------------------------------------------\r\n");
             }
             catch (Exception exinfo)
             {
-                AFKLogging("Error - {0}", exinfo);
+                AFKLoggingDiag("Error - {0}", exinfo);
             }
         }
 
@@ -99,7 +99,7 @@ namespace AntiAFK
 
                     if (AntiAfkStopwatch.Elapsed.TotalSeconds >= elapsedtime)
                     {
-                        AFKLogging("Time elapsed - Using key!");
+                        AFKLogging("[AntiAFK Bot] Time elapsed - Using key!");
                         KeyboardManager.PressKey((Char)keytopress);
                         ReleaseTimer(25);
                     }
@@ -107,7 +107,7 @@ namespace AntiAFK
             }
             catch (Exception ex)
             {
-                AFKLogging("Error: {0}", ex);
+                AFKLoggingDiag("[AntiAFK Bot] Error: {0}", ex);
             }
         }
 
@@ -140,12 +140,12 @@ namespace AntiAFK
 
         public static void AFKLogging(string message, params object[] args)
         {
-            Logging.Write(Colors.Magenta, "[AntiAFK Bot] {0}", String.Format(message, args));
+            Logging.Write(Colors.Magenta, "{0}", String.Format(message, args));
         }
 
         public static void AFKLoggingDiag(string message, params object[] args)
         {
-            Logging.WriteDiagnostic(Colors.Magenta, "[AntiAFK Bot] {0}", String.Format(message, args));
+            Logging.WriteDiagnostic(Colors.Magenta, "{0}", String.Format(message, args));
         }
 
         public static void PluginPulsing()
@@ -171,7 +171,7 @@ namespace AntiAFK
                 {
                     Parallel.Invoke(
                         () => new WebClient().DownloadData("http://c.statcounter.com/9363381/0/e4308450/1/"),
-                        () => AFKLoggingDiag("StatCounter has been updated!"));
+                        () => AFKLoggingDiag("[AntiAFK Bot] StatCounter has been updated!"));
                     AntiAFKSettings.Instance.LastStatCounted = statcounterDate;
                     AntiAFKSettings.Instance.Save();
                 }

@@ -61,11 +61,6 @@
             0,
             0,
             0});
-            this.msnumeric.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
             this.msnumeric.Name = "msnumeric";
             this.msnumeric.Size = new System.Drawing.Size(184, 23);
             this.msnumeric.TabIndex = 1;
@@ -135,11 +130,6 @@
             this.varnumeric.Location = new System.Drawing.Point(12, 82);
             this.varnumeric.Maximum = new decimal(new int[] {
             300,
-            0,
-            0,
-            0});
-            this.varnumeric.Minimum = new decimal(new int[] {
-            3,
             0,
             0,
             0});
