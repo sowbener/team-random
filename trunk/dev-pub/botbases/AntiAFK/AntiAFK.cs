@@ -89,13 +89,13 @@ namespace AntiAFK
                     return;
                 }
 
-                if (StyxWoW.Me.IsAFKFlagged && _elapsedtime == 0)
-                {
-                    _elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
-                }
-
                 if (StyxWoW.Me.IsAFKFlagged)
                 {
+                    if (_elapsedtime == 0)
+                    {
+                        _elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
+                    }
+
                     if (!AntiAfkStopwatch.IsRunning)
                     {
                         AntiAfkStopwatch.Start();
