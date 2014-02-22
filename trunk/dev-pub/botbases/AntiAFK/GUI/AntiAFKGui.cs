@@ -62,7 +62,7 @@ namespace AntiAFK.GUI
             keydropdown.Items.Add(new CboItem((int)Keys.D, "Right (D)"));
 
             SetComboBoxEnum(keydropdown, (int)AntiAFKSettings.Instance.AntiAfkKey);
-            msnumeric.Value = new decimal(AntiAFKSettings.Instance.AntiAfkTime);
+            msnumeric.Value = new decimal(AntiAFKSettings.Instance.AntiAfkTimeValue);
             pluginscheckbox.Checked = AntiAFKSettings.Instance.AntiAfkPlugins;
         }
 
@@ -75,7 +75,7 @@ namespace AntiAFK.GUI
 
         private void msnumeric_ValueChanged(object sender, EventArgs e)
         {
-            AntiAFKSettings.Instance.AntiAfkTime = (int)msnumeric.Value;
+            AntiAFKSettings.Instance.AntiAfkTimeValue = (int)msnumeric.Value;
         }
 
         private void pluginscheckbox_CheckedChanged(object sender, EventArgs e)

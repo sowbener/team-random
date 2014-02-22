@@ -69,7 +69,7 @@ namespace AntiAFK
 
                 AfkLogging("\r\n-------------------------------------------");
                 AfkLogging("[AntiAFK] BotBase - Version {0}", Version);
-                AfkLogging("[AntiAFK] This botbase is written by nomnomnom \r\n");
+                AfkLogging("[AntiAFK] This botbase is written by nomnomnom");
                 AfkLogging("-------------------------------------------\r\n");
             }
             catch (Exception exinfo)
@@ -87,7 +87,7 @@ namespace AntiAFK
                     return;
                 }
 
-                var elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTime, AntiAFKSettings.Instance.AntiAfkTime + 20);
+                var elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
                 var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
 
                 if (StyxWoW.Me.IsAFKFlagged)

@@ -28,7 +28,10 @@ namespace AntiAFK.GUI
         public Keys AntiAfkKey { get; set; }
 
         [Setting, DefaultValue(5)]
-        public int AntiAfkTime { get; set; }
+        public int AntiAfkTimeValue { get; set; }
+
+        [Setting, DefaultValue(20)]
+        public int AntiAfkRandomValue { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool AntiAfkPlugins { get; set; }
