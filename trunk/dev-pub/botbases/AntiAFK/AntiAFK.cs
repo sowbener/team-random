@@ -60,7 +60,7 @@ namespace AntiAFK
             try
             {
                 StatCounter();
-                AntiAFKSettings.Instance.Load();
+                AntiAfkSettings.Instance.Load();
 
                 if (GlobalSettings.Instance.LogoutForInactivity)
                 {
@@ -87,8 +87,8 @@ namespace AntiAFK
                     return;
                 }
 
-                var elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
-                var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
+                var elapsedtime = Random.Next(AntiAfkSettings.Instance.AntiAfkTimeValue, AntiAfkSettings.Instance.AntiAfkTimeValue + AntiAfkSettings.Instance.AntiAfkRandomValue);
+                var keytopress = AntiAfkSettings.Instance.AntiAfkKey;
 
                 if (StyxWoW.Me.IsAFKFlagged)
                 {
@@ -131,9 +131,8 @@ namespace AntiAFK
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
+            var keytopress = AntiAfkSettings.Instance.AntiAfkKey;
 
-            AfkLogging("[AntiAFK] Releasing key!");
             KeyboardManager.ReleaseKey((Char)keytopress);
             AntiAfkStopwatch.Reset();
             AntiAfkStopwatch.Stop();
@@ -146,7 +145,7 @@ namespace AntiAFK
 
         public static void PluginPulsing()
         {
-            if (AntiAFKSettings.Instance.AntiAfkPlugins)
+            if (AntiAfkSettings.Instance.AntiAfkPlugins)
             {
                 _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
                 AfkLogging("[AntiAFK] Plugins are enabled!");
@@ -163,13 +162,13 @@ namespace AntiAFK
             try
             {
                 var statcounterDate = DateTime.Now.DayOfYear.ToString(CultureInfo.InvariantCulture);
-                if (!statcounterDate.Equals(AntiAFKSettings.Instance.LastStatCounted))
+                if (!statcounterDate.Equals(AntiAfkSettings.Instance.LastStatCounted))
                 {
                     Parallel.Invoke(
                         () => new WebClient().DownloadData("http://c.statcounter.com/9363381/0/e4308450/1/"),
                         () => Logging.WriteDiagnostic(Colors.Magenta, "[AntiAFK] StatCounter has been updated!"));
-                    AntiAFKSettings.Instance.LastStatCounted = statcounterDate;
-                    AntiAFKSettings.Instance.Save();
+                    AntiAfkSettings.Instance.LastStatCounted = statcounterDate;
+                    AntiAfkSettings.Instance.Save();
                 }
             }
             // ReSharper disable once EmptyGeneralCatchClause

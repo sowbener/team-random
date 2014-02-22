@@ -30,11 +30,14 @@
         {
             this.buttonsaveandclose = new System.Windows.Forms.Button();
             this.msnumeric = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
+            this.stopwatchtimer = new System.Windows.Forms.Label();
             this.keydropdown = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.selectkeytopress = new System.Windows.Forms.Label();
             this.pluginscheckbox = new System.Windows.Forms.CheckBox();
+            this.timervariation = new System.Windows.Forms.Label();
+            this.varnumeric = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.msnumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.varnumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonsaveandclose
@@ -54,7 +57,12 @@
             this.msnumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.msnumeric.Location = new System.Drawing.Point(12, 28);
             this.msnumeric.Maximum = new decimal(new int[] {
-            1800000,
+            300,
+            0,
+            0,
+            0});
+            this.msnumeric.Minimum = new decimal(new int[] {
+            3,
             0,
             0,
             0});
@@ -69,34 +77,34 @@
             0});
             this.msnumeric.ValueChanged += new System.EventHandler(this.msnumeric_ValueChanged);
             // 
-            // label1
+            // stopwatchtimer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(165, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Stopwatch Timer (In seconds):";
+            this.stopwatchtimer.AutoSize = true;
+            this.stopwatchtimer.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stopwatchtimer.Location = new System.Drawing.Point(9, 9);
+            this.stopwatchtimer.Name = "stopwatchtimer";
+            this.stopwatchtimer.Size = new System.Drawing.Size(165, 15);
+            this.stopwatchtimer.TabIndex = 2;
+            this.stopwatchtimer.Text = "Stopwatch Timer (In seconds):";
             // 
             // keydropdown
             // 
             this.keydropdown.FormattingEnabled = true;
-            this.keydropdown.Location = new System.Drawing.Point(12, 77);
+            this.keydropdown.Location = new System.Drawing.Point(12, 136);
             this.keydropdown.Name = "keydropdown";
             this.keydropdown.Size = new System.Drawing.Size(184, 21);
             this.keydropdown.TabIndex = 3;
             this.keydropdown.SelectedIndexChanged += new System.EventHandler(this.keydropdown_SelectedIndexChanged);
             // 
-            // label2
+            // selectkeytopress
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(9, 59);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(109, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Select key to press:";
+            this.selectkeytopress.AutoSize = true;
+            this.selectkeytopress.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectkeytopress.Location = new System.Drawing.Point(9, 118);
+            this.selectkeytopress.Name = "selectkeytopress";
+            this.selectkeytopress.Size = new System.Drawing.Size(109, 15);
+            this.selectkeytopress.TabIndex = 4;
+            this.selectkeytopress.Text = "Select key to press:";
             // 
             // pluginscheckbox
             // 
@@ -110,21 +118,60 @@
             this.pluginscheckbox.UseVisualStyleBackColor = true;
             this.pluginscheckbox.CheckedChanged += new System.EventHandler(this.pluginscheckbox_CheckedChanged);
             // 
-            // AntiAFKGui
+            // timervariation
+            // 
+            this.timervariation.AutoSize = true;
+            this.timervariation.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timervariation.Location = new System.Drawing.Point(9, 64);
+            this.timervariation.Name = "timervariation";
+            this.timervariation.Size = new System.Drawing.Size(158, 15);
+            this.timervariation.TabIndex = 6;
+            this.timervariation.Text = "Timer Variation (In seconds):";
+            // 
+            // varnumeric
+            // 
+            this.varnumeric.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.varnumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.varnumeric.Location = new System.Drawing.Point(12, 82);
+            this.varnumeric.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.varnumeric.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.varnumeric.Name = "varnumeric";
+            this.varnumeric.Size = new System.Drawing.Size(184, 23);
+            this.varnumeric.TabIndex = 7;
+            this.varnumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.varnumeric.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.varnumeric.ValueChanged += new System.EventHandler(this.varnumeric_ValueChanged);
+            // 
+            // AntiAfkGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(208, 257);
+            this.Controls.Add(this.varnumeric);
+            this.Controls.Add(this.timervariation);
             this.Controls.Add(this.pluginscheckbox);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.selectkeytopress);
             this.Controls.Add(this.keydropdown);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.stopwatchtimer);
             this.Controls.Add(this.msnumeric);
             this.Controls.Add(this.buttonsaveandclose);
             this.Name = "AntiAfkGui";
             this.Text = "AntiAFK GUI";
             this.Load += new System.EventHandler(this.AntiAFKGui_Load);
             ((System.ComponentModel.ISupportInitialize)(this.msnumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.varnumeric)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -134,9 +181,11 @@
 
         private System.Windows.Forms.Button buttonsaveandclose;
         private System.Windows.Forms.NumericUpDown msnumeric;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label stopwatchtimer;
         private System.Windows.Forms.ComboBox keydropdown;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label selectkeytopress;
         private System.Windows.Forms.CheckBox pluginscheckbox;
+        private System.Windows.Forms.Label timervariation;
+        private System.Windows.Forms.NumericUpDown varnumeric;
     }
 }

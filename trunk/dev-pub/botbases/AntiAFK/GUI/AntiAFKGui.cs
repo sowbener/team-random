@@ -49,7 +49,7 @@ namespace AntiAFK.GUI
         public AntiAfkGui()
         {
             InitializeComponent();
-            AntiAFKSettings.Instance.Load();
+            AntiAfkSettings.Instance.Load();
 
             keydropdown.Items.Add(new CboItem((int)Keys.Space, "Space (Jump)"));
             keydropdown.Items.Add(new CboItem((int)Keys.Up, "Forward (Up Arrow)"));
@@ -61,31 +61,37 @@ namespace AntiAFK.GUI
             keydropdown.Items.Add(new CboItem((int)Keys.A, "Left (A)"));
             keydropdown.Items.Add(new CboItem((int)Keys.D, "Right (D)"));
 
-            SetComboBoxEnum(keydropdown, (int)AntiAFKSettings.Instance.AntiAfkKey);
-            msnumeric.Value = new decimal(AntiAFKSettings.Instance.AntiAfkTimeValue);
-            pluginscheckbox.Checked = AntiAFKSettings.Instance.AntiAfkPlugins;
+            SetComboBoxEnum(keydropdown, (int)AntiAfkSettings.Instance.AntiAfkKey);
+            msnumeric.Value = new decimal(AntiAfkSettings.Instance.AntiAfkTimeValue);
+            varnumeric.Value = new decimal(AntiAfkSettings.Instance.AntiAfkRandomValue);
+            pluginscheckbox.Checked = AntiAfkSettings.Instance.AntiAfkPlugins;
         }
 
         private void AntiAFKGui_Load(object sender, EventArgs e) { }
 
         private void keydropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AntiAFKSettings.Instance.AntiAfkKey = (Keys)GetComboBoxEnum(keydropdown);
+            AntiAfkSettings.Instance.AntiAfkKey = (Keys)GetComboBoxEnum(keydropdown);
         }
 
         private void msnumeric_ValueChanged(object sender, EventArgs e)
         {
-            AntiAFKSettings.Instance.AntiAfkTimeValue = (int)msnumeric.Value;
+            AntiAfkSettings.Instance.AntiAfkTimeValue = (int)msnumeric.Value;
+        }
+
+        private void varnumeric_ValueChanged(object sender, EventArgs e)
+        {
+            AntiAfkSettings.Instance.AntiAfkRandomValue = (int)varnumeric.Value;
         }
 
         private void pluginscheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            AntiAFKSettings.Instance.AntiAfkPlugins = pluginscheckbox.Checked;
+            AntiAfkSettings.Instance.AntiAfkPlugins = pluginscheckbox.Checked;
         }
 
         private void buttonsaveandclose_Click(object sender, EventArgs e)
         {
-            AntiAFKSettings.Instance.Save();
+            AntiAfkSettings.Instance.Save();
             AntiAfk.PluginPulsing();
             AntiAfk.AfkLogging("[AntiAFK] Settings are saved!");
             Close();

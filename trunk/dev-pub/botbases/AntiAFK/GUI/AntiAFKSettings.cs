@@ -5,21 +5,21 @@ using System.Windows.Forms;
 
 namespace AntiAFK.GUI
 {
-    public class AntiAFKSettings : Settings
+    public class AntiAfkSettings : Settings
     {
-        private static AntiAFKSettings _instance;
+        private static AntiAfkSettings _instance;
 
         public static string SettingsPath
         {
             get { return string.Format("{0}\\Settings\\AntiAFK\\AntiAfk_{1}", Utilities.AssemblyDirectory, StyxWoW.Me.Name); }
         }
 
-        public static AntiAFKSettings Instance
+        public static AntiAfkSettings Instance
         {
-            get { return _instance ?? (_instance = new AntiAFKSettings()); }
+            get { return _instance ?? (_instance = new AntiAfkSettings()); }
         }
 
-        public AntiAFKSettings()
+        public AntiAfkSettings()
             : base(SettingsPath + ".xml")
         {
         }
