@@ -25,9 +25,9 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 6, 3);
+        public static readonly Version Revision = new Version(1, 5, 6, 4);
         public static readonly string FuName = "Fury Unleashed - IR " + Revision;
-        public static readonly string WoWVersion = "5.4.2";
+        public static readonly string WoWVersion = "5.4.7";
 
         public override string Name { get { return FuName; } }
         public override bool WantButton { get { return true; } }
@@ -37,7 +37,7 @@ namespace FuryUnleashed
 
         private Composite _combatBehavior, _preCombatBehavior;
 
-        internal static ulong MyGuid = 0;
+        internal static ulong MyToonGuid = 0;
 
         #region Publics
         public override WoWClass Class
@@ -112,13 +112,12 @@ namespace FuryUnleashed
             Logger.CombatLogOr("Protection: Release");
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
+            /* Set Characters GUID */
+            MyToonGuid = Me.Guid;
 
             /* Update TalentManager */
             try { TalentManager.Update(); }
             catch (Exception e) { StopBot(e.ToString()); }
-
-            /* Set Characters GUID */
-            MyGuid = Me.Guid;
 
             /* Initialize Various Functions */
             DamageTracker.Initialize();

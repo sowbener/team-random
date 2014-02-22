@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media;
+using Timer = System.Timers.Timer;
 
 namespace FuryUnleashed.Core.Utilities
 {
@@ -308,72 +309,5 @@ namespace FuryUnleashed.Core.Utilities
             }
             return sb.ToString();
         }
-
-        #region Advanced Logging
-        // 1, TimeSpan.FromMilliseconds(SG.Instance.NumAdvLogThrottleTime), RunStatus.Failure
-        // 1 traverse per xxx timespan ms
-        //internal static Composite AdvancedLogging
-        //{
-        //    get
-        //    {
-        //        return new PrioritySelector(
-        //            //Cached Units Logging
-        //            new Decorator(ret => InternalSettings.Instance.General.CheckUnitLogging,
-        //                new PrioritySelector(
-        //                    new ThrottlePasses(1,
-        //                        TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
-        //                        RunStatus.Failure,
-        //                        new Action(delegate
-        //                        {
-        //                            CombatLogPu("Cached Unit Counts:");
-        //                            CombatLogWh("Units - In Range (2Y - SlamCleave): {0}",Unit.NearbySlamCleaveUnitsCount);
-        //                            CombatLogWh("Units - In Range (5Y - Melee): {0}", Unit.AttackableMeleeUnitsCount);
-        //                            CombatLogWh("Units - In Range (8Y - AoE): {0}", Unit.NearbyAttackableUnitsCount);
-        //                            CombatLogWh("Units - Interrupts (10Y): {0}", Unit.InterruptableUnitsCount);
-        //                            CombatLogWh("Units - Rallying Cry (30Y): {0}", Unit.RaidMembersNeedCryCount);
-        //                            CombatLogWh("Units - Deep Wounds (8Y): {0}", Unit.NeedThunderclapUnitsCount);
-        //                            CombatLogPu("Units - Slam Viable: {0}", Global.SlamViable);
-        //                            CombatLogPu("Units - Whirlwind viable: {0}", Global.WhirlwindViable);
-        //                        }
-        //                        )))),
-        //            // Aura & CD logging.
-        //            new Decorator(ret => InternalSettings.Instance.General.CheckCacheLogging,
-        //                new PrioritySelector(
-        //                    new ThrottlePasses(1,
-        //                        TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
-        //                        RunStatus.Failure,
-        //                        new Action(delegate
-        //                        {
-        //                            // ReSharper disable InconsistentNaming
-        //                            CombatLogPu("Cooldowns:");
-        //                            foreach (var WoWAura in CooldownTracker.cooldowns)
-        //                            {
-        //                                CombatLogWh("{0}", WoWAura);
-        //                            }
-        //                            //CombatLogPu("Self Aura's:");
-        //                            //foreach (var WoWAura in Spell.CachedAuras)
-        //                            //{
-        //                            //    CombatLogWh("{0}", WoWAura);
-        //                            //}
-        //                        }
-        //                        )))),
-        //            //Temporary Functions Logging
-        //            new Decorator(ret => InternalSettings.Instance.General.CheckTestLogging,
-        //                new PrioritySelector(
-        //                    new ThrottlePasses(1,
-        //                        TimeSpan.FromMilliseconds(InternalSettings.Instance.General.LoggingThrottleNum),
-        //                        RunStatus.Failure,
-        //                        new Action(delegate
-        //                        {
-        //                            CombatLogPu("Test Logging:");
-        //                            CombatLogWh("BT OC {0}", Global.BtOc);
-        //                            CombatLogWh("Slam Cost: {0}", WoWSpell.FromId(SpellBook.Slam).PowerCost);
-        //                            CombatLogWh("Whirlwind Cost: {0}", WoWSpell.FromId(SpellBook.Whirlwind).PowerCost);
-        //                        }
-        //                        )))));
-        //    }
-        //}
-        #endregion
-
     }
 }

@@ -98,13 +98,6 @@ namespace FuryUnleashed.Interfaces.Settings
         public bool CheckPreCombatBuff { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
-        [Category("Combat Settings")]
-        [DisplayName("Enable Heroic Leap Usage")]
-        [Description("This enables the routine to cast Heroic Leap when applicable on your target - EXPERIMENTAL!")]
-        public bool CheckHeroicLeap { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(Enum.VigilanceTrigger.OnTank)]
         [Category("Combat Settings")]
         [DisplayName("Vigilance Usage")]

@@ -95,8 +95,6 @@ namespace FuryUnleashed.Rotations.Fury
                 //# Cooldowns are stacked whenever possible, and only delayed for the very last use of them.
 
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
-                new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
-                    Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                 //actions.single_target+=/bloodthirst,if=!buff.enrage.up
                 Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura),
                 //# Galakras cooldown reduction trinket allows Storm Bolt to be synced with Colossus Smash. 'buff.cooldown_reduction.up' is a hackish way of seeing if the trinket is equipped.
@@ -108,7 +106,7 @@ namespace FuryUnleashed.Rotations.Fury
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.down&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && !G.ReadinessAura && G.ColossusSmashAura && FG.Tier6AbilityUsage),
                 //actions.single_target+=/bloodthirst
-                Spell.MultiDoT(SpellBook.Bloodbath, AuraBook.DeepWounds, 1500, 5, 160, ret => FG.MultiTargetUsage),
+                Spell.MultiDoT(SpellBook.Bloodthirst, AuraBook.DeepWounds, 1500, 5, 160, ret => FG.MultiTargetUsage),
                 Spell.Cast(SpellBook.Bloodthirst),
                 //# The GCD reduction of the Bloodsurge buff allows 3 Wild Strikes in-between Bloodthirst.
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.react&target.health.pct>=20&cooldown.bloodthirst.remains<=1
@@ -157,8 +155,8 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryStanceDance()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.BattleStance, ret => !G.BattleStanceAura && !DamageTracker.CalculateBerserkerStance(), true),
-                Spell.Cast(SpellBook.BerserkerStance, ret => !G.BerserkerStanceAura && DamageTracker.CalculateBerserkerStance(), true));
+                Spell.Cast(SpellBook.BattleStance, ret => !G.BattleStanceAura && !DamageTracker.CalculatePreferredStance(), true),
+                Spell.Cast(SpellBook.BerserkerStance, ret => !G.BerserkerStanceAura && DamageTracker.CalculatePreferredStance(), true));
         }
 
         internal static Composite Dev_FuryHeroicStrike()
@@ -199,8 +197,6 @@ namespace FuryUnleashed.Rotations.Fury
                     new PrioritySelector(
                         Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 5, true),
                         Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && FG.Tier6AbilityUsage),
-                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.ColossusSmashAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
-                            Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura && G.BerserkerRageOnCooldown),
                         Spell.Cast(SpellBook.Execute),
                         Spell.Cast(SpellBook.RagingBlow))));
@@ -217,8 +213,6 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true),
                         //actions.two_targets+=/heroic_leap,if=buff.enrage.up
-                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
-                            Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         //# Generally, if an encounter has any type of AoE, Bladestorm will be the better choice.
                         //actions.two_targets+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
                         Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && !G.ColossusSmashAura && FG.BloodbathSync && FG.Tier4AbilityAoEUsage),
@@ -257,8 +251,6 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.three_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>90
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > 90, true),
                         //actions.three_targets+=/heroic_leap,if=buff.enrage.up
-                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
-                            Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         //actions.three_targets+=/dragon_roar,if=enabled&(!debuff.colossus_smash.up&(buff.bloodbath.up|!talent.bloodbath.enabled))
                         Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && !G.ColossusSmashAura && FG.BloodbathSync && FG.Tier4AbilityAoEUsage),
                         //actions.three_targets+=/shockwave,if=enabled
@@ -291,8 +283,6 @@ namespace FuryUnleashed.Rotations.Fury
                         //actions.aoe+=/cleave,if=rage>110
                         Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower > Lua.PlayerPowerMax - 10, true),
                         //actions.aoe+=/heroic_leap,if=buff.enrage.up
-                        new Decorator(ret => FG.HeroicLeapUsage && U.IsViable(Me.CurrentTarget) && G.EnrageAura && Me.CurrentTarget.Distance >= 8 && Me.CurrentTarget.Distance <= 40,
-                            Spell.CastOnGround(SpellBook.HeroicLeap, on => Me.CurrentTarget.Location)),
                         //# Dragon roar is a poor choice on large-scale AoE as the damage it does is reduced with additional targets. The damage it does per target is reduced by the following amounts:
                         //# 1/2/3/4/5+ targets ---> 0%/25%/35%/45%/50%
                         //actions.aoe+=/dragon_roar,if=enabled&debuff.colossus_smash.down&(buff.bloodbath.up|!talent.bloodbath.enabled)
