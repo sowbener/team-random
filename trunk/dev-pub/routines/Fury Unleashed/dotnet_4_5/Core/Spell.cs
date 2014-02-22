@@ -330,17 +330,17 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                     }
 
                     if (auraresult == null) return false;
@@ -381,17 +381,17 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        auraresult = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        auraresult = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        auraresult = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                     }
 
                     if (auraresult == null) return false;
@@ -422,19 +422,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
                     return 0;
@@ -461,19 +461,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
                     }
                     return 0;
@@ -501,19 +501,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
                 }
@@ -541,19 +541,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);                        
                     }
                 }
@@ -581,19 +581,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
                 }
@@ -621,19 +621,19 @@ namespace FuryUnleashed.Core
 
                     if (!cached)
                     {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
 
                     if (CachedTargetAuras != null && unit == Me.CurrentTarget)
                     {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
 
                     if (CachedAuras != null && unit == Me)
                     {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                         return aura != null && aura.TimeLeft >= TimeSpan.FromMilliseconds(remainingtime);
                     }
                 }

@@ -85,7 +85,7 @@ namespace FuryUnleashed.Core.Helpers
             switch (args.Event)
             {
                 case "SWING_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid)
+                    if (args.DestGuid == Root.MyToonGuid)
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
@@ -94,7 +94,7 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "RANGE_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid)
+                    if (args.DestGuid == Root.MyToonGuid)
                     {
                         object damage = args.Amount;
                         if (!AddingDamageTaken)
@@ -103,7 +103,7 @@ namespace FuryUnleashed.Core.Helpers
                     break;
 
                 case "SPELL_DAMAGE":
-                    if (args.DestGuid == Root.MyGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
+                    if (args.DestGuid == Root.MyToonGuid && StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                     {
                         bool countDamage = args.SourceName != null || (args.SpellName == "Spirit Link" && args.SourceName == "Spirit Link Totem");
 
@@ -176,39 +176,26 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region Fury-Spec Functions
-        public static bool CalculateBerserkerStance()
+        public static bool CalculatePreferredStance()
         {
-            using (new PerformanceLogger("CalculateBerserkerStance"))
+            using (new PerformanceLogger("CalculatePreferredStance"))
             {
                 try
                 {
                     var healthtopercent = StyxWoW.Me.MaxHealth / 100; // Calculate Health per 1%.
                     var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Retrieve damage taken over 3 seconds.
                     var damagetorage = (damageoverthreeseconds / healthtopercent) / 3; // Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds.
-                    var battlestancetgrageregen = Item.AttackSpeed * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
-                    var battlestancesmfrageregen = Item.AttackSpeed * 3.5; // Base Weaponspeed * 3.5 to get normalized rage.
-                    var berserkerstancetgrageregen = (battlestancetgrageregen * 0.5) + damagetorage; // Half of normalized rage  + Rage from Damage.
-                    var berserkerstancesmfrageregen = (battlestancesmfrageregen * 0.5) + damagetorage; // Half of normalized rage  + Rage from Damage.
 
-                    if (Item.WieldsTwoHandedWeapons)
-                    {
-                        if (berserkerstancetgrageregen > battlestancetgrageregen)
-                            return true;
+                    var battlestancerage = Item.AttackSpeed * 3.5; // Weaponspeed * 3.5 to get normalized rage.
+                    var berserkerstancerage = (battlestancerage * 0.5) + damagetorage; // Half of normalized rage + Rage from Damage.
 
-                        return false;
-                    }
+                    Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
-                    if (Item.WieldsOneHandedWeapons)
-                    {
-                        if (berserkerstancesmfrageregen > battlestancesmfrageregen)
-                            return true;
-
-                        return false;
-                    }
+                    return berserkerstancerage > battlestancerage;
                 }
                 catch (Exception exstancecalc)
                 {
-                    Logger.DiagLogFb("FU: Failed CalculateBerserkerStance - {0}", exstancecalc);
+                    Logger.DiagLogFb("FU: Failed CalculatePreferredStance - {0}", exstancecalc);
                 }
             }
             return false;

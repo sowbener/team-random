@@ -32,11 +32,12 @@ namespace FuryUnleashed.Core.Managers
 
                 if (InternalSettings.Instance.General.CurrentRevision != remoteRev)
                 {
-                    var logwrt = InternalSettings.Instance.General.CheckAutoUpdate ? "Downloading Update - Please wait." : "Please update manually!";
+                    var logwrt = InternalSettings.Instance.General.CheckAutoUpdate ? "Downloading Update - Please wait." : "Please update manually - You have disabled the autoupdater!";
                     Logger.CombatLogOr("A new version was found. " + logwrt);
                     if (!InternalSettings.Instance.General.CheckAutoUpdate && checkallow) return;
 
-                    DownloadFilesFromSvn(new WebClient(), FuSvnUrl, path);
+                    InitializeUpdate(path);
+
                     InternalSettings.Instance.General.CurrentRevision = remoteRev;
                     InternalSettings.Instance.General.Save();
 
@@ -69,14 +70,17 @@ namespace FuryUnleashed.Core.Managers
             }
         }
 
+        private static void InitializeUpdate(string path)
+        {
+            DownloadFilesFromSvn(new WebClient(), FuSvnUrl, path);
+        }
+
         private static void DownloadFilesFromSvn(WebClient client, string url, string path)
         {
             var html = client.DownloadString(url);
             MatchCollection results = LinkPattern.Matches(html);
+            IEnumerable<Match> matches = from match in results.OfType<Match>() where match.Success && match.Groups["ln"].Success select match;
 
-            IEnumerable<Match> matches = from match in results.OfType<Match>()
-                                         where match.Success && match.Groups["ln"].Success
-                                         select match;
             foreach (Match match in matches)
             {
                 var file = RemoveXmlEscapes(match.Groups["ln"].Value);

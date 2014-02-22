@@ -92,14 +92,6 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
-        internal static bool HeroicLeapUsage
-        {
-            get
-            {
-                return IS.Instance.General.CheckHeroicLeap;
-            }
-        }
-
         internal static bool HeroicThrowUsage
         {
             get
