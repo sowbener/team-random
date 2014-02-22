@@ -22,13 +22,14 @@ namespace AntiAFK
     {
         private static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
         private static readonly Random Random = new Random();
+        private static readonly Keys KeyToPress = AntiAFKSettings.Instance.AntiAfkKey;
 
         private const double Version = 1.03;
+        private static int _elapsedtime;
 
         private static Composite _root;
         private static PulseFlags _pulseFlags;
         private static Timer _antiafktimer;
-        private static int _elapsedtime;
 
         internal static LocalPlayer Me
         {
@@ -88,11 +89,10 @@ namespace AntiAFK
                     return;
                 }
 
-                if (_elapsedtime == 0)
+                if (StyxWoW.Me.IsAFKFlagged && _elapsedtime == 0)
                 {
                     _elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
                 }
-                var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
 
                 if (StyxWoW.Me.IsAFKFlagged)
                 {
@@ -104,7 +104,7 @@ namespace AntiAFK
                     if (AntiAfkStopwatch.Elapsed.TotalSeconds >= _elapsedtime)
                     {
                         AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", _elapsedtime);
-                        KeyboardManager.PressKey((Char)keytopress);
+                        KeyboardManager.PressKey((Char)KeyToPress);
                         ReleaseTimer(25);
                     }
                 }
@@ -135,12 +135,11 @@ namespace AntiAFK
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
+            _elapsedtime = 0;
 
-            KeyboardManager.ReleaseKey((Char)keytopress);
+            KeyboardManager.ReleaseKey((Char)KeyToPress);
             AntiAfkStopwatch.Reset();
             AntiAfkStopwatch.Stop();
-            _elapsedtime = 0;
         }
 
         public static void AFKLogging(string message, params object[] args)
