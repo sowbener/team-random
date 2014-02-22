@@ -20,13 +20,14 @@ namespace AntiAFK
 {
     public class AntiAfk : BotBase
     {
-        internal static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
-        internal static readonly AntiAFKSettings Settings = new AntiAFKSettings();
-        internal static double Version = 1.02;
-        internal static Timer Antiafktimer;
+        private static readonly Stopwatch AntiAfkStopwatch = new Stopwatch();
+        private static readonly Random Random = new Random();
 
-        private static PulseFlags _pulseFlags;
+        private const double Version = 1.03;
+
         private static Composite _root;
+        private static PulseFlags _pulseFlags;
+        private static Timer _antiafktimer;
 
         internal static LocalPlayer Me
         {
@@ -49,6 +50,11 @@ namespace AntiAFK
             get { return false; }
         }
 
+        public override PulseFlags PulseFlags
+        {
+            get { return _pulseFlags; }
+        }
+
         public override void Start()
         {
             try
@@ -64,8 +70,6 @@ namespace AntiAFK
                 AfkLogging("\r\n-------------------------------------------");
                 AfkLogging("[AntiAFK] BotBase - Version {0}", Version);
                 AfkLogging("[AntiAFK] This botbase is written by nomnomnom \r\n");
-                AfkLogging("[AntiAFK] Loaded - Pulse every {0} miliseconds.", AntiAFKSettings.Instance.AntiAfkTime);
-                AfkLogging("[AntiAFK] Loaded - Selected key is {0}.", AntiAFKSettings.Instance.AntiAfkKey);
                 AfkLogging("-------------------------------------------\r\n");
             }
             catch (Exception exinfo)
@@ -83,8 +87,8 @@ namespace AntiAFK
                     return;
                 }
 
-                Settings.AntiAfkKey = AntiAFKSettings.Instance.AntiAfkKey;
-                Settings.AntiAfkTime = AntiAFKSettings.Instance.AntiAfkTime;
+                var elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTime, AntiAFKSettings.Instance.AntiAfkTime + 20);
+                var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
 
                 if (StyxWoW.Me.IsAFKFlagged)
                 {
@@ -93,10 +97,10 @@ namespace AntiAFK
                         AntiAfkStopwatch.Start();
                     }
 
-                    if (AntiAfkStopwatch.Elapsed.TotalSeconds >= Settings.AntiAfkTime)
+                    if (AntiAfkStopwatch.Elapsed.TotalSeconds >= elapsedtime)
                     {
                         AfkLogging("[AntiAFK] Time elapsed - Using key!");
-                        KeyboardManager.PressKey((Char)Settings.AntiAfkKey);
+                        KeyboardManager.PressKey((Char)keytopress);
                         ReleaseTimer(25);
                     }
                 }
@@ -114,31 +118,23 @@ namespace AntiAFK
                 AntiAfkStopwatch.Stop();
             }
         }
-
-        public override PulseFlags PulseFlags
-        {
-            get { return _pulseFlags; }
-        }
-
-        public override Composite Root
-        {
-            get { return _root ?? (_root = CreateRoot()); }
-        }
         #endregion
 
         #region Others
         public static void ReleaseTimer(int tickingtime)
         {
-            Antiafktimer = new Timer(tickingtime);
-            Antiafktimer.Elapsed += OnTimedEvent;
-            Antiafktimer.AutoReset = false;
-            Antiafktimer.Enabled = true;
+            _antiafktimer = new Timer(tickingtime);
+            _antiafktimer.Elapsed += OnTimedEvent;
+            _antiafktimer.AutoReset = false;
+            _antiafktimer.Enabled = true;
         }
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
+            var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
+
             AfkLogging("[AntiAFK] Releasing key!");
-            KeyboardManager.ReleaseKey((Char)Settings.AntiAfkKey);
+            KeyboardManager.ReleaseKey((Char)keytopress);
             AntiAfkStopwatch.Reset();
             AntiAfkStopwatch.Stop();
         }
@@ -182,6 +178,11 @@ namespace AntiAFK
         #endregion
 
         #region Obsolete
+        public override Composite Root
+        {
+            get { return _root ?? (_root = CreateRoot()); }
+        }
+
         private static PrioritySelector CreateRoot()
         {
             return new PrioritySelector(
