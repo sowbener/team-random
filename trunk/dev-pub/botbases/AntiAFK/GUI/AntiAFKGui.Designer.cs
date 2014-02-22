@@ -53,7 +53,7 @@
             // 
             // msnumeric
             // 
-            this.msnumeric.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.msnumeric.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.msnumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.msnumeric.Location = new System.Drawing.Point(12, 28);
             this.msnumeric.Maximum = new decimal(new int[] {
@@ -62,7 +62,7 @@
             0,
             0});
             this.msnumeric.Name = "msnumeric";
-            this.msnumeric.Size = new System.Drawing.Size(184, 23);
+            this.msnumeric.Size = new System.Drawing.Size(184, 19);
             this.msnumeric.TabIndex = 1;
             this.msnumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.msnumeric.Value = new decimal(new int[] {
@@ -84,6 +84,7 @@
             // 
             // keydropdown
             // 
+            this.keydropdown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.keydropdown.FormattingEnabled = true;
             this.keydropdown.Location = new System.Drawing.Point(12, 136);
             this.keydropdown.Name = "keydropdown";
@@ -125,7 +126,7 @@
             // 
             // varnumeric
             // 
-            this.varnumeric.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.varnumeric.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.varnumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.varnumeric.Location = new System.Drawing.Point(12, 82);
             this.varnumeric.Maximum = new decimal(new int[] {
@@ -134,7 +135,7 @@
             0,
             0});
             this.varnumeric.Name = "varnumeric";
-            this.varnumeric.Size = new System.Drawing.Size(184, 23);
+            this.varnumeric.Size = new System.Drawing.Size(184, 19);
             this.varnumeric.TabIndex = 7;
             this.varnumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.varnumeric.Value = new decimal(new int[] {

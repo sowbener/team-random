@@ -28,6 +28,7 @@ namespace AntiAFK
         private static Composite _root;
         private static PulseFlags _pulseFlags;
         private static Timer _antiafktimer;
+        private static int _elapsedtime;
 
         internal static LocalPlayer Me
         {
@@ -87,7 +88,10 @@ namespace AntiAFK
                     return;
                 }
 
-                var elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
+                if (_elapsedtime == 0)
+                {
+                    _elapsedtime = Random.Next(AntiAFKSettings.Instance.AntiAfkTimeValue, AntiAFKSettings.Instance.AntiAfkTimeValue + AntiAFKSettings.Instance.AntiAfkRandomValue);
+                }
                 var keytopress = AntiAFKSettings.Instance.AntiAfkKey;
 
                 if (StyxWoW.Me.IsAFKFlagged)
@@ -97,9 +101,9 @@ namespace AntiAFK
                         AntiAfkStopwatch.Start();
                     }
 
-                    if (AntiAfkStopwatch.Elapsed.TotalSeconds >= elapsedtime)
+                    if (AntiAfkStopwatch.Elapsed.TotalSeconds >= _elapsedtime)
                     {
-                        AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", elapsedtime);
+                        AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", _elapsedtime);
                         KeyboardManager.PressKey((Char)keytopress);
                         ReleaseTimer(25);
                     }
@@ -136,6 +140,7 @@ namespace AntiAFK
             KeyboardManager.ReleaseKey((Char)keytopress);
             AntiAfkStopwatch.Reset();
             AntiAfkStopwatch.Stop();
+            _elapsedtime = 0;
         }
 
         public static void AFKLogging(string message, params object[] args)
