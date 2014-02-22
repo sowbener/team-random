@@ -53,7 +53,7 @@ namespace Tyrael.Shared
                     if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
-                        Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Paused!\", ChatTypeInfo[\"SKILL\"]);");
+                        Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Resumed!\", ChatTypeInfo[\"GUILD\"]);");
                     }
                     Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
