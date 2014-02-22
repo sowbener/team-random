@@ -70,8 +70,8 @@ namespace AntiAFK
                 }
 
                 AFKLogging("\r\n-------------------------------------------");
-                AFKLogging("[AntiAFK Bot] AntiAFK Bot - Version {0}", Version);
-                AFKLogging("[AntiAFK Bot] This BotBase is written by nomnomnom");
+                AFKLogging("[AntiAFK Bot] AntiAFK Bot - Version {0}.", Version);
+                AFKLogging("[AntiAFK Bot] This BotBase is written by nomnomnom.");
                 AFKLogging("-------------------------------------------\r\n");
             }
             catch (Exception exinfo)
@@ -103,7 +103,8 @@ namespace AntiAFK
 
                     if (AntiAfkStopwatch.Elapsed.TotalSeconds > _elapsedtime)
                     {
-                        AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", _elapsedtime);
+                        AFKLogging("[AntiAFK Bot] Timer elapsed - Using key!");
+                        AFKLoggingDiag("[AntiAFK Bot] Elapsed Time is {0} seconds.", _elapsedtime);
                         KeyboardManager.PressKey((Char)KeyToPress);
                         _elapsedtime = 0;
                         ReleaseTimer(25);
