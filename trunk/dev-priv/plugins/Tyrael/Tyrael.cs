@@ -197,7 +197,7 @@ namespace Tyrael
         #region Softlock
         private static Composite SelectLockMethod(params Composite[] children)
         {
-            return TyraelSettings.Instance.UseSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);
+            return TyraelSettings.Instance.UseSoftLock && !GlobalSettings.Instance.UseFrameLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
 
         public class FrameLockSelector : PrioritySelector
