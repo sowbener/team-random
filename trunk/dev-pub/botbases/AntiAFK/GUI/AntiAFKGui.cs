@@ -50,6 +50,7 @@ namespace AntiAFK.GUI
         private void cbxDesign_DrawItem(object sender, DrawItemEventArgs e)
         {
             ComboBox cbx = sender as ComboBox;
+
             if (cbx != null)
             {
                 e.DrawBackground();

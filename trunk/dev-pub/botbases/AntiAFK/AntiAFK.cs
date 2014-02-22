@@ -101,7 +101,7 @@ namespace AntiAFK
                         AntiAfkStopwatch.Start();
                     }
 
-                    if (AntiAfkStopwatch.Elapsed.TotalSeconds >= _elapsedtime)
+                    if (AntiAfkStopwatch.Elapsed.TotalSeconds > _elapsedtime)
                     {
                         AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", _elapsedtime);
                         KeyboardManager.PressKey((Char)KeyToPress);
