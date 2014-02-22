@@ -105,6 +105,7 @@ namespace AntiAFK
                     {
                         AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", _elapsedtime);
                         KeyboardManager.PressKey((Char)KeyToPress);
+                        _elapsedtime = 0;
                         ReleaseTimer(25);
                     }
                 }
@@ -135,8 +136,6 @@ namespace AntiAFK
 
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            _elapsedtime = 0;
-
             KeyboardManager.ReleaseKey((Char)KeyToPress);
             AntiAfkStopwatch.Reset();
             AntiAfkStopwatch.Stop();

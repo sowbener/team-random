@@ -85,10 +85,11 @@
             // keydropdown
             // 
             this.keydropdown.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.keydropdown.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.keydropdown.FormattingEnabled = true;
             this.keydropdown.Location = new System.Drawing.Point(12, 136);
             this.keydropdown.Name = "keydropdown";
-            this.keydropdown.Size = new System.Drawing.Size(184, 21);
+            this.keydropdown.Size = new System.Drawing.Size(184, 25);
             this.keydropdown.TabIndex = 3;
             this.keydropdown.SelectedIndexChanged += new System.EventHandler(this.keydropdown_SelectedIndexChanged);
             // 
