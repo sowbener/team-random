@@ -34,7 +34,7 @@ namespace AntiAFK.GUI
                 return;
             }
             item = (CboItem)cb.Items[0];
-            AntiAFK.AfkLogging("[AntiAFK] Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
+            AntiAFK.AFKLogging("[AntiAFK] Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
                           cb.Name, e, item.E);
             cb.SelectedIndex = 0;
         }
@@ -93,7 +93,7 @@ namespace AntiAFK.GUI
         {
             AntiAFKSettings.Instance.Save();
             AntiAFK.PluginPulsing();
-            AntiAFK.AfkLogging("[AntiAFK] Settings are saved!");
+            AntiAFK.AFKLogging("[AntiAFK] Settings are saved!");
             Close();
         }
     }

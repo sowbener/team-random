@@ -67,14 +67,14 @@ namespace AntiAFK
                     GlobalSettings.Instance.LogoutForInactivity = false;
                 }
 
-                AfkLogging("\r\n-------------------------------------------");
-                AfkLogging("[AntiAFK] BotBase - Version {0}", Version);
-                AfkLogging("[AntiAFK] This botbase is written by nomnomnom");
-                AfkLogging("-------------------------------------------\r\n");
+                AFKLogging("\r\n-------------------------------------------");
+                AFKLogging("AntiAFK Bot - Version {0}", Version);
+                AFKLogging("This BotBase is written by nomnomnom");
+                AFKLogging("-------------------------------------------\r\n");
             }
             catch (Exception exinfo)
             {
-                AfkLogging("[AntiAFK] Error - {0}", exinfo);
+                AFKLogging("Error - {0}", exinfo);
             }
         }
 
@@ -99,7 +99,7 @@ namespace AntiAFK
 
                     if (AntiAfkStopwatch.Elapsed.TotalSeconds >= elapsedtime)
                     {
-                        AfkLogging("[AntiAFK] Time elapsed - Using key!");
+                        AFKLogging("Time elapsed - Using key!");
                         KeyboardManager.PressKey((Char)keytopress);
                         ReleaseTimer(25);
                     }
@@ -107,7 +107,7 @@ namespace AntiAFK
             }
             catch (Exception ex)
             {
-                AfkLogging("[AntiAFK] Error: {0}", ex);
+                AFKLogging("Error: {0}", ex);
             }
         }
 
@@ -138,9 +138,14 @@ namespace AntiAFK
             AntiAfkStopwatch.Stop();
         }
 
-        public static void AfkLogging(string message, params object[] args)
+        public static void AFKLogging(string message, params object[] args)
         {
-            Logging.Write(Colors.Magenta, "{0}", String.Format(message, args));
+            Logging.Write(Colors.Magenta, "[AntiAFK Bot] {0}", String.Format(message, args));
+        }
+
+        public static void AFKLoggingDiag(string message, params object[] args)
+        {
+            Logging.WriteDiagnostic(Colors.Magenta, "[AntiAFK Bot] {0}", String.Format(message, args));
         }
 
         public static void PluginPulsing()
@@ -148,12 +153,12 @@ namespace AntiAFK
             if (AntiAFKSettings.Instance.AntiAfkPlugins)
             {
                 _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-                AfkLogging("[AntiAFK] Plugins are enabled!");
+                AFKLogging("Plugins are enabled!");
             }
             else
             {
                 _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
-                AfkLogging("[AntiAFK] Plugins are disabled!");
+                AFKLogging("Plugins are disabled!");
             }
         }
 
@@ -166,7 +171,7 @@ namespace AntiAFK
                 {
                     Parallel.Invoke(
                         () => new WebClient().DownloadData("http://c.statcounter.com/9363381/0/e4308450/1/"),
-                        () => Logging.WriteDiagnostic(Colors.Magenta, "[AntiAFK] StatCounter has been updated!"));
+                        () => AFKLoggingDiag("StatCounter has been updated!"));
                     AntiAFKSettings.Instance.LastStatCounted = statcounterDate;
                     AntiAFKSettings.Instance.Save();
                 }
