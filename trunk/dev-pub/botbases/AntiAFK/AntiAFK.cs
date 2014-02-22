@@ -99,7 +99,7 @@ namespace AntiAFK
 
                     if (AntiAfkStopwatch.Elapsed.TotalSeconds >= elapsedtime)
                     {
-                        AFKLogging("[AntiAFK Bot] Time elapsed - Using key!");
+                        AFKLogging("[AntiAFK Bot] {0} seconds elapsed - Using key!", elapsedtime);
                         KeyboardManager.PressKey((Char)keytopress);
                         ReleaseTimer(25);
                     }
