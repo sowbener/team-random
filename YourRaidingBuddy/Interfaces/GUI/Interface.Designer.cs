@@ -107,7 +107,7 @@ namespace YourBuddy.Interfaces.GUI
                     this.HkTier4AbilityLabel.Text = "Tricks of the Trade";
                     this.HkDemoBannerLabel.Text = "NOT IN USE";
                     this.HkHeroicLeapLabel.Text = "NOT IN USE";
-                    this.HkMockingBannerLabel.Text = "NOT IN USE";
+                    this.HkMockingBannerLabel.Text = "Rupture";
                     this.HkShattThrowLabel.Text = "Talk-Key";
                     Refresh();
                     return true;

@@ -50,6 +50,13 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Select the usage of Touch of Death. Default is Off")]
         public bool TouchOfDeath { get; set; }
 
+         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Windwalker - Ability Options")]
+        [DisplayName("Auto Cancel Storm, Earth and Fire")]
+        [Description("Select the usage of Auto Cancel Storm, Earth and Fire. Default is Off")]
+        public bool AutoCancelSEF { get; set; }
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

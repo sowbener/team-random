@@ -442,6 +442,13 @@ namespace YourBuddy.Core
         public static void CancelAura(this WoWUnit unit, string aura)
         {
             WoWAura a = unit.GetAuraFromName(aura);
+            if (a != null)
+                a.TryCancelAura();
+        }
+
+        public static void CancelAura(this WoWUnit unit, int aura)
+        {
+            WoWAura a = unit.GetAuraFromID(aura);
             if (a != null && a.Cancellable)
                 a.TryCancelAura();
         }

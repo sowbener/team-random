@@ -13,7 +13,10 @@ using YourBuddy.Core.Managers;
 using G = YourBuddy.Rotations.Global;
 using SH = YourBuddy.Interfaces.Settings.SettingsH;
 using YourBuddy.Core.Helpers;
+using Action = Styx.TreeSharp.Action;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
+using Enum = YourBuddy.Core.Helpers.Enum;
+using System;
 
 namespace YourBuddy.Rotations.Monk
 {
@@ -32,6 +35,7 @@ namespace YourBuddy.Rotations.Monk
                         G.InitializeCaching(),
                         G.ManualCastPause(),
                         G.InitializeOnKeyActionsM(),
+                        new Decorator(ret => SG.Instance.Windwalker.AutoCancelSEF, CreateSEFCancel()),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Windwalker.CheckAutoAttack, Lua.StartAutoAttack),
@@ -174,6 +178,12 @@ namespace YourBuddy.Rotations.Monk
                     (SG.Instance.Windwalker.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.ClassRacials == Enum.AbilityTrigger.Always)
                     )));
+        }
+
+        public static Composite CreateSEFCancel()
+        {
+            return new PrioritySelector(
+                Lua.RunMacroText("/cancelaura Storm, Earth, and Fire", ret => Me.CurrentTarget.HasAura(138130)));
         }
 
         internal static Composite WindwalkerUtility()

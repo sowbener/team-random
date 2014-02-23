@@ -27,6 +27,8 @@ namespace YourBuddy.Rotations
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         internal static int ? _anticipationCount;
         private static ulong MouseOverTarget;
+        public static bool RuptureMode;
+        public static bool SEFMode;
 
 
 
@@ -391,6 +393,31 @@ namespace YourBuddy.Rotations
 
         #endregion
 
+        #region lel
+        internal static void HandleModifierStateChanged(object sender, LuaEventArgs args)
+        {
+            if (   SettingsH.Instance.MockingBannerChoice == Keys.None && SettingsH.Instance.Tier4Choice == Keys.None
+
+                )
+                return;
+
+            if (KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice))
+            {
+                SEFMode = !SEFMode;
+
+                if (SEFMode && Me.Combat)
+                {
+                    Logger.CombatLog("Storm,Earth and Fire activated");
+                    if (SG.Instance.General.CheckHotkeyChatOutput)
+                        Lua.DoString(
+                            "RaidNotice_AddMessage(RaidWarningFrame, \"SEF Enabled\", ChatTypeInfo[\"RAID_WARNING\"]);");
+                }
+            }
+
+        }
+
+        #endregion
+
 
         #region PaladinStuff
 
@@ -565,7 +592,7 @@ namespace YourBuddy.Rotations
                 }
 
                 // If the player has a focus target set, use it instead.
-                if (StyxWoW.Me.FocusedUnitGuid != 0)
+                if (StyxWoW.Me.FocusedUnitGuid != 0 && Me.FocusedUnit.Distance <= 30)
                 {
                     return StyxWoW.Me.FocusedUnit;
                 }

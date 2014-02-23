@@ -188,6 +188,9 @@ namespace YourBuddy
             if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightBlood)
                 DeathStrikeTracker.Initialize();
 
+            if (StyxWoW.Me.Specialization == WoWSpec.RogueCombat || StyxWoW.Me.Specialization == WoWSpec.MonkWindwalker)
+                Styx.WoWInternals.Lua.Events.AttachEvent("MODIFIER_STATE_CHANGED", G.HandleModifierStateChanged);
+
             /* Unholy DoTTracker */
         //    if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
 
