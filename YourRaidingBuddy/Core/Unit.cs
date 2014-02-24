@@ -309,7 +309,7 @@ namespace YourBuddy.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.Distance <= 45;
+                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.SpellDistance(Me.CurrentTarget) < 45f;
             }
         }
 

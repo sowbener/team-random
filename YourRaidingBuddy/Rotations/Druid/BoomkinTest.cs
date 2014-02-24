@@ -36,6 +36,7 @@ namespace YourBuddy.Rotations.Druid
                     //               new Decorator(ret => HotKeyManager.IsSpecial, new PrioritySelector(Spell.Cast("Binding Shot", ret => TalentManager.IsSelected(4)))),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
+                        BoomkinRebirth(),
                         new Decorator(ret => SG.Instance.Boomkin.EnableFacing && !Me.IsMoving && !Me.IsSafelyFacing(Me.CurrentTarget), new Action(ret => { Me.CurrentTarget.Face(); return RunStatus.Failure; })),
                         new Decorator(a => CastingStarfire && EclipseDirMoon && !CelestialalignmentUp, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
                         new Decorator(a => CastingWrath && EclipseDirSun && !CelestialalignmentUp, new Action(delegate { SpellManager.StopCasting(); return RunStatus.Failure; })),
