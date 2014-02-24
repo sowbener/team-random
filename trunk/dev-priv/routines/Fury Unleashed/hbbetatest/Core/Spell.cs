@@ -303,6 +303,230 @@ namespace FuryUnleashed.Core
         }
 
         /// <summary>
+        /// Gets fading aura timeleft  - String
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraname">Full Auraname</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static double AuraTimeLeft(this WoWUnit unit, string auraname, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("AuraTimeLeft-String"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return 0;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+                    return 0;
+                }
+                catch (Exception) { return 0; }
+            }
+        }
+
+        /// <summary>
+        /// Gets fading aura timeleft  - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static double AuraTimeLeft(this WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("AuraTimeLeft-Int"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return 0;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
+                    }
+                    return 0;
+                }
+                catch (Exception) { return 0; }
+            }
+        }
+
+        /// <summary>
+        /// Used for cancelling aura's.
+        /// </summary>
+        /// <param name="unit">Unit to cancel aura's on --> Always Me?</param>
+        /// <param name="auraname">AuraBook.Auraname or Aura ID</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        public static void CancelAura(this WoWUnit unit, string auraname, bool isFromMe = false, bool cached = true)
+        {
+            using (new PerformanceLogger("CancelAura-String"))
+            {
+                if (!cached)
+                {
+                    WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                    if (aura != null)
+                    {
+                        Logger.CombatLogWh("Cancelling Aura: {0}", auraname);
+                        aura.TryCancelAura();
+                    }
+                }
+
+                if (CachedAuras != null && unit == Me)
+                {
+                    WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                    if (aura != null)
+                    {
+                        Logger.CombatLogWh("Cancelling Aura: {0}", auraname);
+                        aura.TryCancelAura();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used for cancelling aura's.
+        /// </summary>
+        /// <param name="unit">Unit to cancel aura's on --> Always Me?</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        public static void CancelAura(this WoWUnit unit, int auraId, bool isFromMe = false, bool cached = true)
+        {
+            using (new PerformanceLogger("CancelAura-Int"))
+            {
+                if (!cached)
+                {
+                    WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                    if (aura != null)
+                    {
+                        Logger.CombatLogWh("Cancelling Aura: {0}", WoWSpell.FromId(auraId).Name);
+                        aura.TryCancelAura();
+                    }
+                }
+
+                if (CachedAuras != null && unit == Me)
+                {
+                    WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                    if (aura != null)
+                    {
+                        Logger.CombatLogWh("Cancelling Aura: {0}", WoWSpell.FromId(auraId).Name);
+                        aura.TryCancelAura();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets fading aura timeleft - String
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraname">Full Auraname</param>
+        /// <param name="fadingtime">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool FadingAura(this WoWUnit unit, string auraname, int fadingtime, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("FadingAura-String"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Gets fading aura timeleft - ID
+        /// </summary>
+        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
+        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
+        /// <param name="fadingtime">Timeleft on the Aura</param>
+        /// <param name="isFromMe">True, False - Is aura made by Me</param>
+        /// <param name="cached">True, False - Use cached aura's</param>
+        /// <returns></returns>
+        public static bool FadingAura(this WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
+        {
+            using (new PerformanceLogger("FadingAura-Int"))
+            {
+                try
+                {
+                    if (!Unit.IsViable(unit)) return false;
+
+                    if (!cached)
+                    {
+                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
+                    {
+                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+
+                    if (CachedAuras != null && unit == Me)
+                    {
+                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
+                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
+                    }
+                }
+                catch (Exception) { return false; }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// HasAura extension - String
         /// </summary>
         /// <param name="unit">Unit (Me, Me.CurrentTarget, etc)</param>
@@ -398,164 +622,6 @@ namespace FuryUnleashed.Core
 
                     if (auraresult.TimeLeft.TotalMilliseconds > msuLeft)
                         return auraresult.StackCount >= stacks;
-                }
-                catch (Exception) { return false; }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Gets fading aura timeleft  - String
-        /// </summary>
-        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
-        /// <param name="auraname">Full Auraname</param>
-        /// <param name="isFromMe">True, False - Is aura made by Me</param>
-        /// <param name="cached">True, False - Use cached aura's</param>
-        /// <returns></returns>
-        public static double AuraTimeLeft(this WoWUnit unit, string auraname, bool isFromMe = true, bool cached = true)
-        {
-            using (new PerformanceLogger("AuraTimeLeft-String"))
-            {
-                try
-                {
-                    if (!Unit.IsViable(unit)) return 0;
-
-                    if (!cached)
-                    {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
-                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
-                    }
-
-                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                    {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
-                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
-                    }
-
-                    if (CachedAuras != null && unit == Me)
-                    {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
-                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
-                    }
-                    return 0;
-                }
-                catch (Exception) { return 0; }
-            }
-        }
-
-        /// <summary>
-        /// Gets fading aura timeleft  - ID
-        /// </summary>
-        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
-        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
-        /// <param name="isFromMe">True, False - Is aura made by Me</param>
-        /// <param name="cached">True, False - Use cached aura's</param>
-        /// <returns></returns>
-        public static double AuraTimeLeft(this WoWUnit unit, int auraId, bool isFromMe = true, bool cached = true)
-        {
-            using (new PerformanceLogger("AuraTimeLeft-Int"))
-            {
-                try
-                {
-                    if (!Unit.IsViable(unit)) return 0;
-
-                    if (!cached)
-                    {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
-                    }
-
-                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                    {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
-                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
-                    }
-
-                    if (CachedAuras != null && unit == Me)
-                    {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
-                        return aura != null ? aura.TimeLeft.TotalMilliseconds : 0;
-                    }
-                    return 0;
-                }
-                catch (Exception) { return 0; }
-            }
-        }
-
-        /// <summary>
-        /// Gets fading aura timeleft - String
-        /// </summary>
-        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
-        /// <param name="auraname">Full Auraname</param>
-        /// <param name="fadingtime">Timeleft on the Aura</param>
-        /// <param name="isFromMe">True, False - Is aura made by Me</param>
-        /// <param name="cached">True, False - Use cached aura's</param>
-        /// <returns></returns>
-        public static bool FadingAura(this WoWUnit unit, string auraname, int fadingtime, bool isFromMe = true, bool cached = true)
-        {
-            using (new PerformanceLogger("FadingAura-String"))
-            {
-                try
-                {
-                    if (!Unit.IsViable(unit)) return false;
-
-                    if (!cached)
-                    {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
-                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-                    }
-
-                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                    {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.Name == auraname);
-                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-                    }
-
-                    if (CachedAuras != null && unit == Me)
-                    {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
-                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-                    }
-                }
-                catch (Exception) { return false; }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Gets fading aura timeleft - ID
-        /// </summary>
-        /// <param name="unit">Unit (Me, Me.CurrentTarget, Etc)</param>
-        /// <param name="auraId">AuraBook.Auraname or Aura ID</param>
-        /// <param name="fadingtime">Timeleft on the Aura</param>
-        /// <param name="isFromMe">True, False - Is aura made by Me</param>
-        /// <param name="cached">True, False - Use cached aura's</param>
-        /// <returns></returns>
-        public static bool FadingAura(this WoWUnit unit, int auraId, int fadingtime, bool isFromMe = true, bool cached = true)
-        {
-            using (new PerformanceLogger("FadingAura-Int"))
-            {
-                try
-                {
-                    if (!Unit.IsViable(unit)) return false;
-
-                    if (!cached)
-                    {
-                        WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
-                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-                    }
-
-                    if (CachedTargetAuras != null && unit == Me.CurrentTarget)
-                    {
-                        WoWAura aura = isFromMe ? CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedTargetAuras.FirstOrDefault(a => a.SpellId == auraId);
-                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);
-                    }
-
-                    if (CachedAuras != null && unit == Me)
-                    {
-                        WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
-                        return aura != null && aura.TimeLeft <= TimeSpan.FromMilliseconds(fadingtime);                        
-                    }
                 }
                 catch (Exception) { return false; }
             }

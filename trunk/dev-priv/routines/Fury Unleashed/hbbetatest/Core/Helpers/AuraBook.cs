@@ -8,6 +8,7 @@
                             BattleStance = 2457,
                             BerserkerStance = 2458,
                             BerserkerRage = 18499,
+                            Bladestorm = 46924,
                             Bloodbath = 12292,
                             Bloodlust = 2825,
                             Bloodsurge = 46916,
