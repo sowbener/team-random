@@ -391,7 +391,7 @@ namespace FuryUnleashed.Core
         {
             using (new PerformanceLogger("CancelAura-String"))
             {
-                if (!cached)
+                if (!cached && unit == Me)
                 {
                     WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                     if (aura != null)
@@ -401,7 +401,7 @@ namespace FuryUnleashed.Core
                     }
                 }
 
-                if (CachedAuras != null && unit == Me)
+                if (cached && CachedAuras != null && unit == Me)
                 {
                     WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                     if (aura != null)
@@ -424,7 +424,7 @@ namespace FuryUnleashed.Core
         {
             using (new PerformanceLogger("CancelAura-Int"))
             {
-                if (!cached)
+                if (!cached && unit == Me)
                 {
                     WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                     if (aura != null)
@@ -434,7 +434,7 @@ namespace FuryUnleashed.Core
                     }
                 }
 
-                if (CachedAuras != null && unit == Me)
+                if (cached && CachedAuras != null && unit == Me)
                 {
                     WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                     if (aura != null)
