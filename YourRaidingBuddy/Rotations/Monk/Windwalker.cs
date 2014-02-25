@@ -102,6 +102,7 @@ namespace YourBuddy.Rotations.Monk
             return new PrioritySelector(
                Spell.Cast("Tiger Palm", ret => TigerPowerRemains <= 3),
                Spell.Cast("Rising Sun Kick"),
+               new Decorator(ret => (Me.IsChanneling && (Lua.PlayerChi >= 2 && CooldownTracker.GetSpellCooldown("Rising Sun Kick").TotalSeconds < 1.5)), new ActionAlwaysSucceed()),
                 Spell.Cast("Tiger Palm", ret => !Me.HasAura(125359) && RisingSunKickDebuffRemains > 1 && Lua.TimeToEnergyCap() > 1),
                 Spell.Cast("Touch of Death", ret => SG.Instance.Windwalker.TouchOfDeath && ((Me.HasAura(124490) && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= 10) || (Lua.PlayerChi >= 3 && Me.HasAura("Death Note")))),
                 Spell.Cast("Fists of Fury", ret => !Me.IsMoving && EnergizingBrewDown && Lua.TimeToEnergyCap() > 4 && TigerPowerRemains > 4),

@@ -45,7 +45,7 @@ namespace YourBuddy.Core.Managers
         // ReSharper disable once RedundantDefaultFieldInitializer
         private static bool _Rebuild = false;
 
-        private static bool RebuildNeeded
+        internal static bool RebuildNeeded
         {
             get
             {
@@ -180,7 +180,7 @@ namespace YourBuddy.Core.Managers
             if (EventRebuildTimer.IsFinished && RebuildNeeded)
             {
                 RebuildNeeded = false;
-                Logger.DiagLogPu("FU TalentManager: Rebuilding behaviors due to changes detected.");
+                Logger.DiagLogPu("YB TalentManager: Rebuilding behaviors due to changes detected.");
                 Update();
                 CombatLogHandler.Shutdown();
                 Root.Instance.PreCombatSelector();

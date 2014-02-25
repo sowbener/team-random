@@ -96,7 +96,7 @@ namespace YourBuddy.Rotations.Hunter
             return new PrioritySelector(
                 HunterTrapBehavior(),
                 Spell.PreventDoubleCast("Fervor", 0.7, ret => FervorReqs),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Lua.PlayerPower >= 90 && LockAndLoadProc),
+                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Lua.PlayerPower >= 90 && LockAndLoadProc && !Me.HasAura(144641)),
                 Spell.Cast("Explosive Shot", ret => LockAndLoadProc),
                 Spell.CastHack("Dire Beast", ret => TalentManager.IsSelected(11) && Me.CurrentTarget.CurrentHealth >= SG.Instance.General.MinHPAbility && TimeToDie >= 15),
                 Spell.Cast("Glaive Toss", ret => TalentManager.IsSelected(16)),

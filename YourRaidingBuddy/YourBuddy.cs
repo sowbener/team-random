@@ -124,7 +124,6 @@ namespace YourBuddy
 
             Spell.PulseDoubleCastEntries();
 
-            Spell.GcdInitialize();
 
          //   if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy && !DoTTracker.Initialized) DoTTracker.Initialize();
 
