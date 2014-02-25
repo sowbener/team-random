@@ -280,6 +280,9 @@ namespace FuryUnleashed.Core
         #endregion GCD
 
         #region Cached & Non-Cached Aura Functions
+        /// <summary>
+        /// The lists required for cached auras.
+        /// </summary>
         public static IEnumerable<WoWAura> CachedAuras = new List<WoWAura>();
         public static IEnumerable<WoWAura> CachedTargetAuras = new List<WoWAura>();
 
