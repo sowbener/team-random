@@ -194,7 +194,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),
                 Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget), true),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss, true),
-                Spell.Cast(SpellBook.Taunt, ret => IS.Instance.Protection.CheckAutoTaunt && !U.IsTargettingMe, true),
+                Spell.Cast(SpellBook.Taunt, ret => (IS.Instance.Protection.CheckAutoTaunt && !IS.Instance.Protection.CheckSmartTaunt && !U.IsTargettingMe) || IS.Instance.Protection.CheckSmartTaunt, true),
                 Spell.Cast(SpellBook.RallyingCry, on => Me, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry, true),
                 Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum, true),
                 Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum, true),

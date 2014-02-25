@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Styx;
 using Styx.WoWInternals.WoWObjects;
@@ -9,81 +10,32 @@ namespace FuryUnleashed.Core.Helpers
     {
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        #region Tier Armor hashlists
-        public static readonly HashSet<int> Tier14DpsIds = new HashSet<int>
+        #region Smart Taunt Lists
+        internal static HashSet<Tuple<int, int>> TauntUseQualifiers = new HashSet<Tuple<int, int>>
         {
-            -539,   // 509 - Heroic Raid
-            1144,   // 496 - Normal Raid
-            -516,   // 483 - Raid Finder
-        };
-
-        public static readonly HashSet<int> Tier14TankIds = new HashSet<int>
-        {
-            -540,   // 509 - Heroic Raid
-            1145,   // 496 - Normal Raid
-            -517,   // 483 - Raid Finder
-        };
-
-        public static readonly HashSet<int> Tier15DpsIds = new HashSet<int>
-        {
-            -745,   // 535 - Heroic Raid
-            1172,   // 522 - Normal Raid
-            -722,   // 502 - Raid Finder
-        };
-
-        public static readonly HashSet<int> Tier15TankIds = new HashSet<int>
-        {
-            -746,   // 535 - Heroic Raid
-            1173,   // 522 - Normal Raid
-            -723,   // 502 - Raid Finder
+            // Tuple<AuraId, StackCount> (will want to double check AuraIds)
+            Tuple.Create(143436, 1), // "Corrosive Blast" (http://wowhead.com/spell=143436)
+            Tuple.Create(146124, 3), // "Self Doubt" (http://wowhead.com/spell=146124)
+            Tuple.Create(144358, 1), // "Wounded Pride" (http://wowhead.com/spell=144358)
+            Tuple.Create(146992, 3), // "Flames of Galakrond" (http://wowhead.com/spell=146992) - Possibly wrong.
+            Tuple.Create(147029, 3), // "Flames of Galakrond" (http://wowhead.com/spell=147029) 
+            Tuple.Create(144467, 2), // "Ignite Armor" (http://wowhead.com/spell=144467)
+            Tuple.Create(144215, 5), // "Froststorm Strike" (http://wowhead.com/spell=144215)
+            Tuple.Create(143494, 3), // "Sundering Blow" (http://wowhead.com/spell=143494)
+            Tuple.Create(142990, 12), // "Fatal Strike" (http://wowhead.com/spell=142990)
+            Tuple.Create(143766, 3), // "Panic" (http://wowhead.com/spell=143766)
+            Tuple.Create(143780, 3), // "Acid Breath" (http://wowhead.com/spell=143780)
+            Tuple.Create(143773, 3), // "Freezing Breath" (http://wowhead.com/spell=143773)
+            Tuple.Create(143767, 3), // "Scorching Breath" (http://wowhead.com/spell=143767)
+            Tuple.Create(143385, 4), // "Electrostatic Charge" (http://wowhead.com/spell=143385)
+            Tuple.Create(145183, 3), // "Gripping Despair" (http://wowhead.com/spell=145183)
+            Tuple.Create(145195, 3), // "Empowered Gripping Despair" (http://wowhead.com/spell=145195)
+            Tuple.Create(31803, 2), // "Censure" (http://wowhead.com/spell=31803)
         };
         #endregion
 
-        #region Other Lists
-        internal static readonly HashSet<Keys> MovementKey = new HashSet<Keys> { };
-
-        internal static readonly HashSet<string> MovementKeysHash = new HashSet<string>
-        {
-            "MOVEFORWARD",
-            "MOVEBACKWARD",
-            "TURNLEFT",
-            "TURNRIGHT",
-            "STRAFELEFT",
-            "STRAFERIGHT",
-            "JUMP",
-            "TURNORACTION",
-            "CAMERAORSELECTORMOVE",
-        };
-
-        public static bool HamstringUnitsList(this WoWUnit unit)
-        {
-            return unit != null && (HamstringListIds.Contains(unit.Entry));
-        }
-        public static HashSet<uint> HamstringListIds { get { return HamstringList; } }
-        private static readonly HashSet<uint> HamstringList = new HashSet<uint>
-        {
-            69480,  // Blessed Loa Spirit
-            69491,  // Blessed Loa Spirit
-            69492,  // Blessed Loa Spirit
-            69556,  // Shadowed Loa Spirit
-            69553,  // Shadowed Loa Spirit
-            69548   // Shadowed Loa Spirit
-        };
-
-        public static bool DoNotUseOnTgtList(this WoWUnit unit)
-        {
-            return unit != null && (DoNotUseOnTgtIds.Contains(unit.Entry));
-        }
-        public static HashSet<uint> DoNotUseOnTgtIds { get { return DoNotUseOnList; } }
-        private static readonly HashSet<uint> DoNotUseOnList = new HashSet<uint>
-        {
-			68036, // Durumu the Forgotten
-            60410  // Elegon
-        };
-        #endregion
-		
-		#region Rare & Elites
-		public static bool RareUnitsList(this WoWUnit unit)
+        #region Dummy, Elites & Boss ID Lists
+        public static bool RareUnitsList(this WoWUnit unit)
         {
             return unit != null && (RareListIds.Contains(unit.Entry));
         }
@@ -124,9 +76,7 @@ namespace FuryUnleashed.Core.Helpers
             71919, //Zhu-Gon
             72032  //Zvezdan
         };
-		#endregion
 
-        #region Dummy & Boss ID's
         public static HashSet<uint> BossIds { get { return Bosses; } }
         public static bool TargetIsBoss(this WoWUnit unit)
         {
@@ -1408,6 +1358,79 @@ namespace FuryUnleashed.Core.Helpers
             71158, // Rik'kal the Dissector
             71153  // Hisek the Swarmkeeper
             };
+        #endregion
+
+        #region Other Lists
+        internal static readonly HashSet<Keys> MovementKey = new HashSet<Keys>();
+
+        internal static readonly HashSet<string> MovementKeysHash = new HashSet<string>
+        {
+            "MOVEFORWARD",
+            "MOVEBACKWARD",
+            "TURNLEFT",
+            "TURNRIGHT",
+            "STRAFELEFT",
+            "STRAFERIGHT",
+            "JUMP",
+            "TURNORACTION",
+            "CAMERAORSELECTORMOVE",
+        };
+
+        public static bool HamstringUnitsList(this WoWUnit unit)
+        {
+            return unit != null && (HamstringListIds.Contains(unit.Entry));
+        }
+        public static HashSet<uint> HamstringListIds { get { return HamstringList; } }
+        private static readonly HashSet<uint> HamstringList = new HashSet<uint>
+        {
+            69480,  // Blessed Loa Spirit
+            69491,  // Blessed Loa Spirit
+            69492,  // Blessed Loa Spirit
+            69556,  // Shadowed Loa Spirit
+            69553,  // Shadowed Loa Spirit
+            69548   // Shadowed Loa Spirit
+        };
+
+        public static bool DoNotUseOnTgtList(this WoWUnit unit)
+        {
+            return unit != null && (DoNotUseOnTgtIds.Contains(unit.Entry));
+        }
+        public static HashSet<uint> DoNotUseOnTgtIds { get { return DoNotUseOnList; } }
+        private static readonly HashSet<uint> DoNotUseOnList = new HashSet<uint>
+        {
+			68036, // Durumu the Forgotten
+            60410  // Elegon
+        };
+        #endregion
+
+        #region Obsolete hashlists
+        //public static readonly HashSet<int> Tier14DpsIds = new HashSet<int>
+        //{
+        //    -539,   // 509 - Heroic Raid
+        //    1144,   // 496 - Normal Raid
+        //    -516,   // 483 - Raid Finder
+        //};
+
+        //public static readonly HashSet<int> Tier14TankIds = new HashSet<int>
+        //{
+        //    -540,   // 509 - Heroic Raid
+        //    1145,   // 496 - Normal Raid
+        //    -517,   // 483 - Raid Finder
+        //};
+
+        //public static readonly HashSet<int> Tier15DpsIds = new HashSet<int>
+        //{
+        //    -745,   // 535 - Heroic Raid
+        //    1172,   // 522 - Normal Raid
+        //    -722,   // 502 - Raid Finder
+        //};
+
+        //public static readonly HashSet<int> Tier15TankIds = new HashSet<int>
+        //{
+        //    -746,   // 535 - Heroic Raid
+        //    1173,   // 522 - Normal Raid
+        //    -723,   // 502 - Raid Finder
+        //};
         #endregion
     }
 }

@@ -410,6 +410,32 @@ namespace FuryUnleashed.Core
         }
         #endregion
 
+        #region SmartTaunt Functions
+        // Full credits to Chinajade for this!
+        internal static bool IsAutoTauntDesired()
+        {
+            // Make certain we have a target, and the target is a boss ...
+            if (!Me.GotTarget || !IsTargetBoss)
+            {
+                return false;
+            }
+
+            // Make certain focus target is valid, and it makes sense to use Taunt ...
+            var focusedunit = StyxWoW.Me.FocusedUnit;
+
+            if (!IsViable(focusedunit) || focusedunit.IsDead)
+            {
+                return false;
+            }
+
+            // Are any of the Taunt use constraints met?
+            return (from aura in focusedunit.Auras.Values
+                    let tauntqualifier = HashSets.TauntUseQualifiers.FirstOrDefault(t => t.Item1 == aura.SpellId)
+                    where (tauntqualifier != null) && (aura.StackCount >= tauntqualifier.Item2) 
+                    select aura).Any();
+        }
+        #endregion
+
         #region Range Checks
         /// <summary>
         /// Using Math.Abs calculating the actual maximum range for spell cast on unit.
