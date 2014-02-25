@@ -180,6 +180,7 @@ namespace YourBuddy
             if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) YourBuddy.Rotations.Druid.CommonDruid.Initialize();
 
             CombatLogHandler.Initialize();
+            Spell.GcdInitialize();
 
             /* Lua SecondaryStats */
       //     if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy) Lua.PopulateSecondryStats();
