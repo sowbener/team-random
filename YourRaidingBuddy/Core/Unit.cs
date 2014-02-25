@@ -215,6 +215,7 @@ namespace YourBuddy.Core
         /// Retrieves the count (Integer & Float) of nearby units (8y) - Used in YourBuddy.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int NearbyAttackableUnitsCount;
+        public static int NearbyAttackableUnitsCL;
         public static float NearbyAttackableUnitsFloat;
         public static void GetNearbyAttackableUnitsCount()
         {
@@ -224,6 +225,7 @@ namespace YourBuddy.Core
                 {
                     NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
                     NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
+                    NearbyAttackableUnitsCL = NearbyAttackableUnits(StyxWoW.Me.Location, 28).Count();
                 }
             }
         }

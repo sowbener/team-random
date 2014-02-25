@@ -28,7 +28,7 @@ namespace YourBuddy.Rotations.Shaman
             get
             {
                 return new PrioritySelector(
-                        new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheckS), new ActionAlwaysSucceed()),
+                        new Decorator(ret => (HotKeyManager.IsPaused || !Unit.DefaultCheckRanged), new ActionAlwaysSucceed()),
                         G.InitializeCaching(),
                         G.ManualCastPause(),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,
@@ -114,10 +114,10 @@ namespace YourBuddy.Rotations.Shaman
         {
             WoWUnit seedTarget = null;
             return new PrioritySelector(
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount > 4,
+                new Decorator(ret => Unit.NearbyAttackableUnitsCL > 4,
                     new PrioritySelector(
                      Spell.Cast("Chain Lightning"))),
-                     new Decorator(ret => Unit.NearbyAttackableUnitsCount.Between(2,3),
+                     new Decorator(ret => Unit.NearbyAttackableUnitsCL.Between(2, 3),
                     new PrioritySelector(
                     Spell.PreventDoubleMultiDoT("Flame Shock", 1, Me, 20, 3, ret => Unit.NearbyAttackableUnitsCount < 4 && seedTarget == null),
                     Spell.PreventDoubleCastHack("Earth Shock", 0.5, ret=> Me.CurrentTarget, ret => LightningShieldStacks >= 6, true),
@@ -126,7 +126,7 @@ namespace YourBuddy.Rotations.Shaman
                     Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
                     Spell.Cast("Elemental Blast", ret => TalentManager.IsSelected(18)),
                     Spell.Cast("Chain Lightning"))),
-                new Decorator(ret => Unit.NearbyAttackableUnitsCount.Between(2,2),
+                new Decorator(ret => Unit.NearbyAttackableUnitsCL.Between(2, 2),
                     new PrioritySelector(
                 Spell.Cast("Unleash Elements", ret => TalentManager.IsSelected(16) && !Me.HasAura(114050)),
                 Spell.Cast("Lava Burst", ret => NeedLavaBurst),
