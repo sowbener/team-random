@@ -297,6 +297,14 @@ namespace YourBuddy.Core
             }
         }
 
+        internal static bool DefaultCheckS
+        {
+            get
+            {
+                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead;
+            }
+        }
+
         internal static bool DefaultCheckRanged
         {
             get
