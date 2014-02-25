@@ -20,6 +20,7 @@ using Styx.Helpers;
 using Styx.Patchables;
 using Styx.WoWInternals.World;
 using Lua = YourBuddy.Core.Helpers.LuaClass;
+using Enum = YourBuddy.Core.Helpers.Enum;
 
 namespace YourBuddy.Core
 {
@@ -287,18 +288,6 @@ namespace YourBuddy.Core
         }
         #endregion
 
-        #region GCD Detection
-        public static bool IsGlobalCooldown(YourBuddy.Core.Helpers.Enum.LagTolerance allow = YourBuddy.Core.Helpers.Enum.LagTolerance.Yes)
-        {
-#if NO_LATENCY_ISSUES_WITH_GLOBAL_COOLDOWN
-            uint latency = allow == YourBuddy.Core.Helpers.Enum.LagTolerance.Yes ? StyxWoW.WoWClient.Latency : 0;
-            TimeSpan gcdTimeLeft = GcdTimeLeft;
-            return gcdTimeLeft.TotalMilliseconds > latency;
-#else
-            return Spell.FixGlobalCooldown;
-#endif
-        }
-
         #region Fix HonorBuddys GCD Handling
 
 #if HONORBUDDY_GCD_IS_WORKING
@@ -318,12 +307,12 @@ namespace YourBuddy.Core
                 if (!SpellManager.FindSpell(value, out sfr))
                 {
                     _gcdCheck = null;
-                    Logger.DiagLogFb("GCD check fix spell {0} not known", value);
+                    Logger.InitLog("GCD check fix spell {0} not known", value);
                 }
                 else
                 {
                     _gcdCheck = sfr.Original;
-                    Logger.DiagLogFb("GCD check fix spell set to: {0}", value);
+                    Logger.InitLog("GCD check fix spell set to: {0}", value);
                 }
             }
         }
@@ -379,17 +368,20 @@ namespace YourBuddy.Core
 #if HONORBUDDY_GCD_IS_WORKING
             Logger.WriteDebug("GcdInitialize: using HonorBuddy GCD");
 #else
-            Logger.DiagLogFb("FixGlobalCooldownInitialize: using YourBuddy GCD");
+            Logger.DebugLog("FixGlobalCooldownInitialize: using YourBuddy GCD");
             switch (StyxWoW.Me.Class)
             {
                 case WoWClass.DeathKnight:
                     FixGlobalCooldownCheckSpell = "Frost Presence";
                     break;
+                case WoWClass.Druid:
+                    FixGlobalCooldownCheckSpell = "Cat Form";
+                    break;
                 case WoWClass.Hunter:
                     FixGlobalCooldownCheckSpell = "Hunter's Mark";
                     break;
-                case WoWClass.Druid:
-                    FixGlobalCooldownCheckSpell = "Cat Form";
+                case WoWClass.Mage:
+                    FixGlobalCooldownCheckSpell = "Polymorph";
                     break;
                 case WoWClass.Monk:
                     FixGlobalCooldownCheckSpell = "Stance of the Fierce Tiger";
@@ -397,11 +389,20 @@ namespace YourBuddy.Core
                 case WoWClass.Paladin:
                     FixGlobalCooldownCheckSpell = "Righteous Fury";
                     break;
+                case WoWClass.Priest:
+                    FixGlobalCooldownCheckSpell = "Inner Fire";
+                    break;
                 case WoWClass.Rogue:
                     FixGlobalCooldownCheckSpell = "Sap";
                     break;
                 case WoWClass.Shaman:
                     FixGlobalCooldownCheckSpell = "Lightning Shield";
+                    break;
+                case WoWClass.Warlock:
+                    FixGlobalCooldownCheckSpell = "Corruption";
+                    break;
+                case WoWClass.Warrior:
+                    FixGlobalCooldownCheckSpell = "Sunder Armor";
                     break;
             }
 
@@ -413,11 +414,14 @@ namespace YourBuddy.Core
                 case WoWClass.DeathKnight:
                     // FixGlobalCooldownCheckSpell = "";
                     break;
+                case WoWClass.Druid:
+                    FixGlobalCooldownCheckSpell = "Wrath";
+                    break;
                 case WoWClass.Hunter:
                     FixGlobalCooldownCheckSpell = "Arcane Shot";
                     break;
-                case WoWClass.Druid:
-                    FixGlobalCooldownCheckSpell = "Wrath";
+                case WoWClass.Mage:
+                    FixGlobalCooldownCheckSpell = "Frostfire Bolt";
                     break;
                 case WoWClass.Monk:
                     //FixGlobalCooldownCheckSpell = "";
@@ -425,16 +429,40 @@ namespace YourBuddy.Core
                 case WoWClass.Paladin:
                     FixGlobalCooldownCheckSpell = "Seal of Command";
                     break;
+                case WoWClass.Priest:
+                    FixGlobalCooldownCheckSpell = "Smite";
+                    break;
                 case WoWClass.Rogue:
                     FixGlobalCooldownCheckSpell = "Sinister Strike";
                     break;
                 case WoWClass.Shaman:
                     FixGlobalCooldownCheckSpell = "Lightning Bolt";
                     break;
+                case WoWClass.Warlock:
+                    FixGlobalCooldownCheckSpell = "Shadow Bolt";
+                    break;
+                case WoWClass.Warrior:
+                    FixGlobalCooldownCheckSpell = "Heroic Strike";
+                    break;
             }
 #endif
         }
-        #endregion GCD
+
+        #endregion
+
+        #region Wait
+
+
+        public static bool IsGlobalCooldown(Enum.LagTolerance allow = Enum.LagTolerance.Yes)
+        {
+#if NO_LATENCY_ISSUES_WITH_GLOBAL_COOLDOWN
+            uint latency = allow == Enum.LagTolerance.Yes ? StyxWoW.WoWClient.Latency : 0;
+            TimeSpan gcdTimeLeft = Spell.GcdTimeLeft;
+            return gcdTimeLeft.TotalMilliseconds > latency;
+#else
+            return Spell.FixGlobalCooldown;
+#endif
+        }
         #endregion
 
         #region CancelAura

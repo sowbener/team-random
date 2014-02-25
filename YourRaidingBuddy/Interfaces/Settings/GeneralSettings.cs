@@ -45,6 +45,13 @@ namespace YourBuddy.Interfaces.Settings
         public bool EnableRedirectRogue { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("General Settings")]
+        [DisplayName("Enable Personal Raid Warnings.")]
+        [Description("Enables Personal Raid Warnings for Toggles")]
+        public bool CheckRaidWarning { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.SvnUrl.Release)]
         [Category("Updater")]
         [DisplayName("Auto Update Version")]

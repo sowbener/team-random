@@ -63,8 +63,12 @@ namespace YourBuddy.Core.Managers
                     LogKey("Pause", SettingsH.Instance.PauseKeyChoice, SettingsH.Instance.ModKeyChoice, IsPaused);
                     if (InternalSettings.Instance.General.CheckHotkeyChatOutput)
                         Lua.DoString(IsPaused
-                            ? @"print('Rotation \124cFFE61515 Paused!')"
-                            : @"print('Rotation \124cFF15E61C Resumed!')");
+                            ? @"print('TakingADump \124cFFE61515 Paused!')"
+                            : @"print('TakingADump \124cFF15E61C Resumed!')");
+                    if (InternalSettings.Instance.General.CheckRaidWarning)
+                        Lua.DoString(IsPaused
+                           ? "RaidNotice_AddMessage(RaidWarningFrame, \"TakingADump Enabled\", ChatTypeInfo[\"OFFICER\"]);"
+                           : "RaidNotice_AddMessage(RaidWarningFrame, \"TakingADump Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                 });
 
                 HotkeysManager.Register("Cooldown", SettingsH.Instance.CooldownKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
@@ -73,18 +77,26 @@ namespace YourBuddy.Core.Managers
                     LogKey("Cooldown", SettingsH.Instance.CooldownKeyChoice, SettingsH.Instance.ModKeyChoice, IsCooldown);
                     if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused)
                         Lua.DoString(IsCooldown
-                            ? "RaidNotice_AddMessage(RaidWarningFrame, \"Cooldown Enabled\", ChatTypeInfo[\"SKILL\"]);"
-                            : "RaidNotice_AddMessage(RaidWarningFrame, \"Cooldown Disabled\", ChatTypeInfo[\"OFFICER\"])");
+                        ? @"print('Cooldowns \124cFF15E61C Enabled!')"
+                        : @"print('Cooldowns \124cFFE61515 Disabled!')");
+                    if (InternalSettings.Instance.General.CheckRaidWarning && !IsPaused)
+                        Lua.DoString(IsCooldown
+                            ? "RaidNotice_AddMessage(RaidWarningFrame, \"Cooldowns Enabled\", ChatTypeInfo[\"OFFICER\"]);"
+                            : "RaidNotice_AddMessage(RaidWarningFrame, \"Cooldowns Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                 });
 
                 HotkeysManager.Register("Toggle", SettingsH.Instance.MockingBannerChoice, SettingsH.Instance.ModKeyChoice, hk =>
                 {
                     IsSpecialKey = !IsSpecialKey;
                     LogKey("Toggle", SettingsH.Instance.MockingBannerChoice, SettingsH.Instance.ModKeyChoice, IsSpecialKey);
+                    if (InternalSettings.Instance.General.CheckRaidWarning && !IsPaused)
+                        Lua.DoString(IsSpecialKey
+                            ? "RaidNotice_AddMessage(RaidWarningFrame, \"MyPony Enabled\", ChatTypeInfo[\"OFFICER\"]);"
+                            : "RaidNotice_AddMessage(RaidWarningFrame, \"MyPony Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                     if (InternalSettings.Instance.General.CheckHotkeyChatOutput && !IsPaused)
                         Lua.DoString(IsSpecialKey
-                            ? "RaidNotice_AddMessage(RaidWarningFrame, \"Toggle Enabled\", ChatTypeInfo[\"SKILL\"]);"
-                            : "RaidNotice_AddMessage(RaidWarningFrame, \"Toggle Disabled\", ChatTypeInfo[\"OFFICER\"])");
+                            ? @"print('MyPony \124cFF15E61C Enabled!')"
+                            : @"print('MyPony \124cFFE61515 Disabled!')");
                 });
 
                 HotkeysManager.Register("AoE", SettingsH.Instance.MultiTgtKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
@@ -95,6 +107,10 @@ namespace YourBuddy.Core.Managers
                         Lua.DoString(IsAoe
                             ? @"print('Aoe \124cFF15E61C Enabled!')"
                             : @"print('Aoe \124cFFE61515 Disabled!')");
+                    if (InternalSettings.Instance.General.CheckRaidWarning && !IsPaused)
+                        Lua.DoString(IsAoe
+                            ? "RaidNotice_AddMessage(RaidWarningFrame, \"AoE Enabled\", ChatTypeInfo[\"OFFICER\"]);"
+                            : "RaidNotice_AddMessage(RaidWarningFrame, \"AoE Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                 });
 
                 HotkeysManager.Register("Special", SettingsH.Instance.SpecialKeyChoice, SettingsH.Instance.ModKeyChoice, hk =>
@@ -105,6 +121,10 @@ namespace YourBuddy.Core.Managers
                         Lua.DoString(IsSpecial
                             ? @"print('Special \124cFF15E61C Enabled!')"
                             : @"print('Special \124cFFE61515 Disabled!')");
+                    if (InternalSettings.Instance.General.CheckRaidWarning && !IsPaused)
+                        Lua.DoString(IsAoe
+                            ? "RaidNotice_AddMessage(RaidWarningFrame, \"Special Enabled\", ChatTypeInfo[\"OFFICER\"]);"
+                            : "RaidNotice_AddMessage(RaidWarningFrame, \"Special Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                 });
 
                 Logger.DiagLogPu("YourBuddy: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
