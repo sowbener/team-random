@@ -103,9 +103,9 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
+                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && U.InterruptableUnitsCount > 1)),
+                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
                     Spell.Cast(SpellBook.Pummel)));
         }
 
@@ -140,10 +140,10 @@ namespace FuryUnleashed.Rotations
             }
         }
 
-        //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
         //actions+=/blood_fury,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
         //actions+=/berserking,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
         //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+        //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
 
         internal static bool RacialUsageSatisfied(string racial)
         {
@@ -288,6 +288,11 @@ namespace FuryUnleashed.Rotations
         internal static bool BerserkerStanceAura
         {
             get { return Spell.HasAura(Me, AuraBook.BerserkerStance, 0, 0, true, false, true); }
+        }
+
+        internal static bool BladestormAura
+        {
+            get { return Spell.HasAura(Me, AuraBook.Bladestorm); }
         }
 
         internal static bool BloodbathAura
@@ -482,6 +487,12 @@ namespace FuryUnleashed.Rotations
         internal static bool RemainingColossusSmash(int remainingtime)
         {
             return Spell.RemainingAura(Me.CurrentTarget, AuraBook.ColossusSmash, remainingtime);
+        }
+
+        // StyxWoW.Me - Remaining
+        internal static bool RemainingEnrage(int remainingtime)
+        {
+            return Spell.RemainingAura(Me, AuraBook.EnrageNormal, remainingtime);
         }
 
         // StyxWoW.Me.CurrentTarget - Fading

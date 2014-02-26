@@ -1,6 +1,7 @@
 ﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
+using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
@@ -232,9 +233,13 @@ namespace FuryUnleashed.Rotations.Arms
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new PrioritySelector(
-                                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true),
-                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me))),
+                            new Action(ctx =>
+                            {
+                                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                                Spell.Cast(SpellBook.BerserkerRage, on => Me);
+                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+                                return RunStatus.Failure;
+                            })),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 

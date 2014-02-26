@@ -201,6 +201,17 @@ namespace FuryUnleashed.Interfaces.Settings
 
         // ========================================================================================
 
+        #region Experimental Options
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Experimental Options")]
+        [DisplayName("Enable Smart Taunting")]
+        [Description("Enables automatic taunting if certain raidconditions are met - Put boss on focus!!!")]
+        public bool CheckSmartTaunt { get; set; }
+        #endregion
+
+        // ========================================================================================
+
         #region HP Regeneration Options
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
