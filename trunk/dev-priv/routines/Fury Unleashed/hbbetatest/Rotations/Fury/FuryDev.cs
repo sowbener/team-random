@@ -341,10 +341,13 @@ namespace FuryUnleashed.Rotations.Fury
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new Sequence(
-                                new Action(delegate { Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration"); return RunStatus.Failure; }),
-                                new Action(delegate { Spell.Cast(SpellBook.BerserkerRage, on => Me); return RunStatus.Failure; }),
-                                new Action(delegate { Spell.Cast(SpellBook.EnragedRegeneration, on => Me); return RunStatus.Failure; }))),
+                            new Action(ctx =>
+                            {
+                                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                                Spell.Cast(SpellBook.BerserkerRage, on => Me);
+                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+                                return RunStatus.Failure;
+                            })),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 

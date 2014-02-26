@@ -103,9 +103,9 @@ namespace FuryUnleashed.Rotations
         internal static Composite InitializeInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
-                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && (PummelOnCooldown || U.InterruptableUnitsCount >= 1))),
-                new ThrottlePasses(1, TimeSpan.FromMilliseconds(1000), RunStatus.Failure,
+                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
+                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && U.InterruptableUnitsCount > 1)),
+                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
                     Spell.Cast(SpellBook.Pummel)));
         }
 

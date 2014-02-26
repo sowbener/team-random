@@ -245,6 +245,10 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region GCD Detection
+        /// <summary>
+        /// This section is used to determine if we're on GlobalCooldown and not continueing treetraverse if we are.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsGlobalCooldown()
         {
             using (new PerformanceLogger("IsGlobalCooldown"))

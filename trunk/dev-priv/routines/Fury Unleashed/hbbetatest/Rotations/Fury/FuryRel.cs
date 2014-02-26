@@ -89,7 +89,7 @@ namespace FuryUnleashed.Rotations.Fury
             return new PrioritySelector(
                 //cancel bladestorm right before a new BT cycle - new theorycraft - http://www.mmo-champion.com/threads/1459299-Why-Bladestorm
                 new Decorator(ret => G.BladestormAura && G.BloodthirstSpellCooldown < 1000,
-                    new Action(delegate { Me.CancelAura(AuraBook.Bladestorm); return RunStatus.Failure; })),
+                    new Action(ctx => { Me.CancelAura(AuraBook.Bladestorm); return RunStatus.Failure; })),
                 //Added for Supporting it.
                 Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura), // Added T16 P4.
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
@@ -116,8 +116,8 @@ namespace FuryUnleashed.Rotations.Fury
                 Spell.Cast(SpellBook.RagingBlow, ret => G.ExecutePhase || G.RagingBlow2S || (G.ColossusSmashAura || G.BloodthirstSpellCooldown >= 1 && G.FadingRagingBlow(3000))),
                 //swapped bladestorm and wildstrike as of new theorycraft - fill 2 GCD's with bladestorm and cancel it for the next BT! - http://www.mmo-champion.com/threads/1459299-Why-Bladestorm
                 //actions.single_target+=/bladestorm,if=enabled&cooldown.bloodthirst.remains>2
-                //Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && G.BloodthirstSpellCooldown > 2000 && FG.Tier4AbilityUsage),
-                Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && FG.Tier4AbilityUsage),
+                //only if there are 2 GCD's until next Bloodthirst so we can have 4 bladestorm ticks - any number between 1501 and above would suffice.
+                Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && G.BloodthirstSpellCooldown > 2000 && FG.Tier4AbilityUsage),
                 //actions.single_target+=/wild_strike,if=buff.bloodsurge.up
                 Spell.Cast(SpellBook.WildStrike, ret => G.BloodsurgeAura),
                 //actions.single_target+=/raging_blow,if=cooldown.colossus_smash.remains>=3
@@ -341,10 +341,13 @@ namespace FuryUnleashed.Rotations.Fury
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new Sequence(
-                                new Action(ctx => Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration")),
-                                new Action(ctx => Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true)),
-                                new Action(ctx => Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
+                            new Action(ctx =>
+                            {
+                                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                                Spell.Cast(SpellBook.BerserkerRage, on => Me);
+                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+                                return RunStatus.Failure;
+                            })),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 
