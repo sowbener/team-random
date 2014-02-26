@@ -25,7 +25,7 @@ namespace FuryUnleashed
         [UsedImplicitly]
         public static Root Instance { get; private set; }
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static readonly Version Revision = new Version(1, 5, 6, 4);
+        public static readonly Version Revision = new Version(1, 5, 6, 5);
         public static readonly string FuName = "Fury Unleashed - IR " + Revision;
         public static readonly string WoWVersion = "5.4.7";
 
