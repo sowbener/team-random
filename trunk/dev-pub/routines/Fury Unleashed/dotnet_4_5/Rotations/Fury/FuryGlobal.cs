@@ -60,6 +60,24 @@ namespace FuryUnleashed.Rotations.Fury
             }
         }
 
+        // Experimental
+        internal static bool StanceDanceUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckStanceDance && !G.DefensiveStanceAura;
+            }
+        }
+
+        internal static bool CancelBladestormAuraUsage
+        {
+            get
+            {
+                return IS.Instance.Fury.CheckBladeStormLogics && G.BladestormAura;
+            }
+        }
+
+        // Non-Experimental
         internal static bool BloodbathSync
         {
             get
@@ -210,14 +228,6 @@ namespace FuryUnleashed.Rotations.Fury
             get
             {
                 return IS.Instance.Fury.CheckStaggeringShout;
-            }
-        }
-
-        internal static bool StanceDanceUsage
-        {
-            get
-            {
-                return IS.Instance.Fury.CheckStanceDance && !G.DefensiveStanceAura;
             }
         }
 
