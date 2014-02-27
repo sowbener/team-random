@@ -162,6 +162,13 @@ namespace FuryUnleashed.Interfaces.Settings
         [DisplayName("Enable Stance Dance")]
         [Description("Enabled allows the routine to make a prediction which Stance will be best - Battle or Berserker.")]
         public bool CheckStanceDance { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Fury - Experimental Options")]
+        [DisplayName("Enable Bladestorm Logics")]
+        [Description("Enabled sets the new theorycraft regarding Bladestorm active - Cancels bladestorm when you need to Enrage with BT.")]
+        public bool CheckBladeStormLogics { get; set; }
         #endregion
 
         // ========================================================================================

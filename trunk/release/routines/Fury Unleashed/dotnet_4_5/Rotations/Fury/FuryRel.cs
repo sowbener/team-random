@@ -88,7 +88,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             return new PrioritySelector(
                 //cancel bladestorm right before a new BT cycle - new theorycraft - http://www.mmo-champion.com/threads/1459299-Why-Bladestorm
-                new Decorator(ret => G.BladestormAura && G.BloodthirstSpellCooldown < 1000,
+                new Decorator(ret => FG.CancelBladestormAuraUsage && G.BloodthirstSpellCooldown < 500,
                     new Action(ctx => { Me.CancelAura(AuraBook.Bladestorm); return RunStatus.Failure; })),
                 //Added for Supporting it.
                 Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura), // Added T16 P4.
