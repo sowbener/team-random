@@ -84,8 +84,8 @@ namespace YourBuddy.Rotations.Hunter
                                     SurvivalOffensive())),
                                     new Decorator(ret => HotKeyManager.IsAoe, SurvivalMt()),
                                     new Decorator(ret => !HotKeyManager.IsAoe, new PrioritySelector(
-                                        new Decorator(ret => !HotKeyManager.IsSpecial, SurvivalSt()),
-                                        new Decorator(ret => HotKeyManager.IsSpecial, HandleQuasiAoE()))))));
+                                        new Decorator(ret => !HotKeyManager.IsSpecialKey, SurvivalSt()),
+                                        new Decorator(ret => HotKeyManager.IsSpecialKey, HandleQuasiAoE()))))));
             }
         }
         #endregion

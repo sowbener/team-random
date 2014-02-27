@@ -106,7 +106,11 @@ namespace YourBuddy.Rotations.Rogue
        internal static Composite ComFin()
        {
            return new PrioritySelector(
-                  new Decorator(ret => HotKeyManager.IsSpecialKey, new PrioritySelector( Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
+                   new Decorator(ret => HotKeyManager.IsSpecialKey && SG.Instance.Combat.EnableRuptureHotkey, new PrioritySelector(Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") &&  Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
+                   (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
+                   (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
+                   (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.Always))))),
+                   new Decorator(ret => !SG.Instance.Combat.EnableRuptureHotkey, new PrioritySelector(Spell.Cast("Rupture", ret => SG.Instance.Combat.CheckRupture && (Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent >= 10 && !Me.HasAura("Blade Flurry") && Lua.PlayerComboPts == 5 && Me.HasAura(5171) && (G.TargetRuptureFalling || !G.TargetHaveRupture)) && (
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                    (SG.Instance.Combat.Rupture == Enum.AbilityTrigger.Always))))),

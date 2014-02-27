@@ -57,6 +57,13 @@ namespace YourBuddy.Interfaces.Settings
         [DisplayName("Expose Armor")]
         [Description("Select to Enable or Disable Expose Armor")]
         public bool CheckExposeArmor { get; set; }
+        
+        [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Combat - Ability Options")]
+        [DisplayName("Rupture Hotkey")]
+        [Description("Select to Enable or Disable Rupture Hotkey")]
+        public bool EnableRuptureHotkey { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]

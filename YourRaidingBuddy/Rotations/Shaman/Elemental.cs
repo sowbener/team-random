@@ -40,7 +40,7 @@ namespace YourBuddy.Rotations.Shaman
                                                     new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                          new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                         ElementalOffensive(),
-                                        new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
+                                        new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCL >= 2, ElementalMt()),
                                             ElementalSt())),
 
                      new Decorator(ret => !Spell.IsGlobalCooldown() && !SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
@@ -54,7 +54,7 @@ namespace YourBuddy.Rotations.Shaman
                                              new Styx.TreeSharp.Action(ret => { Item.UseElementalItems(); return RunStatus.Failure; }),
                                                          new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76093, ret => true, "Using Jade Serpent Potion")),
                                                         ElementalOffensive())),
-                                        new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCount >= 2, ElementalMt()),
+                                        new Decorator(ret => SG.Instance.Elemental.CheckAoE && Unit.NearbyAttackableUnitsCL >= 2, ElementalMt()),
                                             ElementalSt())),
 //FirstPvPElemental
                    new Decorator(ret => !Spell.IsGlobalCooldown() && SG.Instance.Elemental.PvPRotationCheck && SH.Instance.ModeSelection == Enum.Mode.Auto,

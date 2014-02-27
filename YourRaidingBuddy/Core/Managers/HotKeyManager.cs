@@ -127,11 +127,12 @@ namespace YourBuddy.Core.Managers
                             : "RaidNotice_AddMessage(RaidWarningFrame, \"Special Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                 });
 
-                Logger.DiagLogPu("YourBuddy: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special key and {4} as Modifier Key.",
+                Logger.DiagLogPu("YourBuddy: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special Key, {4} as the other Special Key and {5} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
                     SettingsH.Instance.SpecialKeyChoice,
+                    SettingsH.Instance.MockingBannerChoice,
                     SettingsH.Instance.ModKeyChoice);
             }
         }
@@ -142,6 +143,7 @@ namespace YourBuddy.Core.Managers
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
             HotkeysManager.Unregister("Special");
+            HotkeysManager.Unregister("Toggle");
             Logger.DiagLogPu("YourBuddy: Hotkeys removed!");
         }
 
