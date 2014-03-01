@@ -21,7 +21,6 @@ namespace YourBuddy.Rotations.Deathknight
     class Frost
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
-        private static int _currentRunicPower;
 
         #region Initialize Rotations
         internal static Composite InitializeFrost
@@ -34,7 +33,6 @@ namespace YourBuddy.Rotations.Deathknight
                          G.ManualCastPause(),
                          G.InitializeOnKeyActionsDK(),
                          G.InitializeCaching(),
-                         new Action(delegate { CacheLocalVars(); return RunStatus.Failure; }),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Auto,
                                 new PrioritySelector(
                                         new Decorator(ret => SG.Instance.Frost.CheckAutoAttack, Lua.StartAutoAttack),
@@ -79,32 +77,28 @@ namespace YourBuddy.Rotations.Deathknight
         }
         #endregion
 
-        private static void CacheLocalVars()
-        {
-            _currentRunicPower = (int)Lua.PlayerPower;
-        }
 
         #region Rotations
         internal static Composite FrostDWSt()
         {
             return new PrioritySelector(
-                        Spell.PreventDoubleCast("Blood Tap", 0.6, ret => NeedBloodTapFirstCheckDW),
+                        Spell.PreventDoubleCast("Blood Tap", 0.7, ret => NeedBloodTapFirstCheckDW),
                         Spell.Cast("Outbreak", ret => NeedEitherDis && SG.Instance.Frost.EnableOutbreak),
-                        Spell.Cast("Frost Strike", ret => ObliterateProc || _currentRunicPower > 88),
+                        Spell.Cast("Frost Strike", ret => ObliterateProc || Lua.PlayerPower > 88),
                         Spell.Cast("Howling Blast", ret => G.BloodRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
                         Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && UnholyBlightTalent && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                         Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.Cast("Howling Blast", ret => UnholyBlightCheck && NeedFrostFever),
                         Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague)),
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
-                        Spell.Cast("Frost Strike", ret => _currentRunicPower > 76),
+                        Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.Cast("Obliterate", ret => !SG.Instance.Frost.MasterSimple && G.UnholyRuneSlotsActive > 0 && !Me.HasAura(51124)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Frost Strike", ret => TalentManager.IsSelected(14) && G.FrostRuneSlotsActive == 0 || G.DeathRuneSlotsActive == 0),
-                        Spell.PreventDoubleCast("Blood Tap", 0.6, ret => NeedBloodTapSecondCheckDW),
-                        Spell.Cast("Frost Strike", ret => _currentRunicPower >= 40),
+                        Spell.PreventDoubleCast("Blood Tap", 0.7, ret => NeedBloodTapSecondCheckDW),
+                        Spell.Cast("Frost Strike", ret => Lua.PlayerPower >= 40),
                         Spell.Cast("Horn of Winter", ret => HornofWinterCooldown),
-                        Spell.PreventDoubleCast("Blood Tap", 0.6, ret => NeedBloodTapThirdCheckDW),
+                        Spell.PreventDoubleCast("Blood Tap", 0.7, ret => NeedBloodTapThirdCheckDW),
                         Spell.Cast("Plague Leech", ret => G.CanCastPlagueLeechDW));
         }
 
@@ -141,7 +135,7 @@ namespace YourBuddy.Rotations.Deathknight
                         Spell.Cast("Outbreak", ret => (NeedBothDisUpAoE && UnholyBlightCheck) || !TalentManager.IsSelected(3)),
                         Spell.PreventDoubleCast("Pestilence", 1, ret => Me.DeathRuneCount > 1 && U.AoeBPCheck && CooldownTracker.SpellOnCooldown(77575)),
                         Spell.Cast("Howling Blast"),
-                        Spell.Cast("Frost Strike", ret => _currentRunicPower > 76),
+                        Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => Me.UnholyRuneCount > 0),
                         Spell.Cast("Plague Strike", ret => Me.UnholyRuneCount > 1),
                         Spell.Cast("Frost Strike"),
@@ -218,7 +212,7 @@ namespace YourBuddy.Rotations.Deathknight
         // actions.single_target+=/blood_tap,if=talent.blood_tap.enabled&(target.health.pct-3*(target.health.pct%target.time_to_die)>35|buff.blood_charge.stack>=8)
         // actions.single_target+=/blood_tap,if=talent.blood_tap.enabled
         //Blood Tap
-       private static bool NeedBloodTapFirstCheckDW { get { return TalentManager.IsSelected(13) && AllRunesDown && Spell.GetAuraStack(Me, 114851) > 10 && (_currentRunicPower > 76 || (Me.HasAura(51124) && _currentRunicPower >= 20)); } }
+       private static bool NeedBloodTapFirstCheckDW { get { return TalentManager.IsSelected(13) && AllRunesDown && Spell.GetAuraStack(Me, 114851) > 10 && (Lua.PlayerPower > 76 || (Me.HasAura(51124) && Lua.PlayerPower >= 20)); } }
 
        private static bool NeedBloodTapSecondCheckDW { get { return TalentManager.IsSelected(13) && Spell.GetAuraStack(Me, 114851) >= 8 && AllRunesDown; } }
        private static bool NeedBloodTapThirdCheckDW { get { return TalentManager.IsSelected(13) && Spell.GetAuraStack(Me, 114851) > 4 && AllRunesDown; ; } }
@@ -227,8 +221,8 @@ namespace YourBuddy.Rotations.Deathknight
         private static bool BloodStacksunder10 { get { return BloodTapStackCount <= 10 && TalentManager.IsSelected(13); } }
         private static bool BloodTapFirstCheck2H { get { return Me.CurrentTarget != null && TalentManager.IsSelected(13) && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP && SoulReaperNotOnCooldown && BloodTapStackCount > 4; } }
         private static bool BloodTapSecondCheck2H { get { return BloodTapStackCount > 4 && TalentManager.IsSelected(13) && ObliterateProc; } }
-        private static bool BloodTapThirdCheck2H { get { return BloodTapStackCount > 10 && _currentRunicPower > 76 && TalentManager.IsSelected(13); } }
-        private static bool BloodTapForthCheck2H { get { return BloodTapStackCount > 10 && _currentRunicPower >= 20 && TalentManager.IsSelected(13); } }
+        private static bool BloodTapThirdCheck2H { get { return BloodTapStackCount > 10 && Lua.PlayerPower > 76 && TalentManager.IsSelected(13); } }
+        private static bool BloodTapForthCheck2H { get { return BloodTapStackCount > 10 && Lua.PlayerPower >= 20 && TalentManager.IsSelected(13); } }
 
 
             private static uint BloodTapStackCount
@@ -284,9 +278,9 @@ namespace YourBuddy.Rotations.Deathknight
         private static bool FrostRunes0 { get { return G.FrostRuneSlotsActive == 0; } }
 
         //RunicPowerChecks
-        private static bool RP76 { get { return _currentRunicPower > 76; } }
-        private static bool FSRP76 { get { return _currentRunicPower > 76; } }
-        private static bool RP20 { get { return _currentRunicPower >= 20; } }
+        private static bool RP76 { get { return Lua.PlayerPower > 76; } }
+        private static bool FSRP76 { get { return Lua.PlayerPower > 76; } }
+        private static bool RP20 { get { return Lua.PlayerPower >= 20; } }
 
         //OutbreakCooldownCheck
         private static bool OutBreakCooldown { get { return CooldownTracker.SpellOnCooldown(77575); } }
