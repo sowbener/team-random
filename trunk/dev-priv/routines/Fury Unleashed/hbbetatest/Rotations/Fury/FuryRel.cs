@@ -91,7 +91,7 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => FG.CancelBladestormAuraUsage && G.BloodthirstSpellCooldown < 500,
                     new Action(ctx => { Me.CancelAura(AuraBook.Bladestorm); return RunStatus.Failure; })),
                 //Added for Supporting it.
-                Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura), // Added T16 P4.
+                Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura && G.NormalPhase), // Added T16 P4.
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && G.ReadinessAura && G.ColossusSmashAura && FG.Tier6AbilityUsage),
@@ -180,10 +180,12 @@ namespace FuryUnleashed.Rotations.Fury
             return new PrioritySelector(
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => G.FadingDeathSentence(1500)), // To not let our free execute get wasted during Execute Phase - Added T16 P4.
                         Rel_FurySt())),
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.BerserkerRage, ret => !G.EnrageAura && FG.BerserkerRageUsage, true),
+                        Spell.Cast(SpellBook.Execute, ret => G.FadingDeathSentence(1500)), // To not let our free execute get wasted during Execute Phase - Added T16 P4.
                         Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && FG.Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura && G.BerserkerRageOnCooldown),
                         Spell.Cast(SpellBook.Execute),
