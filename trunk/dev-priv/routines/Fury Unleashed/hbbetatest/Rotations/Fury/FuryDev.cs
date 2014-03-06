@@ -1,13 +1,12 @@
-﻿using System.Windows.Forms;
-using CommonBehaviors.Actions;
+﻿using CommonBehaviors.Actions;
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
-using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
+using System.Windows.Forms;
 using FG = FuryUnleashed.Rotations.Fury.FuryGlobal;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
@@ -341,13 +340,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new Action(ctx =>
-                            {
-                                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
-                                Spell.Cast(SpellBook.BerserkerRage, on => Me);
-                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-                                return RunStatus.Failure;
-                            })),
+                            G.PriorityEnragedRegeneration()),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 

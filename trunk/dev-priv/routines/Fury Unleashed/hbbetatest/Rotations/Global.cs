@@ -109,6 +109,27 @@ namespace FuryUnleashed.Rotations
                     Spell.Cast(SpellBook.Pummel)));
         }
 
+        internal static Composite CancelBladestorm()
+        {
+            return new Action(ctx =>
+            {
+                Me.CancelAura(AuraBook.Bladestorm);
+                Spell.Cast(SpellBook.Bloodthirst);
+                return RunStatus.Failure;
+            });
+        }
+
+        internal static Composite PriorityEnragedRegeneration()
+        {
+            return new Action(ctx =>
+            {
+                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                Spell.Cast(SpellBook.BerserkerRage, on => Me);
+                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+                return RunStatus.Failure;
+            });
+        }
+
         internal static Composite ManualCastPause()
         {
             return new Sequence(

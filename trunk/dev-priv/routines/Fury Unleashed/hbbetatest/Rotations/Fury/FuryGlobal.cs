@@ -73,7 +73,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return IS.Instance.Fury.CheckBladeStormLogics && G.BladestormAura;
+                return IS.Instance.Fury.CheckBladeStormLogics && G.BladestormAura && U.NearbyAttackableUnitsCount == 1;
             }
         }
 
