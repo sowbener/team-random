@@ -111,7 +111,7 @@ namespace YourBuddy.Rotations.Rogue
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
                 Spell.Cast("Vanish", ret => SH.Instance.ModeSelection == Enum.Mode.Auto && Lua.PlayerPower <= 75 && Lua.PlayerComboPts <= 3 && !Me.HasAura(51713) && !Me.HasAura("Master of Subtlety") && (G.FindWeaknessOff || G.FindWeakness < 3)),
                 new Decorator(ret => Lua.PlayerComboPts > 4, Finishers()),
-                new Decorator(ret => CooldownTracker.SpellOnCooldown(8676) && !Me.HasAura(115192) && !Me.HasAura(51713) && (!Me.HasAura(11327) || !Me.HasAura(1784)) && Lua.PlayerComboPts < 5, ComboBuilders())
+                new Decorator(ret => ((Me.CurrentTarget.MeIsBehind && CooldownTracker.SpellOnCooldown(8676)) || (!Me.CurrentTarget.MeIsBehind)) && !Me.HasAura(115192) && !Me.HasAura(51713) && (!Me.HasAura(11327) || !Me.HasAura(1784)) && Lua.PlayerComboPts < 5, ComboBuilders())
                         );
 
           
