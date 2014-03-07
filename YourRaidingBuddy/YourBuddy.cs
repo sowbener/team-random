@@ -181,6 +181,7 @@ namespace YourBuddy
 
             CombatLogHandler.Initialize();
             Spell.GcdInitialize();
+            
 
             /* Lua SecondaryStats */
       //     if (StyxWoW.Me.Specialization == WoWSpec.DeathKnightUnholy) Lua.PopulateSecondryStats();
