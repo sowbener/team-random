@@ -45,7 +45,7 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Protection.CheckAutoAttack, Lua.StartAutoAttack), 
                                             ProtectionDefensive(),
                                         new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
-                                      //  new Decorator(ret => SG.Instance.Protection.CheckDPS, ProtectionDPS()),
+                                      //  new Decorator(ret => SG.Instance.Protection.CheckDPS, ProtectioonDPS()),
                                         new Decorator(ret => SG.Instance.Protection.CheckSpecial, ProtectionSpecial()),
                                         new Decorator(ret => SG.Instance.Protection.HandsEnable, ProtectionHands()),
                                         ProtectionUtility(),
