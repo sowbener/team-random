@@ -50,9 +50,9 @@ namespace YourBuddy.Rotations.Rogue
                             new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                 SubOffensive(),
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAoE && U.NearbyAttackableUnitsCount > 4, SubMt()),
-                                SubSt(),
                                 SubShadowDance(),
-                                new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline, new ActionAlwaysSucceed()))),
+                                new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline && G.SNDSetting > 2 && (G.FindWeaknessOff || G.FindWeakness < 3), new ActionAlwaysSucceed()),
+                                SubSt())),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.SemiHotkey,
                             new PrioritySelector(
                                 new Decorator(ret => SG.Instance.Subtlety.CheckAutoAttack,
@@ -176,7 +176,7 @@ namespace YourBuddy.Rotations.Rogue
         static Composite SubShadowDance()
         {
             return new PrioritySelector(
-                   Spell.Cast("Shadow Dance", ret => Me.CurrentTarget != null && Lua.PlayerPower > 74 && !Me.HasAura("Stealth") && G.RuptureSetting > 2 && G.SNDSetting > 2 && !Me.HasAura("Vanish") && (G.FindWeaknessOff || G.FindWeakness < 3) && (
+                   Spell.Cast("Shadow Dance", ret => Me.CurrentTarget != null && Lua.PlayerPower > 74 && !Me.HasAura("Stealth") && G.SNDSetting > 2 && !Me.HasAura("Vanish") && (G.FindWeaknessOff || G.FindWeakness < 3) && (
                     (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowDance == Enum.AbilityTrigger.Always)
