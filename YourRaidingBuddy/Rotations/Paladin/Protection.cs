@@ -23,7 +23,7 @@ namespace YourBuddy.Rotations.Paladin
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        #region Initialize Rotations
+            #region Initialize Rotations
         internal static Composite InitializeProtection
         {
             get
@@ -45,6 +45,9 @@ namespace YourBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Protection.CheckAutoAttack, Lua.StartAutoAttack), 
                                             ProtectionDefensive(),
                                         new Decorator(ret => SG.Instance.Protection.CheckInterrupts, ProtectionInterrupts()),
+                                      //  new Decorator(ret => SG.Instance.Protection.CheckDPS, ProtectionDPS()),
+                                        new Decorator(ret => SG.Instance.Protection.CheckSpecial, ProtectionSpecial()),
+                                        new Decorator(ret => SG.Instance.Protection.HandsEnable, ProtectionHands()),
                                         ProtectionUtility(),
                                         new Action(ret => { Item.UseProtectionItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
@@ -143,6 +146,22 @@ namespace YourBuddy.Rotations.Paladin
               Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && !ProtectionSettings.UseLightsHammerHotkey),
               Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && ProtectionSettings.UseLightsHammerHotkey && KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)),
               Spell.Cast("Holy Wrath"));
+        }
+
+        internal static Composite ProtectionHands()
+        {
+            return new PrioritySelector(
+                Spell.Cast("Hand of Purity", On => Me, ret => TalentManager.IsSelected(10) && G.Hands()));
+            
+        }
+
+        internal static Composite ProtectionSpecial()
+        {
+            {
+                return new PrioritySelector(
+        Spell.Cast("Reckoning", ret => G.IsReconingCastDesiredP()));
+                        
+            }
         }
 
         internal static Composite ProtectionUtility()

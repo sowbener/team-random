@@ -66,6 +66,18 @@ namespace YourBuddy.Rotations
             }
         }
 
+
+        internal static Composite InitializePreBuffPaladin
+         {
+             get
+             {
+                 return new PrioritySelector(
+                     new Decorator(ret => Me.Specialization == WoWSpec.PaladinProtection && U.DefaultBuffCheck,
+                         new PrioritySelector(
+                    Spell.Cast("Righteous Fury", ret => !Me.HasAura("Righteous Fury")))));
+             }      
+        }
+
         internal static Composite InitializePreBuffShaman
         {
             get
@@ -393,7 +405,7 @@ namespace YourBuddy.Rotations
 
         #endregion
 
-        #region lel
+        #region RaidWarnings
         internal static void HandleModifierStateChanged(object sender, LuaEventArgs args)
         {
             if (   SettingsH.Instance.MockingBannerChoice == Keys.None && SettingsH.Instance.Tier4Choice == Keys.None
@@ -419,25 +431,6 @@ namespace YourBuddy.Rotations
         #endregion
 
 
-        #region PaladinStuff
-
-        internal static Composite InitializeOnKeyActionsLayonHands()
-        {
-            return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Lay on Hands", ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice) && SG.Instance.Protection.UseLayonHandsMouseover),
-                     new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusTarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)));
-        }
-
-        internal static Composite InitializeOnKeyActionsHandofSalvation()
-        {
-            return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Hand of Salvation", ret => KP.IsKeyAsyncDown(SettingsH.Instance.HeroicLeapChoice) && SG.Instance.Protection.UseHandofSalvationMouseover),
-                     new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseHandofSalvationFocusTarget, Spell.Cast("Hand of Salvation", on => Me.FocusedUnit)));
-        
-        }            
-
-
-        #endregion
 
         #region RogueStuff
 
@@ -453,34 +446,6 @@ namespace YourBuddy.Rotations
         }
 
 
-        internal static void HandleMouseOverTarget(object sender, LuaEventArgs args)
-        {          
-
-            var unitName = Lua.GetReturnVal<string>("return GetUnitName(\"mouseover\");", 0);
-            if (unitName != "")
-            {
-                var unitGuid = Lua.GetReturnVal<string>("return UnitGUID(\"mouseover\");", 0);
-                if (unitGuid != "")
-                {
-                    try
-                    {
-                        unitGuid = unitGuid.Replace("0x", String.Empty);
-                        MouseOverTarget = ulong.Parse(unitGuid, NumberStyles.HexNumber);
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-                else
-                {
-                    MouseOverTarget = 0;
-                }
-            }
-            else
-            {
-                MouseOverTarget = 0;
-            }
-        }
 
         internal static bool WeakenedBlowsAura { get { return !Me.CurrentTarget.HasAura(113746); } }
 
@@ -945,12 +910,104 @@ namespace YourBuddy.Rotations
 
         #region Paladin Stuff
 
+        internal static Composite InitializeOnKeyActionsLayonHands()
+        {
+            return new PrioritySelector(
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Lay on Hands", ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice) && SG.Instance.Protection.UseLayonHandsMouseover),
+                     new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusTarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)));
+        }
+
+        internal static Composite InitializeOnKeyActionsHandofSalvation()
+        {
+            return new PrioritySelector(
+                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Hand of Salvation", ret => KP.IsKeyAsyncDown(SettingsH.Instance.HeroicLeapChoice) && SG.Instance.Protection.UseHandofSalvationMouseover),
+                     new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseHandofSalvationFocusTarget, Spell.Cast("Hand of Salvation", on => Me.FocusedUnit)));
+
+        }
+
+       internal static HashSet<Tuple<int>> HandofPurityAbilities = new HashSet<Tuple<int>>()
+       {
+
+          Tuple.Create(143638), // Bonecracker Nazgrim
+          Tuple.Create(144089), // Toxic Mist Shamans
+
+
+
+       };
+        internal static bool Hands()
+        {
+            // Make certain we have a target, and the target is a boss...
+            if (!Me.GotTarget || !Me.CurrentTarget.IsBoss)
+            { return false; }
+
+
+
+            // Are any of the Hans of Purity use constraints met?
+            return
+            StyxWoW.Me.Auras.Values
+            .Any(aura => HandofPurityAbilities.Any(t => (aura.SpellId == t.Item1)));
+        }
+
+
+              //SoO Boss
+        internal static HashSet<Tuple<int, int>> ReconingUseQualifiersP = new HashSet<Tuple<int, int>>()
+{
+            // Tuple<AuraId, StackCount> (will want to double check AuraIds)
+            Tuple.Create(143436, SG.Instance.Protection.CheckBossImmerseus), // "Corrosive Blast" (http://wowhead.com/spell=143436)
+            Tuple.Create(146124, SG.Instance.Protection.CheckBossAmalgam), // "Self Doubt" (http://wowhead.com/spell=146124)
+            Tuple.Create(144358, SG.Instance.Protection.CheckBossSha), // "Wounded Pride" (http://wowhead.com/spell=144358)
+            Tuple.Create(147029, SG.Instance.Protection.CheckBossGalakras), // "Flames of Galakrond" (http://wowhead.com/spell=147029)
+            Tuple.Create(144467, SG.Instance.Protection.CheckBossIronJuggernaut), // "Ignite Armor" (http://wowhead.com/spell=144467)
+            Tuple.Create(144215, SG.Instance.Protection.CheckBossEarthBreakerHaromm), // "Froststorm Strike" (http://wowhead.com/spell=144215)
+            Tuple.Create(143494, SG.Instance.Protection.CheckBossNazgrim), // "Sundering Blow" (http://wowhead.com/spell=143494)
+            Tuple.Create(142990, SG.Instance.Protection.CheckBossMalkorok), // "Fatal Strike" (http://wowhead.com/spell=142990)
+            Tuple.Create(143766, SG.Instance.Protection.CheckBossThok1), // "Panic" (http://wowhead.com/spell=143766)
+            Tuple.Create(143780, SG.Instance.Protection.CheckBossThok2), // "Acid Breath" (http://wowhead.com/spell=143780)
+            Tuple.Create(143773, SG.Instance.Protection.CheckBossThok3), // "Freezing Breath" (http://wowhead.com/spell=143773)
+            Tuple.Create(143767, SG.Instance.Protection.CheckBossThok4), // "Scorching Breath" (http://wowhead.com/spell=143767)
+            Tuple.Create(143385, SG.Instance.Protection.CheckBossBlackfuse), // "Electrostatic Charge" (http://wowhead.com/spell=143385)
+            Tuple.Create(145183, SG.Instance.Protection.CheckBossGarrosh1), // "Gripping Despair" (http://wowhead.com/spell=145183)
+            Tuple.Create(145195, SG.Instance.Protection.CheckBossGarrosh2), // "Empowered Gripping Despair" (http://wowhead.com/spell=145195)
+};
+
+        internal static bool IsReconingCastDesiredP()
+        {
+            // Make certain we have a target, and the target is a boss...
+            if (!Me.GotTarget || !Me.CurrentTarget.IsBoss)
+            { return false; }
+
+            // Make certain focus target is valid, and it makes sense to use Reconing...
+            var focusedUnit = StyxWoW.Me.FocusedUnit;
+            if ((focusedUnit == null) || !focusedUnit.IsValid || focusedUnit.IsDead)
+            { return false; }
+
+            // Are any of the Reconing use constraints met?
+            return
+            focusedUnit.Auras.Values
+            .Any(aura => ReconingUseQualifiersP.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
+        }
+        //http://www.thebuddyforum.com/honorbuddy-forum/community-developer-forum/150686-auto-taunt-soo-code.html#post1411068
+
         #region DevastatingAbilities
 
         internal static readonly HashSet<int> DevastatingAbilities = new HashSet<int>
        {
 
            143502, // Execute General Nazgrim HC 
+           143330, // Gouge He Softfoot | Fallen Protectors
+           143301, // Gouge He Softfoot | Fallen Protectors 2
+           144397, // Rook
+           144437, // Rook
+           145584, // Rook
+           144396, // Rook just to be Safe :)
+           145216, // Unleashed Anger Norushen
+           145212, // Unleashed Anger Norushen
+           144657, // Piercing Corruption
+           143426, // Fearsome Roar
+           143280, // Bloodletting
+           143974, // Shield Bash
+           143939, // Gouge Klaxxi
+           144821, // Hellscream's Warsong
 
        };
 

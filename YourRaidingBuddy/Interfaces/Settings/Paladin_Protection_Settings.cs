@@ -20,6 +20,7 @@ namespace YourBuddy.Interfaces.Settings
         [Description("Select the usage of your Avenging Wrath Cooldown to be used at.")]
         public Enum.AbilityTrigger AvengingWrath { get; set; }
 
+
         [Setting]
         [Styx.Helpers.DefaultValue(55)]
         [Category("Protection - Ability Options")]
@@ -84,11 +85,130 @@ namespace YourBuddy.Interfaces.Settings
         public bool EnableWordofGlory { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Self Doubt Amalgam")]
+        [Description("Amalgam Self Doubt StackCount")]
+        public int CheckBossAmalgam { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Blackfuse Electrostatic Charge")]
+        [Description("Electrostatic Charge Stacks")]
+        public int CheckBossBlackfuse { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Earthbreaker Haromm Froststorm Strike")]
+        [Description("Froststorm Strike Stacks")]
+        public int CheckBossEarthBreakerHaromm { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Galakras Flames of Galakrond")]
+        [Description("Flames of Galakrond StackCount")]
+        public int CheckBossGalakras { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Garrosh Gripping Despair")]
+        [Description("Gripping Despair StackCount")]
+        public int CheckBossGarrosh1 { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Garrosh Empowered Gripping Despair")]
+        [Description("Empowered Gripping Despair StackCount")]
+        public int CheckBossGarrosh2 { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Immerseus Corrosive Blast")]
+        [Description("Corrosive Blast StackCount")]
+        public int CheckBossImmerseus { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Iron Juggernaut Ignite Armor")]
+        [Description("Ignite Armor StackCount")]
+        public int CheckBossIronJuggernaut { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Malkorok Fatal Strike")]
+        [Description("Fatal Strike StackCount")]
+        public int CheckBossMalkorok { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Nazgrim Sundering Blow")]
+        [Description("Sundering Blow StackCount")]
+        public int CheckBossNazgrim { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Sha Wounded Pride")]
+        [Description("Wounded Pride StackCount")]
+        public int CheckBossSha { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Thok Panic")]
+        [Description("Panic StackCount")]
+        public int CheckBossThok1 { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Thok Acid Breath")]
+        [Description("Acid Breath StackCount")]
+        public int CheckBossThok2 { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Thok Freezing Breath")]
+        [Description("Freezing Breath StackCount")]
+        public int CheckBossThok3 { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(1)]
+        [Category("Protection - Auto Taunting")]
+        [DisplayName("Boss Thok Scorching Breath")]
+        [Description("Scorching Breath StackCount")]
+        public int CheckBossThok4 { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Ability Options")]
         [DisplayName("Lay on Hands Mouseover Enable")]
         [Description("Checked enables Lay on Hands Mouseover")]
         public bool UseLayonHandsMouseover { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Enable Auto-Taunting")]
+        [Description("Checked enables Auto-Taunting")]
+        public bool CheckSpecial { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Hand of Purity Auto")]
+        [Description("Checked enables Hand of Purity automated")]
+        public bool HandsEnable{ get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
