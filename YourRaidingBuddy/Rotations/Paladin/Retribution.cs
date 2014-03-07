@@ -182,14 +182,15 @@ namespace YourBuddy.Rotations.Paladin
         {
             return 
                 new PrioritySelector(
-                    new Decorator (ret=>U.DefaultCheck,
+                    new Decorator (ret=> U.DefaultCheck,
                         new PrioritySelector(
+                       //[19:59:40] dxxx: Tier 5 Talent Detecion if Divine Purpose is seleted to use Avenging Wrath 10 seconds after Guardian of Ancient Kings(Or 20 seconds left)
                             //actions+=/inquisition,if=(buff.inquisition.down|buff.inquisition.remains<=2)&(holy_power>=3|target.time_to_die<holy_power*20|buff.divine_purpose.react)
                             //actions+=/avenging_wrath,if=buff.inquisition.up
                             //actions+=/guardian_of_ancient_kings,if=buff.inquisition.up
                             //actions+=/holy_avenger,if=talent.holy_avenger.enabled&(buff.inquisition.up&holy_power<=2)
                             //actions+=/use_item,name=gauntlets_of_winged_triumph,if=buff.inquisition.up&(buff.ancient_power.down|buff.ancient_power.stack=12)
-                            Spell.Cast("Avenging Wrath", ret => U.DefaultCheck && InquisitionUp && (
+                            Spell.Cast("Avenging Wrath", ret => InquisitionUp && (
                                 (SG.Instance.Retribution.AvengingWrath == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                                 (SG.Instance.Retribution.AvengingWrath == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                                 (SG.Instance.Retribution.AvengingWrath == Enum.AbilityTrigger.Always)

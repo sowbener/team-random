@@ -105,7 +105,7 @@ namespace YourBuddy.Rotations.Rogue
         static Composite SubSt()
         {
             return new PrioritySelector(
-                new Throttle(3, Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Me.CurrentTarget != null && Lua.PlayerComboPts < 1 && SG.Instance.General.EnableRedirectRogue)),
+           //     new Throttle(3, Spell.Cast("Redirect", ret => Me.RawComboPoints > 0 && Me.CurrentTarget != null && Lua.PlayerComboPts < 1 && SG.Instance.General.EnableRedirectRogue)),
                 Spell.Cast("Premeditation", ret => Me.CurrentEnergy < 90 && Lua.PlayerComboPts < 3),
                 Spell.Cast("Ambush", ret => StyxWoW.Me.CurrentTarget.MeIsBehind && (Lua.PlayerComboPts < 5 || G._anticipationCount < 3)),
                 Spell.Cast("Hemorrhage", ret => G.HemorrhageDebuffFalling),
