@@ -1,7 +1,6 @@
 ﻿using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
-using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
@@ -138,13 +137,7 @@ namespace FuryUnleashed.Rotations.Protection
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new Action(ctx =>
-                            {
-                                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
-                                Spell.Cast(SpellBook.BerserkerRage, on => Me);
-                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-                                return RunStatus.Failure;
-                            })),
+                            G.EnragedRegenerationLogic()),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 
@@ -197,7 +190,7 @@ namespace FuryUnleashed.Rotations.Protection
                 Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),
                 Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget), true),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss, true),
-                Spell.Cast(SpellBook.Taunt, ret => (IS.Instance.Protection.CheckAutoTaunt && !IS.Instance.Protection.CheckSmartTaunt && !U.IsTargettingMe) || IS.Instance.Protection.CheckSmartTaunt, true),
+                Spell.Cast(SpellBook.Taunt, ret => (IS.Instance.Protection.CheckAutoTaunt && !IS.Instance.Protection.CheckSmartTaunt && !U.IsTargettingMe) || (IS.Instance.Protection.CheckSmartTaunt && Unit.IsAutoTauntDesired()), true),
                 Spell.Cast(SpellBook.RallyingCry, on => Me, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry, true),
                 Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum, true),
                 Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum, true),

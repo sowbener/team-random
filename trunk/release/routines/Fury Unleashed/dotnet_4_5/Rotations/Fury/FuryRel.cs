@@ -2,7 +2,6 @@
 using FuryUnleashed.Core;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
-using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
@@ -88,10 +87,10 @@ namespace FuryUnleashed.Rotations.Fury
         {
             return new PrioritySelector(
                 //cancel bladestorm right before a new BT cycle - new theorycraft - http://www.mmo-champion.com/threads/1459299-Why-Bladestorm
-                new Decorator(ret => FG.CancelBladestormAuraUsage && G.BloodthirstSpellCooldown < 500,
-                    new Action(ctx => { Me.CancelAura(AuraBook.Bladestorm); return RunStatus.Failure; })),
-                //Added for Supporting it.
-                Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura), // Added T16 P4.
+                new Decorator(ret => FG.CancelBladestormAuraUsage && !G.BloodThirstOnCooldown, 
+                    G.CancelBladestormLogic()),
+                //added for Supporting  Tier 16 4P setbonus proc - Execute.
+                Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura && G.NormalPhase),
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
                 //actions.single_target+=/storm_bolt,if=enabled&buff.cooldown_reduction.up&debuff.colossus_smash.up
                 Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && G.ReadinessAura && G.ColossusSmashAura && FG.Tier6AbilityUsage),
@@ -158,11 +157,11 @@ namespace FuryUnleashed.Rotations.Fury
                 new Decorator(ret => !FG.MultiTargetUsage || U.NearbyAttackableUnitsCount < IS.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
                         //actions.single_target+=/heroic_strike,if=(debuff.colossus_smash.up&rage>=40&target.health.pct>=20|rage>=100)&buff.enrage.up - added extra code to prevent ragecapping at any time.
-                        Spell.Cast(SpellBook.HeroicStrike, ret => ((G.ColossusSmashAura && Lua.PlayerPower >= 40 && G.NormalPhase || Lua.PlayerPower >= 100) && G.EnrageAura) || Lua.PlayerPower >= Lua.PlayerPowerMax - 5, true))),
+                        Spell.Cast(SpellBook.HeroicStrike, ret => ((G.ColossusSmashAura && Lua.PlayerPower >= 40 && G.NormalPhase || Lua.PlayerPower >= 100) && G.EnrageAura) || Lua.PlayerPower >= Lua.PlayerPowerMax - 10, true))),
                 new Decorator(ret => FG.MultiTargetUsage && U.NearbyAttackableUnitsCount >= IS.Instance.Fury.CheckAoENum,
                     new PrioritySelector(
                         //added to prevent ragecapping in any situation.
-                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 5),
+                        Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10),
                         new Decorator(ret => U.NearbyAttackableUnitsCount == 2,
                             //actions.two_targets+=/cleave,if=(rage>=60&debuff.colossus_smash.up)|rage>110
                             Spell.Cast(SpellBook.Cleave, ret => Lua.PlayerPower >= 60 && G.ColossusSmashAura || Lua.PlayerPower > Me.MaxRage - 10, true)),
@@ -180,10 +179,12 @@ namespace FuryUnleashed.Rotations.Fury
             return new PrioritySelector(
                 new Decorator(ret => !G.ColossusSmashAura,
                     new PrioritySelector(
+                        Spell.Cast(SpellBook.Execute, ret => G.FadingDeathSentence(1500)), // To not let our free execute get wasted during Execute Phase - Added T16 P4.
                         Rel_FurySt())),
                 new Decorator(ret => G.ColossusSmashAura,
                     new PrioritySelector(
                         Spell.Cast(SpellBook.BerserkerRage, ret => !G.EnrageAura && FG.BerserkerRageUsage, true),
+                        Spell.Cast(SpellBook.Execute, ret => G.FadingDeathSentence(1500)), // To not let our free execute get wasted during Execute Phase - Added T16 P4.
                         Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && FG.Tier6AbilityUsage),
                         Spell.Cast(SpellBook.Bloodthirst, ret => !G.EnrageAura && G.BerserkerRageOnCooldown),
                         Spell.Cast(SpellBook.Execute),
@@ -341,13 +342,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            new Action(ctx =>
-                            {
-                                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
-                                Spell.Cast(SpellBook.BerserkerRage, on => Me);
-                                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-                                return RunStatus.Failure;
-                            })),
+                            G.EnragedRegenerationLogic()),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 

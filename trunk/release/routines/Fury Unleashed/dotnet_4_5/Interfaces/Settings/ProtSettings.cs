@@ -206,7 +206,7 @@ namespace FuryUnleashed.Interfaces.Settings
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Experimental Options")]
         [DisplayName("Enable Smart Taunting")]
-        [Description("Enables automatic taunting if certain raidconditions are met - Put boss on focus!!!")]
+        [Description("Enables automatic taunting on certain conditions - PUT OTHER TANK ON FOCUS!")]
         public bool CheckSmartTaunt { get; set; }
         #endregion
 
