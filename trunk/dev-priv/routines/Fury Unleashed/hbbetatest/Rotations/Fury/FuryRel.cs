@@ -87,7 +87,8 @@ namespace FuryUnleashed.Rotations.Fury
         {
             return new PrioritySelector(
                 //cancel bladestorm right before a new BT cycle - new theorycraft - http://www.mmo-champion.com/threads/1459299-Why-Bladestorm
-                new Decorator(ret => FG.CancelBladestormAuraUsage && !G.BloodThirstOnCooldown, G.CancelBladestorm()),
+                new Decorator(ret => FG.CancelBladestormAuraUsage && !G.BloodThirstOnCooldown, 
+                    G.CancelBladestormLogic()),
                 //added for Supporting  Tier 16 4P setbonus proc - Execute.
                 Spell.Cast(SpellBook.Execute, ret => G.DeathSentenceAuraT16 && G.ColossusSmashAura && G.NormalPhase),
                 //actions.single_target+=/heroic_leap,if=debuff.colossus_smash.up
@@ -341,7 +342,7 @@ namespace FuryUnleashed.Rotations.Fury
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
                         new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            G.PriorityEnragedRegeneration()),
+                            G.EnragedRegenerationLogic()),
                         new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
 

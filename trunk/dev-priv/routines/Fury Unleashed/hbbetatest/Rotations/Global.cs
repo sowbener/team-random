@@ -69,7 +69,7 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new Decorator(ret => IS.Instance.General.AutoDetectManualCast,
-                    ManualCastPause()),
+                    ManualCastPauseLogic()),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Bladestorm, ret => BladestormTalent),
@@ -100,16 +100,7 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        internal static Composite InitializeInterrupts()
-        {
-            return new PrioritySelector(
-                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
-                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && U.InterruptableUnitsCount > 1)),
-                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
-                    Spell.Cast(SpellBook.Pummel)));
-        }
-
-        internal static Composite CancelBladestorm()
+        internal static Composite CancelBladestormLogic()
         {
             return new Action(ctx =>
             {
@@ -119,7 +110,7 @@ namespace FuryUnleashed.Rotations
             });
         }
 
-        internal static Composite PriorityEnragedRegeneration()
+        internal static Composite EnragedRegenerationLogic()
         {
             return new Action(ctx =>
             {
@@ -130,7 +121,16 @@ namespace FuryUnleashed.Rotations
             });
         }
 
-        internal static Composite ManualCastPause()
+        internal static Composite InterruptLogic()
+        {
+            return new PrioritySelector(
+                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
+                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && U.InterruptableUnitsCount > 1)),
+                new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
+                    Spell.Cast(SpellBook.Pummel)));
+        }
+
+        internal static Composite ManualCastPauseLogic()
         {
             return new Sequence(
                 new Decorator(ret => IS.Instance.General.AutoDetectManualCast && HotKeyManager.AnyKeyPressed(), new ActionAlwaysSucceed()),

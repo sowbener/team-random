@@ -43,7 +43,7 @@ namespace FuryUnleashed.Rotations.Protection
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
-                    new Decorator(ret => IS.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                    new Decorator(ret => IS.Instance.Protection.CheckInterrupts && U.CanInterrupt, G.InterruptLogic()),
                     new Switch<Enum.ProtRotationVersion>(ctx => IS.Instance.General.CrProtRotVersion,
                         new SwitchArgument<Enum.ProtRotationVersion>(Enum.ProtRotationVersion.Development, ProtDev.DevProtCombat),
                         new SwitchArgument<Enum.ProtRotationVersion>(Enum.ProtRotationVersion.Release, ProtRel.RelProtCombat)));

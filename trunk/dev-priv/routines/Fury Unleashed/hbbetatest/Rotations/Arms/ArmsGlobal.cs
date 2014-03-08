@@ -49,7 +49,7 @@ namespace FuryUnleashed.Rotations.Arms
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
-                    new Decorator(ret => IS.Instance.Arms.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                    new Decorator(ret => IS.Instance.Arms.CheckInterrupts && U.CanInterrupt, G.InterruptLogic()),
                     new Switch<Enum.ArmsRotationVersion>(ctx => IS.Instance.General.CrArmsRotVersion,
                         new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.Development, ArmsDev.DevArmsCombat),
                         new SwitchArgument<Enum.ArmsRotationVersion>(Enum.ArmsRotationVersion.PvP, ArmsPvP.PvPArmsCombat),
