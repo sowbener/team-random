@@ -42,7 +42,7 @@ namespace FuryUnleashed.Rotations.Fury
                     new Decorator(ret => (HotKeyManager.IsPaused || !U.DefaultCheck), new ActionAlwaysSucceed()),
                     G.InitializeCaching(),
                     G.InitializeOnKeyActions(),
-                    new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InitializeInterrupts()),
+                    new Decorator(ret => IS.Instance.Fury.CheckInterrupts && U.CanInterrupt, G.InterruptLogic()),
                     new Switch<Enum.FuryRotationVersion>(ctx => IS.Instance.General.CrFuryRotVersion,
                         new SwitchArgument<Enum.FuryRotationVersion>(Enum.FuryRotationVersion.Development, FuryDev.DevFuryCombat),
                         new SwitchArgument<Enum.FuryRotationVersion>(Enum.FuryRotationVersion.Release, FuryRel.RelFuryCombat)));
@@ -73,7 +73,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             get
             {
-                return IS.Instance.Fury.CheckBladeStormLogics && G.BladestormAura;
+                return IS.Instance.Fury.CheckBladeStormLogics && G.BladestormAura && U.NearbyAttackableUnitsCount == 1;
             }
         }
 

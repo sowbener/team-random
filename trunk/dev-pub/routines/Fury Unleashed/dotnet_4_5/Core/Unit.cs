@@ -1,5 +1,4 @@
-﻿
-using FuryUnleashed.Core.Helpers;
+﻿using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using FuryUnleashed.Rotations;
@@ -218,12 +217,6 @@ namespace FuryUnleashed.Core
                         NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
                     }
                 }
-
-                //if (IsViable(Me.CurrentTarget))
-                //{
-                //    NearbyAttackableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
-                //    NearbyAttackableUnitsFloat = NearbyAttackableUnits(StyxWoW.Me.Location, 8).Count();
-                //}
             }
         }
 

@@ -69,7 +69,7 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new Decorator(ret => IS.Instance.General.AutoDetectManualCast,
-                    ManualCastPause()),
+                    ManualCastPauseLogic()),
                 new Decorator(ret => HotKeyManager.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice),
                     new PrioritySelector(
                         Spell.Cast(SpellBook.Bladestorm, ret => BladestormTalent),
@@ -100,7 +100,28 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        internal static Composite InitializeInterrupts()
+        internal static Composite CancelBladestormLogic()
+        {
+            return new Action(ctx =>
+            {
+                Me.CancelAura(AuraBook.Bladestorm);
+                Spell.Cast(SpellBook.Bloodthirst);
+                return RunStatus.Failure;
+            });
+        }
+
+        internal static Composite EnragedRegenerationLogic()
+        {
+            return new Action(ctx =>
+            {
+                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                Spell.Cast(SpellBook.BerserkerRage, on => Me);
+                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+                return RunStatus.Failure;
+            });
+        }
+
+        internal static Composite InterruptLogic()
         {
             return new PrioritySelector(
                 new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
@@ -109,7 +130,7 @@ namespace FuryUnleashed.Rotations
                     Spell.Cast(SpellBook.Pummel)));
         }
 
-        internal static Composite ManualCastPause()
+        internal static Composite ManualCastPauseLogic()
         {
             return new Sequence(
                 new Decorator(ret => IS.Instance.General.AutoDetectManualCast && HotKeyManager.AnyKeyPressed(), new ActionAlwaysSucceed()),
