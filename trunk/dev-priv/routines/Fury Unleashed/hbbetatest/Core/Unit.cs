@@ -404,16 +404,20 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region SmartTaunt Functions
-        // Full credits to Chinajade for this!
+        // Full credits to Chinajade for this! - http://www.thebuddyforum.com/honorbuddy-forum/community-developer-forum/150686-auto-taunt-soo-code.html
+        // Need to add caching to FocusedUnit Auras
+
+        /// <summary>
+        /// Checks if Taunting is desired, based on a Tuple list.
+        /// </summary>
+        /// <returns></returns>
         internal static bool IsAutoTauntDesired()
         {
-            // Make certain we have a target, and the target is a boss ...
             if (!Me.GotTarget || !IsTargetBoss)
             {
                 return false;
             }
 
-            // Make certain focus target is valid, and it makes sense to use Taunt ...
             var focusedunit = StyxWoW.Me.FocusedUnit;
 
             if (!IsViable(focusedunit) || focusedunit.IsDead)
@@ -421,11 +425,7 @@ namespace FuryUnleashed.Core
                 return false;
             }
 
-            // Are any of the Taunt use constraints met?
-            return (from aura in focusedunit.Auras.Values
-                    let tauntqualifier = HashSets.TauntUseQualifiers.FirstOrDefault(t => t.Item1 == aura.SpellId)
-                    where (tauntqualifier != null) && (aura.StackCount >= tauntqualifier.Item2) 
-                    select aura).Any();
+            return focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
         }
         #endregion
 

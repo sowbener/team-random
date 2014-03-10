@@ -9,3 +9,5 @@
 -option for safeguard on cooldown as damage reduction like vigilance
 -auto face target? This is minor but it's affected my dps when I paid less attention. Just for convenience
 ... There was one more major thing which I've totally forgotten. I'll post again when I remember. Keep up the good work, thanks.
+
+// Need to add caching to FocusedUnit Auras

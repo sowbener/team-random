@@ -567,9 +567,13 @@ namespace FuryUnleashed.Interfaces.GUI
                 ((Styx.Helpers.Settings)SpecGrid.SelectedObject).Save();
             }
             Logger.CombatLogOr("Settings for Fury Unleashed saved!");
+            if (InternalSettings.Instance.Protection.CheckSmartTaunt && StyxWoW.Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                Logger.CombatLogWh("You have enabled the Smart Taunt function - Make sure to set the other tank on focus.");
+            }
             if (InternalSettings.Instance.General.InterruptMode == Enum.Interrupts.Constant)
             {
-                MessageBox.Show("You have selected Constant as Interrupt mode.\r\n Due to the increased banrisk, I HIGHLY recommend using Random instead!");
+                MessageBox.Show("You have selected Constant as Interrupt mode.\r\n Due to the increased ban risk, I HIGHLY recommend using Random instead!");
             }
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
