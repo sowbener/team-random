@@ -24,7 +24,7 @@ namespace AntiAFK
         private static readonly Random Random = new Random();
         private static readonly Keys KeyToPress = AntiAFKSettings.Instance.AntiAfkKey;
 
-        private const double Version = 1.03;
+        private const double Version = 1.04;
         private static int _elapsedtime;
 
         private static Composite _root;
@@ -61,8 +61,10 @@ namespace AntiAFK
         {
             try
             {
-                StatCounter();
                 AntiAFKSettings.Instance.Load();
+
+                PluginPulsing();
+                StatCounter();
 
                 if (GlobalSettings.Instance.LogoutForInactivity)
                 {
