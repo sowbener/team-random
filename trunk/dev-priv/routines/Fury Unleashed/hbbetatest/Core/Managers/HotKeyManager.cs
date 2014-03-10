@@ -1,11 +1,14 @@
-﻿using FuryUnleashed.Core.Helpers;
+﻿using System;
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
+using Styx;
 using Styx.Common;
 using Styx.WoWInternals;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 
 namespace FuryUnleashed.Core.Managers
 {
@@ -23,10 +26,17 @@ namespace FuryUnleashed.Core.Managers
         }
 
         /* Keystates - One press with Spell Queueing */
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetActiveWindow();
+
         [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(Keys vKey);
+
         public static bool IsKeyAsyncDown(Keys key)
         {
+            if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
+                return false;
+
             return (GetAsyncKeyState(key)) != 0;
         }
 
