@@ -16,7 +16,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 6, 1);
+        public static readonly Version Revision = new Version(5, 6, 2);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static bool IsPaused;
 
@@ -195,6 +195,9 @@ namespace Tyrael
         #endregion
 
         #region Softlock
+        /// <summary>
+        /// Used for Locking only the BotBase and Routine - Not HonorBuddy itself (Softlock). Only kicks in when HardLock isn't enabled.
+        /// </summary>
         private static Composite SelectLockMethod(params Composite[] children)
         {
             return TyraelSettings.Instance.UseSoftLock && !GlobalSettings.Instance.UseFrameLock ? new FrameLockSelector(children) : new PrioritySelector(children);
