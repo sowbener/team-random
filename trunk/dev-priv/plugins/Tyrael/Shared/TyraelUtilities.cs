@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-using Styx;
-using Styx.Common;
+﻿using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
 using Styx.WoWInternals;
@@ -8,29 +6,14 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Globalization;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace Tyrael.Shared
 {
     public class TyraelUtilities
     {
         #region Hotkeys
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern IntPtr GetActiveWindow();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern short GetAsyncKeyState(int vkey);
-
-        public static bool IsKeyAsyncDown(Keys key)
-        {
-            if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
-                return false;
-
-            return key != Keys.None && (GetAsyncKeyState((int)key) & 0x8000) != 0;
-        }
-
         public static bool IsTyraelPaused { get; set; }
 
         public static void RegisterHotkeys()
@@ -43,8 +26,13 @@ namespace Tyrael.Shared
                     if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
+                    }
+
+                    if (TyraelSettings.Instance.CheckRaidWarningOutput)
+                    {
                         Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Paused!\", ChatTypeInfo[\"RAID_WARNING\"]);");
                     }
+
                     Logging.Write(Colors.Red, "[Tyrael] Rotation Paused!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
@@ -53,8 +41,13 @@ namespace Tyrael.Shared
                     if (TyraelSettings.Instance.CheckChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
+                    }
+
+                    if (TyraelSettings.Instance.CheckRaidWarningOutput)
+                    {
                         Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Resumed!\", ChatTypeInfo[\"GUILD\"]);");
                     }
+
                     Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
