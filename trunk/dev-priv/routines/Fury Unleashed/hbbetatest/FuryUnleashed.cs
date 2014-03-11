@@ -120,12 +120,7 @@ namespace FuryUnleashed
             catch (Exception e) { StopBot(e.ToString()); }
 
             /* Initialize Various Functions */
-            DamageTracker.Initialize();
-            HotKeyManager.InitializeBindings();
             Item.RefreshSecondaryStats();
-            Unit.InitializeSmartTaunt();
-
-            /* Gather required information */
             Logger.StatCounter();
             Logger.LogTimer(500);
 
@@ -155,7 +150,6 @@ namespace FuryUnleashed
 
         internal static void StopBot(string reason)
         {
-            DamageTracker.Stop();
             TreeRoot.Stop();
             Logger.CombatLogWh(reason);
         }
