@@ -35,6 +35,22 @@ namespace FuryUnleashed.Interfaces.GUI
             }
         }
 
+        private void UpdateFocusAuras()
+        {
+            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            {
+                myfocusaurasdatagrid.DataSource = StyxWoW.Me.FocusedUnit.Auras.Values.OrderBy(a => a.Name).ToList();
+            }
+        }
+
+        private void UpdateFocusAurasLinq()
+        {
+            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            {
+                myfocusaurasdatagrid.DataSource = StyxWoW.Me.FocusedUnit.GetAllAuras().OrderBy(a => a.Name).ToList();
+            }
+        }
+
         private void UpdateTargetAuras()
         {
             if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
@@ -56,6 +72,14 @@ namespace FuryUnleashed.Interfaces.GUI
             if (Unit.IsViable(StyxWoW.Me))
             {
                 mycachedaurasdatagrid.DataSource = Spell.CachedAuras.OrderBy(a => a.Name).ToList();
+            }
+        }
+
+        private void UpdateFocusCachedAuras()
+        {
+            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            {
+                myfocuscachedaurasdatagrid.DataSource = Spell.CachedFocusAuras.OrderBy(a => a.Name).ToList();
             }
         }
 
@@ -149,6 +173,16 @@ namespace FuryUnleashed.Interfaces.GUI
             UpdateMyAurasLinq();
         }
 
+        private void focusaurasbutton1_Click(object sender, EventArgs e)
+        {
+            UpdateFocusAuras();
+        }
+
+        private void focusaurasbutton2_Click(object sender, EventArgs e)
+        {
+            UpdateFocusAurasLinq();
+        }
+
         private void targetaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateTargetAuras();
@@ -162,6 +196,11 @@ namespace FuryUnleashed.Interfaces.GUI
         private void mycachedaurasbutton_Click(object sender, EventArgs e)
         {
             UpdateMyCachedAuras();
+        }
+
+        private void focuscachedaurasbutton_Click(object sender, EventArgs e)
+        {
+            UpdateFocusCachedAuras();
         }
 
         private void targetcachedaurasbutton_Click(object sender, EventArgs e)

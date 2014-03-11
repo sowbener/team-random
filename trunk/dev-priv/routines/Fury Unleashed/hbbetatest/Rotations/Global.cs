@@ -890,6 +890,11 @@ namespace FuryUnleashed.Rotations
             get { return CooldownTracker.SpellOnCooldown(SpellBook.DisruptingShout); } // Disrupting Shout
         }
 
+        internal static bool EnragedRegenerationOnCooldown
+        {
+            get { return CooldownTracker.SpellOnCooldown(SpellBook.EnragedRegeneration); } // Enraged Regeneration
+        }
+
         internal static bool HeroicLeapOnCooldown
         {
             get { return CooldownTracker.SpellOnCooldown(SpellBook.HeroicLeap); } // Heroic Leap

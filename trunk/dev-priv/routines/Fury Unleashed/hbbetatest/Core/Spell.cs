@@ -3,6 +3,7 @@
 using CommonBehaviors.Actions;
 using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
@@ -18,13 +19,11 @@ namespace FuryUnleashed.Core
     internal static class Spell
     {
         #region Delegates
-        // Public delegates
         public delegate WoWUnit UnitSelectionDelegate(object context);
         public delegate WoWPoint LocationRetriever(object context);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static WoWSpell GcdSpell { get; set; }
 
-        // Internal delegates
         internal delegate T Selection<out T>(object context);
         internal static readonly uint ClientLatency = StyxWoW.WoWClient.Latency;
         #endregion
@@ -288,6 +287,7 @@ namespace FuryUnleashed.Core
         /// The lists required for cached auras.
         /// </summary>
         public static IEnumerable<WoWAura> CachedAuras = new List<WoWAura>();
+        public static IEnumerable<WoWAura> CachedFocusAuras = new List<WoWAura>();
         public static IEnumerable<WoWAura> CachedTargetAuras = new List<WoWAura>();
 
         /// <summary>
@@ -299,8 +299,20 @@ namespace FuryUnleashed.Core
             {
                 try
                 {
-                    if (Unit.IsViable(Me)) { CachedAuras = Me.GetAllAuras(); }
-                    if (Unit.IsViable(Me.CurrentTarget)) { CachedTargetAuras = Me.CurrentTarget.GetAllAuras(); }
+                    if (Unit.IsViable(Me))
+                    {
+                        CachedAuras = Me.GetAllAuras();
+                    }
+
+                    if (Unit.IsViable(Me.FocusedUnit) && InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
+                    {
+                        CachedFocusAuras = Me.FocusedUnit.GetAllAuras();
+                    }
+
+                    if (Unit.IsViable(Me.CurrentTarget))
+                    {
+                        CachedTargetAuras = Me.CurrentTarget.GetAllAuras();
+                    }
                 }
                 catch (Exception getcachedauraException)
                 {

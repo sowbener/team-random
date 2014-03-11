@@ -30,6 +30,7 @@
         {
             this.Tabs = new System.Windows.Forms.TabControl();
             this.myaurastab = new System.Windows.Forms.TabPage();
+            this.myaurasbutton2 = new System.Windows.Forms.Button();
             this.myaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.spellIdDataGridViewTextBoxColumnMyAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,6 +49,7 @@
             this.cancellableDataGridViewCheckBoxColumnMyAuras = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.myaurasbutton1 = new System.Windows.Forms.Button();
             this.targetaurastab = new System.Windows.Forms.TabPage();
+            this.targetaurasbutton2 = new System.Windows.Forms.Button();
             this.mytargetaurasdatagrid = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.spellIdDataGridViewTextBoxColumnMyTargetAuras = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -123,8 +125,43 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.myaurasbutton2 = new System.Windows.Forms.Button();
-            this.targetaurasbutton2 = new System.Windows.Forms.Button();
+            this.focusaurastab = new System.Windows.Forms.TabPage();
+            this.focuscachedaurastab = new System.Windows.Forms.TabPage();
+            this.focusaurasbutton1 = new System.Windows.Forms.Button();
+            this.focusaurasbutton2 = new System.Windows.Forms.Button();
+            this.myfocusaurasdatagrid = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewCheckBoxColumn2 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewCheckBoxColumn3 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewCheckBoxColumn4 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.myfocuscachedaurasdatagrid = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewCheckBoxColumn5 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewCheckBoxColumn6 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewCheckBoxColumn7 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewCheckBoxColumn8 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.focuscachedaurasbutton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.myaurastab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.myaurasdatagrid)).BeginInit();
@@ -142,13 +179,19 @@
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.focusaurastab.SuspendLayout();
+            this.focuscachedaurastab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.myfocusaurasdatagrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myfocuscachedaurasdatagrid)).BeginInit();
             this.SuspendLayout();
             // 
             // Tabs
             // 
             this.Tabs.Controls.Add(this.myaurastab);
+            this.Tabs.Controls.Add(this.focusaurastab);
             this.Tabs.Controls.Add(this.targetaurastab);
             this.Tabs.Controls.Add(this.mycachedaurastab);
+            this.Tabs.Controls.Add(this.focuscachedaurastab);
             this.Tabs.Controls.Add(this.targetcachedaurastab);
             this.Tabs.Controls.Add(this.cachedattackableunitslisttab);
             this.Tabs.Controls.Add(this.cachedraidmemberslisttab);
@@ -173,6 +216,17 @@
             this.myaurastab.TabIndex = 0;
             this.myaurastab.Text = "My Aura\'s";
             this.myaurastab.UseVisualStyleBackColor = true;
+            // 
+            // myaurasbutton2
+            // 
+            this.myaurasbutton2.Location = new System.Drawing.Point(1009, 8);
+            this.myaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.myaurasbutton2.Name = "myaurasbutton2";
+            this.myaurasbutton2.Size = new System.Drawing.Size(350, 28);
+            this.myaurasbutton2.TabIndex = 2;
+            this.myaurasbutton2.Text = "Update my Aura\'s (GetAllAuras())";
+            this.myaurasbutton2.UseVisualStyleBackColor = true;
+            this.myaurasbutton2.Click += new System.EventHandler(this.myaurasbutton2_Click);
             // 
             // myaurasdatagrid
             // 
@@ -339,6 +393,17 @@
             this.targetaurastab.TabIndex = 1;
             this.targetaurastab.Text = "Target Aura\'s";
             this.targetaurastab.UseVisualStyleBackColor = true;
+            // 
+            // targetaurasbutton2
+            // 
+            this.targetaurasbutton2.Location = new System.Drawing.Point(1009, 8);
+            this.targetaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.targetaurasbutton2.Name = "targetaurasbutton2";
+            this.targetaurasbutton2.Size = new System.Drawing.Size(350, 28);
+            this.targetaurasbutton2.TabIndex = 3;
+            this.targetaurasbutton2.Text = "Update my Target\'s Aura\'s (Me.CurrentTarget.Auras)";
+            this.targetaurasbutton2.UseVisualStyleBackColor = true;
+            this.targetaurasbutton2.Click += new System.EventHandler(this.targetaurasbutton2_Click);
             // 
             // mytargetaurasdatagrid
             // 
@@ -1061,27 +1126,343 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Arms";
             // 
-            // myaurasbutton2
+            // focusaurastab
             // 
-            this.myaurasbutton2.Location = new System.Drawing.Point(1009, 8);
-            this.myaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.myaurasbutton2.Name = "myaurasbutton2";
-            this.myaurasbutton2.Size = new System.Drawing.Size(350, 28);
-            this.myaurasbutton2.TabIndex = 2;
-            this.myaurasbutton2.Text = "Update my Aura\'s (GetAllAuras())";
-            this.myaurasbutton2.UseVisualStyleBackColor = true;
-            this.myaurasbutton2.Click += new System.EventHandler(this.myaurasbutton2_Click);
+            this.focusaurastab.Controls.Add(this.myfocusaurasdatagrid);
+            this.focusaurastab.Controls.Add(this.focusaurasbutton2);
+            this.focusaurastab.Controls.Add(this.focusaurasbutton1);
+            this.focusaurastab.Location = new System.Drawing.Point(4, 25);
+            this.focusaurastab.Name = "focusaurastab";
+            this.focusaurastab.Padding = new System.Windows.Forms.Padding(3);
+            this.focusaurastab.Size = new System.Drawing.Size(1367, 542);
+            this.focusaurastab.TabIndex = 7;
+            this.focusaurastab.Text = "Focus Aura\'s";
+            this.focusaurastab.UseVisualStyleBackColor = true;
             // 
-            // targetaurasbutton2
+            // focuscachedaurastab
             // 
-            this.targetaurasbutton2.Location = new System.Drawing.Point(1009, 8);
-            this.targetaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.targetaurasbutton2.Name = "targetaurasbutton2";
-            this.targetaurasbutton2.Size = new System.Drawing.Size(350, 28);
-            this.targetaurasbutton2.TabIndex = 3;
-            this.targetaurasbutton2.Text = "Update my Target\'s Aura\'s (Me.CurrentTarget.Auras)";
-            this.targetaurasbutton2.UseVisualStyleBackColor = true;
-            this.targetaurasbutton2.Click += new System.EventHandler(this.targetaurasbutton2_Click);
+            this.focuscachedaurastab.Controls.Add(this.focuscachedaurasbutton);
+            this.focuscachedaurastab.Controls.Add(this.myfocuscachedaurasdatagrid);
+            this.focuscachedaurastab.Location = new System.Drawing.Point(4, 25);
+            this.focuscachedaurastab.Name = "focuscachedaurastab";
+            this.focuscachedaurastab.Padding = new System.Windows.Forms.Padding(3);
+            this.focuscachedaurastab.Size = new System.Drawing.Size(1367, 542);
+            this.focuscachedaurastab.TabIndex = 8;
+            this.focuscachedaurastab.Text = "Focus Cached Aura\'s";
+            this.focuscachedaurastab.UseVisualStyleBackColor = true;
+            // 
+            // focusaurasbutton1
+            // 
+            this.focusaurasbutton1.Location = new System.Drawing.Point(6, 7);
+            this.focusaurasbutton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.focusaurasbutton1.Name = "focusaurasbutton1";
+            this.focusaurasbutton1.Size = new System.Drawing.Size(350, 28);
+            this.focusaurasbutton1.TabIndex = 1;
+            this.focusaurasbutton1.Text = "Update my Focus\'s Aura\'s (Me.FocusedUnit.Auras)";
+            this.focusaurasbutton1.UseVisualStyleBackColor = true;
+            this.focusaurasbutton1.Click += new System.EventHandler(this.focusaurasbutton1_Click);
+            // 
+            // focusaurasbutton2
+            // 
+            this.focusaurasbutton2.Location = new System.Drawing.Point(1011, 7);
+            this.focusaurasbutton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.focusaurasbutton2.Name = "focusaurasbutton2";
+            this.focusaurasbutton2.Size = new System.Drawing.Size(350, 28);
+            this.focusaurasbutton2.TabIndex = 3;
+            this.focusaurasbutton2.Text = "Update my Focus\'s Aura\'s (Me.FocusedUnit.GetAllAuras())";
+            this.focusaurasbutton2.UseVisualStyleBackColor = true;
+            this.focusaurasbutton2.Click += new System.EventHandler(this.focusaurasbutton2_Click);
+            // 
+            // myfocusaurasdatagrid
+            // 
+            this.myfocusaurasdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.myfocusaurasdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.myfocusaurasdatagrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9,
+            this.dataGridViewTextBoxColumn10,
+            this.dataGridViewTextBoxColumn11,
+            this.dataGridViewCheckBoxColumn1,
+            this.dataGridViewCheckBoxColumn2,
+            this.dataGridViewCheckBoxColumn3,
+            this.dataGridViewCheckBoxColumn4});
+            this.myfocusaurasdatagrid.EnableHeadersVisualStyles = false;
+            this.myfocusaurasdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.myfocusaurasdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.myfocusaurasdatagrid.Name = "myfocusaurasdatagrid";
+            this.myfocusaurasdatagrid.Size = new System.Drawing.Size(1352, 489);
+            this.myfocusaurasdatagrid.TabIndex = 4;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "Name";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "SpellId";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Spell ID";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Spell";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Spell";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "ApplyAuraType";
+            this.dataGridViewTextBoxColumn4.HeaderText = "Apply Aura Type";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "CreatorGuid";
+            this.dataGridViewTextBoxColumn5.HeaderText = "Creator GUID";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "Flags";
+            this.dataGridViewTextBoxColumn6.HeaderText = "Flags";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "Duration";
+            this.dataGridViewTextBoxColumn7.HeaderText = "Duration";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.DataPropertyName = "EndTime";
+            this.dataGridViewTextBoxColumn8.HeaderText = "End Time";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.DataPropertyName = "TimeLeft";
+            this.dataGridViewTextBoxColumn9.HeaderText = "Time Left";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.DataPropertyName = "StackCount";
+            this.dataGridViewTextBoxColumn10.HeaderText = "Stack Count";
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.DataPropertyName = "Level";
+            this.dataGridViewTextBoxColumn11.HeaderText = "Level";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewCheckBoxColumn1
+            // 
+            this.dataGridViewCheckBoxColumn1.DataPropertyName = "IsHarmful";
+            this.dataGridViewCheckBoxColumn1.HeaderText = "Is Harmful";
+            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            this.dataGridViewCheckBoxColumn1.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn2
+            // 
+            this.dataGridViewCheckBoxColumn2.DataPropertyName = "IsActive";
+            this.dataGridViewCheckBoxColumn2.HeaderText = "Is Active";
+            this.dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
+            this.dataGridViewCheckBoxColumn2.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn3
+            // 
+            this.dataGridViewCheckBoxColumn3.DataPropertyName = "IsPassive";
+            this.dataGridViewCheckBoxColumn3.HeaderText = "Is Passive";
+            this.dataGridViewCheckBoxColumn3.Name = "dataGridViewCheckBoxColumn3";
+            this.dataGridViewCheckBoxColumn3.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn4
+            // 
+            this.dataGridViewCheckBoxColumn4.DataPropertyName = "Cancellable";
+            this.dataGridViewCheckBoxColumn4.HeaderText = "Cancellable";
+            this.dataGridViewCheckBoxColumn4.Name = "dataGridViewCheckBoxColumn4";
+            this.dataGridViewCheckBoxColumn4.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // myfocuscachedaurasdatagrid
+            // 
+            this.myfocuscachedaurasdatagrid.BackgroundColor = System.Drawing.Color.White;
+            this.myfocuscachedaurasdatagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.myfocuscachedaurasdatagrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn12,
+            this.dataGridViewTextBoxColumn13,
+            this.dataGridViewTextBoxColumn14,
+            this.dataGridViewTextBoxColumn15,
+            this.dataGridViewTextBoxColumn16,
+            this.dataGridViewTextBoxColumn17,
+            this.dataGridViewTextBoxColumn18,
+            this.dataGridViewTextBoxColumn19,
+            this.dataGridViewTextBoxColumn20,
+            this.dataGridViewTextBoxColumn21,
+            this.dataGridViewTextBoxColumn22,
+            this.dataGridViewCheckBoxColumn5,
+            this.dataGridViewCheckBoxColumn6,
+            this.dataGridViewCheckBoxColumn7,
+            this.dataGridViewCheckBoxColumn8});
+            this.myfocuscachedaurasdatagrid.EnableHeadersVisualStyles = false;
+            this.myfocuscachedaurasdatagrid.Location = new System.Drawing.Point(7, 43);
+            this.myfocuscachedaurasdatagrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.myfocuscachedaurasdatagrid.Name = "myfocuscachedaurasdatagrid";
+            this.myfocuscachedaurasdatagrid.Size = new System.Drawing.Size(1352, 489);
+            this.myfocuscachedaurasdatagrid.TabIndex = 3;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.DataPropertyName = "Name";
+            this.dataGridViewTextBoxColumn12.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            this.dataGridViewTextBoxColumn13.DataPropertyName = "SpellId";
+            this.dataGridViewTextBoxColumn13.HeaderText = "Spell ID";
+            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn14
+            // 
+            this.dataGridViewTextBoxColumn14.DataPropertyName = "Spell";
+            this.dataGridViewTextBoxColumn14.HeaderText = "Spell";
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn15
+            // 
+            this.dataGridViewTextBoxColumn15.DataPropertyName = "ApplyAuraType";
+            this.dataGridViewTextBoxColumn15.HeaderText = "Apply Aura Type";
+            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            this.dataGridViewTextBoxColumn15.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn16
+            // 
+            this.dataGridViewTextBoxColumn16.DataPropertyName = "CreatorGuid";
+            this.dataGridViewTextBoxColumn16.HeaderText = "Creator GUID";
+            this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            this.dataGridViewTextBoxColumn16.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn17
+            // 
+            this.dataGridViewTextBoxColumn17.DataPropertyName = "Flags";
+            this.dataGridViewTextBoxColumn17.HeaderText = "Flags";
+            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            this.dataGridViewTextBoxColumn17.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn18
+            // 
+            this.dataGridViewTextBoxColumn18.DataPropertyName = "Duration";
+            this.dataGridViewTextBoxColumn18.HeaderText = "Duration";
+            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            this.dataGridViewTextBoxColumn18.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn19
+            // 
+            this.dataGridViewTextBoxColumn19.DataPropertyName = "EndTime";
+            this.dataGridViewTextBoxColumn19.HeaderText = "End Time";
+            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            this.dataGridViewTextBoxColumn19.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn20
+            // 
+            this.dataGridViewTextBoxColumn20.DataPropertyName = "TimeLeft";
+            this.dataGridViewTextBoxColumn20.HeaderText = "Time Left";
+            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
+            this.dataGridViewTextBoxColumn20.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn21
+            // 
+            this.dataGridViewTextBoxColumn21.DataPropertyName = "StackCount";
+            this.dataGridViewTextBoxColumn21.HeaderText = "Stack Count";
+            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
+            this.dataGridViewTextBoxColumn21.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn22
+            // 
+            this.dataGridViewTextBoxColumn22.DataPropertyName = "Level";
+            this.dataGridViewTextBoxColumn22.HeaderText = "Level";
+            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
+            this.dataGridViewTextBoxColumn22.ReadOnly = true;
+            // 
+            // dataGridViewCheckBoxColumn5
+            // 
+            this.dataGridViewCheckBoxColumn5.DataPropertyName = "IsHarmful";
+            this.dataGridViewCheckBoxColumn5.HeaderText = "Is Harmful";
+            this.dataGridViewCheckBoxColumn5.Name = "dataGridViewCheckBoxColumn5";
+            this.dataGridViewCheckBoxColumn5.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn6
+            // 
+            this.dataGridViewCheckBoxColumn6.DataPropertyName = "IsActive";
+            this.dataGridViewCheckBoxColumn6.HeaderText = "Is Active";
+            this.dataGridViewCheckBoxColumn6.Name = "dataGridViewCheckBoxColumn6";
+            this.dataGridViewCheckBoxColumn6.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn6.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn7
+            // 
+            this.dataGridViewCheckBoxColumn7.DataPropertyName = "IsPassive";
+            this.dataGridViewCheckBoxColumn7.HeaderText = "Is Passive";
+            this.dataGridViewCheckBoxColumn7.Name = "dataGridViewCheckBoxColumn7";
+            this.dataGridViewCheckBoxColumn7.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // dataGridViewCheckBoxColumn8
+            // 
+            this.dataGridViewCheckBoxColumn8.DataPropertyName = "Cancellable";
+            this.dataGridViewCheckBoxColumn8.HeaderText = "Cancellable";
+            this.dataGridViewCheckBoxColumn8.Name = "dataGridViewCheckBoxColumn8";
+            this.dataGridViewCheckBoxColumn8.ReadOnly = true;
+            this.dataGridViewCheckBoxColumn8.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewCheckBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // focuscachedaurasbutton
+            // 
+            this.focuscachedaurasbutton.Location = new System.Drawing.Point(3, 7);
+            this.focuscachedaurasbutton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.focuscachedaurasbutton.Name = "focuscachedaurasbutton";
+            this.focuscachedaurasbutton.Size = new System.Drawing.Size(350, 28);
+            this.focuscachedaurasbutton.TabIndex = 4;
+            this.focuscachedaurasbutton.Text = "Update my Focus\'s Cached Aura\'s";
+            this.focuscachedaurasbutton.UseVisualStyleBackColor = true;
+            this.focuscachedaurasbutton.Click += new System.EventHandler(this.focuscachedaurasbutton_Click);
             // 
             // DebuggerGui
             // 
@@ -1114,6 +1495,10 @@
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.focusaurastab.ResumeLayout(false);
+            this.focuscachedaurastab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.myfocusaurasdatagrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.myfocuscachedaurasdatagrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1221,5 +1606,42 @@
         private System.Windows.Forms.Button cachedraidmembersbutton;
         private System.Windows.Forms.Button myaurasbutton2;
         private System.Windows.Forms.Button targetaurasbutton2;
+        private System.Windows.Forms.TabPage focusaurastab;
+        private System.Windows.Forms.TabPage focuscachedaurastab;
+        private System.Windows.Forms.Button focusaurasbutton2;
+        private System.Windows.Forms.Button focusaurasbutton1;
+        private System.Windows.Forms.DataGridView myfocusaurasdatagrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn3;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn4;
+        private System.Windows.Forms.DataGridView myfocuscachedaurasdatagrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn5;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn6;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn7;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn8;
+        private System.Windows.Forms.Button focuscachedaurasbutton;
     }
 }

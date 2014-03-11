@@ -227,7 +227,7 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsDefensive()
         {
             return new PrioritySelector(
-                new Decorator(ret => G.EnragedRegenerationTalent && AG.EnragedRegenerationUsage && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum,
+                new Decorator(ret => G.EnragedRegenerationTalent && AG.EnragedRegenerationUsage && !G.EnragedRegenerationOnCooldown && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum,
                     new PrioritySelector(
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),

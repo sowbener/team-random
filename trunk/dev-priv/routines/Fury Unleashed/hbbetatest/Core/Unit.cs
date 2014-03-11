@@ -425,7 +425,8 @@ namespace FuryUnleashed.Core
                 return false;
             }
 
-            return focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
+            //return focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
+            return Spell.CachedFocusAuras.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
         }
         #endregion
 

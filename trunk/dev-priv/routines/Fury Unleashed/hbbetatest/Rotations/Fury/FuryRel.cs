@@ -337,7 +337,7 @@ namespace FuryUnleashed.Rotations.Fury
         {
             return new PrioritySelector(
                 // HP Regeneration
-                new Decorator(ret => G.EnragedRegenerationTalent && IS.Instance.Fury.CheckEnragedRegen && Me.HealthPercent <= IS.Instance.Fury.CheckEnragedRegenNum,
+                new Decorator(ret => G.EnragedRegenerationTalent && IS.Instance.Fury.CheckEnragedRegen && !G.EnragedRegenerationOnCooldown && Me.HealthPercent <= IS.Instance.Fury.CheckEnragedRegenNum,
                     new PrioritySelector(
                         new Decorator(ret => G.EnrageAura,
                             Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
