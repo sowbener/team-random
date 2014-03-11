@@ -19,8 +19,8 @@ namespace FuryUnleashed.Core.Helpers
             LuaClass.DisableClickToMove();
 
             /* Initialize Hotkey Functions */
-            HotKeyManager.InitializeBindings();
             HotKeyManager.RegisterKeys();
+            HotKeyManager.InitializeBindings();
 
             /* Initialize Routine Functions */
             DamageTracker.Initialize();
