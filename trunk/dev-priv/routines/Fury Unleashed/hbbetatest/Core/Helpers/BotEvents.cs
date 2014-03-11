@@ -11,6 +11,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             if (RoutineManager.Current.Name != Root.FuName) 
                 return;
+            LuaClass.DisableScriptErrors();
             HotKeyManager.RegisterKeys();
             LuaClass.DisableClickToMove();
             Logger.DiagLogPu("Fury Unleashed: Started! (OnBotStarted)");
@@ -20,6 +21,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             if (RoutineManager.Current.Name != Root.FuName) 
                 return;
+            LuaClass.EnableScriptErrors();
             HotKeyManager.RemoveAllKeys();
             LuaClass.EnableClickToMove();
             Logger.DiagLogPu("Fury Unleashed: Stopped! (OnBotStopped)");
