@@ -189,9 +189,10 @@ namespace FuryUnleashed.Core.Managers
                 DamageTracker.Stop();
                 DamageTracker.Initialize();
 
-                /* Refreshing Stats and Setting GCD Spell */
+                /* Refreshing Stats, FocusedUnit and Setting GCD Spell */
                 Item.RefreshSecondaryStats();
                 Spell.InitGcdSpell();
+                Unit.InitializeSmartTaunt();
 
                 /* Restarting Rotations */
                 Root.Instance.PreCombatSelector();

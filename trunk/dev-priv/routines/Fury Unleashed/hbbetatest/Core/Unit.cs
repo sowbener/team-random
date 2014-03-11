@@ -17,6 +17,7 @@ namespace FuryUnleashed.Core
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static readonly Random Random = new Random();
 
+        public static WoWUnit SmartTauntFocusedUnit;
         public static WoWUnit VigilanceTarget;
 
         #region Unit Caching Functions
@@ -408,24 +409,43 @@ namespace FuryUnleashed.Core
         // Need to add caching to FocusedUnit Auras
 
         /// <summary>
+        /// Sets the tank as FocusedUnit
+        /// </summary>
+        internal static void InitializeSmartTaunt()
+        {
+            SmartTauntFocusedUnit = null;
+
+            if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
+            {
+                SmartTauntFocusedUnit = (from unittofocus in RaidMembers
+                                         where IsViable(unittofocus) && unittofocus.Guid != Root.MyToonGuid && (unittofocus.HasAura(AuraBook.Vengeance) || LuaClass.IsTank(unittofocus))
+                                         select unittofocus).FirstOrDefault();
+
+                StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
+            }
+        }
+
+        /// <summary>
         /// Checks if Taunting is desired, based on a Tuple list.
         /// </summary>
-        /// <returns></returns>
-        internal static bool IsAutoTauntDesired()
+        /// <returns>//return focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));</returns>
+        internal static bool IsSmartTauntDesired()
         {
             if (!Me.GotTarget || !IsTargetBoss)
             {
                 return false;
             }
 
-            var focusedunit = StyxWoW.Me.FocusedUnit;
+            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer)
+            {
+                InitializeSmartTaunt();
+            }
 
-            if (!IsViable(focusedunit) || focusedunit.IsDead)
+            if (!IsViable(SmartTauntFocusedUnit) || SmartTauntFocusedUnit.IsDead)
             {
                 return false;
             }
 
-            //return focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
             return Spell.CachedFocusAuras.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));
         }
         #endregion

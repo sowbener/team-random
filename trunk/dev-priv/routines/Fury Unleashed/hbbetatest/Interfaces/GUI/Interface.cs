@@ -1,4 +1,5 @@
-﻿using FuryUnleashed.Core.Managers;
+﻿using FuryUnleashed.Core;
+using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
 using Styx;
@@ -575,6 +576,7 @@ namespace FuryUnleashed.Interfaces.GUI
             {
                 MessageBox.Show("You have selected Constant as Interrupt mode.\r\n Due to the increased ban risk, I HIGHLY recommend using Random instead!");
             }
+            Unit.InitializeSmartTaunt();
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             HotKeyManager.HotkeyTimer(500);

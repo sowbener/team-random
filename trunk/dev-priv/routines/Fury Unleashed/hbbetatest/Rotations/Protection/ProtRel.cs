@@ -189,7 +189,7 @@ namespace FuryUnleashed.Rotations.Protection
                 // Taunt Logic
                 Spell.Cast(SpellBook.Taunt, ret => 
                     (IS.Instance.Protection.CheckAutoTaunt && !IS.Instance.Protection.CheckSmartTaunt && !U.IsTargettingMe) || 
-                    (IS.Instance.Protection.CheckSmartTaunt && Unit.IsAutoTauntDesired()), true),
+                    (IS.Instance.Protection.CheckSmartTaunt && Unit.IsSmartTauntDesired()), true),
 
                 // Need to improve hamstring method
                 Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),

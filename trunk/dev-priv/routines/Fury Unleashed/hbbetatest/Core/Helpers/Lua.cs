@@ -6,6 +6,7 @@ using FuryUnleashed.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
+using Styx.WoWInternals.WoWObjects;
 using Action = Styx.TreeSharp.Action;
 
 // Credits for this code go out to the PureRotation Team!
@@ -109,6 +110,31 @@ namespace FuryUnleashed.Core.Helpers
                 Logger.DiagLogWh("FU: {0} - GetFps()", ex);
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Used to check if unit is a Tank
+        /// </summary>
+        /// <param name="player">WoWPlayer</param>
+        /// <returns>The tank</returns>
+        public static bool IsTank(WoWPlayer player)
+        {
+            return Lua.GetReturnValues("return UnitGroupRolesAssigned('" + LuaClass.DeUnicodify(player.Name) + "')").First() == "TANK";
+        }
+
+        public static string DeUnicodify(string spell)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            byte[] bytes = Encoding.UTF8.GetBytes(spell);
+
+            foreach (byte b in bytes)
+            {
+                if (b != 0)
+                    sb.Append("\\" + b);
+            }
+
+            return sb.ToString();
         }
         #endregion
     }

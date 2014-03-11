@@ -123,6 +123,7 @@ namespace FuryUnleashed
             DamageTracker.Initialize();
             HotKeyManager.InitializeBindings();
             Item.RefreshSecondaryStats();
+            Unit.InitializeSmartTaunt();
 
             /* Gather required information */
             Logger.StatCounter();
