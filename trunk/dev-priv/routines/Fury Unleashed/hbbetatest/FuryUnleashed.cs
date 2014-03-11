@@ -57,6 +57,7 @@ namespace FuryUnleashed
         {
             try
             {
+                LuaClass.DisableScriptErrors();
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
@@ -157,6 +158,7 @@ namespace FuryUnleashed
         {
             DamageTracker.Stop();
             TreeRoot.Stop();
+            LuaClass.EnableScriptErrors();
             Logger.CombatLogWh(reason);
         }
         #endregion

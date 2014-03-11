@@ -98,6 +98,18 @@ namespace FuryUnleashed.Core.Helpers
         }
         #endregion
 
+        #region Script Errors
+        public static void DisableScriptErrors()
+        {
+            Lua.DoString("SetCVar('scriptErrors', '0')");
+        }
+
+        public static void EnableScriptErrors()
+        {
+            Lua.DoString("SetCVar('scriptErrors', '1')");
+        }
+        #endregion
+
         #region Other LUA
         internal static uint GetFps()
         {
@@ -119,7 +131,7 @@ namespace FuryUnleashed.Core.Helpers
         /// <returns>The tank</returns>
         public static bool IsTank(WoWPlayer player)
         {
-            return Lua.GetReturnValues("return UnitGroupRolesAssigned('" + LuaClass.DeUnicodify(player.Name) + "')").First() == "TANK";
+            return Lua.GetReturnValues("return UnitGroupRolesAssigned('" + DeUnicodify(player.Name) + "')").First() == "TANK";
         }
 
         public static string DeUnicodify(string spell)
