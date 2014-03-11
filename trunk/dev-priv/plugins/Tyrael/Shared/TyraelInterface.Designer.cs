@@ -80,14 +80,14 @@ namespace Tyrael.Shared
             this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.TPSTrackBar.Location = new System.Drawing.Point(10, 2);
             this.TPSTrackBar.Maximum = 100;
-            this.TPSTrackBar.Minimum = 5;
+            this.TPSTrackBar.Minimum = 10;
             this.TPSTrackBar.Name = "TPSTrackBar";
             this.TPSTrackBar.Size = new System.Drawing.Size(742, 45);
             this.TPSTrackBar.SmallChange = 10;
             this.TPSTrackBar.TabIndex = 0;
             this.TPSTrackBar.TickFrequency = 5;
             this.TPSTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.TPSTrackBar.Value = 10;
+            this.TPSTrackBar.Value = 30;
             this.TPSTrackBar.Scroll += new System.EventHandler(this.TPSTrackBar_Scroll);
             // 
             // checkClicktoMove
@@ -180,8 +180,6 @@ namespace Tyrael.Shared
             // CheckHardLock
             // 
             this.CheckHardLock.AutoSize = true;
-            //if (TreeRoot.IsRunning) { this.CheckHardLock.Enabled = false; }
-            //else { this.CheckHardLock.Enabled = true; }
             this.CheckHardLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CheckHardLock.ForeColor = System.Drawing.Color.DodgerBlue;
             this.CheckHardLock.Location = new System.Drawing.Point(10, 22);
@@ -324,8 +322,6 @@ namespace Tyrael.Shared
             // checkSoftLock
             // 
             this.checkSoftLock.AutoSize = true;
-            //if (TreeRoot.IsRunning) { this.checkSoftLock.Enabled = false; }
-            //else { this.checkSoftLock.Enabled = true; }
             this.checkSoftLock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkSoftLock.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkSoftLock.Location = new System.Drawing.Point(10, 42);
