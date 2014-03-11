@@ -413,7 +413,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static void InitializeSmartTaunt()
         {
-            SmartTauntFocusedUnit = null;
+            SmartTauntFocusedUnit = Me;
 
             if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
             {
