@@ -14,6 +14,10 @@ namespace FuryUnleashed.Core.Helpers
                 return;
             }
 
+            /* Disable Ingame Settings */
+            LuaClass.DisableScriptErrors();
+            LuaClass.DisableClickToMove();
+
             /* Initialize Hotkey Functions */
             HotKeyManager.InitializeBindings();
             HotKeyManager.RegisterKeys();
@@ -21,10 +25,6 @@ namespace FuryUnleashed.Core.Helpers
             /* Initialize Routine Functions */
             DamageTracker.Initialize();
             Unit.InitializeSmartTaunt();
-
-            /* Disable Ingame Settings */
-            LuaClass.DisableScriptErrors();
-            LuaClass.DisableClickToMove();
 
             Logger.DiagLogPu("Fury Unleashed: Started! (OnBotStarted)");
         }
@@ -36,15 +36,15 @@ namespace FuryUnleashed.Core.Helpers
                 return;
             }
 
+            /* Enable Ingame Settings */
+            LuaClass.EnableScriptErrors();
+            LuaClass.EnableClickToMove();
+
             /* Removing Hotkey Functions */
             HotKeyManager.RemoveAllKeys();
 
             /* Stopping Routine Functions */
             DamageTracker.Stop();
-
-            /* Enable Ingame Settings */
-            LuaClass.EnableScriptErrors();
-            LuaClass.EnableClickToMove();
 
             Logger.DiagLogPu("Fury Unleashed: Stopped! (OnBotStopped)");
         }
