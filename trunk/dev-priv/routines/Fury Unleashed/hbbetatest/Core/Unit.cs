@@ -438,22 +438,26 @@ namespace FuryUnleashed.Core
                 return false;
             }
 
-            var focusedunit = Me.FocusedUnit;
-            var self = Me;
-
-            if (Me.FocusedUnit == null || !focusedunit.IsPlayer)
+            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer)
             {
                 InitializeSmartTaunt();
             }
 
-            if (!IsViable(focusedunit) || focusedunit.IsDead)
+            if (!IsViable(Me.FocusedUnit))
             {
                 return false;
             }
 
-            return 
-                focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2))) &&
-                !self.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1)));
+            if (Me.FocusedUnit != null && Me.FocusedUnit.IsDead)
+            {
+                return false;
+            }
+
+            return (
+                Me.FocusedUnit != null &&
+                Me.FocusedUnit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2))) &&
+                !Me.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1)))
+                );
         }
         #endregion
 
