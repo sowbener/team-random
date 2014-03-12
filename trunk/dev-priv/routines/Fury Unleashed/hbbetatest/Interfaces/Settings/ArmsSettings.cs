@@ -255,9 +255,9 @@ namespace FuryUnleashed.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Arms - Selectable Options")]
-        [DisplayName("Enable Experimental AoE")]
-        [Description("Enables experimental AoE - Picks between WhirlWind and Slam which is the best - BETA!!!")]
-        public bool CheckExperimentalAoE { get; set; }
+        [DisplayName("Enable Smart AoE Logics")]
+        [Description("Enables Smart AoE - Picks between WhirlWind and Slam which is the best")]
+        public bool CheckSmartAoE { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(true)]

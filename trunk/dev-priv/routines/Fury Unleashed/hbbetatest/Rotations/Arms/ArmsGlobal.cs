@@ -226,7 +226,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             get
             {
-                return ((G.BloodbathAura || G.AvatarTalent || G.StormBoltTalent) || (G.DeterminationAura || G.OutrageAura));
+                return ((G.BloodbathAura || !G.BloodbathTalent) || (G.DeterminationAura || G.OutrageAura));
             }
         }
     }

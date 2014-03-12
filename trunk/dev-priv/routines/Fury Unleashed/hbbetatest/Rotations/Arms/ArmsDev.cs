@@ -91,6 +91,11 @@ namespace FuryUnleashed.Rotations.Arms
                                 Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10, true),
                                 Spell.Cast(SpellBook.ColossusSmash),
                                 Spell.Cast(SpellBook.MortalStrike),
+
+                                Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityUsage),
+                                Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityUsage),
+                                Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && !G.ReadinessAura && AG.Tier6AbilityUsage),
+
                                 Spell.Cast(SpellBook.Overpower),
                                 Spell.Cast(SpellBook.Slam, ret => Lua.PlayerPower >= 80 && (G.TasteForBloodS1 || G.TasteForBloodS2)),
                                 new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
@@ -102,6 +107,11 @@ namespace FuryUnleashed.Rotations.Arms
                                 Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10, true),
                                 Spell.Cast(SpellBook.ColossusSmash),
                                 Spell.Cast(SpellBook.MortalStrike),
+
+                                Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityUsage),
+                                Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityUsage),
+                                Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && !G.ReadinessAura && AG.Tier6AbilityUsage),
+
                                 Spell.Cast(SpellBook.Overpower, ret => G.TasteForBloodS4 || G.TasteForBloodS5),
                                 Spell.Cast(SpellBook.Slam, ret => Lua.PlayerPower >= 80 && (G.TasteForBloodS1 || G.TasteForBloodS2 || G.TasteForBloodS3)),
                                 new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
@@ -114,24 +124,25 @@ namespace FuryUnleashed.Rotations.Arms
                         new Decorator(ret => !G.Tier16TwoPieceBonus,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.MortalStrike),
+
+                                Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && AG.Tier6AbilityUsage),
+
                                 Spell.Cast(SpellBook.Slam, ret => Lua.PlayerPower >= 40 || G.RecklessnessAura),
                                 Spell.Cast(SpellBook.Overpower))),
                         new Decorator(ret => G.Tier16TwoPieceBonus,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.HeroicStrike, ret => Lua.PlayerPower >= Lua.PlayerPowerMax - 10 && !G.RecklessnessAura, true),
                                 Spell.Cast(SpellBook.MortalStrike),
+
+                                Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && AG.Tier6AbilityUsage),
+
                                 Spell.Cast(SpellBook.Slam, ret => G.RecklessnessAura),
                                 Spell.Cast(SpellBook.Overpower, ret => G.TasteForBloodS4 || G.TasteForBloodS5),
                                 Spell.Cast(SpellBook.Slam, ret => G.TasteForBloodS1 || G.TasteForBloodS2 || G.TasteForBloodS3)
                                 )))));
         }
 
-        internal static Composite Dev_ArmsStanceDance()
-        {
-            return new PrioritySelector(
-                G.StanceDanceLogic());
-        }
-
+        // This non CS window rotation is solely to preserve rage for the Colossus Smash Window.
         internal static Composite Dev_ArmsExec()
         {
             return new PrioritySelector(
@@ -139,10 +150,15 @@ namespace FuryUnleashed.Rotations.Arms
                     new PrioritySelector(
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.Cast(SpellBook.MortalStrike),
+
+                        Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityUsage),
+                        Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && AG.Tier6AbilityUsage),
+
                         Spell.Cast(SpellBook.Execute, ret => Lua.PlayerPower > 80),
                         Spell.Cast(SpellBook.Overpower),
                         Spell.Cast(SpellBook.DragonRoar, ret => AG.Tier4AbilityUsage),
-                        Spell.Cast(SpellBook.ImpendingVictory, ret => AG.RotationalImpendingVictoryUsage),
+                        Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && AG.RotationalImpendingVictoryUsage),
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me)))
@@ -161,6 +177,12 @@ namespace FuryUnleashed.Rotations.Arms
                     new PrioritySelector(
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.MultiDoT(SpellBook.MortalStrike, AuraBook.DeepWounds),
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && AG.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && AG.Tier6AbilityAoEUsage),
+
                         Dev_ArmsSt())),
                 new Decorator(ret => U.NearbyAttackableUnitsCount >= 3,
                     new PrioritySelector(
@@ -169,7 +191,20 @@ namespace FuryUnleashed.Rotations.Arms
                             Spell.Cast(SpellBook.ThunderClap)),
                         Spell.Cast(SpellBook.ColossusSmash),
                         Spell.MultiDoT(SpellBook.MortalStrike, AuraBook.DeepWounds),
-                        Spell.Cast(SpellBook.Slam),
+
+                        Spell.Cast(SpellBook.Bladestorm, ret => G.BladestormTalent && AG.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.DragonRoar, ret => G.DragonRoarTalent && AG.BloodbathSync && AG.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.Shockwave, ret => G.ShockwaveTalent && G.ShockwaveFacing && AG.Tier4AbilityAoEUsage),
+                        Spell.Cast(SpellBook.StormBolt, ret => G.StormBoltTalent && AG.Tier6AbilityAoEUsage),
+
+                        new Decorator(ret => IS.Instance.Arms.CheckSmartAoE,
+                            new PrioritySelector(
+                                Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
+                                Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
+
+                        new Decorator(ret => !IS.Instance.Arms.CheckSmartAoE,
+                            Spell.Cast(SpellBook.Slam)),
+
                         new Switch<Enum.Shouts>(ctx => IS.Instance.Arms.ShoutSelection,
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me))),
@@ -177,9 +212,20 @@ namespace FuryUnleashed.Rotations.Arms
                         )));
         }
 
+        internal static Composite Rel_FuryStanceDance()
+        {
+            return new Decorator(ret => AG.StanceDanceUsage,
+                G.StanceDanceLogic());
+        }
+
         internal static Composite Dev_ArmsOffensive()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.Recklessness, ret => AG.RecklessnessUsage, true),
+                Spell.Cast(SpellBook.SkullBanner, ret => AG.SkullBannerUsage, true),
+                Spell.Cast(SpellBook.Avatar, ret => AG.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.Bloodbath, ret => AG.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.BerserkerRage, ret => AG.BerserkerRageUsage, true)
                 );
         }
 

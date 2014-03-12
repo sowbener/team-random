@@ -142,12 +142,6 @@ namespace FuryUnleashed.Rotations.Fury
                 );
         }
 
-        internal static Composite Rel_FuryStanceDance()
-        {
-            return new PrioritySelector(
-                G.StanceDanceLogic());
-        }
-
         internal static Composite Rel_FuryHeroicStrike()
         {
             return new PrioritySelector(
@@ -291,6 +285,12 @@ namespace FuryUnleashed.Rotations.Fury
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.BattleShout, Spell.Cast(SpellBook.BattleShout, on => Me)),
                             new SwitchArgument<Enum.Shouts>(Enum.Shouts.CommandingShout, Spell.Cast(SpellBook.CommandingShout, on => Me)))
                         )));
+        }
+
+        internal static Composite Rel_FuryStanceDance()
+        {
+            return new Decorator(ret => FG.StanceDanceUsage,
+                G.StanceDanceLogic());
         }
 
         internal static Composite Rel_FuryOffensive()

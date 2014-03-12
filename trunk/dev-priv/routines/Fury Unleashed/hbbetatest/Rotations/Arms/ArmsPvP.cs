@@ -244,11 +244,11 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Added - Generate rage.
-                        new Decorator(ret => IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
                                 Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
-                        new Decorator(ret => !IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => !IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam))),
                         Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage),
@@ -271,11 +271,11 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Added - Generate rage.
-                        new Decorator(ret => IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
                                 Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
-                        new Decorator(ret => !IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => !IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam))),
                         Spell.Cast(SpellBook.Cleave, ret => Me.CurrentRage == Me.MaxRage),

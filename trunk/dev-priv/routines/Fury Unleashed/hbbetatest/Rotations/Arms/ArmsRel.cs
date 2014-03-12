@@ -167,11 +167,11 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Added - Generate rage.
-                        new Decorator(ret => IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
                                 Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
-                        new Decorator(ret => !IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => !IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam))),
                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt()),
@@ -188,11 +188,11 @@ namespace FuryUnleashed.Rotations.Arms
                         Spell.Cast(SpellBook.SweepingStrikes),
                         Spell.Cast(SpellBook.ColossusSmash), // Added.
                         Spell.Cast(SpellBook.MortalStrike), // Added - Generate rage.
-                        new Decorator(ret => IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam, ret => G.SlamViable),
                                 Spell.Cast(SpellBook.Whirlwind, ret => G.WhirlwindViable))),
-                        new Decorator(ret => !IS.Instance.Arms.CheckExperimentalAoE,
+                        new Decorator(ret => !IS.Instance.Arms.CheckSmartAoE,
                             new PrioritySelector(
                                 Spell.Cast(SpellBook.Slam))),
                         new Decorator(ret => G.NormalPhase, Rel_ArmsSt()),
@@ -203,7 +203,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             return new PrioritySelector(
                 Spell.Cast(SpellBook.BerserkerRage, ret => (!G.EnrageAura || G.FadingEnrage(500)) && G.ColossusSmashAura && AG.BerserkerRageUsage, true),
-                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && AG.Tier4AbilityUsage, true),
+                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && AG.Tier6AbilityUsage, true),
 
                 Spell.Cast(SpellBook.Recklessness, ret => AG.RecklessnessUsage),
                 Spell.Cast(SpellBook.Avatar, ret => G.AvatarTalent && AG.RecklessnessSync && AG.Tier6AbilityUsage, true),
