@@ -212,7 +212,7 @@ namespace FuryUnleashed.Rotations.Arms
                         )));
         }
 
-        internal static Composite Rel_FuryStanceDance()
+        internal static Composite Dev_ArmsStanceDance()
         {
             return new Decorator(ret => AG.StanceDanceUsage,
                 G.StanceDanceLogic());
