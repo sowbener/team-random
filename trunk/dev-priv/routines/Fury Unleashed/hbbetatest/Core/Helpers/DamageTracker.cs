@@ -176,7 +176,32 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region Fury-Spec Functions
-        public static bool CalculatePreferredStance()
+        //public static bool CalculatePreferredStance()
+        //{
+        //    using (new PerformanceLogger("CalculatePreferredStance"))
+        //    {
+        //        try
+        //        {
+        //            var healthtopercent = StyxWoW.Me.MaxHealth / 100; // Calculate Health per 1%.
+        //            var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Retrieve damage taken over 3 seconds.
+        //            var damagetorage = (damageoverthreeseconds / healthtopercent) / 3; // Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds.
+
+        //            var battlestancerage = Item.AttackSpeed * 3.5; // Weaponspeed * 3.5 to get normalized rage.
+        //            var berserkerstancerage = (battlestancerage * 0.5) + damagetorage; // Half of normalized rage + Rage from Damage.
+
+        //            Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
+
+        //            return berserkerstancerage > battlestancerage;
+        //        }
+        //        catch (Exception exstancecalc)
+        //        {
+        //            Logger.DiagLogFb("FU: Failed CalculatePreferredStance - {0}", exstancecalc);
+        //        }
+        //    }
+        //    return false;
+        //}
+
+        public static void CalculatePreferredStance()
         {
             using (new PerformanceLogger("CalculatePreferredStance"))
             {
@@ -191,14 +216,15 @@ namespace FuryUnleashed.Core.Helpers
 
                     Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
-                    return berserkerstancerage > battlestancerage;
+                    Spell.Cast(berserkerstancerage > battlestancerage
+                        ? SpellBook.BerserkerStance
+                        : SpellBook.BattleStance);
                 }
                 catch (Exception exstancecalc)
                 {
                     Logger.DiagLogFb("FU: Failed CalculatePreferredStance - {0}", exstancecalc);
                 }
             }
-            return false;
         }
         #endregion
 

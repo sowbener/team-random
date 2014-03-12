@@ -137,6 +137,15 @@ namespace FuryUnleashed.Rotations
                 new WaitContinue(TimeSpan.FromMilliseconds(IS.Instance.General.ResumeTime), ret => false,
                     new ActionAlwaysSucceed()));
         }
+
+        internal static Composite StanceDanceLogic()
+        {
+            return new Action(ctx =>
+            {
+                DamageTracker.CalculatePreferredStance();
+                return RunStatus.Failure;
+            });
+        }
         #endregion
 
         #region Racials
