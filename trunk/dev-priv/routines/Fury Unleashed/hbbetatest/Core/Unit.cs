@@ -413,7 +413,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static void InitializeSmartTaunt()
         {
-            if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection && (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty))
+            if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
             {
                 SmartTauntFocusedUnit = (from unittofocus in RaidMembers
                                          where IsViable(unittofocus) && unittofocus.Guid != Root.MyToonGuid && (unittofocus.HasAura(AuraBook.Vengeance) || LuaClass.IsTank(unittofocus))
