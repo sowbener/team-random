@@ -228,10 +228,10 @@ namespace FuryUnleashed.Core.Helpers
                     /* Half of normalized rage + Rage from Damage. */
                     var extendedberserkerstancerage = (battlestancerage * 0.5) + damagetorage6S;
 
-                    Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
-
                     if (!Unit.IsExtendedDamageTarget)
                     {
+                        Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
+
                         if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
                         {
                             Spell.Cast(SpellBook.BerserkerStance);
@@ -245,6 +245,8 @@ namespace FuryUnleashed.Core.Helpers
 
                     if (Unit.IsExtendedDamageTarget)
                     {
+                        Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, extendedberserkerstancerage);
+
                         if (extendedberserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
                         {
                             Spell.Cast(SpellBook.BerserkerStance);
