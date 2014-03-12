@@ -214,7 +214,7 @@ namespace FuryUnleashed.Rotations.Arms
 
         internal static Composite Dev_ArmsStanceDance()
         {
-            return new Decorator(ret => AG.StanceDanceUsage,
+            return new PrioritySelector(
                 G.StanceDanceLogic());
         }
 

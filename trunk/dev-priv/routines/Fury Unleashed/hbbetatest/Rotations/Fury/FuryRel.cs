@@ -289,7 +289,7 @@ namespace FuryUnleashed.Rotations.Fury
 
         internal static Composite Rel_FuryStanceDance()
         {
-            return new Decorator(ret => FG.StanceDanceUsage,
+            return new PrioritySelector(
                 G.StanceDanceLogic());
         }
 
