@@ -187,7 +187,7 @@ namespace FuryUnleashed.Rotations.Protection
         {
             return new PrioritySelector(
                 // Taunt Logic
-                Spell.Cast(SpellBook.Taunt, ret => 
+                Spell.Cast(SpellBook.Taunt, on => Me.CurrentTarget, ret => 
                     (IS.Instance.Protection.CheckAutoTaunt && !IS.Instance.Protection.CheckSmartTaunt && !U.IsTargettingMe) || 
                     (IS.Instance.Protection.CheckSmartTaunt && Unit.IsSmartTauntDesired()), true),
 

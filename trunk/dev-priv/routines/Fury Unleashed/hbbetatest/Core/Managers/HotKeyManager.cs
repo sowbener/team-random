@@ -1,10 +1,9 @@
-﻿using System;
-using FuryUnleashed.Core.Helpers;
+﻿using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
-using Styx;
 using Styx.Common;
 using Styx.WoWInternals;
+using System;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
@@ -34,9 +33,8 @@ namespace FuryUnleashed.Core.Managers
 
         public static bool IsKeyAsyncDown(Keys key)
         {
-            if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
-                return false;
-
+            //if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
+            //    return false;
             return (GetAsyncKeyState(key)) != 0;
         }
 

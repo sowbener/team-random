@@ -415,9 +415,9 @@ namespace FuryUnleashed.Core
         {
             if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
             {
-                SmartTauntFocusedUnit = (from unittofocus in RaidMembers
-                                         where IsViable(unittofocus) && unittofocus.Guid != Root.MyToonGuid && (unittofocus.HasAura(AuraBook.Vengeance) || LuaClass.IsTank(unittofocus))
-                                         select unittofocus).FirstOrDefault();
+                SmartTauntFocusedUnit = (from u in RaidMembers
+                                         where IsViable(u) && u.Guid != Root.MyToonGuid && (u.HasAura(AuraBook.Vengeance) || LuaClass.IsTank(u))
+                                         select u).FirstOrDefault();
 
                 StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
             }
@@ -438,7 +438,7 @@ namespace FuryUnleashed.Core
                 return false;
             }
 
-            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer)
+            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer || SmartTauntFocusedUnit == Me)
             {
                 InitializeSmartTaunt();
             }
