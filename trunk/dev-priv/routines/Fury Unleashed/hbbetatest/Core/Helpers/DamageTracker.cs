@@ -211,26 +211,49 @@ namespace FuryUnleashed.Core.Helpers
                 {
                     /* Calculate Health per 1%. */
                     var healthtopercent = StyxWoW.Me.MaxHealth / 100;
+                    /* Weaponspeed * 3.5 to get normalized rage. */
+                    var battlestancerage = Item.AttackSpeed * 3.5;
+
                     /* Retrieve damage taken over 3 seconds. */
                     var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3);
                     /* Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds. */
-                    var damagetorage = (damageoverthreeseconds / healthtopercent) / 3;
-
-                    /* Weaponspeed * 3.5 to get normalized rage. */
-                    var battlestancerage = Item.AttackSpeed * 3.5;
+                    var damagetorage3S = (damageoverthreeseconds / healthtopercent) / 3;
                     /* Half of normalized rage + Rage from Damage. */
-                    var berserkerstancerage = (battlestancerage * 0.5) + damagetorage;
+                    var berserkerstancerage = (battlestancerage * 0.5) + damagetorage3S;
+
+                    /* Retrieve damage taken over 6 seconds. */
+                    var damageoversixseconds = GetDamageTaken(DateTime.Now);
+                    /* Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 6 seconds. */
+                    var damagetorage6S = (damageoversixseconds / healthtopercent) / 6;
+                    /* Half of normalized rage + Rage from Damage. */
+                    var extendedberserkerstancerage = (battlestancerage * 0.5) + damagetorage6S;
 
                     Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
-                    if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
+                    if (!Unit.IsExtendedDamageTarget)
                     {
-                        Spell.Cast(SpellBook.BerserkerStance);
+                        if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
+                        {
+                            Spell.Cast(SpellBook.BerserkerStance);
+                        }
+
+                        if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
+                        {
+                            Spell.Cast(SpellBook.BattleStance);
+                        }
                     }
 
-                    if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
+                    if (Unit.IsExtendedDamageTarget)
                     {
-                        Spell.Cast(SpellBook.BattleStance);
+                        if (extendedberserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
+                        {
+                            Spell.Cast(SpellBook.BerserkerStance);
+                        }
+
+                        if (battlestancerage >= extendedberserkerstancerage && !Global.BattleStanceAura)
+                        {
+                            Spell.Cast(SpellBook.BattleStance);
+                        }
                     }
                 }
                 catch (Exception exstancecalc)

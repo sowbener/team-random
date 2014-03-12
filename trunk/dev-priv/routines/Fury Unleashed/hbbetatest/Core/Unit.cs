@@ -359,6 +359,14 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region HashSet Checks
+        public static bool IsExtendedDamageTarget
+        {
+            get
+            {
+                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.ExtendedDamageTargetList();
+            }
+        }
+
         /// <summary>
         /// Checks if Unit is viable and if Unit is on Hashlist for this function.
         /// </summary>

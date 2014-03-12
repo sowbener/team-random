@@ -37,9 +37,9 @@ namespace FuryUnleashed.Core.Helpers
         #region Dummy, Elites & Boss ID Lists
         public static bool RareUnitsList(this WoWUnit unit)
         {
-            return unit != null && (RareListIds.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (RareList.Contains(unit.Entry));
         }
-        public static HashSet<uint> RareListIds { get { return RareList; } }
+
         private static readonly HashSet<uint> RareList = new HashSet<uint>
         {
 			// 5.4 - Timeless Isles rares.
@@ -77,13 +77,12 @@ namespace FuryUnleashed.Core.Helpers
             72032  //Zvezdan
         };
 
-        public static HashSet<uint> BossIds { get { return Bosses; } }
         public static bool TargetIsBoss(this WoWUnit unit)
         {
-            return unit != null && (unit.IsBoss || BossIds.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (unit.IsBoss || BossList.Contains(unit.Entry));
         }
 
-        private static readonly HashSet<uint> Bosses = new HashSet<uint> {
+        private static readonly HashSet<uint> BossList = new HashSet<uint> {
             // Dummies
             31146, // Raider's
             54344, // Highlord's Nemesis Trainer (Ebon Hold)
@@ -1361,26 +1360,11 @@ namespace FuryUnleashed.Core.Helpers
         #endregion
 
         #region Other Lists
-        internal static readonly HashSet<Keys> MovementKey = new HashSet<Keys>();
-
-        internal static readonly HashSet<string> MovementKeysHash = new HashSet<string>
-        {
-            "MOVEFORWARD",
-            "MOVEBACKWARD",
-            "TURNLEFT",
-            "TURNRIGHT",
-            "STRAFELEFT",
-            "STRAFERIGHT",
-            "JUMP",
-            "TURNORACTION",
-            "CAMERAORSELECTORMOVE",
-        };
-
         public static bool HamstringUnitsList(this WoWUnit unit)
         {
-            return unit != null && (HamstringListIds.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (HamstringList.Contains(unit.Entry));
         }
-        public static HashSet<uint> HamstringListIds { get { return HamstringList; } }
+
         private static readonly HashSet<uint> HamstringList = new HashSet<uint>
         {
             69480,  // Blessed Loa Spirit
@@ -1393,13 +1377,41 @@ namespace FuryUnleashed.Core.Helpers
 
         public static bool DoNotUseOnTgtList(this WoWUnit unit)
         {
-            return unit != null && (DoNotUseOnTgtIds.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (DoNotUseOnList.Contains(unit.Entry));
         }
-        public static HashSet<uint> DoNotUseOnTgtIds { get { return DoNotUseOnList; } }
+
         private static readonly HashSet<uint> DoNotUseOnList = new HashSet<uint>
         {
 			68036, // Durumu the Forgotten
             60410  // Elegon
+        };
+
+        /// <summary>
+        /// This list is to determine if the DamageTracker's window is increased from 3 seconds to 6 seconds - For Fury Stance Dance logics
+        /// </summary>
+        /// <param name="unit">Unit</param>
+        public static bool ExtendedDamageTargetList(this WoWUnit unit)
+        {
+            return Unit.IsViable(unit) && (ExtendedDamageList.Contains(unit.Entry));
+        }
+        
+        private static readonly HashSet<uint> ExtendedDamageList = new HashSet<uint>
+        {
+            71529 // Thok the Bloodthirsty
+        };
+
+        internal static readonly HashSet<Keys> MovementKey = new HashSet<Keys>();
+        internal static readonly HashSet<string> MovementKeysHash = new HashSet<string>
+        {
+            "MOVEFORWARD",
+            "MOVEBACKWARD",
+            "TURNLEFT",
+            "TURNRIGHT",
+            "STRAFELEFT",
+            "STRAFERIGHT",
+            "JUMP",
+            "TURNORACTION",
+            "CAMERAORSELECTORMOVE",
         };
         #endregion
 
