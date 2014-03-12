@@ -100,6 +100,14 @@ namespace FuryUnleashed.Rotations.Arms
             }
         }
 
+        internal static bool MultiTargetUsage
+        {
+            get
+            {
+                return IS.Instance.Arms.CheckAoE;
+            }
+        }
+
         internal static bool RacialUsage
         {
             get
@@ -145,6 +153,15 @@ namespace FuryUnleashed.Rotations.Arms
                 return ((IS.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                         (IS.Instance.Arms.SkullBanner == Enum.AbilityTrigger.OnBlTwHr && G.HasteAbilities) ||
                         (IS.Instance.Arms.SkullBanner == Enum.AbilityTrigger.Always));
+            }
+        }
+
+        // Experimental
+        internal static bool StanceDanceUsage
+        {
+            get
+            {
+                return IS.Instance.Arms.CheckStanceDance && !G.DefensiveStanceAura;
             }
         }
 

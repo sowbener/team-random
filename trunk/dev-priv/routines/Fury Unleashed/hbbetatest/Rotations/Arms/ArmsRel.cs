@@ -7,10 +7,12 @@ using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using AG = FuryUnleashed.Rotations.Arms.ArmsGlobal;
+using Enum = FuryUnleashed.Core.Helpers.Enum;
 using G = FuryUnleashed.Rotations.Global;
 using IS = FuryUnleashed.Interfaces.Settings.InternalSettings;
 using Lua = FuryUnleashed.Core.Helpers.LuaClass;
 using U = FuryUnleashed.Core.Unit;
+
 
 namespace FuryUnleashed.Rotations.Arms
 {
