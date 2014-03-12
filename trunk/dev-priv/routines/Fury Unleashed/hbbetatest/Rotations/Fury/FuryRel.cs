@@ -324,10 +324,8 @@ namespace FuryUnleashed.Rotations.Fury
 
         internal static Composite Rel_FuryRacials()
         {
-            return new PrioritySelector(
-                new Decorator(ret => FG.RacialUsage,
-                    Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell()))
-                    ));
+            return new Decorator(ret => FG.RacialUsage,
+                Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell())));
         }
 
         internal static Composite Rel_FuryDefensive()

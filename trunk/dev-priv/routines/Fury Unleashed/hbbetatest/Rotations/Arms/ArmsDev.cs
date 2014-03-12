@@ -221,11 +221,12 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Dev_ArmsOffensive()
         {
             return new PrioritySelector(
+                Spell.Cast(SpellBook.BerserkerRage, ret => G.ColossusSmashAura && (!G.EnrageAura || G.FadingEnrage(500)) && AG.BerserkerRageUsage, true),
+                Spell.Cast(SpellBook.Bloodbath, ret => G.BloodbathTalent && AG.Tier6AbilityUsage, true),
+
                 Spell.Cast(SpellBook.Recklessness, ret => AG.RecklessnessUsage, true),
-                Spell.Cast(SpellBook.SkullBanner, ret => AG.SkullBannerUsage, true),
-                Spell.Cast(SpellBook.Avatar, ret => AG.Tier6AbilityUsage, true),
-                Spell.Cast(SpellBook.Bloodbath, ret => AG.Tier6AbilityUsage, true),
-                Spell.Cast(SpellBook.BerserkerRage, ret => AG.BerserkerRageUsage, true)
+                Spell.Cast(SpellBook.Avatar, ret => G.AvatarTalent && G.RecklessnessAura && AG.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.SkullBanner, ret => !G.SkullBannerAura && G.RecklessnessAura && AG.SkullBannerUsage, true)
                 );
         }
 
@@ -237,8 +238,8 @@ namespace FuryUnleashed.Rotations.Arms
 
         internal static Composite Dev_ArmsRacials()
         {
-            return new PrioritySelector(
-                );
+            return new Decorator(ret => AG.RacialUsage,
+                Spell.Cast(G.SelectRacialSpell(), ret => G.SelectRacialSpell() != null && G.RacialUsageSatisfied(G.SelectRacialSpell())));
         }
 
         internal static Composite Dev_ArmsDefensive()
