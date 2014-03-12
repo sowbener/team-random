@@ -611,6 +611,16 @@ namespace FuryUnleashed.Rotations
             get { return Spell.HasAura(Me, AuraBook.RagingBlow, 2); }
         }
 
+        internal static bool TasteForBloodS1
+        {
+            get { return Spell.HasAura(Me, AuraBook.TasteForBlood, 1); }
+        }
+
+        internal static bool TasteForBloodS2
+        {
+            get { return Spell.HasAura(Me, AuraBook.TasteForBlood, 2); }
+        }
+
         internal static bool TasteForBloodS3
         {
             get { return Spell.HasAura(Me, AuraBook.TasteForBlood, 3); }
