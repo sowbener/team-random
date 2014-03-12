@@ -1,9 +1,11 @@
 ﻿using FuryUnleashed.Core.Utilities;
+using FuryUnleashed.Rotations;
 using Styx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Styx.Common;
+using Styx.TreeSharp;
 
 namespace FuryUnleashed.Core.Helpers
 {
@@ -207,18 +209,29 @@ namespace FuryUnleashed.Core.Helpers
             {
                 try
                 {
-                    var healthtopercent = StyxWoW.Me.MaxHealth / 100; // Calculate Health per 1%.
-                    var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3); // Retrieve damage taken over 3 seconds.
-                    var damagetorage = (damageoverthreeseconds / healthtopercent) / 3; // Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds.
+                    /* Calculate Health per 1%. */
+                    var healthtopercent = StyxWoW.Me.MaxHealth / 100;
+                    /* Retrieve damage taken over 3 seconds. */
+                    var damageoverthreeseconds = GetDamageTaken(DateTime.Now, 3);
+                    /* Generates 1 rage per 1% lost per second -> Getting % HP lost average per second over last 3 seconds. */
+                    var damagetorage = (damageoverthreeseconds / healthtopercent) / 3;
 
-                    var battlestancerage = Item.AttackSpeed * 3.5; // Weaponspeed * 3.5 to get normalized rage.
-                    var berserkerstancerage = (battlestancerage * 0.5) + damagetorage; // Half of normalized rage + Rage from Damage.
+                    /* Weaponspeed * 3.5 to get normalized rage. */
+                    var battlestancerage = Item.AttackSpeed * 3.5;
+                    /* Half of normalized rage + Rage from Damage. */
+                    var berserkerstancerage = (battlestancerage * 0.5) + damagetorage;
 
                     Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
-                    Spell.Cast(berserkerstancerage > battlestancerage
-                        ? SpellBook.BerserkerStance
-                        : SpellBook.BattleStance);
+                    if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
+                    {
+                        Spell.Cast(SpellBook.BerserkerStance);
+                    }
+
+                    if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
+                    {
+                        Spell.Cast(SpellBook.BattleStance);
+                    }
                 }
                 catch (Exception exstancecalc)
                 {
