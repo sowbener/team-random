@@ -37,8 +37,10 @@ namespace FuryUnleashed.Core.Helpers
         #region Dummy, Elites & Boss ID Lists
         public static bool RareUnitsList(this WoWUnit unit)
         {
-            return Unit.IsViable(unit) && (RareList.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (RareListIds.Contains(unit.Entry));
         }
+
+        public static HashSet<uint> RareListIds { get { return RareList; } }
 
         private static readonly HashSet<uint> RareList = new HashSet<uint>
         {
@@ -79,8 +81,10 @@ namespace FuryUnleashed.Core.Helpers
 
         public static bool TargetIsBoss(this WoWUnit unit)
         {
-            return Unit.IsViable(unit) && (unit.IsBoss || BossList.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (unit.IsBoss || BossListIds.Contains(unit.Entry));
         }
+
+        public static HashSet<uint> BossListIds { get { return BossList; } }
 
         private static readonly HashSet<uint> BossList = new HashSet<uint> {
             // Dummies
@@ -1362,8 +1366,10 @@ namespace FuryUnleashed.Core.Helpers
         #region Other Lists
         public static bool HamstringUnitsList(this WoWUnit unit)
         {
-            return Unit.IsViable(unit) && (HamstringList.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (HamstringListIds.Contains(unit.Entry));
         }
+
+        public static HashSet<uint> HamstringListIds { get { return HamstringList; } }
 
         private static readonly HashSet<uint> HamstringList = new HashSet<uint>
         {
@@ -1377,8 +1383,10 @@ namespace FuryUnleashed.Core.Helpers
 
         public static bool DoNotUseOnTgtList(this WoWUnit unit)
         {
-            return Unit.IsViable(unit) && (DoNotUseOnList.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (DoNotUseOnListIds.Contains(unit.Entry));
         }
+
+        public static HashSet<uint> DoNotUseOnListIds { get { return DoNotUseOnList; } }
 
         private static readonly HashSet<uint> DoNotUseOnList = new HashSet<uint>
         {
@@ -1392,8 +1400,10 @@ namespace FuryUnleashed.Core.Helpers
         /// <param name="unit">Unit</param>
         public static bool ExtendedDamageTargetList(this WoWUnit unit)
         {
-            return Unit.IsViable(unit) && (ExtendedDamageList.Contains(unit.Entry));
+            return Unit.IsViable(unit) && (ExtendedDamageListIds.Contains(unit.Entry));
         }
+
+        public static HashSet<uint> ExtendedDamageListIds { get { return ExtendedDamageList; } }
         
         private static readonly HashSet<uint> ExtendedDamageList = new HashSet<uint>
         {

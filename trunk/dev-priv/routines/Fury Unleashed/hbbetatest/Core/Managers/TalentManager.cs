@@ -30,7 +30,7 @@ namespace FuryUnleashed.Core.Managers
             Lua.Events.AttachEvent("PLAYER_LEVEL_UP", UpdateTalentManager);
             Lua.Events.AttachEvent("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("GLYPH_UPDATED", UpdateTalentManager);
-            Lua.Events.AttachEvent("ACTIVE_Talent_GROUP_CHANGED", UpdateTalentManager);
+            Lua.Events.AttachEvent("ACTIVE_TALENT_GROUP_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("PLAYER_SPECIALIZATION_CHANGED", UpdateTalentManager);
             Lua.Events.AttachEvent("LEARNED_SPELL_IN_TAB", UpdateTalentManager);
         }
@@ -80,7 +80,7 @@ namespace FuryUnleashed.Core.Managers
             return Glyphs.Any() && Glyphs.Contains(glyphName);
         }
 
-        private static void UpdateTalentManager(object sender, LuaEventArgs args)
+        internal static void UpdateTalentManager(object sender, LuaEventArgs args)
         {
             var oldSpec = CurrentSpec;
             int[] oldTalent = TalentId;

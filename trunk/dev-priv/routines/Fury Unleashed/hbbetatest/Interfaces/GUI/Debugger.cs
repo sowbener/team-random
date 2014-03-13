@@ -37,7 +37,7 @@ namespace FuryUnleashed.Interfaces.GUI
 
         private void UpdateFocusAuras()
         {
-            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            if (Unit.IsViable(StyxWoW.Me.FocusedUnit))
             {
                 myfocusaurasdatagrid.DataSource = StyxWoW.Me.FocusedUnit.Auras.Values.OrderBy(a => a.Name).ToList();
             }
@@ -45,7 +45,7 @@ namespace FuryUnleashed.Interfaces.GUI
 
         private void UpdateFocusAurasLinq()
         {
-            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            if (Unit.IsViable(StyxWoW.Me.FocusedUnit))
             {
                 myfocusaurasdatagrid.DataSource = StyxWoW.Me.FocusedUnit.GetAllAuras().OrderBy(a => a.Name).ToList();
             }
@@ -77,7 +77,7 @@ namespace FuryUnleashed.Interfaces.GUI
 
         private void UpdateFocusCachedAuras()
         {
-            if (Unit.IsViable(StyxWoW.Me.CurrentTarget))
+            if (Unit.IsViable(StyxWoW.Me.FocusedUnit))
             {
                 myfocuscachedaurasdatagrid.DataSource = Spell.CachedFocusAuras.OrderBy(a => a.Name).ToList();
             }
@@ -120,6 +120,14 @@ namespace FuryUnleashed.Interfaces.GUI
             if (Unit.IsViable(StyxWoW.Me))
             {
                 vigilancetargettextbox.Text = Core.Utilities.Logger.PrintVigilanceTarget;
+            }
+        }
+
+        private void UpdateSmartTauntUnit()
+        {
+            if (Unit.IsViable(StyxWoW.Me.FocusedUnit))
+            {
+                smarttaunttextbox.Text = Core.Utilities.Logger.PrintSmartTauntUnit;
             }
         }
 
@@ -236,6 +244,11 @@ namespace FuryUnleashed.Interfaces.GUI
         private void cachedraidmembersbutton_Click(object sender, EventArgs e)
         {
             UpdateCachedRaidMembersList();
+        }
+
+        private void updatesmarttauntbutton_Click(object sender, EventArgs e)
+        {
+            UpdateSmartTauntUnit();
         }
     }
 }

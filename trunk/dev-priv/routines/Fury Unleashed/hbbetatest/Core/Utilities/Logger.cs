@@ -166,6 +166,28 @@ namespace FuryUnleashed.Core.Utilities
             }
         }
 
+        public static string PrintSmartTauntUnit
+        {
+            get
+            {
+                if (StyxWoW.Me.GroupInfo.IsInParty || StyxWoW.Me.GroupInfo.IsInRaid)
+                {
+                    Unit.InitializeSmartTaunt();
+
+                    var smarttauntunit = StyxWoW.Me.FocusedUnit;
+
+                    if (smarttauntunit == null)
+                    {
+                        return "No Suitable Target";
+                    }
+
+                    CombatLogLg("FU: SmartTaunt unit is {0}", smarttauntunit);
+                    return smarttauntunit.ToString();
+                }
+                return "No Suitable Unit";
+            }
+        }
+
         public static void WriteFileLog(string message, params object[] args)
         {
             if (message == null) return;

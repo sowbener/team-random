@@ -14,7 +14,9 @@ namespace FuryUnleashed.Core.Helpers
 {
     internal static class LuaClass
     {
-        #region Start AutoAttack
+        /// <summary>
+        /// Lua to start AutoAttacking
+        /// </summary>
         internal static Composite StartAutoAttack
         {
             get
@@ -27,9 +29,11 @@ namespace FuryUnleashed.Core.Helpers
                     });
             }
         }
-        #endregion
 
-        #region Run Macro text
+        /// <summary>
+        /// Lua used for running Macro's ingame.
+        /// </summary>
+        /// <param name="luastring">Lua/Macro to Execute</param>
         public static string RealLuaEscape(string luastring)
         {
             var bytes = Encoding.UTF8.GetBytes(luastring);
@@ -43,10 +47,23 @@ namespace FuryUnleashed.Core.Helpers
                        new PrioritySelector(
                            new Action(a => Lua.DoString("RunMacroText(\"" + RealLuaEscape(macro) + "\")"))));
         }
-        #endregion
 
-        #region PlayerPower Rage
+        /// <summary>
+        /// Returns Me.CurrentRage via LUA instead of HB API - HB API as Backup.
+        /// </summary>
         public static uint PlayerPower
+        {
+            get
+            {
+                try { return Lua.GetReturnVal<uint>("return UnitPower(\"player\");", 0); }
+                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
+            }
+        }
+
+        /// <summary>
+        /// Returns Me.CurrentRage via LUA instead of HB API - Using a new frame  - HB API as Backup.
+        /// </summary>
+        public static uint PlayerPowerFlocked
         {
             get
             {
@@ -61,7 +78,22 @@ namespace FuryUnleashed.Core.Helpers
             }
         }
 
+        /// <summary>
+        /// Returns Me.MaxRage via LUA instead of HB API - HB API as Backup.
+        /// </summary>
         public static uint PlayerPowerMax
+        {
+            get
+            {
+                try { return Lua.GetReturnVal<uint>("return UnitPowerMax(\"player\",1);", 0); }
+                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return StyxWoW.Me.MaxRage; }
+            }
+        }
+
+        /// <summary>
+        /// Returns Me.MaxRage via LUA instead of HB API - Using a new frame  - HB API as Backup.
+        /// </summary>
+        public static uint PlayerPowerMaxFlocked
         {
             get
             {
@@ -74,13 +106,24 @@ namespace FuryUnleashed.Core.Helpers
                 }
                 catch
                 {
-                    Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return 0;
+                    Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return StyxWoW.Me.MaxRage;
                 }
             }
         }
-        #endregion
 
-        #region Disable Click-To-Move
+        /// <summary>
+        /// Updates the Ingame Focus Frame after setting a Focus via HB.
+        /// </summary>
+        /// <param name="unit">Me.FocusedUnit</param>
+        public static void UpdateFocusFrame(WoWUnit unit)
+        {
+            Lua.DoString("TargetFrame_Update(FocusFrame)");
+        }  
+
+
+        /// <summary>
+        /// Disabled the Click to Move function
+        /// </summary>
         public static void DisableClickToMove()
         {
             if (InternalSettings.Instance.General.CheckDisableClickToMove)
@@ -89,6 +132,9 @@ namespace FuryUnleashed.Core.Helpers
             }
         }
 
+        /// <summary>
+        /// Enables the Click to Move function
+        /// </summary>
         public static void EnableClickToMove()
         {
             if (InternalSettings.Instance.General.CheckDisableClickToMove)
@@ -96,21 +142,27 @@ namespace FuryUnleashed.Core.Helpers
                 Lua.DoString("SetCVar('autoInteract', '1')");
             }
         }
-        #endregion
 
-        #region Script Errors
+        /// <summary>
+        /// Disables Script Errors
+        /// </summary>
         public static void DisableScriptErrors()
         {
             Lua.DoString("SetCVar('scriptErrors', '0')");
         }
 
+        /// <summary>
+        /// Enables Script Errors
+        /// </summary>
         public static void EnableScriptErrors()
         {
             Lua.DoString("SetCVar('scriptErrors', '1')");
         }
-        #endregion
 
-        #region Other LUA
+        /// <summary>
+        /// Retrieves FPS ingame (WoW)
+        /// </summary>
+        /// <returns>Frames per Second</returns>
         internal static uint GetFps()
         {
             try
@@ -148,6 +200,5 @@ namespace FuryUnleashed.Core.Helpers
 
             return sb.ToString();
         }
-        #endregion
     }
 }

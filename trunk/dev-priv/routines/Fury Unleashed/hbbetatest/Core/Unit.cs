@@ -15,9 +15,10 @@ namespace FuryUnleashed.Core
     internal static class Unit
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
+        private static WoWUnit FocusedUnit { get { return StyxWoW.Me.FocusedUnit; }}
         private static readonly Random Random = new Random();
 
-        public static WoWUnit SmartTauntFocusedUnit;
+        //public static WoWUnit SmartTauntFocusedUnit;
         public static WoWUnit VigilanceTarget;
 
         #region Unit Caching Functions
@@ -423,15 +424,10 @@ namespace FuryUnleashed.Core
         {
             if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
             {
-                SmartTauntFocusedUnit = (from u in RaidMembers
-                                         where IsViable(u) && u.Guid != Root.MyToonGuid && (u.HasAura(AuraBook.Vengeance) || LuaClass.IsTank(u))
-                                         select u).FirstOrDefault();
+                //SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
 
-                StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
-            }
-            else
-            {
-                SmartTauntFocusedUnit = Me;
+                StyxWoW.Me.SetFocus(TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid));
+                LuaClass.UpdateFocusFrame(Me.FocusedUnit);
             }
         }
 
@@ -446,26 +442,85 @@ namespace FuryUnleashed.Core
                 return false;
             }
 
-            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer || SmartTauntFocusedUnit == Me)
+            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer || Me.FocusedUnit == Me)
             {
                 InitializeSmartTaunt();
             }
 
-            if (!IsViable(Me.FocusedUnit))
-            {
-                return false;
-            }
-
-            if (Me.FocusedUnit != null && Me.FocusedUnit.IsDead)
+            if (!IsViable(FocusedUnit) || FocusedUnit.IsDead)
             {
                 return false;
             }
 
             return (
-                Me.FocusedUnit != null &&
-                Me.FocusedUnit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2))) &&
-                !Me.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1)))
+                FocusedUnit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2))) &&
+                IsViable(FocusedUnit) && !Me.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1)))
                 );
+        }
+        #endregion
+
+        #region Lists
+        /// <summary>
+        /// The required lists for WoWPlayers
+        /// </summary>
+        public static IEnumerable<WoWPlayer> DpsList = new List<WoWPlayer>();
+        public static IEnumerable<WoWPlayer> HealerList = new List<WoWPlayer>();
+        public static IEnumerable<WoWPlayer> TankList = new List<WoWPlayer>();
+
+        /// <summary>
+        /// Called to update the required lists.
+        /// </summary>
+        public static void UpdateRaidLists()
+        {
+            using (new PerformanceLogger("UpdateRaidLists"))
+            {
+                try
+                {
+                    if (IsViable(Me) && Me.IsInMyPartyOrRaid)
+                    {
+                        DpsList = RetrieveDpsList;
+                        HealerList = RetrieveHealerList;
+                        TankList = RetrieveTankList;
+                    }
+                }
+                catch (Exception updateRaidListsException)
+                {
+                    Logger.DiagLogFb("FU: Failed to retrieve Raid Lists - {0}", updateRaidListsException);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the list of Units with grouprole DPS.
+        /// </summary>
+        public static List<WoWPlayer> RetrieveDpsList
+        {
+            get
+            {
+                return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => !p.HasRole(WoWPartyMember.GroupRole.Tank) && !p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Returns the list of Units with grouprole Healer.
+        /// </summary>
+        public static List<WoWPlayer> RetrieveHealerList
+        {
+            get
+            {
+                return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Returns the list of Units with grouprole Tank.
+        /// </summary>
+        public static List<WoWPlayer> RetrieveTankList
+        {
+            get
+            {
+                return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+            }
         }
         #endregion
 
