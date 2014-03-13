@@ -140,7 +140,7 @@ namespace FuryUnleashed.Rotations
 
         internal static Composite StanceDanceLogic()
         {
-            return new Action(ctx =>
+            return new Action(delegate
             {
                 DamageTracker.CalculatePreferredStance();
                 return RunStatus.Failure;
