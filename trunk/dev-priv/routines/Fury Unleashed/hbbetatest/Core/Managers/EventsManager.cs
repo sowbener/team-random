@@ -18,6 +18,8 @@ namespace FuryUnleashed.Core.Managers
             Lua.Events.AttachEvent("ACTIVE_TALENT_GROUP_CHANGED", TalentManager.UpdateTalentManager);
             Lua.Events.AttachEvent("PLAYER_SPECIALIZATION_CHANGED", TalentManager.UpdateTalentManager);
             Lua.Events.AttachEvent("LEARNED_SPELL_IN_TAB", TalentManager.UpdateTalentManager);
+
+            Logger.DiagLogWh("[FU] Initialized Events (Lua.Events.AttachEvent)");
         }
 
         private static void UpdateRaidLists(object sender, LuaEventArgs args)
@@ -25,9 +27,7 @@ namespace FuryUnleashed.Core.Managers
             Unit.UpdateRaidLists();
         }
 
-        public static void Initialize()
-        {
-            Logger.DiagLogFb("FU: Initialized Events");
-        }
+        public static void Initialize() 
+        { }
     }
 }

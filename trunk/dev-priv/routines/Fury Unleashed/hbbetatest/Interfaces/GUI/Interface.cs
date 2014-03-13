@@ -43,7 +43,7 @@ namespace FuryUnleashed.Interfaces.GUI
                 return;
             }
             item = (Enum.FuCboItem)cb.Items[0];
-            Logger.DiagLogPu("Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
+            Logger.DiagLogPu("[FU] Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
                           cb.Name, e, item.E);
             cb.SelectedIndex = 0;
         }

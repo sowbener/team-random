@@ -114,8 +114,8 @@ namespace FuryUnleashed.Core
                 {
                     return new Action(ret =>
                         {
-                            Logger.DiagLogPu("Exception MultiDot {0}", ex);
-                            Logger.DiagLogPu("Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
+                            Logger.DiagLogFb("[FU] Exception MultiDot {0}", ex);
+                            Logger.DiagLogFb("[FU] Tried to cast spell (MultiDot)={0}, dotTarget={1},name={3},health={4}", spellid, target != null, target != null ? target.SafeName : "<none>", target != null ? target.HealthPercent : 0);
                         });
                 }
 
@@ -260,7 +260,7 @@ namespace FuryUnleashed.Core
         {
             if (GetGlobalCooldownSpell != null)
             {
-                Logger.DiagLogWh("FU: GCD Spell is set to {0}", GetGlobalCooldownSpell);
+                Logger.DiagLogWh("[FU] GCD Spell is set to {0}", GetGlobalCooldownSpell);
                 GcdSpell = GetGlobalCooldownSpell;
             }
         }
@@ -316,7 +316,7 @@ namespace FuryUnleashed.Core
                 }
                 catch (Exception getcachedauraException)
                 {
-                    Logger.DiagLogFb("FU: Failed to retrieve aura's - {0}", getcachedauraException);
+                    Logger.DiagLogFb("[FU] Failed to retrieve aura's - {0}", getcachedauraException);
                 }
             }
         }

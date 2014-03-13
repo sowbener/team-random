@@ -114,22 +114,22 @@ namespace FuryUnleashed.Core.Helpers
                         var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
                         if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
                         {
-                            Logger.CooldownTrackerLog("FU: Checked cooldown for {0} at {1}", spell, DateTime.Now);
+                            Logger.CooldownTrackerLog("[FU] Checked cooldown for {0} at {1}", spell, DateTime.Now);
                             return result.Cooldown;
                         }
-                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check at {1}", spell, DateTime.Now);
+                        Logger.CooldownTrackerLog("[FU] Found {0} but not ready to check at {1}", spell, DateTime.Now);
                         return true;
                     }
                 }
                 catch
                 {
-                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    Logger.DiagLogFb("[FU] FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
                     return false;
                 }
             }
             else
             {
-                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+                Logger.DiagLogFb("[FU] FindSpell {0} failed at {1}", spell, DateTime.Now);
             }
             return false;
         }
@@ -148,23 +148,23 @@ namespace FuryUnleashed.Core.Helpers
                         var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
                         if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
                         {
-                            Logger.CooldownTrackerLog("FU: Checked cooldown for {0} at {1}", spell, DateTime.Now);
+                            Logger.CooldownTrackerLog("[FU] Checked cooldown for {0} at {1}", spell, DateTime.Now);
                             return result.Cooldown;
                         }
 
-                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check at {1}", spell, DateTime.Now);
+                        Logger.CooldownTrackerLog("[FU] Found {0} but not ready to check at {1}", spell, DateTime.Now);
                         return true;
                     }
                 }
                 catch
                 {
-                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    Logger.DiagLogFb("[FU] FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
                     return false;
                 }
             }
             else
             {
-                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+                Logger.DiagLogFb("[FU] FindSpell {0} failed at {1}", spell, DateTime.Now);
             }
             return false;
         }
@@ -183,23 +183,23 @@ namespace FuryUnleashed.Core.Helpers
                         var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
                         if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
                         {
-                            Logger.CooldownTrackerLog("FU: Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
+                            Logger.CooldownTrackerLog("[FU] Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
                             return result.CooldownTimeLeft;
                         }
 
-                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
+                        Logger.CooldownTrackerLog("[FU] Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
                         return TimeSpan.FromSeconds(10);
                     }
                 }
                 catch
                 {
-                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    Logger.DiagLogFb("[FU] FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
                     return TimeSpan.MaxValue;
                 }
             }
             else
             {
-                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+                Logger.DiagLogFb("[FU] FindSpell {0} failed at {1}", spell, DateTime.Now);
             }
             return TimeSpan.MaxValue;
         }
@@ -218,23 +218,23 @@ namespace FuryUnleashed.Core.Helpers
                         var lastUsedminusBuffer = lastUsed - TimeSpan.FromSeconds(buffer);
                         if (DateTime.Compare(DateTime.Now, lastUsedminusBuffer) > 0)
                         {
-                            Logger.CooldownTrackerLog("FU: Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
+                            Logger.CooldownTrackerLog("[FU] Checked CooldownTimeLeft for {0} at {1}", spell, DateTime.Now);
                             return result.CooldownTimeLeft;
                         }
 
-                        Logger.CooldownTrackerLog("FU: Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
+                        Logger.CooldownTrackerLog("[FU] Found {0} but not ready to check CooldownTimeLeft {1}", spell, DateTime.Now);
                         return TimeSpan.FromSeconds(10);
                     }
                 }
                 catch
                 {
-                    Logger.CooldownTrackerLog("FU: FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
+                    Logger.DiagLogFb("[FU] FindSpell Found {0} but currently not in our cooldownlist, first usage?", spell);
                     return TimeSpan.MaxValue;
                 }
             }
             else
             {
-                Logger.CooldownTrackerLog("FU: FindSpell {0} failed at {1}", spell, DateTime.Now);
+                Logger.DiagLogFb("[FU] FindSpell {0} failed at {1}", spell, DateTime.Now);
             }
             return TimeSpan.MaxValue;
         }

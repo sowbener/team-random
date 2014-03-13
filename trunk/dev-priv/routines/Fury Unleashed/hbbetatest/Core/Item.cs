@@ -249,7 +249,7 @@ namespace FuryUnleashed.Core
                 }
                 catch (Exception ex)
                 {
-                    Logger.DiagLogPu("Wielding TwoHander: {0}", ex);
+                    Logger.DiagLogFb("[FU] Wielding OneHander: {0}", ex);
                 }
                 return false;
             }
@@ -274,7 +274,7 @@ namespace FuryUnleashed.Core
                 }
                 catch (Exception ex)
                 {
-                    Logger.DiagLogPu("Wielding TwoHander: {0}", ex);
+                    Logger.DiagLogFb("[FU] Wielding TwoHander: {0}", ex);
                 }
                 return false;
             }

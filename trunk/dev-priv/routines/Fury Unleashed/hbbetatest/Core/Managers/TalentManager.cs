@@ -86,20 +86,20 @@ namespace FuryUnleashed.Core.Managers
             int[] oldTalent = TalentId;
             int[] oldGlyph = GlyphId;
 
-            Logger.DiagLogPu("{0} Event Fired!", args.EventName);
+            Logger.DiagLogWh("[FU] {0} Event Fired!", args.EventName);
 
             Update();
 
             if (args.EventName == "PLAYER_LEVEL_UP")
             {
                 RebuildNeeded = true;
-                Logger.DiagLogPu("FU TalentManager: Your character has leveled up! Now level {0}", args.Args[0]);
+                Logger.DiagLogWh("[FU] Your character has leveled up! Now level {0}", args.Args[0]);
             }
 
             if (CurrentSpec != oldSpec)
             {
                 RebuildNeeded = true;
-                Logger.DiagLogPu("FU TalentManager: Your spec has been changed.");
+                Logger.DiagLogWh("[FU] Your specialization has been changed.");
             }
 
             int i;
@@ -118,7 +118,7 @@ namespace FuryUnleashed.Core.Managers
                 if (oldGlyph[i] != GlyphId[i])
                 {
                     RebuildNeeded = true;
-                    Logger.DiagLogPu("FU TalentManager: Your glyphs have changed.");
+                    Logger.DiagLogWh("[FU] Your glyphs have changed.");
                     break;
                 }
             }
@@ -164,12 +164,12 @@ namespace FuryUnleashed.Core.Managers
 
                 foreach (var glyph in Glyphs)
                 {
-                    Logger.DiagLogPu("Glyph of {0}", glyph);
+                    Logger.DiagLogWh("[FU] Glyph of {0}", glyph);
                 }
 
                 foreach (var talent in Talents)
                 {
-                    Logger.DiagLogPu("{0} : {1}", talent.Index, talent.Selected);
+                    Logger.DiagLogWh("[FU] {0} : {1}", talent.Index, talent.Selected);
                 }
 
             }
@@ -180,7 +180,7 @@ namespace FuryUnleashed.Core.Managers
             if (EventRebuildTimer.IsFinished && RebuildNeeded)
             {
                 RebuildNeeded = false;
-                Logger.DiagLogPu("FU: Rebuilding behaviors due to changes detected - TalentManager.");
+                Logger.DiagLogWh("[FU] Rebuilding behaviors due to changes detected - TalentManager.");
 
                 /* Updating Talents and Glyphs */
                 Update();
@@ -199,7 +199,7 @@ namespace FuryUnleashed.Core.Managers
                 Root.Instance.CombatSelector();
 
                 /* Done! */
-                Logger.DiagLogPu("FU: Rebuilding behaviors completed - TalentManager.");
+                Logger.DiagLogWh("[FU] Rebuilding behaviors completed - TalentManager.");
                 return true;
             }
             return false;

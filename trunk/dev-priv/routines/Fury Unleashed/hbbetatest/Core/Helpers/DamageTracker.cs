@@ -1,7 +1,6 @@
 ﻿using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Rotations;
 using Styx;
-using Styx.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +30,11 @@ namespace FuryUnleashed.Core.Helpers
                 CombatLogHandler.Initialize();
                 AttachCombatLogEvent();
                 _pulseDamageTracker = true;
-                Logger.CombatLogFb("Damage Tracker Initialized.");
+                Logger.DiagLogWh("[FU] Damage Tracker Initialized.");
             }
             catch (Exception ex)
             {
-                Logger.DiagLogFb("FU: Damage Tracker failed to initialize - {0}", ex);
+                Logger.DiagLogFb("[FU] Damage Tracker failed to initialize - {0}", ex);
             }
         }
 
@@ -46,11 +45,11 @@ namespace FuryUnleashed.Core.Helpers
                 DetachCombatLogEvent();
                 CombatLogHandler.Shutdown();
                 _pulseDamageTracker = false;
-                Logger.CombatLogFb("Damage Tracker Stopped - Possibly for reinitialize.");
+                Logger.DiagLogWh("[FU] Damage Tracker Stopped - Possibly for reinitialize.");
             }
             catch (Exception ex)
             {
-                Logger.DiagLogFb("FU: Damage Tracker failed to stop - {0}", ex);
+                Logger.DiagLogFb("[FU] Damage Tracker failed to stop - {0}", ex);
             }
         }
 
@@ -65,7 +64,7 @@ namespace FuryUnleashed.Core.Helpers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogFb("FU: Damage Tracker failed to RemoveDamageTaken - {0}", ex);
+                Logger.DiagLogFb("[FU] Damage Tracker failed to RemoveDamageTaken - {0}", ex);
             }
         }
 
@@ -127,14 +126,14 @@ namespace FuryUnleashed.Core.Helpers
                 AddingDamageTaken = true;
                 _damageTaken[timestamp] = damage;
                 AddingDamageTaken = false;
-                Logging.WriteDiagnostic(" Adding Damage amount {0}", damage);
+                Logger.DiagLogWh("[FU] Adding Damage amount: {0}", damage);
             }
             catch (Exception ex)
             {
                 _damageTaken[timestamp] = _damageTaken.ContainsKey(timestamp) ? damage : 0;
                 AddingDamageTaken = false;
 
-                Logger.DiagLogWh("AddDamageTaken : {0}", ex);
+                Logger.DiagLogFb("[FU] AddDamageTaken: {0}", ex);
             }
         }
 
@@ -162,7 +161,7 @@ namespace FuryUnleashed.Core.Helpers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogWh("RemovingDamageTaken : {0}", ex);
+                Logger.DiagLogFb("[FU] RemovingDamageTaken: {0}", ex);
             }
         }
 
@@ -192,13 +191,13 @@ namespace FuryUnleashed.Core.Helpers
         //            var battlestancerage = Item.AttackSpeed * 3.5; // Weaponspeed * 3.5 to get normalized rage.
         //            var berserkerstancerage = (battlestancerage * 0.5) + damagetorage; // Half of normalized rage + Rage from Damage.
 
-        //            Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
+        //            Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
         //            return berserkerstancerage > battlestancerage;
         //        }
         //        catch (Exception exstancecalc)
         //        {
-        //            Logger.DiagLogFb("FU: Failed CalculatePreferredStance - {0}", exstancecalc);
+        //            Logger.DiagLogFb("[FU] Failed CalculatePreferredStance - {0}", exstancecalc);
         //        }
         //    }
         //    return false;
@@ -231,7 +230,7 @@ namespace FuryUnleashed.Core.Helpers
 
                     if (!Unit.IsExtendedDamageTarget)
                     {
-                        Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
+                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
                         if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
                         {
@@ -246,7 +245,7 @@ namespace FuryUnleashed.Core.Helpers
 
                     if (Unit.IsExtendedDamageTarget)
                     {
-                        Logger.DiagLogWh("FU: Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, extendedberserkerstancerage);
+                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, extendedberserkerstancerage);
 
                         if (extendedberserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
                         {
@@ -261,7 +260,7 @@ namespace FuryUnleashed.Core.Helpers
                 }
                 catch (Exception exstancecalc)
                 {
-                    Logger.DiagLogFb("FU: Failed CalculatePreferredStance - {0}", exstancecalc);
+                    Logger.DiagLogFb("[FU] Failed CalculatePreferredStance - {0}", exstancecalc);
                 }
             }
         }
@@ -298,7 +297,7 @@ namespace FuryUnleashed.Core.Helpers
                 }
                 catch (Exception exabsorbcalc)
                 {
-                    Logger.DiagLogFb("FU: Failed CalculateEstimatedAbsorbValue - {0}", exabsorbcalc);
+                    Logger.DiagLogFb("[FU] Failed CalculateEstimatedAbsorbValue - {0}", exabsorbcalc);
                 }
             }
             return 0;
@@ -323,7 +322,7 @@ namespace FuryUnleashed.Core.Helpers
                 }
                 catch (Exception exblockcalc)
                 {
-                    Logger.DiagLogFb("FU: Failed CalculateEstimatedBlockValue - {0}", exblockcalc);
+                    Logger.DiagLogFb("[FU] Failed CalculateEstimatedBlockValue - {0}", exblockcalc);
                 }
             }
             return 1;

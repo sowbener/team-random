@@ -50,7 +50,7 @@ namespace FuryUnleashed.Core.Managers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogPu("{0}.", ex);
+                Logger.DiagLogFb("[FU] {0}.", ex);
             }
         }
 
@@ -61,7 +61,7 @@ namespace FuryUnleashed.Core.Managers
                 var wc = new WebClient();
                 var webData = wc.DownloadString(FuSvnUrl + "version");
 
-                Logger.DiagLogPu("Current SVN version: {0}", int.Parse(webData));
+                Logger.DiagLogWh("[FU] Current SVN version: {0}", int.Parse(webData));
                 return int.Parse(webData);
             }
             catch (Exception)
@@ -104,18 +104,18 @@ namespace FuryUnleashed.Core.Managers
                         filePath = Path.Combine(path, file);
                     }
 
-                    Logger.DiagLogPu("FU: Downloading {0}.", file);
+                    Logger.DiagLogWh("[FU] Downloading {0}.", file);
 
                     try
                     {
                         if (!Directory.Exists(dirPath))
                             Directory.CreateDirectory(dirPath);
                         client.DownloadFile(newUrl, filePath);
-                        Logger.DiagLogPu("FU: Download {0} done.", file);
+                        Logger.DiagLogWh("[FU] Download {0} done.", file);
                     }
                     catch (Exception ex)
                     {
-                        Logger.DiagLogPu("{0}.", ex);
+                        Logger.DiagLogFb("[FU] {0}.", ex);
                     }
                 }
             }

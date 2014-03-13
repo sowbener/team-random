@@ -56,7 +56,7 @@ namespace FuryUnleashed.Core.Helpers
             get
             {
                 try { return Lua.GetReturnVal<uint>("return UnitPower(\"player\");", 0); }
-                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
+                catch { Logger.DiagLogFb("[FU] Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
             }
         }
 
@@ -74,7 +74,7 @@ namespace FuryUnleashed.Core.Helpers
                         return Lua.GetReturnVal<uint>("return UnitPower(\"player\");", 0);
                     }
                 }
-                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
+                catch { Logger.DiagLogFb("[FU] Lua Failed in PlayerPower"); return StyxWoW.Me.CurrentPower; }
             }
         }
 
@@ -86,7 +86,7 @@ namespace FuryUnleashed.Core.Helpers
             get
             {
                 try { return Lua.GetReturnVal<uint>("return UnitPowerMax(\"player\",1);", 0); }
-                catch { Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return StyxWoW.Me.MaxRage; }
+                catch { Logger.DiagLogFb("[FU] Lua Failed in PlayerPowerMax"); return StyxWoW.Me.MaxRage; }
             }
         }
 
@@ -106,7 +106,7 @@ namespace FuryUnleashed.Core.Helpers
                 }
                 catch
                 {
-                    Logger.DiagLogPu("FU: Lua Failed in PlayerPowerMax"); return StyxWoW.Me.MaxRage;
+                    Logger.DiagLogFb("[FU] Lua Failed in PlayerPowerMax"); return StyxWoW.Me.MaxRage;
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace FuryUnleashed.Core.Helpers
             }
             catch (Exception ex)
             {
-                Logger.DiagLogWh("FU: {0} - GetFps()", ex);
+                Logger.DiagLogFb("[FU] {0} - GetFps()", ex);
             }
             return 0;
         }

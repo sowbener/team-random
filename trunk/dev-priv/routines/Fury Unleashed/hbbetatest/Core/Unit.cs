@@ -485,7 +485,7 @@ namespace FuryUnleashed.Core
                 }
                 catch (Exception updateRaidListsException)
                 {
-                    Logger.DiagLogFb("FU: Failed to retrieve Raid Lists - {0}", updateRaidListsException);
+                    Logger.DiagLogFb("[FU] Failed to retrieve Raid Lists - {0}", updateRaidListsException);
                 }
             }
         }

@@ -65,7 +65,7 @@ namespace FuryUnleashed
             }
             catch (Exception exception)
             {
-                Logger.DiagLogPu("FU: Exception thrown at Initialize - {0}", new object[] { exception.ToString() });
+                Logger.DiagLogFb("[FU] Exception thrown at Initialize - {0}", new object[] { exception.ToString() });
             }
         }
 
@@ -92,7 +92,7 @@ namespace FuryUnleashed
 
         public override void ShutDown()
         {
-            StopBot("FU: Shutting down HonorBuddy and all attached addons.");
+            StopBot("[FU] Shutting down HonorBuddy and all attached addons.");
         }
         #endregion
 

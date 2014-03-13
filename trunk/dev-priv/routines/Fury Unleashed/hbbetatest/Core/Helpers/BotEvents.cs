@@ -26,7 +26,7 @@ namespace FuryUnleashed.Core.Helpers
             DamageTracker.Initialize();
             Unit.InitializeSmartTaunt();
 
-            Logger.DiagLogPu("Fury Unleashed: Started! (OnBotStarted)");
+            Logger.DiagLogPu("[FU] Started! (OnBotStarted)");
         }
 
         public static void OnBotStopped(EventArgs args)
@@ -46,7 +46,7 @@ namespace FuryUnleashed.Core.Helpers
             /* Stopping Routine Functions */
             DamageTracker.Stop();
 
-            Logger.DiagLogPu("Fury Unleashed: Stopped! (OnBotStopped)");
+            Logger.DiagLogPu("[FU] Stopped! (OnBotStopped)");
         }
 
         public static void OnBotChanged(EventArgs args)
@@ -60,7 +60,7 @@ namespace FuryUnleashed.Core.Helpers
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
 
-            Logger.DiagLogPu("Fury Unleashed: Started! (OnBotChanged)");
+            Logger.DiagLogPu("[FU] Changed! (OnBotChanged)");
         }
     }
 }

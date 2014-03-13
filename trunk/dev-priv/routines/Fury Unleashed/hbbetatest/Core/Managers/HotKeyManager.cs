@@ -21,7 +21,7 @@ namespace FuryUnleashed.Core.Managers
 
         private static void LogKey(string kType, Keys kValue, ModifierKeys kModifier, bool kResult)
         {
-            Logger.DiagLogPu("{0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
+            Logger.DiagLogWh("[FU] {0}-key ({1} + {2}) pressed, set to: {3}", kType, kValue, kModifier, kResult);
         }
 
         /* Keystates - One press with Spell Queueing */
@@ -100,7 +100,7 @@ namespace FuryUnleashed.Core.Managers
                     });
                 }
 
-                Logger.DiagLogPu("Fury Unleashed: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key and {3} as Modifier Key.",
+                Logger.DiagLogWh("[FU] Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key and {3} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
@@ -113,7 +113,7 @@ namespace FuryUnleashed.Core.Managers
             HotkeysManager.Unregister("Pause");
             HotkeysManager.Unregister("Cooldown");
             HotkeysManager.Unregister("AoE");
-            Logger.DiagLogPu("Fury Unleashed: Hotkeys removed!");
+            Logger.DiagLogWh("[FU] Hotkeys removed!");
         }
 
         #region ManualCastPause
@@ -203,7 +203,7 @@ namespace FuryUnleashed.Core.Managers
                     key != Keys.CapsLock &&
                     !HashSets.MovementKey.Contains(key))
                 {
-                    Logger.CombatLogWh("FU: Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.ResumeTime);
+                    Logger.CombatLogWh("Auto Pause on Manual Cast: Key press detected - Combat Routine Pause for {0} ms", InternalSettings.Instance.General.ResumeTime);
                     return true;
                 }
             }

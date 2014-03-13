@@ -247,15 +247,15 @@ namespace FuryUnleashed.Core.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Utilities.Logger.DiagLogWh("{0}", ex);
+                            Utilities.Logger.DiagLogFb("[FU] {0}", ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Utilities.Logger.DiagLogWh(args.Args[1] + ", Index: " + index);
-                Utilities.Logger.DiagLogWh("{0}", ex);
+                Utilities.Logger.DiagLogFb("[FU]" + args.Args[1] + ", Index: " + index);
+                Utilities.Logger.DiagLogFb("[FU] {0}", ex);
             }
         }
 
@@ -348,7 +348,7 @@ namespace FuryUnleashed.Core.Helpers
                 // Pop in our new one. This avoids a shitload of events being thrown at us, that we really don't care about.
                 Lua.Events.AddFilter("COMBAT_LOG_EVENT_UNFILTERED", sb.ToString().TrimEnd(" or ".ToArray()));
 
-                Utilities.Logger.DiagLogWh(" Removed combat filter:  {0}", combatLogEventName);
+                Utilities.Logger.DiagLogFb("[FU] Removed Combat Filter:  {0}", combatLogEventName);
             }
         }
     }
