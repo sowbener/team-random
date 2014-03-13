@@ -1,4 +1,5 @@
-﻿using Styx.WoWInternals;
+﻿using FuryUnleashed.Core.Utilities;
+using Styx.WoWInternals;
 
 namespace FuryUnleashed.Core.Managers
 {
@@ -22,6 +23,11 @@ namespace FuryUnleashed.Core.Managers
         private static void UpdateRaidLists(object sender, LuaEventArgs args)
         {
             Unit.UpdateRaidLists();
+        }
+
+        public static void Initialize()
+        {
+            Logger.DiagLogFb("FU: Initialized Events");
         }
     }
 }

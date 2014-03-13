@@ -59,6 +59,7 @@ namespace FuryUnleashed
             {
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
+                EventsManager.lol();
 
                 Unleash();
             }
