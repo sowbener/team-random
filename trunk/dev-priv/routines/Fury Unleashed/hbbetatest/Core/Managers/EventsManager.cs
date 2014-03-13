@@ -27,7 +27,8 @@ namespace FuryUnleashed.Core.Managers
             Unit.UpdateRaidLists();
         }
 
-        public static void Initialize() 
-        { }
+        public static void Initialize()
+        {
+        }
     }
 }
