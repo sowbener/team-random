@@ -22,8 +22,10 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (Unit.IgnoreDamageTracker) 
+                if (Unit.IgnoreDamageTracker)
+                {
                     return;
+                }
 
                 _damageTaken = new Dictionary<DateTime, double>();
                 CombatLogHandler.Initialize();

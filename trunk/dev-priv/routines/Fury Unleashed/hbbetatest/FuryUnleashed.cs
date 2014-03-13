@@ -116,8 +116,7 @@ namespace FuryUnleashed
             MyToonGuid = Me.Guid;
 
             /* Update TalentManager */
-            try { TalentManager.Update(); }
-            catch (Exception e) { StopBot(e.ToString()); }
+            TalentManager.Update();
 
             /* Initialize Various Functions */
             Item.RefreshSecondaryStats();

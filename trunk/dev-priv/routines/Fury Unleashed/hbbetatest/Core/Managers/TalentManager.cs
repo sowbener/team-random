@@ -27,12 +27,12 @@ namespace FuryUnleashed.Core.Managers
 
             CurrentSpec = StyxWoW.Me.Specialization;
 
-            Lua.Events.AttachEvent("PLAYER_LEVEL_UP", UpdateTalentManager);
-            Lua.Events.AttachEvent("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
-            Lua.Events.AttachEvent("GLYPH_UPDATED", UpdateTalentManager);
-            Lua.Events.AttachEvent("ACTIVE_TALENT_GROUP_CHANGED", UpdateTalentManager);
-            Lua.Events.AttachEvent("PLAYER_SPECIALIZATION_CHANGED", UpdateTalentManager);
-            Lua.Events.AttachEvent("LEARNED_SPELL_IN_TAB", UpdateTalentManager);
+            //Lua.Events.AttachEvent("PLAYER_LEVEL_UP", UpdateTalentManager);
+            //Lua.Events.AttachEvent("CHARACTER_POINTS_CHANGED", UpdateTalentManager);
+            //Lua.Events.AttachEvent("GLYPH_UPDATED", UpdateTalentManager);
+            //Lua.Events.AttachEvent("ACTIVE_TALENT_GROUP_CHANGED", UpdateTalentManager);
+            //Lua.Events.AttachEvent("PLAYER_SPECIALIZATION_CHANGED", UpdateTalentManager);
+            //Lua.Events.AttachEvent("LEARNED_SPELL_IN_TAB", UpdateTalentManager);
         }
 
         public static WoWSpec CurrentSpec { get; private set; }
