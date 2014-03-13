@@ -20,6 +20,6 @@ Fix impvic: [FU] FindSpell 103840 failed at 03/13/2014 23:40:46
 =========================================
 To Test:
 =========================================
-* CancelAura Bladestorm Logic.
+* CancelAura Bladestorm Logic
 * SmartTaunt Logic with Auto Focus.
-* StanceDance Logic.
+* WORKS - StanceDance Logic.

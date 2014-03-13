@@ -231,36 +231,13 @@ namespace FuryUnleashed.Core.Helpers
 
                     if (Unit.IsExtendedDamageTarget)
                     {
-                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, extendedberserkerstancerage);
-
-                        if (extendedberserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
-                        {
-                            return true;
-                            //Spell.Cast(SpellBook.BerserkerStance);
-                        }
-
-                        if (battlestancerage >= extendedberserkerstancerage && !Global.BattleStanceAura)
-                        {
-                            return false;
-                            //Spell.Cast(SpellBook.BattleStance);
-                        }
+                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1} - (Extended)", battlestancerage, extendedberserkerstancerage);
+                        return extendedberserkerstancerage > battlestancerage;
                     }
-                    else
-                    {
-                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
 
-                        if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
-                        {
-                            return true;
-                            //Spell.Cast(SpellBook.BerserkerStance);
-                        }
+                    Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
+                    return berserkerstancerage > battlestancerage;
 
-                        if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
-                        {
-                            return false;
-                            //Spell.Cast(SpellBook.BattleStance);
-                        }
-                    }
                 }
                 catch (Exception exstancecalc)
                 {

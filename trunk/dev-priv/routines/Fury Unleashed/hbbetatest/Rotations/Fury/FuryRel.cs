@@ -290,18 +290,8 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryStanceDance()
         {
             return new PrioritySelector(
-                new Decorator(ret => !DamageTracker.CalculatePreferredStance() && !G.BattleStanceAura,
-                    Spell.Cast(SpellBook.BattleStance)),
-                new Decorator(ret => DamageTracker.CalculatePreferredStance() && !G.BerserkerStanceAura,
-                    Spell.Cast(SpellBook.BerserkerStance))
-                );
+                G.StanceDanceLogic());
         }
-
-        //internal static Composite Rel_FuryStanceDance()
-        //{
-        //    return new PrioritySelector(
-        //        G.StanceDanceLogic());
-        //}
 
         internal static Composite Rel_FuryOffensive()
         {
@@ -324,8 +314,8 @@ namespace FuryUnleashed.Rotations.Fury
         internal static Composite Rel_FuryGcdUtility()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.ImpendingVictory, ret => !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && FG.ImpendingVictoryUsage && Me.HealthPercent <= IS.Instance.Fury.CheckImpVicNum),
-                Spell.Cast(SpellBook.VictoryRush, ret => !G.VictoryRushOnCooldown && G.VictoriousAura && FG.VictoryRushUsage && Me.HealthPercent <= IS.Instance.Fury.CheckVicRushNum),
+                Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && FG.ImpendingVictoryUsage && !G.ImpendingVictoryOnCooldown && Me.HealthPercent <= IS.Instance.Fury.CheckImpVicNum),
+                Spell.Cast(SpellBook.VictoryRush, ret => G.VictoriousAura && FG.VictoryRushUsage && !G.VictoryRushOnCooldown && Me.HealthPercent <= IS.Instance.Fury.CheckVicRushNum),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => FG.IntimidatingShoutUsage && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
                 //actions.single_target+=/shattering_throw,if=cooldown.colossus_smash.remains>5
                 Spell.Cast(SpellBook.ShatteringThrow, ret => FG.ShatteringThrowUsage && G.ColossusSmashSpellCooldown > 5)

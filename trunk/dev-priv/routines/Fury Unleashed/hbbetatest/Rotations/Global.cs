@@ -106,7 +106,7 @@ namespace FuryUnleashed.Rotations
             {
                 Me.CancelAura(AuraBook.Bladestorm);
                 Spell.Cast(SpellBook.Bloodthirst);
-                return RunStatus.Failure;
+                return RunStatus.Success;
             });
         }
 
@@ -117,7 +117,7 @@ namespace FuryUnleashed.Rotations
                 Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
                 Spell.Cast(SpellBook.BerserkerRage, on => Me);
                 Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-                return RunStatus.Failure;
+                return RunStatus.Success;
             });
         }
 
@@ -140,11 +140,10 @@ namespace FuryUnleashed.Rotations
 
         internal static Composite StanceDanceLogic()
         {
-            return new Action(delegate
-            {
-                DamageTracker.CalculatePreferredStance();
-                return RunStatus.Failure;
-            });
+            return new PrioritySelector(
+                Spell.Cast(SpellBook.BattleStance, ret => !BattleStanceAura && !DefensiveStanceAura && !DamageTracker.CalculatePreferredStance(), true),
+                Spell.Cast(SpellBook.BerserkerStance, ret => !BerserkerStanceAura && !DefensiveStanceAura && DamageTracker.CalculatePreferredStance(), true)
+                );
         }
         #endregion
 
