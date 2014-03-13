@@ -316,7 +316,7 @@ namespace FuryUnleashed.Rotations.Arms
             return new PrioritySelector(
                 Spell.Cast(SpellBook.ImpendingVictory,
                     ret =>
-                        !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && IS.Instance.Arms.CheckImpVic &&
+                        G.ImpendingVictoryTalent && !G.ImpendingVictoryOnCooldown && IS.Instance.Arms.CheckImpVic &&
                         Me.HealthPercent <= IS.Instance.Arms.CheckImpVicNum),
                 Spell.Cast(SpellBook.VictoryRush,
                     ret =>

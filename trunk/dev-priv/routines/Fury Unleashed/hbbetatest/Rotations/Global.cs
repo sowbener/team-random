@@ -100,25 +100,39 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
+        //internal static Composite EnragedRegenerationLogic()
+        //{
+        //    return new Action(ctx =>
+        //    {
+        //        Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+        //        Spell.Cast(SpellBook.BerserkerRage, on => Me);
+        //        Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+        //        return RunStatus.Success;
+        //    });
+        //}
+
         internal static Composite CancelBladestormLogic()
         {
-            return new Action(ctx =>
-            {
-                Me.CancelAura(AuraBook.Bladestorm);
-                Spell.Cast(SpellBook.Bloodthirst);
-                return RunStatus.Success;
-            });
+            return new PrioritySelector(
+                new Action(ctx => { Me.CancelAura(AuraBook.Bladestorm); return RunStatus.Failure; } ),
+                Spell.Cast(SpellBook.Bloodthirst));
         }
 
         internal static Composite EnragedRegenerationLogic()
         {
-            return new Action(ctx =>
-            {
-                Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
-                Spell.Cast(SpellBook.BerserkerRage, on => Me);
-                Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-                return RunStatus.Success;
-            });
+            return new PrioritySelector(
+                new Decorator(ret => EnrageAura,
+                    Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
+                new Decorator(ret => !EnrageAura && !BerserkerRageOnCooldown,
+                    new Action(ctx =>
+                    {
+                        Logger.CombatLogPu("[FU] Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                        Spell.Cast(SpellBook.BerserkerRage, on => Me);
+                        Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
+                        return RunStatus.Success;
+                    })),
+                new Decorator(ret => !EnrageAura && BerserkerRageOnCooldown,
+                    Spell.Cast(SpellBook.EnragedRegeneration, on => Me)));
         }
 
         internal static Composite InterruptLogic()

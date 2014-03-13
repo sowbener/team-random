@@ -415,7 +415,7 @@ namespace FuryUnleashed.Core
                     WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.Name == auraname);
                     if (aura != null)
                     {
-                        Logger.CombatLogWh("Cancelling Aura: {0}", auraname);
+                        Logger.CombatLogPu("[FU] Cancelling Aura: {0}", auraname);
                         aura.TryCancelAura();
                     }
                 }
@@ -425,7 +425,7 @@ namespace FuryUnleashed.Core
                     WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.Name == auraname && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.Name == auraname);
                     if (aura != null)
                     {
-                        Logger.CombatLogWh("Cancelling Aura: {0}", auraname);
+                        Logger.CombatLogPu("[FU] Cancelling Aura: {0}", auraname);
                         aura.TryCancelAura();
                     }
                 }
@@ -448,7 +448,7 @@ namespace FuryUnleashed.Core
                     WoWAura aura = isFromMe ? unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : unit.GetAllAuras().FirstOrDefault(a => a.SpellId == auraId);
                     if (aura != null)
                     {
-                        Logger.CombatLogWh("Cancelling Aura: {0}", WoWSpell.FromId(auraId).Name);
+                        Logger.CombatLogPu("[FU] Cancelling Aura: {0}", WoWSpell.FromId(auraId).Name);
                         aura.TryCancelAura();
                     }
                 }
@@ -458,7 +458,7 @@ namespace FuryUnleashed.Core
                     WoWAura aura = isFromMe ? CachedAuras.FirstOrDefault(a => a.SpellId == auraId && a.CreatorGuid == Root.MyToonGuid) : CachedAuras.FirstOrDefault(a => a.SpellId == auraId);
                     if (aura != null)
                     {
-                        Logger.CombatLogWh("Cancelling Aura: {0}", WoWSpell.FromId(auraId).Name);
+                        Logger.CombatLogPu("[FU] Cancelling Aura: {0}", WoWSpell.FromId(auraId).Name);
                         aura.TryCancelAura();
                     }
                 }

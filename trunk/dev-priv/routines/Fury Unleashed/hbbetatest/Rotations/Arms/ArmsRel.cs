@@ -213,7 +213,7 @@ namespace FuryUnleashed.Rotations.Arms
         internal static Composite Rel_ArmsGcdUtility()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.ImpendingVictory, ret => !G.ImpendingVictoryOnCooldown && G.ImpendingVictoryTalent && IS.Instance.Arms.CheckImpVic && Me.HealthPercent <= IS.Instance.Arms.CheckImpVicNum),
+                Spell.Cast(SpellBook.ImpendingVictory, ret => G.ImpendingVictoryTalent && !G.ImpendingVictoryOnCooldown && IS.Instance.Arms.CheckImpVic && Me.HealthPercent <= IS.Instance.Arms.CheckImpVicNum),
                 Spell.Cast(SpellBook.VictoryRush, ret => !G.VictoryRushOnCooldown && G.VictoriousAura && IS.Instance.Arms.CheckVicRush && Me.HealthPercent <= IS.Instance.Arms.CheckVicRushNum),
                 Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Arms.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
                 Spell.Cast(SpellBook.ShatteringThrow, ret => AG.ShatteringThrowUsage && G.ColossusSmashSpellCooldown > 5));
@@ -230,13 +230,7 @@ namespace FuryUnleashed.Rotations.Arms
         {
             return new PrioritySelector(
                 new Decorator(ret => G.EnragedRegenerationTalent && AG.EnragedRegenerationUsage && !G.EnragedRegenerationOnCooldown && Me.HealthPercent <= IS.Instance.Arms.CheckEnragedRegenNum,
-                    new PrioritySelector(
-                        new Decorator(ret => G.EnrageAura,
-                            Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
-                        new Decorator(ret => !G.EnrageAura && !G.BerserkerRageOnCooldown,
-                            G.EnragedRegenerationLogic()),
-                        new Decorator(ret => !G.EnrageAura && G.BerserkerRageOnCooldown,
-                            Spell.Cast(SpellBook.EnragedRegeneration, on => Me)))),
+                    G.EnragedRegenerationLogic()),
 
                 Spell.Cast(SpellBook.DiebytheSword, ret => IS.Instance.Arms.CheckDiebytheSword && Me.HealthPercent <= IS.Instance.Arms.CheckDiebytheSwordNum),
                 Spell.Cast(SpellBook.ShieldWall, ret => IS.Instance.Arms.CheckShieldWall && Me.HealthPercent <= IS.Instance.Arms.CheckShieldWallNum),

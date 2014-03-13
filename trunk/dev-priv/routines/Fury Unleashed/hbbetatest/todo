@@ -15,11 +15,14 @@
 
 <orthofunk> @nom any plans to add smart interrupts... only interrupt critical casts?
 offensive cooldowns in protection --> simc in combination with revenge.
-Fix impvic: [FU] FindSpell 103840 failed at 03/13/2014 23:40:46
+
+* FIXED - Bloodbath in Arms does not pop.
+* FIXED - Fix impvic: [FU] FindSpell 103840 failed at 03/13/2014 23:40:46
 
 =========================================
 To Test:
 =========================================
-* CancelAura Bladestorm Logic
 * SmartTaunt Logic with Auto Focus.
+* Enraged Regeneration Logic.
+* WORKS - CancelAura Bladestorm Logic.
 * WORKS - StanceDance Logic.
