@@ -59,7 +59,7 @@ namespace FuryUnleashed
             {
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
-                EventsManager.lol();
+                EventsManager.Initialize();
 
                 Unleash();
             }
@@ -116,13 +116,14 @@ namespace FuryUnleashed
             /* Set Characters GUID */
             MyToonGuid = Me.Guid;
 
-            /* Update TalentManager */
-            TalentManager.Update();
-
             /* Initialize Various Functions */
+            EventsManager.Initialize();
             Item.RefreshSecondaryStats();
             Logger.StatCounter();
             Logger.LogTimer(500);
+
+            /* Update TalentManager */
+            TalentManager.Update();
 
             /* Start Combat */
             Spell.InitGcdSpell();
