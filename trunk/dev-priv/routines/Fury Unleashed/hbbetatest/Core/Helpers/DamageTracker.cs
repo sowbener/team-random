@@ -4,6 +4,7 @@ using Styx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Styx.Common;
 
 namespace FuryUnleashed.Core.Helpers
 {
@@ -203,7 +204,7 @@ namespace FuryUnleashed.Core.Helpers
         //    return false;
         //}
 
-        public static void CalculatePreferredStance()
+        public static bool CalculatePreferredStance()
         {
             using (new PerformanceLogger("CalculatePreferredStance"))
             {
@@ -234,12 +235,14 @@ namespace FuryUnleashed.Core.Helpers
 
                         if (extendedberserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
                         {
-                            Spell.Cast(SpellBook.BerserkerStance);
+                            return true;
+                            //Spell.Cast(SpellBook.BerserkerStance);
                         }
 
                         if (battlestancerage >= extendedberserkerstancerage && !Global.BattleStanceAura)
                         {
-                            Spell.Cast(SpellBook.BattleStance);
+                            return false;
+                            //Spell.Cast(SpellBook.BattleStance);
                         }
                     }
                     else
@@ -248,12 +251,14 @@ namespace FuryUnleashed.Core.Helpers
 
                         if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
                         {
-                            Spell.Cast(SpellBook.BerserkerStance);
+                            return true;
+                            //Spell.Cast(SpellBook.BerserkerStance);
                         }
 
                         if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
                         {
-                            Spell.Cast(SpellBook.BattleStance);
+                            return false;
+                            //Spell.Cast(SpellBook.BattleStance);
                         }
                     }
                 }
@@ -262,6 +267,7 @@ namespace FuryUnleashed.Core.Helpers
                     Logger.DiagLogFb("[FU] Failed CalculatePreferredStance - {0}", exstancecalc);
                 }
             }
+            return false;
         }
         #endregion
 

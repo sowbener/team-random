@@ -104,10 +104,10 @@ namespace FuryUnleashed.Core.Utilities
 
                 if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                 {
-                    return "Use Protection Spec!";
+                    return "Use Protection Specialization!";
                 }
 
-                CombatLogLg("FU: Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, DamageTracker.ShieldBarrierSpellId);
+                CombatLogLg("[FU] Shield Barrier size is {0} with Spell ID {1}", shieldbarriersize, DamageTracker.ShieldBarrierSpellId);
                 return shieldbarriersize.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -120,10 +120,10 @@ namespace FuryUnleashed.Core.Utilities
 
                 if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                 {
-                    return "Use Protection Spec!";
+                    return "Use Protection Specialization!";
                 }
 
-                CombatLogLg("FU: Shield Block size is {0} with Spell ID {1}", shieldblocksize, DamageTracker.ShieldBlockSpellId);
+                CombatLogLg("[FU] Shield Block size is {0} with Spell ID {1}", shieldblocksize, DamageTracker.ShieldBlockSpellId);
                 return shieldblocksize.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -136,10 +136,10 @@ namespace FuryUnleashed.Core.Utilities
 
                 if (StyxWoW.Me.Specialization != WoWSpec.WarriorProtection)
                 {
-                    return "Use Protection Spec!";
+                    return "Use Protection Specialization!";
                 }
 
-                CombatLogLg("FU: Damage taken is {0}", damagetaken);
+                CombatLogLg("[FU] Damage taken is {0}", damagetaken);
                 return damagetaken.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -159,7 +159,7 @@ namespace FuryUnleashed.Core.Utilities
                         return "No Suitable Target";
                     }
 
-                    CombatLogLg("FU: Vigilance target is {0}", vigilancetarget);
+                    CombatLogLg("[FU] Vigilance target is {0}", vigilancetarget);
                     return vigilancetarget.ToString();
                 }
                 return "No Suitable Target";
@@ -181,7 +181,7 @@ namespace FuryUnleashed.Core.Utilities
                         return "No Suitable Target";
                     }
 
-                    CombatLogLg("FU: SmartTaunt unit is {0}", smarttauntunit);
+                    CombatLogLg("[FU] SmartTaunt unit is {0}", smarttauntunit);
                     return smarttauntunit.ToString();
                 }
                 return "No Suitable Unit";
@@ -210,48 +210,48 @@ namespace FuryUnleashed.Core.Utilities
             WriteFile("");
             WriteFile("{0} is the HB path.", Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
             WriteFile("");
-            LogSettings("General Settings (SettingsG)", InternalSettings.Instance.General);
-            LogSettings("Hotkey Settings (SettingsH)", SettingsH.Instance);
+            LogSettings("[FU] General Settings (SettingsG)", InternalSettings.Instance.General);
+            LogSettings("[FU] Hotkey Settings (SettingsH)", SettingsH.Instance);
             if (Global.IsArmsSpec)
-                LogSettings("Arms Settings (SettingsA)", InternalSettings.Instance.Arms);
+                LogSettings("[FU] Arms Settings (SettingsA)", InternalSettings.Instance.Arms);
             if (Global.IsFurySpec)
-                LogSettings("Fury Settings (SettingsF)", InternalSettings.Instance.Fury);
+                LogSettings("[FU] Fury Settings (SettingsF)", InternalSettings.Instance.Fury);
             if (Global.IsProtSpec)
-                LogSettings("Protection Settings (SettingsP)", InternalSettings.Instance.Protection);
+                LogSettings("[FU] Protection Settings (SettingsP)", InternalSettings.Instance.Protection);
             WriteFile("");
             WriteFile("====== Talents ======");
-            WriteFile("Juggernaut Talent: {0}", Global.JuggernautTalent);
-            WriteFile("Double Time Talent: {0}", Global.DoubleTimeTalent);
-            WriteFile("Warbringer Talent: {0}", Global.WarbringerTalent);
-            WriteFile("Enraged Regeneration Talent: {0}", Global.EnragedRegenerationTalent);
-            WriteFile("Second Wind Talent: {0}", Global.SecondWindTalent);
-            WriteFile("Impending Victory Talent: {0}", Global.ImpendingVictoryTalent);
-            WriteFile("Staggering Shout Talent: {0}", Global.StaggeringShoutTalent);
-            WriteFile("Piercing Howl Talent: {0}", Global.PiercingHowlTalent);
-            WriteFile("Disrupting Shout Talent: {0}", Global.DisruptingShoutTalent);
-            WriteFile("Bladestorm Talent: {0}", Global.BladestormTalent);
-            WriteFile("Shockwave Talent: {0}", Global.ShockwaveTalent);
-            WriteFile("Dragon Roar Talent: {0}", Global.DragonRoarTalent);
-            WriteFile("Mass Spell Reflection Talent: {0}", Global.MassSpellReflectionTalent);
-            WriteFile("Safeguard Talent: {0}", Global.SafeguardTalent);
-            WriteFile("Vigilance Talent: {0}", Global.VigilanceTalent);
-            WriteFile("Avatar Talent: {0}", Global.AvatarTalent);
-            WriteFile("Bloodbath Talent: {0}", Global.BloodbathTalent);
-            WriteFile("Storm Bolt Talent: {0}", Global.StormBoltTalent);
+            WriteFile("[FU] Juggernaut Talent: {0}", Global.JuggernautTalent);
+            WriteFile("[FU] Double Time Talent: {0}", Global.DoubleTimeTalent);
+            WriteFile("[FU] Warbringer Talent: {0}", Global.WarbringerTalent);
+            WriteFile("[FU] Enraged Regeneration Talent: {0}", Global.EnragedRegenerationTalent);
+            WriteFile("[FU] Second Wind Talent: {0}", Global.SecondWindTalent);
+            WriteFile("[FU] Impending Victory Talent: {0}", Global.ImpendingVictoryTalent);
+            WriteFile("[FU] Staggering Shout Talent: {0}", Global.StaggeringShoutTalent);
+            WriteFile("[FU] Piercing Howl Talent: {0}", Global.PiercingHowlTalent);
+            WriteFile("[FU] Disrupting Shout Talent: {0}", Global.DisruptingShoutTalent);
+            WriteFile("[FU] Bladestorm Talent: {0}", Global.BladestormTalent);
+            WriteFile("[FU] Shockwave Talent: {0}", Global.ShockwaveTalent);
+            WriteFile("[FU] Dragon Roar Talent: {0}", Global.DragonRoarTalent);
+            WriteFile("[FU] Mass Spell Reflection Talent: {0}", Global.MassSpellReflectionTalent);
+            WriteFile("[FU] Safeguard Talent: {0}", Global.SafeguardTalent);
+            WriteFile("[FU] Vigilance Talent: {0}", Global.VigilanceTalent);
+            WriteFile("[FU] Avatar Talent: {0}", Global.AvatarTalent);
+            WriteFile("[FU] Bloodbath Talent: {0}", Global.BloodbathTalent);
+            WriteFile("[FU] Storm Bolt Talent: {0}", Global.StormBoltTalent);
             WriteFile("");
             WriteFile("======= Item Info =======");
-            WriteFile("AttackSpeed: {0}", Item.AttackSpeed);
-            WriteFile("Crit Chance: {0}", Item.CritChance);
-            WriteFile("Crit Rating: {0}", Item.CritRating);
-            WriteFile("Expertise: {0}", Item.Expertise);
-            WriteFile("Mastery: {0}", Item.Mastery);
-            WriteFile("Haste: {0}", Item.MeleeHaste);
-            WriteFile("Hit: {0}", Item.MeleeHit);
-            WriteFile("2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
-            WriteFile("Tier 16 DPS 2P: {0}", Global.Tier16TwoPieceBonus);
-            WriteFile("Tier 16 DPS 4P: {0}", Global.Tier16FourPieceBonus);
-            WriteFile("Tier 16 Prot 2P: {0}", Global.Tier16TwoPieceBonusT);
-            WriteFile("Tier 16 Prot 4P: {0}", Global.Tier16FourPieceBonusT);
+            WriteFile("[FU] AttackSpeed: {0}", Item.AttackSpeed);
+            WriteFile("[FU] Crit Chance: {0}", Item.CritChance);
+            WriteFile("[FU] Crit Rating: {0}", Item.CritRating);
+            WriteFile("[FU] Expertise: {0}", Item.Expertise);
+            WriteFile("[FU] Mastery: {0}", Item.Mastery);
+            WriteFile("[FU] Haste: {0}", Item.MeleeHaste);
+            WriteFile("[FU] Hit: {0}", Item.MeleeHit);
+            WriteFile("[FU] 2H Weapons: {0}", Global.WieldsTwoHandedWeapons);
+            WriteFile("[FU] Tier 16 DPS 2P: {0}", Global.Tier16TwoPieceBonus);
+            WriteFile("[FU] Tier 16 DPS 4P: {0}", Global.Tier16FourPieceBonus);
+            WriteFile("[FU] Tier 16 Prot 2P: {0}", Global.Tier16TwoPieceBonusT);
+            WriteFile("[FU] Tier 16 Prot 4P: {0}", Global.Tier16FourPieceBonusT);
         }
 
         private static Timer _fuTimer;
@@ -278,7 +278,7 @@ namespace FuryUnleashed.Core.Utilities
                 {
                     Parallel.Invoke(
                         () => new WebClient().DownloadData("http://c.statcounter.com/9163286/0/396c7d29/1/"),
-                        () => DiagLogWh("FU: StatCounter has been updated!"));
+                        () => DiagLogWh("[FU] StatCounter has been updated!"));
                     InternalSettings.Instance.General.LastStatCounted = statcounterDate;
                     InternalSettings.Instance.Save();
                 }
