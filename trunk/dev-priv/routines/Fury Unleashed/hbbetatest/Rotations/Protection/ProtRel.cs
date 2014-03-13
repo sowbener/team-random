@@ -156,21 +156,22 @@ namespace FuryUnleashed.Rotations.Protection
                     new PrioritySelector(
                         new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent < 100 && Me.HealthPercent > IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
                             new PrioritySelector(
-                                Spell.Cast(SpellBook.Execute, ret => G.ExecutePhase, true),
-                                Spell.Cast(SpellBook.HeroicStrike, ret => !IS.Instance.Protection.CheckAoE || U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum, true),
-                                Spell.Cast(SpellBook.Cleave, ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum, true))),
+                                Spell.Cast(SpellBook.Execute, ret => G.ExecutePhase),
+                                Spell.Cast(SpellBook.HeroicStrike, ret => !IS.Instance.Protection.CheckAoE || U.NearbyAttackableUnitsCount < IS.Instance.Protection.CheckAoENum),
+                                Spell.Cast(SpellBook.Cleave, ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckAoENum))),
                         new Decorator(ret => Me.CurrentTarget.ThreatInfo.RawPercent >= 100 || Me.HealthPercent <= IS.Instance.Protection.ShieldBarrierBlockThresholdNum,
                             new PrioritySelector(
                                 new Decorator(ret => U.IsCastingAtMe,
-                                    Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => Lua.PlayerPower > 30, true)),
-                                Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
-                                Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true)
+                                    Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => Lua.PlayerPower > 30)),
+                                Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100)),
+                                Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue())
                                 )))),
 
                 new Decorator(ret => IS.Instance.Protection.CheckShieldBbAdvancedLogics && !IS.Instance.Protection.CheckShieldBbThreatLogics && Lua.PlayerPower >= IS.Instance.Protection.ShieldBarrierBlockNum,
                     new PrioritySelector(
-                        Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100), true),
-                        Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue(), true))));
+                        Spell.Cast(SpellBook.ShieldBarrier, on => Me, ret => (DamageTracker.CalculateEstimatedAbsorbValue() > DamageTracker.CalculateEstimatedBlockValue()) || (Lua.PlayerPower > 90 && Me.HealthPercent < 100)),
+                        Spell.Cast(SpellBook.ShieldBlock, on => Me, ret => DamageTracker.CalculateEstimatedAbsorbValue() <= DamageTracker.CalculateEstimatedBlockValue())))
+                        );
         }
 
         internal static Composite Rel_ProtGcdUtility()
@@ -189,17 +190,16 @@ namespace FuryUnleashed.Rotations.Protection
                 // Taunt Logic
                 Spell.Cast(SpellBook.Taunt, on => Me.CurrentTarget, ret => 
                     (IS.Instance.Protection.CheckAutoTaunt && !IS.Instance.Protection.CheckSmartTaunt && !U.IsTargettingMe) || 
-                    (IS.Instance.Protection.CheckSmartTaunt && Unit.IsSmartTauntDesired()), true),
+                    (IS.Instance.Protection.CheckSmartTaunt && Unit.IsSmartTauntDesired())),
 
                 // Need to improve hamstring method
-                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),
-                Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget), true),
-                Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss, true),
-                Spell.Cast(SpellBook.RallyingCry, on => Me, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry, true),
-                Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum, true),
-                Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum, true),
+                Spell.Cast(SpellBook.Hamstring, ret => !U.IsTargetBoss && !G.HamstringAura && (IS.Instance.Protection.HamString == Enum.Hamstring.Always || IS.Instance.Protection.HamString == Enum.Hamstring.AddList && U.IsHamstringTarget)),
+                Spell.Cast(SpellBook.IntimidatingShout, ret => IS.Instance.Protection.CheckIntimidatingShout && G.IntimidatingShoutGlyph && !U.IsTargetBoss),
+                Spell.Cast(SpellBook.RallyingCry, on => Me, ret => U.RaidMembersNeedCryCount > 0 && !G.LastStandAura && IS.Instance.Protection.CheckRallyingCry),
+                Spell.Cast(SpellBook.StaggeringShout, ret => G.StaggeringShoutTalent && IS.Instance.Protection.CheckStaggeringShout && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckStaggeringShoutNum),
+                Spell.Cast(SpellBook.PiercingHowl, ret => G.PiercingHowlTalent && IS.Instance.Protection.CheckPiercingHowl && U.NearbyAttackableUnitsCount >= IS.Instance.Protection.CheckPiercingHowlNum),
                 new Decorator(ret => U.VigilanceTarget != null,
-                    Spell.Cast(SpellBook.Vigilance, on => U.VigilanceTarget, ret => true, true)));
+                    Spell.Cast(SpellBook.Vigilance, on => U.VigilanceTarget, ret => true)));
         }
 
         internal static Composite Rel_ProtRacials()
@@ -211,9 +211,11 @@ namespace FuryUnleashed.Rotations.Protection
         internal static Composite Rel_ProtOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.Avatar, on => Me, ret => G.AvatarTalent && PG.Tier6AbilityUsage, true),
+                Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => (!G.EnrageAura || G.FadingEnrage(1500)) && PG.BerserkerRageUsage, true),
                 Spell.Cast(SpellBook.Bloodbath, on => Me, ret => G.BloodbathTalent && PG.Tier6AbilityUsage, true),
+
                 Spell.Cast(SpellBook.Recklessness, on => Me, ret => PG.RecklessnessUsage, true),
+                Spell.Cast(SpellBook.Avatar, on => Me, ret => G.AvatarTalent && PG.Tier6AbilityUsage, true),
                 Spell.Cast(SpellBook.SkullBanner, ret => !G.SkullBannerAura && PG.SkullBannerUsage, true));
         }
     }
