@@ -228,21 +228,6 @@ namespace FuryUnleashed.Core.Helpers
                     /* Half of normalized rage + Rage from Damage. */
                     var extendedberserkerstancerage = (battlestancerage * 0.5) + damagetorage6S;
 
-                    if (!Unit.IsExtendedDamageTarget)
-                    {
-                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
-
-                        if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
-                        {
-                            Spell.Cast(SpellBook.BerserkerStance);
-                        }
-
-                        if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
-                        {
-                            Spell.Cast(SpellBook.BattleStance);
-                        }
-                    }
-
                     if (Unit.IsExtendedDamageTarget)
                     {
                         Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, extendedberserkerstancerage);
@@ -253,6 +238,20 @@ namespace FuryUnleashed.Core.Helpers
                         }
 
                         if (battlestancerage >= extendedberserkerstancerage && !Global.BattleStanceAura)
+                        {
+                            Spell.Cast(SpellBook.BattleStance);
+                        }
+                    }
+                    else
+                    {
+                        Logger.DiagLogWh("[FU] Battle Stance Rage: {0} - Berserker Stance Rage: {1}", battlestancerage, berserkerstancerage);
+
+                        if (berserkerstancerage > battlestancerage && !Global.BerserkerStanceAura)
+                        {
+                            Spell.Cast(SpellBook.BerserkerStance);
+                        }
+
+                        if (battlestancerage >= berserkerstancerage && !Global.BattleStanceAura)
                         {
                             Spell.Cast(SpellBook.BattleStance);
                         }
