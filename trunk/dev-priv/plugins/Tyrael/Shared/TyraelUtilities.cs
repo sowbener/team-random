@@ -94,6 +94,7 @@ namespace Tyrael.Shared
         #region Logging
         public static void WriteInfoToLogFile()
         {
+            WriteFile("[Tyrael] Diagnostic Logging");
             LogSettings("[Tyrael] Settings", TyraelSettings.Instance);
         }
 
