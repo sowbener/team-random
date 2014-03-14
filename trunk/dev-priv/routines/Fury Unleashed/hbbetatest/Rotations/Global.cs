@@ -155,8 +155,13 @@ namespace FuryUnleashed.Rotations
         internal static Composite StanceDanceLogic()
         {
             return new PrioritySelector(
-                Spell.Cast(SpellBook.BattleStance, ret => !BattleStanceAura && !DefensiveStanceAura && !DamageTracker.CalculatePreferredStance(), true),
-                Spell.Cast(SpellBook.BerserkerStance, ret => !BerserkerStanceAura && !DefensiveStanceAura && DamageTracker.CalculatePreferredStance(), true)
+                new ThrottlePasses(1, TimeSpan.FromSeconds(3), RunStatus.Failure,
+                    Spell.Cast(SpellBook.BattleStance, ret => !BattleStanceAura && !DefensiveStanceAura && !DamageTracker.CalculatePreferredStance(), true)),
+                new ThrottlePasses(1, TimeSpan.FromSeconds(3), RunStatus.Failure,
+                    Spell.Cast(SpellBook.BerserkerStance, ret => !BerserkerStanceAura && !DefensiveStanceAura && DamageTracker.CalculatePreferredStance(), true))
+                //Below works and is tested. ThrottlePass is added later.
+                //Spell.Cast(SpellBook.BattleStance, ret => !BattleStanceAura && !DefensiveStanceAura && !DamageTracker.CalculatePreferredStance(), true),
+                //Spell.Cast(SpellBook.BerserkerStance, ret => !BerserkerStanceAura && !DefensiveStanceAura && DamageTracker.CalculatePreferredStance(), true)
                 );
         }
         #endregion
