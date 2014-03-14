@@ -1,4 +1,5 @@
-﻿using Styx.Common;
+﻿using System.Timers;
+using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
 using Styx.WoWInternals;
@@ -125,6 +126,21 @@ namespace Tyrael.Shared
                 WriteFile("  {0}: {1}", kvp.Key, kvp.Value.ToString());
             }
             WriteFile("");
+        }
+
+        private static Timer _tyraelTimer;
+
+        internal static void LogTimer(int tickingtime)
+        {
+            _tyraelTimer = new Timer(tickingtime);
+            _tyraelTimer.Elapsed += OnTimedEvent;
+            _tyraelTimer.AutoReset = false;
+            _tyraelTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            WriteInfoToLogFile();
         }
         #endregion
 
