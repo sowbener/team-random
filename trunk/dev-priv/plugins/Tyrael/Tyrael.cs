@@ -140,6 +140,7 @@ namespace Tyrael
                 TyraelUtilities.ClickToMove();
                 TyraelUtilities.StatCounter();
                 TyraelUtilities.RegisterHotkeys();
+                TyraelUtilities.WriteInfoToLogFile();
 
                 ProfileManager.LoadEmpty();
 

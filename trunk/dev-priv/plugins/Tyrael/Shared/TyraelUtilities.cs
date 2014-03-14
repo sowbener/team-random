@@ -91,6 +91,42 @@ namespace Tyrael.Shared
         }
         #endregion
 
+        #region Logging
+        public static void WriteInfoToLogFile()
+        {
+            LogSettings("[FU] General Settings (SettingsG)", TyraelSettings.Instance);
+        }
+
+        public static void WriteFile(string message)
+        {
+            WriteFile(LogLevel.Verbose, message);
+        }
+
+        public static void WriteFile(string message, params object[] args)
+        {
+            WriteFile(LogLevel.Verbose, message, args);
+        }
+
+        public static void WriteFile(LogLevel ll, string message, params object[] args)
+        {
+            if (GlobalSettings.Instance.LogLevel >= LogLevel.Quiet)
+                Logging.WriteToFileSync(ll, "Fury Unleashed: " + message, args);
+        }
+
+        public static void LogSettings(string desc, Settings set)
+        {
+            if (set == null)
+                return;
+
+            WriteFile("====== {0} ======", desc);
+            foreach (var kvp in set.GetSettings())
+            {
+                WriteFile("  {0}: {1}", kvp.Key, kvp.Value.ToString());
+            }
+            WriteFile("");
+        }
+        #endregion
+
         #region Others
         public enum SvnUrl
         {
@@ -119,12 +155,6 @@ namespace Tyrael.Shared
             }
             // ReSharper disable once EmptyGeneralCatchClause
             catch { /* Catch all errors */ }
-        }
-
-        internal static void DiagnosticLogging()
-        {
-            Logging.WriteDiagnostic(Colors.White, "------------------------------------------");
-            Logging.WriteDiagnostic("[Tyrael] {0}", TreeRoot.Current);
         }
         #endregion
     }
