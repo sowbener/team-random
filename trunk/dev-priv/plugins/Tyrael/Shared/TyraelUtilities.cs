@@ -96,6 +96,7 @@ namespace Tyrael.Shared
         public static void WriteInfoToLogFile()
         {
             WriteFile("[Tyrael] Diagnostic Logging");
+            WriteFile("[Tyrael] Hardlock Enabled: {0}", GlobalSettings.Instance.UseFrameLock);
             LogSettings("[Tyrael] Settings", TyraelSettings.Instance);
         }
 
