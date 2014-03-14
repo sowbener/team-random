@@ -94,7 +94,7 @@ namespace Tyrael.Shared
         #region Logging
         public static void WriteInfoToLogFile()
         {
-            LogSettings("[FU] General Settings (SettingsG)", TyraelSettings.Instance);
+            LogSettings("[Tyrael] Settings", TyraelSettings.Instance);
         }
 
         public static void WriteFile(string message)
@@ -110,7 +110,7 @@ namespace Tyrael.Shared
         public static void WriteFile(LogLevel ll, string message, params object[] args)
         {
             if (GlobalSettings.Instance.LogLevel >= LogLevel.Quiet)
-                Logging.WriteToFileSync(ll, "Fury Unleashed: " + message, args);
+                Logging.WriteToFileSync(ll, "[Tyrael] " + message, args);
         }
 
         public static void LogSettings(string desc, Settings set)
