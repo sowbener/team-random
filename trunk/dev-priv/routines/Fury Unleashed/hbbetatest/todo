@@ -8,19 +8,19 @@
 -option to heroic leap in colossus smash, try maintain face target
 -option for safeguard on cooldown as damage reduction like vigilance
 -auto face target? This is minor but it's affected my dps when I paid less attention. Just for convenience
-... There was one more major thing which I've totally forgotten. I'll post again when I remember. Keep up the good work, thanks.
-
 // Need to add caching to FocusedUnit Auras
 // Battlestance in prot when not tanking
-
 <orthofunk> @nom any plans to add smart interrupts... only interrupt critical casts?
 offensive cooldowns in protection --> simc in combination with revenge.
 
+=========================================
+	Issues Fixed:
+=========================================
 * FIXED - Bloodbath in Arms does not pop.
 * FIXED - Fix impvic: [FU] FindSpell 103840 failed at 03/13/2014 23:40:46
 
 =========================================
-To Test:
+	To Test:
 =========================================
 * SmartTaunt Logic with Auto Focus.
 * Enraged Regeneration Logic.

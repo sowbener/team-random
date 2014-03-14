@@ -1,10 +1,8 @@
 ﻿using FuryUnleashed.Core.Utilities;
-using FuryUnleashed.Rotations;
 using Styx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Styx.Common;
 
 namespace FuryUnleashed.Core.Helpers
 {
