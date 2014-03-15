@@ -635,7 +635,7 @@ namespace FuryUnleashed.Interfaces.GUI
                 Title = @"Save Settings from a File",
                 InitialDirectory = string.Format("{0}\\Routines\\Fury Unleashed\\Interfaces\\Settings\\CustomSettings\\", Utilities.AssemblyDirectory),
                 DefaultExt = "xml",
-                FileName = "FU_" + StyxWoW.Me.Specialization + "_" + StyxWoW.Me.Name
+                FileName = "FU_" + StyxWoW.Me.Specialization + "_" + DateTime.Now.ToString("dd-MM-yyyy")
             };
 
             var showDialog = saveFileDialog.ShowDialog();
