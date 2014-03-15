@@ -525,7 +525,6 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             SettingsH.Instance.Tier4Choice = (Keys)GetComboBoxEnum(ComboHkTier4Ability);
         }
-
         private void ComboHkMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             SettingsH.Instance.ModeSelection = (Enum.Mode)GetComboBoxEnum(ComboHkMode);
@@ -556,6 +555,53 @@ namespace FuryUnleashed.Interfaces.GUI
         private void debuggerpanel_Click(object sender, EventArgs e)
         {
             new DebuggerGui().Show();
+        }
+
+        private void SaveToFileButton_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = @"Setting File|*.xml",
+                Title = @"Save Settings from a File",
+                InitialDirectory = string.Format("{0}\\Routines\\Fury Unleashed\\Interfaces\\Settings\\CustomSettings\\", Utilities.AssemblyDirectory),
+                DefaultExt = "xml",
+                FileName = "Fury Unleashed - " + StyxWoW.Me.Specialization + " - " + StyxWoW.Me.Name
+            };
+
+            var showDialog = saveFileDialog.ShowDialog();
+
+            if (showDialog == DialogResult.OK)
+            {
+                switch (StyxWoW.Me.Specialization)
+                {
+                    case WoWSpec.WarriorArms:
+                        if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP)
+                        {
+                            InternalSettings.Instance.PvPArms.SaveToFile(saveFileDialog.FileName);
+                            Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms PvP).");
+                        }
+                        else
+                        {
+                            InternalSettings.Instance.Arms.SaveToFile(saveFileDialog.FileName);
+                            Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms).");
+                        }
+                        break;
+
+                    case WoWSpec.WarriorFury:
+                        InternalSettings.Instance.Fury.SaveToFile(saveFileDialog.FileName);
+                        Logger.CombatLogWh("[FU] Saved specialization specifics to file (Fury).");
+                        break;
+
+                    case WoWSpec.WarriorProtection:
+                        InternalSettings.Instance.Protection.SaveToFile(saveFileDialog.FileName);
+                        Logger.CombatLogWh("[FU] Saved specialization specifics to file (Protection).");
+                        break;
+                }
+            }
+            else
+            {
+                Logger.CombatLogWh("[FU] Cancelled Save to File.");
+            }
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -596,6 +642,18 @@ namespace FuryUnleashed.Interfaces.GUI
         {
             StatusStripText.Text =
                 "Click and hold to drag the Fury Unleashed User Interface.";
+        }
+
+        private void SavetoFileButton_MouseMove(object sender, MouseEventArgs e)
+        {
+            StatusStripText.Text =
+                "Click this button to save the settings to a file - You can load this file again!";
+        }
+
+        private void LoadfromFileButton_MouseMove(object sender, MouseEventArgs e)
+        {
+            StatusStripText.Text =
+                "Click this button to load the settings from a file - (Presets or self-saved)";
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)

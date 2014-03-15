@@ -60,6 +60,8 @@
             this.ComboHkMockingBanner = new System.Windows.Forms.ComboBox();
             this.HkMockingBannerLabel = new System.Windows.Forms.Label();
             this.HotkeyPanel = new System.Windows.Forms.Panel();
+            this.SavetoFileButton = new System.Windows.Forms.Button();
+            this.LoadfromFileButton = new System.Windows.Forms.Button();
             this.StatusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPicture)).BeginInit();
             this.HotkeyPanel.SuspendLayout();
@@ -123,7 +125,7 @@
             // debuggerpanel
             // 
             this.debuggerpanel.BackColor = System.Drawing.Color.White;
-            this.debuggerpanel.Location = new System.Drawing.Point(9, 415);
+            this.debuggerpanel.Location = new System.Drawing.Point(9, 386);
             this.debuggerpanel.Name = "debuggerpanel";
             this.debuggerpanel.Size = new System.Drawing.Size(321, 26);
             this.debuggerpanel.TabIndex = 5;
@@ -526,6 +528,8 @@
             // HotkeyPanel
             // 
             this.HotkeyPanel.BackColor = System.Drawing.Color.White;
+            this.HotkeyPanel.Controls.Add(this.LoadfromFileButton);
+            this.HotkeyPanel.Controls.Add(this.SavetoFileButton);
             this.HotkeyPanel.Controls.Add(this.debuggerpanel);
             this.HotkeyPanel.Controls.Add(this.HkMockingBannerLabel);
             this.HotkeyPanel.Controls.Add(this.ComboHkMockingBanner);
@@ -556,6 +560,35 @@
             this.HotkeyPanel.Name = "HotkeyPanel";
             this.HotkeyPanel.Size = new System.Drawing.Size(334, 477);
             this.HotkeyPanel.TabIndex = 3;
+            // 
+            // SavetoFileButton
+            // 
+            this.SavetoFileButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.SavetoFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SavetoFileButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.SavetoFileButton.Location = new System.Drawing.Point(9, 418);
+            this.SavetoFileButton.Name = "SavetoFileButton";
+            this.SavetoFileButton.Size = new System.Drawing.Size(157, 23);
+            this.SavetoFileButton.TabIndex = 29;
+            this.SavetoFileButton.Text = "Save to File";
+            this.SavetoFileButton.UseVisualStyleBackColor = false;
+            this.SavetoFileButton.Click += new System.EventHandler(this.SaveToFileButton_Click);
+            this.SavetoFileButton.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
+            this.SavetoFileButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SavetoFileButton_MouseMove);
+            // 
+            // LoadfromFileButton
+            // 
+            this.LoadfromFileButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.LoadfromFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadfromFileButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.LoadfromFileButton.Location = new System.Drawing.Point(173, 418);
+            this.LoadfromFileButton.Name = "LoadfromFileButton";
+            this.LoadfromFileButton.Size = new System.Drawing.Size(157, 23);
+            this.LoadfromFileButton.TabIndex = 30;
+            this.LoadfromFileButton.Text = "Load from File";
+            this.LoadfromFileButton.UseVisualStyleBackColor = false;
+            this.LoadfromFileButton.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
+            this.LoadfromFileButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LoadfromFileButton_MouseMove);
             // 
             // Interface
             // 
@@ -618,5 +651,7 @@
         private System.Windows.Forms.ComboBox ComboHkMockingBanner;
         private System.Windows.Forms.Label HkMockingBannerLabel;
         private System.Windows.Forms.Panel HotkeyPanel;
+        private System.Windows.Forms.Button SavetoFileButton;
+        private System.Windows.Forms.Button LoadfromFileButton;
     }
 }

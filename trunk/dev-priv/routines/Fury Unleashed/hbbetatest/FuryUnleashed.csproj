@@ -119,6 +119,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Interfaces\Settings\CustomSettings\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
