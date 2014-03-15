@@ -617,7 +617,8 @@ namespace FuryUnleashed.Interfaces.GUI
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show(string.Format("You are {0}! You tried to load: \n\n {1} \n\nWhich is not your class. Please select the right class file.", StyxWoW.Me.Class, openFileDialog.FileName),
+                    MessageBox.Show(string.Format("You are {0}. You tried to load:\n\n {1} \n\nWhich is not suited for your current specialization. Please select the right specialization settings file.",
+                        StyxWoW.Me.Specialization.ToString().CamelToSpaced(), openFileDialog.FileName),
                         @"An Error Has Occured",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation,
