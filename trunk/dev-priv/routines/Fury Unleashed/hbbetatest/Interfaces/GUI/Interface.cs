@@ -562,24 +562,16 @@ namespace FuryUnleashed.Interfaces.GUI
         private void LoadFromFileButton_Click(object sender, EventArgs e)
         {
             var openFileDialog = new OpenFileDialog
+
             {
                 Filter = @"Setting File|*.xml",
                 Title = @"Load Settings from a File",
-                InitialDirectory =
-                    string.Format("{0}\\Routines\\Fury Unleashed\\Interfaces\\Settings\\CustomSettings\\",
-                        Utilities.AssemblyDirectory),
+                InitialDirectory = string.Format("{0}\\Routines\\Fury Unleashed\\Interfaces\\Settings\\CustomSettings\\", Utilities.AssemblyDirectory),
             };
 
             var showDialog = openFileDialog.ShowDialog();
 
-            if (showDialog == DialogResult.Cancel)
-            {
-                return;
-            }
-
-            var fileChoice = openFileDialog.ShowDialog();
-
-            if (openFileDialog.FileName.Contains(".xml") && fileChoice == DialogResult.OK)
+            if (openFileDialog.FileName.Contains(".xml") && showDialog == DialogResult.OK)
             {
                 try
                 {
@@ -595,23 +587,23 @@ namespace FuryUnleashed.Interfaces.GUI
                                 if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP)
                                 {
                                     InternalSettings.Instance.PvPArms.LoadFromXML(XElement.Load(openFileDialog.FileName));
-                                    Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms PvP).");
+                                    Logger.CombatLogWh("[FU] Loaded specialization specifics from file (Arms PvP).");
                                 }
                                 else
                                 {
                                     InternalSettings.Instance.Arms.LoadFromXML(XElement.Load(openFileDialog.FileName));
-                                    Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms).");
+                                    Logger.CombatLogWh("[FU] Loaded specialization specifics from file (Arms).");
                                 }
                                 break;
 
                             case WoWSpec.WarriorFury:
                                 InternalSettings.Instance.Fury.LoadFromXML(XElement.Load(openFileDialog.FileName));
-                                Logger.CombatLogWh("[FU] Saved specialization specifics to file (Fury).");
+                                Logger.CombatLogWh("[FU] Loaded specialization specifics from file (Fury).");
                                 break;
 
                             case WoWSpec.WarriorProtection:
                                 InternalSettings.Instance.Protection.LoadFromXML(XElement.Load(openFileDialog.FileName));
-                                Logger.CombatLogWh("[FU] Saved specialization specifics to file (Protection).");
+                                Logger.CombatLogWh("[FU] Loaded specialization specifics from file (Protection).");
                                 break;
 
                             default:
@@ -619,12 +611,13 @@ namespace FuryUnleashed.Interfaces.GUI
                                 break;
                         }
                     }
+
                     FuInterface_Load(null, null);
-                    Logger.CombatLogWh("[FU] Loaded file:  {0}", openFileDialog.FileName);
+                    Logger.CombatLogWh("[FU] Loaded file: {0}", openFileDialog.FileName);
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show(string.Format("You are {0} !! You tried to load: \n\n {1} \n\nWhich is not your class. Please select the right class file.", StyxWoW.Me.Class, openFileDialog.FileName),
+                    MessageBox.Show(string.Format("You are {0}! You tried to load: \n\n {1} \n\nWhich is not your class. Please select the right class file.", StyxWoW.Me.Class, openFileDialog.FileName),
                         @"An Error Has Occured",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation,
@@ -641,7 +634,7 @@ namespace FuryUnleashed.Interfaces.GUI
                 Title = @"Save Settings from a File",
                 InitialDirectory = string.Format("{0}\\Routines\\Fury Unleashed\\Interfaces\\Settings\\CustomSettings\\", Utilities.AssemblyDirectory),
                 DefaultExt = "xml",
-                FileName = "Fury Unleashed - " + StyxWoW.Me.Specialization + " - " + StyxWoW.Me.Name
+                FileName = "FU_" + StyxWoW.Me.Specialization + "_" + StyxWoW.Me.Name
             };
 
             var showDialog = saveFileDialog.ShowDialog();
