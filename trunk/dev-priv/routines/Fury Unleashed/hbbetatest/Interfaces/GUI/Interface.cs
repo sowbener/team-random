@@ -617,9 +617,9 @@ namespace FuryUnleashed.Interfaces.GUI
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show(string.Format("You are {0}. You tried to load:\n\n {1} \n\nWhich is not suited for your current specialization. Please select the right specialization settings file.",
+                    MessageBox.Show(string.Format("Your current specialization is: {0}.\n\n You tried to load the following file, which is not suited for your current specialization:\n\n {1} \n\nPlease select the right specialization settings file.",
                         StyxWoW.Me.Specialization.ToString().CamelToSpaced(), openFileDialog.FileName),
-                        @"An Error Has Occured",
+                        @"Fury Unleashed - An Error Has Occured",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation,
                         MessageBoxDefaultButton.Button1);
@@ -717,13 +717,13 @@ namespace FuryUnleashed.Interfaces.GUI
         private void SavetoFileButton_MouseMove(object sender, MouseEventArgs e)
         {
             StatusStripText.Text =
-                "Click this button to save the settings to a file - You can load this file again!";
+                "Click this button to save the specialization settings to a file - You can load this file again!";
         }
 
         private void LoadfromFileButton_MouseMove(object sender, MouseEventArgs e)
         {
             StatusStripText.Text =
-                "Click this button to load the settings from a file - (Presets or self-saved)";
+                "Click this button to load the specialization settings from a file - (Presets or self-saved)";
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
