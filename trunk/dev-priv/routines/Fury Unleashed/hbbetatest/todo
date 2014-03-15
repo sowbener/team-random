@@ -12,6 +12,7 @@
 // Battlestance in prot when not tanking
 <orthofunk> @nom any plans to add smart interrupts... only interrupt critical casts?
 offensive cooldowns in protection --> simc in combination with revenge.
+-FuInterface_Load(null, null); <--- reloads the GUI!
 
 =========================================
 	Issues Fixed:

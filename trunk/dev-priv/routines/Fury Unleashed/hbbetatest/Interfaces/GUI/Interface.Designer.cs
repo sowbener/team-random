@@ -60,8 +60,9 @@
             this.ComboHkMockingBanner = new System.Windows.Forms.ComboBox();
             this.HkMockingBannerLabel = new System.Windows.Forms.Label();
             this.HotkeyPanel = new System.Windows.Forms.Panel();
-            this.SavetoFileButton = new System.Windows.Forms.Button();
             this.LoadfromFileButton = new System.Windows.Forms.Button();
+            this.SavetoFileButton = new System.Windows.Forms.Button();
+            this.replinklabel = new System.Windows.Forms.LinkLabel();
             this.StatusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPicture)).BeginInit();
             this.HotkeyPanel.SuspendLayout();
@@ -561,6 +562,21 @@
             this.HotkeyPanel.Size = new System.Drawing.Size(334, 477);
             this.HotkeyPanel.TabIndex = 3;
             // 
+            // LoadfromFileButton
+            // 
+            this.LoadfromFileButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.LoadfromFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadfromFileButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.LoadfromFileButton.Location = new System.Drawing.Point(173, 418);
+            this.LoadfromFileButton.Name = "LoadfromFileButton";
+            this.LoadfromFileButton.Size = new System.Drawing.Size(157, 23);
+            this.LoadfromFileButton.TabIndex = 30;
+            this.LoadfromFileButton.Text = "Load from File";
+            this.LoadfromFileButton.UseVisualStyleBackColor = false;
+            this.LoadfromFileButton.Click += new System.EventHandler(this.LoadFromFileButton_Click);
+            this.LoadfromFileButton.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
+            this.LoadfromFileButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LoadfromFileButton_MouseMove);
+            // 
             // SavetoFileButton
             // 
             this.SavetoFileButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
@@ -576,19 +592,21 @@
             this.SavetoFileButton.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
             this.SavetoFileButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SavetoFileButton_MouseMove);
             // 
-            // LoadfromFileButton
+            // replinklabel
             // 
-            this.LoadfromFileButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.LoadfromFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LoadfromFileButton.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.LoadfromFileButton.Location = new System.Drawing.Point(173, 418);
-            this.LoadfromFileButton.Name = "LoadfromFileButton";
-            this.LoadfromFileButton.Size = new System.Drawing.Size(157, 23);
-            this.LoadfromFileButton.TabIndex = 30;
-            this.LoadfromFileButton.Text = "Load from File";
-            this.LoadfromFileButton.UseVisualStyleBackColor = false;
-            this.LoadfromFileButton.MouseLeave += new System.EventHandler(this.Fu_MouseLeave);
-            this.LoadfromFileButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LoadfromFileButton_MouseMove);
+            this.replinklabel.ActiveLinkColor = System.Drawing.Color.DimGray;
+            this.replinklabel.AutoSize = true;
+            this.replinklabel.BackColor = System.Drawing.Color.White;
+            this.replinklabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.replinklabel.LinkColor = System.Drawing.Color.Black;
+            this.replinklabel.Location = new System.Drawing.Point(871, 588);
+            this.replinklabel.Name = "replinklabel";
+            this.replinklabel.Size = new System.Drawing.Size(136, 17);
+            this.replinklabel.TabIndex = 5;
+            this.replinklabel.TabStop = true;
+            this.replinklabel.Text = "Rep+ nomnomnom";
+            this.replinklabel.VisitedLinkColor = System.Drawing.Color.Black;
+            this.replinklabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.replinklabel_LinkClicked);
             // 
             // Interface
             // 
@@ -596,6 +614,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(1015, 612);
+            this.Controls.Add(this.replinklabel);
             this.Controls.Add(this.SpecGrid);
             this.Controls.Add(this.HotkeyPanel);
             this.Controls.Add(this.StatusStrip);
@@ -614,6 +633,7 @@
             this.HotkeyPanel.ResumeLayout(false);
             this.HotkeyPanel.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -653,5 +673,6 @@
         private System.Windows.Forms.Panel HotkeyPanel;
         private System.Windows.Forms.Button SavetoFileButton;
         private System.Windows.Forms.Button LoadfromFileButton;
+        private System.Windows.Forms.LinkLabel replinklabel;
     }
 }

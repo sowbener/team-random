@@ -1,4 +1,6 @@
-﻿using FuryUnleashed.Core;
+﻿using System.Diagnostics;
+using System.Xml.Linq;
+using FuryUnleashed.Core;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
@@ -557,6 +559,80 @@ namespace FuryUnleashed.Interfaces.GUI
             new DebuggerGui().Show();
         }
 
+        private void LoadFromFileButton_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = @"Setting File|*.xml",
+                Title = @"Load Settings from a File",
+                InitialDirectory =
+                    string.Format("{0}\\Routines\\Fury Unleashed\\Interfaces\\Settings\\CustomSettings\\",
+                        Utilities.AssemblyDirectory),
+            };
+
+            var showDialog = openFileDialog.ShowDialog();
+
+            if (showDialog == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            var fileChoice = openFileDialog.ShowDialog();
+
+            if (openFileDialog.FileName.Contains(".xml") && fileChoice == DialogResult.OK)
+            {
+                try
+                {
+                    if (showDialog == DialogResult.Yes)
+                    {
+                        InternalSettings.Instance.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                    }
+                    else
+                    {
+                        switch (StyxWoW.Me.Specialization)
+                        {
+                            case WoWSpec.WarriorArms:
+                                if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP)
+                                {
+                                    InternalSettings.Instance.PvPArms.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                    Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms PvP).");
+                                }
+                                else
+                                {
+                                    InternalSettings.Instance.Arms.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                    Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms).");
+                                }
+                                break;
+
+                            case WoWSpec.WarriorFury:
+                                InternalSettings.Instance.Fury.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[FU] Saved specialization specifics to file (Fury).");
+                                break;
+
+                            case WoWSpec.WarriorProtection:
+                                InternalSettings.Instance.Protection.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[FU] Saved specialization specifics to file (Protection).");
+                                break;
+
+                            default:
+                                Logger.CombatLogWh("[FU] Invalid specialization!");
+                                break;
+                        }
+                    }
+                    FuInterface_Load(null, null);
+                    Logger.CombatLogWh("[FU] Loaded file:  {0}", openFileDialog.FileName);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(string.Format("You are {0} !! You tried to load: \n\n {1} \n\nWhich is not your class. Please select the right class file.", StyxWoW.Me.Class, openFileDialog.FileName),
+                        @"An Error Has Occured",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation,
+                        MessageBoxDefaultButton.Button1);
+                }
+            }
+        }
+
         private void SaveToFileButton_Click(object sender, EventArgs e)
         {
             var saveFileDialog = new SaveFileDialog
@@ -728,5 +804,10 @@ namespace FuryUnleashed.Interfaces.GUI
                 "Select the preferred key to toggle special abilities - Toggle Type - Arms: None - Fury: None - Prot: Switch Shield Block or Barrier.";
         }
         #endregion
+
+        private void replinklabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.thebuddyforum.com/reputation.php?do=addreputation&p=1151695");
+        }
     }
 }

@@ -426,8 +426,11 @@ namespace FuryUnleashed.Core
             {
                 //SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
 
-                StyxWoW.Me.SetFocus(TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid));
-                LuaClass.UpdateFocusFrame(Me.FocusedUnit);
+                if (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty)
+                {
+                    StyxWoW.Me.SetFocus(TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid));
+                    LuaClass.UpdateFocusFrame(Me.FocusedUnit);
+                }
             }
         }
 
