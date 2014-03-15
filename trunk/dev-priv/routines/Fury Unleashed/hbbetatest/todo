@@ -15,15 +15,20 @@ offensive cooldowns in protection --> simc in combination with revenge.
 -FuInterface_Load(null, null); <--- reloads the GUI!
 
 =========================================
+	To Test:
+=========================================
+* SmartTaunt Logic with Auto Focus.
+* Enraged Regeneration Logic.
+
+=========================================
 	Issues Fixed:
 =========================================
 * FIXED - Bloodbath in Arms does not pop.
 * FIXED - Fix impvic: [FU] FindSpell 103840 failed at 03/13/2014 23:40:46
 
 =========================================
-	To Test:
+	Logics Tested:
 =========================================
-* SmartTaunt Logic with Auto Focus.
-* Enraged Regeneration Logic.
 * WORKS - CancelAura Bladestorm Logic.
 * WORKS - StanceDance Logic.
+* WORKS - Add Save and Load function for Specialization specific settings.

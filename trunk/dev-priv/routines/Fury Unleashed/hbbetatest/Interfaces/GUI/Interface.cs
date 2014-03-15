@@ -629,7 +629,7 @@ namespace FuryUnleashed.Interfaces.GUI
 
         private void SaveToFileButton_Click(object sender, EventArgs e)
         {
-            var saveFileDialog = new SaveFileDialog
+            var saveSpecDialog = new SaveFileDialog
             {
                 Filter = @"Setting File|*.xml",
                 Title = @"Save Settings from a File",
@@ -638,7 +638,7 @@ namespace FuryUnleashed.Interfaces.GUI
                 FileName = "FU_" + StyxWoW.Me.Specialization + "_" + DateTime.Now.ToString("dd-MM-yyyy")
             };
 
-            var showDialog = saveFileDialog.ShowDialog();
+            var showDialog = saveSpecDialog.ShowDialog();
 
             if (showDialog == DialogResult.OK)
             {
@@ -647,23 +647,23 @@ namespace FuryUnleashed.Interfaces.GUI
                     case WoWSpec.WarriorArms:
                         if (InternalSettings.Instance.General.CrArmsRotVersion == Enum.ArmsRotationVersion.PvP)
                         {
-                            InternalSettings.Instance.PvPArms.SaveToFile(saveFileDialog.FileName);
+                            InternalSettings.Instance.PvPArms.SaveToFile(saveSpecDialog.FileName);
                             Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms PvP).");
                         }
                         else
                         {
-                            InternalSettings.Instance.Arms.SaveToFile(saveFileDialog.FileName);
+                            InternalSettings.Instance.Arms.SaveToFile(saveSpecDialog.FileName);
                             Logger.CombatLogWh("[FU] Saved specialization specifics to file (Arms).");
                         }
                         break;
 
                     case WoWSpec.WarriorFury:
-                        InternalSettings.Instance.Fury.SaveToFile(saveFileDialog.FileName);
+                        InternalSettings.Instance.Fury.SaveToFile(saveSpecDialog.FileName);
                         Logger.CombatLogWh("[FU] Saved specialization specifics to file (Fury).");
                         break;
 
                     case WoWSpec.WarriorProtection:
-                        InternalSettings.Instance.Protection.SaveToFile(saveFileDialog.FileName);
+                        InternalSettings.Instance.Protection.SaveToFile(saveSpecDialog.FileName);
                         Logger.CombatLogWh("[FU] Saved specialization specifics to file (Protection).");
                         break;
                 }

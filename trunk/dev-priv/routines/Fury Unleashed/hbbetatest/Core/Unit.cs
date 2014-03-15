@@ -18,7 +18,7 @@ namespace FuryUnleashed.Core
         private static WoWUnit FocusedUnit { get { return StyxWoW.Me.FocusedUnit; }}
         private static readonly Random Random = new Random();
 
-        //public static WoWUnit SmartTauntFocusedUnit;
+        public static WoWUnit SmartTauntFocusedUnit = Me;
         public static WoWUnit VigilanceTarget;
 
         #region Unit Caching Functions
@@ -424,11 +424,10 @@ namespace FuryUnleashed.Core
         {
             if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
             {
-                //SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
-
                 if (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty)
                 {
-                    StyxWoW.Me.SetFocus(TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid));
+                    SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
+                    StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
                     LuaClass.UpdateFocusFrame(Me.FocusedUnit);
                 }
             }
