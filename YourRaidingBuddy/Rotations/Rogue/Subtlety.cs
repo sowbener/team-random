@@ -83,10 +83,10 @@ namespace YourRaidingBuddy.Rotations.Rogue
                                 new Decorator(ret => SG.Instance.Subtlety.CheckInterrupts,
                                     SubInterrupts()),
                                 SubUtility(),
-                                 new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline && (!Me.HasAura(115191) || !Me.HasAura(115193)) && (G.FindWeaknessOff || G.FindWeakness < 3), new ActionAlwaysSucceed()),
                                  new Decorator(ret => HotKeyManager.IsCooldown,
                                     new PrioritySelector(
                                         SubShadowDance(),
+                                        new Decorator(ret => Lua.PlayerPower < 75 && G.ShadowDanceOnline && (!Me.HasAura(115191) || !Me.HasAura(115193)) && (G.FindWeaknessOff || G.FindWeakness < 3), new ActionAlwaysSucceed()),
                                 new Styx.TreeSharp.Action(ret => { Item.UseSubtletyItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76089, ret => true, "Using Virmen's Bite Potion")),
                                          Spell.Cast("Vanish", ret => G.ShadowDanceOffline && G.PremeditationOnline && Lua.PlayerComboPts <= 3 && (G.FindWeaknessOff || G.FindWeakness < 3) && (!Me.HasAura(115191) || !Me.HasAura(115193)) && !Me.HasAura(51713) && Me.IsFacing(Me.CurrentTarget) && (
@@ -95,6 +95,7 @@ namespace YourRaidingBuddy.Rotations.Rogue
                                          (SG.Instance.Subtlety.Vanish == Enum.AbilityTrigger.Always)
                                           )),
                                         SubOffensive())),
+
                                 new Decorator(ret => HotKeyManager.IsAoe, SubMt()),
                                 new Decorator(ret => !HotKeyManager.IsAoe, SubSt()))));
             }
