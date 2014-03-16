@@ -200,7 +200,7 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [Styx.Helpers.DefaultValue(false)]
         [Category("Protection - Ability Options")]
         [DisplayName("Enable Auto-Taunting")]
-        [Description("Checked enables Auto-Taunting")]
+        [Description("Checked enables Auto Taunting")]
         public bool CheckSpecial { get; set; }
 
         [Setting]

@@ -23,7 +23,7 @@ namespace YourRaidingBuddy.Rotations.Paladin
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-            #region Initialize Rotations
+        #region Initialize Rotations
         internal static Composite InitializeProtection
         {
             get

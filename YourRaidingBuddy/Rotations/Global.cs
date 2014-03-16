@@ -261,7 +261,6 @@ namespace YourRaidingBuddy.Rotations
 
         internal static bool SpeedBuffsAura { get { return Me.HasAura(2825) || Me.HasAura(80353) || Me.HasAura(32182) || Me.HasAura(90355); } }
 
-
         #region Lists
         internal static Random _random = new Random();
 
@@ -427,8 +426,6 @@ namespace YourRaidingBuddy.Rotations
         }
 
         #endregion
-
-
 
         #region RogueStuff
 
