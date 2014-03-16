@@ -692,7 +692,7 @@ namespace FuryUnleashed.Interfaces.GUI
             {
                 MessageBox.Show("You have selected Constant as Interrupt mode.\r\n Due to the increased ban risk, I HIGHLY recommend using Random instead!");
             }
-            Unit.InitializeSmartTaunt();
+            //Unit.InitializeSmartTaunt();
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             HotKeyManager.HotkeyTimer(500);

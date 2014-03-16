@@ -12,7 +12,9 @@
 // Battlestance in prot when not tanking
 <orthofunk> @nom any plans to add smart interrupts... only interrupt critical casts?
 offensive cooldowns in protection --> simc in combination with revenge.
--FuInterface_Load(null, null); <--- reloads the GUI!
+-Implement better racial logic.
+
+-Disable Damagetracker when stuff not enabled.
 
 =========================================
 	To Test:
@@ -32,3 +34,8 @@ offensive cooldowns in protection --> simc in combination with revenge.
 * WORKS - CancelAura Bladestorm Logic.
 * WORKS - StanceDance Logic.
 * WORKS - Add Save and Load function for Specialization specific settings.
+
+=========================================
+	Self Notes:
+=========================================
+* FuInterface_Load(null, null); <- This function reloads the GUI.

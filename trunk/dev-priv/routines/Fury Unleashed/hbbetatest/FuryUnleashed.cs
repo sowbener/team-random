@@ -82,7 +82,7 @@ namespace FuryUnleashed
 				return;
 			}
 
-            DamageTracker.Pulse();   
+            DamageTracker.Pulse();
         }
 
         public override void OnButtonPress()

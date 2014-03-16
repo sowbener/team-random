@@ -188,14 +188,14 @@ namespace FuryUnleashed.Core
         /// <summary>
         /// Retrieves the count (Integer) of nearby units 
         /// </summary>
-        public static int InterruptableUnitsCount;
-        public static void GetInterruptableUnitsCount()
+        public static int NearbyInterruptableUnitsCount;
+        public static void GetNearbyInterruptableUnitsCount()
         {
-            using (new PerformanceLogger("GetInterruptableUnitsCount"))
+            using (new PerformanceLogger("GetNearbyInterruptableUnitsCount"))
             {
                 if (IsViable(Me.CurrentTarget))
                 {
-                    InterruptableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
+                    NearbyInterruptableUnitsCount = NearbyAttackableUnits(StyxWoW.Me.Location, 10).Count(u => u.IsCasting && u.CanInterruptCurrentSpellCast);
                 }
             }
         }
@@ -468,21 +468,21 @@ namespace FuryUnleashed.Core
         /// <summary>
         /// Sets the tank as FocusedUnit
         /// </summary>
-        internal static void InitializeSmartTaunt()
-        {
-            using (new PerformanceLogger("InitializeSmartTaunt"))
-            {
-                if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
-                {
-                    if (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty)
-                    {
-                        SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
-                        StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
-                        LuaClass.UpdateFocusFrame(Me.FocusedUnit);
-                    }
-                }                
-            }
-        }
+        //internal static void InitializeSmartTaunt()
+        //{
+        //    using (new PerformanceLogger("InitializeSmartTaunt"))
+        //    {
+        //        if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
+        //        {
+        //            if (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty)
+        //            {
+        //                SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
+        //                StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
+        //                LuaClass.UpdateFocusFrame(Me.FocusedUnit);
+        //            }
+        //        }                
+        //    }
+        //}
 
         /// <summary>
         /// Checks if Taunting is desired, based on a Tuple list.
@@ -499,7 +499,8 @@ namespace FuryUnleashed.Core
 
                 if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer || Me.FocusedUnit == Me)
                 {
-                    InitializeSmartTaunt();
+                    //InitializeSmartTaunt();
+                    return false;
                 }
 
                 if (!IsViable(FocusedUnit) || FocusedUnit.IsDead)

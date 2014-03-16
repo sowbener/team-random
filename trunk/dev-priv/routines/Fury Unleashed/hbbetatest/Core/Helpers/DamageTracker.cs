@@ -57,7 +57,9 @@ namespace FuryUnleashed.Core.Helpers
             try
             {
                 if (Unit.IgnoreDamageTracker || _pulseDamageTracker == false)
+                {
                     return;
+                }
 
                 RemoveDamageTaken(DateTime.Now);
             }

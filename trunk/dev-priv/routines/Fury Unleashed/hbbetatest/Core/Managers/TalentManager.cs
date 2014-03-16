@@ -192,7 +192,7 @@ namespace FuryUnleashed.Core.Managers
                 /* Refreshing Stats, FocusedUnit and Setting GCD Spell */
                 Item.RefreshSecondaryStats();
                 Spell.InitGcdSpell();
-                Unit.InitializeSmartTaunt();
+                //Unit.InitializeSmartTaunt();
 
                 /* Restarting Rotations */
                 Root.Instance.PreCombatSelector();

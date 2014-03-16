@@ -40,7 +40,7 @@ namespace FuryUnleashed.Rotations
                             new Decorator(ret => IS.Instance.Arms.CheckAoE && IS.Instance.Arms.CheckAoEThunderclap && U.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { U.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => IS.Instance.Arms.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                                new Action(delegate { U.GetNearbyInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => IS.Instance.Arms.CheckRallyingCry,
                                 new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })),
                             new Action(delegate { U.GetNearbySlamCleaveUnitsCount(); return RunStatus.Failure; }))),
@@ -49,7 +49,7 @@ namespace FuryUnleashed.Rotations
                     new SwitchArgument<WoWSpec>(WoWSpec.WarriorFury,
                         new PrioritySelector(
                             new Decorator(ret => IS.Instance.Fury.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                                new Action(delegate { U.GetNearbyInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => IS.Instance.Fury.CheckRallyingCry,
                                 new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; })))),
 
@@ -59,7 +59,7 @@ namespace FuryUnleashed.Rotations
                             new Decorator(ret => IS.Instance.Protection.CheckAoE && U.NearbyAttackableUnitsCount > 1,
                                 new Action(delegate { U.GetNeedThunderclapUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => IS.Instance.Protection.CheckInterruptsAoE && U.NearbyAttackableUnitsCount > 1,
-                                new Action(delegate { U.GetInterruptableUnitsCount(); return RunStatus.Failure; })),
+                                new Action(delegate { U.GetNearbyInterruptableUnitsCount(); return RunStatus.Failure; })),
                             new Decorator(ret => IS.Instance.Protection.CheckRallyingCry,
                                 new Action(delegate { U.GetRaidMembersNeedCryCount(); return RunStatus.Failure; }))))
                                 ));
@@ -121,17 +121,17 @@ namespace FuryUnleashed.Rotations
         internal static Composite EnragedRegenerationLogic()
         {
             return new PrioritySelector(
-                new Decorator(ret => EnrageAura,
+                new Decorator(ret => EnrageAura && !EnragedRegenerationOnCooldown,
                     Spell.Cast(SpellBook.EnragedRegeneration, on => Me)),
-                new Decorator(ret => !EnrageAura && !BerserkerRageOnCooldown,
+                new Decorator(ret => !EnrageAura && !BerserkerRageOnCooldown && !EnragedRegenerationOnCooldown,
                     new Action(ctx =>
                     {
                         Logger.CombatLogPu("[FU] Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
-                        Spell.Cast(SpellBook.BerserkerRage, on => Me);
-                        Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-                        return RunStatus.Success;
+                        Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true);
+                        Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => true, true);
+                        return RunStatus.Failure;
                     })),
-                new Decorator(ret => !EnrageAura && BerserkerRageOnCooldown,
+                new Decorator(ret => !EnrageAura && BerserkerRageOnCooldown && !EnragedRegenerationOnCooldown,
                     Spell.Cast(SpellBook.EnragedRegeneration, on => Me)));
         }
 
@@ -139,7 +139,7 @@ namespace FuryUnleashed.Rotations
         {
             return new PrioritySelector(
                 new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
-                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && U.InterruptableUnitsCount > 1)),
+                    Spell.Cast(SpellBook.DisruptingShout, ret => DisruptingShoutTalent && U.NearbyInterruptableUnitsCount > 1)),
                 new ThrottlePasses(1, TimeSpan.FromSeconds(15), RunStatus.Failure,
                     Spell.Cast(SpellBook.Pummel)));
         }
@@ -188,17 +188,16 @@ namespace FuryUnleashed.Rotations
             }
         }
 
-        //actions+=/blood_fury,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
-        //actions+=/berserking,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
-        //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
-        //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
-
         internal static bool RacialUsageSatisfied(string racial)
         {
             if (racial != null)
             {
                 switch (racial)
                 {
+                    //actions+=/blood_fury,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+                    //actions+=/berserking,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+                    //actions+=/arcane_torrent,if=buff.cooldown_reduction.down&(buff.bloodbath.up|(!talent.bloodbath.enabled&debuff.colossus_smash.up))|buff.cooldown_reduction.up&buff.recklessness.up
+                    //actions+=/use_item,slot=hands,if=!talent.bloodbath.enabled&debuff.colossus_smash.up|buff.bloodbath.up
                     case "Stoneform": return IsSick;
                     case "Escape Artist": return Me.Rooted;
                     case "Every Man for Himself": return IsImpaired;

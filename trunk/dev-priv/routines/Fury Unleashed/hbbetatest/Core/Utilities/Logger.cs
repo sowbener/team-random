@@ -172,7 +172,7 @@ namespace FuryUnleashed.Core.Utilities
             {
                 if (StyxWoW.Me.GroupInfo.IsInParty || StyxWoW.Me.GroupInfo.IsInRaid)
                 {
-                    Unit.InitializeSmartTaunt();
+                    //Unit.InitializeSmartTaunt();
 
                     var smarttauntunit = StyxWoW.Me.FocusedUnit;
 

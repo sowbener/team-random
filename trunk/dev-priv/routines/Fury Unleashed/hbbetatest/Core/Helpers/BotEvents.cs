@@ -24,7 +24,7 @@ namespace FuryUnleashed.Core.Helpers
 
             /* Initialize Routine Functions */
             DamageTracker.Initialize();
-            Unit.InitializeSmartTaunt();
+            //Unit.InitializeSmartTaunt();
 
             Logger.DiagLogPu("[FU] Started! (OnBotStarted)");
         }
