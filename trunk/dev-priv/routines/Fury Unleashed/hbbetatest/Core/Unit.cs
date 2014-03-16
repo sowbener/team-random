@@ -134,11 +134,14 @@ namespace FuryUnleashed.Core
         /// <returns></returns>
         internal static WoWUnit MultiDotUnit(int debuffid, int auratimeleft, double radius, int conedegrees)
         {
-            var selectableunits = NearbyAttackableUnits(StyxWoW.Me.Location, radius).Where(x => IsViable(x) && !x.IsPlayer && Me.IsSafelyFacing(x, conedegrees)).OrderByDescending(x => x.HealthPercent);
-            var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, conedegrees) && !Spell.HasAura(x, debuffid)) ??
-                          selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, conedegrees) && Spell.HasAura(x, debuffid, 0, auratimeleft));
+            using (new PerformanceLogger("MultiDotUnit"))
+            {
+                var selectableunits = NearbyAttackableUnits(StyxWoW.Me.Location, radius).Where(x => IsViable(x) && !x.IsPlayer && Me.IsSafelyFacing(x, conedegrees)).OrderByDescending(x => x.HealthPercent);
+                var dotunit = selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, conedegrees) && !Spell.HasAura(x, debuffid)) ??
+                              selectableunits.FirstOrDefault(x => IsViable(x) && Me.IsSafelyFacing(x, conedegrees) && Spell.HasAura(x, debuffid, 0, auratimeleft));
 
-            return dotunit;
+                return dotunit;
+            }
         }
 
         /// <summary>
@@ -147,7 +150,7 @@ namespace FuryUnleashed.Core
         /// <returns>Viable unit to cast Vigilance on - Based on Settings</returns>
         public static bool GetVigilanceTarget()
         {
-            using (new PerformanceLogger("VigilanceTarget"))
+            using (new PerformanceLogger("GetVigilanceTarget"))
             {
                 VigilanceTarget = null;
 
@@ -298,7 +301,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
+                using (new PerformanceLogger("DefaultCheck"))
+                {
+                    return IsViable(Me.CurrentTarget) && !Me.Mounted && Me.CurrentTarget.Attackable && !Me.CurrentTarget.IsDead && Me.CurrentTarget.IsWithinMeleeRange;
+                }
             }
         }
 
@@ -309,7 +315,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return IsViable(Me) && !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink");
+                using (new PerformanceLogger("DefaultBuffCheck"))
+                {
+                    return IsViable(Me) && !Me.Mounted && !Me.IsDead && !Me.IsFlying && !Me.IsOnTransport && !Me.IsChanneling && !Me.HasAura("Food") && !Me.HasAura("Drink");
+                }
             }
         }
 
@@ -318,7 +327,13 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static bool IgnoreDamageTracker
         {
-            get { return StyxWoW.Me.Specialization == WoWSpec.WarriorArms; }
+            get
+            {
+                using (new PerformanceLogger("IgnoreDamageTracker"))
+                {
+                    return StyxWoW.Me.Specialization == WoWSpec.WarriorArms;
+                }
+            }
         }
 
         /// <summary>
@@ -326,7 +341,13 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static bool IsCastingAtMe
         {
-            get { return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && IsTargettingMe; }
+            get
+            {
+                using (new PerformanceLogger("IsCastingAtMe"))
+                {
+                    return IsViable(Me.CurrentTarget) && (Me.CurrentTarget.IsCasting || Me.CurrentTarget.IsChanneling) && IsTargettingMe;
+                }
+            }
         }
 
         /// <summary>
@@ -334,7 +355,13 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static bool IsTargettingMe
         {
-            get { return Me.CurrentTarget.CurrentTargetGuid == Root.MyToonGuid; }
+            get
+            {
+                using (new PerformanceLogger("IsTargettingMe"))
+                {
+                    return Me.CurrentTarget.CurrentTargetGuid == Root.MyToonGuid;
+                }
+            }
         }
 
         /// <summary>
@@ -344,7 +371,10 @@ namespace FuryUnleashed.Core
         /// <returns>Isviable or not.</returns>
         public static bool IsViable(WoWObject wowObject)
         {
-            return (wowObject != null) && wowObject.IsValid;
+            using (new PerformanceLogger("IsViable"))
+            {
+                return (wowObject != null) && wowObject.IsValid;
+            }
         }
 
         /// <summary>
@@ -352,7 +382,7 @@ namespace FuryUnleashed.Core
         /// </summary>
         public static void UpdateObjectManager()
         {
-            using (new PerformanceLogger("ObjManager Update"))
+            using (new PerformanceLogger("UpdateObjectManager"))
             {
                 ObjectManager.Update();
             }
@@ -360,11 +390,17 @@ namespace FuryUnleashed.Core
         #endregion
 
         #region HashSet Checks
+        /// <summary>
+        /// Checks if an extended damage-received check is required for a specific target.
+        /// </summary>
         public static bool IsExtendedDamageTarget
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.ExtendedDamageTargetList();
+                using (new PerformanceLogger("IsExtendedDamageTarget"))
+                {
+                    return IsViable(Me.CurrentTarget) && Me.CurrentTarget.ExtendedDamageTargetList();
+                }
             }
         }
 
@@ -375,7 +411,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.HamstringUnitsList();
+                using (new PerformanceLogger("IsHamstringTarget"))
+                {
+                    return IsViable(Me.CurrentTarget) && Me.CurrentTarget.HamstringUnitsList();
+                }
             }
         }
 
@@ -386,7 +425,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.RareUnitsList();
+                using (new PerformanceLogger("IsTargetRare"))
+                {
+                    return IsViable(Me.CurrentTarget) && Me.CurrentTarget.RareUnitsList();
+                }
             }
         }
 
@@ -397,7 +439,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && Me.CurrentTarget.TargetIsBoss();
+                using (new PerformanceLogger("IsTargetBoss"))
+                {
+                    return IsViable(Me.CurrentTarget) && Me.CurrentTarget.TargetIsBoss();
+                }
             }
         }
 
@@ -408,7 +453,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return IsViable(Me.CurrentTarget) && !Me.CurrentTarget.DoNotUseOnTgtList();
+                using (new PerformanceLogger("IsDoNotUseOnTgt"))
+                {
+                    return IsViable(Me.CurrentTarget) && !Me.CurrentTarget.DoNotUseOnTgtList();
+                }
             }
         }
         #endregion
@@ -422,14 +470,17 @@ namespace FuryUnleashed.Core
         /// </summary>
         internal static void InitializeSmartTaunt()
         {
-            if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
+            using (new PerformanceLogger("InitializeSmartTaunt"))
             {
-                if (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty)
+                if (InternalSettings.Instance.Protection.CheckSmartTaunt && Me.Specialization == WoWSpec.WarriorProtection)
                 {
-                    SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
-                    StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
-                    LuaClass.UpdateFocusFrame(Me.FocusedUnit);
-                }
+                    if (Me.GroupInfo.IsInRaid || Me.GroupInfo.IsInParty)
+                    {
+                        SmartTauntFocusedUnit = TankList.FirstOrDefault(x => IsViable(x) && x.Guid != Root.MyToonGuid);
+                        StyxWoW.Me.SetFocus(SmartTauntFocusedUnit);
+                        LuaClass.UpdateFocusFrame(Me.FocusedUnit);
+                    }
+                }                
             }
         }
 
@@ -439,25 +490,27 @@ namespace FuryUnleashed.Core
         /// <returns>//return focusedunit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2)));</returns>
         internal static bool IsSmartTauntDesired()
         {
-            if (!Me.GotTarget || !IsTargetBoss)
+            using (new PerformanceLogger("IsSmartTauntDesired"))
             {
-                return false;
-            }
+                if (!Me.GotTarget || !IsTargetBoss)
+                {
+                    return false;
+                }
 
-            if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer || Me.FocusedUnit == Me)
-            {
-                InitializeSmartTaunt();
-            }
+                if (Me.FocusedUnit == null || !Me.FocusedUnit.IsPlayer || Me.FocusedUnit == Me)
+                {
+                    InitializeSmartTaunt();
+                }
 
-            if (!IsViable(FocusedUnit) || FocusedUnit.IsDead)
-            {
-                return false;
-            }
+                if (!IsViable(FocusedUnit) || FocusedUnit.IsDead)
+                {
+                    return false;
+                }
 
-            return (
-                FocusedUnit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2))) &&
-                IsViable(FocusedUnit) && !Me.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1)))
-                );
+                return (
+                    FocusedUnit.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1) && (aura.StackCount >= t.Item2))) &&
+                    IsViable(FocusedUnit) && !Me.Auras.Values.Any(aura => HashSets.TauntUseQualifiers.Any(t => (aura.SpellId == t.Item1))));
+            }
         }
         #endregion
 
@@ -499,7 +552,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => !p.HasRole(WoWPartyMember.GroupRole.Tank) && !p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+                using (new PerformanceLogger("RetrieveTankList"))
+                {
+                    return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => !p.HasRole(WoWPartyMember.GroupRole.Tank) && !p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+                }
             }
         }
 
@@ -510,7 +566,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+                using (new PerformanceLogger("RetrieveHealerList"))
+                {
+                    return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Healer)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+                }
             }
         }
 
@@ -521,7 +580,10 @@ namespace FuryUnleashed.Core
         {
             get
             {
-                return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+                using (new PerformanceLogger("RetrieveTankList"))
+                {
+                    return !StyxWoW.Me.GroupInfo.IsInParty ? new List<WoWPlayer>() : StyxWoW.Me.GroupInfo.RaidMembers.Where(p => p.HasRole(WoWPartyMember.GroupRole.Tank)).Select(p => p.ToPlayer()).Where(IsViable).ToList();
+                }
             }
         }
         #endregion
@@ -532,7 +594,10 @@ namespace FuryUnleashed.Core
         /// </summary>
         public static float ActualMaxRange(WoWSpell spell, WoWUnit unit)
         {
-            return Math.Abs(spell.MaxRange) < 1 ? 0 : (IsViable(unit) ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
+            using (new PerformanceLogger("ActualMaxRange"))
+            {
+                return Math.Abs(spell.MaxRange) < 1 ? 0 : (IsViable(unit) ? spell.MaxRange + unit.CombatReach + Me.CombatReach - 0.1f : spell.MaxRange);
+            }
         }
 
         /// <summary>
@@ -540,7 +605,10 @@ namespace FuryUnleashed.Core
         /// </summary>
         public static float ActualMinRange(WoWSpell spell, WoWUnit unit)
         {
-            return Math.Abs(spell.MinRange) < 1 ? 0 : (IsViable(unit) ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
+            using (new PerformanceLogger("ActualMinRange"))
+            {
+                return Math.Abs(spell.MinRange) < 1 ? 0 : (IsViable(unit) ? spell.MinRange + unit.CombatReach + Me.CombatReach + 0.1f : spell.MinRange);
+            }
         }
         #endregion
     }
