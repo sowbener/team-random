@@ -57,7 +57,6 @@
   <ItemGroup>
     <Compile Include="Core\Clusters.cs" />
     <Compile Include="Core\Helpers\AuraBook.cs" />
-    <Compile Include="Core\Helpers\Between.cs" />
     <Compile Include="Core\Helpers\CombatLogHandler.cs" />
     <Compile Include="Core\Helpers\CooldownTracker.cs" />
     <Compile Include="Core\Helpers\DamageTracker.cs" />
@@ -148,7 +147,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\Images\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="version" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\Images\RoutineLogo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

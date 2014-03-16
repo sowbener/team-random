@@ -4,8 +4,8 @@ using System.Linq;
 using Bots.DungeonBuddy.Helpers;
 using Styx;
 using Styx.WoWInternals.WoWObjects;
-using Enum = YourBuddy.Core.Helpers.Enum;
-namespace YourBuddy.Core
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
+namespace YourRaidingBuddy.Core
 {
     internal static class Clusters
     {

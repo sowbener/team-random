@@ -1,6 +1,6 @@
-﻿using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
-using YourBuddy.Rotations;
+﻿using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Rotations;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
@@ -9,12 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
-using Enum = YourBuddy.Core.Helpers.Enum;
-using G = YourBuddy.Rotations.Global;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
-using U = YourBuddy.Core.Unit;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
+using G = YourRaidingBuddy.Rotations.Global;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
+using U = YourRaidingBuddy.Core.Unit;
 
-namespace YourBuddy.Core
+namespace YourRaidingBuddy.Core
 {
     internal static class Item
     {

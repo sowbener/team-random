@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows.Forms;
 
-namespace YourBuddy.Interfaces.GUI
+namespace YourRaidingBuddy.Interfaces.GUI
 {
     public static class GuiExtentions
     {

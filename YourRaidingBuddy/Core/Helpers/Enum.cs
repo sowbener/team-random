@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     internal static class Enum
     {

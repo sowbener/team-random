@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using Styx;
 using Styx.WoWInternals.WoWObjects;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     public static class HashSets
     {

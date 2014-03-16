@@ -2,15 +2,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using JetBrains.Annotations;
-    using YourBuddy.Core;
-    using YourBuddy.Core.Helpers;
-    using YourBuddy.Core.Managers;
+    using YourRaidingBuddy.Core;
+    using YourRaidingBuddy.Core.Helpers;
+    using YourRaidingBuddy.Core.Managers;
     using Styx;
     using Styx.WoWInternals;
-    using Lua = YourBuddy.Core.Helpers.LuaClass;
-using Logger = YourBuddy.Core.Utilities.Logger;
+    using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using Logger = YourRaidingBuddy.Core.Utilities.Logger;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     [UsedImplicitly]
     internal static class DeathStrikeTracker

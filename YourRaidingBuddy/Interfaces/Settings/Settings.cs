@@ -2,7 +2,7 @@
 using Styx.Common;
 using System.ComponentModel;
 
-namespace YourBuddy.Interfaces.Settings
+namespace YourRaidingBuddy.Interfaces.Settings
 {
     internal class InternalSettings : Styx.Helpers.Settings
     {
@@ -17,7 +17,7 @@ namespace YourBuddy.Interfaces.Settings
         {
             get
             {
-                return string.Format("{0}\\Settings\\YourBuddy\\Yb_Settings_{1}-Rev{2}", Utilities.AssemblyDirectory, StyxWoW.Me.Name, Root.Revision);
+                return string.Format("{0}\\Settings\\YourRaidingBuddy\\Yb_Settings_{1}-Rev{2}", Utilities.AssemblyDirectory, StyxWoW.Me.Name, Root.Revision);
             }
         }
 

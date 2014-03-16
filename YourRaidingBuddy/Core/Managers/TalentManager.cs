@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Utilities;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Utilities;
 using Styx;
 using Styx.Common.Helpers;
 using Styx.WoWInternals;
-using Enum = YourBuddy.Core.Helpers.Enum;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
 
-namespace YourBuddy.Core.Managers
+namespace YourRaidingBuddy.Core.Managers
 {
     internal static class TalentManager
     {

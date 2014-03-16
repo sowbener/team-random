@@ -15,11 +15,11 @@ using Styx.TreeSharp;
 using CommonBehaviors.Actions;
 using Action = Styx.TreeSharp.Action;
 using System.Drawing;
-using YourBuddy.Core.Helpers;
-using Unit = YourBuddy.Core.Unit;
-using YourBuddy.Core.Utilities;
+using YourRaidingBuddy.Core.Helpers;
+using Unit = YourRaidingBuddy.Core.Unit;
+using YourRaidingBuddy.Core.Utilities;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     internal static class Totems
     {

@@ -2,14 +2,14 @@
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
-using YourBuddy.Rotations;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Rotations;
 using Styx.Common;
 using Styx.WoWInternals;
 
-namespace YourBuddy.Core.Managers
+namespace YourRaidingBuddy.Core.Managers
 {
     internal static class HotKeyManager
     {
@@ -127,7 +127,7 @@ namespace YourBuddy.Core.Managers
                             : "RaidNotice_AddMessage(RaidWarningFrame, \"Special Disabled\", ChatTypeInfo[\"RAID_WARNING\"])");
                 });
 
-                Logger.DiagLogPu("YourBuddy: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special Key, {4} as the other Special Key and {5} as Modifier Key.",
+                Logger.DiagLogPu("YourRaidingBuddy: Hotkeys registered with the following values: {0} as Pause Key, {1} as Cooldown Key, {2} as AoE Key, {3} as the Special Key, {4} as the other Special Key and {5} as Modifier Key.",
                     SettingsH.Instance.PauseKeyChoice,
                     SettingsH.Instance.CooldownKeyChoice,
                     SettingsH.Instance.MultiTgtKeyChoice,
@@ -144,7 +144,7 @@ namespace YourBuddy.Core.Managers
             HotkeysManager.Unregister("AoE");
             HotkeysManager.Unregister("Special");
             HotkeysManager.Unregister("Toggle");
-            Logger.DiagLogPu("YourBuddy: Hotkeys removed!");
+            Logger.DiagLogPu("YourRaidingBuddy: Hotkeys removed!");
         }
 
         

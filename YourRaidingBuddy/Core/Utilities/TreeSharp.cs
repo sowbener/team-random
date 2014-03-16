@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Styx.TreeSharp;
 
-namespace YourBuddy.Core.Utilities
+namespace YourRaidingBuddy.Core.Utilities
 {
     public class TreeSharp
     {

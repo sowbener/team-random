@@ -1,9 +1,9 @@
 ﻿using CommonBehaviors.Actions;
-using YourBuddy.Core;
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Managers;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Core;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Managers;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
 using Styx;
 using Styx.CommonBot;
 using Styx.TreeSharp;
@@ -13,21 +13,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Action = Styx.TreeSharp.Action;
-using Enum = YourBuddy.Core.Helpers.Enum;
-using U = YourBuddy.Core.Unit;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
+using U = YourRaidingBuddy.Core.Unit;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
 using System.Windows.Forms;
-using KP = YourBuddy.Core.Managers.HotKeyManager;
+using KP = YourRaidingBuddy.Core.Managers.HotKeyManager;
 using System.Globalization;
 
-namespace YourBuddy.Rotations
+namespace YourRaidingBuddy.Rotations
 {
     class Global
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         internal static int ? _anticipationCount;
-        private static ulong MouseOverTarget;
-        public static bool RuptureMode;
         public static bool SEFMode;
 
 
@@ -400,7 +398,7 @@ namespace YourBuddy.Rotations
         internal static Composite InitializeOnKeyActionsM()
         {
             return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover,harm] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
+                     YourRaidingBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [@mouseover,harm] Storm, Earth, and Fire", ret => KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)));
         }
 
         #endregion
@@ -913,14 +911,14 @@ namespace YourBuddy.Rotations
         internal static Composite InitializeOnKeyActionsLayonHands()
         {
             return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Lay on Hands", ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice) && SG.Instance.Protection.UseLayonHandsMouseover),
+                     YourRaidingBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Lay on Hands", ret => KP.IsKeyAsyncDown(SettingsH.Instance.DemoBannerChoice) && SG.Instance.Protection.UseLayonHandsMouseover),
                      new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusTarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)));
         }
 
         internal static Composite InitializeOnKeyActionsHandofSalvation()
         {
             return new PrioritySelector(
-                     YourBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Hand of Salvation", ret => KP.IsKeyAsyncDown(SettingsH.Instance.HeroicLeapChoice) && SG.Instance.Protection.UseHandofSalvationMouseover),
+                     YourRaidingBuddy.Core.Helpers.LuaClass.RunMacroText("/cast [target=mouseover,help,nodead] Hand of Salvation", ret => KP.IsKeyAsyncDown(SettingsH.Instance.HeroicLeapChoice) && SG.Instance.Protection.UseHandofSalvationMouseover),
                      new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseHandofSalvationFocusTarget, Spell.Cast("Hand of Salvation", on => Me.FocusedUnit)));
 
         }

@@ -1,23 +1,23 @@
 ﻿using CommonBehaviors.Actions;
-using YourBuddy.Core;
-using YourBuddy.Interfaces;
+using YourRaidingBuddy.Core;
+using YourRaidingBuddy.Interfaces;
 using System.Linq;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
 using Styx.CommonBot;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
-using TalentManager = YourBuddy.Core.Managers.TalentManager;
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Managers;
-using SH = YourBuddy.Interfaces.Settings.SettingsH;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using G = YourBuddy.Rotations.Global;
-using YourBuddy.Interfaces.Settings;
-using U = YourBuddy.Core.Unit;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
+using TalentManager = YourRaidingBuddy.Core.Managers.TalentManager;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Managers;
+using SH = YourRaidingBuddy.Interfaces.Settings.SettingsH;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using G = YourRaidingBuddy.Rotations.Global;
+using YourRaidingBuddy.Interfaces.Settings;
+using U = YourRaidingBuddy.Core.Unit;
 
-namespace YourBuddy.Rotations.Monk
+namespace YourRaidingBuddy.Rotations.Monk
 {
     class Brewmaster
     {

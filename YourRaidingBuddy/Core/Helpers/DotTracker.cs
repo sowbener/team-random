@@ -7,12 +7,12 @@ using JetBrains.Annotations;
 using Styx;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using Logger = YourBuddy.Core.Utilities.Logger;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
-using YourBuddy.Core;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using Logger = YourRaidingBuddy.Core.Utilities.Logger;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
+using YourRaidingBuddy.Core;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     [UsedImplicitly]
     internal static class DoTTracker

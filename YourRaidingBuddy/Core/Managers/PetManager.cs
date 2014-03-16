@@ -8,14 +8,14 @@ using Styx.Common.Helpers;
 using Styx.CommonBot;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
-using YourBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Helpers;
 using Styx.WoWInternals.WoWObjects;
 using Action = Styx.TreeSharp.Action;
-using Logger = YourBuddy.Core.Utilities.Logger;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
-using Spell = YourBuddy.Core.Spell;
+using Logger = YourRaidingBuddy.Core.Utilities.Logger;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
+using Spell = YourRaidingBuddy.Core.Spell;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     internal static class PetManager
     {

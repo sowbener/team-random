@@ -1,5 +1,8 @@
 ﻿using Styx;
-namespace YourBuddy.Interfaces.GUI
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+namespace YourRaidingBuddy.Interfaces.GUI
 {
     partial class Interface
     {
@@ -20,6 +23,7 @@ namespace YourBuddy.Interfaces.GUI
             }
             base.Dispose(disposing);
         }
+
 
         public bool RebuildGUI()
         {
@@ -198,6 +202,8 @@ namespace YourBuddy.Interfaces.GUI
             this.ComboHkMockingBanner = new System.Windows.Forms.ComboBox();
             this.HkMockingBannerLabel = new System.Windows.Forms.Label();
             this.HotkeyPanel = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.StatusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPicture)).BeginInit();
             this.HotkeyPanel.SuspendLayout();
@@ -217,17 +223,18 @@ namespace YourBuddy.Interfaces.GUI
             this.GeneralGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.GeneralGrid.HelpForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.GeneralGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
-            this.GeneralGrid.Location = new System.Drawing.Point(3, 104);
+            this.GeneralGrid.Location = new System.Drawing.Point(3, 147);
             this.GeneralGrid.Name = "GeneralGrid";
             this.GeneralGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.GeneralGrid.SelectedItemWithFocusBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.GeneralGrid.SelectedItemWithFocusForeColor = System.Drawing.Color.Black;
-            this.GeneralGrid.Size = new System.Drawing.Size(334, 478);
+            this.GeneralGrid.Size = new System.Drawing.Size(334, 501);
             this.GeneralGrid.TabIndex = 1;
             this.GeneralGrid.ToolbarVisible = false;
             this.GeneralGrid.ViewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.GeneralGrid.ViewBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.GeneralGrid.ViewForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.GeneralGrid.Click += new System.EventHandler(this.GeneralGrid_Click);
             // 
             // StatusStrip
             // 
@@ -238,10 +245,10 @@ namespace YourBuddy.Interfaces.GUI
             this.StatusStrip.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusStripText});
-            this.StatusStrip.Location = new System.Drawing.Point(4, 585);
+            this.StatusStrip.Location = new System.Drawing.Point(3, 662);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
-            this.StatusStrip.Size = new System.Drawing.Size(1007, 23);
+            this.StatusStrip.Size = new System.Drawing.Size(1098, 23);
             this.StatusStrip.SizingGrip = false;
             this.StatusStrip.TabIndex = 2;
             this.StatusStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.StatusStrip_ItemClicked);
@@ -253,14 +260,14 @@ namespace YourBuddy.Interfaces.GUI
             this.StatusStripText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.StatusStripText.Name = "StatusStripText";
             this.StatusStripText.Size = new System.Drawing.Size(213, 18);
-            this.StatusStripText.Text = "YourBuddy - The best you can get!";
+            this.StatusStripText.Text = "YourRaidingBuddy - The best you can get!";
             // 
             // LogoPicture
             // 
             this.LogoPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
-            this.LogoPicture.Location = new System.Drawing.Point(4, 4);
+            this.LogoPicture.Location = new System.Drawing.Point(3, 2);
             this.LogoPicture.Name = "LogoPicture";
-            this.LogoPicture.Size = new System.Drawing.Size(1007, 97);
+            this.LogoPicture.Size = new System.Drawing.Size(1045, 139);
             this.LogoPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.LogoPicture.TabIndex = 0;
             this.LogoPicture.TabStop = false;
@@ -272,7 +279,7 @@ namespace YourBuddy.Interfaces.GUI
             // 
             this.debuggerpanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
             this.debuggerpanel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
-            this.debuggerpanel.Location = new System.Drawing.Point(9, 415);
+            this.debuggerpanel.Location = new System.Drawing.Point(8, 387);
             this.debuggerpanel.Name = "debuggerpanel";
             this.debuggerpanel.Size = new System.Drawing.Size(321, 26);
             this.debuggerpanel.TabIndex = 5;
@@ -284,7 +291,7 @@ namespace YourBuddy.Interfaces.GUI
             this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.SaveButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
-            this.SaveButton.Location = new System.Drawing.Point(9, 447);
+            this.SaveButton.Location = new System.Drawing.Point(8, 475);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(321, 23);
             this.SaveButton.TabIndex = 5;
@@ -309,12 +316,12 @@ namespace YourBuddy.Interfaces.GUI
             this.SpecGrid.HelpBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.SpecGrid.HelpForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.SpecGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
-            this.SpecGrid.Location = new System.Drawing.Point(340, 104);
+            this.SpecGrid.Location = new System.Drawing.Point(360, 147);
             this.SpecGrid.Name = "SpecGrid";
             this.SpecGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.SpecGrid.SelectedItemWithFocusBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
             this.SpecGrid.SelectedItemWithFocusForeColor = System.Drawing.Color.Black;
-            this.SpecGrid.Size = new System.Drawing.Size(334, 478);
+            this.SpecGrid.Size = new System.Drawing.Size(334, 501);
             this.SpecGrid.TabIndex = 4;
             this.SpecGrid.ToolbarVisible = false;
             this.SpecGrid.ViewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
@@ -699,6 +706,8 @@ namespace YourBuddy.Interfaces.GUI
             // HotkeyPanel
             // 
             this.HotkeyPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
+            this.HotkeyPanel.Controls.Add(this.button2);
+            this.HotkeyPanel.Controls.Add(this.button1);
             this.HotkeyPanel.Controls.Add(this.debuggerpanel);
             this.HotkeyPanel.Controls.Add(this.HkMockingBannerLabel);
             this.HotkeyPanel.Controls.Add(this.ComboHkMockingBanner);
@@ -725,18 +734,46 @@ namespace YourBuddy.Interfaces.GUI
             this.HotkeyPanel.Controls.Add(this.label2);
             this.HotkeyPanel.Controls.Add(this.HkDemoBannerLabel);
             this.HotkeyPanel.Controls.Add(this.ComboHkDemoralizingBanner);
-            this.HotkeyPanel.Location = new System.Drawing.Point(680, 105);
+            this.HotkeyPanel.Location = new System.Drawing.Point(717, 147);
             this.HotkeyPanel.Name = "HotkeyPanel";
-            this.HotkeyPanel.Size = new System.Drawing.Size(331, 477);
+            this.HotkeyPanel.Size = new System.Drawing.Size(331, 501);
             this.HotkeyPanel.TabIndex = 3;
             this.HotkeyPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HotkeyPanel_Paint_1);
+            // 
+            // button2
+            // 
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.button2.Location = new System.Drawing.Point(195, 427);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(126, 42);
+            this.button2.TabIndex = 30;
+            this.button2.Text = "Save Settings";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(197)))), ((int)(((byte)(114)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.1F);
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
+            this.button1.Location = new System.Drawing.Point(14, 427);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(126, 42);
+            this.button1.TabIndex = 29;
+            this.button1.Text = "Load Settings";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // Interface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(241)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(1014, 612);
+            this.ClientSize = new System.Drawing.Size(1050, 685);
             this.Controls.Add(this.SpecGrid);
             this.Controls.Add(this.HotkeyPanel);
             this.Controls.Add(this.StatusStrip);
@@ -746,7 +783,7 @@ namespace YourBuddy.Interfaces.GUI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Interface";
             this.ShowIcon = false;
-            this.Text = "YourBuddy";
+            this.Text = "YourRaidingBuddy";
             this.Load += new System.EventHandler(this.FuInterface_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Fu_GuiDragDrop);
             this.StatusStrip.ResumeLayout(false);
@@ -764,8 +801,7 @@ namespace YourBuddy.Interfaces.GUI
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.PictureBox LogoPicture;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.PropertyGrid SpecGrid;
-        private System.Windows.Forms.ToolStripStatusLabel StatusStripText;
+        internal System.Windows.Forms.PropertyGrid SpecGrid;
         private System.Windows.Forms.Panel debuggerpanel;
         private System.Windows.Forms.ComboBox ComboHkDemoralizingBanner;
         private System.Windows.Forms.Label HkDemoBannerLabel;
@@ -792,5 +828,8 @@ namespace YourBuddy.Interfaces.GUI
         private System.Windows.Forms.Label HkMockingBannerLabel;
         private System.Windows.Forms.Panel HotkeyPanel;
         internal System.Windows.Forms.Label HkTier4AbilityLabel;
+        private System.Windows.Forms.ToolStripStatusLabel StatusStripText;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }

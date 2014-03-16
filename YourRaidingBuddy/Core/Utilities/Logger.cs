@@ -1,6 +1,6 @@
-﻿using YourBuddy.Core.Helpers;
-using YourBuddy.Interfaces.Settings;
-using YourBuddy.Rotations;
+﻿using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Rotations;
 using Styx;
 using Styx.Common;
 using Styx.Helpers;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media;
 
-namespace YourBuddy.Core.Utilities
+namespace YourRaidingBuddy.Core.Utilities
 {
     static class Logger
     {
@@ -95,7 +95,7 @@ namespace YourBuddy.Core.Utilities
             if (LogQueue.Contains(string.Format(format, args))) return;
             LogQueue.Enqueue(string.Format(format, args));
 
-            Logging.Write(level, color, string.Format("[{0}]: {1}", YourBuddy.Root.YbName, format), args);
+            Logging.Write(level, color, string.Format("[{0}]: {1}", YourRaidingBuddy.Root.YbName, format), args);
         }
 
         public static void InitLog(string format, params object[] args)
@@ -182,7 +182,7 @@ namespace YourBuddy.Core.Utilities
 
         public static void WriteInfoToLogFile()
         {
-            WriteFile("YourBuddy: Diagnostic Logging");
+            WriteFile("YourRaidingBuddy: Diagnostic Logging");
             WriteFile("");
             WriteFile("{0} is the used revision.", Root.Revision);
             WriteFile("Current race {0} with {1} as spec and level {2}.", StyxWoW.Me.Race, StyxWoW.Me.Specialization.ToString().CamelToSpaced(), StyxWoW.Me.Level);
@@ -285,7 +285,7 @@ namespace YourBuddy.Core.Utilities
         public static void WriteFile(LogLevel ll, string message, params object[] args)
         {
             if (GlobalSettings.Instance.LogLevel >= LogLevel.Quiet)
-                Logging.WriteToFileSync(ll, "YourBuddy: " + message, args);
+                Logging.WriteToFileSync(ll, "YourRaidingBuddy: " + message, args);
         }
 
         public static void LogSettings(string desc, Settings set)

@@ -1,9 +1,9 @@
 ﻿using System;
-using YourBuddy.Core.Managers;
-using YourBuddy.Core.Utilities;
+using YourRaidingBuddy.Core.Managers;
+using YourRaidingBuddy.Core.Utilities;
 using Styx.CommonBot.Routines;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     class BotEvents
     {
@@ -13,7 +13,7 @@ namespace YourBuddy.Core.Helpers
                 return;
             HotKeyManager.RegisterKeys();
             LuaClass.DisableClickToMove();
-            Logger.DiagLogPu("YourBuddy: Started! (OnBotStarted)");
+            Logger.DiagLogPu("YourRaidingBuddy: Started! (OnBotStarted)");
         }
 
         public static void OnBotStopped(EventArgs args)
@@ -22,7 +22,7 @@ namespace YourBuddy.Core.Helpers
                 return;
             HotKeyManager.RemoveAllKeys();
             LuaClass.EnableClickToMove();
-            Logger.DiagLogPu("YourBuddy: Stopped! (OnBotStopped)");
+            Logger.DiagLogPu("YourRaidingBuddy: Stopped! (OnBotStopped)");
         }
 
         public static void OnBotChanged(EventArgs args)
@@ -31,7 +31,7 @@ namespace YourBuddy.Core.Helpers
                 return;
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
-            Logger.DiagLogPu("YourBuddy: Started! (OnBotChanged)");
+            Logger.DiagLogPu("YourRaidingBuddy: Started! (OnBotChanged)");
         }
     }
 }

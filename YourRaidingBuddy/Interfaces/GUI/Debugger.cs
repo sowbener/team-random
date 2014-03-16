@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using YourBuddy.Core;
+using YourRaidingBuddy.Core;
 using Styx;
 
-namespace YourBuddy.Interfaces.GUI
+namespace YourRaidingBuddy.Interfaces.GUI
 {
     public partial class DebuggerGui : Form
     {

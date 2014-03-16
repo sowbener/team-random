@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using YourBuddy.Core.Utilities;
+using YourRaidingBuddy.Core.Utilities;
 using Styx.CommonBot;
 using Styx.WoWInternals;
 using Styx.TreeSharp;
@@ -9,7 +9,7 @@ using CommonBehaviors.Actions;
 using Styx.WoWInternals.WoWObjects;
 using JetBrains.Annotations;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     // OK heres how it works. You cast the spell you want to track using
     //

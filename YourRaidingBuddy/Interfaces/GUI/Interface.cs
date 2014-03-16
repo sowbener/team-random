@@ -1,15 +1,18 @@
-﻿using YourBuddy.Core.Managers;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
+﻿using YourRaidingBuddy.Core.Managers;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
 using Styx;
 using Styx.Common;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Enum = YourBuddy.Core.Helpers.Enum;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
+using System.Drawing;
+using Styx.Helpers;
+using System.Xml.Linq;
 
-namespace YourBuddy.Interfaces.GUI
+namespace YourRaidingBuddy.Interfaces.GUI
 {
     public partial class Interface : Form
     {
@@ -29,6 +32,39 @@ namespace YourBuddy.Interfaces.GUI
                     break;
             }
         }
+
+        #region Button Click Actions
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            ButtonClick(button2);
+            SaveFile();
+            ButtonHoverOver(button2);
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+
+            ButtonClick(button1);
+            LoadFile();
+            ButtonHoverOver(button1);
+        }
+
+
+        private void ButtonHoverOver(Control button)
+        {
+            button.BackColor = Color.MediumPurple;
+            button.ForeColor = Color.White;
+        }
+
+        private void ButtonClick(Control button)
+        {
+            button.BackColor = Color.White;
+            button.ForeColor = Color.Purple;
+        }
+
+
+
+        #endregion
 
         /* Requirements for Combobox Enumerations */
         private static void SetComboBoxEnum(ComboBox cb, int e)
@@ -467,9 +503,9 @@ namespace YourBuddy.Interfaces.GUI
             SetComboBoxEnum(ComboHkPause, (int)SettingsH.Instance.PauseKeyChoice);
             SetComboBoxEnum(ComboHkSpecial, (int)SettingsH.Instance.SpecialKeyChoice);
 
-            if (File.Exists(Utilities.AssemblyDirectory + @"\Routines\YourBuddy\Interfaces\Images\RoutineLogo.png"))
+            if (File.Exists(Utilities.AssemblyDirectory + @"\Routines\YourRaidingBuddy\Interfaces\Images\RoutineLogo.jpg"))
                 LogoPicture.ImageLocation =
-                    string.Format(@"{0}\Routines\YourBuddy\Interfaces\Images\RoutineLogo.png",
+                    string.Format(@"{0}\Routines\YourRaidingBuddy\Interfaces\Images\RoutineLogo.jpg",
                                   Utilities.AssemblyDirectory);
         }
 
@@ -606,6 +642,177 @@ namespace YourBuddy.Interfaces.GUI
             new DebuggerGui().Show();
         }
 
+        public void SaveFile()
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Settings File|*.*",
+                Title = "Save Settings...",
+                InitialDirectory = string.Format("{0}\\Settings\\YourRaidingBuddy\\", Utilities.AssemblyDirectory),
+                DefaultExt = "xml",
+                FileName = "YourRaidingBuddy - " + StyxWoW.Me.Class + StyxWoW.Me.Specialization
+            };
+            var result = saveFileDialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                InternalSettings.Instance.SaveToFile(saveFileDialog.FileName);
+                SettingsH.Instance.SaveToFile(saveFileDialog.FileName);
+                if (SpecGrid.SelectedObject != null)
+                {
+                    ((Styx.Helpers.Settings)SpecGrid.SelectedObject).SaveToFile(saveFileDialog.FileName);
+                }
+
+                Logger.InitLog("Settings Saved to File.");
+            }
+            else
+            {
+                Logger.InitLog("Setting Save Cancelled.");
+            }
+        }
+
+       internal void LoadFile()
+        {
+            var openFileDialog = new OpenFileDialog
+
+            {
+                Filter = @"Setting File|*.xml",
+                Title = @"Load Settings from a File",
+                InitialDirectory = string.Format("{0}\\Routines\\YourRaidingBuddy\\Settings\\CustomSettings\\", Utilities.AssemblyDirectory),
+            };
+
+            var showDialog = openFileDialog.ShowDialog();
+
+            if (openFileDialog.FileName.Contains(".xml") && showDialog == DialogResult.OK)
+            {
+                try
+                {
+                    if (showDialog == DialogResult.Yes)
+                    {
+                        InternalSettings.Instance.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                    }
+                    else
+                    {
+                        switch (StyxWoW.Me.Specialization)
+                        {
+
+                            //Deathknight
+                            case WoWSpec.DeathKnightBlood:
+                                {
+                                    InternalSettings.Instance.Blood.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                    Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Deathknight Blood).");
+                                }
+                                break;
+
+                            case WoWSpec.DeathKnightFrost:
+                                {
+                                    InternalSettings.Instance.Frost.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                    Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Deathknight Frost).");
+                                }
+                                break;
+
+                            case WoWSpec.DeathKnightUnholy:
+                                InternalSettings.Instance.Unholy.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Deathknight Unholy).");
+                                break;
+
+                               //Paladin
+                            case WoWSpec.PaladinProtection:
+                                InternalSettings.Instance.Protection.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Paladin Protection).");
+                                break;
+                            case WoWSpec.PaladinRetribution:
+                                InternalSettings.Instance.Retribution.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Paladin Retribution).");
+                                break;
+
+                                //Rogue
+                            case WoWSpec.RogueAssassination:
+                                InternalSettings.Instance.Assassination.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Rogue Assassination).");
+                                break;
+                            case WoWSpec.RogueCombat:
+                                InternalSettings.Instance.Combat.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Rogue Combat).");
+                                break;
+                            case WoWSpec.RogueSubtlety:
+                                InternalSettings.Instance.Subtlety.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Rogue Subtlety).");
+                                break;
+
+                                //Monk
+                            case WoWSpec.MonkBrewmaster:
+                                InternalSettings.Instance.Brewmaster.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Monk Brewmaster).");
+                                break;
+                            case WoWSpec.MonkWindwalker:
+                                InternalSettings.Instance.Windwalker.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Monk Windwalker).");
+                                break;
+
+                                //Druid
+                            case WoWSpec.DruidBalance:
+                                InternalSettings.Instance.Retribution.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Druid Balance).");
+                                break;
+                            case WoWSpec.DruidFeral:
+                                InternalSettings.Instance.Retribution.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Druid Feral).");
+                                break;
+                           // case WoWSpec.DruidGuardian:
+                             //   InternalSettings.Instance.Guardian.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                          //      Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Druid Guardian).");
+                          //      break;
+
+
+                                //Hunter
+                            case WoWSpec.HunterBeastMastery:
+                                InternalSettings.Instance.Beastmastery.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Hunter BeastMastery).");
+                                break;
+                            case WoWSpec.HunterMarksmanship:
+                                InternalSettings.Instance.Marksmanship.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Hunter Marksmanship).");
+                                break;
+                            case WoWSpec.HunterSurvival:
+                                InternalSettings.Instance.Survival.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Hunter Survival).");
+                                break;
+
+                                //Shaman
+                            case WoWSpec.ShamanElemental:
+                                InternalSettings.Instance.Elemental.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Shaman Elemental).");
+                                break;
+                            case WoWSpec.ShamanEnhancement:
+                                InternalSettings.Instance.Enhancement.LoadFromXML(XElement.Load(openFileDialog.FileName));
+                                Logger.CombatLogWh("[YRB] Loaded specialization specifics from file (Shaman Enhancement).");
+                                break;
+
+
+                            default:
+                                Logger.CombatLogWh("[YRB] Invalid specialization!");
+                                break;
+                        }
+                    }
+
+                    FuInterface_Load(null, null);
+                    Logger.CombatLogWh("[YRB] Loaded file: {0}", openFileDialog.FileName);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(string.Format("Your current specialization is: {0}.\n\n You tried to load the following file, which is not suited for your current specialization:\n\n {1} \n\nPlease select the right specialization settings file.",
+                        StyxWoW.Me.Specialization.ToString().CamelToSpaced(), openFileDialog.FileName),
+                        @"YourRaidingBuddy - An Error Has Occured",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation,
+                        MessageBoxDefaultButton.Button1);
+                }
+            }
+        }
+
+
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             InternalSettings.Instance.Save();
@@ -615,7 +822,7 @@ namespace YourBuddy.Interfaces.GUI
             {
                 ((Styx.Helpers.Settings)SpecGrid.SelectedObject).Save();
             }
-            Logger.CombatLogOr("Settings for YourBuddy saved!");
+            Logger.CombatLogOr("Settings for YourRaidingBuddy saved!");
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             HotKeyManager.HotkeyTimer(500);
@@ -628,13 +835,13 @@ namespace YourBuddy.Interfaces.GUI
         private void Fu_MouseLeave(object sender, EventArgs e)
         {
             StatusStripText.Text = 
-                "YourBuddy - The best you can get!";
+                "YourRaidingBuddy - The best you can get!";
         }
 
         private void LogoPicture_MouseMove(object sender, MouseEventArgs e)
         {
             StatusStripText.Text =
-                "Click and hold to drag the YourBuddy User Interface.";
+                "Click and hold to drag the YourRaidingBuddy User Interface.";
         }
 
         private void SaveButton_MouseMove(object sender, MouseEventArgs e)
@@ -731,6 +938,21 @@ namespace YourBuddy.Interfaces.GUI
         }
 
         private void StatusStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void GeneralGrid_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }

@@ -1,4 +1,4 @@
-﻿namespace YourBuddy.Core.Helpers
+﻿namespace YourRaidingBuddy.Core.Helpers
 {
     public abstract class SpellBook
     {

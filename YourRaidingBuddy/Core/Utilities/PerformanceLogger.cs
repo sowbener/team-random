@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using YourBuddy.Interfaces.Settings;
-using Enum = YourBuddy.Core.Helpers.Enum;
+using YourRaidingBuddy.Interfaces.Settings;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
 
-namespace YourBuddy.Core.Utilities
+namespace YourRaidingBuddy.Core.Utilities
 {
     // CREDIT TO unifiedtrinity && Wulf
     [DebuggerStepThrough]

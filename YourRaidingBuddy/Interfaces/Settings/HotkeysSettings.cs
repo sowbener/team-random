@@ -1,10 +1,10 @@
 ﻿using System.Windows.Forms;
-using YourBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Helpers;
 using Styx.Common;
 using Styx.Helpers;
 using System.ComponentModel;
 
-namespace YourBuddy.Interfaces.Settings
+namespace YourRaidingBuddy.Interfaces.Settings
 {
     internal class SettingsH : Styx.Helpers.Settings
     {

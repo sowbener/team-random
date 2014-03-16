@@ -1,8 +1,8 @@
-﻿using YourBuddy.Core;
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Managers;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.GUI;
+﻿using YourRaidingBuddy.Core;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Managers;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.GUI;
 using System.Linq;
 using System.Collections.Generic;
 using JetBrains.Annotations;
@@ -14,33 +14,32 @@ using Styx.Helpers;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
-using G = YourBuddy.Rotations.Global;
-using WWM = YourBuddy.Rotations.Monk.Windwalker;
-using BMM = YourBuddy.Rotations.Monk.Brewmaster;
-using SR = YourBuddy.Rotations.Rogue.Subtlety;
-using AR = YourBuddy.Rotations.Rogue.Assassination;
-using CR = YourBuddy.Rotations.Rogue.Combat;
-using BD = YourBuddy.Rotations.Deathknight.Blood;
-using FD = YourBuddy.Rotations.Deathknight.Frost;
-using UD = YourBuddy.Rotations.Deathknight.Unholy;
-using PP = YourBuddy.Rotations.Paladin.Protection;
-using DF = YourBuddy.Rotations.Druid.Feral;
-using DB = YourBuddy.Rotations.Druid.Boomkin;
-using RP = YourBuddy.Rotations.Paladin.Retribution;
-using SV = YourBuddy.Rotations.Hunter.Survival;
-using BMH = YourBuddy.Rotations.Hunter.BeastMastery;
-using MM = YourBuddy.Rotations.Hunter.Marksmanship;
-using ES = YourBuddy.Rotations.Shaman.Enhancement;
-using EES = YourBuddy.Rotations.Shaman.Elemental;
+using G = YourRaidingBuddy.Rotations.Global;
+using WWM = YourRaidingBuddy.Rotations.Monk.Windwalker;
+using BMM = YourRaidingBuddy.Rotations.Monk.Brewmaster;
+using SR = YourRaidingBuddy.Rotations.Rogue.Subtlety;
+using AR = YourRaidingBuddy.Rotations.Rogue.Assassination;
+using CR = YourRaidingBuddy.Rotations.Rogue.Combat;
+using BD = YourRaidingBuddy.Rotations.Deathknight.Blood;
+using FD = YourRaidingBuddy.Rotations.Deathknight.Frost;
+using UD = YourRaidingBuddy.Rotations.Deathknight.Unholy;
+using PP = YourRaidingBuddy.Rotations.Paladin.Protection;
+using DF = YourRaidingBuddy.Rotations.Druid.Feral;
+using DB = YourRaidingBuddy.Rotations.Druid.Boomkin;
+using RP = YourRaidingBuddy.Rotations.Paladin.Retribution;
+using SV = YourRaidingBuddy.Rotations.Hunter.Survival;
+using BMH = YourRaidingBuddy.Rotations.Hunter.BeastMastery;
+using MM = YourRaidingBuddy.Rotations.Hunter.Marksmanship;
+using ES = YourRaidingBuddy.Rotations.Shaman.Enhancement;
+using EES = YourRaidingBuddy.Rotations.Shaman.Elemental;
 
 using System.Windows.Forms;
 using BotEvents = Styx.CommonBot.BotEvents;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using YourRaidingBuddy.Core.Helpers;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
 
 // HB API Documentation: http://docs.honorbuddy.com/
 
-namespace YourBuddy
+namespace YourRaidingBuddy
 {
     public class Root : CombatRoutine
     {
@@ -177,7 +176,7 @@ namespace YourBuddy
             DpsMeter.Initialize();
 
             if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) grabMainHandDPS();
-            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) YourBuddy.Rotations.Druid.CommonDruid.Initialize();
+            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) YourRaidingBuddy.Rotations.Druid.CommonDruid.Initialize();
 
             CombatLogHandler.Initialize();
             Spell.GcdInitialize();

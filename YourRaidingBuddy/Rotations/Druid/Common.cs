@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YourBuddy.Core;
+using YourRaidingBuddy.Core;
 using Styx;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using Lua = Styx.WoWInternals.Lua;
-using YourBuddy.Core.Helpers;
-using DF = YourBuddy.Rotations.Druid.Feral;
+using YourRaidingBuddy.Core.Helpers;
+using DF = YourRaidingBuddy.Rotations.Druid.Feral;
 
 
-namespace YourBuddy.Rotations.Druid
+namespace YourRaidingBuddy.Rotations.Druid
 {
     internal class CommonDruid
     {
-        private static bool _combatLogAttached;
         public static DateTime RipAppliedDateTime;
         public static double RealRipTimeLeft;
         public static double Ripextends;

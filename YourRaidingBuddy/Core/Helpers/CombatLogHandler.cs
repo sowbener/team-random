@@ -7,9 +7,9 @@ using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
 using Styx.WoWInternals;
-using DF = YourBuddy.Rotations.Druid.Feral;
+using DF = YourRaidingBuddy.Rotations.Druid.Feral;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     [UsedImplicitly]
     internal class CombatLogHandler

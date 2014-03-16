@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
-using Enum = YourBuddy.Core.Helpers.Enum;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
 
-namespace YourBuddy.Core.Managers
+namespace YourRaidingBuddy.Core.Managers
 {
     internal static class Updater
     {
@@ -40,7 +40,7 @@ namespace YourBuddy.Core.Managers
                     InternalSettings.Instance.General.CurrentRevision = remoteRev;
                     InternalSettings.Instance.General.Save();
 
-                    Logger.CombatLogOr("A new version of YourBuddy was installed. Please restart Honorbuddy.");
+                    Logger.CombatLogOr("A new version of YourRaidingBuddy was installed. Please restart Honorbuddy.");
                 }
                 else
                 {

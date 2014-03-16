@@ -1,22 +1,22 @@
 ﻿using CommonBehaviors.Actions;
-using YourBuddy.Core;
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Managers;
+using YourRaidingBuddy.Core;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Managers;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System.Windows.Forms;
-using G = YourBuddy.Rotations.Global;
-using I = YourBuddy.Core.Item;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using T = YourBuddy.Core.Managers.TalentManager;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
-using SH = YourBuddy.Interfaces.Settings.SettingsH;
-using U = YourBuddy.Core.Unit;
+using G = YourRaidingBuddy.Rotations.Global;
+using I = YourRaidingBuddy.Core.Item;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using T = YourRaidingBuddy.Core.Managers.TalentManager;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
+using SH = YourRaidingBuddy.Interfaces.Settings.SettingsH;
+using U = YourRaidingBuddy.Core.Unit;
 using Styx.CommonBot;
 using Styx.WoWInternals;
 
-namespace YourBuddy.Rotations.Rogue
+namespace YourRaidingBuddy.Rotations.Rogue
 {
     class Assassination
     {

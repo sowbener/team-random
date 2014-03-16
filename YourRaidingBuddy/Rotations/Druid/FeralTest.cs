@@ -1,23 +1,22 @@
 ﻿using CommonBehaviors.Actions;
-using YourBuddy.Core;
+using YourRaidingBuddy.Core;
 using System.Linq;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
 using System.Windows.Forms;
 using Styx.CommonBot;
-using Logger = YourBuddy.Core.Utilities.Logger;
-using LoggerP = YourBuddy.Core.Utilities.PerformanceLogger;
-using YourBuddy.Core.Managers;
-using G = YourBuddy.Rotations.Global;
-using SH = YourBuddy.Interfaces.Settings.SettingsH;
-using YourBuddy.Core.Helpers;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using U = YourBuddy.Core.Unit;
+using Logger = YourRaidingBuddy.Core.Utilities.Logger;
+using LoggerP = YourRaidingBuddy.Core.Utilities.PerformanceLogger;
+using YourRaidingBuddy.Core.Managers;
+using G = YourRaidingBuddy.Rotations.Global;
+using SH = YourRaidingBuddy.Interfaces.Settings.SettingsH;
 using YourRaidingBuddy.Core.Helpers;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using U = YourRaidingBuddy.Core.Unit;
 
-namespace YourBuddy.Rotations.Druid
+namespace YourRaidingBuddy.Rotations.Druid
 {
     class Feral
     {
@@ -262,8 +261,8 @@ namespace YourBuddy.Rotations.Druid
         {
             get
             {
-                double weaponDmg = YourBuddy.Root.dps;
-                return (5 * weaponDmg + 390)*YourBuddy.Root.Multiplier;
+                double weaponDmg = YourRaidingBuddy.Root.dps;
+                return (5 * weaponDmg + 390)*YourRaidingBuddy.Root.Multiplier;
             }
         }
 
@@ -275,9 +274,9 @@ namespace YourBuddy.Rotations.Druid
         {
             get
             {
-                double Rake_sAP = YourBuddy.Root.AP;
-                double Rake_sMastery = YourBuddy.Root.Mastery;
-                double Rake_sMult = YourBuddy.Root.Multiplier;
+                double Rake_sAP = YourRaidingBuddy.Root.AP;
+                double Rake_sMastery = YourRaidingBuddy.Root.Mastery;
+                double Rake_sMult = YourRaidingBuddy.Root.Multiplier;
                return (((99 + (Rake_sAP*0.3))*Rake_sMastery)*Rake_sMult);
             }
         }
@@ -286,9 +285,9 @@ namespace YourBuddy.Rotations.Druid
         {
             get
             {
-                double Rip_sAP = YourBuddy.Root.AP;
-                double Rip_sMastery = YourBuddy.Root.Mastery;
-                double Rip_sMult = YourBuddy.Root.Multiplier;
+                double Rip_sAP = YourRaidingBuddy.Root.AP;
+                double Rip_sMastery = YourRaidingBuddy.Root.Mastery;
+                double Rip_sMult = YourRaidingBuddy.Root.Multiplier;
                 return (((113*Rip_sMastery) + 320*5*Rip_sMastery + 0.0484*5*Rip_sAP*Rip_sMastery)*Rip_sMult);
             }
         }

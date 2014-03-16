@@ -1,11 +1,11 @@
-﻿using YourBuddy.Core.Utilities;
+﻿using YourRaidingBuddy.Core.Utilities;
 using Styx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Styx.Common;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     public class DamageTracker
     {

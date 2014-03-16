@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Styx.TreeSharp;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     /// <summary>
     ///   Implements a 'throttle' composite. This composite limits the number of times the child 

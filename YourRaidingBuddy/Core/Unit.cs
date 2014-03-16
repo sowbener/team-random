@@ -1,28 +1,26 @@
 ﻿
-using YourBuddy.Core.Helpers;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
-using YourBuddy.Rotations;
+using YourRaidingBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Rotations;
 using Styx;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Enum = YourBuddy.Core.Helpers.Enum;
-using U = YourBuddy.Core.Unit;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
+using U = YourRaidingBuddy.Core.Unit;
 using Styx.TreeSharp;
 using Styx.CommonBot;
-using G = YourBuddy.Rotations.Global;
+using G = YourRaidingBuddy.Rotations.Global;
 
-namespace YourBuddy.Core
+namespace YourRaidingBuddy.Core
 {
     internal static class Unit
     {
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static readonly Random Random = new Random();
-
-        public static WoWUnit VigilanceTarget;
 
         #region Unit Caching Functions
         /// <summary>
@@ -196,7 +194,7 @@ namespace YourBuddy.Core
         /// <returns>Viable unit to cast Vigilance on - Based on Settings</returns>
 
         /// <summary>
-        /// Retrieves the count (Integer) of melee units (5y) - Used in YourBuddy.Rotations.Global.InitializeCaching()
+        /// Retrieves the count (Integer) of melee units (5y) - Used in YourRaidingBuddy.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int AttackableMeleeUnitsCount;
         public static void GetAttackableMeleeUnitsCount()
@@ -212,7 +210,7 @@ namespace YourBuddy.Core
 
 
         /// <summary>
-        /// Retrieves the count (Integer & Float) of nearby units (8y) - Used in YourBuddy.Rotations.Global.InitializeCaching()
+        /// Retrieves the count (Integer & Float) of nearby units (8y) - Used in YourRaidingBuddy.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int NearbyAttackableUnitsCount;
         public static int NearbyAttackableUnitsCL;
@@ -231,7 +229,7 @@ namespace YourBuddy.Core
         }
 
         /// <summary>
-        /// Retrieves the count (Integer) of nearby units of my target (8y) - Used in YourBuddy.Rotations.Global.InitializeCaching()
+        /// Retrieves the count (Integer) of nearby units of my target (8y) - Used in YourRaidingBuddy.Rotations.Global.InitializeCaching()
         /// </summary>
         public static int NearbyTargetAttackableUnitsCount;
         public static void GetNearbyTargetAttackableUnitsCount()

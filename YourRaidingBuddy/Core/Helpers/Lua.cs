@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using YourBuddy.Core.Utilities;
-using YourBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Core.Utilities;
+using YourRaidingBuddy.Interfaces.Settings;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals;
 using Action = Styx.TreeSharp.Action;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
 
 // Credits for this code go out to the PureRotation Team!
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
     internal static class LuaClass
     {
@@ -203,18 +203,18 @@ namespace YourBuddy.Core.Helpers
             }
         }
 
-        public static YourBuddy.Core.Helpers.Enum.EclipseType GetEclipseDirection()
+        public static YourRaidingBuddy.Core.Helpers.Enum.EclipseType GetEclipseDirection()
         {
             var dir = Styx.WoWInternals.Lua.GetReturnVal<string>("return GetEclipseDirection();", 0);
 
             switch (dir)
             {
                 case "moon":
-                    return YourBuddy.Core.Helpers.Enum.EclipseType.Lunar;
+                    return YourRaidingBuddy.Core.Helpers.Enum.EclipseType.Lunar;
                 case "sun":
-                    return YourBuddy.Core.Helpers.Enum.EclipseType.Solar;
+                    return YourRaidingBuddy.Core.Helpers.Enum.EclipseType.Solar;
                 default:
-                    return YourBuddy.Core.Helpers.Enum.EclipseType.None;
+                    return YourRaidingBuddy.Core.Helpers.Enum.EclipseType.None;
             }
         }
 

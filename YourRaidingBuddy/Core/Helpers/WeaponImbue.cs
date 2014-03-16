@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YourBuddy.Core;
-using YourBuddy.Interfaces.Settings;
-using YourBuddy.Core.Helpers;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
-using SH = YourBuddy.Interfaces.Settings.SettingsH;
+using YourRaidingBuddy.Core;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Core.Helpers;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
+using SH = YourRaidingBuddy.Interfaces.Settings.SettingsH;
 using CommonBehaviors.Actions;
 using Styx;
 using Styx.CommonBot;
 using Styx.Pathing;
 using Styx.TreeSharp;
 
-namespace YourBuddy.Core.Helpers
+namespace YourRaidingBuddy.Core.Helpers
 {
 
     public static class WeaponImbue

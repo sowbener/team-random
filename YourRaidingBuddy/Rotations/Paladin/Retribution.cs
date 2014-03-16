@@ -1,24 +1,24 @@
 ﻿using CommonBehaviors.Actions;
-using YourBuddy.Core;
+using YourRaidingBuddy.Core;
 using System.Linq;
 using Styx;
 using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
-using SG = YourBuddy.Interfaces.Settings.InternalSettings;
+using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
 using System.Windows.Forms;
 using Styx.CommonBot;
-using Logger = YourBuddy.Core.Utilities.Logger;
-using LoggerP = YourBuddy.Core.Utilities.PerformanceLogger;
-using YourBuddy.Core.Managers;
-using G = YourBuddy.Rotations.Global;
-using SH = YourBuddy.Interfaces.Settings.SettingsH;
-using YourBuddy.Core.Helpers;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using YourBuddy.Interfaces.Settings;
-using U = YourBuddy.Core.Unit;
-using KP = YourBuddy.Core.Managers.HotKeyManager;
+using Logger = YourRaidingBuddy.Core.Utilities.Logger;
+using LoggerP = YourRaidingBuddy.Core.Utilities.PerformanceLogger;
+using YourRaidingBuddy.Core.Managers;
+using G = YourRaidingBuddy.Rotations.Global;
+using SH = YourRaidingBuddy.Interfaces.Settings.SettingsH;
+using YourRaidingBuddy.Core.Helpers;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using YourRaidingBuddy.Interfaces.Settings;
+using U = YourRaidingBuddy.Core.Unit;
+using KP = YourRaidingBuddy.Core.Managers.HotKeyManager;
 
-namespace YourBuddy.Rotations.Paladin
+namespace YourRaidingBuddy.Rotations.Paladin
 {
     class Retribution
     {

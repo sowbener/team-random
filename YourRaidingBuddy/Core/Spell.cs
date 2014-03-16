@@ -2,11 +2,11 @@
 // ReSharper disable CompareOfFloatsByEqualityOperator
 #define NO_LATENCY_ISSUES_WITH_GLOBAL_COOLDOWN
 using CommonBehaviors.Actions;
-using YourBuddy.Core.Helpers;
+using YourRaidingBuddy.Core.Helpers;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using YourBuddy.Core.Utilities;
+using YourRaidingBuddy.Core.Utilities;
 using Styx;
 using System;
 using Styx.CommonBot;
@@ -19,10 +19,10 @@ using System.Text;
 using Styx.Helpers;
 using Styx.Patchables;
 using Styx.WoWInternals.World;
-using Lua = YourBuddy.Core.Helpers.LuaClass;
-using Enum = YourBuddy.Core.Helpers.Enum;
+using Lua = YourRaidingBuddy.Core.Helpers.LuaClass;
+using Enum = YourRaidingBuddy.Core.Helpers.Enum;
 
-namespace YourBuddy.Core
+namespace YourRaidingBuddy.Core
 {
     internal static class Spell
     {
@@ -368,7 +368,7 @@ namespace YourBuddy.Core
 #if HONORBUDDY_GCD_IS_WORKING
             Logger.WriteDebug("GcdInitialize: using HonorBuddy GCD");
 #else
-            Logger.DebugLog("FixGlobalCooldownInitialize: using YourBuddy GCD");
+            Logger.DebugLog("FixGlobalCooldownInitialize: using YourRaidingBuddy GCD");
             switch (StyxWoW.Me.Class)
             {
                 case WoWClass.DeathKnight:
@@ -609,7 +609,7 @@ namespace YourBuddy.Core
             return new Decorator(
                 delegate(object a)
                 {
-                    if (!YourBuddy.Interfaces.Settings.InternalSettings.Instance.General.EnableRaidPartyBuffing)
+                    if (!YourRaidingBuddy.Interfaces.Settings.InternalSettings.Instance.General.EnableRaidPartyBuffing)
                         return false;
 
                     if (!cond(a))
@@ -633,7 +633,7 @@ namespace YourBuddy.Core
 
                     var ProvidablePlayerBuffs = new HashSet<int>();
 
-                    return players.Any(x => x.Distance2DSqr < 40 * 40 && ((!x.HasAnyAura(YourBuddy.Rotations.Global.LegacyoftheWhiteTiger) || !Me.HasAnyAura(YourBuddy.Rotations.Global.LegacyoftheWhiteTiger) && Me.Specialization == WoWSpec.MonkWindwalker) || !x.HasAnyAura(YourBuddy.Rotations.Global.LegacyoftheEmperor) || Me.HasAnyAura(YourBuddy.Rotations.Global.LegacyoftheEmperor) && !x.IsDead && !x.IsGhost && x.IsAlive));
+                    return players.Any(x => x.Distance2DSqr < 40 * 40 && ((!x.HasAnyAura(YourRaidingBuddy.Rotations.Global.LegacyoftheWhiteTiger) || !Me.HasAnyAura(YourRaidingBuddy.Rotations.Global.LegacyoftheWhiteTiger) && Me.Specialization == WoWSpec.MonkWindwalker) || !x.HasAnyAura(YourRaidingBuddy.Rotations.Global.LegacyoftheEmperor) || Me.HasAnyAura(YourRaidingBuddy.Rotations.Global.LegacyoftheEmperor) && !x.IsDead && !x.IsGhost && x.IsAlive));
                 },
                 new Sequence(
                     new Action(a => SpellManager.Cast(name))));

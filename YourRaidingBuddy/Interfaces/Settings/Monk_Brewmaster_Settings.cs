@@ -1,9 +1,9 @@
-﻿using YourBuddy.Core.Helpers;
+﻿using YourRaidingBuddy.Core.Helpers;
 using Styx.Helpers;
 using System.ComponentModel;
-using YourBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Interfaces.Settings;
 
-namespace YourBuddy.Interfaces.Settings
+namespace YourRaidingBuddy.Interfaces.Settings
 {
     internal class YbSettingsBMM : Styx.Helpers.Settings
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YourBuddy.Core;
-using YourBuddy.Interfaces.Settings;
-using YourBuddy.Core.Helpers;
+using YourRaidingBuddy.Core;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Core.Helpers;
 
-namespace YourBuddy.Core.Helpers 
+namespace YourRaidingBuddy.Core.Helpers 
 {
     using CommonBehaviors.Actions;
     using Styx;
