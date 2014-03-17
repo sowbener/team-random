@@ -1,4 +1,6 @@
-﻿namespace Tyrael.Shared
+﻿using Styx.CommonBot;
+
+namespace Tyrael.Shared
 {
     partial class TyraelInterface
     {
@@ -40,6 +42,7 @@
             this.checkChatOutput = new System.Windows.Forms.CheckBox();
             this.SaveButton = new System.Windows.Forms.Button();
             this.NamePanel = new System.Windows.Forms.Panel();
+            this.repnomnomnomlinklabel = new System.Windows.Forms.LinkLabel();
             this.TyraelForumTopicLabel = new System.Windows.Forms.LinkLabel();
             this.LabelName = new System.Windows.Forms.Label();
             this.TpsLabel = new System.Windows.Forms.Label();
@@ -78,14 +81,14 @@
             this.TPSTrackBar.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.TPSTrackBar.Location = new System.Drawing.Point(10, 2);
             this.TPSTrackBar.Maximum = 100;
-            this.TPSTrackBar.Minimum = 5;
+            this.TPSTrackBar.Minimum = 10;
             this.TPSTrackBar.Name = "TPSTrackBar";
             this.TPSTrackBar.Size = new System.Drawing.Size(742, 45);
             this.TPSTrackBar.SmallChange = 10;
             this.TPSTrackBar.TabIndex = 0;
             this.TPSTrackBar.TickFrequency = 5;
             this.TPSTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.TPSTrackBar.Value = 10;
+            this.TPSTrackBar.Value = 30;
             this.TPSTrackBar.Scroll += new System.EventHandler(this.TPSTrackBar_Scroll);
             // 
             // checkClicktoMove
@@ -152,9 +155,9 @@
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkPlugins.Location = new System.Drawing.Point(10, 165);
             this.checkPlugins.Name = "checkPlugins";
-            this.checkPlugins.Size = new System.Drawing.Size(116, 21);
+            this.checkPlugins.Size = new System.Drawing.Size(217, 21);
             this.checkPlugins.TabIndex = 4;
-            this.checkPlugins.Text = "Enable Plugins";
+            this.checkPlugins.Text = "Enable Plugins and AutoEquip";
             this.checkPlugins.UseVisualStyleBackColor = false;
             this.checkPlugins.CheckedChanged += new System.EventHandler(this.checkPlugins_CheckedChanged);
             this.checkPlugins.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
@@ -217,13 +220,14 @@
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save and Close";
             this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            this.SaveButton.Click += new System.EventHandler(this.savebutton_Click);
             this.SaveButton.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);
             this.SaveButton.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SaveButton_MouseMove);
             // 
             // NamePanel
             // 
             this.NamePanel.BackColor = System.Drawing.Color.White;
+            this.NamePanel.Controls.Add(this.repnomnomnomlinklabel);
             this.NamePanel.Controls.Add(this.TyraelForumTopicLabel);
             this.NamePanel.Controls.Add(this.LabelName);
             this.NamePanel.Location = new System.Drawing.Point(2, 2);
@@ -232,6 +236,22 @@
             this.NamePanel.TabIndex = 0;
             this.NamePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
             // 
+            // repnomnomnomlinklabel
+            // 
+            this.repnomnomnomlinklabel.ActiveLinkColor = System.Drawing.Color.SteelBlue;
+            this.repnomnomnomlinklabel.AutoSize = true;
+            this.repnomnomnomlinklabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.repnomnomnomlinklabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.repnomnomnomlinklabel.LinkColor = System.Drawing.Color.DodgerBlue;
+            this.repnomnomnomlinklabel.Location = new System.Drawing.Point(617, 3);
+            this.repnomnomnomlinklabel.Name = "repnomnomnomlinklabel";
+            this.repnomnomnomlinklabel.Size = new System.Drawing.Size(136, 17);
+            this.repnomnomnomlinklabel.TabIndex = 14;
+            this.repnomnomnomlinklabel.TabStop = true;
+            this.repnomnomnomlinklabel.Text = "Rep+ nomnomnom";
+            this.repnomnomnomlinklabel.VisitedLinkColor = System.Drawing.Color.DodgerBlue;
+            this.repnomnomnomlinklabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // TyraelForumTopicLabel
             // 
             this.TyraelForumTopicLabel.ActiveLinkColor = System.Drawing.Color.SteelBlue;
@@ -239,7 +259,7 @@
             this.TyraelForumTopicLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TyraelForumTopicLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.TyraelForumTopicLabel.LinkColor = System.Drawing.Color.DodgerBlue;
-            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(685, 21);
+            this.TyraelForumTopicLabel.Location = new System.Drawing.Point(680, 21);
             this.TyraelForumTopicLabel.Name = "TyraelForumTopicLabel";
             this.TyraelForumTopicLabel.Size = new System.Drawing.Size(73, 17);
             this.TyraelForumTopicLabel.TabIndex = 13;
@@ -451,7 +471,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(766, 314);
+            this.ClientSize = new System.Drawing.Size(765, 314);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel3);
@@ -515,6 +535,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button fastbutton;
         private System.Windows.Forms.LinkLabel TyraelForumTopicLabel;
+        private System.Windows.Forms.LinkLabel repnomnomnomlinklabel;
 
     }
 }
