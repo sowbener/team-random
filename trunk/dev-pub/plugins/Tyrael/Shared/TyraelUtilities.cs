@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using Styx;
+﻿using System.Timers;
 using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
@@ -8,29 +7,14 @@ using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Globalization;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace Tyrael.Shared
 {
     public class TyraelUtilities
     {
         #region Hotkeys
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern IntPtr GetActiveWindow();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern short GetAsyncKeyState(int vkey);
-
-        public static bool IsKeyAsyncDown(Keys key)
-        {
-            if (GetActiveWindow() != StyxWoW.Memory.Process.MainWindowHandle)
-                return false;
-
-            return key != Keys.None && (GetAsyncKeyState((int)key) & 0x8000) != 0;
-        }
-
         public static bool IsTyraelPaused { get; set; }
 
         public static void RegisterHotkeys()
@@ -44,6 +28,12 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
+
+                    if (TyraelSettings.Instance.CheckRaidWarningOutput)
+                    {
+                        Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Paused!\", ChatTypeInfo[\"RAID_WARNING\"]);");
+                    }
+
                     Logging.Write(Colors.Red, "[Tyrael] Rotation Paused!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
@@ -53,6 +43,12 @@ namespace Tyrael.Shared
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
+
+                    if (TyraelSettings.Instance.CheckRaidWarningOutput)
+                    {
+                        Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Resumed!\", ChatTypeInfo[\"GUILD\"]);");
+                    }
+
                     Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
                     TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
@@ -74,9 +70,78 @@ namespace Tyrael.Shared
         #region Click-To-Move (CTM)
         public static void ClickToMove()
         {
-            Lua.DoString(TyraelSettings.Instance.CheckClickToMove
-                ? "SetCVar('autoInteract', '1')"
-                : "SetCVar('autoInteract', '0')");
+            if (!TyraelSettings.Instance.CheckClickToMove)
+            {
+                Lua.DoString("SetCVar('autoInteract', '0')");
+            }
+
+            if (TyraelSettings.Instance.CheckClickToMove)
+            {
+                Lua.DoString("SetCVar('autoInteract', '1')");
+            }
+        }
+
+        public static void DisableClickToMove()
+        {
+            Lua.DoString("SetCVar('autoInteract', '0')");
+        }
+
+        public static void EnableClickToMove()
+        {
+            Lua.DoString("SetCVar('autoInteract', '1')");
+        }
+        #endregion
+
+        #region Logging
+        public static void WriteInfoToLogFile()
+        {
+            WriteFile("[Tyrael] Diagnostic Logging");
+            WriteFile("[Tyrael] Hardlock Enabled: {0}", GlobalSettings.Instance.UseFrameLock);
+            LogSettings("[Tyrael] Settings", TyraelSettings.Instance);
+        }
+
+        public static void WriteFile(string message)
+        {
+            WriteFile(LogLevel.Verbose, message);
+        }
+
+        public static void WriteFile(string message, params object[] args)
+        {
+            WriteFile(LogLevel.Verbose, message, args);
+        }
+
+        public static void WriteFile(LogLevel ll, string message, params object[] args)
+        {
+            if (GlobalSettings.Instance.LogLevel >= LogLevel.Quiet)
+                Logging.WriteToFileSync(ll, "[Tyrael] " + message, args);
+        }
+
+        public static void LogSettings(string desc, Settings set)
+        {
+            if (set == null)
+                return;
+
+            WriteFile("====== {0} ======", desc);
+            foreach (var kvp in set.GetSettings())
+            {
+                WriteFile("  {0}: {1}", kvp.Key, kvp.Value.ToString());
+            }
+            WriteFile("");
+        }
+
+        private static Timer _tyraelTimer;
+
+        internal static void LogTimer(int tickingtime)
+        {
+            _tyraelTimer = new Timer(tickingtime);
+            _tyraelTimer.Elapsed += OnTimedEvent;
+            _tyraelTimer.AutoReset = false;
+            _tyraelTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            WriteInfoToLogFile();
         }
         #endregion
 

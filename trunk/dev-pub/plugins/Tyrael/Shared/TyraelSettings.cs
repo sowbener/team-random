@@ -38,6 +38,9 @@ namespace Tyrael.Shared
         [Setting, DefaultValue(false)]
         public bool CheckPluginPulsing { get; set; }
 
+        [Setting, DefaultValue(false)]
+        public bool UseSoftLock { get; set; }
+
         [Setting, DefaultValue(TyraelUtilities.SvnUrl.Development)]
         public TyraelUtilities.SvnUrl SvnUrl { get; set; }
 
@@ -50,7 +53,7 @@ namespace Tyrael.Shared
 
         #region Manual Settings
         [Setting, DefaultValue(false)]
-        public bool UseSoftLock { get; set; }
+        public bool CheckRaidWarningOutput { get; set; }
 
         [Setting, DefaultValue(0)]
         public int CurrentRevision { get; set; }

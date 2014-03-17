@@ -16,7 +16,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 6, 0);
+        public static readonly Version Revision = new Version(5, 6, 2);
         public static LocalPlayer Me { get { return StyxWoW.Me; } }
         public static bool IsPaused;
 
@@ -49,22 +49,21 @@ namespace Tyrael
             get { return _root ?? (_root = CreateRoot()); }
         }
 
+        /// <summary>
+        /// Runs when the bot starts. Loads several Tyrael functions and sets some basic settings.
+        /// </summary>
         public override void Start()
         {
             try
             {
-                TyraelUpdater.CheckForUpdate();
-                TyraelSettings.Instance.Load();
+                InitializeComponents();
+                InitializePlugins();
 
-                TyraelUtilities.ClickToMove();
-                TyraelUtilities.StatCounter();
-                TyraelUtilities.RegisterHotkeys();
-
-                ProfileManager.LoadEmpty();
-                GlobalSettings.Instance.LogoutForInactivity = false;
-                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
-
-                PluginPulsing();
+                if (!GlobalSettings.Instance.UseFrameLock && !TyraelSettings.Instance.UseSoftLock)
+                {
+                    Logging.Write(Colors.White, "------------------------------------------");
+                    Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
+                }
 
                 Logging.Write(Colors.White, "------------------------------------------");
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
@@ -74,37 +73,46 @@ namespace Tyrael
                 Logging.Write(Colors.DodgerBlue, "[Tyrael] PureRotation Team");
                 Logging.Write(Colors.White, "-------------------------------------------\r\n");
             }
-            catch (Exception initExept)
+            catch (Exception startexception)
             {
-                Logging.WriteDiagnostic(initExept.ToString());
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", startexception);
             }
         }
 
+        /// <summary>
+        /// Runs when the bot stops. Unloads several Tyrael functions and resets basic settings.
+        /// </summary>
         public override void Stop()
         {
-            Logging.Write(Colors.White, "------------------------------------------");
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Removing hotkeys.");
-            TyraelUtilities.RemoveHotkeys();
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Reconfiguring Honorbuddy.");
-            GlobalSettings.Instance.LogoutForInactivity = true;
-            Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
-            Logging.Write(Colors.White, "-------------------------------------------\r\n");
-        }
-
-        public static void PluginPulsing()
-        {
-            if (TyraelSettings.Instance.CheckPluginPulsing)
+            try
             {
-                _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                Logging.Write(Colors.White, "------------------------------------------");
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Performing required actions.");
+                StopComponents();
+                Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
+                Logging.Write(Colors.White, "-------------------------------------------\r\n");
             }
-            else
+            catch (Exception stopexception)
             {
-                _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", stopexception);
             }
         }
         #endregion
 
-        #region Selectors
+        #region Privates & Internals
+        /// <summary>
+        /// SanityCheck - Checks if we are actually ingame and able to control the character.
+        /// </summary>
+        /// <returns>true / false</returns>
+        private static bool SanityCheckCombat()
+        {
+            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
+        }
+
+        /// <summary>
+        /// Actual Root Composite - Within this the RoutineManager runs the routines behaviors.
+        /// </summary>
+        /// <returns>Routines Behaviors</returns>
         private static Composite CreateRoot()
         {
             return new PrioritySelector(
@@ -118,14 +126,82 @@ namespace Tyrael
                     RoutineManager.Current.RestBehavior);
         }
 
-        private static bool SanityCheckCombat()
+        /// <summary>
+        /// Initializes all the required components for Tyrael to run.
+        /// </summary>
+        private static void InitializeComponents()
         {
-            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
+            try
+            {
+                TyraelUpdater.CheckForUpdate();
+
+                TyraelSettings.Instance.Load();
+
+                TyraelUtilities.ClickToMove();
+                TyraelUtilities.StatCounter();
+                TyraelUtilities.RegisterHotkeys();
+                TyraelUtilities.LogTimer(500);
+
+                ProfileManager.LoadEmpty();
+
+                GlobalSettings.Instance.LogoutForInactivity = false;
+                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+            }
+            catch (Exception initializecomponentsexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", initializecomponentsexception);
+            }
         }
 
+        /// <summary>
+        /// Stops components for Tyrael.
+        /// </summary>
+        private static void StopComponents()
+        {
+            try
+            {
+                TyraelUtilities.EnableClickToMove();
+                TyraelUtilities.RemoveHotkeys();
+
+                GlobalSettings.Instance.LogoutForInactivity = true;
+                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+            }
+            catch (Exception stopcomponentsexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", stopcomponentsexception);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the proper plugins based on the Setting CheckPluginPulsing.
+        /// </summary>
+        internal static void InitializePlugins()
+        {
+            try
+            {
+                if (TyraelSettings.Instance.CheckPluginPulsing)
+                {
+                    _pulseFlags = PulseFlags.CharacterManager | PulseFlags.InfoPanel | PulseFlags.Lua | PulseFlags.Objects | PulseFlags.Plugins;
+                }
+                else
+                {
+                    _pulseFlags = PulseFlags.InfoPanel | PulseFlags.Lua | PulseFlags.Objects;
+                }
+            }
+            catch (Exception initializepluginsexception)
+            {
+                Logging.WriteDiagnostic("[Tyrael] Error: {0}", initializepluginsexception);
+            }
+        }
+        #endregion
+
+        #region Softlock
+        /// <summary>
+        /// Used for Locking only the BotBase and Routine - Not HonorBuddy itself (Softlock). Only kicks in when HardLock isn't enabled.
+        /// </summary>
         private static Composite SelectLockMethod(params Composite[] children)
         {
-            return TyraelSettings.Instance.UseSoftLock ? new FrameLockSelector(children) : new PrioritySelector(children);
+            return TyraelSettings.Instance.UseSoftLock && !GlobalSettings.Instance.UseFrameLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
 
         public class FrameLockSelector : PrioritySelector
