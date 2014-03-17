@@ -154,9 +154,9 @@ namespace Tyrael.Shared
             this.checkPlugins.ForeColor = System.Drawing.Color.DodgerBlue;
             this.checkPlugins.Location = new System.Drawing.Point(10, 165);
             this.checkPlugins.Name = "checkPlugins";
-            this.checkPlugins.Size = new System.Drawing.Size(116, 21);
+            this.checkPlugins.Size = new System.Drawing.Size(217, 21);
             this.checkPlugins.TabIndex = 4;
-            this.checkPlugins.Text = "Enable Plugins";
+            this.checkPlugins.Text = "Enable Plugins and AutoEquip";
             this.checkPlugins.UseVisualStyleBackColor = false;
             this.checkPlugins.CheckedChanged += new System.EventHandler(this.checkPlugins_CheckedChanged);
             this.checkPlugins.MouseLeave += new System.EventHandler(this.TPSTrackBar_Scroll);

@@ -181,11 +181,11 @@ namespace Tyrael
             {
                 if (TyraelSettings.Instance.CheckPluginPulsing)
                 {
-                    _pulseFlags = PulseFlags.Plugins | PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                    _pulseFlags = PulseFlags.CharacterManager | PulseFlags.InfoPanel | PulseFlags.Lua | PulseFlags.Objects | PulseFlags.Plugins;
                 }
                 else
                 {
-                    _pulseFlags = PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel;
+                    _pulseFlags = PulseFlags.InfoPanel | PulseFlags.Lua | PulseFlags.Objects;
                 }
             }
             catch (Exception initializepluginsexception)
