@@ -118,6 +118,11 @@ namespace Tyrael.Shared
             System.Diagnostics.Process.Start("http://www.thebuddyforum.com/honorbuddy-forum/botbases/102004-bot-tyrael-raiding-botbase.html");
         }
 
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/reputation.php?do=addreputation&p=1002699");
+        }
+
         private void checkAutomaticUpdater_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables the automatic updater.");
