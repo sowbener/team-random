@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Xml.Linq;
 using FuryUnleashed.Core;
+using FuryUnleashed.Core.Helpers;
 using FuryUnleashed.Core.Managers;
 using FuryUnleashed.Core.Utilities;
 using FuryUnleashed.Interfaces.Settings;
@@ -693,6 +694,7 @@ namespace FuryUnleashed.Interfaces.GUI
                 MessageBox.Show("You have selected Constant as Interrupt mode.\r\n Due to the increased ban risk, I HIGHLY recommend using Random instead!");
             }
             //Unit.InitializeSmartTaunt();
+            DamageTracker.Initialize();
             HotKeyManager.RemoveAllKeys();
             HotKeyManager.RegisterKeys();
             HotKeyManager.HotkeyTimer(500);

@@ -100,17 +100,6 @@ namespace FuryUnleashed.Rotations
                     })));
         }
 
-        //internal static Composite EnragedRegenerationLogic()
-        //{
-        //    return new Action(ctx =>
-        //    {
-        //        Logger.CombatLogWh("Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
-        //        Spell.Cast(SpellBook.BerserkerRage, on => Me);
-        //        Spell.Cast(SpellBook.EnragedRegeneration, on => Me);
-        //        return RunStatus.Success;
-        //    });
-        //}
-
         internal static Composite CancelBladestormLogic()
         {
             return new PrioritySelector(
@@ -126,7 +115,7 @@ namespace FuryUnleashed.Rotations
                 new Decorator(ret => !EnrageAura && !BerserkerRageOnCooldown && !EnragedRegenerationOnCooldown,
                     new Action(ctx =>
                     {
-                        Logger.CombatLogPu("[FU] Using Berserker Rage to Enrage - Required for Emergency Enraged Regeneration");
+                        Logger.CombatLogPu("[FU] Using Berserker Rage to force Enrage - Required for Emergency Enraged Regeneration");
                         Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true);
                         Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => true, true);
                         return RunStatus.Failure;

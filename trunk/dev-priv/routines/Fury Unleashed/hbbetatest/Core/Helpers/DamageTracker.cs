@@ -20,7 +20,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (Unit.IgnoreDamageTracker)
+                if (Unit.DoNotStartDamageTracker)
                 {
                     return;
                 }
@@ -56,7 +56,7 @@ namespace FuryUnleashed.Core.Helpers
         {
             try
             {
-                if (Unit.IgnoreDamageTracker || _pulseDamageTracker == false)
+                if (Unit.DoNotStartDamageTracker || _pulseDamageTracker == false)
                 {
                     return;
                 }
