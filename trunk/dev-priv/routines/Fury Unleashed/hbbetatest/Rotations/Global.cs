@@ -116,8 +116,11 @@ namespace FuryUnleashed.Rotations
                     new Action(ctx =>
                     {
                         Logger.CombatLogPu("[FU] Using Berserker Rage to force Enrage - Required for Emergency Enraged Regeneration");
-                        Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true);
-                        Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => true, true);
+                        SpellManager.Cast(SpellBook.BerserkerRage);
+                        SpellManager.Cast(SpellBook.EnragedRegeneration);
+                        Logger.DiagLogWh("[FU] Emergency EnragedRegenerationLogic completed!");
+                        //Spell.Cast(SpellBook.BerserkerRage, on => Me, ret => true, true);
+                        //Spell.Cast(SpellBook.EnragedRegeneration, on => Me, ret => true, true);
                         return RunStatus.Failure;
                     })),
                 new Decorator(ret => !EnrageAura && BerserkerRageOnCooldown && !EnragedRegenerationOnCooldown,

@@ -325,11 +325,11 @@ namespace FuryUnleashed.Core
         /// <summary>
         /// Used in the Damage Tracker to determine by specialization to Initialize or not
         /// </summary>
-        internal static bool IgnoreDamageTracker
+        internal static bool DoNotStartDamageTracker
         {
             get
             {
-                using (new PerformanceLogger("IgnoreDamageTracker"))
+                using (new PerformanceLogger("DoNotStartDamageTracker"))
                 {
                     return StyxWoW.Me.Specialization == WoWSpec.WarriorArms;
                 }
