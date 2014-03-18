@@ -187,7 +187,7 @@ namespace YourRaidingBuddy.Rotations.Rogue
         static Composite SubOffensive()
         {
             return new PrioritySelector(
-                Spell.Cast("Shadow Blades", ret => (G.FindWeaknessOff || G.FindWeakness < 3) || (G.SpeedBuffsAura || Me.HasAura(105697)) && (
+                Spell.Cast("Shadow Blades", ret => ((G.FindWeaknessOff || G.FindWeakness < 3) || (G.SpeedBuffsAura || Me.HasAura(105697))) && (
                     (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.OnBlTwHr && (G.SpeedBuffsAura)) ||
                     (SG.Instance.Subtlety.ShadowBlades == Enum.AbilityTrigger.Always)

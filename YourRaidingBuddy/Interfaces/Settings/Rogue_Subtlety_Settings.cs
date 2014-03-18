@@ -14,6 +14,7 @@ namespace YourRaidingBuddy.Interfaces.Settings
 
 
         #region Ability Options
+
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]
         [Category("Subtlety - Ability Options")]
