@@ -76,6 +76,18 @@ namespace YourRaidingBuddy.Rotations
              }      
         }
 
+
+        internal static Composite InitializePreBuffBoomkin
+        {
+            get
+            {
+                return new PrioritySelector(
+                    new Decorator(ret => Me.Specialization == WoWSpec.DruidBalance && U.DefaultBuffCheck,
+                        new PrioritySelector(
+                   Spell.Cast("Moonkin Form", ret => !Me.HasAura("Moonkin Form")))));
+            }
+        }
+
         internal static Composite InitializePreBuffShaman
         {
             get

@@ -214,6 +214,8 @@ namespace YourRaidingBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),
                 new SwitchArgument<WoWSpec>(WoWSpec.ShamanElemental, G.InitializePreBuffShaman),
                 new SwitchArgument<WoWSpec>(WoWSpec.ShamanEnhancement, G.InitializePreBuffShaman),
+                new SwitchArgument<WoWSpec>(WoWSpec.PaladinProtection, G.InitializePreBuffPaladin),
+                new SwitchArgument<WoWSpec>(WoWSpec.DruidBalance, G.InitializePreBuffBoomkin),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, G.InitializePreBuffRogue));
         }
      
