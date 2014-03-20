@@ -115,7 +115,7 @@ namespace YourRaidingBuddy.Rotations.Monk
 
         private static bool NeedZenMeditation { get { return Me.HealthPercent <= MonkSettings.ZenMeditationPercent; } }
 
-        private static bool NeedBuildStacksForGaurd { get { return (Lua.PlayerChi >= 1 && !Me.HasAura(118636) || ((TigerPowerDown || TigerPowerRemains < 3) && (ShuffleSetting > 2 || KegSmashOnCooldown)); } }
+        private static bool NeedBuildStacksForGaurd { get { return (Lua.PlayerChi >= 1 && !Me.HasAura(118636)) || ((TigerPowerDown || TigerPowerRemains < 3) && (ShuffleSetting > 2 || KegSmashOnCooldown)); } }
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && TalentManager.IsSelected(16); } }
 
@@ -175,7 +175,7 @@ namespace YourRaidingBuddy.Rotations.Monk
             Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and
             Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
             new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder()),
-            Spell.Cast("Rushing Jade Wind", ret =>  ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
+            Spell.Cast("Rushing Jade Wind", ret =>  ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget)
                 );
 
         }
