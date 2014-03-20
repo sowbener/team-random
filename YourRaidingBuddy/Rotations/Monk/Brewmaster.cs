@@ -87,6 +87,12 @@ namespace YourRaidingBuddy.Rotations.Monk
 
         private static YbSettingsBMM MonkSettings { get { return SG.Instance.Brewmaster; } }
 
+        internal static double TigerPowerRemains { get { return Spell.GetMyAuraTimeLeft(125359, Me); } }
+
+        internal static bool TigerPowerDown { get { return !Me.HasAura(125359); } }
+
+        internal static bool KegSmashOnCooldown { get { return CooldownTracker.GetSpellCooldown(121253).TotalMilliseconds > 500; } }
+
         internal static double ShuffleSetting { get { return Spell.GetMyAuraTimeLeft(115307, Me); } }
 
         internal static bool CanUsePurifyingBrew { get { return ((Lua.PlayerChi >= 3 || Me.HasAura(138237)) && Me.HasAura(124273)) || (MonkSettings.PurifyingModerate && Lua.PurifyingBrew(124274) > (StyxWoW.Me.MaxHealth * MonkSettings.HPModerateScale / 100) && Me.HasAura(124274) && (ShuffleSetting > 4 || Lua.PlayerChi > 3)) || (MonkSettings.PurifyingLight && Me.HasAura(124275) && (ShuffleSetting > 10 || Lua.PlayerChi > 3)); } }
@@ -109,7 +115,7 @@ namespace YourRaidingBuddy.Rotations.Monk
 
         private static bool NeedZenMeditation { get { return Me.HealthPercent <= MonkSettings.ZenMeditationPercent; } }
 
-        private static bool NeedBuildStacksForGaurd { get { return Lua.PlayerChi >= 1 && !Me.HasAura(118636); } }
+        private static bool NeedBuildStacksForGaurd { get { return (Lua.PlayerChi >= 1 && !Me.HasAura(118636) || ((TigerPowerDown || TigerPowerRemains < 3) && (ShuffleSetting > 2 || KegSmashOnCooldown)); } }
 
         private static bool NeedRushingJadeWind { get { return Lua.PlayerChi >= 2 && TalentManager.IsSelected(16); } }
 
@@ -167,9 +173,9 @@ namespace YourRaidingBuddy.Rotations.Monk
             return new PrioritySelector(
             Spell.Cast("Blackout Kick", ret => Lua.PlayerChi >= 4),
             Spell.PreventDoubleCast("Tiger Palm", 1, ret => NeedBuildStacksForGaurd), // Build PG and
-            Spell.Cast("Rushing Jade Wind", ret =>  ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
             Spell.Cast("Touch of Death", ret => NeedTouchofDeath), // Touch of Death fosho
-            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder())
+            new Decorator(ret => Lua.PlayerChi < MaxChi, ChiBuilder()),
+            Spell.Cast("Rushing Jade Wind", ret =>  ShuffleSetting >= 5 && MonkSettings.UseRJWSingleTarget),
                 );
 
         }
@@ -202,7 +208,7 @@ namespace YourRaidingBuddy.Rotations.Monk
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
                      Spell.Cast("Guard", ret => Me.HealthPercent < MonkSettings.GuardHPPercent),
-                     Spell.Cast("Chi Wave", ret => Me.HealthPercent < 85),
+                     Spell.Cast("Chi Wave", ret => Me.HealthPercent < 85 && ShuffleSetting > 3),
                      new Decorator(ret => Me.HealthPercent < 100, HandleHealingCooldowns()),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
