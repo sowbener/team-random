@@ -208,7 +208,7 @@ namespace YourRaidingBuddy.Rotations.Monk
                      Spell.Cast("Purifying Brew", ret => CanUsePurifyingBrew), // Top Priority
                      Spell.Cast("Dampen Harm", ret => NeedDampenHarm),
                      Spell.Cast("Guard", ret => Me.HealthPercent < MonkSettings.GuardHPPercent),
-                     Spell.Cast("Chi Wave", ret => Me.HealthPercent < 85 && ShuffleSetting > 3),
+                     Spell.Cast("Chi Wave", ret => Me.HealthPercent < 85 && KegSmashOnCooldown),
                      new Decorator(ret => Me.HealthPercent < 100, HandleHealingCooldowns()),
                      Spell.Cast("Fortifying Brew", ret => NeedFortifyingBrew),
                      Spell.PreventDoubleCast("Zen Sphere", 0.5, ret => NeedZenSphere),
