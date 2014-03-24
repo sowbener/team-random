@@ -16,7 +16,7 @@ namespace FuryUnleashed.Core.Helpers
             // Tuple<AuraId, StackCount> (will want to double check AuraIds)
             Tuple.Create(143436, 1), // "Corrosive Blast" (http://wowhead.com/spell=143436)
             Tuple.Create(146124, 3), // "Self Doubt" (http://wowhead.com/spell=146124)
-            Tuple.Create(144358, 1), // "Wounded Pride" (http://wowhead.com/spell=144358)
+            Tuple.Create(144358, 0), // "Wounded Pride" (http://wowhead.com/spell=144358)
             Tuple.Create(146992, 3), // "Flames of Galakrond" (http://wowhead.com/spell=146992) - Possibly wrong.
             Tuple.Create(147029, 3), // "Flames of Galakrond" (http://wowhead.com/spell=147029) 
             Tuple.Create(144467, 2), // "Ignite Armor" (http://wowhead.com/spell=144467)
