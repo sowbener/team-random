@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tripper.Navigation</name>
+    </assembly>
+    <members>
+        <member name="M:Tripper.Navigation.IMeshProvider.GetTile(Tripper.MeshMisc.TileIdentifier)">
+            <summary>
+            Gets a tile at a specified ADT X and Y position. The mesh provider should take phases into account.
+            </summary>
+            <param name="wowTile"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tripper.Navigation.IMeshProvider.SetMap(System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Sets the maps this provider should provide meshes for. These are in order of priority.
+            </summary>
+            <param name="maps"></param>
+        </member>
+        <member name="P:Tripper.Navigation.IMeshProvider.IsTiled">
+            <summary>
+            Gets a value indicating whether this map is tiled.
+            </summary>
+        </member>
+        <member name="T:Tripper.Navigation.NavHelper">
+            <summary>
+            Provides tools required to use a navmesh.
+            </summary>
+        </member>
+        <member name="M:Tripper.Navigation.NavHelper.ToNav(Tripper.Tools.Math.Vector3)">
+            <summary>
+            Converts a World of Warcraft coordinate into a nav coordinate that can be used with a navmesh.
+            </summary>
+            <param name="wow"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tripper.Navigation.NavHelper.ToNav(Tripper.Tools.Math.Vector3@)">
+            <summary>
+            Converts a World of Warcraft coordinate into a nav coordinate that can be used with a navmesh.
+            </summary>
+            <param name="coordinate"></param>
+        </member>
+        <member name="M:Tripper.Navigation.NavHelper.ToNav(Tripper.Tools.Math.Vector3@,Tripper.Tools.Math.Vector3@)">
+            <summary>
+            Converts a World of Warcraft coordinate into a nav coordinate that can be used with a navmesh.
+            </summary>
+            <param name="wow"></param>
+            <param name="nav"></param>
+        </member>
+        <member name="M:Tripper.Navigation.NavHelper.ToWow(Tripper.Tools.Math.Vector3)">
+            <summary>
+            Converts a nav coordinate into a World of Warcraft coordinate.
+            </summary>
+            <param name="nav"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tripper.Navigation.NavHelper.ToWow(Tripper.Tools.Math.Vector3@)">
+            <summary>
+            Converts a nav coordinate into a World of Warcraft coordinate.
+            </summary>
+            <param name="coordinate"></param>
+        </member>
+        <member name="M:Tripper.Navigation.NavHelper.ToWow(Tripper.Tools.Math.Vector3@,Tripper.Tools.Math.Vector3@)">
+            <summary>
+            Converts a nav coordinate into a World of Warcraft coordinate.
+            </summary>
+            <param name="nav"></param>
+            <param name="wow"></param>
+        </member>
+        <member name="F:Tripper.Navigation.WowNavigator._loadedTiles">
+            <summary>
+            Gets a dictionary of loaded tiles.
+            <para>The stopwatch is a timer that is restarted every time the tile has been used.</para>
+            </summary>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.StoreQueryFilter(System.String,Tripper.Navigation.WowQueryFilter)">
+             <summary>
+            
+             </summary>
+             <param name="name"></param>
+             <param name="filter"></param>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.SetFactionQueryFilter(System.Boolean)">
+            <summary>
+            Sets the query filter to the default query filters for a specified faction.
+            </summary>
+            <param name="isHorde"></param>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.ResetQueryFilter">
+            <summary>
+            Sets the query filter to the default query filter.
+            </summary>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.UpdateTileUsageTime(Tripper.MeshMisc.TileIdentifier)">
+            <summary>
+            Sets the last used time for a specified tile to the current time.
+            </summary>
+            <param name="ti">The tile identifier.</param>
+            <returns>True if the tile usage time was updated; false otherwise.</returns>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.GarbageCollectTiles(System.Boolean)">
+            <summary>
+            Garbage collects currently loaded tiles by unloading all tiles that haven't been used in the last period of time, specified by the <see cref="P:Tripper.Navigation.WowNavigator.GarbageCollectTime"/> value.
+            </summary>
+            <param name="log">Whether to log if tiles were garbage collected.</param>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.ChangeMap(System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Changes the current maps.
+            </summary>
+            <param name="maps">The new maps, in order of priority.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="maps"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Thrown if one of the maps couldn't be loaded.</exception>
+        </member>
+        <member name="M:Tripper.Navigation.WowNavigator.UnloadTile(Tripper.MeshMisc.TileIdentifier)">
+            <summary>
+            Unloads the specified wow tile.
+            </summary>
+            <param name="wowTile"></param>
+            <returns>True if the tile is not loaded after this call; false otherwise.</returns>
+        </member>
+        <member name="E:Tripper.Navigation.WowNavigator.OnTileLoaded">
+            <summary>
+            Fired when an area of the world map is loaded. The tile passed in the event args corresponds to the ADT tile position.
+            </summary>
+        </member>
+        <member name="E:Tripper.Navigation.WowNavigator.OnSubTileLoaded">
+            <summary>
+            Fired when a Recast and Detour tile is loaded. There are 16 Recast and Detour tiles per ADT tile.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.WowNavigator.GarbageCollectTime">
+            <summary>
+            The time after which a tile will be unloaded, if it hasn't been used.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.WowNavigator.RandomizePaths">
+            <summary>
+            Gets a boolean that indicates whether paths generated should be randomized.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.WowNavigator.Mesh">
+            <summary>
+            The nav mesh used by this navigator. To use this, see <see cref="T:Tripper.Navigation.NavHelper"/>.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.WowNavigator.MeshQuery">
+            <summary>
+            The nav mesh query used by this navigator. To use this, see <see cref="T:Tripper.Navigation.NavHelper"/>.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.WowNavigator.PrimaryMapName">
+            <summary>
+            Gets the name of the primary map that is loaded, or null if no map is loaded.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.PathFindProgressEventArgs.PathFindStart">
+            <summary>
+            Gets a <see cref="T:System.DateTime"/> that represents the moment the path find was started.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.PathFindProgressEventArgs.RunTime">
+            <summary>
+            Gets the time the path find has been running.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.PathFindProgressEventArgs.Cancel">
+            <summary>
+            Gets or sets a boolean value indicating whether the current path find should be aborted and an early return should be done.
+            </summary>
+        </member>
+        <member name="P:Tripper.Navigation.PathFindResult.FailStep">
+            <summary>
+            If the path failed at generating, gets the step the path failed on.
+            </summary>
+        </member>
+    </members>
+</doc>
