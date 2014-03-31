@@ -14,10 +14,11 @@ namespace FuryUnleashed.Core.Helpers
     internal class CombatLogHandler
     {
         //Credits to Apoc and Wulf for this class!!!
-
+        internal static bool HandlerInitialized = false;
         internal static void Initialize()
         {
             Lua.Events.AttachEvent("COMBAT_LOG_EVENT_UNFILTERED", HandleCombatLogEvent);
+            HandlerInitialized = true;
         }
 
         public delegate void CombatLogEventHandler(CombatLogEventArgs args);
@@ -27,6 +28,7 @@ namespace FuryUnleashed.Core.Helpers
 
         internal static void Shutdown()
         {
+            HandlerInitialized = false;
             Lua.Events.DetachEvent("COMBAT_LOG_EVENT_UNFILTERED", HandleCombatLogEvent);
         }
 
@@ -322,6 +324,11 @@ namespace FuryUnleashed.Core.Helpers
 
         public static void Remove(string combatLogEventName)
         {
+            if (!HandlerInitialized)
+            {
+                return;
+            }
+
             List<CombatLogEventHandler> handlers;
 
             if (EventHandlers.TryGetValue(combatLogEventName, out handlers))

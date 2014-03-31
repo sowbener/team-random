@@ -274,13 +274,6 @@ namespace FuryUnleashed.Interfaces.Settings
         public int CheckAoENum { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(true)]
-        [Category("Arms - Selectable Options")]
-        [DisplayName("Enable Auto Attack")]
-        [Description("Enables auto attack, persistent combat while tabbing units.")]
-        public bool CheckAutoAttack { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Never)]
         [Category("Arms - Selectable Options")]
         [DisplayName("Shattering Throw")]
