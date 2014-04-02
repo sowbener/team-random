@@ -122,7 +122,7 @@ namespace YourRaidingBuddy.Rotations.Paladin
               Spell.Cast("Execution Sentence"),
               Spell.Cast("Holy Prism"),
               Spell.Cast("Holy Wrath"),
-              Spell.Cast("Consecration", ret => !TalentManager.HasGlyph("Consecration")),
+              Spell.Cast("Consecration", ret => ProtectionSettings.EnableConsecration && !TalentManager.HasGlyph("Consecration")),
               Spell.CastOnGround("Consecration", ret => Me.CurrentTarget != null ? Me.CurrentTarget.Location : Me.Location, ret => TalentManager.HasGlyph("Consecration")),
               Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && !ProtectionSettings.UseLightsHammerHotkey),
               Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc!=WoWPoint.Empty && ProtectionSettings.UseLightsHammerHotkey && KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice))

@@ -85,6 +85,13 @@ namespace YourRaidingBuddy.Interfaces.Settings
         public bool EnableWordofGlory { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(true)]
+        [Category("Protection - Ability Options")]
+        [DisplayName("Consecration Enable")]
+        [Description("Checked enables Consecration")]
+        public bool EnableConsecration { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(1)]
         [Category("Protection - Auto Taunting")]
         [DisplayName("Self Doubt Amalgam")]
