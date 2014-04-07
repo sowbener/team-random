@@ -158,10 +158,10 @@ namespace Tyrael
             {
                 TyraelSettings.Instance.Load();
                 TyraelUpdater.CheckForUpdate();
-                TyraelUtilities.ClickToMove();
                 TyraelUtilities.StatCounter();
                 TyraelUtilities.RegisterHotkeys();
                 TyraelUtilities.PrintInformation();
+                TyraelUtilities.ClickToMove();
 
                 ProfileManager.LoadEmpty();
 
