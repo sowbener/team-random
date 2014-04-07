@@ -1,5 +1,4 @@
-﻿using System.Timers;
-using Styx.Common;
+﻿using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
 using Styx.WoWInternals;
@@ -14,149 +13,191 @@ namespace Tyrael.Shared
 {
     public class TyraelUtilities
     {
-        #region Hotkeys
+        #region Click-To-Move (CTM) Functions
+        /// <summary>
+        /// Enables or Disables CTM when this void is executed.
+        /// </summary>
+        internal static void ClickToMove()
+        {
+            Lua.DoString(!TyraelSettings.Instance.ClickToMove
+                ? "SetCVar('autoInteract', '0')"
+                : "SetCVar('autoInteract', '1')");
+        }
+
+        /// <summary>
+        /// Disables CTM when this void is executed.
+        /// </summary>
+        internal static void DisableClickToMove()
+        {
+            Lua.DoString("SetCVar('autoInteract', '0')");
+        }
+
+        /// <summary>
+        /// Enables CTM when this void is executed.
+        /// </summary>
+        internal static void EnableClickToMove()
+        {
+            Lua.DoString("SetCVar('autoInteract', '1')");
+        }
+        #endregion
+
+        #region Hotkey Functions
+        /// <summary>
+        /// Global bool to see if Tyrael's Paused or not.
+        /// </summary>
         public static bool IsTyraelPaused { get; set; }
 
-        public static void RegisterHotkeys()
+        /// <summary>
+        /// Used for registering hotkeys within Honorbuddy using the HB API.
+        /// </summary>
+        internal static void RegisterHotkeys()
         {
             HotkeysManager.Register("Tyrael Pause", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice, hk =>
             {
                 IsTyraelPaused = !IsTyraelPaused;
                 if (IsTyraelPaused)
                 {
-                    if (TyraelSettings.Instance.CheckChatOutput)
+                    if (TyraelSettings.Instance.ChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFFE61515 Paused!')");
                     }
 
-                    if (TyraelSettings.Instance.CheckRaidWarningOutput)
+                    if (TyraelSettings.Instance.RaidWarningOutput)
                     {
                         Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Paused!\", ChatTypeInfo[\"RAID_WARNING\"]);");
                     }
 
                     Logging.Write(Colors.Red, "[Tyrael] Rotation Paused!");
-                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
+                    TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
                 else
                 {
-                    if (TyraelSettings.Instance.CheckChatOutput)
+                    if (TyraelSettings.Instance.ChatOutput)
                     {
                         Lua.DoString(@"print('[Tyrael] Rotation \124cFF15E61C Resumed!')");
                     }
 
-                    if (TyraelSettings.Instance.CheckRaidWarningOutput)
+                    if (TyraelSettings.Instance.RaidWarningOutput)
                     {
                         Lua.DoString("RaidNotice_AddMessage(RaidWarningFrame, \"[Tyrael] Rotation Resumed!\", ChatTypeInfo[\"GUILD\"]);");
                     }
 
                     Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
-                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
+                    TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
             });
         }
 
-        public static void RemoveHotkeys()
+        /// <summary>
+        /// Used for unregistering hotkeys within Honorbuddy using the HB API.
+        /// </summary>
+        internal static void RemoveHotkeys()
         {
             HotkeysManager.Unregister("Tyrael Pause");
         }
 
-        public static void ReRegisterHotkeys()
+        /// <summary>
+        /// Used for reregistering hotkeys within Honorbuddy using the HB API.
+        /// </summary>
+        internal static void ReRegisterHotkeys()
         {
             RemoveHotkeys();
             RegisterHotkeys();
         }
         #endregion
 
-        #region Click-To-Move (CTM)
-        public static void ClickToMove()
+        #region Logging Functions
+        internal static void DiagnosticLog(string message, params object[] args)
         {
-            if (!TyraelSettings.Instance.CheckClickToMove)
-            {
-                Lua.DoString("SetCVar('autoInteract', '0')");
-            }
-
-            if (TyraelSettings.Instance.CheckClickToMove)
-            {
-                Lua.DoString("SetCVar('autoInteract', '1')");
-            }
+            Write(LogLevel.Diagnostic, Colors.MediumPurple, message, args);
         }
 
-        public static void DisableClickToMove()
+        internal static void PrintLog(string message, params object[] args)
         {
-            Lua.DoString("SetCVar('autoInteract', '0')");
+            Write(LogLevel.Normal, ColorException(message) ? Colors.White : Colors.DodgerBlue, message, false, args);
         }
 
-        public static void EnableClickToMove()
+        internal static void WriteToFileLog(string message, params object[] args)
         {
-            Lua.DoString("SetCVar('autoInteract', '1')");
-        }
-        #endregion
-
-        #region Logging
-        public static void WriteInfoToLogFile()
-        {
-            WriteFile("[Tyrael] Diagnostic Logging");
-            WriteFile("[Tyrael] Hardlock Enabled: {0}", GlobalSettings.Instance.UseFrameLock);
-            LogSettings("[Tyrael] Settings", TyraelSettings.Instance);
+            Logging.WriteToFileSync(LogLevel.Verbose, "[Tyrael] " + message, args);
         }
 
-        public static void WriteFile(string message)
+        /// <summary>
+        /// Main void for logging purposes.
+        /// </summary>
+        /// <param name="level">Define the loglevel (Eg: LogLevel.Diagnostic).</param>
+        /// <param name="specificcolor">Define the color (Eg: Colors.OrangeRed).</param>
+        /// <param name="message">The actual message to print.</param>
+        /// <param name="args">Arguments to fill parameters.</param>
+        private static void Write(LogLevel level, Color specificcolor, string message, params object[] args)
         {
-            WriteFile(LogLevel.Verbose, message);
+            Logging.Write(level, specificcolor, string.Format("[Tyrael] {0}", message), args);
         }
 
-        public static void WriteFile(string message, params object[] args)
+        private static bool ColorException(string message)
         {
-            WriteFile(LogLevel.Verbose, message, args);
+            return message.Contains("------------------------------------------");
         }
 
-        public static void WriteFile(LogLevel ll, string message, params object[] args)
-        {
-            if (GlobalSettings.Instance.LogLevel >= LogLevel.Quiet)
-                Logging.WriteToFileSync(ll, "[Tyrael] " + message, args);
-        }
-
-        public static void LogSettings(string desc, Settings set)
+        /// <summary>
+        /// Prints the Settings files to the logfile of HB.
+        /// </summary>
+        private static void LogSettings(string desc, Settings set)
         {
             if (set == null)
+            {
                 return;
+            }
 
-            WriteFile("====== {0} ======", desc);
+            WriteToFileLog("====== {0} ======", desc);
             foreach (var kvp in set.GetSettings())
             {
-                WriteFile("  {0}: {1}", kvp.Key, kvp.Value.ToString());
+                WriteToFileLog("{0}: {1}", kvp.Key, kvp.Value.ToString());
             }
-            WriteFile("");
+            WriteToFileLog("");
         }
 
-        private static Timer _tyraelTimer;
-
-        internal static void LogTimer(int tickingtime)
+        /// <summary>
+        /// Prints required diagnostical information to the Logfile.
+        /// </summary>
+        internal static void PrintInformation(bool reinitialized = false)
         {
-            _tyraelTimer = new Timer(tickingtime);
-            _tyraelTimer.Elapsed += OnTimedEvent;
-            _tyraelTimer.AutoReset = false;
-            _tyraelTimer.Enabled = true;
-        }
-
-        private static void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            WriteInfoToLogFile();
+            WriteToFileLog("");
+            WriteToFileLog("------------------------------------------");
+            WriteToFileLog("Diagnostic Logging");
+            WriteToFileLog("");
+            WriteToFileLog("Tyrael Revision: {0}", Tyrael.Revision);
+            WriteToFileLog("");
+            WriteToFileLog("HardLock Enabled: {0}", GlobalSettings.Instance.UseFrameLock);
+            WriteToFileLog("Ticks per Second: {0}", CharacterSettings.Instance.TicksPerSecond);
+            WriteToFileLog("");
+            LogSettings("Settings", TyraelSettings.Instance);
+            WriteToFileLog("");
+            WriteToFileLog("------------------------------------------");
         }
         #endregion
 
         #region Others
-        public enum SvnUrl
+        /// <summary>
+        /// ENUM for the SVN URL.
+        /// </summary>
+        internal enum SvnUrl
         {
             Release,
             Development
         }
 
-        public static bool IsViable(WoWObject wowObject)
+        /// <summary>
+        /// Is the Object viable?
+        /// </summary>
+        internal static bool IsViable(WoWObject wowObject)
         {
             return (wowObject != null) && wowObject.IsValid;
         }
 
+        /// <summary>
+        /// Used for tracking Tyraels Popularity - No personal information is stored!
+        /// </summary>
         internal static void StatCounter()
         {
             try

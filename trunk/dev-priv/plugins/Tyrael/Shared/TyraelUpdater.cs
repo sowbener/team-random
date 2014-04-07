@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Windows.Media;
 
 namespace Tyrael.Shared
 {
@@ -18,41 +17,41 @@ namespace Tyrael.Shared
             : "https://subversion.assembla.com/svn/team-random/trunk/dev-pub/plugins/Tyrael/";
         private static readonly Regex LinkPattern = new Regex(@"<li><a href="".+"">(?<ln>.+(?:..))</a></li>", RegexOptions.CultureInvariant);
 
-        public static void CheckForUpdate()
+        internal static void CheckForUpdate()
         {
             CheckForUpdate(Utilities.AssemblyDirectory + "\\Bots\\Tyrael\\", true);
         }
 
-        public static void CheckForUpdate(string path, bool checkallow)
+        internal static void CheckForUpdate(string path, bool checkallow)
         {
             try
             {
-                Logging.Write(Colors.White, "\r\n------------------------------------------");
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Checking if the used revision is the latest, updates if it is not.");
+                TyraelUtilities.PrintLog("\r\n------------------------------------------");
+                TyraelUtilities.PrintLog("Checking if the used revision is the latest, updates if it is not.");
                 var remoteRev = GetRevision();
 
                 if (TyraelSettings.Instance.CurrentRevision != remoteRev)
                 {
-                    var logwrt = TyraelSettings.Instance.CheckAutoUpdate ? "[Tyrael] Downloading Update - Please wait." : "Please update manually!";
-                    Logging.Write(Colors.DodgerBlue, "[Tyrael] A new version was found.\r\n" + logwrt);
-                    if (!TyraelSettings.Instance.CheckAutoUpdate && checkallow) return;
+                    var logwrt = TyraelSettings.Instance.AutoUpdate ? "Downloading Update - Please wait." : "Please update manually!";
+                    TyraelUtilities.PrintLog("A new version was found.\r\n" + logwrt);
+                    if (!TyraelSettings.Instance.AutoUpdate && checkallow) return;
 
                     DownloadFilesFromSvn(new WebClient(), TyraelSvnUrl, path);
                     TyraelSettings.Instance.CurrentRevision = remoteRev;
                     TyraelSettings.Instance.Save();
 
-                    Logging.Write(Colors.DodgerBlue, "[Tyrael] A new version of Tyrael was installed. Please restart Honorbuddy.");
-                    Logging.Write(Colors.White, "------------------------------------------");
+                    TyraelUtilities.PrintLog("A new version of Tyrael was installed. Please restart Honorbuddy.");
+                    TyraelUtilities.PrintLog("------------------------------------------");
                 }
                 else
                 {
-                    Logging.Write(Colors.DodgerBlue, "[Tyrael] No updates found.");
-                    Logging.Write(Colors.White, "------------------------------------------");
+                    TyraelUtilities.PrintLog("No updates found.");
+                    TyraelUtilities.PrintLog("------------------------------------------");
                 }
             }
             catch (Exception ex)
             {
-                Logging.WriteDiagnostic(Colors.MediumPurple, "{0}.", ex);
+                TyraelUtilities.DiagnosticLog("CheckForUpdate Error: {0}.", ex);
             }
         }
 
@@ -63,7 +62,7 @@ namespace Tyrael.Shared
                 var wc = new WebClient();
                 var webData = wc.DownloadString(TyraelSvnUrl + "version");
 
-                Logging.WriteDiagnostic(Colors.MediumPurple, "[Tyrael] Current SVN version: {0}", int.Parse(webData));
+                TyraelUtilities.DiagnosticLog("Current SVN version: {0}", int.Parse(webData));
                 return int.Parse(webData);
             }
             catch (Exception)
@@ -103,18 +102,18 @@ namespace Tyrael.Shared
                         filePath = Path.Combine(path, file);
                     }
 
-                    Logging.WriteDiagnostic(Colors.MediumPurple, "[Tyrael] Downloading {0}.", file);
+                    TyraelUtilities.DiagnosticLog("Downloading {0}.", file);
 
                     try
                     {
                         if (!Directory.Exists(dirPath))
                             Directory.CreateDirectory(dirPath);
                         client.DownloadFile(newUrl, filePath);
-                        Logging.WriteDiagnostic(Colors.MediumPurple, "[Tyrael] Download {0} done.", file);
+                        TyraelUtilities.DiagnosticLog("Download {0} done.", file);
                     }
                     catch (Exception ex)
                     {
-                        Logging.WriteDiagnostic(Colors.MediumPurple, "{0}.", ex);
+                        TyraelUtilities.DiagnosticLog("DownloadFilesFromSvn Error: {0}.", ex);
                     }
                 }
             }
