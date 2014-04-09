@@ -143,7 +143,7 @@ namespace YourRaidingBuddy.Rotations.Monk
         internal static Composite WindwalkerOffensive()
         {
             return new PrioritySelector(
-               Spell.Cast("Tigereye Brew", ret => ((TigerEyeUseDown && TigerEyeBrewStacks == 20) || (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) && TigerEyeUseDown) || (TigerEyeUseDown && Lua.PlayerChi >= 2 && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || TigerEyeBrewStacks >= 15 || Me.CurrentTarget.HealthPercent < 20) && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1)) && (
+               Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && TigerEyeBrewStacks == 20) || (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) && TigerEyeUseDown) || (TigerEyeUseDown && Lua.PlayerChi >= 2 && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || TigerEyeBrewStacks >= 15 || Me.CurrentTarget.HealthPercent < 20) && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
                   (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                    (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.Always)
