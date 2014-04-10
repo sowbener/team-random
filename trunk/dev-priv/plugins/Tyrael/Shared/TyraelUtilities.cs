@@ -134,7 +134,7 @@ namespace Tyrael.Shared
 
         internal static void PrintLog(string message, params object[] args)
         {
-            Write(LogLevel.Normal, ColorException(message) ? Colors.White : Colors.DodgerBlue, message, false, args);
+            Write(LogLevel.Normal, ColorException(message) ? Colors.White : Colors.DodgerBlue, message, args);
         }
 
         internal static void WriteToFileLog(string message, params object[] args)

@@ -14,7 +14,7 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        internal static readonly Version Revision = new Version(5, 6, 3);
+        internal static readonly Version Revision = new Version(5, 6, 4);
         internal static bool IsPaused;
 
         private static Composite _root;
@@ -86,8 +86,8 @@ namespace Tyrael
                 }
 
                 TyraelUtilities.PrintLog("------------------------------------------");
-                TyraelUtilities.PrintLog("{0} is loaded.", RoutineManager.Current.Name);
-                TyraelUtilities.PrintLog("{0} {1} has been started.\r\n", Name, Revision);
+                TyraelUtilities.PrintLog("{0} {1} has been started.", Name, Revision);
+                TyraelUtilities.PrintLog("{0} is loaded.\r\n", RoutineManager.Current.Name);
                 TyraelUtilities.PrintLog("Special thanks to the following persons:");
                 TyraelUtilities.PrintLog("PureRotation Team");
                 TyraelUtilities.PrintLog("-------------------------------------------\r\n");
