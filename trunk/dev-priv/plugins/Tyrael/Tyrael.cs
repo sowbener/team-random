@@ -161,7 +161,7 @@ namespace Tyrael
                 TyraelUtilities.StatCounter();
                 TyraelUtilities.RegisterHotkeys();
                 TyraelUtilities.PrintInformation();
-                TyraelUtilities.ClickToMove(2500);
+                TyraelUtilities.ClickToMove(1000);
 
                 ProfileManager.LoadEmpty();
 
