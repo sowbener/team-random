@@ -152,8 +152,8 @@ namespace YourRaidingBuddy
             Logger.CombatLogOr("Thanks list is available in the topic!");
             Logger.CombatLogOr("Special thanks to: Stormchasing, Handnavi, Wulf, Mirabis, Nomnomnom, Chinajade, Weischbier & Millz!\r\n");
             Logger.CombatLogOr("Your specialization is " + Me.Specialization.ToString().CamelToSpaced() + " and your race is " + Me.Race + ".");
-            if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
-            else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
+           // if (!GlobalSettings.Instance.UseFrameLock) { Logger.CombatLogFb("Framelock is disabled - I suggest enabling it for optimal DPS/TPS!"); }
+           // else { Logger.CombatLogOr("Framelock is enabled at {0} ticks per second.\r\n", GlobalSettings.Instance.TicksPerSecond); }
             Logger.CombatLogWh("-------------------------------------------\r\n");
 
 
