@@ -85,10 +85,10 @@ namespace YourRaidingBuddy
                 TreeHooks.Instance.ClearAll();
                 Updater.CheckForUpdate();
 
-                if (GlobalSettings.Instance.UseFrameLock)
-                {
-                    MessageBox.Show("Hard Framelock is Enabled - I suggest disable it for Soft Lock in Tyrael!");
-                }
+              //  if (GlobalSettings.Instance.UseFrameLock)
+             //   {
+             //       MessageBox.Show("Hard Framelock is Enabled - I suggest disable it for Soft Lock in Tyrael!");
+            //    }
 
                 Unleash();
             }
