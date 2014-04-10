@@ -3,7 +3,6 @@ using Styx.CommonBot;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Media;
 using Styx.Helpers;
 
 namespace Tyrael.Shared
@@ -59,7 +58,7 @@ namespace Tyrael.Shared
                 return;
             }
             item = (CboItem)cb.Items[0];
-            Logging.Write("Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
+            TyraelUtilities.DiagnosticLog("Dialog Error: Combobox {0} does not have enum({1}) in list, defaulting to enum({2})",
                           cb.Name, e, item.E);
             cb.SelectedIndex = 0;
         }
@@ -74,107 +73,112 @@ namespace Tyrael.Shared
         {
             if (TreeRoot.IsRunning)
             {
-                Logging.Write(Colors.Red, "[Tyrael] You must stop the bot in order to enable or disable FrameLock Functions (HardLock & SoftLock).");
+                TyraelUtilities.PrintLog("We strongly advise to stop Honorbuddy before changing FrameLock settings (Hardlock and Softlock).");
             }
 
             InitializeComponent();
             GlobalSettings.Instance.Load();
-            CharacterSettings.Instance.Load();
             TyraelSettings.Instance.Load();
 
-            comboModifierKey.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Alt, "Alt - Mod"));
-            comboModifierKey.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Control, "Ctrl - Mod"));
-            comboModifierKey.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Shift, "Shift - Mod"));
-            comboModifierKey.Items.Add(new CboItem((int)ModifierKeys, "Disable HK"));
-            SetComboBoxEnum(comboModifierKey, (int)TyraelSettings.Instance.ModKeyChoice);
+            ModifierKeyComboBox.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Alt, "Alt - Mod"));
+            ModifierKeyComboBox.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Control, "Ctrl - Mod"));
+            ModifierKeyComboBox.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Shift, "Shift - Mod"));
+            ModifierKeyComboBox.Items.Add(new CboItem((int)ModifierKeys, "Disable HK"));
+            SetComboBoxEnum(ModifierKeyComboBox, (int)TyraelSettings.Instance.ModKeyChoice);
 
-            comboPauseKey.Items.Add(new CboItem((int)Keys.None, "Modifier Only"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.XButton1, "Mouse button 4"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.XButton2, "Mouse button 5"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.D1, "1 (no numpad)"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.D2, "2 (no numpad)"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.D3, "3 (no numpad)"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.Q, "Q"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.E, "E"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.R, "R"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.Z, "Z"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.X, "X"));
-            comboPauseKey.Items.Add(new CboItem((int)Keys.C, "C"));
-            SetComboBoxEnum(comboPauseKey, (int)TyraelSettings.Instance.PauseKeyChoice);
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.None, "Modifier Only"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.XButton1, "Mouse button 4"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.XButton2, "Mouse button 5"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.D1, "1 (no numpad)"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.D2, "2 (no numpad)"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.D3, "3 (no numpad)"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.Q, "Q"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.E, "E"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.R, "R"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.Z, "Z"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.X, "X"));
+            PauseKeyComboBox.Items.Add(new CboItem((int)Keys.C, "C"));
+            SetComboBoxEnum(PauseKeyComboBox, (int)TyraelSettings.Instance.PauseKeyChoice);
 
-            checkAutomaticUpdater.Checked = TyraelSettings.Instance.CheckAutoUpdate;
-            checkChatOutput.Checked = TyraelSettings.Instance.CheckChatOutput;
-            checkClicktoMove.Checked = TyraelSettings.Instance.CheckClickToMove;
-            CheckHardLock.Checked = GlobalSettings.Instance.UseFrameLock;
-            checkHealingMode.Checked = TyraelSettings.Instance.CheckHealingMode;
-            checkPlugins.Checked = TyraelSettings.Instance.CheckPluginPulsing;
-            checkSoftLock.Checked = TyraelSettings.Instance.UseSoftLock;
+            AutomaticUpdater.Checked = TyraelSettings.Instance.AutoUpdate;
+            ChatOutput.Checked = TyraelSettings.Instance.ChatOutput;
+            ClickToMove.Checked = TyraelSettings.Instance.ClickToMove;
+            HardLock.Checked = GlobalSettings.Instance.UseFrameLock;
+            ContinuesHealingMode.Checked = TyraelSettings.Instance.ContinuesHealingMode;
+            Plugins.Checked = TyraelSettings.Instance.PluginPulsing;
+            RaidWarningOutput.Checked = TyraelSettings.Instance.RaidWarningOutput;
+            SoftLock.Checked = TyraelSettings.Instance.UseSoftLock;
 
             HonorbuddyTps = CharacterSettings.Instance.TicksPerSecond;
-            TPSTrackBar.Value = CharacterSettings.Instance.TicksPerSecond;
+            TicksPerSecondTrackBar.Value = CharacterSettings.Instance.TicksPerSecond;
         }
 
-        private void TyraelForumTopicLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void FAQLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.thebuddyforum.com/honorbuddy-forum/botbases/102004-bot-tyrael-raiding-botbase.html");
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void RepLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.thebuddyforum.com/reputation.php?do=addreputation&p=1002699");
         }
 
-        private void checkAutomaticUpdater_MouseMove(object sender, MouseEventArgs e)
+        private void AutomaticUpdater_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables the automatic updater.");
         }
 
-        private void checkChatOutput_MouseMove(object sender, MouseEventArgs e)
+        private void ChatOutput_MouseMove(object sender, MouseEventArgs e)
         {
-            TpsLabel.Text = Text = string.Format("Enables chat output in WoW.");
+            TpsLabel.Text = Text = string.Format("Enables local Chat output in WoW.");
         }
 
-        private void checkClicktoMove_MouseMove(object sender, MouseEventArgs e)
+        private void RaidWarningOutput_MouseMove(object sender, MouseEventArgs e)
+        {
+            TpsLabel.Text = Text = string.Format("Enables local RaidWarning output in WoW.");
+        }
+
+        private void ClickToMove_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables click to move in WoW.");
         }
 
-        private void CheckHardLock_MouseMove(object sender, MouseEventArgs e)
+        private void HardLock_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables HonorBuddy's HardLock (Framelock)");
         }
 
-        private void checkSoftLock_MouseMove(object sender, MouseEventArgs e)
+        private void SoftLock_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables Tyrael's SoftLock (Framelock)");
         }
 
-        private void checkHealingMode_MouseMove(object sender, MouseEventArgs e)
+        private void ContinuesHealingMode_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables healing mode - Casts out of combat!");
         }
 
-        private void checkPlugins_MouseMove(object sender, MouseEventArgs e)
+        private void Plugins_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("Enables plugins in Tyrael.");
         }
 
-        private void slowbutton_MouseMove(object sender, MouseEventArgs e)
+        private void CasualPerformanceButton_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("15 TPS - Hardlock disabled - Softlock disabled.");
         }
 
-        private void normalbutton_MouseMove(object sender, MouseEventArgs e)
+        private void NormalPerformanceButton_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("30 TPS - Hardlock disabled - Softlock enabled.");
         }
 
-        private void fastbutton_MouseMove(object sender, MouseEventArgs e)
+        private void QuickPerformanceButton_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("60 TPS - Hardlock disabled - Softlock enabled.");
         }
 
-        private void extremebutton_MouseMove(object sender, MouseEventArgs e)
+        private void MaximumPerformanceButton_MouseMove(object sender, MouseEventArgs e)
         {
             TpsLabel.Text = Text = string.Format("90 TPS - Hardlock enabled - Softlock disabled.");
         }
@@ -195,114 +199,111 @@ namespace Tyrael.Shared
         {
             get
             {
-                return (byte)TPSTrackBar.Value;
+                return (byte)TicksPerSecondTrackBar.Value;
             }
             set
             {
                 Text = string.Format("Tyrael now ticks with {0} Ticks per Second.", (byte)value);
                 TpsLabel.Text = Text = string.Format("{0} Ticks per Second.", (byte)value);
-                TPSTrackBar.Value = (byte)value;
+                TicksPerSecondTrackBar.Value = (byte)value;
             }
         }
 
-        private bool TpsChanges
+        private bool TicksPerSecondChanges
         {
             get { return HonorbuddyTps != _var; }
         }
 
-        private void TPSTrackBar_Scroll(object sender, EventArgs e)
+        private void TicksPerSecondTrackBar_Scroll(object sender, EventArgs e)
         {
-            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
-            HonorbuddyTps = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TicksPerSecondTrackBar.Value;
+            HonorbuddyTps = (byte)TicksPerSecondTrackBar.Value;
         }
 
-        private void checkAutomaticUpdater_CheckedChanged(object sender, EventArgs e)
+        private void AutomaticUpdater_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.CheckAutoUpdate = checkAutomaticUpdater.Checked;
+            TyraelSettings.Instance.AutoUpdate = AutomaticUpdater.Checked;
         }
 
-        private void checkHardLock_CheckedChanged(object sender, EventArgs e)
+        private void HardLock_CheckedChanged(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.UseFrameLock = CheckHardLock.Checked;
+            GlobalSettings.Instance.UseFrameLock = HardLock.Checked;
         }
 
-        private void checkSoftLock_CheckedChanged(object sender, EventArgs e)
+        private void SoftLock_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.UseSoftLock = checkSoftLock.Checked;   
+            TyraelSettings.Instance.UseSoftLock = SoftLock.Checked;   
         }
 
-        private void checkChatOutput_CheckedChanged(object sender, EventArgs e)
+        private void ChatOutput_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.CheckChatOutput = checkChatOutput.Checked;
+            TyraelSettings.Instance.ChatOutput = ChatOutput.Checked;
         }
 
-        private void checkClicktoMove_CheckedChanged(object sender, EventArgs e)
+        private void ClickToMove_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.CheckClickToMove = checkClicktoMove.Checked;
+            TyraelSettings.Instance.ClickToMove = ClickToMove.Checked;
         }
 
-        private void checkHealingMode_CheckedChanged(object sender, EventArgs e)
+        private void ContinuesHealingMode_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.CheckHealingMode = checkHealingMode.Checked;
+            TyraelSettings.Instance.ContinuesHealingMode = ContinuesHealingMode.Checked;
         }
 
-        private void checkPlugins_CheckedChanged(object sender, EventArgs e)
+        private void Plugins_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.CheckPluginPulsing = checkPlugins.Checked;
+            TyraelSettings.Instance.PluginPulsing = Plugins.Checked;
         }
 
-        private void comboModifierKey_SelectedIndexChanged(object sender, EventArgs e)
+        private void RaidWarningOutput_CheckedChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.ModKeyChoice = (ModifierKeys)GetComboBoxEnum(comboModifierKey);
+            TyraelSettings.Instance.RaidWarningOutput = RaidWarningOutput.Checked;
         }
 
-        private void comboPauseKey_SelectedIndexChanged(object sender, EventArgs e)
+        private void ModifierKeyComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TyraelSettings.Instance.PauseKeyChoice = (Keys)GetComboBoxEnum(comboPauseKey);
+            TyraelSettings.Instance.ModKeyChoice = (ModifierKeys)GetComboBoxEnum(ModifierKeyComboBox);
+        }
+
+        private void PauseKeyComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TyraelSettings.Instance.PauseKeyChoice = (Keys)GetComboBoxEnum(PauseKeyComboBox);
         }
 
         private void CloseFormLogging()
         {
-            Logging.Write(Colors.White, "------------------------------------------");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckAutoUpdate
-                    ? "[Tyrael] Automatic Updater is enabled!"
-                    : "[Tyrael] Automatic Updater is disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckChatOutput
-                    ? "[Tyrael] ChatOutput enabled!"
-                    : "[Tyrael] ChatOutput disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckClickToMove
-                    ? "[Tyrael] Click to Move enabled!"
-                    : "[Tyrael] Click to Move disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                GlobalSettings.Instance.UseFrameLock
-                    ? "[Tyrael] HardLock (Framelock) enabled!"
-                    : "[Tyrael] HardLock (Framelock) disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.UseSoftLock
-                    ? "[Tyrael] SoftLock (Framelock) enabled!"
-                    : "[Tyrael] SoftLock (Framelock) disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckHealingMode
-                    ? "[Tyrael] Continues Healing mode enabled!"
-                    : "[Tyrael] Continues Healing mode disabled!");
-            Logging.Write(Colors.DodgerBlue,
-                TyraelSettings.Instance.CheckPluginPulsing
-                    ? "[Tyrael] Plugins are enabled!"
-                    : "[Tyrael] Plugins are disabled!");
+            TyraelUtilities.PrintLog("------------------------------------------");
+            TyraelUtilities.PrintLog(TyraelSettings.Instance.AutoUpdate
+                ? "Automatic Updater is enabled!"
+                : "Automatic Updater is disabled!");
+            TyraelUtilities.PrintLog(TyraelSettings.Instance.ChatOutput
+                ? "ChatOutput enabled!"
+                : "ChatOutput disabled!");
+            TyraelUtilities.PrintLog(TyraelSettings.Instance.ClickToMove
+                ? "Click to Move enabled!"
+                : "Click to Move disabled!");
+            TyraelUtilities.PrintLog(GlobalSettings.Instance.UseFrameLock
+                ? "HardLock (Framelock) enabled!"
+                : "HardLock (Framelock) disabled!");
+            TyraelUtilities.PrintLog(TyraelSettings.Instance.UseSoftLock
+                ? "SoftLock (Framelock) enabled!"
+                : "SoftLock (Framelock) disabled!");
+            TyraelUtilities.PrintLog(TyraelSettings.Instance.ContinuesHealingMode
+                ? "Continues Healing mode enabled!"
+                : "Continues Healing mode disabled!");
+            TyraelUtilities.PrintLog(TyraelSettings.Instance.PluginPulsing
+                ? "Plugins are enabled!"
+                : "Plugins are disabled!");
 
-            Logging.Write(Colors.DodgerBlue,
-                    "[Tyrael] {0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
+            TyraelUtilities.PrintLog("{0} is the pause key, with {1} as modifier key.", TyraelSettings.Instance.PauseKeyChoice, TyraelSettings.Instance.ModKeyChoice);
 
-            if (TpsChanges)
-                Logging.Write(Colors.DodgerBlue,
-                        "[Tyrael] New TPS at {0} saved!", HonorbuddyTps);
+            if (TicksPerSecondChanges)
+            {
+                TyraelUtilities.PrintLog("New TPS at {0} saved!", HonorbuddyTps);
+            }
 
-            Logging.Write(Colors.DodgerBlue,
-                    "[Tyrael] Interface saved and closed!");
-            Logging.Write(Colors.White, "------------------------------------------");
+            TyraelUtilities.PrintLog("Interface saved and closed!");
+            TyraelUtilities.PrintLog("------------------------------------------");
         }
 
         private void SaveSettings()
@@ -310,8 +311,9 @@ namespace Tyrael.Shared
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
 
-            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ClickToMove(1000);
             TyraelUtilities.ReRegisterHotkeys();
+            TyraelUtilities.PrintInformation();
             Tyrael.InitializePlugins();
 
             TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond;
@@ -321,49 +323,49 @@ namespace Tyrael.Shared
             Close();
         }
 
-        private void savebutton_Click(object sender, EventArgs e)
+        private void SaveandCloseButton_Click(object sender, EventArgs e)
         {
             SaveSettings();
         }
 
-        private void slowbutton_Click(object sender, EventArgs e)
+        private void CasualPerformanceButton_Click(object sender, EventArgs e)
         {
-            TPSTrackBar.Value = 15;
+            TicksPerSecondTrackBar.Value = 15;
 
-            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TicksPerSecondTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = false;
 
             SaveSettings();
         }
 
-        private void normalbutton_Click(object sender, EventArgs e)
+        private void NormalPerformanceButton_Click(object sender, EventArgs e)
         {
-            TPSTrackBar.Value = 30;
+            TicksPerSecondTrackBar.Value = 30;
 
-            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TicksPerSecondTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = true;
 
             SaveSettings();
         }
 
-        private void fastbutton_Click(object sender, EventArgs e)
+        private void QuickPerformanceButton_Click(object sender, EventArgs e)
         {
-            TPSTrackBar.Value = 60;
+            TicksPerSecondTrackBar.Value = 60;
 
-            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TicksPerSecondTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = true;
 
             SaveSettings();
         }
 
-        private void extremebutton_Click(object sender, EventArgs e)
+        private void MaximumPerformanceButton_Click(object sender, EventArgs e)
         {
-            TPSTrackBar.Value = 90;
+            TicksPerSecondTrackBar.Value = 90;
 
-            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TicksPerSecondTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
             TyraelSettings.Instance.UseSoftLock = false;
 
