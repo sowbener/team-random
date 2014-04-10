@@ -1,6 +1,5 @@
 ﻿using CommonBehaviors.Actions;
 using Styx;
-using Styx.Common;
 using Styx.CommonBot;
 using Styx.CommonBot.Profiles;
 using Styx.CommonBot.Routines;
@@ -9,48 +8,70 @@ using Styx.TreeSharp;
 using Styx.WoWInternals.WoWObjects;
 using System;
 using System.Windows.Forms;
-using System.Windows.Media;
 using Tyrael.Shared;
 
 namespace Tyrael
 {
     public class Tyrael : BotBase
     {
-        public static readonly Version Revision = new Version(5, 6, 2);
-        public static LocalPlayer Me { get { return StyxWoW.Me; } }
-        public static bool IsPaused;
-
+		public static bool IsPaused;
+		
+        internal static readonly Version Revision = new Version(5, 6, 4);
+        
         private static Composite _root;
         private static PulseFlags _pulseFlags;
 
+        /// <summary>
+        /// Returns Me as StyxWoW.Me.
+        /// </summary>
+        internal static LocalPlayer Me
+        {
+            get { return StyxWoW.Me; }
+        }
+
         #region Overrides
+        /// <summary>
+        /// Returns the Name of the BotBase.
+        /// </summary>
         public override string Name
         {
             get { return "Tyrael"; }
         }
 
+        /// <summary>
+        /// Returns the requires PulseFlags for the BotBase.
+        /// </summary>
         public override PulseFlags PulseFlags
         {
             get { return !TyraelUtilities.IsTyraelPaused ? _pulseFlags : PulseFlags.Objects | PulseFlags.Lua | PulseFlags.InfoPanel; }
         }
 
+        /// <summary>
+        /// Returns the GUI of the BotBase on button press.
+        /// </summary>
         public override Form ConfigurationForm
         {
             get { return new TyraelInterface(); }
         }
 		
+        /// <summary>
+        /// Forcefully disable the profile requirements.
+        /// </summary>
 		public override bool RequiresProfile
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Creating the Root Composite - The magic happens within this composite.
+        /// </summary>
         public override Composite Root
         {
             get { return _root ?? (_root = CreateRoot()); }
         }
 
         /// <summary>
-        /// Runs when the bot starts. Loads several Tyrael functions and sets some basic settings.
+        /// Runs when the BotBase is started - Initializes several basic functions.
         /// </summary>
         public override void Start()
         {
@@ -61,40 +82,38 @@ namespace Tyrael
 
                 if (!GlobalSettings.Instance.UseFrameLock && !TyraelSettings.Instance.UseSoftLock)
                 {
-                    Logging.Write(Colors.White, "------------------------------------------");
-                    Logging.Write(Colors.Red, "[Tyrael] HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
+                    TyraelUtilities.PrintLog("------------------------------------------");
+                    TyraelUtilities.PrintLog("HardLock and SoftLock are both disabled - For optimal DPS/HPS I suggest enabling ONE of them.");
                 }
 
-                Logging.Write(Colors.White, "------------------------------------------");
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} is loaded.", RoutineManager.Current.Name);
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] {0} {1} has been started.", Name, Revision);
-                Logging.Write(Colors.DodgerBlue, "\r\n");
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Special thanks to the following persons:");
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] PureRotation Team");
-                Logging.Write(Colors.White, "-------------------------------------------\r\n");
+                TyraelUtilities.PrintLog("------------------------------------------");
+                TyraelUtilities.PrintLog("{0} {1} has been started.", Name, Revision);
+                TyraelUtilities.PrintLog("{0} is loaded.\r\n", RoutineManager.Current.Name);
+                TyraelUtilities.PrintLog("Special thanks to the following persons:");
+                TyraelUtilities.PrintLog("PureRotation Team");
+                TyraelUtilities.PrintLog("-------------------------------------------\r\n");
             }
             catch (Exception startexception)
             {
-                Logging.WriteDiagnostic("[Tyrael] Error: {0}", startexception);
+                TyraelUtilities.DiagnosticLog("Start() Error: {0}", startexception);
             }
         }
 
         /// <summary>
-        /// Runs when the bot stops. Unloads several Tyrael functions and resets basic settings.
+        /// Runs when the BotBase is stopped - Stops several basic functions.
         /// </summary>
         public override void Stop()
         {
             try
             {
-                Logging.Write(Colors.White, "------------------------------------------");
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Performing required actions.");
+                TyraelUtilities.PrintLog("------------------------------------------");
+                TyraelUtilities.PrintLog("Shutdown - Performing required actions.");
                 StopComponents();
-                Logging.Write(Colors.DodgerBlue, "[Tyrael] Shutdown - Complete.");
-                Logging.Write(Colors.White, "-------------------------------------------\r\n");
+                TyraelUtilities.PrintLog("-------------------------------------------\r\n");
             }
             catch (Exception stopexception)
             {
-                Logging.WriteDiagnostic("[Tyrael] Error: {0}", stopexception);
+                TyraelUtilities.DiagnosticLog("Stop() Error: {0}", stopexception);
             }
         }
         #endregion
@@ -103,16 +122,21 @@ namespace Tyrael
         /// <summary>
         /// SanityCheck - Checks if we are actually ingame and able to control the character.
         /// </summary>
-        /// <returns>true / false</returns>
         private static bool SanityCheckCombat()
         {
-            return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.CheckHealingMode) && !Me.IsDead;
+            try
+            {
+                return TyraelUtilities.IsViable(Me) && (StyxWoW.Me.Combat || TyraelSettings.Instance.ContinuesHealingMode) && !Me.IsDead;
+            }
+            catch (Exception sanitycheckexception)
+            {
+                TyraelUtilities.DiagnosticLog("SanityCheckCombat() Error: {0}", sanitycheckexception); return false;
+            }
         }
 
         /// <summary>
         /// Actual Root Composite - Within this the RoutineManager runs the routines behaviors.
         /// </summary>
-        /// <returns>Routines Behaviors</returns>
         private static Composite CreateRoot()
         {
             return new PrioritySelector(
@@ -133,23 +157,21 @@ namespace Tyrael
         {
             try
             {
-                TyraelUpdater.CheckForUpdate();
-
                 TyraelSettings.Instance.Load();
-
-                TyraelUtilities.ClickToMove();
+                TyraelUpdater.CheckForUpdate();
                 TyraelUtilities.StatCounter();
                 TyraelUtilities.RegisterHotkeys();
-                TyraelUtilities.LogTimer(500);
+                TyraelUtilities.PrintInformation();
+                TyraelUtilities.ClickToMove(1000);
 
                 ProfileManager.LoadEmpty();
 
                 GlobalSettings.Instance.LogoutForInactivity = false;
-                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond;
             }
             catch (Exception initializecomponentsexception)
             {
-                Logging.WriteDiagnostic("[Tyrael] Error: {0}", initializecomponentsexception);
+                TyraelUtilities.DiagnosticLog("InitializeComponents() Error: {0}", initializecomponentsexception);
             }
         }
 
@@ -160,15 +182,13 @@ namespace Tyrael
         {
             try
             {
-                TyraelUtilities.EnableClickToMove();
                 TyraelUtilities.RemoveHotkeys();
-
                 GlobalSettings.Instance.LogoutForInactivity = true;
-                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond;
             }
             catch (Exception stopcomponentsexception)
             {
-                Logging.WriteDiagnostic("[Tyrael] Error: {0}", stopcomponentsexception);
+                TyraelUtilities.DiagnosticLog("StopComponents() Error: {0}", stopcomponentsexception);
             }
         }
 
@@ -179,7 +199,7 @@ namespace Tyrael
         {
             try
             {
-                if (TyraelSettings.Instance.CheckPluginPulsing)
+                if (TyraelSettings.Instance.PluginPulsing)
                 {
                     _pulseFlags = PulseFlags.CharacterManager | PulseFlags.InfoPanel | PulseFlags.Lua | PulseFlags.Objects | PulseFlags.Plugins;
                 }
@@ -190,7 +210,7 @@ namespace Tyrael
             }
             catch (Exception initializepluginsexception)
             {
-                Logging.WriteDiagnostic("[Tyrael] Error: {0}", initializepluginsexception);
+                TyraelUtilities.DiagnosticLog("InitializePlugins() Error: {0}", initializepluginsexception);
             }
         }
         #endregion
@@ -204,7 +224,7 @@ namespace Tyrael
             return TyraelSettings.Instance.UseSoftLock && !GlobalSettings.Instance.UseFrameLock ? new FrameLockSelector(children) : new PrioritySelector(children);
         }
 
-        public class FrameLockSelector : PrioritySelector
+        private class FrameLockSelector : PrioritySelector
         {
             public FrameLockSelector(params Composite[] children)
                 : base(children)

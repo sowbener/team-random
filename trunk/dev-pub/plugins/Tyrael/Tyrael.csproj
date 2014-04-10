@@ -31,11 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GreyMagic, Version=2.5.8461.698, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=x86">
+    <Reference Include="GreyMagic, Version=2.5.10170.568, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\references\GreyMagic.dll</HintPath>
     </Reference>
-    <Reference Include="Honorbuddy, Version=2.5.8461.698, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
+    <Reference Include="Honorbuddy, Version=2.5.10170.568, Culture=neutral, PublicKeyToken=50a565ab5c01ae50, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\references\Honorbuddy.exe</HintPath>
     </Reference>
