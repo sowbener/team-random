@@ -1,4 +1,5 @@
-﻿using Styx.Common;
+﻿using System.Timers;
+using Styx.Common;
 using Styx.CommonBot;
 using Styx.Helpers;
 using Styx.WoWInternals;
@@ -15,9 +16,28 @@ namespace Tyrael.Shared
     {
         #region Click-To-Move (CTM) Functions
         /// <summary>
+        /// This runs the RunClickToMove() void after a set time.
+        /// </summary>
+        /// <param name="tickingtime">Ticking time in MS.</param>
+        public static void ClickToMove(int tickingtime)
+        {
+            _tyraeltimer = new Timer(tickingtime);
+            _tyraeltimer.Elapsed += OnTimedEvent;
+            _tyraeltimer.AutoReset = false;
+            _tyraeltimer.Enabled = true;
+        }
+
+        private static Timer _tyraeltimer;
+
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            RunClickToMove();
+        }
+
+        /// <summary>
         /// Enables or Disables CTM when this void is executed.
         /// </summary>
-        internal static void ClickToMove()
+        internal static void RunClickToMove()
         {
             Lua.DoString(!TyraelSettings.Instance.ClickToMove
                 ? "SetCVar('autoInteract', '0')"

@@ -311,7 +311,7 @@ namespace Tyrael.Shared
             GlobalSettings.Instance.Save();
             TyraelSettings.Instance.Save();
 
-            TyraelUtilities.ClickToMove();
+            TyraelUtilities.ClickToMove(2500);
             TyraelUtilities.ReRegisterHotkeys();
             TyraelUtilities.PrintInformation();
             Tyrael.InitializePlugins();
