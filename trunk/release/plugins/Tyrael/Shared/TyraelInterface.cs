@@ -79,6 +79,7 @@ namespace Tyrael.Shared
 
             InitializeComponent();
             GlobalSettings.Instance.Load();
+            CharacterSettings.Instance.Load();
             TyraelSettings.Instance.Load();
 
             comboModifierKey.Items.Add(new CboItem((int)Styx.Common.ModifierKeys.Alt, "Alt - Mod"));
@@ -109,8 +110,8 @@ namespace Tyrael.Shared
             checkPlugins.Checked = TyraelSettings.Instance.CheckPluginPulsing;
             checkSoftLock.Checked = TyraelSettings.Instance.UseSoftLock;
 
-            HonorbuddyTps = GlobalSettings.Instance.TicksPerSecond;
-            TPSTrackBar.Value = GlobalSettings.Instance.TicksPerSecond;
+            HonorbuddyTps = CharacterSettings.Instance.TicksPerSecond;
+            TPSTrackBar.Value = CharacterSettings.Instance.TicksPerSecond;
         }
 
         private void TyraelForumTopicLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -188,7 +189,7 @@ namespace Tyrael.Shared
             TpsLabel.Text = Text = string.Format("Opens the Tyrael Topic in your default browser.");
         }
 
-        private readonly int _var = GlobalSettings.Instance.TicksPerSecond;
+        private readonly int _var = CharacterSettings.Instance.TicksPerSecond;
 
         private int HonorbuddyTps
         {
@@ -211,7 +212,7 @@ namespace Tyrael.Shared
 
         private void TPSTrackBar_Scroll(object sender, EventArgs e)
         {
-            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             HonorbuddyTps = (byte)TPSTrackBar.Value;
         }
 
@@ -313,7 +314,7 @@ namespace Tyrael.Shared
             TyraelUtilities.ReRegisterHotkeys();
             Tyrael.InitializePlugins();
 
-            TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+            TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond;
 
             CloseFormLogging();
 
@@ -329,7 +330,7 @@ namespace Tyrael.Shared
         {
             TPSTrackBar.Value = 15;
 
-            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = false;
 
@@ -340,7 +341,7 @@ namespace Tyrael.Shared
         {
             TPSTrackBar.Value = 30;
 
-            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = true;
 
@@ -351,7 +352,7 @@ namespace Tyrael.Shared
         {
             TPSTrackBar.Value = 60;
 
-            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = false;
             TyraelSettings.Instance.UseSoftLock = true;
 
@@ -362,7 +363,7 @@ namespace Tyrael.Shared
         {
             TPSTrackBar.Value = 90;
 
-            GlobalSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
+            CharacterSettings.Instance.TicksPerSecond = (byte)TPSTrackBar.Value;
             GlobalSettings.Instance.UseFrameLock = true;
             TyraelSettings.Instance.UseSoftLock = false;
 

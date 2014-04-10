@@ -35,7 +35,7 @@ namespace Tyrael.Shared
                     }
 
                     Logging.Write(Colors.Red, "[Tyrael] Rotation Paused!");
-                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
+                    TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond; Tyrael.IsPaused = true;
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace Tyrael.Shared
                     }
 
                     Logging.Write(Colors.LimeGreen, "[Tyrael] Rotation Resumed!");
-                    TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
+                    TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond; Tyrael.IsPaused = false;
                 }
             });
         }

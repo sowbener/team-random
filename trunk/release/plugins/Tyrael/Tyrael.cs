@@ -145,7 +145,7 @@ namespace Tyrael
                 ProfileManager.LoadEmpty();
 
                 GlobalSettings.Instance.LogoutForInactivity = false;
-                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond;
             }
             catch (Exception initializecomponentsexception)
             {
@@ -164,7 +164,7 @@ namespace Tyrael
                 TyraelUtilities.RemoveHotkeys();
 
                 GlobalSettings.Instance.LogoutForInactivity = true;
-                TreeRoot.TicksPerSecond = GlobalSettings.Instance.TicksPerSecond;
+                TreeRoot.TicksPerSecond = CharacterSettings.Instance.TicksPerSecond;
             }
             catch (Exception stopcomponentsexception)
             {
