@@ -14,9 +14,10 @@ namespace Tyrael
 {
     public class Tyrael : BotBase
     {
+		public static bool IsPaused;
+		
         internal static readonly Version Revision = new Version(5, 6, 4);
-        internal static bool IsPaused;
-
+        
         private static Composite _root;
         private static PulseFlags _pulseFlags;
 
