@@ -37,7 +37,7 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Unholy - Ability Options")]
-        [DisplayName("Raise Dead")]
+        [DisplayName("Raise Dead Pet Enable")]
         [Description("Select the usage of Auto-Raise Dead")]
         public bool PrebuffPet { get; set; }
 
