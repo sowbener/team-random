@@ -209,6 +209,7 @@ namespace YourRaidingBuddy
         {
             return new Switch<WoWSpec>(ret => Me.Specialization,
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkWindwalker, G.InitializePreBuffMonk),
+                new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightUnholy, G.InitializePreBuffDK),
                 new SwitchArgument<WoWSpec>(WoWSpec.MonkBrewmaster, G.InitializePreBuffMonk),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, G.InitializePreBuffRogue),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, G.InitializePreBuffRogue),

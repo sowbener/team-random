@@ -104,6 +104,17 @@ namespace YourRaidingBuddy.Rotations
             }
         }
 
+        internal static Composite InitializePreBuffDK
+        {
+            get
+            {
+                return new PrioritySelector(
+                    new Decorator(ret => Me.Specialization == WoWSpec.DeathKnightUnholy && Unit.DefaultBuffCheck && ((SG.Instance.General.CheckPreCombatBuff && !Me.Combat) || Me.Combat),
+                        new PrioritySelector(
+                            Spell.Cast("Raise Dead", ret => Me, ret => Me.Specialization == WoWSpec.DeathKnightUnholy && SG.Instance.Unholy.PrebuffPet && !Me.GotAlivePet))));
+            }
+        }
+
 
 
         internal static Composite InitializeCaching()
