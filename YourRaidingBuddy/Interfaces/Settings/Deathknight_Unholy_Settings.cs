@@ -124,13 +124,6 @@ namespace YourRaidingBuddy.Interfaces.Settings
         public int SoulReaperHP { get; set; }
 
         [Setting]
-        [Styx.Helpers.DefaultValue(3000)]
-        [Category("Unholy - Selectable Options")]
-        [DisplayName("Attack Power Required")]
-        [Description("Attack Power Required to Override CurrentDot.")]
-        public int AttackPowerDot { get; set; }
-
-        [Setting]
         [Styx.Helpers.DefaultValue(80)]
         [Category("Unholy - Selectable Options")]
         [DisplayName("Death Siphon %")]
