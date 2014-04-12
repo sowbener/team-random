@@ -42,6 +42,7 @@ namespace YourRaidingBuddy.Interfaces.Settings
         public bool PrebuffPet { get; set; }
 
 
+        [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.Always)]
         [Category("Unholy - Ability Options")]
         [DisplayName("Empower Rune Weapon")]
