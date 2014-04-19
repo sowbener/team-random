@@ -264,6 +264,7 @@ namespace YourRaidingBuddy.Core
                 return;
             }
         }
+
         #endregion
 
         #region Global Functions

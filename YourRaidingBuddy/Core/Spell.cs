@@ -75,6 +75,23 @@ namespace YourRaidingBuddy.Core
                     }));
         }
 
+        public static Composite Facing(UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
+        {
+            return
+                new Decorator(ret => (onUnit != null && onUnit(ret) != null && (reqs == null || reqs(ret))),
+            new Action(ret =>
+            {
+                if (!Me.IsFacing(onUnit(ret)))
+                {
+                    Logger.CombatLogOr("Facing Unit:" + " To " + onUnit(ret).SafeName);
+                    if (!failThrough)
+                        return RunStatus.Success;
+                }
+                return RunStatus.Failure;
+            }));
+        }
+
+
 
         public static Composite CastHack(string spellname, UnitSelectionDelegate onUnit, Selection<bool> reqs = null, bool failThrough = false)
         {
