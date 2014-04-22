@@ -31,7 +31,7 @@ namespace YourRaidingBuddy.Interfaces.Settings
 
         #region Updater
         [Setting]
-        [Styx.Helpers.DefaultValue(false)]
+        [Styx.Helpers.DefaultValue(true)]
         [Category("Updater")]
         [DisplayName("Enable Automatic Updates")]
         [Description("Enables the automatic updater in this CC.")]
