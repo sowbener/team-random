@@ -41,6 +41,7 @@ namespace YourRaidingBuddy.Core.Helpers
             Never,
             Always,
             OnBossDummy,
+            OnAgilityTrinkets,
             OnBlTwHr
         }
 

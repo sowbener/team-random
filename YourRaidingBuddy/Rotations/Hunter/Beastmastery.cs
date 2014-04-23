@@ -92,28 +92,30 @@ namespace YourRaidingBuddy.Rotations.Hunter
         }
         #endregion
 
+
         #region Rotations
         internal static Composite BeastmasterySt()
         {
+
+
             return new PrioritySelector(
-                Spell.PreventDoubleCast("Fervor", 0.7, ret => FervorReqs),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => Lua.PlayerPower >= 90),
+                Spell.PreventDoubleCast("Fervor", 0.5, ret => FervorReqs),
                 Spell.CastHunterTrap("Explosive Trap", on => Me.CurrentTarget.Location, ret => SG.Instance.Beastmastery.EnableTraps),
-                Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.PreventDoubleCast("Serpent Sting", 0.5, ret => SerpentStingRefresh),
+                Spell.Cast("Dire Beast"),
+                Spell.Cast("Focus Fire", ret => FocusFireStackCount == 5 && (!Me.HasAura(34471) || RapidFireAura)),
                 Spell.Cast("Fervor", ret => FervorReqs),
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.SpellDistance(Me.Pet.CurrentTarget) < 25f),
                 new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
-                Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
-               Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
-                Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
+                Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (ThrillProc && Lua.PlayerPower > 40) || (ThrillProc && BestialWrathUp)),
+                Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (KillCommandCooldown && Focus61) || Lua.PlayerPower > 90),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
+                Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
 
@@ -135,14 +137,13 @@ namespace YourRaidingBuddy.Rotations.Hunter
                 Spell.Cast("Bestial Wrath", ret => BestialWrathNotUp),
                 Spell.Cast("Kill Shot", ret => TargetSoonDead),
                 Spell.Cast("Kill Command", ret => Me.Pet != null && Me.Pet.CurrentTarget != null && Me.Pet.SpellDistance(Me.Pet.CurrentTarget) < 25f),
-                new Decorator(ret => BestialWrathIsNotOnCooldown && BestialWrathNotUp, new ActionAlwaysSucceed()),
-                Spell.PreventDoubleCast("Multi Shot", 1, ret => Lua.PlayerPower > 40),
+                Spell.PreventDoubleCast("Multi Shot", 0.5, ret => Unit.NearbyTargetAttackableUnitsCount > 5 || (Unit.NearbyTargetAttackableUnitsCount > 1 && !Me.Pet.HasAura("Beast Cleave"))),
                 Spell.Cast("Glaive Toss", ret => TalentGlaiveToss),
                 Spell.Cast("Dire Beast", ret => Lua.PlayerPower <= 90),
                 Spell.Cast("Powershot", ret => TalentPowershot),
                 Spell.Cast("Barrage", ret => TalentBarrage),
-               Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (ThrillProc && BestialWrathNotUp && BestialWrathIsNotOnCooldown && Lua.PlayerPower > 80) || (ThrillProc && BestialWrathUp)),
-                Spell.PreventDoubleCast("Arcane Shot", 0.7, ret => (KillCommandCooldown && Focus61 || BestialWrathUp) || Lua.PlayerPower > 90),
+                Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (ThrillProc && Lua.PlayerPower > 40) || (ThrillProc && BestialWrathUp)),
+                Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (KillCommandCooldown && Focus61) || Lua.PlayerPower > 90),
                Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
                 Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
@@ -178,6 +179,8 @@ namespace YourRaidingBuddy.Rotations.Hunter
                 Spell.Cast("Mend Pet", ret => Me.Pet.HealthPercent <= SG.Instance.Beastmastery.MendPetHP && Me.Pet.IsAlive && !Me.Pet.HasAura("Mend Pet")));
         }
 
+
+
         internal static Composite BeastmasteryOffensive()
         {
             return new PrioritySelector(
@@ -205,7 +208,8 @@ namespace YourRaidingBuddy.Rotations.Hunter
                     Spell.Cast("Stampede", ret => (
                     (SG.Instance.Beastmastery.Stampede == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Beastmastery.Stampede == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
-                    (SG.Instance.Beastmastery.Stampede == Enum.AbilityTrigger.Always)
+                    (SG.Instance.Beastmastery.Stampede == Enum.AbilityTrigger.Always) ||
+                    (SG.Instance.Beastmastery.Stampede == Enum.AbilityTrigger.OnAgilityTrinkets && Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)))
                     )),
                 Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
                     (SG.Instance.Beastmastery.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
@@ -254,7 +258,7 @@ namespace YourRaidingBuddy.Rotations.Hunter
             }
         }
 
-        internal static bool FervorReqs { get { return TalentManager.IsSelected(10) && Lua.PlayerPower <= 50; } }
+        internal static bool FervorReqs { get { return TalentManager.IsSelected(10) && Lua.PlayerPower <= 65; } }
         internal static bool LockAndLoadProc { get { return Me.HasAura("Lock and Load"); } }
         internal static bool TalentGlaiveToss { get { return TalentManager.IsSelected(16); } }
         internal static bool TalentPowershot { get { return TalentManager.IsSelected(17); } }
@@ -264,7 +268,7 @@ namespace YourRaidingBuddy.Rotations.Hunter
         internal static bool RapidFireAura { get { return !Me.HasAura(3045); } }
         internal static bool SerpentStingAoE { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(1978); } }
         internal static bool SerpentStingRefresh6Seconds { get { return Me.CurrentTarget != null && Spell.GetMyAuraTimeLeft("Serpent Sting", Me.CurrentTarget) < 6; } }
-        internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(131894, Me.CurrentTarget) < 2; } }
+        internal static bool MurderofCrows { get { return TalentManager.IsSelected(13) && Me.CurrentTarget != null && !Me.CurrentTarget.HasAura(131894) && (Me.CurrentTarget.CurrentHealth > (Me.MaxHealth * 4)); } }
         internal static bool LynxRush { get { return TalentManager.IsSelected(15) && Me.CurrentTarget != null && Spell.GetAuraTimeLeft(120697, Me.CurrentTarget) < 2; } }
         internal static bool SerpentStingRefresh { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasAura("Serpent Sting"); } }
         internal static bool ExplosiveShotOffCooldown { get { return !CooldownTracker.SpellOnCooldown(53301); } }
