@@ -99,10 +99,10 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && (Unit.NearbyAttackableUnitsCount < 5 || !SolarEclipseUp)),
+               //actions+=/moonfire,cycle_targets=1,if=buff.lunar_eclipse.up&ticks_remain<2
+                //actions+=/sunfire,cycle_targets=1,if=buff.solar_eclipse.up&ticks_remain<2
                Spell.Cast("Moonfire", ret => LunarEclipseUp && (MoonFireDown || MoonSetting < 2)),
-               Spell.Cast("Moonfire", ret => MoonFireDown || MoonSetting < 2),
                Spell.Cast("Sunfire", ret => SolarEclipseUp && (SunFireDown || SunSetting < 2)),
-               Spell.Cast("Sunfire", ret => SunFireDown || SunSetting < 2),
                Spell.Cast("Starsurge", ret => StarsurgeCooldown),
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
