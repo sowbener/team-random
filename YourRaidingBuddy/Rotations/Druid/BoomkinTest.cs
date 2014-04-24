@@ -171,17 +171,17 @@ namespace YourRaidingBuddy.Rotations.Druid
                     (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (
+                Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (!LunarEclipseUp || !SolarEclipseUp) && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (
+                Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (!LunarEclipseUp || !SolarEclipseUp) && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (
+                Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (!LunarEclipseUp || !SolarEclipseUp) && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.Always)
@@ -201,9 +201,9 @@ namespace YourRaidingBuddy.Rotations.Druid
         internal static Composite BoomkinInterrupts()
         {
             return new PrioritySelector(
-                new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
-                    Spell.Cast("xxxx", ret => (SG.Instance.General.InterruptList == Enum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
-                    (SG.Instance.General.InterruptList == Enum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
+              //  new ThrottlePasses(1, System.TimeSpan.FromMilliseconds(G._random.Next(700, 2000)), RunStatus.Failure,
+                //  &&  Spell.Cast("xxxx", ret => (SG.Instance.General.InterruptList == Enum.InterruptList.MoP && (G.InterruptListMoP.Contains(Me.CurrentTarget.CurrentCastorChannelId()))) ||
+              //      (SG.Instance.General.InterruptList == Enum.InterruptList.NextExpensionPack && (G.InterruptListTBA.Contains(Me.CurrentTarget.CurrentCastorChannelId())))))
                       );
         }
         #endregion

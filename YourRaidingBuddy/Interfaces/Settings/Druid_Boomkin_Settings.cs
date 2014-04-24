@@ -137,6 +137,20 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [Description("Select the usage of Rebirth")]
         public Enum.TriggerTarget RebrithLogic { get; set; }
 
+        [Setting]
+        [Styx.Helpers.DefaultValue(Enum.EclipseType.Solar)]
+        [Category("Boomkin - Ability Options")]
+        [DisplayName("Eclipse Type PreCombat")]
+        [Description("Select which Eclipse Type you want PreBuff")]
+        public Enum.EclipseType WhichEclipse { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Boomkin - Ability Options")]
+        [DisplayName("Only change Eclipse Precombat if none")]
+        [Description("Only change Eclipse Precombat if none")]
+        public bool OnlyChangeIfNoEclipse { get; set; }
+
         #region Item Options
         [Setting]
         [Styx.Helpers.DefaultValue(Enum.AbilityTrigger.OnBossDummy)]

@@ -24,7 +24,6 @@ using BD = YourRaidingBuddy.Rotations.Deathknight.Blood;
 using FD = YourRaidingBuddy.Rotations.Deathknight.Frost;
 using UD = YourRaidingBuddy.Rotations.Deathknight.Unholy;
 using PP = YourRaidingBuddy.Rotations.Paladin.Protection;
-using DF = YourRaidingBuddy.Rotations.Druid.Feral;
 using DB = YourRaidingBuddy.Rotations.Druid.Boomkin;
 using RP = YourRaidingBuddy.Rotations.Paladin.Retribution;
 using SV = YourRaidingBuddy.Rotations.Hunter.Survival;
@@ -119,8 +118,6 @@ namespace YourRaidingBuddy
             if (Me.Specialization == WoWSpec.MonkBrewmaster)
             _NewAP = Lua.Vengeance(120267);
 
-            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) SnapShotStats();
-
             Spell.PulseDoubleCastEntries();
 
 
@@ -175,9 +172,6 @@ namespace YourRaidingBuddy
         //    Styx.WoWInternals.Lua.Events.AttachEvent("UPDATE_MOUSEOVER_UNIT", G.HandleMouseOverTarget);
             DpsMeter.Initialize();
 
-            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) grabMainHandDPS();
-            if (StyxWoW.Me.Specialization == WoWSpec.DruidFeral) YourRaidingBuddy.Rotations.Druid.CommonDruid.Initialize();
-
             CombatLogHandler.Initialize();
             Spell.GcdInitialize();
             
@@ -229,7 +223,7 @@ namespace YourRaidingBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueSubtlety, SR.InitializeSub),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueAssassination, AR.InitializeAss),
                 new SwitchArgument<WoWSpec>(WoWSpec.RogueCombat, CR.InitializeCom),
-                new SwitchArgument<WoWSpec>(WoWSpec.DruidFeral, DF.InitializeFeral),
+            //Going to make this Guardian    new SwitchArgument<WoWSpec>(WoWSpec.DruidFeral, DF.InitializeFeral),
                 new SwitchArgument<WoWSpec>(WoWSpec.DruidBalance, DB.InitializeBoomkin),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightBlood, BD.InitializeBlood),
                 new SwitchArgument<WoWSpec>(WoWSpec.DeathKnightFrost, FD.InitializeFrost),
@@ -243,33 +237,6 @@ namespace YourRaidingBuddy
                 new SwitchArgument<WoWSpec>(WoWSpec.PaladinProtection, PP.InitializeProtection)
                 
                 );
-        }
-
-        public static double AP { get; set; }
-        public static double Mastery { get; set; }
-        public static double Multiplier { get; set; }
-
-        private void SnapShotStats()
-        {
-            var DoCSID = Me.HasAura(145152);
-            AP = StyxWoW.Me.AttackPower;
-
-            using (StyxWoW.Memory.AcquireFrame())
-            {
-                Multiplier = Styx.WoWInternals.Lua.GetReturnVal<double>("return UnitDamage(\"player\");", 6);
-                Mastery = (1 + (Styx.WoWInternals.Lua.GetReturnVal<double>("return GetMasteryEffect()", 0) / 100));
-            }
-
-            if (DoCSID)
-                Multiplier = Multiplier * 1.3;
-        }
-
-        private void grabMainHandDPS()
-        {
-            var swingMin = Styx.WoWInternals.Lua.GetReturnVal<float>("return UnitDamage(\"player\");", 0);
-            var swingMax = Styx.WoWInternals.Lua.GetReturnVal<float>("return UnitDamage(\"player\");", 1);
-            var swingAvg = (swingMin + swingMax) / 2;
-            dps = swingAvg / 2;
         }
 
         internal static void StopBot(string reason)

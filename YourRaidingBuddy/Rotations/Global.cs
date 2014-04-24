@@ -45,6 +45,7 @@ namespace YourRaidingBuddy.Rotations
             }
         }
 
+
         internal static Composite InitializePreBuffRogue
         {
             get
@@ -84,7 +85,10 @@ namespace YourRaidingBuddy.Rotations
                 return new PrioritySelector(
                     new Decorator(ret => Me.Specialization == WoWSpec.DruidBalance && U.DefaultBuffCheck,
                         new PrioritySelector(
-                   Spell.Cast("Moonkin Form", ret => !Me.HasAura("Moonkin Form")))));
+                   Spell.Cast("Moonkin Form", ret => !Me.HasAura("Moonkin Form")),
+                   Spell.Cast("Astral Communion", ret => (SG.Instance.Boomkin.OnlyChangeIfNoEclipse && YourRaidingBuddy.Rotations.Druid.Boomkin.EclipseDirNothing) && (
+                         (SG.Instance.Boomkin.WhichEclipse == Enum.EclipseType.Solar && YourRaidingBuddy.Rotations.Druid.Boomkin.EclipseDirMoon) ||
+                         (SG.Instance.Boomkin.WhichEclipse == Enum.EclipseType.Lunar && YourRaidingBuddy.Rotations.Druid.Boomkin.EclipseDirSun))))));
             }
         }
 

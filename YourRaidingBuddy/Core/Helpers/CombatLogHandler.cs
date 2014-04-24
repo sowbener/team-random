@@ -7,7 +7,6 @@ using JetBrains.Annotations;
 using Styx;
 using Styx.Common;
 using Styx.WoWInternals;
-using DF = YourRaidingBuddy.Rotations.Druid.Feral;
 
 namespace YourRaidingBuddy.Core.Helpers
 {
