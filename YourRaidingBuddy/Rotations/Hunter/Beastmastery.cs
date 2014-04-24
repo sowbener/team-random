@@ -115,6 +115,7 @@ namespace YourRaidingBuddy.Rotations.Hunter
                 Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (ThrillProc && Lua.PlayerPower > 40) || (ThrillProc && BestialWrathUp)),
                 Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (KillCommandCooldown && Focus61) || Lua.PlayerPower > 90),
                 Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
+                Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75),
                 Spell.PreventDoubleCast("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
@@ -144,7 +145,8 @@ namespace YourRaidingBuddy.Rotations.Hunter
                 Spell.Cast("Barrage", ret => TalentBarrage),
                 Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (ThrillProc && Lua.PlayerPower > 40) || (ThrillProc && BestialWrathUp)),
                 Spell.PreventDoubleCast("Arcane Shot", 0.5, ret => (KillCommandCooldown && Focus61) || Lua.PlayerPower > 90),
-               Spell.PreventDoubleCastHack("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
+               Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75, true),
+               Spell.PreventDoubleCast("Cobra Shot", Spell.GetSpellCastTime(77767), target => Me.CurrentTarget, ret => Lua.PlayerPower <= 75),
                 Spell.PreventDoubleCastHack("Steady Shot", Spell.GetSpellCastTime(56641), target => Me.CurrentTarget, ret => Lua.PlayerPower < 30 && Me.Level < 81, true));
         }
 
