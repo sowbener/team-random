@@ -86,9 +86,10 @@ namespace YourRaidingBuddy.Rotations
                     new Decorator(ret => Me.Specialization == WoWSpec.DruidBalance && U.DefaultBuffCheck,
                         new PrioritySelector(
                    Spell.Cast("Moonkin Form", ret => !Me.HasAura("Moonkin Form")),
+                   //!Me.HasAnyAura("Eclipse (Lunar)","Eclipse (Solar)")
                    Spell.Cast("Astral Communion", ret => (SG.Instance.Boomkin.OnlyChangeIfNoEclipse && YourRaidingBuddy.Rotations.Druid.Boomkin.EclipseDirNothing) && (
-                         (SG.Instance.Boomkin.WhichEclipse == Enum.EclipseType.Solar && YourRaidingBuddy.Rotations.Druid.Boomkin.EclipseDirMoon) ||
-                         (SG.Instance.Boomkin.WhichEclipse == Enum.EclipseType.Lunar && YourRaidingBuddy.Rotations.Druid.Boomkin.EclipseDirSun))))));
+                         (SG.Instance.Boomkin.WhichEclipse == Enum.EclipseType.Solar && !Me.HasAura("Eclipse (Solar)")) ||
+                         (SG.Instance.Boomkin.WhichEclipse == Enum.EclipseType.Lunar && !Me.HasAura("Eclipse (Lunar)")))))));
             }
         }
 
