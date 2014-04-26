@@ -100,7 +100,7 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && !SolarEclipseUp),
                Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3 && MoonFireUp) || (MoonFireUp && MoonSetting < 2)),
-               Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 3 && SunFireUp) || (SunFireUp && SunSetting < 2),
+               Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 3 && SunFireUp) || (SunFireUp && SunSetting < 2)),
                Spell.Cast("Starsurge"),
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
