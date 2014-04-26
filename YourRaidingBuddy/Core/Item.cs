@@ -13,6 +13,7 @@ using Enum = YourRaidingBuddy.Core.Helpers.Enum;
 using G = YourRaidingBuddy.Rotations.Global;
 using SG = YourRaidingBuddy.Interfaces.Settings.InternalSettings;
 using U = YourRaidingBuddy.Core.Unit;
+using YourRaidingBuddy.Core.Helpers;
 
 namespace YourRaidingBuddy.Core
 {
@@ -584,7 +585,7 @@ namespace YourRaidingBuddy.Core
                 Logger.CombatLogFb("Using: Slot 2 trinket is used.");
             }
 
-            if (CanUseHands(InternalSettings.Instance.Boomkin.UseHands, hands))
+            if (CanUseHands(InternalSettings.Instance.Boomkin.UseHands, hands) && ((!Me.HasAura(48518) && !Me.HasAura(48517) && CooldownTracker.GetSpellCooldown(106731).TotalSeconds > 10)))
             {
                 hands.Use();
                 Logger.CombatLogFb("Using: Engineering hands are used.");
