@@ -99,8 +99,8 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && !SolarEclipseUp),
-               Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3) || SunSetting < 2),
-               Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 3) || SunSetting < 2),
+               Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3 && MoonFireUp) || (MoonFireUp && MoonSetting < 2)),
+               Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 3 && SunFireUp) || (SunFireUp && SunSetting < 2),
                Spell.Cast("Starsurge"),
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
@@ -228,6 +228,8 @@ namespace YourRaidingBuddy.Rotations.Druid
         internal static bool MoonFireDown { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(8921); } }
         internal static double SunSetting { get { return Spell.GetMyAuraTimeLeft(93402, Me.CurrentTarget); } }
         internal static bool SunFireDown { get { return Me.CurrentTarget != null && !Me.CurrentTarget.HasMyAura(93402); } }
+        internal static bool SunFireUp { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura(93402); } }
+        internal static bool MoonFireUp { get { return Me.CurrentTarget != null && Me.CurrentTarget.HasMyAura(8921); } }
 
         internal static double TimeToDie
         {
