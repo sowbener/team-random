@@ -99,13 +99,13 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && !SolarEclipseUp),
+               Spell.Cast("Starsurge", ret => StarsurgeCooldown),
                Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3 && MoonFireUp) || (MoonFireUp && MoonSetting < 2)),
                Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 3 && SunFireUp) || (SunFireUp && SunSetting < 2)),
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
                Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
                Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0))), //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
-               Spell.Cast("Starsurge"),
                Spell.PreventDoubleCast("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving, true),
                Spell.PreventDoubleCast("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving, true)
  
@@ -169,17 +169,17 @@ namespace YourRaidingBuddy.Rotations.Druid
                     (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ForceofNature == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && (!LunarEclipseUp || !SolarEclipseUp) && (
+                Spell.Cast("Berserking", ret => Me.Race == WoWRace.Troll && ((!LunarEclipseUp && !SolarEclipseUp) && CooldownTracker.GetSpellCooldown(106731).TotalSeconds > 10) && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && (!LunarEclipseUp || !SolarEclipseUp) && (
+                Spell.Cast("Blood Fury", ret => Me.Race == WoWRace.Orc && ((!LunarEclipseUp && !SolarEclipseUp) && CooldownTracker.GetSpellCooldown(106731).TotalSeconds > 10) && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.Always)
                     )),
-                Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && (!LunarEclipseUp || !SolarEclipseUp) && (
+                Spell.Cast("Rocket Barrage", ret => Me.Race == WoWRace.Goblin && ((!LunarEclipseUp && !SolarEclipseUp) && CooldownTracker.GetSpellCooldown(106731).TotalSeconds > 10) && (
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.ClassRacials == Enum.AbilityTrigger.Always)
