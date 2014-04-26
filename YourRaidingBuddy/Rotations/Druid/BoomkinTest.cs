@@ -99,13 +99,13 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && !SolarEclipseUp),
-               Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 2)),
-               Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 2)),
+               Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3) || SunSetting < 2),
+               Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 3) || SunSetting < 2),
                Spell.Cast("Starsurge"),
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
-               Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
-               Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0))), //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
+               Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0 && Eclipse < 100))),
+               Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0 && Eclipse > -100))), //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
                Spell.PreventDoubleCast("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving, true),
                Spell.PreventDoubleCast("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving, true)
  
