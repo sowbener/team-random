@@ -98,16 +98,16 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.Cast("Starfall", ret => TimeToDie > 2 && StarfallDown),
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
                Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
-               Spell.Cast("Starsurge", ret => ShootingStarsUp && (Unit.NearbyAttackableUnitsCount < 5 || !SolarEclipseUp)),
-               Spell.Cast("Moonfire", ret => MoonFireDown || (LunarEclipseUp && MoonSetting < 2)),
+               Spell.Cast("Starsurge", ret => ShootingStarsUp && !SolarEclipseUp),
+               Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 2)),
                Spell.Cast("Sunfire", ret => SunFireDown || (SolarEclipseUp && SunSetting < 2)),
-               Spell.Cast("Starsurge", ret => StarsurgeCooldown),
+               Spell.Cast("Starsurge"),
                Spell.Cast("Starfire", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Starfire") < CelestialalignmentSetting),
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
                Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0))),
                Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0))), //Spell.GetSpellCastTime("Wrath") <= TimeToDie && (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0)))
-               Spell.PreventDoubleCastHack("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving, true),
-               Spell.PreventDoubleCastHack("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving, true)
+               Spell.PreventDoubleCast("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving, true),
+               Spell.PreventDoubleCast("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving, true)
  
                 );
         }
@@ -159,7 +159,7 @@ namespace YourRaidingBuddy.Rotations.Druid
                     (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.Incarnation == Enum.AbilityTrigger.Always)
                     )),
-               Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp || !SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || (TalentManager.IsSelected(11) && CooldownTracker.GetSpellCooldown("Incarnation").TotalSeconds > 10)) && (
+                Spell.Cast("Celestial Alignment", ret => (!LunarEclipseUp && !SolarEclipseUp) && (ChoenofEluneUp || !TalentManager.IsSelected(11) || CooldownTracker.GetSpellCooldown(106731).TotalSeconds > 10) && (
                     (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.OnBossDummy && U.IsTargetBoss) ||
                     (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Boomkin.Celestial == Enum.AbilityTrigger.Always)
@@ -212,7 +212,7 @@ namespace YourRaidingBuddy.Rotations.Druid
         internal static bool LunarEclipseUp { get { return Me.HasAura(48518); } }
         internal static bool SolarEclipseUp { get { return Me.HasAura(48517); } }
         internal static bool ChoenofEluneUp { get { return Me.HasAura(102560); } }
-        internal static bool ShootingStarsUp { get { return Me.HasAura(93400);  } }
+        internal static bool ShootingStarsUp { get { return Me.HasAura(93400); } }
         internal static bool DreamDown { get { return !Me.HasAura(145152); } }
         internal static bool StarsurgeCooldown { get { return !CooldownTracker.SpellOnCooldown("Starsurge"); } }
         internal static bool StarfallDown { get { return !Me.HasAura(48505); } }
