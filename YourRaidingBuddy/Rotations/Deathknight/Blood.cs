@@ -81,8 +81,8 @@ namespace YourRaidingBuddy.Rotations.Deathknight
                 Spell.PreventDoubleCast("Blood Tap", 0.5, ret => NeedBloodTap),
                 Spell.Cast("Outbreak", ret => NeedEitherDis),
                 Spell.Cast("Blood Boil", ret => (NeedEitherDis && EitherDisIsUp) || (!NeedDeathStrike && HasCrimsonScourge) || (!NeedDeathStrike && HasCrimsonScourge && Me.IsMoving)),
-                Spell.Cast("Plague Strike", ret => NeedBloodPlague),
-                Spell.Cast("Icy Touch", ret => NeedFrostFever),
+                Spell.Cast("Plague Strike", ret => NeedBloodPlague && OutBreakOnCooldown),
+                Spell.Cast("Icy Touch", ret => NeedFrostFever && OutBreakOnCooldown),
                 Spell.Cast("Death Strike", ret => NeedDeathStrike),
                 Spell.Cast("Rune Strike", ret => NeedRuneStrike),
                 //Spell.PreventDoubleCast("Blood Boil", 0.5, ret => HasCrimsonScourge), // get rid of the Proc

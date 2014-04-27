@@ -106,8 +106,9 @@ namespace YourRaidingBuddy.Rotations.Druid
                Spell.Cast("Wrath", ret => CelestialalignmentUp && Spell.GetSpellCastTime("Wrath") < CelestialalignmentSetting),
                Spell.Cast("Starfire", ret => (EclipseDirSun || (EclipseDirNothing && Eclipse > 0 && Eclipse < 100) || (EclipseDirNothing && Eclipse == -100 && !SolarEclipseUp && !CelestialalignmentUp))),
                Spell.Cast("Wrath", ret => (EclipseDirMoon || (EclipseDirNothing && Eclipse <= 0 && Eclipse > -100) || (EclipseDirNothing && Eclipse == 100 && !LunarEclipseUp && !CelestialalignmentUp))),
-               Spell.PreventDoubleCast("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving, true),
-               Spell.PreventDoubleCast("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving, true)
+               Spell.PreventDoubleCast("Starsurge", 0.5, target => Me.CurrentTarget, ret => ShootingStarsUp && Me.IsMoving, true),
+               Spell.PreventDoubleCast("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving && !ShootingStarsUp, true),
+               Spell.PreventDoubleCast("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving && !ShootingStarsUp, true)
  
                 );
         }
