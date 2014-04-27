@@ -44,7 +44,7 @@ namespace YourRaidingBuddy.Core
             }
         }
 
-        /// <Testingthings+>
+        /// <Sorrynom>
         /// Core check on Friendly Units (60 yards) - Further filtering should be applied.
         /// </summary>
         internal static IEnumerable<WoWUnit> FriendlyUnits
