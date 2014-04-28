@@ -132,8 +132,8 @@ namespace YourRaidingBuddy.Rotations.Deathknight
         {
             return new PrioritySelector(
                  //       Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.IsWithinMeleeRange && UnholyBlightCheck && NeedBothDisUpAoE),
-                        Spell.Cast("Outbreak", ret => (NeedBothDisUpAoE && UnholyBlightCheck) || !TalentManager.IsSelected(3)),
-                        Spell.PreventDoubleCast("Pestilence", 1, ret => Me.DeathRuneCount > 1 && U.AoeBPCheck && CooldownTracker.SpellOnCooldown(77575)),
+                        Spell.Cast("Outbreak", ret => SG.Instance.Frost.EnableOutbreak && ((NeedBothDisUpAoE && UnholyBlightCheck) || !TalentManager.IsSelected(3))),
+                        Spell.PreventDoubleCast("Pestilence", 1, ret => SG.Instance.Frost.UsePestilence && Me.DeathRuneCount > 1 && U.AoeBPCheck && CooldownTracker.SpellOnCooldown(77575)),
                         Spell.Cast("Howling Blast"),
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.CastOnGround("Death and Decay", ret => Me.CurrentTarget.Location, ret => Me.UnholyRuneCount > 0),
@@ -147,6 +147,7 @@ namespace YourRaidingBuddy.Rotations.Deathknight
         {
             return new PrioritySelector(
                 Spell.Cast("Death Strike", ret => Me.HasAura(101568) && Me.HealthPercent <= SG.Instance.Frost.DeathstrikeHP),
+                Spell.Cast("Death Pact", ret => Me.CurrentTarget != null && Me.GotAlivePet && Me.HealthPercent <= SG.Instance.Frost.DeathPactHP),
                 Spell.Cast("Death Siphon", ret => TalentManager.IsSelected(11) && Me.HealthPercent <= SG.Instance.Frost.DeathSiphonHP),
                 Item.FrostUseHealthStone()
                 );

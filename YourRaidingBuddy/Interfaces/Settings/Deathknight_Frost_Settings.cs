@@ -59,6 +59,13 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Frost - Ability Options")]
+        [DisplayName("Enable Pestilence AoE")]
+        [Description("Select the usage of Pestilence. NOT RECOMMENDED TO DISABLE THIS UNLESS YOU PLAY DW DK")]
+        public bool UsePestilence { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Frost - Ability Options")]
         [DisplayName("Enable Death Strike")]
         [Description("Select the usage of Death Strike.")]
         public bool EnableDeathStrike { get; set; }
@@ -83,6 +90,13 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [DisplayName("Death Strike %")]
         [Description("Uses Death Strike if specced at % of HP")]
         public int DeathstrikeHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(80)]
+        [Category("Frost - Selectable Options")]
+        [DisplayName("Death Pact %")]
+        [Description("Uses Death Pact if specced at % of HP")]
+        public int DeathPactHP { get; set; }
 
         [Setting]
         [Styx.Helpers.DefaultValue(36)]
