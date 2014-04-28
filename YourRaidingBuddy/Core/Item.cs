@@ -613,7 +613,7 @@ namespace YourRaidingBuddy.Core
 
             return (from i in carried
                     let spells = i.ItemSpells
-                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    // ReSharper disable once CompareOfFloatsByEqufOperator
                     where i.ItemInfo != null && spells != null && spells.Count != 0 && i.Usable && i.Cooldown == 0 && i.ItemInfo.RequiredLevel <= StyxWoW.Me.Level && spells.Any(s => s.IsValid && s.ActualSpell != null && spellNameHashes.Contains(s.ActualSpell.Name))
                     orderby i.ItemInfo.Level descending
                     select i).FirstOrDefault();
