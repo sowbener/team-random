@@ -97,7 +97,7 @@ namespace YourRaidingBuddy.Rotations.Druid
 
                Spell.Cast("Starfall", ret => TimeToDie > 2 && StarfallDown),
                Spell.PreventDoubleCast("Healing Touch", 0.7, ret => TalentManager.IsSelected(17) && DreamDown && Me.ManaPercent > 25),
-               Spell.Cast("Natures Vigil", ret => TalentManager.IsSelected(18)),
+               Spell.Cast("Nature's Vigil", ret => TalentManager.IsSelected(18)),
                Spell.Cast("Starsurge", ret => ShootingStarsUp && !SolarEclipseUp),
                Spell.Cast("Starsurge", ret => StarsurgeCooldown),
                Spell.Cast("Moonfire", ret => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3 && MoonFireUp) || (MoonFireUp && MoonSetting < 2)),
