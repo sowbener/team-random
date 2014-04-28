@@ -117,7 +117,7 @@ namespace YourRaidingBuddy.Rotations.Druid
         {
             return new PrioritySelector(
 
-                //new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusTarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)
+                //new Decorator(ret => Me.FocusedUnit != null && SG.Instance.Protection.UseLayonHandsFocusarget, Spell.Cast("Lay on Hands", on => Me.FocusedUnit)
              new Decorator(ret => SG.Instance.Boomkin.RebrithLogic == Enum.TriggerTarget.FocusTarget && Me.FocusedUnit != null && Me.FocusedUnit.Distance <= 30, Spell.Cast("Rebirth", ret => Me.FocusedUnit)
         //    (SG.Instance.Boomkin.RebrithLogic == Enum.DruidRebirth.OnTank && U.IsTargetBoss) ||
         //    (SG.Instance.Boomkin.RebrithLogic == Enum.TriggerTarget.FocusTarget && Me.FocusedUnit != null && Me.FocusedUnit.Distance <= 30)
