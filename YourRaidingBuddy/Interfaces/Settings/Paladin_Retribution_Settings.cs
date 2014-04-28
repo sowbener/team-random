@@ -51,6 +51,13 @@ namespace YourRaidingBuddy.Interfaces.Settings
         public int SealofRighteousnessCount { get; set; }
 
         [Setting]
+        [Styx.Helpers.DefaultValue(5)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Templar's Verdict Holy Power")]
+        [Description("Select the use Holy Power for Templar's Verdict")]
+        public int TVHolyPower { get; set; }
+
+        [Setting]
         [Styx.Helpers.DefaultValue(false)]
         [Category("Retribution - Ability Options")]
         [DisplayName("Seal Swapping")]

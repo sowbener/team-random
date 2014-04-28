@@ -121,7 +121,7 @@ namespace YourRaidingBuddy.Rotations.Paladin
             Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc != WoWPoint.Empty && !RetributionSettings.UseLightsHammerHotkey && InquisitionUp && (AnicentPowerDown || AnicentPowerStack == 12)),
             Spell.CastOnGround("Light's Hammer", ret => LHLoc, ret => LHLoc != WoWPoint.Empty && RetributionSettings.UseLightsHammerHotkey && KP.IsKeyAsyncDown(SettingsH.Instance.Tier4Choice)),
             Spell.Cast("Divine Storm", ret => DivineCrusaderProc && Lua.HolyPower == 5),
-            Spell.Cast("Templar's Verdict", ret => Lua.HolyPower == 5 || (HolyAvengerUp && Lua.HolyPower >= 3)),
+            Spell.Cast("Templar's Verdict", ret => Lua.HolyPower == SG.Instance.Retribution.TVHolyPower || (HolyAvengerUp && Lua.HolyPower >= 3)),
             Spell.Cast("Templar's Verdict", ret => DivinePurposeProc && DivinePurposeTime < 4),
             Spell.Cast("Hammer of Wrath"),
             new Decorator(ret => HammerofWrathCooldownRemains && HammerofWrathUnder0, new ActionAlwaysSucceed()),
