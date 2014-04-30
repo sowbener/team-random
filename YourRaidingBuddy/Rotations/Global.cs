@@ -332,7 +332,7 @@ namespace YourRaidingBuddy.Rotations
             146311, // Ticking Ebon Detonator
             146308, // Assurance of Consequence
             148903, // Haromm's Talisman
-            148903, // Haromm's HC Talisman
+            148904, // Haromm's HC Talisman
         };
 
         internal static readonly HashSet<int> EnrageEffectList = new HashSet<int>
