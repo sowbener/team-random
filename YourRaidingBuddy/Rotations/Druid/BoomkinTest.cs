@@ -85,8 +85,9 @@ namespace YourRaidingBuddy.Rotations.Druid
         {
             return new PrioritySelector(
                 ctx => Unit.NearbyUnfriendlyUnits.Where(u => (u.Combat || Unit.IsDummy(Me.CurrentTarget)) && !u.IsCrowdControlled() && Me.IsSafelyFacing(u)).ToList(),
-                Spell.Cast("Sunfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => u.HasAuraExpired("Sunfire", 2))),
-                Spell.Cast("Moonfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => u.HasAuraExpired("Moonfire", 2)))
+                Spell.Cast("Sunfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => SunFireDown || (SolarEclipseUp && SunSetting < 3 && SunFireUp) || (SunFireUp && SunSetting < 2))),
+                Spell.Cast("Moonfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => MoonFireDown || ((LunarEclipseUp || CelestialalignmentUp) && MoonSetting < 3 && MoonFireUp) || (MoonFireUp && MoonSetting < 2))),
+                BoomkinSt()
              );
         }
 
