@@ -245,7 +245,7 @@ namespace YourRaidingBuddy.Rotations.Druid
 
         // 16974 Predatory Swiftness Aura
         // 145152 Dream aura
-        // 135700 Omen of Clarity
+        // 135700 Omen of Clarittyy
 
         #endregion Booleans
 
