@@ -90,7 +90,7 @@ namespace YourRaidingBuddy.Rotations.Monk
         internal static bool ComboBreakerTpUp { get { return Me.HasAura(118864); } }
         internal static double ComboBreakerTpRemains { get { return Spell.GetMyAuraTimeLeft(118864, Me); } }
         internal static double RisingSunKickDebuffRemains { get { return Spell.GetMyAuraTimeLeft(130320, Me.CurrentTarget); } }
-        internal static bool TigerEyeUseDown { get { return !Me.HasAura(116740); } }
+        internal static bool TigerEyeUseDown { get { return !Me.HasAura(116740); } } 
         internal static double TigerEyeBrewStacks { get { return Spell.GetAuraStack(Me, 125195); } }
 
         public static int MaxChi { get { return TalentManager.IsSelected(8) ? 5 : 4; } } // 
@@ -143,7 +143,7 @@ namespace YourRaidingBuddy.Rotations.Monk
         internal static Composite WindwalkerOffensive()
         {
             return new PrioritySelector(
-               Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && TigerEyeBrewStacks == 20) || (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) && TigerEyeUseDown) || (TigerEyeUseDown && Lua.PlayerChi >= 2 && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || TigerEyeBrewStacks >= 15 || Me.CurrentTarget.HealthPercent < 20) && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
+               Spell.Cast("Tigereye Brew", ret => (TigerEyeUseDown && (TigerEyeBrewStacks >= 20 && Me.HasAura(125195))) || (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) && TigerEyeUseDown) || (TigerEyeUseDown && Lua.PlayerChi >= 2 && (Me.GetAllAuras().Any(a => G.AgilityProcList.Contains(a.SpellId)) || TigerEyeBrewStacks >= 15 || Me.CurrentTarget.HealthPercent < 20) && RisingSunKickDebuffRemains > 1 && TigerPowerRemains > 1) && (
                   (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.OnBossDummy && Unit.IsTargetBoss) ||
                    (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.OnBlTwHr && G.SpeedBuffsAura) ||
                     (SG.Instance.Windwalker.TigereyeBrew == Enum.AbilityTrigger.Always)
