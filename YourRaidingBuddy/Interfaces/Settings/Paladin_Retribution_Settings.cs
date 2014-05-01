@@ -92,6 +92,14 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [DisplayName("Word of Glory Enable")]
         [Description("Checked enables Word of Glory")]
         public bool EnableWordofGlory { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Ability Options")]
+        [DisplayName("Enables Self-Healing / Utility")]
+        [Description("Checked Enables Self-Healing / Utility")]
+        public bool EnableSelfHealing { get; set; }
+
         #endregion
 
         #region Item Options

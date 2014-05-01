@@ -43,7 +43,7 @@ namespace YourRaidingBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Retribution.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, RetributionDefensive()),
                                         new Decorator(ret => SG.Instance.Retribution.CheckInterrupts, RetributionInterrupts()),
-                                        RetributionUtility(),
+                                        new Decorator(ret => SG.Instance.Retribution.EnableSelfHealing, RetributionUtility()),
                                         new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
                                         new Decorator(ret => SG.Instance.General.CheckPotionUsage && G.SpeedBuffsAura, Item.UseBagItem(76095, ret => true, "Using Mogu Power Potion")),
                                         RetributionOffensive(),
@@ -54,7 +54,7 @@ namespace YourRaidingBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Retribution.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, RetributionDefensive()),
                                         new Decorator(ret => SG.Instance.Retribution.CheckInterrupts, RetributionInterrupts()),
-                                        RetributionUtility(),
+                                        new Decorator(ret => SG.Instance.Retribution.EnableSelfHealing, RetributionUtility()),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                         new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
@@ -67,7 +67,7 @@ namespace YourRaidingBuddy.Rotations.Paladin
                                         new Decorator(ret => SG.Instance.Retribution.CheckAutoAttack, Lua.StartAutoAttack),
                                         new Decorator(ret => Me.HealthPercent < 100, RetributionDefensive()),
                                         new Decorator(ret => SG.Instance.Retribution.CheckInterrupts, RetributionInterrupts()),
-                                        RetributionUtility(),
+                                        new Decorator(ret => SG.Instance.Retribution.EnableSelfHealing, RetributionUtility()),
                                         new Decorator(ret => HotKeyManager.IsCooldown,
                                                 new PrioritySelector(
                                         new Action(ret => { Item.UseRetributionItems(); return RunStatus.Failure; }),
