@@ -219,7 +219,7 @@ namespace YourRaidingBuddy.Rotations.Druid
         internal static bool SolarEclipseUp { get { return Me.HasAura(48517); } }
         internal static bool ChoenofEluneUp { get { return Me.HasAura(102560); } }
         internal static bool ShootingStarsUp { get { return Me.HasAura(93400); } }
-        internal static bool DreamDown { get { return !Me.HasAura(145152); } }
+        internal static bool DreamDown { get { return !Me.HasAura(108373); } }
         internal static bool StarsurgeCooldown { get { return !CooldownTracker.SpellOnCooldown(78674); } }
         internal static bool StarfallDown { get { return !Me.HasAura(48505); } }
         internal static double Eclipse { get { return Lua.PlayerEclipsePower; } }
