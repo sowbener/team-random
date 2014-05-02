@@ -87,7 +87,11 @@ namespace YourRaidingBuddy.Rotations.Druid
                 ctx => Unit.NearbyUnfriendlyUnits.Where(u => (u.Combat || Unit.IsDummy(Me.CurrentTarget)) && !u.IsCrowdControlled() && Me.IsSafelyFacing(u)).ToList(),
                 Spell.Cast("Sunfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => ((SolarEclipseUp && (SunSetting < 3 || SunFireDown))) || (SunFireUp && SunSetting < 2))),
                 Spell.Cast("Moonfire", ret => ((List<WoWUnit>)ret).FirstOrDefault(u => ((LunarEclipseUp || CelestialalignmentUp) && (MoonSetting < 3 || MoonFireDown)) || (MoonFireUp && MoonSetting < 2))),
-                BoomkinSt()
+                Spell.Cast("Starsurge", ret => ShootingStarsUp),
+                Spell.Cast("Starfall", ret => StarfallDown),
+                Spell.PreventDoubleCast("Starsurge", 0.5, target => Me.CurrentTarget, ret => ShootingStarsUp && Me.IsMoving, true),
+               Spell.PreventDoubleCast("Moonfire", 0.5, target => Me.CurrentTarget, ret => LunarEclipseUp && Me.IsMoving && !ShootingStarsUp, true),
+               Spell.PreventDoubleCast("Sunfire", 0.5, target => Me.CurrentTarget, ret => !MoonFireDown && Me.IsMoving && !ShootingStarsUp, true)
              );
         }
 
