@@ -85,11 +85,11 @@ namespace YourRaidingBuddy.Rotations.Deathknight
                         Spell.PreventDoubleCast("Blood Tap", 0.7, ret => NeedBloodTapFirstCheckDW),
                         Spell.Cast("Outbreak", ret => NeedEitherDis && SG.Instance.Frost.EnableOutbreak),
                         Spell.Cast("Frost Strike", ret => ObliterateProc || Lua.PlayerPower > 88),
-                        Spell.Cast("Howling Blast", ret => G.BloodRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
+                        Spell.Cast("Howling Blast", ret => G.DeathRuneSlotsActive > 1 || G.FrostRuneSlotsActive > 1),
                         Spell.Cast("Unholy Blight", ret => Me.CurrentTarget != null && Me.CurrentTarget.Distance < 6 && UnholyBlightTalent && OutBreakCooldown && UnholyBlightCheck && NeedEitherDis),
                         Spell.Cast("Soul Reaper", ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP),
                         Spell.Cast("Howling Blast", ret => UnholyBlightCheck && NeedFrostFever),
-                        Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague)),
+                        Spell.Cast("Plague Strike", ret => (UnholyBlightCheck && OutBreakCooldown && SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (UnholyBlightCheck && !SG.Instance.Frost.EnableOutbreak && NeedBloodPlague) || (SG.Instance.Frost.ExperimentalPlagueStrike && (G.FrostRuneSlotsActive == 0 && G.DeathRuneSlotsActive == 0) && Lua.PlayerPower <= 20 && BloodTap4)),
                         Spell.Cast("Howling Blast", ret => HowlingBlastProc),
                         Spell.Cast("Frost Strike", ret => Lua.PlayerPower > 76),
                         Spell.Cast("Obliterate", ret => !SG.Instance.Frost.MasterSimple && G.UnholyRuneSlotsActive > 0 && !Me.HasAura(51124)),
@@ -220,6 +220,7 @@ namespace YourRaidingBuddy.Rotations.Deathknight
         private static bool RunicEmpowermentTalent { get { return TalentManager.IsSelected(14); } }
         private static bool AllRunesDown { get { return G.FrostRuneSlotsActive == 0 || G.UnholyRuneSlotsActive == 0 || G.BloodRuneSlotsActive == 0; } }
         private static bool BloodStacksunder10 { get { return BloodTapStackCount <= 10 && TalentManager.IsSelected(13); } }
+        private static bool BloodTap4 { get { return BloodTapStackCount >= 4 && TalentManager.IsSelected(13); } }
         private static bool BloodTapFirstCheck2H { get { return Me.CurrentTarget != null && TalentManager.IsSelected(13) && Me.CurrentTarget.HealthPercent <= SG.Instance.Frost.SoulReaperHP && SoulReaperNotOnCooldown && BloodTapStackCount > 4; } }
         private static bool BloodTapSecondCheck2H { get { return BloodTapStackCount > 4 && TalentManager.IsSelected(13) && ObliterateProc; } }
         private static bool BloodTapThirdCheck2H { get { return BloodTapStackCount > 10 && Lua.PlayerPower > 76 && TalentManager.IsSelected(13); } }

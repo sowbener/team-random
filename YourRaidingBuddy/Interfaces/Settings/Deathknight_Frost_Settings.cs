@@ -48,6 +48,14 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [DisplayName("Mastersimple Rotation")]
         [Description("Select the usage of Mastersimple Rotation.")]
         public bool MasterSimple { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Frost - Ability Options")]
+        [DisplayName("Plague Strike Experimental")]
+        [Description("Select the usage of Plague Strike if both Frost and Death runes are down and we don't have enough RP for Frost Strike and Blood tap is 4, we use a Plague Strike to get Blood Tap Stacks to 5.")]
+        public bool ExperimentalPlagueStrike { get; set; }
+
         
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
