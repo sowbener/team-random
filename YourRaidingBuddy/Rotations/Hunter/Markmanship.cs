@@ -56,9 +56,9 @@ namespace YourRaidingBuddy.Rotations.Hunter
                                                         new Action(ret => { Item.UseMarksmanshipItems(); return RunStatus.Failure; }),
                                                         MarksmanshipOffensive())),
                                         new Decorator(ret => SG.Instance.Marksmanship.CheckAoE && (Unit.NearbyAttackableUnitsCount >= 2), MarksmanshipMt()),
-                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent > 80,
+                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent > 80 && !Unit.IsDummy(Me.CurrentTarget),
                                         new PrioritySelector(MarksmanshipStOver80())),
-                                        new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent < 80,
+                                        new Decorator(ret => Me.CurrentTarget != null && (Me.CurrentTarget.HealthPercent < 80 || Unit.IsDummy(Me.CurrentTarget)),
                                         new PrioritySelector(MarksmanshipSt())))),
                         new Decorator(ret => !Spell.IsGlobalCooldown() && SH.Instance.ModeSelection == Enum.Mode.Hotkey,
                                 new PrioritySelector(
