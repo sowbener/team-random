@@ -86,12 +86,61 @@ namespace YourRaidingBuddy.Interfaces.Settings
         [Description("Checked enables Fist of Justice Hotkey")]
         public bool EnableFistofJustice { get; set; }
 
+        //SelfhealingThingsHere
+
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
-        [Category("Retribution - Ability Options")]
+        [Category("Retribution - Selfhealing")]
         [DisplayName("Word of Glory Enable")]
         [Description("Checked enables Word of Glory")]
         public bool EnableWordofGlory { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Selfhealing")]
+        [DisplayName("Lay on Hands Enable")]
+        [Description("Checked enables Lay on Hands")]
+        public bool EnableLoH{ get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(85)]
+        [Category("Retribution - Selfhealing")]
+        [DisplayName("Flash of Light HP %")]
+        [Description("Flash of Light HP %")]
+        public int FlashOfLightHP{ get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(10)]
+        [Category("Retribution - Selfhealing")]
+        [DisplayName("Lay on Hands HP %")]
+        [Description("Lay on Hands HP %")]
+        public int LohHPSetting { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(99)]
+        [Category("Retribution - Selfhealing")]
+        [DisplayName("Word of Glory HP %")]
+        [Description("Word of Glory HP %")]
+        public int WoGHP { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(3)]
+        [Category("Retribution - Selfhealing")]
+        [DisplayName("Selfless Healing Stacks")]
+        [Description("Selfless healing Stacks for Flash of Light")]
+        public int SelflessHealingStacks { get; set; }
+
+        [Setting]
+        [Styx.Helpers.DefaultValue(false)]
+        [Category("Retribution - Selfhealing")]
+        [DisplayName("Flash of Light Enable")]
+        [Description("Checked enables Flash of Light")]
+        public bool EnableFlashofLight { get; set; }
+
+
+
+
+
 
         [Setting]
         [Styx.Helpers.DefaultValue(false)]
