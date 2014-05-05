@@ -14,7 +14,7 @@ namespace Tyrael.Shared
 {
     public class TyraelUtilities
     {
-        #region Click-To-Move (CTM) Functions
+        #region Click-To-Move Functions
         /// <summary>
         /// This runs the RunClickToMove() void after a set time.
         /// </summary>
