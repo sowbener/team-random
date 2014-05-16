@@ -761,7 +761,7 @@ namespace YourRaidingBuddy.Core
             {
                 if (Me.Shapeshift == ShapeshiftForm.Cat || Me.Shapeshift == ShapeshiftForm.Bear || Me.Shapeshift == ShapeshiftForm.DireBear)
                 {
-                    if (Me.HealingSpellIds.Contains(spell.Id))
+                    if (Me.IsCastingHealingSpell)
                     {
                         formSwitch = true;
                         currentPower = Me.CurrentMana;
