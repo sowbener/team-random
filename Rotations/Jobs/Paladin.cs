@@ -41,7 +41,12 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> PaladinRotation()
         {
-            await Spell.CastSpell("Savage Blade", () => Actionmanager.LastSpell.Name == "Fast Blade");
+            await Spell.CastSpell("Royal Authority", () => Actionmanager.LastSpell.Name == "Savage Blade" && Me.CurrentTarget.HasAura("Rage of Halone") && Me.CurrentTarget.HasAura("Goring Blade"));
+            await Spell.CastSpell("Rage of Halone", () => Actionmanager.LastSpell.Name == "Savage Blade" && !Me.CurrentTarget.HasAura("Rage of Halone"));
+            await Spell.CastSpell("Goring Blade", () => Actionmanager.LastSpell.Name == "Riot Blade" && Me.CurrentTarget.HasAura("Rage of Halone") && !Me.CurrentTarget.HasAura("Goring Blade"));
+            await Spell.CastSpell("Savage Blade", () => Actionmanager.LastSpell.Name == "Fast Blade" && !Me.CurrentTarget.HasAura("Rage of Halone"));
+            await Spell.CastSpell("Savage Blade", () => Actionmanager.LastSpell.Name == "Fast Blade" && Me.CurrentTarget.HasAura("Rage of Halone") && Me.CurrentTarget.HasAura("Goring Blade"));
+            await Spell.CastSpell("Riot Blade", () => Me.CurrentTarget.HasAura("Rage of Halone") && Actionmanager.LastSpell.Name == "Fast Blade");
             await Spell.CastSpell("Fast Blade", () => true);
             return false;
         }
