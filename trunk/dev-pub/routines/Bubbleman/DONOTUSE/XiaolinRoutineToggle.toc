@@ -1,7 +1,0 @@
-## Interface: 50400
-## Title: BubblemanRoutineToggle
-## Notes: 
-## DefaultState: Enabled
-
-BubblemanRoutineToggle.lua
-BubblemanRoutineToggle.xml

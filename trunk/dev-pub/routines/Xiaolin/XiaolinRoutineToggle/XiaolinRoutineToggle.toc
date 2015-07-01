@@ -1,7 +1,0 @@
-## Interface: 50400
-## Title: XiaolinRoutineToggle
-## Notes: 
-## DefaultState: Enabled
-
-XiaolinRoutineToggle.lua
-XiaolinRoutineToggle.xml
