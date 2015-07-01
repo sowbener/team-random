@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B9894864-3BE1-44BE-A029-5495625070A2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YourRaidingBuddy</RootNamespace>
+    <AssemblyName>YourRaidingBuddy</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GreyMagic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RebornBeta\GreyMagic.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="RebornBuddy, Version=1.0.283.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\RebornBeta\RebornBuddy.exe</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Input.Manipulations" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes.cs" />
+    <Compile Include="Core\Books\AuraBook.cs" />
+    <Compile Include="Core\Books\VariableBook.cs" />
+    <Compile Include="Core\Helpers\Units.cs" />
+    <Compile Include="Core\Helpers\Updater.cs" />
+    <Compile Include="Core\Interface\GUI\Overlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\GUI\Overlay.Designer.cs">
+      <DependentUpon>Overlay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Interface\GUI\YrbGui.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\GUI\YrbGui.Designer.cs">
+      <DependentUpon>YrbGui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Settings\Class\ThaumaturgeSettings.cs" />
+    <Compile Include="Core\Settings\Class\ArcanistSettings.cs" />
+    <Compile Include="Core\Settings\Class\RogueSettings.cs" />
+    <Compile Include="Core\Settings\Class\ArcherSettings.cs" />
+    <Compile Include="Core\Settings\Class\LancerSettings.cs" />
+    <Compile Include="Core\Settings\Class\PugilistSettings.cs" />
+    <Compile Include="Core\Settings\Class\GladiatorSettings.cs" />
+    <Compile Include="Core\Settings\Class\MarauderSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\MachinistSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\AstrologianSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\DarkKnightSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\ScholarSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\SummonerSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\BlackMageSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\WhiteMageSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\DragoonSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\MonkSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\PaladinSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\WarriorSettings.cs" />
+    <Compile Include="Core\Settings\Class\ConjuerSettings.cs" />
+    <Compile Include="Core\Settings\Jobs\BardSettings.cs" />
+    <Compile Include="HealingManager.cs" />
+    <Compile Include="Core\Helpers\Extensions.cs" />
+    <Compile Include="Core\Helpers\Logging.cs" />
+    <Compile Include="Core\Helpers\Spell.cs" />
+    <Compile Include="Core\Interface\Extentions\Extensions.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\Extentions\Extention1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\Extentions\Extention2.cs" />
+    <Compile Include="Core\Interface\Extentions\LoadMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\Extentions\LoadMessageBox.Designer.cs">
+      <DependentUpon>LoadMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Interface\Extentions\SaveMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\Extentions\SaveMessageBox.Designer.cs">
+      <DependentUpon>SaveMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Manager\HotkeyManager.cs" />
+    <Compile Include="Behaviors.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="Core\Helpers\Movement.cs" />
+    <Compile Include="Core\Helpers\Target.cs" />
+    <Compile Include="HealPredict.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContextSystem.cs" />
+    <Compile Include="Root.cs" />
+    <Compile Include="Rotations\Class\Pugilist.cs" />
+    <Compile Include="Rotations\Class\Conjurer.cs" />
+    <Compile Include="Rotations\Jobs\Bard.cs" />
+    <Compile Include="Rotations\Jobs\Monk.cs" />
+    <Compile Include="Rotations\Jobs\Whitemage.cs" />
+    <Compile Include="Rotations\Jobs\Ninja.cs" />
+    <Compile Include="Core\Settings\HotkeySettings.cs" />
+    <Compile Include="Core\Settings\Settings.cs" />
+    <Compile Include="Core\Settings\CoreSetting.cs" />
+    <Compile Include="Core\Settings\Jobs\NinjaSettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MiscStuff.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Interface\Extentions\LoadMessageBox.resx">
+      <DependentUpon>LoadMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Interface\Extentions\SaveMessageBox.resx">
+      <DependentUpon>SaveMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Interface\GUI\Overlay.resx">
+      <DependentUpon>Overlay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Interface\GUI\YrbGui.resx">
+      <DependentUpon>YrbGui.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
