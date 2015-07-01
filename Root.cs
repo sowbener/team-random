@@ -84,7 +84,6 @@ namespace YourRaidingBuddy
         {   
             OldJob = Core.Player.CurrentJob;
             VariableBook.Initialize();
-            if(InternalSettings.Instance.General.AutoUpdate) Updater.CheckForUpdate();
             Overlay.Overlay.onLocationChanged += Overlay_onLocationChanged;
             /* Printing some Information */
             Logger.Write("------------------------------------------");

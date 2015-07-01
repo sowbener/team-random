@@ -73,7 +73,6 @@
     <Compile Include="Core\Books\AuraBook.cs" />
     <Compile Include="Core\Books\VariableBook.cs" />
     <Compile Include="Core\Helpers\Units.cs" />
-    <Compile Include="Core\Helpers\Updater.cs" />
     <Compile Include="Core\Interface\GUI\Overlay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +142,7 @@
     <Compile Include="Rotations\Class\Conjurer.cs" />
     <Compile Include="Rotations\Jobs\Bard.cs" />
     <Compile Include="Rotations\Jobs\Monk.cs" />
+    <Compile Include="Rotations\Jobs\Paladin.cs" />
     <Compile Include="Rotations\Jobs\Whitemage.cs" />
     <Compile Include="Rotations\Jobs\Ninja.cs" />
     <Compile Include="Core\Settings\HotkeySettings.cs" />
