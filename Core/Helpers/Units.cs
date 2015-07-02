@@ -72,7 +72,7 @@ namespace YourRaidingBuddy.Helpers
                 var unitlist = GameObjectManager.GetObjectsOfType<BattleCharacter>().ToList();
 
                 /* Filling Friendly unit list */
-                FriendlyPriorities = unitlist.Where(u =>
+                    FriendlyPriorities = unitlist.Where(u =>
                     u.IsViableHealing() && u.Type == GameObjectType.Pc &&
                     u.IsAlive && u.CurrentHealthPercent < 99 &&
                     u.Distance(Core.Me) <= 30).ToList();

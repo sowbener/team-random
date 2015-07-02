@@ -142,6 +142,7 @@
     <Compile Include="Rotations\Class\Conjurer.cs" />
     <Compile Include="Rotations\Jobs\Bard.cs" />
     <Compile Include="Rotations\Jobs\Monk.cs" />
+    <Compile Include="Rotations\Jobs\DarkKnight.cs" />
     <Compile Include="Rotations\Jobs\Paladin.cs" />
     <Compile Include="Rotations\Jobs\Whitemage.cs" />
     <Compile Include="Rotations\Jobs\Ninja.cs" />
