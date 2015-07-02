@@ -47,7 +47,7 @@ namespace YourRaidingBuddy
         {
             Unit.UpdatePriorities();
             Spell.SyncCombos();
-            HealTargeting.Instance.Pulse();
+            if(Core.Player.CurrentJob == ClassJobType.WhiteMage) HealTargeting.Instance.Pulse();
             if (Overlay.Overlay.isShown())
             {
                 Overlay.Overlay.updateLabels();

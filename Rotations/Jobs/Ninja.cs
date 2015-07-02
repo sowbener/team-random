@@ -13,6 +13,7 @@ using YourRaidingBuddy.Settings;
 using TreeSharp;
 using System.Collections.Generic;
 using YourRaidingBuddy.Books;
+using YourRaidingBuddy.Interfaces.Settings;
 
 namespace YourRaidingBuddy.Rotations
 {
@@ -151,7 +152,7 @@ namespace YourRaidingBuddy.Rotations
                     if (!(Kassatsu.Cooldown.TotalMilliseconds <= 0) || !Core.Player.HasTarget)
                         return false;
 
-                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Kassatsu, null) && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura(492)))
+                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Kassatsu, null) && InternalSettings.Instance.Ninja.Kassatsu && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura(492)))
                     {
                         Logger.Write("YourRaidingBuddy Casting " + "Raiton");
                         if (Me.CurrentTarget.HasAura(492)) await CastRaiton();

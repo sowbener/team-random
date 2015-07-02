@@ -25,6 +25,12 @@ namespace YourRaidingBuddy.Settings
         public bool ShurikenCheckMobs { get; set; }
 
         [Setting]
+        [DefaultValue(false)]
+        [Category("Ninja")]
+        [DisplayName("Use Kassatsu")]
+        public bool Kassatsu { get; set; }
+
+        [Setting]
         [DefaultValue("")]
         [Category("Ninja")]
         public string ShurikenMobs { get; set; }
@@ -161,58 +167,6 @@ namespace YourRaidingBuddy.Settings
         [DefaultValue("")]
         [Category("Rogue")]
         public string JugulateSpells { get; set; }
-
-        [Browsable(false)]
-        public List<string> JugulateList { get; set; }
-
-        [Setting]
-        [DefaultValue(false)]
-        [Category("Rogue")]
-        public bool JugulateCheckSpells { get; set; }
-        
-        [Setting]
-        [DefaultValue(true)]
-        [Category("Rogue")]
-        public bool JugulateDps { get; set; }
-
-        [Setting, DefaultValue(System.Windows.Input.Key.G)]
-        [Category("Rogue Hotkey")]
-        public System.Windows.Input.Key JugulateHotKeyChoice { get; set; }
-
-        [Setting, DefaultValue(ModifierKey.Shift)]
-        [Category("Rogue Hotkey")]
-        public ModifierKey JugulateModKeyChoice { get; set; }
-
-        [Browsable(false)]
-        public System.Windows.Input.Key LastJugulateHotKeyChoice { get; set; }
-        [Browsable(false)]
-        public ModifierKey LastJugulateModKeyChoice { get; set; }
-
-        [Setting, DefaultValue(System.Windows.Input.Key.B)]
-        [Category("Rogue Hotkey")]
-        public System.Windows.Input.Key DancingEdgeHotKeyChoice { get; set; }
-
-        [Setting, DefaultValue(ModifierKey.Shift)]
-        [Category("Rogue Hotkey Hotkey")]
-        public ModifierKey DancingEdgeModKeyChoice { get; set; }
-
-        [Browsable(false)]
-        public System.Windows.Input.Key LastDancingEdgeHotKeyChoice { get; set; }
-        [Browsable(false)]
-        public ModifierKey LastDancingEdgeModKeyChoice { get; set; }
-
-        [Setting, DefaultValue(System.Windows.Input.Key.V)]
-        [Category("Rogue Hotkey")]
-        public System.Windows.Input.Key DotsHotKeyChoice { get; set; }
-
-        [Setting, DefaultValue(ModifierKey.Shift)]
-        [Category("Rogue Hotkey")]
-        public ModifierKey DotsModKeyChoice { get; set; }
-
-        [Browsable(false)]
-        public System.Windows.Input.Key LastDotsHotKeyChoice { get; set; }
-        [Browsable(false)]
-        public ModifierKey LastDotsModKeyChoice { get; set; }
 
 
     }
