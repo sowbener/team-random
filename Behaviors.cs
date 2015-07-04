@@ -284,6 +284,43 @@ namespace YourRaidingBuddy
 
                 #endregion
 
+                #region Summoner Hook
+                // Summoner Job
+                if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Summoner)
+                {
+                    //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
+                    {
+                        switch (InternalSettings.Instance.Hotkeys.HotkeyModeSelection)
+                        {
+                            case HotkeyMode.Automatic:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Summoner.AutoMode()));
+                                //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
+                                break;
+
+                            case HotkeyMode.SemiHotkeyMode:
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            case HotkeyMode.HotkeyMode:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Summoner.HotkeyMode()));
+                                //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            default:
+                                StopBehaviors("Unable to intialize DarkKnight", "HookBehaviors");
+                                break;
+                        }
+                    }
+
+                    Logger.WriteDebug(reinitialized
+                        ? "Hooks reinitialized for DarkKnight (RebuildBehaviors())."
+                        : "Hooks initialized for DarkKnight (HookBehaviors()).");
+                }
+
+                #endregion
+
                 #region Pugilist Hooks
                 // Ninja Job
                 if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Pugilist)
