@@ -72,10 +72,10 @@ namespace YourRaidingBuddy.Helpers
                 var unitlist = GameObjectManager.GetObjectsOfType<BattleCharacter>().ToList();
 
                 /* Filling Friendly unit list */
-                    FriendlyPriorities = unitlist.Where(u =>
-                    u.IsViableHealing() && u.Type == GameObjectType.Pc &&
-                    u.IsAlive && u.CurrentHealthPercent < 99 &&
-                    u.Distance(Core.Me) <= 30).ToList();
+                FriendlyPriorities = unitlist.Where(u =>
+                u.IsViableHealing() && u.Type == GameObjectType.Pc &&
+                u.IsAlive && u.CurrentHealthPercent < 99 &&
+                u.Distance(Core.Me) <= friendlyradius).ToList();
 
                 /* Perform Friendly Unit funcions */
                 PulseFriendlyUnitFunctions();
@@ -83,7 +83,7 @@ namespace YourRaidingBuddy.Helpers
                 /* Filling Hostile unit list */
                 HostilePriorities = unitlist.Where(u =>
                     u.IsViable() &&
-                    u.Distance(Core.Me) <= 30).ToList();
+                    u.Distance(Core.Me) <= hostileradius).ToList();
 
                 /* Perform Hostile Unit funcions */
                 PulseHostileUnitFunctions();
@@ -93,10 +93,10 @@ namespace YourRaidingBuddy.Helpers
                 {
                     foreach (var u in HostilePriorities)
                     {
-                  //      Logger.WriteDebug("{0} is Hostile", u.SafeName());
+                        //      Logger.WriteDebug("{0} is Hostile", u.SafeName());
                     }
 
-               //     Logger.WriteDebug("PulseHostileWoWUnits Count {0}", HostilePriorities.Count);
+                    //     Logger.WriteDebug("PulseHostileWoWUnits Count {0}", HostilePriorities.Count);
                 }
             }
             catch (Exception ex)
@@ -123,13 +123,31 @@ namespace YourRaidingBuddy.Helpers
                         VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 10);
                     }
 
+                    if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.DarkKnight)
+                    {
+                        VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 10);
+
+                        VariableBook.HostileUnitsTargettingMeCount = hostile.Count(u => u.IsViable() && u.TargetCharacter == Core.Player);
+
+                        VariableBook.UnleashRangeNonAggroUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 5 && u.TargetCharacter != Core.Player);
+
+                        VariableBook.ProvokeRangeNonAggroAndTappedUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 25 && u.TargetCharacter != Core.Player && u.Tapped);
+
+                        VariableBook.NearestHostileUnitNotTargettingMe = hostile.Where(
+                          u => u.IsViable() &&
+                          u.Distance2D(Core.Player) <= 25 &&
+                          u.TargetCharacter != Core.Player &&
+                          u.Tapped
+                        ).OrderBy(u => u.Distance2D()).FirstOrDefault();
+                    }
+
                     if (InternalSettings.Instance.General.Debug)
-                        {
-                  //          Logger.WriteDebug("HostileUnitsCountPugilist: {0}", VariableBook.HostileUnitsCount);
-                        }
+                    {
+                        //          Logger.WriteDebug("HostileUnitsCountPugilist: {0}", VariableBook.HostileUnitsCount);
                     }
                 }
-            
+            }
+
             catch (Exception ex)
             {
                 Logger.WriteDebug("PulseHostileUnitFunctions Exception: {0}", ex.ToString());
@@ -143,7 +161,7 @@ namespace YourRaidingBuddy.Helpers
                 //  using (new PerformanceLogger("PulseHostileUnitFunctions", Enums.PerformanceCategory.PulseHostileUnitFunctions))
                 {
                     var friendly = FriendlyPriorities;
-                    
+
                     if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Conjurer)
                     {
                         VariableBook.FriendlyUnitsCount = friendly.Count(u => u.IsViableHealing() && u.Distance(Core.Player) <= 30);
@@ -151,7 +169,7 @@ namespace YourRaidingBuddy.Helpers
 
                     if (InternalSettings.Instance.General.Debug)
                     {
-                            Logger.WriteDebug("FriendlyHealingTesting: {0}", VariableBook.FriendlyUnitsCount);
+                        Logger.WriteDebug("FriendlyHealingTesting: {0}", VariableBook.FriendlyUnitsCount);
                     }
                 }
             }

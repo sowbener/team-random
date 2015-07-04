@@ -1,4 +1,5 @@
-﻿
+﻿using ff14bot.Objects;
+
 namespace YourRaidingBuddy.Books
 {
     internal static class VariableBook
@@ -21,6 +22,10 @@ namespace YourRaidingBuddy.Books
 
             HostileUnitsCount = 0;
             FriendlyUnitsCount = 1;
+
+            UnleashRangeNonAggroUnitsCount = 0;
+            ProvokeRangeNonAggroAndTappedUnitsCount = 0;
+            HostileUnitsTargettingMeCount = 0;
 
             RebuildRequired = false;
         }
@@ -149,13 +154,36 @@ namespace YourRaidingBuddy.Books
 
         #endregion
 
+        #region Dark Knight
+        internal static int UnleashRangeNonAggroUnitsCount
+        {
+            get;
+            set;
+        }
+        internal static int ProvokeRangeNonAggroAndTappedUnitsCount
+        {
+            get;
+            set;
+        }
+        internal static int HostileUnitsTargettingMeCount
+        {
+            get;
+            set;
+        }
+        internal static BattleCharacter NearestHostileUnitNotTargettingMe
+        {
+            get;
+            set;
+        }
+        #endregion
+
         #region Other
         internal static bool RebuildRequired
         {
             get;
             set;
         }
-    
+
         #endregion
 
         #region Overlay

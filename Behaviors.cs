@@ -174,7 +174,7 @@ namespace YourRaidingBuddy
                 #endregion
 
                 #region Paladin Hook
-                // Ninja Job
+                // Paladin Job
                 if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Paladin)
                 {
                     //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
@@ -210,9 +210,8 @@ namespace YourRaidingBuddy
 
                 #endregion
 
-
                 #region DarkKnight Hook
-                // Ninja Job
+                // Deathknight Job
                 if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.DarkKnight)
                 {
                     //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
@@ -232,6 +231,43 @@ namespace YourRaidingBuddy
 
                             case HotkeyMode.HotkeyMode:
                                 TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.DarkKnight.HotkeyMode()));
+                                //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            default:
+                                StopBehaviors("Unable to intialize DarkKnight", "HookBehaviors");
+                                break;
+                        }
+                    }
+
+                    Logger.WriteDebug(reinitialized
+                        ? "Hooks reinitialized for DarkKnight (RebuildBehaviors())."
+                        : "Hooks initialized for DarkKnight (HookBehaviors()).");
+                }
+
+                #endregion
+
+                #region Warrior Hook
+                // Warrior Job
+                if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Warrior)
+                {
+                    //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
+                    {
+                        switch (InternalSettings.Instance.Hotkeys.HotkeyModeSelection)
+                        {
+                            case HotkeyMode.Automatic:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Warrior.AutoMode()));
+                                //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
+                                break;
+
+                            case HotkeyMode.SemiHotkeyMode:
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            case HotkeyMode.HotkeyMode:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Warrior.HotkeyMode()));
                                 //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
                                 break;
 
@@ -369,7 +405,7 @@ namespace YourRaidingBuddy
             HotkeyManager.Stop();
 
             /* Stopping the TreeRoot */
-            StopBot(reason, triggeredby);
+          //  StopBot(reason, triggeredby);
         }
       
     }

@@ -489,7 +489,7 @@ namespace YourRaidingBuddy.Helpers
         }
 
 #pragma warning disable 1998
-        public static async Task<bool> CastLocation(string name, GameObject o, bool cond, bool ignoreCanCast = false, bool lockDoubleCast = false)
+        public static async Task<bool> CastLocation(string name, GameObject o, Func<bool> cond, bool ignoreCanCast = false, bool lockDoubleCast = false)
 #pragma warning restore 1998
         {
                 SpellData data;
@@ -499,7 +499,7 @@ namespace YourRaidingBuddy.Helpers
                     var loc = o.Location;
                     if ((Extensions.DoubleCastPreventionDict.Contains(o, name) || Extensions.DoubleCastPreventionDict.Contains(null, name))
                         || (o as Character) != null && (o as Character).IsDead && o.Type != GameObjectType.Pc
-                        || !cond || !ignoreCanCast && !CanCast(data, o)) return false;
+                        || !cond() || !ignoreCanCast && !CanCast(data, o)) return false;
                     var castTime = data.AdjustedCastTime.TotalSeconds > 0;
                     if (castTime && MovementManager.IsMoving && !Core.Player.HasAura("Swiftcast"))
                     {
