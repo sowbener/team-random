@@ -26,6 +26,8 @@ namespace YourRaidingBuddy.Rotations
             get { return new[] { ClassJobType.Ninja, ClassJobType.Rogue }; }
         }
 
+        private const int MobHp = 3000;
+        private const int BuffHp = 8000;
         public override void OnInitialize()
         {
             ;
@@ -48,42 +50,86 @@ namespace YourRaidingBuddy.Rotations
         }
 
 
-        public static async Task<bool> NinjaOpener()
-        {
-            if (await Spell.ApplyCast("Mutilate", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Shadow Fang") && !Me.CurrentTarget.HasAura(492))) return true;
-            if (await Spell.ApplyCast("Shadow Fang", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura("Vulnerability Up"))) return true;
-            if (Me.CurrentTarget.HasAura("Dancing Edge") && (!Me.HasAura("Suiton") || !Me.HasAura("Huton") || !Me.HasAura("Raiton")))
-            {
-                await DoNinjutsu();
-            }
-            if (await Spell.CastSpell("Internal Release", Me, () => !Me.HasAura("Internal Release"))) return true;
-            if (await Spell.CastSpell("Blood for Blood", Me, () => Actionmanager.LastSpell.Name == "Spinning Edge")) return true;
-            await Spell.CastSpell("Gust Slash", () => Me.HasAura("Blood for Blood") && Actionmanager.LastSpell.Name == "Spinning Edge" && !HasBleedingDebuff());
-            await Spell.CastSpell("Dancing Edge", () => !HasBleedingDebuff() && Spell.LastCombo == Combo.GustSlash);
-            await Spell.CastSpell("Mug", () => Me.CurrentTarget.HasAura("Vulnerability Up") && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura("Dancing Edge") && Actionmanager.LastSpell.Name == "Spinning Edge");
-            await Spell.CastSpell("Gust Slash", () => Me.CurrentTarget.HasAura("Dancing Edge") && Me.CurrentTarget.HasAura("Shadow Fang") && Spell.LastCombo == Combo.SpinningEdge);
-            await Spell.CastSpell("Jugulate", () => Me.CurrentTarget.HasAura("Dancing Edge") && Me.CurrentTarget.HasAura("Shadow Fang") && Spell.LastCombo == Combo.GustSlash);
-            await Spell.CastSpell("Aeolian Edge", () => Jugulate.Cooldown.TotalSeconds <= 30 && Spell.LastCombo == Combo.GustSlash);
-            await Spell.CastSpell("Spinning Edge", () => true);
-            return false;
-        }
+
 
         public static async Task<bool> NinjaRotation()
         {
+            if (Managers.HotkeyManager.IsKeyDown(System.Windows.Forms.Keys.LShiftKey))
+            {
+                await EmergHuton();
+            }
             await DoNinjutsu();
-            await Spell.NoneGcdCast("Trick Attack", Me.CurrentTarget, () => Me.HasAura(AuraBook.Suiton) && Me.CurrentTarget.IsBehind);
-            await Spell.CastSpell("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease));
-            await Spell.CastSpell("Blood for Blood", Me, () => Actionmanager.LastSpell.Name == "Spinning Edge");
-            await Spell.CastSpell("Shadow Fang", Me.CurrentTarget, () => (!Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true)) && Spell.LastCombo == Combo.SpinningEdge);
-            await Spell.CastSpell("Gust Slash", () => Spell.LastCombo == Combo.SpinningEdge && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true));
-            await Spell.CastSpell("Dancing Edge", () => (!Me.CurrentTarget.HasAura(AuraBook.DancingEdge, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.DancingEdge)) && Spell.LastCombo == Combo.GustSlash);
-            await Spell.CastSpell("Aeolian Edge", () => Spell.LastCombo == Combo.GustSlash && Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && Me.CurrentTarget.HasAura(AuraBook.DancingEdge));
-            await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && !Me.CurrentTarget.HasAura(AuraBook.Mutilate));
-            await Spell.CastSpell("Mug", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && Me.CurrentTarget.HasAura(AuraBook.Mutilate));
-            await Spell.CastSpell("Jugulate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && Me.CurrentTarget.HasAura(AuraBook.Mutilate));
+            //await HutonRefresh();
+            await DancingEdge();
+            await Shadow();
+            await SingleTarget();
+            await NoneGCD();
+
+            return false;
+        }
+
+        public static async Task<bool> EmergHuton()
+        {
+            await Spell.CastSpell("Armor Crush", () => Actionmanager.LastSpell.Name == "Gust Slash");
+            await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
+            await Spell.CastSpell("Spinning Edge", () => true);
+            return false;
+        }
+        public static async Task<bool> HutonRefresh()
+        {
+            if (!Me.HasAura("Duality") && !Core.Me.HasAura("Huton", true, 24000) && Actionmanager.LastSpell.Name == "Gust Slash")
+            {
+                return await Spell.CastSpell("Armor Crush", () => true);
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> DancingEdge()
+        {
+            if (!Me.HasAura("Duality") && !Me.CurrentTarget.HasAura("Dancing Edge", true, 4000) && !Me.CurrentTarget.HasAura("Dancing Edge", false, 4000) && !Me.CurrentTarget.HasAura("Storm's Eye", false) && Actionmanager.LastSpell.Name == "Gust Slash")
+            {
+                return await Spell.CastSpell("Dancing Edge", () => true);
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> Shadow()
+        {
+
+            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 4000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && Me.CurrentTarget.HasAura("Dancing Edge", true) && Actionmanager.LastSpell.Name == "Spinning Edge" && Core.Me.CurrentTarget.CurrentHealth >= MobHp)
+            {
+                return await Spell.CastSpell("Shadow Fang", () => true);
+            }
+            return false;
+        }
+
+
+        public static async Task<bool> SingleTarget()
+        {
+            await Spell.CastSpell("Aeolian Edge", () => Me.HasAura("Duality") || Actionmanager.LastSpell.Name == "Gust Slash");
+            await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
+            await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) && Core.Me.CurrentTarget.CurrentHealth >= MobHp);
             await Spell.CastSpell("Spinning Edge", () => true);
 
             return false;
+        }
+
+        public static async Task<bool> NoneGCD()
+        {
+            await Spell.NoneGcdCast("Trick Attack", Me.CurrentTarget, () => Me.HasAura(AuraBook.Suiton) && Me.CurrentTarget.IsBehind);
+            await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
+            await Spell.NoneGcdCast("Blood for Blood", Me, () => !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
+            await Spell.NoneGcdCast("Invigorate", Me, () => Me.CurrentTP < 550);
+            await Spell.NoneGcdCast("Jugulate", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.Mutilate));
+            await Spell.NoneGcdCast("Mug", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang));
+            await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && Me.CurrentTarget.HasAura(AuraBook.DancingEdge, true, 5000));
+            await Spell.NoneGcdCast("Dream Within a Dream", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Vulnerability Up"));
+            await Spell.NoneGcdCast("Assassinate", Me.CurrentTarget, () => true);
+
+            return false;
+
         }
         #endregion
 
@@ -116,7 +162,7 @@ namespace YourRaidingBuddy.Rotations
         };
 
 
-        private const int HutonRecast = 20000;
+        private const int HutonRecast = 8000;
         internal static async Task<bool> DoNinjutsu()
         {
 
@@ -152,7 +198,7 @@ namespace YourRaidingBuddy.Rotations
                     if (!(Kassatsu.Cooldown.TotalMilliseconds <= 0) || !Core.Player.HasTarget)
                         return false;
 
-                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Kassatsu, null) && InternalSettings.Instance.Ninja.Kassatsu && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura(492)))
+                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Kassatsu, null) && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura(492)))
                     {
                         Logger.Write("YourRaidingBuddy Casting " + "Raiton");
                         if (Me.CurrentTarget.HasAura(492)) await CastRaiton();
@@ -163,7 +209,7 @@ namespace YourRaidingBuddy.Rotations
 
                 }
 
-                if (taCD.TotalSeconds >= 20)
+                if (taCD.TotalSeconds >= 5)
                 {
                     await CastRaiton();
                 }
