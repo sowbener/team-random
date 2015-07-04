@@ -59,7 +59,7 @@ namespace YourRaidingBuddy.Rotations
                 await EmergHuton();
             }
             await DoNinjutsu();
-            //await HutonRefresh();
+            await HutonRefresh();
             await DancingEdge();
             await Shadow();
             await SingleTarget();
