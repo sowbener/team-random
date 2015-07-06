@@ -14,6 +14,7 @@ namespace YourRaidingBuddy.Rotations
 {
     public class DarkKnight : Root
     {
+
         private static LocalPlayer Me
         {
             get { return Core.Player; }
@@ -58,14 +59,6 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> AutoRotation()
         {
             if (await Darkside()) return true;
-            if (Target.EnemiesNearTarget(15, Me.CurrentTarget) >= 2)
-            {
-                if (await PullMultiple()) return true;
-            }
-            else
-            {
-                if (await PullSingle()) return true;
-            }
             if (await Aoe()) return true;
             if (await DotRotation()) return true;
             if (await FinishedRotation()) return true;
@@ -86,14 +79,6 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> HotkeyRotation()
         {
             if (await Darkside()) return true;
-            if (HotkeyManager.IsKeyDown(Keys.LShiftKey))
-            {
-                if (await PullSingle()) return true;
-            }
-            else
-            {
-                if (await PullMultiple()) return true;
-            }
             if (await Aoe()) return true;
             if (await DotRotation()) return true;
             if (await FinishedRotation()) return true;
@@ -151,10 +136,11 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> DarkArts()
         {
+            // Using it at Mana > 70% means that we never interrupt more important stuff like Power Slash or Unleash. Which both trigger at 50%.
             await
                 Spell.NoneGcdCast("Dark Arts", Me,
                     () =>
-                        Actionmanager.LastSpell.Name == "Syphon Strike" && Me.CurrentManaPercent > 50 &&
+                        Actionmanager.LastSpell.Name == "Syphon Strike" && Me.CurrentManaPercent > 70 &&
                         (Me.CurrentTarget.HasAura("Delirium", true, 4000) ||
                          Me.CurrentTarget.HasAura("Dragon Kick", true, 4000)));
             await
@@ -169,39 +155,11 @@ namespace YourRaidingBuddy.Rotations
             return
                 await
                     Spell.CastSpell("Unleash", Me,
-                        () => Me.CurrentManaPercent > 50 && VariableBook.HostileUnitsCount > 2);
-
-        }
-
-        private static bool _triggerPlunge;
-        public static async Task<bool> PullSingle()
-        {
-            if (_triggerPlunge && Actionmanager.CanCast("Plunge", Me.CurrentTarget))
-            {
-                await Spell.NoneGcdCast("Plunge", Me.CurrentTarget, () => true);
-                _triggerPlunge = false;
-                return true;
-            }
-
-            if (await Spell.CastSpell("Unmend", () => Me.CurrentTarget.Distance(Me) > 10 &&
-                                                      Me.CurrentTarget is BattleCharacter &&
-                                                      !((BattleCharacter)Me.CurrentTarget).Tapped))
-            {
-                _triggerPlunge = true;
-                return true;
-            }
-            return false;
-        }
-
-        public static async Task<bool> PullMultiple()
-        {
-            if (Actionmanager.CanCast("Plunge", Me.CurrentTarget) && Me.CurrentTarget.Distance(Me) > 10 &&
-                Me.CurrentTarget is BattleCharacter && !((BattleCharacter)Me.CurrentTarget).Tapped)
-            {
-                await Spell.NoneGcdCast("Plunge", Me.CurrentTarget, () => true);
-            }
-
-            return false;
+                        () =>
+                            ((Me.CurrentManaPercent > 50 && VariableBook.HostileUnitsCount > 2) || Me.HasAura("Unleash")) &&
+                            Actionmanager.LastSpell.Name != "Syphon Strike" &&
+                            Actionmanager.LastSpell.Name != "Hard Slash" &&
+                            Actionmanager.LastSpell.Name != "Spinning Slash");
         }
 
         public static async Task<bool> DotRotation()

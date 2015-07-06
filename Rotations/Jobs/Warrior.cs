@@ -82,7 +82,7 @@ namespace YourRaidingBuddy.Rotations
             await Spell.CastSpell("Defiance", Me, () => !Me.HasAura("Defiance"));
             await Spell.CastSpell("Steel Cyclone", Me, () => Me.HasAura("Infuriated"));
             await Spell.CastSpell("Infuriate", Me, () => !Me.HasAura("Infuriated") && !Me.HasAura("Wrath") && !Me.HasAura("Wrath II") && !Me.HasAura("Wrath III") && !Me.HasAura("Wrath IV") && !Me.HasAura("Uncontrollable") && !Me.HasAura("Abandon") && !Me.HasAura("Abandon II") && !Me.HasAura("Abandon III") && !Me.HasAura("Abandon IV"));
-            await Spell.CastSpell("Overpower", Me.CurrentTarget, () => Me.CurrentTarget.CurrentHealthPercent >= 0);
+            await Spell.CastSpell("Overpower", Me.CurrentTarget, () => Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealthPercent >= 0);
             await Spell.CastSpell("Flash", Me, () => true);
 
             // off the Gcd weaving (pops light cds while tanking multiple mobs)
@@ -90,7 +90,7 @@ namespace YourRaidingBuddy.Rotations
             await Spell.CastSpell("Bloodbath", Me, () => Me.CurrentHealthPercent <= 95);
             await Spell.CastSpell("Equilibrium", Me, () => Me.CurrentHealthPercent <= 60);
             await Spell.CastSpell("Featherfoot", Me, () => Me.CurrentHealthPercent <= 85);
-            await Spell.CastSpell("Mercy Stroke", Me.CurrentTarget, () => Me.CurrentTarget.CurrentHealthPercent <= 20);
+            await Spell.CastSpell("Mercy Stroke", Me.CurrentTarget, () => Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealthPercent <= 20);
 
 
             return false;
@@ -115,7 +115,7 @@ namespace YourRaidingBuddy.Rotations
             await Spell.CastSpell("Equilibrium", Me, () => Me.CurrentHealthPercent <= 60);
             await Spell.CastSpell("Featherfoot", Me, () => Me.CurrentHealthPercent <= 85);
             await Spell.CastSpell("Internal Release", Me, () => !Me.HasAura("Internal Release"));
-            await Spell.CastSpell("Mercy Stroke", Me.CurrentTarget, () => Me.CurrentTarget.CurrentHealthPercent <= 20);
+            await Spell.CastSpell("Mercy Stroke", Me.CurrentTarget, () => Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealthPercent <= 20);
 
 
             return false;
