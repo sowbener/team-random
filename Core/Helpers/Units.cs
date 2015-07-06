@@ -52,6 +52,7 @@ namespace YourRaidingBuddy.Helpers
             private set;
         }
 
+
         internal static IEnumerable<BattleCharacter> NearbyUnitsNeedHealing(double radius)
         {
             var friendly = FriendlyPriorities;

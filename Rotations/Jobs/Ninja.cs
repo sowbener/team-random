@@ -45,7 +45,7 @@ namespace YourRaidingBuddy.Rotations
         {
             if (!Me.CurrentTarget.IsViable())
                 return false;
-            // if (VariableBook.HkmMultiTarget) await NinjaAoE();
+            if (VariableBook.HkmMultiTarget) await NinjaAoE();
             return await NinjaRotation();
         }
 
@@ -68,6 +68,19 @@ namespace YourRaidingBuddy.Rotations
             return false;
         }
 
+        public static async Task<bool> NinjaAoE()
+        {
+            if (VariableBook.HostileUnitsCount >= 3 && Core.Me.CurrentTarget.CurrentHealth >= 10000)
+            {
+                await CastDoton();
+            }
+            if (VariableBook.HostileUnitsCount >= 5)
+            {
+                await Spell.CastSpell("Death Blossom", Me, () => true);
+            }
+
+            return false;
+        }
         public static async Task<bool> EmergHuton()
         {
             await Spell.CastSpell("Armor Crush", () => Actionmanager.LastSpell.Name == "Gust Slash");
@@ -122,6 +135,7 @@ namespace YourRaidingBuddy.Rotations
             await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
             await Spell.NoneGcdCast("Blood for Blood", Me, () => !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
             await Spell.NoneGcdCast("Invigorate", Me, () => Me.CurrentTP < 550);
+            await Spell.NoneGcdCast("Second Wind", Me, () => Me.CurrentHealthPercent <= 30);
             await Spell.NoneGcdCast("Jugulate", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.Mutilate));
             await Spell.NoneGcdCast("Mug", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang));
             await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && Me.CurrentTarget.HasAura(AuraBook.DancingEdge, true, 5000));
@@ -259,6 +273,25 @@ namespace YourRaidingBuddy.Rotations
         }
 
 
+        private static async Task<bool> CastDoton()
+        {
+
+            if (Actionmanager.CanCastOrQueue(Jin, null))
+            {
+                if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Jin, null)))
+                {
+                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Ten, null)))
+                    {
+                        if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Chi, null)))
+                        {
+                            return await CastNinjutsu();
+                        }
+                    }
+                }
+
+            }
+            return false;
+        }
 
         private static async Task<bool> CastRaiton()
         {
