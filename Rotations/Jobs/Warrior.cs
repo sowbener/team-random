@@ -56,9 +56,8 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> WarriorDeliverance()
         {
             await Spell.CastSpell("Deliverance", Me, () => !Me.HasAura("Deliverance"));
-            await Spell.ApplyCast("Fracture", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Fracture", true, 4000) && Actionmanager.LastSpell.Name != ("Heavy Swing") && Actionmanager.LastSpell.Name != "Skull Sunder");
+            await Spell.ApplyCast("Fracture", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Fracture", true, 4000) && Actionmanager.LastSpell.Name != ("Heavy Swing") && Actionmanager.LastSpell.Name != ("Skull Sunder") && Actionmanager.LastSpell.Name != ("Maim"));
             await Spell.CastSpell("Fell Cleave", Me.CurrentTarget, () => Me.CurrentTarget.CurrentHealthPercent >= 0);
-            await Spell.CastSpell("Raw Intuition", Me, () => Actionmanager.LastSpell.Name == "Fell Cleave");
             await Spell.CastSpell("Infuriate", Me, () => !Me.HasAura("Infuriated") && !Me.HasAura("Wrath") && !Me.HasAura("Wrath II") && !Me.HasAura("Wrath III") && !Me.HasAura("Wrath IV") && !Me.HasAura("Uncontrollable") && !Me.HasAura("Abandon") && !Me.HasAura("Abandon II") && !Me.HasAura("Abandon III") && !Me.HasAura("Abandon IV"));
             await Spell.CastSpell("Storm's Eye", () => Actionmanager.LastSpell.Name == "Maim");
             await Spell.CastSpell("Maim", () => !Me.HasAura("Maim", true, 7000) && !Me.CurrentTarget.HasAura("Storm's Eye", true, 7000) && Actionmanager.LastSpell.Name == "Heavy Swing");
@@ -68,8 +67,8 @@ namespace YourRaidingBuddy.Rotations
 
             // off the Gcd weaving
 
+            await Spell.CastSpell("Equilibrium", Me, () => Me.CurrentTPPercent <= 50);
             await Spell.CastSpell("Internal Release", Me, () => !Me.HasAura("Internal Release"));
-            await Spell.CastSpell("Berserk", Me, () => !Me.HasAura("Berserk"));
             await Spell.CastSpell("Mercy Stroke", Me.CurrentTarget, () => Me.CurrentTarget.CurrentHealthPercent <= 20);
 
             return false;
@@ -102,6 +101,7 @@ namespace YourRaidingBuddy.Rotations
             if (!Me.CurrentTarget.IsViable())
                 await Spell.CastSpell("Defiance", Me, () => !Me.HasAura("Defiance"));
             await Spell.CastSpell("Infuriate", Me, () => !Me.HasAura("Infuriated") && !Me.HasAura("Wrath") && !Me.HasAura("Wrath II") && !Me.HasAura("Wrath III") && !Me.HasAura("Wrath IV") && !Me.HasAura("Uncontrollable") && !Me.HasAura("Abandon") && !Me.HasAura("Abandon II") && !Me.HasAura("Abandon III") && !Me.HasAura("Abandon IV"));
+            await Spell.ApplyCast("Fracture", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Fracture", true, 4000) && Actionmanager.LastSpell.Name != ("Heavy Swing") && Actionmanager.LastSpell.Name != ("Skull Sunder") && Actionmanager.LastSpell.Name != ("Maim"));
             await Spell.CastSpell("Storm's Path", () => !Me.CurrentTarget.HasAura("Storm's Path", true, 4000) && Actionmanager.LastSpell.Name == "Maim");
             await Spell.CastSpell("Storm's Eye", () => !Me.CurrentTarget.HasAura("Storm's Eye", true, 4000) && Actionmanager.LastSpell.Name == "Maim");
             await Spell.CastSpell("Maim", () => !Me.CurrentTarget.HasAura("Storm's Eye", true, 15000) && Actionmanager.LastSpell.Name == "Heavy Swing");

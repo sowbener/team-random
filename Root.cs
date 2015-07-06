@@ -45,6 +45,14 @@ namespace YourRaidingBuddy
         private Buddy.Coroutines.Coroutine _avoidance;
         public virtual void OnPulse()
         {
+            if (Core.Me.InCombat && !Unit.CombatTime.IsRunning)
+            {
+                Unit.CombatTime.Start();
+            }
+            if(!Core.Me.InCombat && Unit.CombatTime.IsRunning)
+            {
+                Unit.CombatTime.Stop();
+            }
             Unit.UpdatePriorities();
             Spell.SyncCombos();
             if(Core.Player.CurrentJob == ClassJobType.WhiteMage) HealTargeting.Instance.Pulse();

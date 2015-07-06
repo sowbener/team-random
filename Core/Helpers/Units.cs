@@ -5,6 +5,7 @@ using ff14bot.Managers;
 using ff14bot.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using YourRaidingBuddy.Books;
 using YourRaidingBuddy.Interfaces.Settings;
@@ -13,6 +14,8 @@ namespace YourRaidingBuddy.Helpers
 {
     internal static class Unit
     {
+        internal static readonly Stopwatch CombatTime = new Stopwatch();
+
         internal static bool IsViable(this GameObject unit)
         {
             if (unit == null || !unit.IsValid)
@@ -25,6 +28,8 @@ namespace YourRaidingBuddy.Helpers
             return unit.CurrentHealth > 0;
 
         }
+
+
 
         internal static bool IsViableHealing(this GameObject unit)
         {

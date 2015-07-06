@@ -1,5 +1,6 @@
 ﻿// By HeinzSkies
 
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ff14bot;
@@ -52,7 +53,7 @@ namespace YourRaidingBuddy.Rotations
             {
                 return false;
             }
-            Unit.UpdatePriorities(0, 15);
+            Unit.UpdatePriorities(0, 10);
             return await HotkeyRotation();
         }
 
@@ -122,8 +123,7 @@ namespace YourRaidingBuddy.Rotations
                     Spell.CastSpell("Souleater",
                         () =>
                             Actionmanager.LastSpell.Name == "Syphon Strike" &&
-                            (((Me.CurrentTarget.HasAura("Delirium", true, 4000) ||
-                               Me.CurrentTarget.HasAura("Dragon Kick", true, 4000)) &&
+                            ((!ShouldApplyDelirium() &&
                               (Me.CurrentHealthPercent < 70 && Me.HasAura("Grit"))) || Me.HasAura("Dark Arts"))))
                 return true;
             if (
@@ -141,13 +141,17 @@ namespace YourRaidingBuddy.Rotations
                 Spell.NoneGcdCast("Dark Arts", Me,
                     () =>
                         Actionmanager.LastSpell.Name == "Syphon Strike" && Me.CurrentManaPercent > 70 &&
-                        (Me.CurrentTarget.HasAura("Delirium", true, 4000) ||
-                         Me.CurrentTarget.HasAura("Dragon Kick", true, 4000)));
+                        !ShouldApplyDelirium() && !Me.HasAura("Dark Arts"));
             await
                 Spell.NoneGcdCast("Dark Arts", Me,
-                    () => Actionmanager.LastSpell.Name == "Spinning Slash" && Me.CurrentManaPercent > 50);
+                    () => Actionmanager.LastSpell.Name == "Spinning Slash" && Me.CurrentManaPercent > 50 && !Me.HasAura("Dark Arts"));
 
             return false;
+        }
+
+        public static bool ShouldApplyDelirium()
+        {
+            return !Me.CurrentTarget.HasAura("Delirium", false, 4000) && !Me.CurrentTarget.HasAura("Dragon Kick") && Me.ClassLevel >= 50;
         }
 
         public static async Task<bool> Aoe()
@@ -156,10 +160,7 @@ namespace YourRaidingBuddy.Rotations
                 await
                     Spell.CastSpell("Unleash", Me,
                         () =>
-                            ((Me.CurrentManaPercent > 50 && VariableBook.HostileUnitsCount > 2) || Me.HasAura("Unleash")) &&
-                            Actionmanager.LastSpell.Name != "Syphon Strike" &&
-                            Actionmanager.LastSpell.Name != "Hard Slash" &&
-                            Actionmanager.LastSpell.Name != "Spinning Slash");
+                            ((Me.CurrentManaPercent > 50 && VariableBook.HostileUnitsCount > 2) || Me.HasAura("Enhanced Unleash")));
         }
 
         public static async Task<bool> DotRotation()
@@ -191,10 +192,6 @@ namespace YourRaidingBuddy.Rotations
             await Spell.NoneGcdCast("Reprisal", Me.CurrentTarget, () => true);
             await Spell.NoneGcdCast("Low Blow", Me.CurrentTarget, () => true);
 
-            // Need to solve this problem for an increase in dps.
-            // Leaving it like this allow it to be much more flexible.
-            //await Spell.NoneGcdCast("Plunge", Me.CurrentTarget, () => Me.CurrentTarget.Distance(Me) > 10);
-
             // Defensive
             await Spell.NoneGcdCast("Dark Dance", Me, () => Me.CurrentTarget.Distance(Me) < 3);
 
@@ -211,7 +208,7 @@ namespace YourRaidingBuddy.Rotations
                     () => Me.CurrentManaPercent < 70 && VariableBook.HostileUnitsTargettingMeCount > 0);
             await
                 Spell.NoneGcdCast("Carve and Spit", Me.CurrentTarget,
-                    () => !Me.HasAura("Dark Arts") && Me.CurrentManaPercent < 50 && Me.CurrentTarget.Distance(Me) < 3);
+                    () => !Me.HasAura("Dark Arts") && Actionmanager.LastSpell.Name != "Syphon Strike" && Actionmanager.LastSpell.Name != "Spinning Slash" && Me.CurrentManaPercent < 50 && Me.CurrentTarget.Distance(Me) < 3);
             await
                 Spell.NoneGcdCast("Sole Survivor", Me.CurrentTarget,
                     () =>
