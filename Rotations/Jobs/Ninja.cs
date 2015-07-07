@@ -70,7 +70,7 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> NinjaAoE()
         {
-            if (VariableBook.HostileUnitsCount >= 3 && Core.Me.CurrentTarget.CurrentHealth >= 10000)
+            if (VariableBook.HostileUnitsCount >= 3 && Core.Me.CurrentTarget.CurrentHealthPercent >= 60)
             {
                 await CastDoton();
             }
@@ -111,7 +111,7 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> Shadow()
         {
 
-            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 4000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && Me.CurrentTarget.HasAura("Dancing Edge", true) && Actionmanager.LastSpell.Name == "Spinning Edge" && Core.Me.CurrentTarget.CurrentHealth >= MobHp)
+            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 4000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye"))); && Actionmanager.LastSpell.Name == "Spinning Edge");
             {
                 return await Spell.CastSpell("Shadow Fang", () => true);
             }
@@ -123,7 +123,8 @@ namespace YourRaidingBuddy.Rotations
         {
             await Spell.CastSpell("Aeolian Edge", () => Me.HasAura("Duality") || Actionmanager.LastSpell.Name == "Gust Slash");
             await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
-            await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) && Core.Me.CurrentTarget.CurrentHealth >= MobHp);
+            await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) &&
+Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
             await Spell.CastSpell("Spinning Edge", () => true);
 
             return false;
@@ -132,13 +133,13 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> NoneGCD()
         {
             await Spell.NoneGcdCast("Trick Attack", Me.CurrentTarget, () => Me.HasAura(AuraBook.Suiton) && Me.CurrentTarget.IsBehind);
-            await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
-            await Spell.NoneGcdCast("Blood for Blood", Me, () => !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
+            await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
+            await Spell.NoneGcdCast("Blood for Blood", Me, () => !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
             await Spell.NoneGcdCast("Invigorate", Me, () => Me.CurrentTP < 550);
             await Spell.NoneGcdCast("Second Wind", Me, () => Me.CurrentHealthPercent <= 30);
             await Spell.NoneGcdCast("Jugulate", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.Mutilate));
             await Spell.NoneGcdCast("Mug", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang));
-            await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && Me.CurrentTarget.HasAura(AuraBook.DancingEdge, true, 5000));
+            await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && (Me.CurrentTarget.HasAura("Dancing Edge", true, 5000) || Me.CurrentTarget.HasAura("Storm's Eye")));
             await Spell.NoneGcdCast("Dream Within a Dream", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Vulnerability Up"));
             await Spell.NoneGcdCast("Assassinate", Me.CurrentTarget, () => true);
 
