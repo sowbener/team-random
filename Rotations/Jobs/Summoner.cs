@@ -48,10 +48,10 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> Rotation()
         {
-            await Spell.CastSpell("Aetherflow", Me, () => !Me.HasAura("Aethertrail Attunement"));
+            await Spell.CastSpell("Aetherflow", Me, () => !Me.HasAura("Aetherflow"));
             await Spell.CastLocation("Shadowflare", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura(193) || !Me.HasAura("Shadow Flare"));
             await Spell.ApplyCast("Bio II", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura(189));
-            await Spell.NoneGcdCast("Painflare", Me.CurrentTarget, () => Me.HasAura("Aethertrail Attunement") && Me.CurrentTarget.HasAura("Bio II") && Me.Auras.GetAuraStacksById(807) == 3);
+            await Spell.NoneGcdCast("Painflare", Me.CurrentTarget, () => Me.HasAura("Aetherflow") && Me.CurrentTarget.HasAura("Bio II"));
             await Spell.ApplyCast("Miasma", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura(180));
             await Spell.ApplyCast("Bio", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Bio"));
             await Spell.NoneGcdCast("Spur", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Bio") && Me.Auras.GetAuraStacksById(807) == 2);

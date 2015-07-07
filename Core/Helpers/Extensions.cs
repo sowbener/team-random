@@ -35,7 +35,7 @@ namespace YourRaidingBuddy.Helpers
                 return;
 
 
-            TimeSpan expir = DateTime.UtcNow.TimeOfDay + spellData.AdjustedCastTime + TimeSpan.FromSeconds(3);
+            TimeSpan expir = DateTime.UtcNow.TimeOfDay + spellData.AdjustedCastTime + TimeSpan.FromSeconds(4);
             string key = DoubleCastKey(unit.ObjectId, spellName);
             if (DoubleCastPreventionDict.ContainsKey(key))
                 DoubleCastPreventionDict[key] = expir;

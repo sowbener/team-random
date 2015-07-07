@@ -333,15 +333,17 @@ namespace YourRaidingBuddy.Helpers
                 Logger.Write("Applying " + spell);
                 if (Actionmanager.DoAction(spell, o))
                 {
+                    await SleepForLagDuration();
                     Extensions.UpdateDoubleCastDict(spell, o);
+                    return true;
                 }
-
                 return true;
             }
 
             return false;
 
            }
+
 
         #endregion
 
