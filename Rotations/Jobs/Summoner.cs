@@ -50,13 +50,13 @@ namespace YourRaidingBuddy.Rotations
         {
             await Spell.CastSpell("Aetherflow", Me, () => !Me.HasAura("Aethertrail Attunement"));
             await Spell.CastLocation("Shadowflare", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura(193) || !Me.HasAura("Shadow Flare"));
-            if (!Me.CurrentTarget.HasAura("Bio II") && await Spell.ApplyCast("Bio II", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Bio II"))) return true;
+            await Spell.ApplyCast("Bio II", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura(189));
             await Spell.NoneGcdCast("Painflare", Me.CurrentTarget, () => Me.HasAura("Aethertrail Attunement") && Me.CurrentTarget.HasAura("Bio II") && Me.Auras.GetAuraStacksById(807) == 3);
-            await Spell.ApplyCast("Miasma", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Miasma"));
+            await Spell.ApplyCast("Miasma", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura(180));
             await Spell.ApplyCast("Bio", Me.CurrentTarget, () => !Me.CurrentTarget.HasAura("Bio"));
             await Spell.NoneGcdCast("Spur", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Bio") && Me.Auras.GetAuraStacksById(807) == 2);
             await Spell.NoneGcdCast("Fester", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Bio", false, 16500) && Me.Auras.GetAuraStacksById(807) == 1);
-            if (Me.CurrentTarget.HasAura("Bio") && Me.CurrentTarget.HasAura("Bio II") && Me.CurrentTarget.HasAura("Miasma"))
+            if (Me.CurrentTarget.HasAura("Bio") && Me.CurrentTarget.HasAura(189) && Me.CurrentTarget.HasAura("Miasma"))
             {
                 await Spell.CastSpell("Ruin II", () => true);
                 await Spell.NoneGcdCast("Rouse", Me, () => !Me.HasAura("Rouse"));
