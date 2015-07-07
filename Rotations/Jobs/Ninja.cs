@@ -111,7 +111,7 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> Shadow()
         {
 
-            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 4000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye"))); && Actionmanager.LastSpell.Name == "Spinning Edge");
+            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 4000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")) && Actionmanager.LastSpell.Name == "Spinning Edge"))
             {
                 return await Spell.CastSpell("Shadow Fang", () => true);
             }
