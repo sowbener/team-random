@@ -26,8 +26,8 @@ namespace YourRaidingBuddy.Rotations
             get { return new[] { ClassJobType.Ninja, ClassJobType.Rogue }; }
         }
 
-        private const int MobHp = 3000;
-        private const int BuffHp = 8000;
+        private const int MobHp = 0;
+        private const int BuffHp = 0;
         public override void OnInitialize()
         {
             ;
@@ -111,7 +111,7 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> Shadow()
         {
 
-            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 4000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")) && Actionmanager.LastSpell.Name == "Spinning Edge"))
+            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 3000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")) && Actionmanager.LastSpell.Name == "Spinning Edge" && Core.Me.CurrentTarget.CurrentHealth >= MobHp)
             {
                 return await Spell.CastSpell("Shadow Fang", () => true);
             }
@@ -121,6 +121,7 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> SingleTarget()
         {
+            await Spell.CastSpell("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura("Shadow Fang", true) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")));
             await Spell.CastSpell("Aeolian Edge", () => Me.HasAura("Duality") || Actionmanager.LastSpell.Name == "Gust Slash");
             await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
             await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) &&
@@ -139,7 +140,7 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
             await Spell.NoneGcdCast("Second Wind", Me, () => Me.CurrentHealthPercent <= 30);
             await Spell.NoneGcdCast("Jugulate", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.Mutilate));
             await Spell.NoneGcdCast("Mug", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang));
-            await Spell.NoneGcdCast("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura(AuraBook.ShadowFang, true, 5000) && (Me.CurrentTarget.HasAura("Dancing Edge", true, 5000) || Me.CurrentTarget.HasAura("Storm's Eye")));
+
             await Spell.NoneGcdCast("Dream Within a Dream", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Vulnerability Up"));
             await Spell.NoneGcdCast("Assassinate", Me.CurrentTarget, () => true);
 
@@ -177,7 +178,7 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
         };
 
 
-        private const int HutonRecast = 8000;
+        private const int HutonRecast = 6000;
         internal static async Task<bool> DoNinjutsu()
         {
 
