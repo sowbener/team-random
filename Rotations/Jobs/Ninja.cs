@@ -59,6 +59,7 @@ namespace YourRaidingBuddy.Rotations
                 await EmergHuton();
             }
             await DoNinjutsu();
+            await EmergenHuton();
             await HutonRefresh();
             await DancingEdge();
             await Shadow();
@@ -81,6 +82,16 @@ namespace YourRaidingBuddy.Rotations
 
             return false;
         }
+
+        public static async Task<bool> EmergenHuton()
+        {
+            if (!Me.HasAura("Duality") && !Core.Me.HasAura("Huton", true, 15000) && Actionmanager.LastSpell.Name == "Gust Slash")
+            {
+                await Spell.CastSpell("Armor Crush", () => true);
+            }
+            return false;
+        }
+
         public static async Task<bool> EmergHuton()
         {
             await Spell.CastSpell("Armor Crush", () => Actionmanager.LastSpell.Name == "Gust Slash");
@@ -88,19 +99,24 @@ namespace YourRaidingBuddy.Rotations
             await Spell.CastSpell("Spinning Edge", () => true);
             return false;
         }
+
         public static async Task<bool> HutonRefresh()
         {
-            if (!Me.HasAura("Duality") && !Core.Me.HasAura("Huton", true, 24000) && Actionmanager.LastSpell.Name == "Gust Slash")
+            if (!Me.HasAura("Duality") && !Core.Me.HasAura("Huton", true, 40000) && Actionmanager.LastSpell.Name == "Gust Slash")
             {
-                return await Spell.CastSpell("Armor Crush", () => true);
+                await DancingEdge();
+                await Shadow();
+                await Spell.CastSpell("Armor Crush", () => true);
+
             }
+
 
             return false;
         }
 
         public static async Task<bool> DancingEdge()
         {
-            if (!Me.HasAura("Duality") && !Me.CurrentTarget.HasAura("Dancing Edge", true, 4000) && !Me.CurrentTarget.HasAura("Dancing Edge", false, 4000) && !Me.CurrentTarget.HasAura("Storm's Eye", false) && Actionmanager.LastSpell.Name == "Gust Slash")
+            if (!Me.HasAura("Duality") && (!Me.CurrentTarget.HasAura("Dancing Edge", true, 4000) || !Me.CurrentTarget.HasAura("Dancing Edge", true)) && !Me.CurrentTarget.HasAura("Storm's Eye", false) && Actionmanager.LastSpell.Name == "Gust Slash")
             {
                 return await Spell.CastSpell("Dancing Edge", () => true);
             }
@@ -125,7 +141,7 @@ namespace YourRaidingBuddy.Rotations
             await Spell.CastSpell("Aeolian Edge", () => Me.HasAura("Duality") || Actionmanager.LastSpell.Name == "Gust Slash");
             await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
             await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) &&
-Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
+Core.Me.CurrentTarget.CurrentHealth >= MobHp);
             await Spell.CastSpell("Spinning Edge", () => true);
 
             return false;
@@ -134,15 +150,16 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
         public static async Task<bool> NoneGCD()
         {
             await Spell.NoneGcdCast("Trick Attack", Me.CurrentTarget, () => Me.HasAura(AuraBook.Suiton) && Me.CurrentTarget.IsBehind);
-            await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
-            await Spell.NoneGcdCast("Blood for Blood", Me, () => !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
+            await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
+            await Spell.NoneGcdCast("Blood for Blood", Me, () => Unit.CombatTime.ElapsedMilliseconds > 2000 && !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
             await Spell.NoneGcdCast("Invigorate", Me, () => Me.CurrentTP < 550);
             await Spell.NoneGcdCast("Second Wind", Me, () => Me.CurrentHealthPercent <= 30);
-            await Spell.NoneGcdCast("Jugulate", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.Mutilate));
-            await Spell.NoneGcdCast("Mug", Me.CurrentTarget, () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang));
+            await Spell.NoneGcdCast("Jugulate", Me.CurrentTarget, () => Unit.CombatTime.ElapsedMilliseconds > 8000);
+            await Spell.NoneGcdCast("Mug", Me.CurrentTarget, () => Unit.CombatTime.ElapsedMilliseconds > 4000);
 
-            await Spell.NoneGcdCast("Dream Within a Dream", Me.CurrentTarget, () => Me.CurrentTarget.HasAura("Vulnerability Up"));
+            await Spell.NoneGcdCast("Dream Within a Dream", Me.CurrentTarget, () => Unit.CombatTime.ElapsedMilliseconds > 6000);
             await Spell.NoneGcdCast("Assassinate", Me.CurrentTarget, () => true);
+
 
             return false;
 
@@ -216,8 +233,8 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
 
                     if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Kassatsu, null) && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura(492)))
                     {
-                        Logger.Write("YourRaidingBuddy Casting " + "Raiton");
-                        if (Me.CurrentTarget.HasAura(492)) await CastRaiton();
+                        Logger.Write("YourRaidingBuddy Casting " + "Fuma");
+                        if (Me.CurrentTarget.HasAura(492)) await CastFuma();
                     }
 
 
@@ -227,7 +244,7 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
 
                 if (taCD.TotalSeconds >= 5)
                 {
-                    await CastRaiton();
+                    await CastFuma();
                 }
 
 
@@ -238,8 +255,8 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
 
             if (Actionmanager.CanCastOrQueue(Chi, null) && Me.CurrentTarget.HasAura("Shadow Fang"))
             {
-                Logger.Write("YourRaidingBuddy Casting " + "Raiton");
-                await CastRaiton();
+                Logger.Write("YourRaidingBuddy Casting " + "Fuma");
+                await CastFuma();
                 return false;
             }
 
@@ -274,6 +291,15 @@ Core.Me.CurrentTarget.CurrentHealthPercent >= 25);
             }
         }
 
+
+        private static async Task<bool> CastFuma()
+        {
+            if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Ten, null)))
+            {
+                return await CastNinjutsu();
+            }
+            return false;
+        }
 
         private static async Task<bool> CastDoton()
         {
