@@ -326,10 +326,6 @@ namespace YourRaidingBuddy.Helpers
                 if (Extensions.DoubleCastPreventionDict.Contains(o, spell))
                     return false;
 
-                if (!Actionmanager.DoAction(spell, o))
-                {
-                     Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) " + spell + " DoAction Failed");
-                }
                 Logger.Write("Applying " + spell);
                 if (Actionmanager.DoAction(spell, o))
                 {
@@ -337,7 +333,8 @@ namespace YourRaidingBuddy.Helpers
                     Extensions.UpdateDoubleCastDict(spell, o);
                     return true;
                 }
-                return true;
+
+                return false;
             }
 
             return false;
