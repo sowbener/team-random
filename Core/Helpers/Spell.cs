@@ -487,9 +487,7 @@ namespace YourRaidingBuddy.Helpers
             return false;
         }
 
-#pragma warning disable 1998
         public static async Task<bool> CastLocation(string name, GameObject o, Func<bool> cond, bool ignoreCanCast = false, bool lockDoubleCast = false)
-#pragma warning restore 1998
         {
                 SpellData data;
                 if (Actionmanager.CurrentActions.TryGetValue(name, out data))
