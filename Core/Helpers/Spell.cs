@@ -420,7 +420,8 @@ namespace YourRaidingBuddy.Helpers
                 if(InternalSettings.Instance.General.Debug) Logging.Write(Colors.AliceBlue, "[YourRaidingBuddy] Have Selected {0} because it needs healing {1}", HealTargeting.Instance.FirstUnit, HealTargeting.Instance.FirstUnit.CurrentHealthPercent);
                 return true;
             }
-            return true;
+
+            return false;
         }
 
         public static async Task<bool> CastNew(string name, GameObject o, Func<bool> cond, bool ignoreCanCast = false, bool lockDoubleCast = false, bool falseOnFailedDoAction = false)

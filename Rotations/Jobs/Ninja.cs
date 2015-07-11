@@ -137,11 +137,11 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> SingleTarget()
         {
-            await Spell.CastSpell("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura("Shadow Fang", true) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")));
+            await Spell.CastSpell("Duality", Me, () => MovementManager.IsMoving && Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura("Shadow Fang", true) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")));
             await Spell.CastSpell("Aeolian Edge", () => Me.HasAura("Duality") || Actionmanager.LastSpell.Name == "Gust Slash");
             await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
             await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) &&
-Core.Me.CurrentTarget.CurrentHealth >= MobHp);
+            Core.Me.CurrentTarget.CurrentHealth >= MobHp);
             await Spell.CastSpell("Spinning Edge", () => true);
 
             return false;
