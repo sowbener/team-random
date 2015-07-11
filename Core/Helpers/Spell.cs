@@ -334,7 +334,7 @@ namespace YourRaidingBuddy.Helpers
                     return true;
                 }
 
-                return false;
+                return true;
             }
 
             return false;
