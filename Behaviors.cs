@@ -358,6 +358,43 @@ namespace YourRaidingBuddy
 
                 #endregion
 
+                #region Machinist Hooks
+                // Ninja Job
+                if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Machinist)
+                {
+                    //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
+                    {
+                        switch (InternalSettings.Instance.Hotkeys.HotkeyModeSelection)
+                        {
+                            case HotkeyMode.Automatic:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Machinist.AutoMode()));
+                                //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
+                                break;
+
+                            case HotkeyMode.SemiHotkeyMode:
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            case HotkeyMode.HotkeyMode:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Machinist.HotkeyMode()));
+                                //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            default:
+                                StopBehaviors("Unable to intialize Machinist", "HookBehaviors");
+                                break;
+                        }
+                    }
+
+                    Logger.WriteDebug(reinitialized
+                        ? "Hooks reinitialized for Machinist (RebuildBehaviors())."
+                        : "Hooks initialized for Machinist (HookBehaviors()).");
+                }
+
+                #endregion
+
                 #region Conjurer Hooks
                 // Ninja Job
                 if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Conjurer)

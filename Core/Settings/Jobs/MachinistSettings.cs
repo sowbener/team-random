@@ -14,10 +14,33 @@ namespace YourRaidingBuddy.Settings
         {
         }
 
+      //  private const int MinHpBuff = 1000;
+       // private const int MinHpDeBuff = 1000;
+      //  private const int UseInvigorateTP = 550;
+
         [Setting]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         [Category("Machinist")]
-        public bool Test{ get; set; }
+        [DisplayName("Enable Auto-Buffs")]
+        public bool EnableAutoBuffs{ get; set; }
+
+        [Setting]
+        [DefaultValue(1000)]
+        [Category("Machinist")]
+        [DisplayName("Minimum Hp Buff")]
+        public int MinHpBuff { get; set; }
+
+        [Setting]
+        [DefaultValue(1000)]
+        [Category("Machinist")]
+        [DisplayName("Minimum Hp Debuff")]
+        public int MinHpDeBuff { get; set; }
+
+        [Setting]
+        [DefaultValue(550)]
+        [Category("Machinist")]
+        [DisplayName("Use Invigorate TP At")]
+        public int UseInvigorateTP { get; set; }
 
 
     }

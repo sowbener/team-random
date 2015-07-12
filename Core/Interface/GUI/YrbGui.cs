@@ -40,21 +40,21 @@ namespace YourRaidingBuddy.Interface.GUI
                     propertyGrid1.SelectedObject = InternalSettings.Instance.BlackMage;
                     Refresh();
                     break;
-                //      case ff14bot.Enums.ClassJobType.DarkKnight:
-                //         tabPage3.Text = "Dark-Knight";
-                //       propertyGrid1.SelectedObject = InternalSettings.Instance.DarkKnight;
-                //       Refresh();
-                //       break;
-                //      case ff14bot.Enums.ClassJobType.Machinist:
-                //         tabPage3.Text = "Machinist";
-                //       propertyGrid1.SelectedObject = InternalSettings.Instance.Machinist;
-                //       Refresh();
-                //       break;
-                //      case ff14bot.Enums.ClassJobType.Astrologian:
-                //         tabPage3.Text = "Astrologian";
-                //       propertyGrid1.SelectedObject = InternalSettings.Instance.Astrologian;
-                //       Refresh();
-                //       break;
+                      case ff14bot.Enums.ClassJobType.DarkKnight:
+                         tabPage3.Text = "Dark-Knight";
+                       propertyGrid1.SelectedObject = InternalSettings.Instance.DarkKnight;
+                       Refresh();
+                     break;
+                       case ff14bot.Enums.ClassJobType.Machinist:
+                       tabPage3.Text = "Machinist";
+                       propertyGrid1.SelectedObject = InternalSettings.Instance.Machinist;
+                       Refresh();
+                       break;
+                       case ff14bot.Enums.ClassJobType.Astrologian:
+                       tabPage3.Text = "Astrologian";
+                       propertyGrid1.SelectedObject = InternalSettings.Instance.Astrologian;
+                       Refresh();
+                       break;
                 case ff14bot.Enums.ClassJobType.Dragoon:
                     tabPage3.Text = "Dragoon";
                     propertyGrid1.SelectedObject = InternalSettings.Instance.Dragoon;
