@@ -539,15 +539,16 @@ namespace YourRaidingBuddy.Helpers
                 {
                     await SleepForLagDuration();
                     Logging.Write(Colors.Orchid, "[YourRaidingBuddy] Casting {0}", name);
-                    return true;
-                }
-                if (lockDoubleCast)
-                {
-                    if (InternalSettings.Instance.General.Debug)
+
+                    if (lockDoubleCast)
                     {
-                        Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) " + name + " DoAction Success, applying double cast prevention: " + (2.5 + data.AdjustedCastTime.TotalSeconds));
+                        if (InternalSettings.Instance.General.Debug)
+                        {
+                            Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) " + name + " DoAction Success, applying double cast prevention: " + (2.5 + data.AdjustedCastTime.TotalSeconds));
+                        }
+                        Extensions.UpdateDoubleCastDict(name, o);
                     }
-                    Extensions.UpdateDoubleCastDict(name, o);
+                    return true;
                 }
                 return true;
             }
