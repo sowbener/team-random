@@ -19,7 +19,7 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> AutoMode()
         {
-            if (Me.CurrentTarget.IsViable())
+            if (!Me.CurrentTarget.IsViable())
                 return false;
 
             return await BardRotation();
@@ -27,7 +27,7 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> HotkeyMode()
         {
-            if (Me.CurrentTarget.IsViable())
+            if (!Me.CurrentTarget.IsViable())
                 return false;
 
             return await BardRotation();
