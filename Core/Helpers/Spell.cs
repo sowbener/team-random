@@ -11,6 +11,7 @@ using ff14bot.Managers;
 using ff14bot.Objects;
 using YourRaidingBuddy.Interfaces.Settings;
 using YourRaidingBuddy.Books;
+using Clio.Utilities;
 
 namespace YourRaidingBuddy.Helpers
 {
@@ -494,7 +495,12 @@ namespace YourRaidingBuddy.Helpers
                 if (Actionmanager.CurrentActions.TryGetValue(name, out data))
                 {
                     o = o ?? Core.Player.CurrentTarget;
-                    var loc = o.Location;
+                var rnd = new Random();
+                var randomDirection = Core.Player.CurrentTarget.CombatReach * 0.5 * rnd.NextDouble();
+                Vector3 location = Core.Player.CurrentTarget.Location;
+                Vector3 Randomize = new Vector3(0f, 0f, (float)randomDirection);
+                var testloc = Randomize + location;
+                var loc = o.Location;
                     if ((Extensions.DoubleCastPreventionDict.Contains(o, name) || Extensions.DoubleCastPreventionDict.Contains(null, name))
                         || (o as Character) != null && (o as Character).IsDead && o.Type != GameObjectType.Pc
                         || !cond() || !ignoreCanCast && !CanCast(data, o)) return false;
@@ -507,7 +513,7 @@ namespace YourRaidingBuddy.Helpers
                     }
 
                     Root.ShouldPulse = true;
-                    if (Actionmanager.DoActionLocation(name, loc))
+                    if (Actionmanager.DoActionLocation(name, testloc))
                     {
                         Logging.Write(Colors.OrangeRed, "[YourRaidingBuddy] Casting {0} at {1}", name, loc);
                         if (lockDoubleCast)
