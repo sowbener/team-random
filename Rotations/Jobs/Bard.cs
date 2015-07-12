@@ -4,7 +4,7 @@ using ff14bot.Objects;
 using YourRaidingBuddy.Helpers;
 using System.Threading.Tasks;
 
-namespace YourRaidingBuddy.Rotations.Jobs
+namespace YourRaidingBuddy.Rotations
 {
     public class Bard : Root
     {
