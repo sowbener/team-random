@@ -25,6 +25,8 @@ namespace YourRaidingBuddy.Helpers
             if (unit == null)
                 return;
 
+
+
             SpellData spellData;
 
 
@@ -43,9 +45,40 @@ namespace YourRaidingBuddy.Helpers
             DoubleCastPreventionDict.Add(key, expir);
         }
 
+        public static void UpdateDoubleCastDict(uint spellName, GameObject unit)
+        {
+            if (unit == null)
+                return;
+
+            var castingspell = DataManager.GetSpellData(spellName);
+
+            SpellData spellData;
+
+
+            Actionmanager.CurrentActions.TryGetValue(spellName, out spellData);
+
+
+            if (spellData == null)
+                return;
+
+
+            TimeSpan expir = DateTime.UtcNow.TimeOfDay + spellData.AdjustedCastTime + TimeSpan.FromSeconds(4);
+            string key = DoubleCastKeyID(unit.ObjectId, spellName);
+            if (DoubleCastPreventionDict.ContainsKey(key))
+                DoubleCastPreventionDict[key] = expir;
+            else
+                DoubleCastPreventionDict.Add(key, expir);
+        }
+
         public static string DoubleCastKey(uint guid, string spellName)
         {
             return guid.ToString("X") + "-" + spellName;
+        }
+
+        public static string DoubleCastKeyID(uint guid, uint spellName)
+        {
+            var castingspell = DataManager.GetSpellData(spellName);
+            return guid.ToString("X") + "-" + castingspell;
         }
 
         public static string DoubleCastKey(GameObject unit, string spell)
@@ -53,10 +86,20 @@ namespace YourRaidingBuddy.Helpers
             return DoubleCastKey(unit.ObjectId, spell);
         }
 
+        public static string DoubleCastKeyID(GameObject unit, uint spellName)
+        {
+            return DoubleCastKeyID(unit.ObjectId, spellName);
+        }
+
 
         public static bool Contains(this Dictionary<string, TimeSpan> dict, GameObject unit, string spellName)
         {
             return dict.ContainsKey(unit == null ? DoubleCastKey(Core.Player.ObjectId, spellName) : DoubleCastKey(unit, spellName));
+        }
+
+        public static bool Contains(this Dictionary<string, TimeSpan> dict, GameObject unit, uint spellName)
+        {
+            return dict.ContainsKey(unit == null ? DoubleCastKeyID(Core.Player.ObjectId, spellName) : DoubleCastKeyID(unit, spellName));
         }
 
         public static bool ContainsAny(this Dictionary<string, TimeSpan> dict, GameObject unit,

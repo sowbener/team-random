@@ -170,7 +170,7 @@ namespace YourRaidingBuddy.Rotations
                                         Actionmanager.LastSpell.Name != "Syphon Strike" &&
                                         Actionmanager.LastSpell.Name != "Hard Slash" &&
                                         Actionmanager.LastSpell.Name != "Spinning Slash" &&
-                                        Me.CurrentTarget.CurrentHealth > 3000))
+                                        (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealth > 3000)))
                 return true;
 
             return false;
@@ -185,15 +185,26 @@ namespace YourRaidingBuddy.Rotations
             return false;
         }
 
+        public static bool TargetIsNear()
+        {
+            return Me.CurrentTarget.Distance(Me) < 5;
+        }
+
         public static async Task<bool> OffGcdRotation()
         {
-            // Offensive
-            await Spell.CastLocation("Salted Earth", Me.CurrentTarget, () => true);
+            // Defensive that keeps you from dying
+            await Spell.NoneGcdCast("Foresight", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 50);
+            await Spell.NoneGcdCast("Convalescence", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 30);
+
+            // Offensive by DPS
             await Spell.NoneGcdCast("Reprisal", Me.CurrentTarget, () => true);
+            await Spell.NoneGcdCast("Mercy Stroke", Me.CurrentTarget, () => (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealthPercent <= 20));
             await Spell.NoneGcdCast("Low Blow", Me.CurrentTarget, () => true);
+            await Spell.CastLocation("Salted Earth", Me.CurrentTarget, () => true);
 
             // Defensive
-            await Spell.NoneGcdCast("Dark Dance", Me, () => Me.CurrentTarget.Distance(Me) < 3);
+            await Spell.NoneGcdCast("Bloodbath", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 70);
+            await Spell.NoneGcdCast("Dark Dance", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 70);
 
             return false;
         }
@@ -202,18 +213,18 @@ namespace YourRaidingBuddy.Rotations
         {
             await
                 Spell.NoneGcdCast("Blood Weapon", Me,
-                    () => Me.CurrentManaPercent < 90 && Me.CurrentTarget.Distance(Me) < 3);
+                    () => Me.CurrentManaPercent < 90 && TargetIsNear());
             await
                 Spell.NoneGcdCast("Blood Price", Me,
                     () => Me.CurrentManaPercent < 70 && VariableBook.HostileUnitsTargettingMeCount > 0);
             await
                 Spell.NoneGcdCast("Carve and Spit", Me.CurrentTarget,
-                    () => !Me.HasAura("Dark Arts") && Actionmanager.LastSpell.Name != "Syphon Strike" && Actionmanager.LastSpell.Name != "Spinning Slash" && Me.CurrentManaPercent < 50 && Me.CurrentTarget.Distance(Me) < 3);
+                    () => !Me.HasAura("Dark Arts") && Actionmanager.LastSpell.Name != "Syphon Strike" && Actionmanager.LastSpell.Name != "Spinning Slash" && Me.CurrentManaPercent < 50 && TargetIsNear());
             await
                 Spell.NoneGcdCast("Sole Survivor", Me.CurrentTarget,
                     () =>
                         (Me.CurrentManaPercent < 70 || Me.CurrentHealthPercent < 70) &&
-                        Me.CurrentTarget.Distance(Me) < 3 && Me.CurrentTarget.CurrentHealth < 5000);
+                        TargetIsNear() && (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealth < 5000));
 
             return false;
         }

@@ -14,15 +14,23 @@ namespace YourRaidingBuddy.Settings
         {
         }
 
-      //  private const int MinHpBuff = 1000;
-       // private const int MinHpDeBuff = 1000;
-      //  private const int UseInvigorateTP = 550;
-
         [Setting]
         [DefaultValue(true)]
         [Category("Machinist")]
         [DisplayName("Enable Auto-Buffs")]
-        public bool EnableAutoBuffs{ get; set; }
+        public bool EnableAutoBuffs { get; set; }
+
+        [Setting]
+        [DefaultValue(false)]
+        [Category("Machinist")]
+        [DisplayName("Enable Potions")]
+        public bool EnablePotions { get; set; }
+
+        [Setting]
+        [DefaultValue("X-Potion of Dexterity")]
+        [Category("Machinist")]
+        [DisplayName("Potion to be used")]
+        public string PotName { get; set; }
 
         [Setting]
         [DefaultValue(1000)]
@@ -42,6 +50,23 @@ namespace YourRaidingBuddy.Settings
         [DisplayName("Use Invigorate TP At")]
         public int UseInvigorateTP { get; set; }
 
+        [Setting]
+        [DefaultValue(true)]
+        [Category("Machinist")]
+        [DisplayName("Enable AutoTurret Summon")]
+        public bool EnableAutoSummon { get; set; }
+
+        [Setting]
+        [DefaultValue(true)]
+        [Category("Machinist")]
+        [DisplayName("Enable Use of Head Graze")]
+        public bool EnableStuns { get; set; }
+
+        [Setting]
+        [DefaultValue(5)]
+        [Category("Machinist")]
+        [DisplayName("Auto-AoE Number of Mobs")]
+        public int AoEMonster { get; set; }
 
     }
 

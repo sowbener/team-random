@@ -489,6 +489,71 @@ namespace YourRaidingBuddy.Helpers
             return false;
         }
 
+
+        public static async Task<bool> CastQueue(uint name, GameObject o, Func<bool> cond, bool ignoreCanCast = false, bool lockDoubleCast = false, bool falseOnFailedDoAction = false)
+        {
+
+            SpellData data;
+            if (Actionmanager.CurrentActions.TryGetValue(name, out data))
+            {
+                if (InternalSettings.Instance.General.Debug && data.Id == 125)
+                {
+                    if (o != null)
+                        Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) Cast Raise Attempt: " + o.ObjectId);
+                    else
+                        Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) Cast Raise Attempt on null!");
+                }
+                var castingspell = DataManager.GetSpellData(name);
+                o = o ?? Core.Player.CurrentTarget;
+                if ((lockDoubleCast && Extensions.DoubleCastPreventionDict.Contains(o, name) || Extensions.DoubleCastPreventionDict.Contains(null, name))
+                    || (o as Character) != null && (o as Character).IsDead && o.Type != GameObjectType.Pc
+                    || !cond() || (!ignoreCanCast && !Actionmanager.CanCastOrQueue(castingspell, o))) //if (!ignoreCanCast && !Actionmanager.CanCast(spell, o))
+                    return false;
+                var castTime = data.AdjustedCastTime.TotalSeconds > 0;
+                if (InternalSettings.Instance.General.Debug && InternalSettings.Instance.General.WriteSpellQueue &&
+                    GcdTime < 500
+                    && (!name.Equals(LogFilter) || QueueLogFilter < GcdTime))
+                {
+                    QueueLogFilter = GcdTime;
+                    Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) " + GcdTime + " Spell Queue");
+                }
+                else if (QueueLogFilter > GcdTime) QueueLogFilter = GcdTime;
+                Root.ShouldPulse = true;
+                if (ComboSpells.ContainsKey(data.Id))
+                {
+                    if (LastCombo != ComboSpells[data.Id])
+                    {
+                        if (castTime)
+                            ComboCountdown = DateTime.UtcNow.TimeOfDay +
+                                             TimeSpan.FromSeconds(GcdTime / 1000 + 1 + data.AdjustedCastTime.TotalSeconds);
+                        else
+                            ComboCountdown = DateTime.UtcNow.TimeOfDay +
+                                             TimeSpan.FromSeconds(GcdTime / 1000 + 1);
+                        ComboCountCheck = true;
+                        if (CachedCombo == Combo.Flushed)
+                            CachedCombo = ComboSpells[data.Id];
+                    }
+                }
+                // else if(!Gcd) {}  
+                if (Actionmanager.DoAction(name, o))
+                {
+                    await SleepForLagDuration();
+                    Logging.Write(Colors.Orchid, "[YourRaidingBuddy] Casting {0}", name);
+                    return true;
+                }
+                if (lockDoubleCast)
+                {
+                    if (InternalSettings.Instance.General.Debug)
+                    {
+                        Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) " + name + " DoAction Success, applying double cast prevention: " + (2.5 + data.AdjustedCastTime.TotalSeconds));
+                    }
+                    Extensions.UpdateDoubleCastDict(name, o);
+                }
+                return true;
+            }
+            return false;
+        }
+
         public static async Task<bool> CastLocation(string name, GameObject o, Func<bool> cond, bool ignoreCanCast = false, bool lockDoubleCast = false)
         {
                 SpellData data;
