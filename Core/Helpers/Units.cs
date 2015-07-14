@@ -129,7 +129,12 @@ namespace YourRaidingBuddy.Helpers
                         VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 10);
                     }
 
-                    if(Core.Player.CurrentJob == ClassJobType.Machinist)
+                    if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Dragoon)
+                    {
+                        VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 10);
+                    }
+
+                    if (Core.Player.CurrentJob == ClassJobType.Machinist)
                     {
                         VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 10);
 

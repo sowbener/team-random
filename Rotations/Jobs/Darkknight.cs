@@ -1,6 +1,5 @@
 ﻿// By HeinzSkies
 
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ff14bot;
@@ -9,7 +8,8 @@ using ff14bot.Managers;
 using ff14bot.Objects;
 using YourRaidingBuddy.Books;
 using YourRaidingBuddy.Helpers;
-using HotkeyManager = YourRaidingBuddy.Managers.HotkeyManager;
+using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Settings;
 
 namespace YourRaidingBuddy.Rotations
 {
@@ -32,9 +32,11 @@ namespace YourRaidingBuddy.Rotations
             }
         }
 
+        public static SettingsG GeneralSettings { get { return InternalSettings.Instance.General; } }
+        public static DarkKnightSetting DarkKnightSettings { get { return InternalSettings.Instance.DarkKnight; } }
+
         public override void OnInitialize()
         {
-            ;
         }
 
         public static async Task<bool> AutoMode()
@@ -43,7 +45,7 @@ namespace YourRaidingBuddy.Rotations
             {
                 return false;
             }
-            Unit.UpdatePriorities(0, 15);
+            Unit.UpdatePriorities(0, 5);
             return await AutoRotation();
         }
 
@@ -53,17 +55,17 @@ namespace YourRaidingBuddy.Rotations
             {
                 return false;
             }
-            Unit.UpdatePriorities(0, 10);
+            Unit.UpdatePriorities(0, 5);
             return await HotkeyRotation();
         }
 
         public static async Task<bool> AutoRotation()
         {
             if (await Darkside()) return true;
-            if (await Aoe()) return true;
+            if (!IsEnmityKeyDown() && await Aoe(false)) return true;
             if (await DotRotation()) return true;
             if (await FinishedRotation()) return true;
-            if (HotkeyManager.IsKeyDown(Keys.LShiftKey))
+            if (IsEnmityKeyDown())
             {
                 if (await EnmityRotation()) return true;
             }
@@ -71,8 +73,12 @@ namespace YourRaidingBuddy.Rotations
             {
                 if (await DpsRotation()) return true;
             }
-            if (await OffGcdRotation()) return true;
-            if (await MpGeneratorRotation()) return true;
+
+            if (GeneralSettings.Cooldowns == CooldownUse.Always)
+            {
+                if (await OffGcdRotation()) return true;
+                if (await MpGeneratorRotation()) return true;
+            }
 
             return false;
         }
@@ -80,10 +86,13 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> HotkeyRotation()
         {
             if (await Darkside()) return true;
-            if (await Aoe()) return true;
+            if (VariableBook.HkmMultiTarget)
+            {
+                if (!IsEnmityKeyDown() && await Aoe(true)) return true;
+            }
             if (await DotRotation()) return true;
             if (await FinishedRotation()) return true;
-            if (HotkeyManager.IsKeyDown(Keys.LShiftKey))
+            if (IsEnmityKeyDown())
             {
                 if (await EnmityRotation()) return true;
             }
@@ -91,15 +100,23 @@ namespace YourRaidingBuddy.Rotations
             {
                 if (await DpsRotation()) return true;
             }
-            if (await OffGcdRotation()) return true;
-            if (await MpGeneratorRotation()) return true;
+            if (VariableBook.HkmCooldowns)
+            {
+                if (await OffGcdRotation()) return true;
+                if (await MpGeneratorRotation()) return true;
+            }
 
             return false;
         }
 
+        private static bool IsEnmityKeyDown()
+        {
+            return YourRaidingBuddy.Managers.HotkeyManager.IsKeyDown(Keys.LShiftKey);
+        }
+
         public static async Task<bool> Darkside()
         {
-            if (await Spell.NoneGcdCast("Darkside", Me, () => !Me.HasAura("Darkside") && Me.CurrentManaPercent > 90))
+            if (await Spell.NoneGcdCast("Darkside", Me, () => DarkKnightSettings.UseDarkside && !Me.HasAura("Darkside") && Me.CurrentManaPercent > DarkKnightSettings.DarksideMpPercentage))
                 return true;
 
             return false;
@@ -121,10 +138,9 @@ namespace YourRaidingBuddy.Rotations
             if (
                 await
                     Spell.CastSpell("Souleater",
-                        () =>
-                            Actionmanager.LastSpell.Name == "Syphon Strike" &&
+                        () => Actionmanager.LastSpell.Name == "Syphon Strike" &&
                             ((!ShouldApplyDelirium() &&
-                              (Me.CurrentHealthPercent < 70 && Me.HasAura("Grit"))) || Me.HasAura("Dark Arts"))))
+                              (Me.CurrentHealthPercent < DarkKnightSettings.SouleaterHpPercentage && Me.HasAura("Grit"))) || Me.HasAura("Dark Arts"))))
                 return true;
             if (
                 await
@@ -136,31 +152,34 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> DarkArts()
         {
-            // Using it at Mana > 70% means that we never interrupt more important stuff like Power Slash or Unleash. Which both trigger at 50%.
+            if (!DarkKnightSettings.UseDarkArts) return false;
+
             await
                 Spell.NoneGcdCast("Dark Arts", Me,
                     () =>
-                        Actionmanager.LastSpell.Name == "Syphon Strike" && Me.CurrentManaPercent > 70 &&
+                        Actionmanager.LastSpell.Name == "Syphon Strike" && Me.CurrentManaPercent > DarkKnightSettings.DarkArtsSouleaterHpPercentage &&
                         !ShouldApplyDelirium() && !Me.HasAura("Dark Arts"));
             await
                 Spell.NoneGcdCast("Dark Arts", Me,
-                    () => Actionmanager.LastSpell.Name == "Spinning Slash" && Me.CurrentManaPercent > 50 && !Me.HasAura("Dark Arts"));
+                    () => Actionmanager.LastSpell.Name == "Spinning Slash" && Me.CurrentManaPercent > DarkKnightSettings.DarkArtsPowerSlashHpPercentage && !Me.HasAura("Dark Arts"));
 
             return false;
         }
 
         public static bool ShouldApplyDelirium()
         {
-            return !Me.CurrentTarget.HasAura("Delirium", false, 4000) && !Me.CurrentTarget.HasAura("Dragon Kick") && Me.ClassLevel >= 50;
+            return !Me.CurrentTarget.HasAura("Delirium", false, 4000) && !Me.CurrentTarget.HasAura("Dragon Kick") && Me.ClassLevel >= 50 && DarkKnightSettings.UseDelirium;
         }
 
-        public static async Task<bool> Aoe()
+        public static async Task<bool> Aoe(bool force)
         {
+            if (!force && !GeneralSettings.Aoe) return false;
+
             return
                 await
                     Spell.CastSpell("Unleash", Me,
                         () =>
-                            ((Me.CurrentManaPercent > 50 && VariableBook.HostileUnitsCount > 2) || Me.HasAura("Enhanced Unleash")));
+                            ((Me.CurrentManaPercent > 50 && VariableBook.HostileUnitsCount >= GeneralSettings.AoeCount) || Me.HasAura("Enhanced Unleash") || force));
         }
 
         public static async Task<bool> DotRotation()
@@ -193,18 +212,20 @@ namespace YourRaidingBuddy.Rotations
         public static async Task<bool> OffGcdRotation()
         {
             // Defensive that keeps you from dying
-            await Spell.NoneGcdCast("Foresight", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 50);
-            await Spell.NoneGcdCast("Convalescence", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 30);
+            await Spell.NoneGcdCast("Convalescence", Me, () => DarkKnightSettings.UseConvalescence && Me.CurrentHealthPercent < DarkKnightSettings.ConvalescenceHpPercentage);
+            await Spell.NoneGcdCast("Shadow Wall", Me, () => DarkKnightSettings.UseShadowWall && Me.CurrentHealthPercent < DarkKnightSettings.ShadowWallHpPercentage);
+            await Spell.NoneGcdCast("Shadowskin", Me, () => DarkKnightSettings.UseShadowskin && Me.CurrentHealthPercent < DarkKnightSettings.ShadowskinHpPercentage);
 
             // Offensive by DPS
-            await Spell.NoneGcdCast("Reprisal", Me.CurrentTarget, () => true);
-            await Spell.NoneGcdCast("Mercy Stroke", Me.CurrentTarget, () => (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealthPercent <= 20));
-            await Spell.NoneGcdCast("Low Blow", Me.CurrentTarget, () => true);
-            await Spell.CastLocation("Salted Earth", Me.CurrentTarget, () => true);
+            await Spell.NoneGcdCast("Reprisal", Me.CurrentTarget, () => DarkKnightSettings.UseReprisal);
+            await Spell.NoneGcdCast("Mercy Stroke", Me.CurrentTarget, () => DarkKnightSettings.UseMercyStroke && (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealthPercent <= 20));
+            await Spell.NoneGcdCast("Low Blow", Me.CurrentTarget, () => DarkKnightSettings.UseLowBlow);
+            await Spell.CastLocation("Salted Earth", Me.CurrentTarget, () => DarkKnightSettings.UseSaltedEarth);
 
             // Defensive
-            await Spell.NoneGcdCast("Bloodbath", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 70);
-            await Spell.NoneGcdCast("Dark Dance", Me, () => TargetIsNear() && Me.CurrentHealthPercent < 70);
+            await Spell.NoneGcdCast("Bloodbath", Me, () => DarkKnightSettings.UseBloodbath && TargetIsNear() && Me.CurrentHealthPercent < DarkKnightSettings.BloodbathHpPercentage);
+            await Spell.NoneGcdCast("Dark Dance", Me, () => DarkKnightSettings.UseDarkDance && Me.CurrentHealthPercent < DarkKnightSettings.DarkDanceHpPercentage);
+            await Spell.NoneGcdCast("Foresight", Me, () => DarkKnightSettings.UseForesight && Me.CurrentHealthPercent < DarkKnightSettings.ForesightHpPercentage);
 
             return false;
         }
@@ -213,18 +234,18 @@ namespace YourRaidingBuddy.Rotations
         {
             await
                 Spell.NoneGcdCast("Blood Weapon", Me,
-                    () => Me.CurrentManaPercent < 90 && TargetIsNear());
+                    () => DarkKnightSettings.UseBloodWeapon && Me.CurrentManaPercent < DarkKnightSettings.BloodWeaponManaPercentage && TargetIsNear());
             await
                 Spell.NoneGcdCast("Blood Price", Me,
-                    () => Me.CurrentManaPercent < 70 && VariableBook.HostileUnitsTargettingMeCount > 0);
+                    () => DarkKnightSettings.UseBloodPrice && Me.CurrentManaPercent < DarkKnightSettings.BloodPriceManaPercentage && VariableBook.HostileUnitsTargettingMeCount > 0);
             await
                 Spell.NoneGcdCast("Carve and Spit", Me.CurrentTarget,
-                    () => !Me.HasAura("Dark Arts") && Actionmanager.LastSpell.Name != "Syphon Strike" && Actionmanager.LastSpell.Name != "Spinning Slash" && Me.CurrentManaPercent < 50 && TargetIsNear());
+                    () => !Me.HasAura("Dark Arts") && Actionmanager.LastSpell.Name != "Syphon Strike" && Actionmanager.LastSpell.Name != "Spinning Slash" && Me.CurrentManaPercent < 50);
             await
                 Spell.NoneGcdCast("Sole Survivor", Me.CurrentTarget,
-                    () =>
-                        (Me.CurrentManaPercent < 70 || Me.CurrentHealthPercent < 70) &&
-                        TargetIsNear() && (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealth < 5000));
+                    () => DarkKnightSettings.UseSoleSurvivor &&
+                        (Me.CurrentManaPercent < DarkKnightSettings.SoleSurvivorManaPercentage || Me.CurrentHealthPercent < DarkKnightSettings.SoleSurvivorHpPercentage) &&
+                        (Me.CurrentTarget != null && Me.CurrentTarget.CurrentHealth < 5000));
 
             return false;
         }
