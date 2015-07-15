@@ -145,7 +145,7 @@ namespace YourRaidingBuddy
         public override void ShutDown()
         {
             StopBehaviors("Bot Stopping", "Bot Stop");
-            TreeHooks.Instance.ClearAll();
+          //  TreeHooks.Instance.ClearAll();
         }
         #endregion
 
