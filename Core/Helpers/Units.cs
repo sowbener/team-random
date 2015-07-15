@@ -119,6 +119,11 @@ namespace YourRaidingBuddy.Helpers
                 {
                     var hostile = HostilePriorities;
 
+                    if(Core.Player.CurrentJob == ClassJobType.Bard)
+                    {
+                        VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && Core.Player.CurrentTarget != null && u.Location.DistanceSqr(Core.Player.CurrentTarget.Location) <= 8);
+                    }
+
                     if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Pugilist)
                     {
                         VariableBook.HostileUnitsCount = hostile.Count(u => u.IsViable() && u.Distance(Core.Player) <= 10);
