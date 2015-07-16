@@ -493,7 +493,7 @@ namespace YourRaidingBuddy
 
             //    MyToonGuid = Me.Guid;
 
-            HookBehaviors(true);
+            HookBehaviors();
         }
 
         /// <summary>
