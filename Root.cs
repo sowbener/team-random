@@ -128,7 +128,8 @@ namespace YourRaidingBuddy
 
         internal static void StopBot(string reason, string triggeredby)
         {
-            TreeRoot.Stop(reason + " - Triggered by " + triggeredby);
+            //  TreeRoot.Stop(reason + " - Triggered by " + triggeredby);
+            TreeRoot.StopGently(reason + " - Triggered by " + triggeredby);
         }
 
         private void OnRoutineManagerOnReloaded(object s, EventArgs e)
