@@ -89,7 +89,7 @@ namespace YourRaidingBuddy
 
         public override void Initialize()
         {
-            GameEvents.OnMapChanged += OnGameEventsOnMapChanged;
+         //   GameEvents.OnMapChanged += OnGameEventsOnMapChanged;
 
             TreeHooks.Instance.OnHooksCleared += OnInstanceOnHooksCleared;
 
