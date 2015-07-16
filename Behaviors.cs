@@ -121,7 +121,7 @@ namespace YourRaidingBuddy
             try
             {
                 /* Clearing all existing hooks */
-               // TreeHooks.Instance.ClearAll();
+                TreeHooks.Instance.ClearAll();
 
                 /* Starting various functions */
                 if (reinitialized)
@@ -516,7 +516,7 @@ namespace YourRaidingBuddy
             HotkeyManager.Stop();
 
             /* Stopping the TreeRoot */
-          //  StopBot(reason, triggeredby);
+             StopBot(reason, triggeredby);
         }
       
     }
