@@ -88,7 +88,18 @@ namespace YourRaidingBuddy
         internal static Root Instance;
 
         public override void Initialize()
-        {   
+        {
+            GameEvents.OnMapChanged += OnGameEventsOnMapChanged;
+
+            TreeHooks.Instance.OnHooksCleared += OnInstanceOnHooksCleared;
+
+            UpdateContext();
+
+            // NOTE: Hook these events AFTER the context update.
+            OnGameContextChanged += OnOnGameContextChanged;
+
+            RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
+
             OldJob = Core.Player.CurrentJob;
             VariableBook.Initialize();
             Overlay.Overlay.onLocationChanged += Overlay_onLocationChanged;

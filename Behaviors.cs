@@ -127,12 +127,12 @@ namespace YourRaidingBuddy
                 if (reinitialized)
                 {
                     HotkeyManager.Initialize(true);
-             //       Logger.PrintInformation();;
+                    //       Logger.PrintInformation();;
                 }
                 else
                 {
                     HotkeyManager.Initialize();
-               //     Logger.PrintInformation();
+                    //     Logger.PrintInformation();
                 }
                 #endregion
 
@@ -146,17 +146,17 @@ namespace YourRaidingBuddy
                         {
                             case HotkeyMode.Automatic:
                                 TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.AutoMode()));
-                              //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
-                             //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
+                                //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
                                 break;
 
                             case HotkeyMode.SemiHotkeyMode:
-                             //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
-                             //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
                                 break;
 
                             case HotkeyMode.HotkeyMode:
-                                  TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.HotkeyMode()));
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.HotkeyMode()));
                                 //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
                                 break;
 
@@ -493,7 +493,7 @@ namespace YourRaidingBuddy
 
             //    MyToonGuid = Me.Guid;
 
-            HookBehaviors();
+            HookBehaviors(true);
         }
 
         /// <summary>
@@ -516,8 +516,8 @@ namespace YourRaidingBuddy
             HotkeyManager.Stop();
 
             /* Stopping the TreeRoot */
-             StopBot(reason, triggeredby);
+            StopBot(reason, triggeredby);
         }
-      
+
     }
 }
