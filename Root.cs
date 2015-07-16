@@ -93,7 +93,7 @@ namespace YourRaidingBuddy
 
             TreeHooks.Instance.OnHooksCleared += OnInstanceOnHooksCleared;
 
-            RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
+       //      RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
 
             OldJob = Core.Player.CurrentJob;
             VariableBook.Initialize();
