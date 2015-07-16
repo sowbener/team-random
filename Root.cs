@@ -70,7 +70,6 @@ namespace YourRaidingBuddy
             {
                 OldJob = Core.Player.CurrentJob;
                 Logging.Write(Colors.OrangeRed, "YourRaidingBuddy -->  Your job has been updated to " + OldJob + ". Rebuilding behaviors...");
-                TreeHooks.Instance.ClearAll();
                 OnInitialize();
             }
         }
