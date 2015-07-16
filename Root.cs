@@ -93,11 +93,6 @@ namespace YourRaidingBuddy
 
             TreeHooks.Instance.OnHooksCleared += OnInstanceOnHooksCleared;
 
-            UpdateContext();
-
-            // NOTE: Hook these events AFTER the context update.
-            OnGameContextChanged += OnOnGameContextChanged;
-
             RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
 
             OldJob = Core.Player.CurrentJob;

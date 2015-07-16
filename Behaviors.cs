@@ -210,6 +210,43 @@ namespace YourRaidingBuddy
 
                 #endregion
 
+                #region Dragoon Hooks
+                // Dragoon Job
+                if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Dragoon)
+                {
+                    //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
+                    {
+                        switch (InternalSettings.Instance.Hotkeys.HotkeyModeSelection)
+                        {
+                            case HotkeyMode.Automatic:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Dragoon.AutoMode()));
+                                //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
+                                break;
+
+                            case HotkeyMode.SemiHotkeyMode:
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            case HotkeyMode.HotkeyMode:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Dragoon.HotkeyMode()));
+                                //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            default:
+                                StopBehaviors("Unable to intialize Dragoon", "HookBehaviors");
+                                break;
+                        }
+                    }
+
+                    Logger.WriteDebug(reinitialized
+                        ? "Hooks reinitialized for Dragoon (RebuildBehaviors())."
+                        : "Hooks initialized for Dragoon (HookBehaviors()).");
+                }
+
+                #endregion
+
                 #region Paladin Hook
                 // Paladin Job
                 if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Paladin)

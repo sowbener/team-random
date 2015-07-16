@@ -19,7 +19,20 @@ namespace YourRaidingBuddy.Rotations
 {
     public class Ninja : Root
     {
-        private static LocalPlayer Me { get { return Core.Player; } } //Core.Player.CurrentTarget as BattleCharacter
+        private static LocalPlayer Me
+        {
+            get { return Core.Player; }
+        }
+
+        public static SettingsG GeneralSettings
+        {
+            get { return InternalSettings.Instance.General; }
+        }
+
+        public static NinjaSetting NinjaSettings
+        {
+            get { return InternalSettings.Instance.Ninja; }
+        }
 
         public override ClassJobType[] Class
         {
@@ -59,6 +72,7 @@ namespace YourRaidingBuddy.Rotations
                 await EmergHuton();
             }
             await DoNinjutsu();
+            await Kassatsu();
             await EmergenHuton();
             await HutonRefresh();
             await DancingEdge();
@@ -85,7 +99,7 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> EmergenHuton()
         {
-            if (!Me.HasAura("Duality") && !Core.Me.HasAura("Huton", true, 15000) && Actionmanager.LastSpell.Name == "Gust Slash")
+            if (!Me.HasAura("Duality") && !Core.Me.HasAura("Huton", true, NinjaSettings.EmergencyHutonClip) && Actionmanager.LastSpell.Name == "Gust Slash")
             {
                 await Spell.CastSpell("Armor Crush", () => true);
             }
@@ -116,18 +130,20 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> DancingEdge()
         {
-            if (!Me.HasAura("Duality") && (!Me.CurrentTarget.HasAura("Dancing Edge", true, 4000) || !Me.CurrentTarget.HasAura("Dancing Edge", true)) && !Me.CurrentTarget.HasAura("Storm's Eye", false) && Actionmanager.LastSpell.Name == "Gust Slash")
+            if (NinjaSettings.DancingEdge)
             {
-                return await Spell.CastSpell("Dancing Edge", () => true);
+                if (!Me.HasAura("Duality") && !Me.CurrentTarget.HasAura("Dancing Edge", true, NinjaSettings.DancingEdgeClip) && !Me.CurrentTarget.HasAura("Storm's Eye", false) && Actionmanager.LastSpell.Name == "Gust Slash")
+                {
+                    return await Spell.CastSpell("Dancing Edge", () => true);
+                }
             }
-
             return false;
         }
 
         public static async Task<bool> Shadow()
         {
 
-            if ((!Me.CurrentTarget.HasAura("Shadow Fang", true, 3000) || !Me.CurrentTarget.HasAura("Shadow Fang", true)) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")) && Actionmanager.LastSpell.Name == "Spinning Edge" && Core.Me.CurrentTarget.CurrentHealth >= MobHp)
+            if (!Me.CurrentTarget.HasAura("Shadow Fang", true, NinjaSettings.ShadowFangClip) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")) && Actionmanager.LastSpell.Name == "Spinning Edge" && Core.Me.CurrentTarget.CurrentHealth >= MobHp)
             {
                 return await Spell.CastSpell("Shadow Fang", () => true);
             }
@@ -137,11 +153,10 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> SingleTarget()
         {
-            await Spell.CastSpell("Duality", Me, () => MovementManager.IsMoving && Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura("Shadow Fang", true) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")));
+            await Spell.CastSpell("Duality", Me, () => Actionmanager.LastSpell.Name == "Gust Slash" && Me.CurrentTarget.HasAura("Shadow Fang", true) && (Me.CurrentTarget.HasAura("Dancing Edge") || Me.CurrentTarget.HasAura("Storm's Eye")));
             await Spell.CastSpell("Aeolian Edge", () => Me.HasAura("Duality") || Actionmanager.LastSpell.Name == "Gust Slash");
             await Spell.CastSpell("Gust Slash", () => Actionmanager.LastSpell.Name == "Spinning Edge");
-            await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && (!Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, 4000) || !Me.CurrentTarget.HasAura(AuraBook.Mutilate)) &&
-            Core.Me.CurrentTarget.CurrentHealth >= MobHp);
+            await Spell.CastSpell("Mutilate", () => Me.CurrentTarget.HasAura(AuraBook.ShadowFang) && !Me.CurrentTarget.HasAura(AuraBook.Mutilate, true, NinjaSettings.MutilationClip) && Core.Me.CurrentTarget.CurrentHealth >= MobHp);
             await Spell.CastSpell("Spinning Edge", () => true);
 
             return false;
@@ -149,7 +164,7 @@ namespace YourRaidingBuddy.Rotations
 
         public static async Task<bool> NoneGCD()
         {
-            await Spell.NoneGcdCast("Trick Attack", Me.CurrentTarget, () => Me.HasAura(AuraBook.Suiton) && Me.CurrentTarget.IsBehind);
+            await Spell.NoneGcdCast("Trick Attack", Me.CurrentTarget, () => Me.HasAura("Suiton") && Me.CurrentTarget.IsBehind);
             await Spell.NoneGcdCast("Internal Release", Me, () => !Me.HasAura(AuraBook.InternalRelease) && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
             await Spell.NoneGcdCast("Blood for Blood", Me, () => Unit.CombatTime.ElapsedMilliseconds > 2000 && !Me.HasAura("Blood for Blood") && Core.Me.CurrentTarget.CurrentHealth >= BuffHp);
             await Spell.NoneGcdCast("Invigorate", Me, () => Me.CurrentTP < 550);
@@ -184,7 +199,7 @@ namespace YourRaidingBuddy.Rotations
         private static readonly SpellData Ninjutsu = DataManager.GetSpellData(2260);
         private static readonly SpellData Jugulate = DataManager.GetSpellData(2251);
 
-        private static readonly SpellData Kassatsu = DataManager.GetSpellData(2264);
+        //private static readonly SpellData Kassatsu = DataManager.GetSpellData(2264);
 
         private static readonly SpellData Trick_Attack = DataManager.GetSpellData(2258);
         private static readonly SpellData Sneak_Attack = DataManager.GetSpellData(2250);
@@ -198,84 +213,37 @@ namespace YourRaidingBuddy.Rotations
         private const int HutonRecast = 6000;
         internal static async Task<bool> DoNinjutsu()
         {
-
-
-            //Exit early if player was inputting something
-            if (Core.Player.HasAura("Mudra"))
-                return true;
+            if (Core.Player.HasAura("Mudra")) return true;
 
             if (Actionmanager.CanCastOrQueue(Jin, null))
             {
-                if (!Core.Player.HasAura("Huton", true, HutonRecast))
+                if (!Me.HasAura("Huton", true, HutonRecast))
                 {
-                    Logger.Write("YourRaidingBuddy Casting " + "Huton" + "Chi Combo!");
                     await CastHuton();
-                    return false;
                 }
 
-                var curTarget = Core.Target as BattleCharacter;
-                if (curTarget == null)
-                    return false;
-
-                //  if (curTarget.TimeToDeath() <= 3)
-                //       return false;
-
-                //Suiton
                 var taCD = Trick_Attack.Cooldown;
-                //We can start casting suiton before trick attack is ready cause its going to take some time
+
                 if (taCD.TotalMilliseconds <= 1300)
                 {
-                    if (!await CastSuiton())
-                        return false;
-
-                    if (!(Kassatsu.Cooldown.TotalMilliseconds <= 0) || !Core.Player.HasTarget)
-                        return false;
-
-                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Kassatsu, null) && Me.CurrentTarget.HasAura("Shadow Fang") && Me.CurrentTarget.HasAura(492)))
-                    {
-                        Logger.Write("YourRaidingBuddy Casting " + "Fuma");
-                        if (Me.CurrentTarget.HasAura(492)) await CastFuma();
-                    }
-
-
-                    return false;
-
+                    await CastSuiton();
                 }
-
-                if (taCD.TotalSeconds >= 5)
+                if (Me.CurrentTarget.HasAura("Vulnerability Up"))
+                {
+                    await Kassatsu();
+                }
+                if (NinjaSettings.ShurikenAlways)
                 {
                     await CastFuma();
                 }
-
-
-                return false;
-            }
-
-
-
-            if (Actionmanager.CanCastOrQueue(Chi, null) && Me.CurrentTarget.HasAura("Shadow Fang"))
-            {
-                Logger.Write("YourRaidingBuddy Casting " + "Fuma");
-                await CastFuma();
-                return false;
-            }
-
-            if (Actionmanager.CanCastOrQueue(Ten, null))
-            {
-                Logger.Write("YourRaidingBuddy Casting " + "Ten" + "Ninjutsu!");
-
+                else
                 {
-                    await Coroutine.Wait(2000, () => Actionmanager.DoAction(Ten, null));
-                    await CastNinjutsu();
-                    return false;
+                    await CastRaiton();
                 }
             }
-
-
-
-
             return false;
         }
+
 
         private static async Task CastHuton()
         {
@@ -292,6 +260,17 @@ namespace YourRaidingBuddy.Rotations
         }
 
 
+        private static async Task<bool> Kassatsu()
+        {
+            if (NinjaSettings.Kassatsu)
+            {
+                if (Me.CurrentTarget.HasAura("Vulnerability Up"))
+                {
+                    await Spell.NoneGcdCast("Kassatsu", Me, () => true);
+                }
+            }
+            return false;
+        }
         private static async Task<bool> CastFuma()
         {
             if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Ten, null)))
@@ -333,15 +312,18 @@ namespace YourRaidingBuddy.Rotations
 
         private static async Task<bool> CastSuiton()
         {
-            if (!await Coroutine.Wait(2000, () => Actionmanager.DoAction(Ten, null))) return false;
-            if (!await Coroutine.Wait(2000, () => Actionmanager.DoAction(Chi, null))) return false;
-            if (!await Coroutine.Wait(2000, () => Actionmanager.DoAction(Jin, null))) return false;
-
-
-            if (await CastNinjutsu())
+            if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Ten, null)))
             {
-                return await Coroutine.Wait(2000, () => Core.Player.HasAura("Suiton"));
+                if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Chi, null)))
+                {
+                    if (await Coroutine.Wait(2000, () => Actionmanager.DoAction(Jin, null)))
+                    {
+                        return await CastNinjutsu();
+                    }
+                }
             }
+
+
 
             return false;
         }
