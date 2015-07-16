@@ -121,7 +121,7 @@ namespace YourRaidingBuddy
             try
             {
                 /* Clearing all existing hooks */
-                TreeHooks.Instance.ClearAll();
+               // TreeHooks.Instance.ClearAll();
 
                 /* Starting various functions */
                 if (reinitialized)
@@ -530,7 +530,7 @@ namespace YourRaidingBuddy
 
             //    MyToonGuid = Me.Guid;
 
-            HookBehaviors(true);
+            HookBehaviors();
         }
 
         /// <summary>
