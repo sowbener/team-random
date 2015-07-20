@@ -16,7 +16,38 @@ namespace YourRaidingBuddy.Helpers
     {
         internal static readonly Stopwatch CombatTime = new Stopwatch();
 
-        internal static bool IsViable(this GameObject unit)
+        internal static bool ExceptionCheck()
+        {
+            try
+            {
+                //using (new PerformanceLogger("RunComposites", Enums.PerformanceCategory.RunComposites))
+                {
+                    var localunit = Core.Player;
+                    var targetunit = Core.Player.CurrentTarget;
+
+
+                    return
+                        !targetunit.IsViable() ||
+                        !localunit.IsViable() ||
+                        !targetunit.CanAttack ||
+                        !targetunit.IsTargetable ||
+                        targetunit.CurrentHealth > 0 ||
+
+                        !localunit.IsAlive;
+                }
+            }
+            catch (Exception ex)
+            {
+                if(InternalSettings.Instance.General.Debug) Logger.WriteDebug("RunComposites Exception: {0}", ex.ToString()); return false;
+            }
+        }
+
+        internal static bool IsViable(this GameObject gameObject)
+        {
+            return (gameObject != null) && gameObject.IsValid;
+        }
+
+        internal static bool IsViableTarget(this GameObject unit)
         {
             if (unit == null || !unit.IsValid)
                 return false;
@@ -25,7 +56,7 @@ namespace YourRaidingBuddy.Helpers
             if (!unit.IsTargetable)
                 return false;
 
-            return unit.CurrentHealth > 0;
+            return unit.CurrentHealth < 0;
 
         }
 

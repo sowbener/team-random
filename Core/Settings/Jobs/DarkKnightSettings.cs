@@ -100,10 +100,10 @@ namespace YourRaidingBuddy.Settings
         public bool UseDarkMind { get; set; }
 
         [Setting]
-        [DefaultValue(false)]
+        [DefaultValue(70)]
         [Category("Dark Knight - Off GCD Defense Buffs")]
         [DisplayName("Dark Mind HP%")]
-        public bool DarkMindHpPercentage { get; set; }
+        public int DarkMindHpPercentage { get; set; }
 
         [Setting]
         [DefaultValue(false)]
