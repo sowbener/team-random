@@ -28,7 +28,6 @@ namespace YourRaidingBuddy.Helpers
 
                     return
                         !targetunit.IsViable() ||
-                        !localunit.IsViable() ||
                         !targetunit.CanAttack ||
                         !targetunit.IsTargetable ||
                         targetunit.CurrentHealth > 0 ||
