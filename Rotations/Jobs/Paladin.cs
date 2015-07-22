@@ -26,8 +26,7 @@ namespace YourRaidingBuddy.Rotations
         #region NewRotation
         public static async Task<bool> AutoMode()
         {
-            if (!Me.CurrentTarget.IsViable())
-                return false;
+            if (Unit.ExceptionCheck()) return true;
             return await PaladinRotation();
         }
 

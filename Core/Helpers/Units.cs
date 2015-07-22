@@ -27,12 +27,12 @@ namespace YourRaidingBuddy.Helpers
 
 
                     return
-                       // targetunit.IsViable() ||
+                        !targetunit.IsViable() ||
                         !targetunit.CanAttack ||
-                        !targetunit.IsTargetable ||
-                        targetunit.CurrentHealth > 0 ||
+                        !targetunit.IsTargetable;
+                       // targetunit.CurrentHealth > 0;
 
-                        !localunit.IsAlive;
+                        //!localunit.IsAlive;
                 }
             }
             catch (Exception ex)
