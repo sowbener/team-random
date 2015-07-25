@@ -48,14 +48,14 @@ namespace YourRaidingBuddy.Helpers
 
         internal static bool IsViableTarget(this GameObject unit)
         {
-            if (unit == null || !unit.IsValid)
+            if (!unit.IsViable())
                 return false;
             if (!unit.CanAttack)
                 return false;
             if (!unit.IsTargetable)
                 return false;
 
-            return unit.CurrentHealth < 0;
+            return unit.CurrentHealth > 0;
 
         }
 
@@ -118,7 +118,7 @@ namespace YourRaidingBuddy.Helpers
 
                 /* Filling Hostile unit list */
                 HostilePriorities = unitlist.Where(u =>
-                    u.IsViable() &&
+                    u.IsViableTarget() &&
                     u.Distance(Core.Me) <= hostileradius).ToList();
 
                 /* Perform Hostile Unit funcions */
