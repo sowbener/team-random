@@ -119,6 +119,7 @@ namespace Enyo
                 Logger.PrintLog("Honorbuddy Team.");
                 Logger.PrintLog("Awesome Coding Minds.\r\n");
                 Logger.PrintLog("Author of Enyo: nomnomnom.");
+                Logger.PrintLog("Enyo is released under CC BY-NC-SA license");
                 Logger.PrintLog("-------------------------------------------\r\n");
             }
             catch (Exception startexception)
