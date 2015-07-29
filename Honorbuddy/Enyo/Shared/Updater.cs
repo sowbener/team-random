@@ -10,7 +10,7 @@ namespace Enyo.Shared
 {
     class Updater
     {
-        private static readonly string TyraelSvnUrl = "https://subversion.assembla.com/svn/team-random/Honorbuddy/Enyo/";
+        private static readonly string EnyoSvnUrl = "https://subversion.assembla.com/svn/team-random/Honorbuddy/Enyo/";
         private static readonly Regex LinkPattern = new Regex(@"<li><a href="".+"">(?<ln>.+(?:..))</a></li>", RegexOptions.CultureInvariant);
 
         public static void CheckForUpdate()
@@ -34,11 +34,11 @@ namespace Enyo.Shared
                     if (!BotSettings.Instance.AutoUpdate && checkallow)
                         return;
 
-                    DownloadFilesFromSvn(new WebClient(), TyraelSvnUrl, path);
+                    DownloadFilesFromSvn(new WebClient(), EnyoSvnUrl, path);
                     BotSettings.Instance.CurrentRevision = remoterev;
                     BotSettings.Instance.Save();
 
-                    Logger.PrintLog("A new version of Tyrael was installed. Please restart Honorbuddy.");
+                    Logger.PrintLog("A new version of Enyo was installed. Please restart Honorbuddy.");
                     Logger.PrintLog("------------------------------------------");
                 }
                 else
@@ -58,7 +58,7 @@ namespace Enyo.Shared
             try
             {
                 var wc = new WebClient();
-                var webData = wc.DownloadString(TyraelSvnUrl + "version");
+                var webData = wc.DownloadString(EnyoSvnUrl + "version");
 
                 Logger.DiagnosticLog("Current SVN version: {0}", int.Parse(webData));
                 return int.Parse(webData);
@@ -88,9 +88,9 @@ namespace Enyo.Shared
                 else
                 {
                     string filePath, dirPath;
-                    if (url.Length > TyraelSvnUrl.Length)
+                    if (url.Length > EnyoSvnUrl.Length)
                     {
-                        var relativePath = url.Substring(TyraelSvnUrl.Length);
+                        var relativePath = url.Substring(EnyoSvnUrl.Length);
                         dirPath = Path.Combine(path, relativePath);
                         filePath = Path.Combine(dirPath, file);
                     }
