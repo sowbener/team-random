@@ -13,11 +13,11 @@ using System.Windows.Forms;
 
 namespace Enyo
 {
-    class Enyo : BotBase
+    public class Enyo : BotBase
     {
         /* Public defined */
         /* Version and Settings are like this: X.X.X.X-RX for releases - X.X.X.X-BX for betas */
-		public static readonly string Revision = "0.0.0.5-R1";
+		public static readonly string Revision = "0.0.0.6-R1";
         public static readonly string Settings = "0.0.0.6-R1";
 
         public static bool IsPaused;
@@ -194,6 +194,7 @@ namespace Enyo
             try
             {
                 BotSettings.Instance.Load();
+                Updater.CheckForUpdate();
                 Hotkeys.RegisterKeys();
                 Logger.PrintInformation();
                 ClicktoMove.ClickToMove(3000);

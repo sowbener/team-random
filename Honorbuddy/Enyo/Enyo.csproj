@@ -52,10 +52,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GreyMagic">
-      <HintPath>D:\Copy\Prive\HonorBuddy\_Subversion_\private-alxawnom\References\Release\GreyMagic.dll</HintPath>
+      <HintPath>..\..\..\private-alxawnom\References\Release\GreyMagic.dll</HintPath>
     </Reference>
     <Reference Include="Honorbuddy">
-      <HintPath>D:\Copy\Prive\HonorBuddy\_Subversion_\private-alxawnom\References\Release\Honorbuddy.exe</HintPath>
+      <HintPath>..\..\..\private-alxawnom\References\Release\Honorbuddy.exe</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -66,7 +66,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="Tripper.Tools">
-      <HintPath>D:\Copy\Prive\HonorBuddy\_Subversion_\private-alxawnom\References\Release\Tripper.Tools.dll</HintPath>
+      <HintPath>..\..\..\private-alxawnom\References\Release\Tripper.Tools.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -90,6 +90,7 @@
     <Compile Include="Shared\Navigator.cs" />
     <Compile Include="Shared\Properties.cs" />
     <Compile Include="Enyo.cs" />
+    <Compile Include="Shared\Updater.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

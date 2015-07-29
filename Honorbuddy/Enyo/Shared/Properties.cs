@@ -3,9 +3,11 @@ using System.Windows.Forms;
 using Styx;
 using Styx.Common;
 using Styx.Helpers;
+using System.Reflection;
 
 namespace Enyo.Shared
 {
+    [Obfuscation(Exclude = true)]
     class BotSettings : Settings
     {
         private static BotSettings _instance;
@@ -52,11 +54,17 @@ namespace Enyo.Shared
         #endregion
 
         #region Manual Settings
+        [Setting, DefaultValue(true)]
+        public bool AutoUpdate { get; set; }
+
         [Setting, DefaultValue("")]
         public string LastStatCounted { get; set; }
 
         [Setting, DefaultValue(4)]
         public int OverlayOutputTime { get; set; }
+
+        [Setting, DefaultValue(0)]
+        public int CurrentRevision { get; set; }
         #endregion
     }
 }
