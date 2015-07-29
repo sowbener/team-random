@@ -1,0 +1,15 @@
+﻿Version 0.0.0.5-B5
+====================================================
+* Fixed N, C and D option for hotkeys.
+* Re-added Click to Move functionality as it's considered as safe LUA.
+
+Version 0.0.0.5-B1 & B2 & B3 & B4
+====================================================
+Due to this update some functionality will be gone - Based on the recent Warden updates and the uncertainty which causes the increased amount of bans, the Enyo team has decided to remove any direct LUA.
+
+* Removed all LUA from Enyo.
+* Removed ClickToMove functionality as it used LUA.
+* Removed ChatOutputs and RaidWarnings from Enyo.
+* Added Overlays as output in the WoWClient for pause functions.
+* Added Enyo's own forced navigator - Prevents routines from moving even with movement enabled.
+* Some code cleanup and rearrange.
