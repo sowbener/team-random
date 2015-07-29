@@ -3,9 +3,3 @@ Original Author: Bossland GmbH
 Date Obtained: Since Enyo exists (Tyrael)
 Obtained from: HB Distribution folder
 License:  https://creativecommons.org/licenses/by-sa/4.0/ Creative Commons CC CC-BY-SA 4.0
-
-Item: Enyo Store Logo.
-Original Author: nomnomnom (Generated)
-Date Obtained: 30-03-2015
-Obtained from: http://logotypemaker.com/
-License: Free and unlicensed - http://logotypemaker.com/terms-conditions
