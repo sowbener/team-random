@@ -14,10 +14,14 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -32,6 +36,7 @@
     </DocumentationFile>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -54,7 +59,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="RebornBuddy, Version=1.0.283.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RebornBeta\RebornBuddy.exe</HintPath>
+      <HintPath>..\..\..\..\..\..\Desktop\rb\RebornBuddy.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,6 +78,11 @@
     <Compile Include="Core\Books\SpellBook.cs" />
     <Compile Include="Core\Books\AuraBook.cs" />
     <Compile Include="Core\Books\VariableBook.cs" />
+    <Compile Include="Core\Enmity\FFXIVMemory.cs" />
+    <Compile Include="Core\Enmity\FFXIVObject.cs" />
+    <Compile Include="Core\Enmity\FFXIVProcessHelper.cs" />
+    <Compile Include="Core\Enmity\NativeMethods.cs" />
+    <Compile Include="Core\Helpers\Enmity.cs" />
     <Compile Include="Core\Helpers\Units.cs" />
     <Compile Include="Core\Interface\GUI\Overlay.cs">
       <SubType>Form</SubType>
@@ -142,11 +152,11 @@
     <Compile Include="Rotations\Class\Pugilist.cs" />
     <Compile Include="Rotations\Class\Conjurer.cs" />
     <Compile Include="Rotations\Jobs\Bard.cs" />
+    <Compile Include="Rotations\Jobs\Darkknight.cs" />
     <Compile Include="Rotations\Jobs\Dragoon.cs" />
     <Compile Include="Rotations\Jobs\Machinist.cs" />
     <Compile Include="Rotations\Jobs\Summoner.cs" />
     <Compile Include="Rotations\Jobs\Monk.cs" />
-    <Compile Include="Rotations\Jobs\DarkKnight.cs" />
     <Compile Include="Rotations\Jobs\Paladin.cs" />
     <Compile Include="Rotations\Jobs\Warrior.cs" />
     <Compile Include="Rotations\Jobs\Whitemage.cs" />

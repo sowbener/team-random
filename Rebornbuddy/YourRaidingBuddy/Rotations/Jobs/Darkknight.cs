@@ -66,7 +66,7 @@ namespace YourRaidingBuddy.Rotations
             if (!IsEnmityKeyDown() && await Aoe(false)) return true;
             if (await DotRotation()) return true;
             if (await FinishedRotation()) return true;
-            if (IsEnmityKeyDown())
+            if (IsEnmityKeyDown() || Enmity.Instance.NeedToGenerateEnmity())
             {
                 if (await EnmityRotation()) return true;
             }
