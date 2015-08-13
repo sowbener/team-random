@@ -39,7 +39,7 @@ namespace YourRaidingBuddy.Helpers
         Tries to get to the top of the enmity list.
         Tries to get at least enmityGap to the next party member.x
         */
-        public bool NeedToGenerateEnmity(uint enmityGap = 10000)
+        public static bool NeedToGenerateEnmity(uint enmityGap = 10000)
         {
             var enmityList = Instance.GetEnmityEntryList();
             var enmityEntries = enmityList as IList<EnmityEntry> ?? enmityList.ToList();
