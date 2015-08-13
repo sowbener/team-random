@@ -15,13 +15,14 @@ namespace YourRaidingBuddy.Helpers
         private const string TargetSignature32 = "750E85D2750AB9";
         private const string TargetSignature64 = "29017520483935";
         private const string EnmitySignature32 = "E831AA3300B9";
-        private const string EnmitySignature64 = "488D0D????????E820EF3F00488D0D";
+        private const string EnmitySignature64 = "488D0D????????E8D0F23F00488D0D";
         private const int CharmapOffset32 = 0;
         private const int CharmapOffset64 = 0;
         private const int TargetOffset32 = 88;
         private const int TargetOffset64 = 0;
         private const int EnmityOffset32 = 0;
         private const int EnmityOffset64 = 0;
+
         private readonly FfxivClientMode _mode;
         private readonly Thread _thread;
         private IntPtr _aggroAddress = IntPtr.Zero;
