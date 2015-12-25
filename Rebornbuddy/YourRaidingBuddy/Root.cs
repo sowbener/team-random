@@ -15,8 +15,8 @@ using ff14bot.AClasses;
 using Extensions = YourRaidingBuddy.Helpers.Extensions;
 using ff14bot;
 using YourRaidingBuddy.Books;
-using YourRaidingBuddy.Interface.GUI;
 using YourRaidingBuddy.Interfaces.Settings;
+using YourRaidingBuddy.Interface.GUI;
 
 namespace YourRaidingBuddy
 {
@@ -30,7 +30,7 @@ namespace YourRaidingBuddy
         new internal static readonly Version Revision = new Version(0, 0, 1);
         private Form _configForm;
         public override bool WantButton { get { return true; } }
-        public static ClassJobType OldJob { get; set; }
+        
 
         public override void OnButtonPress()
         {
@@ -38,7 +38,7 @@ namespace YourRaidingBuddy
                 Overlay.Overlay.overlayLocation = new System.Drawing.Point(InternalSettings.Instance.General.X, InternalSettings.Instance.General.Y);
 
             if (_configForm == null || _configForm.IsDisposed || _configForm.Disposing)
-                _configForm = new YrbGui();
+                _configForm = new YourRaidingBuddy.Interface.GUI.Interface();
 
             _configForm.ShowDialog();
         }
@@ -66,10 +66,10 @@ namespace YourRaidingBuddy
             Spell.GcdPulse();
             if (InternalSettings.Instance.General.ShowSpellIds && (Core.Player.CurrentTarget as BattleCharacter) != null && (Core.Player.CurrentTarget as BattleCharacter).IsCasting && (Core.Player.CurrentTarget as BattleCharacter).SpellCastInfo != null)
                 Logging.Write(Colors.OrangeRed, "YourRaidingBuddy "+(Core.Player.CurrentTarget as BattleCharacter).SpellCastInfo.Name +" Spell ID " + (Core.Player.CurrentTarget as BattleCharacter).SpellCastInfo.ActionId);
-            if (!OldJob.Equals(Core.Player.CurrentJob))
+            if (!VariableBook.OldJob.Equals(Core.Player.CurrentJob))
             {
-                OldJob = Core.Player.CurrentJob;
-                Logging.Write(Colors.OrangeRed, "YourRaidingBuddy -->  Your job has been updated to " + OldJob + ". Rebuilding behaviors...");
+                VariableBook.OldJob = Core.Player.CurrentJob;
+                Logging.Write(Colors.OrangeRed, "YourRaidingBuddy -->  Your job has been updated to " + VariableBook.OldJob + ". Rebuilding behaviors...");
                 OnInitialize();
             }
         }
@@ -95,14 +95,14 @@ namespace YourRaidingBuddy
 
        //      RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
 
-            OldJob = Core.Player.CurrentJob;
+            VariableBook.OldJob = Core.Player.CurrentJob;
             VariableBook.Initialize();
             Overlay.Overlay.onLocationChanged += Overlay_onLocationChanged;
             /* Printing some Information */
             Logger.Write("------------------------------------------");
             Logger.Write(Name + " by Xcesius" + ".");
             Logger.Write("Internal Revision: " + Revision + ".");
-            Logger.Write("Your Job is " + OldJob.ToString() + ".");
+            Logger.Write("Your Job is " + VariableBook.OldJob.ToString() + ".");
             Logger.Write("-------------------------------------------\r\n");
 
             Logging.WriteToFileSync(LogLevel.Normal, "(YourRaidingBuddy) Spell Queue: " + InternalSettings.Instance.General.SpellQueue);

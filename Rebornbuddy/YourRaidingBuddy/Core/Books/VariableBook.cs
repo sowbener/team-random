@@ -1,4 +1,5 @@
-﻿using ff14bot.Objects;
+﻿using ff14bot.Enums;
+using ff14bot.Objects;
 
 namespace YourRaidingBuddy.Books
 {
@@ -16,9 +17,6 @@ namespace YourRaidingBuddy.Books
             HkmMultiTarget = false;
             HkmSpecialKey = false;
             HkmSpecialKey1 = false;
-
-
-
 
             HostileUnitsCount = 0;
             FriendlyUnitsCount = 1;
@@ -53,6 +51,12 @@ namespace YourRaidingBuddy.Books
         {
             return value >= min && value <= max;
         }
+
+        #endregion
+
+        #region Class Stuff
+
+        public static ClassJobType OldJob { get; set; }
 
         #endregion
 

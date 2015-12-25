@@ -1,4 +1,4 @@
-﻿namespace YourRaidingBuddy.Interfaces.GUI.Extentions
+﻿namespace YourRaidingBuddy.Interface.Extensions
 {
     partial class LoadMessageBox
     {

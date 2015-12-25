@@ -84,17 +84,21 @@
     <Compile Include="Core\Enmity\NativeMethods.cs" />
     <Compile Include="Core\Helpers\Enmity.cs" />
     <Compile Include="Core\Helpers\Units.cs" />
+    <Compile Include="Core\Interface\Extentions\ExtensionMethods.cs" />
+    <Compile Include="Core\Interface\Extentions\ExtensionTheme.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\GUI\Interface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Interface\GUI\Interface.Designer.cs">
+      <DependentUpon>Interface.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\Interface\GUI\Overlay.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Core\Interface\GUI\Overlay.Designer.cs">
       <DependentUpon>Overlay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Core\Interface\GUI\YrbGui.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Core\Interface\GUI\YrbGui.Designer.cs">
-      <DependentUpon>YrbGui.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Settings\Class\ThaumaturgeSettings.cs" />
     <Compile Include="Core\Settings\Class\ArcanistSettings.cs" />
@@ -121,13 +125,6 @@
     <Compile Include="Core\Helpers\Extensions.cs" />
     <Compile Include="Core\Helpers\Logging.cs" />
     <Compile Include="Core\Helpers\Spell.cs" />
-    <Compile Include="Core\Interface\Extentions\Extensions.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Core\Interface\Extentions\Extention1.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Core\Interface\Extentions\Extention2.cs" />
     <Compile Include="Core\Interface\Extentions\LoadMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +145,7 @@
     <Compile Include="HealPredict.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContextSystem.cs" />
+    <Compile Include="Resources\Resources.Designer.cs" />
     <Compile Include="Root.cs" />
     <Compile Include="Rotations\Class\Pugilist.cs" />
     <Compile Include="Rotations\Class\Conjurer.cs" />
@@ -168,8 +166,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MiscStuff.xml" />
+    <None Include="Resources\yrb-logo.jpg" />
+    <None Include="Resources\YRB3Unit.xml" />
+    <None Include="Resources\YRB3Tranq.xml" />
+    <None Include="Resources\YRB3Interrupt.xml" />
+    <None Include="Resources\YRB3Aura.xml" />
+    <None Include="Resources\StoreLogo.png" />
+    <None Include="Resources\Introduction.html" />
+    <None Include="Resources\IconWizard.ico" />
+    <None Include="Resources\IconShield.ico" />
+    <None Include="Resources\IconSettings.ico" />
+    <None Include="Resources\IconKnife.ico" />
+    <None Include="Resources\IconKeyboard.ico" />
+    <None Include="Resources\IconInfo.ico" />
+    <None Include="Resources\IconCloseRound.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Core\Interface\GUI\Interface.resx">
+      <DependentUpon>Interface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

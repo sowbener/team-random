@@ -5,20 +5,22 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-// Google Chrome Theme - Ported to C# by Ecco
-// Original Theme http://www.hackforums.net/showthread.php?tid=2926688
-// Credit to Mavamaarten~ for Google Chrome Theme & Aeonhack for Themebase
-
-// Dimgray = 105, 105, 105
-// Dark Color = 78, 87, 100
-
-namespace YourRaidingBuddy.Interfaces.GUI.Extentions
+namespace YourRaidingBuddy.Interface.Extensions
 {
+    // Google Chrome Theme - Ported to C# by Ecco
+    // Original Theme http://www.hackforums.net/showthread.php?tid=2926688
+    // Credit to Mavamaarten~ for Google Chrome Theme & Aeonhack for Themebase
+    // Edits and extra controls by weischbier & nomnomnom
+
     class ChromeForm : ThemeContainer154
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeForm"/> class.
+        /// </summary>
         public ChromeForm()
         {
             TransparencyKey = Color.Fuchsia;
@@ -29,37 +31,75 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             SetColor("X-ellipse", 114, 114, 114);
         }
 
-        Color TitleColor;
-        Color Xcolor;
-        Color Xellipse;
-        protected override void ColorHook()
+        /// <summary>
+        /// Gets or sets the color of the back.
+        /// </summary>
+        /// <value>
+        /// The color of the back.
+        /// </value>
+        public override sealed Color BackColor
         {
-            TitleColor = GetColor("Title color");
-            Xcolor = GetColor("X-color");
-            Xellipse = GetColor("X-ellipse");
+            get { return base.BackColor; }
+            set { base.BackColor = value; }
         }
 
-        int X;
+        /// <summary>
+        /// The _title color
+        /// </summary>
+        Color _titleColor;
 
-        int Y;
+        /// <summary>
+        /// The _xcolor
+        /// </summary>
+        Color _xcolor;
+
+        /// <summary>
+        /// The _xellipse
+        /// </summary>
+        Color _xellipse;
+
+        /// <summary>
+        /// Colors the hook.
+        /// </summary>
+        protected override void ColorHook()
+        {
+            _titleColor = GetColor("Title color");
+            _xcolor = GetColor("X-color");
+            _xellipse = GetColor("X-ellipse");
+        }
+
+        /// <summary>
+        /// The _x
+        /// </summary>
+        int _x;
+
+        /// <summary>
+        /// The _y
+        /// </summary>
+        int _y;
+        /// <summary>
+        /// Raises the <see cref="E:MouseMove" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            X = e.Location.X;
-            Y = e.Location.Y;
+            _x = e.Location.X;
+            _y = e.Location.Y;
             base.OnMouseMove(e);
             Invalidate();
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseClick" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnMouseClick(MouseEventArgs e)
         {
             base.OnClick(e);
-            Rectangle r = new Rectangle(Width - 22, 5, 15, 15);
-            if (r.Contains(new Point(e.X, e.Y)) || r.Contains(new Point(X, Y)) && e.Button == MouseButtons.Left)
-            {
-                var findForm = FindForm();
-                if (findForm != null) findForm.Close();
-            }
         }
 
+        /// <summary>
+        /// Paints the hook.
+        /// </summary>
         protected override void PaintHook()
         {
             G.Clear(BackColor);
@@ -70,179 +110,195 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             DrawCorners(Color.Fuchsia, 0, 2, Width, Height - 4);
 
             G.SmoothingMode = SmoothingMode.HighQuality;
-            if (new Rectangle(Width - 22, 5, 15, 15).Contains(new Point(X, Y)))
-            {
-                G.FillEllipse(new SolidBrush(Xellipse), new Rectangle(Width - 24, 6, 16, 16));
-                G.DrawString("r", new Font("Webdings", 8), new SolidBrush(BackColor), new Point(Width - 23, 5));
-            }
-            else
-            {
-                G.DrawString("r", new Font("Webdings", 8), new SolidBrush(Xcolor), new Point(Width - 23, 5));
-            }
 
-            DrawText(new SolidBrush(TitleColor), new Point(8, 7));
+            DrawText(new SolidBrush(_titleColor), new Point(8, 7));
         }
     }
 
-    class ChromeRadioButton : ThemeControl154
+    class ChromeButton : ThemeControl154
     {
-
-        public ChromeRadioButton()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeButton"/> class.
+        /// </summary>
+        public ChromeButton()
         {
             Font = new Font("Segoe UI", 9);
-            LockHeight = 17;
-            SetColor("Text", 60, 60, 60);
-            SetColor("Gradient top", 237, 237, 237);
-            SetColor("Gradient bottom", 230, 230, 230);
-            SetColor("Borders", 167, 167, 167);
-            SetColor("Bullet", 100, 100, 100);
-            Width = 180;
+            SetColor("Gradient top normal", 237, 237, 237);
+            SetColor("Gradient top over", 242, 242, 242);
+            SetColor("Gradient top down", 235, 235, 235);
+            SetColor("Gradient bottom normal", 230, 230, 230);
+            SetColor("Gradient bottom over", 235, 235, 235);
+            SetColor("Gradient bottom down", 223, 223, 223);
+            SetColor("Border", 167, 167, 167);
+            SetColor("Text normal", 60, 60, 60);
+            SetColor("Text down/over", 20, 20, 20);
+            SetColor("Text disabled", Color.Gray);
         }
 
-        private int X;
-        private Color TextColor;
-        private Color G1;
-        private Color G2;
-        private Color Bo;
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
+        public override sealed Font Font
+        {
+            get { return base.Font; }
+            set { base.Font = value; }
+        }
 
-        private Color Bb;
+        /// <summary>
+        /// The _GTN
+        /// </summary>
+        Color _gtn;
+        /// <summary>
+        /// The _gto
+        /// </summary>
+        Color _gto;
+        /// <summary>
+        /// The _GTD
+        /// </summary>
+        Color _gtd;
+        /// <summary>
+        /// The _GBN
+        /// </summary>
+        Color _gbn;
+        /// <summary>
+        /// The _gbo
+        /// </summary>
+        Color _gbo;
+        /// <summary>
+        /// The _GBD
+        /// </summary>
+        Color _gbd;
+        /// <summary>
+        /// The _bo
+        /// </summary>
+        Color _bo;
+        /// <summary>
+        /// The _TN
+        /// </summary>
+        Color _tn;
+        /// <summary>
+        /// The _TD
+        /// </summary>
+        Color _td;
+        /// <summary>
+        /// The _tdo
+        /// </summary>
+        Color _tdo;
+        /// <summary>
+        /// Colors the hook.
+        /// </summary>
         protected override void ColorHook()
         {
-            TextColor = GetColor("Text");
-            G1 = GetColor("Gradient top");
-            G2 = GetColor("Gradient bottom");
-            Bb = GetColor("Bullet");
-            Bo = GetColor("Borders");
+            _gtn = GetColor("Gradient top normal");
+            _gto = GetColor("Gradient top over");
+            _gtd = GetColor("Gradient top down");
+            _gbn = GetColor("Gradient bottom normal");
+            _gbo = GetColor("Gradient bottom over");
+            _gbd = GetColor("Gradient bottom down");
+            _bo = GetColor("Border");
+            _tn = GetColor("Text normal");
+            _tdo = GetColor("Text down/over");
+            _td = GetColor("Text disabled");
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-            X = e.Location.X;
-            Invalidate();
-        }
-
+        /// <summary>
+        /// Paints the hook.
+        /// </summary>
         protected override void PaintHook()
         {
             G.Clear(BackColor);
+            LinearGradientBrush lgb;
             G.SmoothingMode = SmoothingMode.HighQuality;
-            if (_Checked)
+
+
+            switch (State)
             {
-                LinearGradientBrush LGB = new LinearGradientBrush(new Rectangle(new Point(0, 0), new Size(14, 14)), G1, G2, 90f);
-                G.FillEllipse(LGB, new Rectangle(new Point(0, 0), new Size(14, 14)));
+                case MouseStateControl.None:
+                    lgb = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), _gtn, _gbn, 90f);
+                    break;
+                case MouseStateControl.Over:
+                    lgb = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), _gto, _gbo, 90f);
+                    break;
+                default:
+                    lgb = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), _gtd, _gbd, 90f);
+                    break;
+            }
+
+            if (!Enabled)
+            {
+                lgb = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), _gtn, _gbn, 90f);
+            }
+
+            var buttonpath = CreateRound(Rectangle.Round(lgb.Rectangle), 3);
+            G.FillPath(lgb, CreateRound(Rectangle.Round(lgb.Rectangle), 3));
+            if (!Enabled)
+                G.FillPath(new SolidBrush(Color.FromArgb(50, Color.White)), CreateRound(Rectangle.Round(lgb.Rectangle), 3));
+            G.SetClip(buttonpath);
+            lgb = new LinearGradientBrush(new Rectangle(0, 0, Width, Height / 6), Color.FromArgb(80, Color.White), Color.Transparent, 90f);
+            G.FillRectangle(lgb, Rectangle.Round(lgb.Rectangle));
+
+
+
+            G.ResetClip();
+            G.DrawPath(new Pen(_bo), buttonpath);
+
+            if (Enabled)
+            {
+                switch (State)
+                {
+                    case MouseStateControl.None:
+                        DrawText(new SolidBrush(_tn), HorizontalAlignment.Center, 1, 0);
+                        break;
+                    default:
+                        DrawText(new SolidBrush(_tdo), HorizontalAlignment.Center, 1, 0);
+                        break;
+                }
             }
             else
             {
-                LinearGradientBrush LGB = new LinearGradientBrush(new Rectangle(new Point(0, 0), new Size(14, 16)), G1, G2, 90f);
-                G.FillEllipse(LGB, new Rectangle(new Point(0, 0), new Size(14, 14)));
-            }
-
-            if (State == MouseState.Over & X < 15)
-            {
-                SolidBrush SB = new SolidBrush(Color.FromArgb(10, Color.Black));
-                G.FillEllipse(SB, new Rectangle(new Point(0, 0), new Size(14, 14)));
-            }
-            else if (State == MouseState.Down & X < 15)
-            {
-                SolidBrush SB = new SolidBrush(Color.FromArgb(20, Color.Black));
-                G.FillEllipse(SB, new Rectangle(new Point(0, 0), new Size(14, 14)));
-            }
-
-            GraphicsPath P = new GraphicsPath();
-            P.AddEllipse(new Rectangle(0, 0, 14, 14));
-            G.SetClip(P);
-
-            LinearGradientBrush LLGGBB = new LinearGradientBrush(new Rectangle(0, 0, 14, 5), Color.FromArgb(150, Color.White), Color.Transparent, 90f);
-            G.FillRectangle(LLGGBB, LLGGBB.Rectangle);
-
-            G.ResetClip();
-
-            G.DrawEllipse(new Pen(Bo), new Rectangle(new Point(0, 0), new Size(14, 14)));
-
-            if (_Checked)
-            {
-                SolidBrush LGB = new SolidBrush(Bb);
-                G.FillEllipse(LGB, new Rectangle(new Point(4, 4), new Size(6, 6)));
-            }
-
-            DrawText(new SolidBrush(TextColor), HorizontalAlignment.Left, 17, -2);
-        }
-
-        private int _Field = 16;
-        public int Field
-        {
-            get { return _Field; }
-            set
-            {
-                if (value < 4)
-                    return;
-                _Field = value;
-                LockHeight = value;
-                Invalidate();
+                DrawText(new SolidBrush(_td), HorizontalAlignment.Center, 1, 0);
             }
         }
-
-        private bool _Checked;
-        public bool Checked
-        {
-            get { return _Checked; }
-            set
-            {
-                _Checked = value;
-                InvalidateControls();
-                if (CheckedChanged != null)
-                {
-                    CheckedChanged(this);
-                }
-                Invalidate();
-            }
-        }
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            if (!_Checked)
-                Checked = true;
-            base.OnMouseDown(e);
-        }
-
-        public event CheckedChangedEventHandler CheckedChanged;
-        public delegate void CheckedChangedEventHandler(object sender);
-
-        protected override void OnCreation()
-        {
-            InvalidateControls();
-        }
-
-        private void InvalidateControls()
-        {
-            if (!IsHandleCreated || !_Checked)
-                return;
-
-            foreach (Control C in Parent.Controls)
-            {
-                if (!object.ReferenceEquals(C, this) && C is ChromeRadioButton)
-                {
-                    ((ChromeRadioButton)C).Checked = false;
-                }
-            }
-        }
-
     }
 
     class ChromeSeparator : ThemeControl154
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeSeparator"/> class.
+        /// </summary>
         public ChromeSeparator()
         {
-            LockHeight = 1;
-            BackColor = Color.FromArgb(238, 238, 238);
+            LockHeight = 2;
+            BackColor = Color.FromArgb(78, 87, 100);
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the back.
+        /// </summary>
+        /// <value>
+        /// The color of the back.
+        /// </value>
+        public override sealed Color BackColor
+        {
+            get { return base.BackColor; }
+            set { base.BackColor = value; }
         }
 
 
+        /// <summary>
+        /// Colors the hook.
+        /// </summary>
         protected override void ColorHook()
         {
         }
 
+        /// <summary>
+        /// Paints the hook.
+        /// </summary>
         protected override void PaintHook()
         {
             G.Clear(BackColor);
@@ -252,6 +308,9 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
     class ChromeTabcontrol : TabControl
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeTabcontrol"/> class.
+        /// </summary>
         public ChromeTabcontrol()
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
@@ -259,76 +318,100 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             SizeMode = TabSizeMode.Fixed;
             ItemSize = new Size(30, 115);
         }
+
+        /// <summary>
+        /// Dieser Member hat für das genannte Steuerelement keine Bedeutung.
+        /// </summary>
+        protected override sealed bool DoubleBuffered
+        {
+            get { return base.DoubleBuffered; }
+            set { base.DoubleBuffered = value; }
+        }
+
+        /// <summary>
+        /// Dieser Member überschreibt <see cref="M:System.Windows.Forms.Control.CreateHandle" />.
+        /// </summary>
         protected override void CreateHandle()
         {
             base.CreateHandle();
             Alignment = TabAlignment.Left;
         }
 
-        Color C1 = Color.FromArgb(78, 87, 100);
+        /// <summary>
+        /// The _C1
+        /// </summary>
+        Color _c1 = Color.FromArgb(78, 87, 100);
+        /// <summary>
+        /// Gets or sets the color of the square.
+        /// </summary>
+        /// <value>
+        /// The color of the square.
+        /// </value>
         public Color SquareColor
         {
-            get { return C1; }
+            get { return _c1; }
             set
             {
-                C1 = value;
+                _c1 = value;
                 Invalidate();
             }
         }
 
-        bool OB = false;
+        /// <summary>
+        /// The _ob
+        /// </summary>
+        bool _ob = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [show outer borders].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show outer borders]; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowOuterBorders
         {
-            get { return OB; }
+            get { return _ob; }
             set
             {
-                OB = value;
+                _ob = value;
                 Invalidate();
             }
         }
 
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.Paint" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.PaintEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            Bitmap B = new Bitmap(Width, Height);
-            Graphics G = Graphics.FromImage(B);
+            var B = new Bitmap(Width, Height);
+            var G = Graphics.FromImage(B);
             try
             {
                 SelectedTab.BackColor = Color.White;
             }
-            catch
+            catch (Exception)
             {
             }
             G.Clear(Color.White);
             for (int i = 0; i <= TabCount - 1; i++)
             {
-                Rectangle x2 = new Rectangle(new Point(GetTabRect(i).Location.X - 2, GetTabRect(i).Location.Y - 2), new Size(GetTabRect(i).Width + 3, GetTabRect(i).Height - 1));
-                Rectangle textrectangle = new Rectangle(x2.Location.X + 20, x2.Location.Y, x2.Width - 20, x2.Height);
+                var x2 = new Rectangle(new Point(GetTabRect(i).Location.X - 2, GetTabRect(i).Location.Y - 2), new Size(GetTabRect(i).Width + 3, GetTabRect(i).Height - 1));
+                var textrectangle = new Rectangle(x2.Location.X + 15, x2.Location.Y, x2.Width - 20, x2.Height); // 10 to 15 for icons
                 if (i == SelectedIndex)
                 {
-                    G.FillRectangle(new SolidBrush(C1), new Rectangle(x2.Location, new Size(9, x2.Height)));
+                    G.FillRectangle(new SolidBrush(_c1), new Rectangle(x2.Location, new Size(9, x2.Height)));
 
 
                     if (ImageList != null)
                     {
                         try
                         {
-                            if (ImageList.Images[TabPages[i].ImageIndex] != null)
+                            G.DrawImage(ImageList.Images[TabPages[i].ImageIndex], new Point(textrectangle.Location.X + 8, textrectangle.Location.Y + 6));
+                            G.DrawString("      " + TabPages[i].Text, Font, Brushes.Black, textrectangle, new StringFormat
                             {
-                                G.DrawImage(ImageList.Images[TabPages[i].ImageIndex], new Point(textrectangle.Location.X + 8, textrectangle.Location.Y + 6));
-                                G.DrawString("      " + TabPages[i].Text, Font, Brushes.Black, textrectangle, new StringFormat
-                                {
-                                    LineAlignment = StringAlignment.Center,
-                                    Alignment = StringAlignment.Near
-                                });
-                            }
-                            else
-                            {
-                                G.DrawString(TabPages[i].Text, Font, Brushes.Black, textrectangle, new StringFormat
-                                {
-                                    LineAlignment = StringAlignment.Center,
-                                    Alignment = StringAlignment.Near
-                                });
-                            }
+                                LineAlignment = StringAlignment.Center,
+                                Alignment = StringAlignment.Near
+                            });
                         }
                         catch
                         {
@@ -355,23 +438,12 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                     {
                         try
                         {
-                            if (ImageList.Images[TabPages[i].ImageIndex] != null)
+                            G.DrawImage(ImageList.Images[TabPages[i].ImageIndex], new Point(textrectangle.Location.X + 8, textrectangle.Location.Y + 6));
+                            G.DrawString("      " + TabPages[i].Text, Font, Brushes.DimGray, textrectangle, new StringFormat
                             {
-                                G.DrawImage(ImageList.Images[TabPages[i].ImageIndex], new Point(textrectangle.Location.X + 8, textrectangle.Location.Y + 6));
-                                G.DrawString("      " + TabPages[i].Text, Font, Brushes.DimGray, textrectangle, new StringFormat
-                                {
-                                    LineAlignment = StringAlignment.Center,
-                                    Alignment = StringAlignment.Near
-                                });
-                            }
-                            else
-                            {
-                                G.DrawString(TabPages[i].Text, Font, Brushes.DimGray, textrectangle, new StringFormat
-                                {
-                                    LineAlignment = StringAlignment.Center,
-                                    Alignment = StringAlignment.Near
-                                });
-                            }
+                                LineAlignment = StringAlignment.Center,
+                                Alignment = StringAlignment.Near
+                            });
                         }
                         catch
                         {
@@ -399,19 +471,189 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         }
     }
 
- 
+    class ChromeTabcontrolNormal : TabControl
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeTabcontrolNormal"/> class.
+        /// </summary>
+        public ChromeTabcontrolNormal()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
+            DoubleBuffered = true;
+            SizeMode = TabSizeMode.Fixed;
+            ItemSize = new Size(165, 28);
+            //ItemSize = new Size(290, 28);
+        }
+
+        /// <summary>
+        /// Dieser Member hat für das genannte Steuerelement keine Bedeutung.
+        /// </summary>
+        protected override sealed bool DoubleBuffered
+        {
+            get { return base.DoubleBuffered; }
+            set { base.DoubleBuffered = value; }
+        }
+
+        /// <summary>
+        /// Dieser Member überschreibt <see cref="M:System.Windows.Forms.Control.CreateHandle" />.
+        /// </summary>
+        protected override void CreateHandle()
+        {
+            base.CreateHandle();
+            Alignment = TabAlignment.Top;
+        }
+
+        /// <summary>
+        /// The _C1
+        /// </summary>
+        Color _c1 = Color.FromArgb(78, 87, 100);
+        /// <summary>
+        /// Gets or sets the color of the square.
+        /// </summary>
+        /// <value>
+        /// The color of the square.
+        /// </value>
+        public Color SquareColor
+        {
+            get { return _c1; }
+            set
+            {
+                _c1 = value;
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// The _ob
+        /// </summary>
+        bool _ob = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [show outer borders].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show outer borders]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowOuterBorders
+        {
+            get { return _ob; }
+            set
+            {
+                _ob = value;
+                Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.Paint" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.PaintEventArgs" />, das die Ereignisdaten enthält.</param>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var B = new Bitmap(Width, Height);
+            var G = Graphics.FromImage(B);
+            try
+            {
+                SelectedTab.BackColor = Color.White;
+            }
+            catch (Exception)
+            {
+            }
+            G.Clear(Color.White);
+            for (int i = 0; i <= TabCount - 1; i++)
+            {
+                var x2 = new Rectangle(new Point(GetTabRect(i).Location.X + 2, GetTabRect(i).Location.Y + 17), new Size(GetTabRect(i).Width - 1, GetTabRect(i).Height - 1));
+                var textrectangle = new Rectangle(x2.Location.X + 12, x2.Location.Y - 21, x2.Width - 20, x2.Height);
+                if (i == SelectedIndex)
+                {
+                    G.FillRectangle(new SolidBrush(_c1), new Rectangle(x2.Location, new Size(x2.Width, 9)));
+
+
+                    if (ImageList != null)
+                    {
+                        try
+                        {
+                            G.DrawImage(ImageList.Images[TabPages[i].ImageIndex], new Point(textrectangle.Location.X + 6, textrectangle.Location.Y + 3));
+                            G.DrawString("      " + TabPages[i].Text, Font, Brushes.Black, textrectangle, new StringFormat
+                            {
+                                LineAlignment = StringAlignment.Center,
+                                Alignment = StringAlignment.Near
+                            });
+                        }
+                        catch
+                        {
+                            G.DrawString(TabPages[i].Text, Font, Brushes.Black, textrectangle, new StringFormat
+                            {
+                                LineAlignment = StringAlignment.Center,
+                                Alignment = StringAlignment.Near
+                            });
+                        }
+                    }
+                    else
+                    {
+                        G.DrawString(TabPages[i].Text, Font, Brushes.Black, textrectangle, new StringFormat
+                        {
+                            LineAlignment = StringAlignment.Center,
+                            Alignment = StringAlignment.Near
+                        });
+                    }
+
+                }
+                else
+                {
+                    if (ImageList != null)
+                    {
+                        try
+                        {
+                            G.DrawImage(ImageList.Images[TabPages[i].ImageIndex], new Point(textrectangle.Location.X + 6, textrectangle.Location.Y + 3));
+                            G.DrawString("      " + TabPages[i].Text, Font, Brushes.DimGray, textrectangle, new StringFormat
+                            {
+                                LineAlignment = StringAlignment.Center,
+                                Alignment = StringAlignment.Near
+                            });
+                        }
+                        catch
+                        {
+                            G.DrawString(TabPages[i].Text, Font, Brushes.DimGray, textrectangle, new StringFormat
+                            {
+                                LineAlignment = StringAlignment.Center,
+                                Alignment = StringAlignment.Near
+                            });
+                        }
+                    }
+                    else
+                    {
+                        G.DrawString(TabPages[i].Text, Font, Brushes.DimGray, textrectangle, new StringFormat
+                        {
+                            LineAlignment = StringAlignment.Center,
+                            Alignment = StringAlignment.Near
+                        });
+                    }
+                }
+            }
+
+            e.Graphics.DrawImage((Image)B.Clone(), 0, 0);
+            G.Dispose();
+            B.Dispose();
+        }
+    }
+
     class ChromeComboBoxLight : ComboBox
     {
-        private readonly Color _white = Color.FromArgb(255, 255, 255);
-        private readonly Color _uppergradientgrey = Color.FromArgb(237, 237, 237);
-        private readonly Color _bottomgradientgrey = Color.FromArgb(230, 230, 230);
-        private readonly Color _lightgrey = Color.FromArgb(167, 167, 167);
-        private readonly Color _mediumgrey = Color.FromArgb(105, 105, 105);
-        private readonly Color _darkgrey = Color.FromArgb(78, 87, 100);
-        private readonly Color _textnormal = Color.FromArgb(60, 60, 60);
 
+        /// <summary>
+        /// The _x
+        /// </summary>
         private int _x;
+        /// <summary>
+        /// The _start index
+        /// </summary>
         private int _startIndex = 0;
+        /// <summary>
+        /// Gets or sets the start index.
+        /// </summary>
+        /// <value>
+        /// The start index.
+        /// </value>
         public int StartIndex
         {
             get { return _startIndex; }
@@ -425,34 +667,83 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                 Invalidate();
             }
         }
+
+        /// <summary>
+        /// The _white
+        /// </summary>
+        private readonly Color _white = Color.FromArgb(255, 255, 255);
+        /// <summary>
+        /// The _uppergradientgrey
+        /// </summary>
+        private readonly Color _uppergradientgrey = Color.FromArgb(237, 237, 237);
+        /// <summary>
+        /// The _bottomgradientgrey
+        /// </summary>
+        private readonly Color _bottomgradientgrey = Color.FromArgb(230, 230, 230);
+        /// <summary>
+        /// The _lightgrey
+        /// </summary>
+        private readonly Color _lightgrey = Color.FromArgb(167, 167, 167);
+        /// <summary>
+        /// The _mediumgrey
+        /// </summary>
+        private readonly Color _mediumgrey = Color.FromArgb(105, 105, 105);
+        /// <summary>
+        /// The _darkgrey
+        /// </summary>
+        private readonly Color _darkgrey = Color.FromArgb(78, 87, 100);
+        /// <summary>
+        /// The _textnormal
+        /// </summary>
+        private readonly Color _textnormal = Color.FromArgb(60, 60, 60);
+
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="G">The g.</param>
         protected void DrawBorders(Pen p1, Graphics G)
         {
             DrawBorders(p1, 0, 0, Width, Height, G);
         }
-        protected void DrawBorders(Pen p1, int offset, Graphics G)
-        {
-            DrawBorders(p1, 0, 0, Width, Height, offset, G);
-        }
+
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="G">The g.</param>
         protected void DrawBorders(Pen p1, int x, int y, int width, int height, Graphics G)
         {
             /* Initial Border around Combobox */
             G.DrawRectangle(p1, x, y, width - 1, height - 1);
         }
-        protected void DrawBorders(Pen p1, int x, int y, int width, int height, int offset, Graphics G)
-        {
-            /* Bordersize of right and down. */
-            DrawBorders(p1, x + offset, y + offset, width - (offset * 1), height - (offset * 1), G);
-        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseMove" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             _x = e.X;
             base.OnMouseMove(e);
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseLeave" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Eine <see cref="T:System.EventArgs" />-Klasse, die die Ereignisdaten enthält.</param>
         protected override void OnMouseLeave(EventArgs e)
         {
             _x = 0;
             base.OnMouseLeave(e);
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseClick" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnMouseClick(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -463,9 +754,18 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         }
 
         //private readonly SolidBrush _b1;
+        /// <summary>
+        /// The _B2
+        /// </summary>
         private readonly SolidBrush _b2;
+        /// <summary>
+        /// The _B3
+        /// </summary>
         private readonly SolidBrush _b3;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeComboBoxLight"/> class.
+        /// </summary>
         public ChromeComboBoxLight()
         {
             SetStyle((ControlStyles)139286, true);
@@ -489,6 +789,10 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             _b3 = new SolidBrush(_mediumgrey);
         }
 
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.Paint" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.PaintEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics G = e.Graphics;
@@ -533,6 +837,10 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                 G.FillPolygon(_b3, points);
             }
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.ComboBox.DrawItem" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.DrawItemEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
@@ -564,8 +872,20 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
     class ChromeComboBoxDark : ComboBox
     {
+        /// <summary>
+        /// The _x
+        /// </summary>
         private int _x;
+        /// <summary>
+        /// The _start index
+        /// </summary>
         private int _startIndex = 0;
+        /// <summary>
+        /// Gets or sets the start index.
+        /// </summary>
+        /// <value>
+        /// The start index.
+        /// </value>
         public int StartIndex
         {
             get { return _startIndex; }
@@ -579,34 +899,76 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                 Invalidate();
             }
         }
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="G">The g.</param>
         protected void DrawBorders(Pen p1, Graphics G)
         {
             DrawBorders(p1, 0, 0, Width, Height, G);
         }
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="G">The g.</param>
         protected void DrawBorders(Pen p1, int offset, Graphics G)
         {
             DrawBorders(p1, 0, 0, Width, Height, offset, G);
         }
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="G">The g.</param>
         protected void DrawBorders(Pen p1, int x, int y, int width, int height, Graphics G)
         {
             /* Initial Border around Combobox */
             G.DrawRectangle(p1, x, y, width - 1, height - 1);
         }
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="G">The g.</param>
         protected void DrawBorders(Pen p1, int x, int y, int width, int height, int offset, Graphics G)
         {
             /* Bordersize of right and down. */
             DrawBorders(p1, x + offset, y + offset, width - (offset * 1), height - (offset * 1), G);
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseMove" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             _x = e.X;
             base.OnMouseMove(e);
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseLeave" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Eine <see cref="T:System.EventArgs" />-Klasse, die die Ereignisdaten enthält.</param>
         protected override void OnMouseLeave(EventArgs e)
         {
             _x = 0;
             base.OnMouseLeave(e);
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseClick" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnMouseClick(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -617,9 +979,18 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         }
 
         //private readonly SolidBrush _b1;
+        /// <summary>
+        /// The _B2
+        /// </summary>
         private readonly SolidBrush _b2;
+        /// <summary>
+        /// The _B3
+        /// </summary>
         private readonly SolidBrush _b3;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeComboBoxDark"/> class.
+        /// </summary>
         public ChromeComboBoxDark()
         {
             SetStyle((ControlStyles)139286, true);
@@ -643,6 +1014,10 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             _b3 = new SolidBrush(Color.FromArgb(105, 105, 105));
         }
 
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.Paint" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.PaintEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics G = e.Graphics;
@@ -687,6 +1062,10 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                 G.FillPolygon(_b3, points);
             }
         }
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.ComboBox.DrawItem" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.DrawItemEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
@@ -716,108 +1095,340 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         }
     }
 
-    class ChromeButton : ThemeControl154
+    class ChromeComboBoxNormal : ComboBox
     {
-        public ChromeButton()
+        /// <summary>
+        /// The x
+        /// </summary>
+        private int X;
+        /// <summary>
+        /// The _ start index
+        /// </summary>
+        private int _startIndex;
+        /// <summary>
+        /// Gets or sets the start index.
+        /// </summary>
+        /// <value>
+        /// The start index.
+        /// </value>
+        public int StartIndex
         {
-            Font = new Font("Segoe UI", 9);
-            SetColor("Gradient top normal", 237, 237, 237);
-            SetColor("Gradient top over", 242, 242, 242);
-            SetColor("Gradient top down", 235, 235, 235);
-            SetColor("Gradient bottom normal", 230, 230, 230);
-            SetColor("Gradient bottom over", 235, 235, 235);
-            SetColor("Gradient bottom down", 223, 223, 223);
-            SetColor("Border", 167, 167, 167);
-            SetColor("Text normal", 60, 60, 60);
-            SetColor("Text down/over", 20, 20, 20);
-            SetColor("Text disabled", Color.Gray);
-        }
-
-        Color GTN;
-        Color GTO;
-        Color GTD;
-        Color GBN;
-        Color GBO;
-        Color GBD;
-        Color Bo;
-        Color TN;
-        Color TD;
-        Color TDO;
-        protected override void ColorHook()
-        {
-            GTN = GetColor("Gradient top normal");
-            GTO = GetColor("Gradient top over");
-            GTD = GetColor("Gradient top down");
-            GBN = GetColor("Gradient bottom normal");
-            GBO = GetColor("Gradient bottom over");
-            GBD = GetColor("Gradient bottom down");
-            Bo = GetColor("Border");
-            TN = GetColor("Text normal");
-            TDO = GetColor("Text down/over");
-            TD = GetColor("Text disabled");
-        }
-
-        protected override void PaintHook()
-        {
-            G.Clear(BackColor);
-            LinearGradientBrush LGB = default(LinearGradientBrush);
-            G.SmoothingMode = SmoothingMode.HighQuality;
-
-
-            switch (State)
+            get { return _startIndex; }
+            set
             {
-                case MouseState.None:
-                    LGB = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), GTN, GBN, 90f);
-                    break;
-                case MouseState.Over:
-                    LGB = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), GTO, GBO, 90f);
-                    break;
-                default:
-                    LGB = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), GTD, GBD, 90f);
-                    break;
-            }
-
-            if (!Enabled)
-            {
-                LGB = new LinearGradientBrush(new Rectangle(0, 0, Width - 1, Height - 1), GTN, GBN, 90f);
-            }
-
-            GraphicsPath buttonpath = CreateRound(Rectangle.Round(LGB.Rectangle), 3);
-            G.FillPath(LGB, CreateRound(Rectangle.Round(LGB.Rectangle), 3));
-            if (!Enabled)
-                G.FillPath(new SolidBrush(Color.FromArgb(50, Color.White)), CreateRound(Rectangle.Round(LGB.Rectangle), 3));
-            G.SetClip(buttonpath);
-            LGB = new LinearGradientBrush(new Rectangle(0, 0, Width, Height / 6), Color.FromArgb(80, Color.White), Color.Transparent, 90f);
-            G.FillRectangle(LGB, Rectangle.Round(LGB.Rectangle));
-
-
-
-            G.ResetClip();
-            G.DrawPath(new Pen(Bo), buttonpath);
-
-            if (Enabled)
-            {
-                switch (State)
+                _startIndex = value;
+                try
                 {
-                    case MouseState.None:
-                        DrawText(new SolidBrush(TN), HorizontalAlignment.Center, 1, 0);
-                        break;
-                    default:
-                        DrawText(new SolidBrush(TDO), HorizontalAlignment.Center, 1, 0);
-                        break;
+                    base.SelectedIndex = value;
                 }
+                catch
+                {
+                }
+                Invalidate();
+            }
+        }
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="G">The g.</param>
+        private void DrawBorders(Pen p1, Graphics G)
+        {
+            DrawBorders(p1, 0, 0, Width, Height, G);
+        }
+
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="G">The g.</param>
+        private void DrawBorders(Pen p1, int x, int y, int width, int height, Graphics G)
+        {
+            G.DrawRectangle(p1, x, y, width - 1, height - 1); // Initial Border around Combobox
+        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseMove" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            X = e.X;
+            base.OnMouseMove(e);
+        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseLeave" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Eine <see cref="T:System.EventArgs" />-Klasse, die die Ereignisdaten enthält.</param>
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            X = 0;
+            base.OnMouseLeave(e);
+        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseClick" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                X = 0;
+            }
+            base.OnMouseClick(e);
+        }
+
+        /// <summary>
+        /// The b2
+        /// </summary>
+        private readonly SolidBrush _b2;
+
+        /// <summary>
+        /// The b3
+        /// </summary>
+        private readonly SolidBrush _b3;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeComboBoxNormal"/> class.
+        /// </summary>
+        public ChromeComboBoxNormal()
+        {
+            SetStyle((ControlStyles)139286, true);
+            SetStyle(ControlStyles.Selectable, false);
+            DrawMode = DrawMode.OwnerDrawFixed;
+
+            BackColor = Color.FromArgb(255, 0, 0); // ???
+            DropDownStyle = ComboBoxStyle.DropDownList;
+
+            Font = new Font("Segoe UI", 9); //Segoe UI; 9pt - Font
+
+            new SolidBrush(Color.FromArgb(255, 0, 0)); // ???
+            _b2 = new SolidBrush(Color.FromArgb(255, 255, 255)); // dropdown background color
+            _b3 = new SolidBrush(Color.FromArgb(105, 105, 105)); // Arrow Color
+        }
+
+        public override sealed Color BackColor
+        {
+            get { return base.BackColor; }
+            set { base.BackColor = value; }
+        }
+
+        // Dimgray = 105, 105, 105
+        // Dark Color = 78, 87, 100
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.Paint" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.PaintEventArgs" />, das die Ereignisdaten enthält.</param>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics G = e.Graphics;
+            var points = new Point[] { new Point(Width - 15, 9), new Point(Width - 6, 9), new Point(Width - 11, 14) };
+            G.Clear(BackColor);
+            G.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+
+            var lgb1 = new LinearGradientBrush(new Rectangle(0, 0, Width, Height), Color.FromArgb(255, 255, 255), Color.FromArgb(255, 255, 255), 90F); // Combobox gradient - Upper and bottom.
+
+            G.FillRectangle(lgb1, new Rectangle(0, 0, Width, Height));
+
+            //G.DrawLine(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), new Point(Width - 21, 1), new Point(Width - 21, Height)); // Horizontal Splitter between text and button
+
+            DrawBorders(new Pen(new SolidBrush(Color.FromArgb(105, 105, 105))), G); // Outter Border
+            //DrawBorders(new Pen(new SolidBrush(Color.FromArgb(255, 0, 0))), 1, G); // Inner Border - Disabled
+
+            try { G.DrawString((string)Items[SelectedIndex].ToString(), Font, new SolidBrush(Color.FromArgb(78, 87, 100)), new Point(3, 4)); } // Text in combobox - When not dropdowned
+            catch { G.DrawString("Select Default", Font, new SolidBrush(Color.FromArgb(78, 87, 100)), new Point(3, 4)); } // Text in combobox - When not dropdowned
+
+            if (X >= 1)
+            {
+                var lgb3 = new LinearGradientBrush(new Rectangle(0, 0, Width, Height), Color.FromArgb(255, 255, 255), Color.FromArgb(255, 255, 255), 90F); // Arrow mouse-over GRADIENT
+                G.FillRectangle(lgb3, new Rectangle(Width - 20, 2, 18, 17));
+                G.FillPolygon(_b3, points);
             }
             else
             {
-                DrawText(new SolidBrush(TD), HorizontalAlignment.Center, 1, 0);
+                G.FillPolygon(_b3, points);
             }
         }
-    }
-    [DefaultEventAttribute("CheckedChanged")]
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.ComboBox.DrawItem" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.DrawItemEventArgs" />, das die Ereignisdaten enthält.</param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            var LGB1 = new LinearGradientBrush(e.Bounds, Color.FromArgb(78, 87, 100), Color.FromArgb(78, 87, 100), 90); // Gradient for actual dropdown - DROPDOWN SELECTION
+            var HB1 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(78, 87, 100), Color.FromArgb(78, 87, 100)); // Diagonal brushes to draw diagonal lines in the gradient - DROPDOWN SELECTION
 
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                e.Graphics.FillRectangle(LGB1, new Rectangle(1, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
+                e.Graphics.FillRectangle(HB1, e.Bounds);
+                e.Graphics.DrawString(GetItemText(Items[e.Index]), e.Font, new SolidBrush(Color.FromArgb(255, 255, 255)), e.Bounds); // Text color when hovering through - selected
+            }
+            else
+            {
+                e.Graphics.FillRectangle(_b2, e.Bounds);
+                try { e.Graphics.DrawString(GetItemText(Items[e.Index]), e.Font, new SolidBrush(Color.FromArgb(105, 105, 105)), e.Bounds); } // Regular text color
+                catch { }
+            }
+
+        }
+    }
+
+    class ChromeLabel : Label
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeLabel"/> class.
+        /// </summary>
+        public ChromeLabel()
+        {
+            ForeColor = Color.FromArgb(78, 87, 100);
+            BackColor = Color.Transparent;
+            Font = new Font("Segoe", 9);
+        }
+    }
+
+    [DefaultEvent("CheckedChanged")]
+    class ChromeOnOff : ThemeControl154
+    {
+        /// <summary>
+        /// The tb
+        /// </summary>
+        Brush TB;
+        /// <summary>
+        /// The b
+        /// </summary>
+        Pen b;
+
+        /// <summary>
+        /// The _ checked
+        /// </summary>
+        private bool _Checked = false;
+        /// <summary>
+        /// Occurs when [checked changed].
+        /// </summary>
+        public event CheckedChangedEventHandler CheckedChanged;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        public delegate void CheckedChangedEventHandler(object sender);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ChromeOnOff"/> is checked.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if checked; otherwise, <c>false</c>.
+        /// </value>
+        public bool Checked
+        {
+            get { return _Checked; }
+            set
+            {
+                _Checked = value;
+                Invalidate();
+                if (CheckedChanged != null)
+                {
+                    CheckedChanged(this);
+                }
+            }
+        }
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="G">The g.</param>
+        protected void DrawBorders(Pen p1, Graphics G)
+        {
+            DrawBorders(p1, 0, 0, Width, Height, G);
+        }
+
+        /// <summary>
+        /// Draws the borders.
+        /// </summary>
+        /// <param name="p1">The p1.</param>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="G">The g.</param>
+        protected void DrawBorders(Pen p1, int x, int y, int width, int height, Graphics G)
+        {
+            G.DrawRectangle(p1, x, y, width - 1, height - 1);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:MouseDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            _Checked = !_Checked;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeOnOff"/> class.
+        /// </summary>
+        public ChromeOnOff()
+        {
+            LockHeight = 24;
+            LockWidth = 62;
+            SetColor("Texts", Color.FromArgb(100, 100, 100));
+            SetColor("border", Color.FromArgb(78, 87, 100));
+        }
+
+        /// <summary>
+        /// Colors the hook.
+        /// </summary>
+        protected override void ColorHook()
+        {
+            TB = GetBrush("Texts");
+            b = GetPen("border");
+        }
+
+        /// <summary>
+        /// Paints the hook.
+        /// </summary>
+        protected override void PaintHook()
+        {
+            new Rectangle();
+            G.Clear(BackColor);
+            var lgb1 = new LinearGradientBrush(new Rectangle(0, 0, Width, Height), Color.FromArgb(78, 87, 100), Color.FromArgb(78, 87, 100), 90);
+            //HatchBrush HB1 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(10, Color.White), Color.Transparent);
+
+            if (_Checked)
+            {
+                G.FillRectangle(lgb1, new Rectangle(0, 0, (Width / 2) - 0, Height - 0));
+                //G.FillRectangle(HB1, new Rectangle(2, 2, (Width / 2) - 2, Height - 4));
+                G.DrawString("On", Font, TB, new Point(36, 6));
+            }
+            else if (!_Checked)
+            {
+                G.FillRectangle(lgb1, new Rectangle((Width / 2) - 0, 0, (Width / 2) - 0, Height - 0));
+                //G.FillRectangle(HB1, new Rectangle((Width / 2) - 1, 2, (Width / 2) - 1, Height - 4));
+                G.DrawString("Off", Font, TB, new Point(5, 6));
+            }
+            DrawBorders(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), G);
+            //DrawBorders(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), 1, G); -- Inner Border - Disabled 
+
+        }
+    }
+
+    [DefaultEvent("CheckedChanged")]
     class ChromeCheckbox : ThemeControl154
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeCheckbox"/> class.
+        /// </summary>
         public ChromeCheckbox()
         {
             LockHeight = 17;
@@ -833,260 +1444,538 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             Width = 160;
         }
 
-        private int X;
-        Color GTN;
-        Color GTO;
-        Color GTD;
-        Color GBN;
-        Color GBO;
-        Color GBD;
-        Color Bo;
-        Color T;
-        protected override void ColorHook()
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
+        public override sealed Font Font
         {
-            GTN = GetColor("Gradient top normal");
-            GTO = GetColor("Gradient top over");
-            GTD = GetColor("Gradient top down");
-            GBN = GetColor("Gradient bottom normal");
-            GBO = GetColor("Gradient bottom over");
-            GBD = GetColor("Gradient bottom down");
-            Bo = GetColor("Border");
-            T = GetColor("Text");
+            get { return base.Font; }
+            set { base.Font = value; }
         }
 
+        /// <summary>
+        /// The _x
+        /// </summary>
+        private int _x;
+        /// <summary>
+        /// The _GTN
+        /// </summary>
+        Color _gtn;
+        /// <summary>
+        /// The _gto
+        /// </summary>
+        Color _gto;
+        /// <summary>
+        /// The _GTD
+        /// </summary>
+        Color _gtd;
+        /// <summary>
+        /// The _GBN
+        /// </summary>
+        Color _gbn;
+        /// <summary>
+        /// The _gbo
+        /// </summary>
+        Color _gbo;
+        /// <summary>
+        /// The _GBD
+        /// </summary>
+        Color _gbd;
+        /// <summary>
+        /// The _bo
+        /// </summary>
+        Color _bo;
+        /// <summary>
+        /// The _
+        /// </summary>
+        Color _;
+        /// <summary>
+        /// Colors the hook.
+        /// </summary>
+        protected override void ColorHook()
+        {
+            _gtn = GetColor("Gradient top normal");
+            _gto = GetColor("Gradient top over");
+            _gtd = GetColor("Gradient top down");
+            _gbn = GetColor("Gradient bottom normal");
+            _gbo = GetColor("Gradient bottom over");
+            _gbd = GetColor("Gradient bottom down");
+            _bo = GetColor("Border");
+            _ = GetColor("Text");
+        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseMove" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            X = e.Location.X;
+            _x = e.Location.X;
             Invalidate();
         }
 
+        /// <summary>
+        /// Paints the hook.
+        /// </summary>
         protected override void PaintHook()
         {
             G.Clear(BackColor);
-            LinearGradientBrush LGB = default(LinearGradientBrush);
+            LinearGradientBrush lgb;
             G.SmoothingMode = SmoothingMode.HighQuality;
             switch (State)
             {
-                case MouseState.None:
-                    LGB = new LinearGradientBrush(new Rectangle(0, 0, 14, 14), GTN, GBN, 90f);
+                case MouseStateControl.None:
+                    lgb = new LinearGradientBrush(new Rectangle(0, 0, 14, 14), _gtn, _gbn, 90f);
                     break;
-                case MouseState.Over:
-                    LGB = new LinearGradientBrush(new Rectangle(0, 0, 14, 14), GTO, GBO, 90f);
+                case MouseStateControl.Over:
+                    lgb = new LinearGradientBrush(new Rectangle(0, 0, 14, 14), _gto, _gbo, 90f);
                     break;
                 default:
-                    LGB = new LinearGradientBrush(new Rectangle(0, 0, 14, 14), GTD, GBD, 90f);
+                    lgb = new LinearGradientBrush(new Rectangle(0, 0, 14, 14), _gtd, _gbd, 90f);
                     break;
             }
-            GraphicsPath buttonpath = CreateRound(Rectangle.Round(LGB.Rectangle), 5);
-            G.FillPath(LGB, CreateRound(Rectangle.Round(LGB.Rectangle), 3));
+            var buttonpath = CreateRound(Rectangle.Round(lgb.Rectangle), 5);
+            G.FillPath(lgb, CreateRound(Rectangle.Round(lgb.Rectangle), 3));
             G.SetClip(buttonpath);
-            LGB = new LinearGradientBrush(new Rectangle(0, 0, 14, 5), Color.FromArgb(150, Color.White), Color.Transparent, 90f);
-            G.FillRectangle(LGB, Rectangle.Round(LGB.Rectangle));
+            lgb = new LinearGradientBrush(new Rectangle(0, 0, 14, 5), Color.FromArgb(150, Color.White), Color.Transparent, 90f);
+            G.FillRectangle(lgb, Rectangle.Round(lgb.Rectangle));
             G.ResetClip();
-            G.DrawPath(new Pen(Bo), buttonpath);
+            G.DrawPath(new Pen(_bo), buttonpath);
 
-            DrawText(new SolidBrush(T), 17, -2);
+            DrawText(new SolidBrush(_), 17, -2);
 
 
-            if (Checked)
-            {
-                Image check = Image.FromStream(new System.IO.MemoryStream(Convert.FromBase64String("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")));
-                G.DrawImage(check, new Rectangle(2, 3, check.Width, check.Height));
-            }
+            if (!Checked) return;
+            var check = Image.FromStream(new MemoryStream(Convert.FromBase64String("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")));
+            G.DrawImage(check, new Rectangle(2, 3, check.Width, check.Height));
         }
 
-        private bool _Checked;
-        public bool Checked
-        {
-            get { return _Checked; }
-            set
-            {
-                _Checked = value;
-                Invalidate();
-            }
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ChromeCheckbox"/> is checked.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if checked; otherwise, <c>false</c>.
+        /// </value>
+        private bool Checked { get; set; }
 
+        /// <summary>
+        /// Raises the <see cref="E:MouseDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            _Checked = !_Checked;
+            Checked = !Checked;
             if (CheckedChanged != null)
                 CheckedChanged(this);
             base.OnMouseDown(e);
         }
 
+        /// <summary>
+        /// Occurs when [checked changed].
+        /// </summary>
         public event CheckedChangedEventHandler CheckedChanged;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         public delegate void CheckedChangedEventHandler(object sender);
 
     }
-    [DefaultEventAttribute("CheckedChanged")]
 
-    class ChromeOnOffStriped : ThemeControl154
+    [DefaultEvent("CheckedChanged")]
+    class ChromeRadioButton : ThemeControl154
     {
-        Brush TB;
-        Pen b;
 
-        private bool _Checked = false;
-        public event CheckedChangedEventHandler CheckedChanged;
-        public delegate void CheckedChangedEventHandler(object sender);
-
-        public bool Checked
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChromeRadioButton"/> class.
+        /// </summary>
+        public ChromeRadioButton()
         {
-            get { return _Checked; }
+            Font = new Font("Segoe UI", 9);
+            LockHeight = 17;
+            SetColor("Text", 60, 60, 60);
+            SetColor("Gradient top", 237, 237, 237);
+            SetColor("Gradient bottom", 230, 230, 230);
+            SetColor("Borders", 167, 167, 167);
+            SetColor("Bullet", 100, 100, 100);
+            Width = 180;
+        }
+
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
+        /// <value>
+        /// The font.
+        /// </value>
+        public override sealed Font Font
+        {
+            get { return base.Font; }
+            set { base.Font = value; }
+        }
+
+        /// <summary>
+        /// The _x
+        /// </summary>
+        private int _x;
+        /// <summary>
+        /// The _text color
+        /// </summary>
+        private Color _textColor;
+        /// <summary>
+        /// The _G1
+        /// </summary>
+        private Color _g1;
+        /// <summary>
+        /// The _G2
+        /// </summary>
+        private Color _g2;
+        /// <summary>
+        /// The _bo
+        /// </summary>
+        private Color _bo;
+        /// <summary>
+        /// The _BB
+        /// </summary>
+        private Color _bb;
+        /// <summary>
+        /// Colors the hook.
+        /// </summary>
+        protected override void ColorHook()
+        {
+            _textColor = GetColor("Text");
+            _g1 = GetColor("Gradient top");
+            _g2 = GetColor("Gradient bottom");
+            _bb = GetColor("Bullet");
+            _bo = GetColor("Borders");
+        }
+
+        /// <summary>
+        /// Löst das <see cref="E:System.Windows.Forms.Control.MouseMove" />-Ereignis aus.
+        /// </summary>
+        /// <param name="e">Ein <see cref="T:System.Windows.Forms.MouseEventArgs" />, das die Ereignisdaten enthält.</param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            _x = e.Location.X;
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Paints the hook.
+        /// </summary>
+        protected override void PaintHook()
+        {
+            G.Clear(BackColor);
+            G.SmoothingMode = SmoothingMode.HighQuality;
+            if (_checked)
+            {
+                var lgb = new LinearGradientBrush(new Rectangle(new Point(0, 0), new Size(14, 14)), _g1, _g2, 90f);
+                G.FillEllipse(lgb, new Rectangle(new Point(0, 0), new Size(14, 14)));
+            }
+            else
+            {
+                var lgb = new LinearGradientBrush(new Rectangle(new Point(0, 0), new Size(14, 16)), _g1, _g2, 90f);
+                G.FillEllipse(lgb, new Rectangle(new Point(0, 0), new Size(14, 14)));
+            }
+
+            if (State == MouseStateControl.Over & _x < 15)
+            {
+                var sb = new SolidBrush(Color.FromArgb(10, Color.Black));
+                G.FillEllipse(sb, new Rectangle(new Point(0, 0), new Size(14, 14)));
+            }
+            else if (State == MouseStateControl.Down & _x < 15)
+            {
+                var sb = new SolidBrush(Color.FromArgb(20, Color.Black));
+                G.FillEllipse(sb, new Rectangle(new Point(0, 0), new Size(14, 14)));
+            }
+
+            var p = new GraphicsPath();
+            p.AddEllipse(new Rectangle(0, 0, 14, 14));
+            G.SetClip(p);
+
+            var llggbb = new LinearGradientBrush(new Rectangle(0, 0, 14, 5), Color.FromArgb(150, Color.White), Color.Transparent, 90f);
+            G.FillRectangle(llggbb, llggbb.Rectangle);
+
+            G.ResetClip();
+
+            G.DrawEllipse(new Pen(_bo), new Rectangle(new Point(0, 0), new Size(14, 14)));
+
+            if (_checked)
+            {
+                var lgb = new SolidBrush(_bb);
+                G.FillEllipse(lgb, new Rectangle(new Point(4, 4), new Size(6, 6)));
+            }
+
+            DrawText(new SolidBrush(_textColor), HorizontalAlignment.Left, 17, -2);
+        }
+
+        /// <summary>
+        /// The _field
+        /// </summary>
+        private int _field = 16;
+        /// <summary>
+        /// Gets or sets the field.
+        /// </summary>
+        /// <value>
+        /// The field.
+        /// </value>
+        public int Field
+        {
+            get { return _field; }
             set
             {
-                _Checked = value;
+                if (value < 4)
+                    return;
+                _field = value;
+                LockHeight = value;
                 Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// The _checked
+        /// </summary>
+        private bool _checked;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ChromeRadioButton"/> is checked.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if checked; otherwise, <c>false</c>.
+        /// </value>
+        private bool Checked
+        {
+            get { return _checked; }
+            set
+            {
+                _checked = value;
+                InvalidateControls();
                 if (CheckedChanged != null)
                 {
                     CheckedChanged(this);
                 }
+                Invalidate();
             }
         }
-        protected void DrawBorders(Pen p1, Graphics G)
-        {
-            DrawBorders(p1, 0, 0, Width, Height, G);
-        }
-        protected void DrawBorders(Pen p1, int offset, Graphics G)
-        {
-            DrawBorders(p1, 0, 0, Width, Height, offset, G);
-        }
-        protected void DrawBorders(Pen p1, int x, int y, int width, int height, Graphics G)
-        {
-            G.DrawRectangle(p1, x, y, width - 1, height - 1);
-        }
-        protected void DrawBorders(Pen p1, int x, int y, int width, int height, int offset, Graphics G)
-        {
-            DrawBorders(p1, x + offset, y + offset, width - (offset * 2), height - (offset * 2), G);
-        }
+
+        /// <summary>
+        /// Raises the <see cref="E:MouseDown" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            if (!_checked)
+                Checked = true;
             base.OnMouseDown(e);
-            _Checked = !_Checked;
         }
 
-        public ChromeOnOffStriped()
-        {
-            LockHeight = 24;
-            LockWidth = 62;
-            SetColor("Texts", Color.FromArgb(100, 100, 100));
-            SetColor("border", Color.FromArgb(78, 87, 100));
-        }
-
-        protected override void ColorHook()
-        {
-            TB = GetBrush("Texts");
-            b = GetPen("border");
-        }
-
-        protected override void PaintHook()
-        {
-            G.Clear(BackColor);
-            LinearGradientBrush LGB1 = new LinearGradientBrush(new Rectangle(0, 0, Width, Height), Color.FromArgb(78, 87, 100), Color.FromArgb(78, 87, 100), 90);
-            HatchBrush HB1 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(10, Color.White), Color.Transparent);
-
-            if (_Checked)
-            {
-                G.FillRectangle(LGB1, new Rectangle(0, 0, (Width / 2) - 0, Height - 0));
-                G.FillRectangle(HB1, new Rectangle(2, 2, (Width / 2) - 2, Height - 4));
-                G.DrawString("On", Font, TB, new Point(36, 6));
-            }
-            else if (!_Checked)
-            {
-                G.FillRectangle(LGB1, new Rectangle((Width / 2) - 0, 0, (Width / 2) - 0, Height - 0));
-                G.FillRectangle(HB1, new Rectangle((Width / 2) - 1, 2, (Width / 2) - 1, Height - 4));
-                G.DrawString("Off", Font, TB, new Point(5, 6));
-            }
-            DrawBorders(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), G);
-            //DrawBorders(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), 1, G); -- Inner Border - Disabled 
-
-        }
-    }
-    [DefaultEvent("CheckedChanged")]
-
-    class ChromeOnOff : ThemeControl154
-    {
-        Brush TB;
-        Pen b;
-
-        private bool _Checked = false;
+        /// <summary>
+        /// Occurs when [checked changed].
+        /// </summary>
         public event CheckedChangedEventHandler CheckedChanged;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         public delegate void CheckedChangedEventHandler(object sender);
 
-        public bool Checked
+        /// <summary>
+        /// Called when [creation].
+        /// </summary>
+        protected override void OnCreation()
         {
-            get { return _Checked; }
+            InvalidateControls();
+        }
+
+        /// <summary>
+        /// Invalidates the controls.
+        /// </summary>
+        private void InvalidateControls()
+        {
+            if (!IsHandleCreated || !_checked)
+                return;
+
+            foreach (var c in from Control c in Parent.Controls where !ReferenceEquals(c, this) && c is ChromeRadioButton select c)
+            {
+                ((ChromeRadioButton)c).Checked = false;
+            }
+        }
+    }
+
+    [DefaultEvent("Scroll")]
+    class ChromeTrackBar : ThemeControl154
+    {
+
+        public event ScrollEventHandler Scroll;
+        public delegate void ScrollEventHandler(object sender);
+
+        private int _Minimum;
+        public int Minimum
+        {
+            get { return _Minimum; }
             set
             {
-                _Checked = value;
-                Invalidate();
-                if (CheckedChanged != null)
+                if (value < 0)
                 {
-                    CheckedChanged(this);
+                    throw new Exception("Property value is not valid.");
+                }
+
+                _Minimum = value;
+                if (value > _Value)
+                    _Value = value;
+                if (value > _Maximum)
+                    _Maximum = value;
+                Invalidate();
+            }
+        }
+
+        private int _Maximum = 10;
+        public int Maximum
+        {
+            get { return _Maximum; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new Exception("Property value is not valid.");
+                }
+
+                _Maximum = value;
+                if (value < _Value)
+                    _Value = value;
+                if (value < _Minimum)
+                    _Minimum = value;
+                Invalidate();
+            }
+        }
+
+        private int _Value;
+        public int Value
+        {
+            get { return _Value; }
+            set
+            {
+                if (value == _Value)
+                    return;
+
+                if (value > _Maximum || value < _Minimum)
+                {
+                    throw new Exception("Property value is not valid.");
+                }
+
+                _Value = value;
+                Invalidate();
+
+                if (Scroll != null)
+                {
+                    Scroll(this);
                 }
             }
         }
-        protected void DrawBorders(Pen p1, Graphics G)
+
+        public ChromeTrackBar()
         {
-            DrawBorders(p1, 0, 0, Width, Height, G);
-        }
-        protected void DrawBorders(Pen p1, int offset, Graphics G)
-        {
-            DrawBorders(p1, 0, 0, Width, Height, offset, G);
-        }
-        protected void DrawBorders(Pen p1, int x, int y, int width, int height, Graphics G)
-        {
-            G.DrawRectangle(p1, x, y, width - 1, height - 1);
-        }
-        protected void DrawBorders(Pen p1, int x, int y, int width, int height, int offset, Graphics G)
-        {
-            DrawBorders(p1, x + offset, y + offset, width - (offset * 2), height - (offset * 2), G);
-        }
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-            _Checked = !_Checked;
+            LockHeight = 17;
+
+            SetColor("Track", 100, 100, 100);
+            SetColor("Border", 70, 70, 70);
+            SetColor("Line", 135, 135, 135);
+            SetColor("BarBack", 118, 118, 118);
+            SetColor("BarGloss1", 150, 150, 150);
+            SetColor("BarGloss2", 128, 128, 128);
+            SetColor("BarShine", 165, 165, 165);
+            SetColor("BarBorder", 80, 80, 80);
+
+            //SetColor("Track", 100, 100, 100);
+            //SetColor("Border", 70, 70, 70);
+            //SetColor("Line", 135, 135, 135);
+            //SetColor("BarBack", 118, 118, 118);
+            //SetColor("BarGloss1", 150, 150, 150);
+            //SetColor("BarGloss2", 128, 128, 128);
+            //SetColor("BarShine", 165, 165, 165);
+            //SetColor("BarBorder", 80, 80, 80);
         }
 
-        public ChromeOnOff()
-        {
-            LockHeight = 24;
-            LockWidth = 62;
-            SetColor("Texts", Color.FromArgb(100, 100, 100));
-            SetColor("border", Color.FromArgb(78, 87, 100));
-        }
+        private SolidBrush B1;
+        private SolidBrush B2;
+        private Pen P1;
+        private Pen P2;
+        private Pen P3;
+        private Pen P4;
+        private Color C1;
 
+        private Color C2;
         protected override void ColorHook()
         {
-            TB = GetBrush("Texts");
-            b = GetPen("border");
+            B1 = GetBrush("Track");
+            B2 = GetBrush("BarBack");
+
+            P1 = GetPen("Border");
+            P2 = GetPen("Line");
+            P3 = GetPen("BarShine");
+            P4 = GetPen("BarBorder");
+
+            C1 = GetColor("BarGloss1");
+            C2 = GetColor("BarGloss2");
         }
 
+        private Rectangle R1;
+
+        private int I1;
         protected override void PaintHook()
         {
-            //Rectangle rec = new Rectangle();
             G.Clear(BackColor);
-            LinearGradientBrush LGB1 = new LinearGradientBrush(new Rectangle(0, 0, Width, Height), Color.FromArgb(78, 87, 100), Color.FromArgb(78, 87, 100), 90);
-            //HatchBrush HB1 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(10, Color.White), Color.Transparent);
 
-            if (_Checked)
-            {
-                G.FillRectangle(LGB1, new Rectangle(0, 0, (Width / 2) - 0, Height - 0));
-                //G.FillRectangle(HB1, new Rectangle(2, 2, (Width / 2) - 2, Height - 4));
-                G.DrawString("On", Font, TB, new Point(36, 6));
-            }
-            else if (!_Checked)
-            {
-                G.FillRectangle(LGB1, new Rectangle((Width / 2) - 0, 0, (Width / 2) - 0, Height - 0));
-                //G.FillRectangle(HB1, new Rectangle((Width / 2) - 1, 2, (Width / 2) - 1, Height - 4));
-                G.DrawString("Off", Font, TB, new Point(5, 6));
-            }
-            DrawBorders(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), G);
-            //DrawBorders(new Pen(new SolidBrush(Color.FromArgb(78, 87, 100))), 1, G); -- Inner Border - Disabled 
+            G.FillRectangle(B1, 0, 8, Width, 2);
 
+            DrawBorders(P1, 0, 7, Width, 4);
+            G.DrawLine(P2, 0, 11, Width, 11);
+
+            I1 = Convert.ToInt32((double)(_Value - _Minimum) / (_Maximum - _Minimum) * (Width - 9));
+            R1 = new Rectangle(I1, 0, 9, 17);
+
+            G.FillRectangle(B2, R1);
+            DrawGradient(C1, C2, R1.X, 0, 9, 7);
+
+            G.DrawLine(P3, R1.X, 1, R1.X + 8, 1);
+            G.DrawRectangle(P4, R1.X, 0, 8, 16);
         }
+
+        private bool TrackDown;
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                I1 = Convert.ToInt32((double)(_Value - _Minimum) / (_Maximum - _Minimum) * (Width - 9));
+                R1 = new Rectangle(I1, 0, 9, 17);
+
+                TrackDown = R1.Contains(e.Location);
+            }
+
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (TrackDown && e.X > -1 && e.X < (Width + 1))
+            {
+                Value = _Minimum + Convert.ToInt32((_Maximum - _Minimum) * ((double)e.X / Width));
+            }
+
+            base.OnMouseMove(e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            TrackDown = false;
+            base.OnMouseUp(e);
+        }
+
     }
-    [DefaultEvent("CheckedChanged")]
 
     //------------------
     //Creator: aeonhack
@@ -1102,8 +1991,9 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         protected Graphics G;
 
-        protected Bitmap B;
-        public ThemeContainer154()
+        private Bitmap B;
+
+        protected ThemeContainer154()
         {
             SetStyle((ControlStyles)139270, true);
 
@@ -1120,15 +2010,15 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         protected override sealed void OnHandleCreated(EventArgs e)
         {
-            if (DoneCreation)
+            if (_doneCreation)
                 InitializeMessages();
 
             InvalidateCustimization();
             ColorHook();
 
-            if (!(_LockWidth == 0))
+            if (_LockWidth != 0)
                 Width = _LockWidth;
-            if (!(_LockHeight == 0))
+            if (_LockHeight != 0)
                 Height = _LockHeight;
             if (!_ControlMode)
                 base.Dock = DockStyle.Fill;
@@ -1140,7 +2030,7 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             base.OnHandleCreated(e);
         }
 
-        private bool DoneCreation;
+        private bool _doneCreation;
         protected override sealed void OnParentChanged(EventArgs e)
         {
             base.OnParentChanged(e);
@@ -1155,12 +2045,15 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
                 if (_IsParentForm)
                 {
-                    ParentForm.FormBorderStyle = _BorderStyle;
-                    ParentForm.TransparencyKey = _TransparencyKey;
-
-                    if (!DesignMode)
+                    if (ParentForm != null)
                     {
-                        ParentForm.Shown += FormShown;
+                        ParentForm.FormBorderStyle = _BorderStyle;
+                        ParentForm.TransparencyKey = _TransparencyKey;
+
+                        if (!DesignMode)
+                        {
+                            ParentForm.Shown += FormShown;
+                        }
                     }
                 }
 
@@ -1168,7 +2061,7 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             }
 
             OnCreation();
-            DoneCreation = true;
+            _doneCreation = true;
             InvalidateTimer();
         }
 
@@ -1204,10 +2097,10 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             base.OnHandleDestroyed(e);
         }
 
-        private bool HasShown;
+        private bool _hasShown;
         private void FormShown(object sender, EventArgs e)
         {
-            if (_ControlMode || HasShown)
+            if (_ControlMode || _hasShown)
                 return;
 
             if (_StartPosition == FormStartPosition.CenterParent || _StartPosition == FormStartPosition.CenterScreen)
@@ -1217,18 +2110,18 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                 ParentForm.Location = new Point(SB.Width / 2 - CB.Width / 2, SB.Height / 2 - CB.Width / 2);
             }
 
-            HasShown = true;
+            _hasShown = true;
         }
 
 
         #region " Size Handling "
 
-        private Rectangle Frame;
+        private Rectangle _frame;
         protected override sealed void OnSizeChanged(EventArgs e)
         {
             if (_Movable && !_ControlMode)
             {
-                Frame = new Rectangle(7, 7, Width - 14, _Header - 7);
+                _frame = new Rectangle(7, 7, Width - 14, _Header - 7);
             }
 
             InvalidateBitmap();
@@ -1239,9 +2132,9 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
-            if (!(_LockWidth == 0))
+            if (_LockWidth != 0)
                 width = _LockWidth;
-            if (!(_LockHeight == 0))
+            if (_LockHeight != 0)
                 height = _LockHeight;
             base.SetBoundsCore(x, y, width, height, specified);
         }
@@ -1250,8 +2143,8 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         #region " State Handling "
 
-        protected MouseState State;
-        private void SetState(MouseState current)
+        private MouseStateControl State;
+        private void SetState(MouseStateControl current)
         {
             State = current;
             Invalidate();
@@ -1259,7 +2152,7 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (!(_IsParentForm && ParentForm.WindowState == FormWindowState.Maximized))
+            if (ParentForm != null && !(_IsParentForm && ParentForm.WindowState == FormWindowState.Maximized))
             {
                 if (_Sizable && !_ControlMode)
                     InvalidateMouse();
@@ -1270,35 +2163,32 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         protected override void OnEnabledChanged(EventArgs e)
         {
-            if (Enabled)
-                SetState(MouseState.None);
-            else
-                SetState(MouseState.Block);
+            SetState(Enabled ? MouseStateControl.None : MouseStateControl.Block);
             base.OnEnabledChanged(e);
         }
 
         protected override void OnMouseEnter(EventArgs e)
         {
-            SetState(MouseState.Over);
+            SetState(MouseStateControl.Over);
             base.OnMouseEnter(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            SetState(MouseState.Over);
+            SetState(MouseStateControl.Over);
             base.OnMouseUp(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            SetState(MouseState.None);
+            SetState(MouseStateControl.None);
 
             if (GetChildAtPoint(PointToClient(MousePosition)) != null)
             {
                 if (_Sizable && !_ControlMode)
                 {
                     Cursor = Cursors.Default;
-                    Previous = 0;
+                    _previous = 0;
                 }
             }
 
@@ -1307,97 +2197,88 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-                SetState(MouseState.Down);
+            if (e.Button == MouseButtons.Left)
+                SetState(MouseStateControl.Down);
 
-            if (!(_IsParentForm && ParentForm.WindowState == FormWindowState.Maximized || _ControlMode))
+            if (ParentForm != null && !(_IsParentForm && ParentForm.WindowState == FormWindowState.Maximized || _ControlMode))
             {
-                if (_Movable && Frame.Contains(e.Location))
+                if (_Movable && _frame.Contains(e.Location))
                 {
                     if (!new Rectangle(Width - 22, 5, 15, 15).Contains(e.Location))
                     {
                         Capture = false;
                     }
-                    WM_LMBUTTONDOWN = true;
-                    DefWndProc(ref Messages[0]);
+                    _wmLmbuttondown = true;
+                    DefWndProc(ref _messages[0]);
                 }
-                else if (_Sizable && !(Previous == 0))
+                else if (_Sizable && _previous != 0)
                 {
                     Capture = false;
-                    WM_LMBUTTONDOWN = true;
-                    DefWndProc(ref Messages[Previous]);
+                    _wmLmbuttondown = true;
+                    DefWndProc(ref _messages[_previous]);
                 }
             }
 
             base.OnMouseDown(e);
         }
 
-        private bool WM_LMBUTTONDOWN;
+        private bool _wmLmbuttondown;
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
 
-            if (WM_LMBUTTONDOWN && m.Msg == 513)
+            if (_wmLmbuttondown && m.Msg == 513)
             {
-                WM_LMBUTTONDOWN = false;
+                _wmLmbuttondown = false;
 
-                SetState(MouseState.Over);
+                SetState(MouseStateControl.Over);
                 if (!_SmartBounds)
                     return;
 
-                if (IsParentMdi)
-                {
-                    CorrectBounds(new Rectangle(Point.Empty, Parent.Parent.Size));
-                }
-                else
-                {
-                    CorrectBounds(Screen.FromControl(Parent).WorkingArea);
-                }
+                CorrectBounds(IsParentMdi ? new Rectangle(Point.Empty, Parent.Parent.Size) : Screen.FromControl(Parent).WorkingArea);
             }
         }
 
-        private Point GetIndexPoint;
-        private bool B1;
-        private bool B2;
-        private bool B3;
-        private bool B4;
+        private Point _getIndexPoint;
+        private bool _b1;
+        private bool _b2;
+        private bool _b3;
+        private bool _b4;
         private int GetIndex()
         {
-            GetIndexPoint = PointToClient(MousePosition);
-            B1 = GetIndexPoint.X < 7;
-            B2 = GetIndexPoint.X > Width - 7;
-            B3 = GetIndexPoint.Y < 7;
-            B4 = GetIndexPoint.Y > Height - 7;
+            _getIndexPoint = PointToClient(MousePosition);
+            _b1 = _getIndexPoint.X < 7;
+            _b2 = _getIndexPoint.X > Width - 7;
+            _b3 = _getIndexPoint.Y < 7;
+            _b4 = _getIndexPoint.Y > Height - 7;
 
-            if (B1 && B3)
+            if (_b1 && _b3)
                 return 4;
-            if (B1 && B4)
+            if (_b1 && _b4)
                 return 7;
-            if (B2 && B3)
+            if (_b2 && _b3)
                 return 5;
-            if (B2 && B4)
+            if (_b2 && _b4)
                 return 8;
-            if (B1)
+            if (_b1)
                 return 1;
-            if (B2)
+            if (_b2)
                 return 2;
-            if (B3)
+            if (_b3)
                 return 3;
-            if (B4)
-                return 6;
-            return 0;
+            return _b4 ? 6 : 0;
         }
 
-        private int Current;
-        private int Previous;
+        private int _current;
+        private int _previous;
         private void InvalidateMouse()
         {
-            Current = GetIndex();
-            if (Current == Previous)
+            _current = GetIndex();
+            if (_current == _previous)
                 return;
 
-            Previous = Current;
-            switch (Previous)
+            _previous = _current;
+            switch (_previous)
             {
                 case 0:
                     Cursor = Cursors.Default;
@@ -1421,13 +2302,13 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             }
         }
 
-        private Message[] Messages = new Message[9];
+        private readonly Message[] _messages = new Message[9];
         private void InitializeMessages()
         {
-            Messages[0] = Message.Create(Parent.Handle, 161, new IntPtr(2), IntPtr.Zero);
-            for (int I = 1; I <= 8; I++)
+            _messages[0] = Message.Create(Parent.Handle, 161, new IntPtr(2), IntPtr.Zero);
+            for (var I = 1; I <= 8; I++)
             {
-                Messages[I] = Message.Create(Parent.Handle, 161, new IntPtr(I + 9), IntPtr.Zero);
+                _messages[I] = Message.Create(Parent.Handle, 161, new IntPtr(I + 9), IntPtr.Zero);
             }
         }
 
@@ -1531,7 +2412,7 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             }
         }
 
-        public override Font Font
+        public override sealed Font Font
         {
             get { return base.Font; }
             set
@@ -1829,7 +2710,7 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
                 if (!_ControlMode)
                 {
-                    Frame = new Rectangle(7, 7, Width - 14, value - 7);
+                    _frame = new Rectangle(7, 7, Width - 14, value - 7);
                     Invalidate();
                 }
             }
@@ -1938,7 +2819,7 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         private void InvalidateTimer()
         {
-            if (DesignMode || !DoneCreation)
+            if (DesignMode || !_doneCreation)
                 return;
 
             if (_IsAnimated)
@@ -2407,7 +3288,6 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         #endregion
 
     }
-
     abstract class ThemeControl154 : Control
     {
 
@@ -2525,42 +3405,42 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         protected override void OnMouseEnter(EventArgs e)
         {
             InPosition = true;
-            SetState(MouseState.Over);
+            SetState(MouseStateControl.Over);
             base.OnMouseEnter(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if (InPosition)
-                SetState(MouseState.Over);
+                SetState(MouseStateControl.Over);
             base.OnMouseUp(e);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
-                SetState(MouseState.Down);
+                SetState(MouseStateControl.Down);
             base.OnMouseDown(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             InPosition = false;
-            SetState(MouseState.None);
+            SetState(MouseStateControl.None);
             base.OnMouseLeave(e);
         }
 
         protected override void OnEnabledChanged(EventArgs e)
         {
             if (Enabled)
-                SetState(MouseState.None);
+                SetState(MouseStateControl.None);
             else
-                SetState(MouseState.Block);
+                SetState(MouseStateControl.Block);
             base.OnEnabledChanged(e);
         }
 
-        protected MouseState State;
-        private void SetState(MouseState current)
+        protected MouseStateControl State;
+        private void SetState(MouseStateControl current)
         {
             State = current;
             Invalidate();
@@ -3326,7 +4206,6 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         #endregion
 
     }
-
     static class ThemeShare
     {
 
@@ -3400,15 +4279,13 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         #endregion
 
     }
-
-    enum MouseState : byte
+    enum MouseStateControl : byte
     {
         None = 0,
         Over = 1,
         Down = 2,
         Block = 3
     }
-
     struct Bloom
     {
 
@@ -3436,7 +4313,6 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
                 }
                 catch
                 {
-                    return;
                 }
             }
         }
@@ -3449,18 +4325,25 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
         }
     }
 
+    //------------------
+    //Creator: aeonhack
+    //Site: elitevs.net
+    //Created: 11/30/2011
+    //Changed: 11/30/2011
+    //Version: 1.0.0
+    //------------------
     class PrecisionTimer : IDisposable
     {
 
-        private bool _Enabled;
+        private bool _enabled;
         public bool Enabled
         {
-            get { return _Enabled; }
+            get { return _enabled; }
         }
 
-        private IntPtr Handle;
+        private IntPtr _handle;
 
-        private TimerDelegate TimerCallback;
+        private TimerDelegate _timerCallback;
         [DllImport("kernel32.dll", EntryPoint = "CreateTimerQueueTimer")]
         private static extern bool CreateTimerQueueTimer(ref IntPtr handle, IntPtr queue, TimerDelegate callback, IntPtr state, uint dueTime, uint period, uint flags);
 
@@ -3471,29 +4354,29 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
 
         public void Create(uint dueTime, uint period, TimerDelegate callback)
         {
-            if (_Enabled)
+            if (_enabled)
                 return;
 
-            TimerCallback = callback;
-            bool Success = CreateTimerQueueTimer(ref Handle, IntPtr.Zero, TimerCallback, IntPtr.Zero, dueTime, period, 0);
+            _timerCallback = callback;
+            bool success = CreateTimerQueueTimer(ref _handle, IntPtr.Zero, _timerCallback, IntPtr.Zero, dueTime, period, 0);
 
-            if (!Success)
+            if (!success)
                 ThrowNewException("CreateTimerQueueTimer");
-            _Enabled = Success;
+            _enabled = success;
         }
 
         public void Delete()
         {
-            if (!_Enabled)
+            if (!_enabled)
                 return;
-            bool Success = DeleteTimerQueueTimer(IntPtr.Zero, Handle, IntPtr.Zero);
+            bool success = DeleteTimerQueueTimer(IntPtr.Zero, _handle, IntPtr.Zero);
 
-            if (!Success && !(Marshal.GetLastWin32Error() == 997))
+            if (!success && Marshal.GetLastWin32Error() != 997)
             {
                 ThrowNewException("DeleteTimerQueueTimer");
             }
 
-            _Enabled = !Success;
+            _enabled = !success;
         }
 
         private void ThrowNewException(string name)

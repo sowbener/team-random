@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using YourRaidingBuddy.Interfaces.Settings;
 using YourRaidingBuddy.Settings;
 
-namespace YourRaidingBuddy.Interfaces.GUI.Extentions
+namespace YourRaidingBuddy.Interface.Extensions
 {
     public partial class LoadMessageBox : Form
     {
@@ -27,8 +27,8 @@ namespace YourRaidingBuddy.Interfaces.GUI.Extentions
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    Extention2.ReleaseCapture();
-                    Extention2.SendMessage(Handle, 0xa1, 0x2, 0);
+                    ExtensionMethods.ReleaseCapture();
+                    ExtensionMethods.SendMessage(Handle, 0xa1, 0x2, 0);
                     break;
             }
         }
