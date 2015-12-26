@@ -470,12 +470,12 @@ namespace YourRaidingBuddy.Helpers
                     }
                 }
                 // else if(!Gcd) {}  
-                if (Actionmanager.DoAction(name, o))
+                if (!Actionmanager.DoAction(name, o))
                 {
-                    await SleepForLagDuration();
                     Logging.Write(Colors.Orchid, "[YourRaidingBuddy] Casting {0}", name);
                     return true;
                 }
+
                 if (lockDoubleCast)
                 {
                     if (InternalSettings.Instance.General.Debug)
@@ -484,6 +484,7 @@ namespace YourRaidingBuddy.Helpers
                     }
                         Extensions.UpdateDoubleCastDict(name, o);
                }
+                await SleepForLagDuration();
                 return true;
             }
             return false;
