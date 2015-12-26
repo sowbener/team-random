@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
+using System.Windows.Input;
 using YourRaidingBuddy.Helpers;
 using YourRaidingBuddy.Books;
 using YourRaidingBuddy.Settings;
 using YourRaidingBuddy.Interfaces.Settings;
 using ff14bot;
+using ff14bot.Enums;
 using YourRaidingBuddy.Interface.Extensions;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace YourRaidingBuddy.Interface.GUI
 {
@@ -14,6 +18,7 @@ namespace YourRaidingBuddy.Interface.GUI
         public Interface()
         {
             InitializeComponent();
+            FillComboBoxes();
 
             //generalwebbrowser.DocumentText = Resources.Resources.Introduction;
             //spec3 Propertygrid for Warrior,Deathknight,Demon-hunter,Druid and Paladin Tanks! Use Spec4 for dps if any else!
@@ -24,7 +29,14 @@ namespace YourRaidingBuddy.Interface.GUI
             ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage7, Resources.Resources.IconInfo, 0);
             ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage1, Resources.Resources.IconSettings, 1);
             ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage2, Resources.Resources.IconKeyboard, 2);
-            ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage3, Resources.Resources.IconKnife, 3);
+            if(Core.Player.CurrentJob == ClassJobType.Pugilist ||
+                Core.Player.CurrentJob == ClassJobType.Lancer || Core.Player.CurrentJob == ClassJobType.Archer || Core.Player.CurrentJob == ClassJobType.Rogue ||
+                Core.Player.CurrentJob == ClassJobType.Arcanist || Core.Player.CurrentJob == ClassJobType.BlackMage || Core.Player.CurrentJob == ClassJobType.Monk ||
+                Core.Player.CurrentJob == ClassJobType.Dragoon || Core.Player.CurrentJob == ClassJobType.Bard || Core.Player.CurrentJob == ClassJobType.Ninja)
+               ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage3, Resources.Resources.IconKnife, 3);
+            if(Core.Player.CurrentJob == ClassJobType.DarkKnight || Core.Player.CurrentJob == ClassJobType.Warrior || Core.Player.CurrentJob == ClassJobType.Gladiator ||
+                Core.Player.CurrentJob == ClassJobType.Paladin || Core.Player.CurrentJob == ClassJobType.Marauder)
+                ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage3, Resources.Resources.IconShield, 3);
 
         }
 
@@ -154,6 +166,364 @@ namespace YourRaidingBuddy.Interface.GUI
             }
         }
 
+        #region Fill Hotkeys!
+        private void FillComboBoxes()
+        {
+            // Key library: http://msdn.microsoft.com/en-us/library/aa245676(v=vs.60).aspx
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.None, "No Hotkey"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.A, "A"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.B, "B"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.C, "D"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F, "F"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.G, "G"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.H, "H"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.I, "I"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.J, "J"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.K, "K"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.L, "L"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.M, "M"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.O, "O"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.P, "P"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Q, "Q"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.R, "R"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.S, "S"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.T, "T"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.U, "U"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.V, "V"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.W, "W"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.X, "X"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Y, "Y"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Z, "Z"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton1, "(Mouse4 (Works on some PC's)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton2, "(Mouse5 (Works on some PC's)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LControlKey, "Left Control"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RControlKey, "Right Control"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LShiftKey, "Left Shift"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RShiftKey, "Right Shift"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D1, "1 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D2, "2 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D3, "3 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D4, "4 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D5, "5 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D6, "6 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D7, "7 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D8, "8 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D9, "9 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D0, "0 (no numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad1, "1 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad2, "2 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad3, "3 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad4, "4 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad5, "5 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad6, "6 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad7, "7 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad8, "8 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad9, "9 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad0, "0 (numpad)"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F1, "F1"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F2, "F2"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F3, "F3"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F4, "F4"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F5, "F5"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F6, "F6"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F7, "F7"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F8, "F8"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F9, "F9"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F10, "F10"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F11, "F11"));
+            chromeComboBoxDark6.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F12, "F12"));
+
+            // Hotkey - Heroic Leap
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.None, "No Hotkey"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.A, "A"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.B, "B"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.C, "D"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F, "F"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.G, "G"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.H, "H"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.I, "I"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.J, "J"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.K, "K"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.L, "L"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.M, "M"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.O, "O"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.P, "P"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Q, "Q"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.R, "R"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.S, "S"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.T, "T"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.U, "U"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.V, "V"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.W, "W"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.X, "X"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Y, "Y"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Z, "Z"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton1, "(Mouse4 (Works on some PC's)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton2, "(Mouse5 (Works on some PC's)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LControlKey, "Left Control"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RControlKey, "Right Control"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LShiftKey, "Left Shift"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RShiftKey, "Right Shift"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D1, "1 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D2, "2 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D3, "3 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D4, "4 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D5, "5 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D6, "6 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D7, "7 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D8, "8 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D9, "9 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D0, "0 (no numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad1, "1 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad2, "2 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad3, "3 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad4, "4 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad5, "5 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad6, "6 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad7, "7 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad8, "8 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad9, "9 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad0, "0 (numpad)"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F1, "F1"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F2, "F2"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F3, "F3"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F4, "F4"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F5, "F5"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F6, "F6"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F7, "F7"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F8, "F8"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F9, "F9"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F10, "F10"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F11, "F11"));
+            chromeComboBoxDark7.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F12, "F12"));
+
+            // Hotkey - Mocking Banner
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.None, "No Hotkey"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.A, "A"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.B, "B"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.C, "D"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F, "F"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.G, "G"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.H, "H"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.I, "I"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.J, "J"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.K, "K"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.L, "L"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.M, "M"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.O, "O"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.P, "P"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Q, "Q"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.R, "R"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.S, "S"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.T, "T"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.U, "U"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.V, "V"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.W, "W"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.X, "X"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Y, "Y"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Z, "Z"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton1, "(Mouse4 (Works on some PC's)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton2, "(Mouse5 (Works on some PC's)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LControlKey, "Left Control"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RControlKey, "Right Control"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LShiftKey, "Left Shift"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RShiftKey, "Right Shift"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D1, "1 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D2, "2 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D3, "3 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D4, "4 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D5, "5 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D6, "6 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D7, "7 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D8, "8 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D9, "9 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D0, "0 (no numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad1, "1 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad2, "2 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad3, "3 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad4, "4 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad5, "5 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad6, "6 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad7, "7 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad8, "8 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad9, "9 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad0, "0 (numpad)"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F1, "F1"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F2, "F2"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F3, "F3"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F4, "F4"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F5, "F5"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F6, "F6"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F7, "F7"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F8, "F8"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F9, "F9"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F10, "F10"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F11, "F11"));
+            chromeComboBoxDark3.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F12, "F12"));
+
+            // Hotkey - Tier 4 Abilities
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.None, "No Hotkey"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.A, "A"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.B, "B"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.C, "D"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F, "F"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.G, "G"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.H, "H"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.I, "I"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.J, "J"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.K, "K"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.L, "L"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.M, "M"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.O, "O"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.P, "P"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Q, "Q"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.R, "R"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.S, "S"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.T, "T"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.U, "U"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.V, "V"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.W, "W"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.X, "X"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Y, "Y"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Z, "Z"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton1, "(Mouse4 (Works on some PC's)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton2, "(Mouse5 (Works on some PC's)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LControlKey, "Left Control"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RControlKey, "Right Control"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LShiftKey, "Left Shift"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RShiftKey, "Right Shift"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D1, "1 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D2, "2 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D3, "3 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D4, "4 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D5, "5 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D6, "6 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D7, "7 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D8, "8 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D9, "9 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D0, "0 (no numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad1, "1 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad2, "2 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad3, "3 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad4, "4 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad5, "5 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad6, "6 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad7, "7 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad8, "8 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad9, "9 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad0, "0 (numpad)"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F1, "F1"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F2, "F2"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F3, "F3"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F4, "F4"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F5, "F5"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F6, "F6"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F7, "F7"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F8, "F8"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F9, "F9"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F10, "F10"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F11, "F11"));
+            chromeComboBoxDark4.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F12, "F12"));
+
+            // Hotkey - Tier 6 Abilities
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.None, "No Hotkey"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.A, "A"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.B, "B"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.C, "D"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F, "F"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.E, "E"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.G, "G"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.H, "H"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.I, "I"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.J, "J"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.K, "K"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.L, "L"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.M, "M"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.O, "O"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.P, "P"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Q, "Q"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.R, "R"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.S, "S"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.T, "T"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.U, "U"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.V, "V"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.W, "W"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.X, "X"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Y, "Y"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.Z, "Z"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton1, "(Mouse4 (Works on some PC's)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.XButton2, "(Mouse5 (Works on some PC's)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LControlKey, "Left Control"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RControlKey, "Right Control"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.LShiftKey, "Left Shift"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.RShiftKey, "Right Shift"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D1, "1 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D2, "2 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D3, "3 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D4, "4 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D5, "5 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D6, "6 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D7, "7 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D8, "8 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D9, "9 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.D0, "0 (no numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad1, "1 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad2, "2 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad3, "3 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad4, "4 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad5, "5 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad6, "6 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad7, "7 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad8, "8 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad9, "9 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.NumPad0, "0 (numpad)"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F1, "F1"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F2, "F2"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F3, "F3"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F4, "F4"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F5, "F5"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F6, "F6"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F7, "F7"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F8, "F8"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F9, "F9"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F10, "F10"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F11, "F11"));
+            chromeComboBoxDark5.Items.Add(new ExtensionMethods.YRBCboItem((int)Keys.F12, "F12"));
+
+            // Hotkey Mode Choice
+            chromeComboBoxDark1.Items.Add(new ExtensionMethods.YRBCboItem((int)HotkeyMode.Automatic, "Automatic Mode"));
+            chromeComboBoxDark1.Items.Add(new ExtensionMethods.YRBCboItem((int)HotkeyMode.HotkeyMode, "Hotkey Mode"));
+            chromeComboBoxDark1.Items.Add(new ExtensionMethods.YRBCboItem((int)HotkeyMode.SemiHotkeyMode, "Semi Hotkey Mode"));
+
+            // Hotkey Modifier Key
+            chromeComboBoxDark2.Items.Add(new ExtensionMethods.YRBCboItem((int)ModifierKeyss.Alt, "Alt - Mod"));
+            chromeComboBoxDark2.Items.Add(new ExtensionMethods.YRBCboItem((int)ModifierKeyss.Control, "Ctrl - Mod"));
+            chromeComboBoxDark2.Items.Add(new ExtensionMethods.YRBCboItem((int)ModifierKeyss.Shift, "Shift - Mod"));
+
+
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark1, (int)InternalSettings.Instance.Hotkeys.HotkeyModeSelection);
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark2, (int)InternalSettings.Instance.Hotkeys.ModifierKey);
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark3, (int)InternalSettings.Instance.Hotkeys.PauseKey);
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark4, (int)InternalSettings.Instance.Hotkeys.CooldownKey);
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark5, (int)InternalSettings.Instance.Hotkeys.MultiTargetKey);
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark6, (int)InternalSettings.Instance.Hotkeys.SpecialKey);
+            ExtensionMethods.SetComboBoxEnum(chromeComboBoxDark7, (int)InternalSettings.Instance.Hotkeys.SpecialKey1);
+
+        }
+
+
+
+        #endregion
+
         private void closepicturebox_Click(object sender, EventArgs e)
         {
             Close();
@@ -225,5 +595,40 @@ namespace YourRaidingBuddy.Interface.GUI
             ;//Nothing here yet!
         }
 
+        private void chromeComboBoxDark1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.HotkeyModeSelection =
+                (HotkeyMode) ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark1);
+        }
+
+        private void chromeComboBoxDark2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.ModifierKey = (ModifierKeys)ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark2);
+        }
+
+        private void chromeComboBoxDark3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.PauseKey = (Keys)ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark3);
+        }
+
+        private void chromeComboBoxDark4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.CooldownKey = (Keys)ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark4);
+        }
+
+        private void chromeComboBoxDark5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.MultiTargetKey = (Keys)ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark5);
+        }
+
+        private void chromeComboBoxDark6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.SpecialKey = (Keys)ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark6);
+        }
+
+        private void chromeComboBoxDark7_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InternalSettings.Instance.Hotkeys.SpecialKey1 = (Keys)ExtensionMethods.GetComboBoxEnum(chromeComboBoxDark7);
+        }
     }
 }

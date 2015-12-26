@@ -145,6 +145,11 @@
     <Compile Include="HealPredict.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContextSystem.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Resources.Designer.cs" />
     <Compile Include="Root.cs" />
     <Compile Include="Rotations\Class\Pugilist.cs" />
@@ -184,6 +189,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Core\Interface\GUI\Interface.resx">
       <DependentUpon>Interface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resources.resx">
       <SubType>Designer</SubType>
