@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MiscStuff.xml" />
+    <None Include="Resources\yrb-logo1.jpg" />
     <None Include="Resources\yrb-logo.jpg" />
     <None Include="Resources\YRB3Unit.xml" />
     <None Include="Resources\YRB3Tranq.xml" />

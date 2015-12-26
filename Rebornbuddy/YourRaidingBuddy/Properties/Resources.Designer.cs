@@ -59,5 +59,15 @@ namespace YourRaidingBuddy.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap yrb_logo {
+            get {
+                object obj = ResourceManager.GetObject("yrb-logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
