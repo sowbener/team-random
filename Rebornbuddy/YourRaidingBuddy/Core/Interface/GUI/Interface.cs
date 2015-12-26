@@ -32,7 +32,7 @@ namespace YourRaidingBuddy.Interface.GUI
             if(Core.Player.CurrentJob == ClassJobType.Pugilist ||
                 Core.Player.CurrentJob == ClassJobType.Lancer || Core.Player.CurrentJob == ClassJobType.Archer || Core.Player.CurrentJob == ClassJobType.Rogue ||
                 Core.Player.CurrentJob == ClassJobType.Arcanist || Core.Player.CurrentJob == ClassJobType.BlackMage || Core.Player.CurrentJob == ClassJobType.Monk ||
-                Core.Player.CurrentJob == ClassJobType.Dragoon || Core.Player.CurrentJob == ClassJobType.Bard || Core.Player.CurrentJob == ClassJobType.Ninja)
+                Core.Player.CurrentJob == ClassJobType.Dragoon || Core.Player.CurrentJob == ClassJobType.Bard || Core.Player.CurrentJob == ClassJobType.Ninja || Core.Player.CurrentJob == ClassJobType.Summoner)
                ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage3, Resources.Resources.IconKnife, 3);
             if(Core.Player.CurrentJob == ClassJobType.DarkKnight || Core.Player.CurrentJob == ClassJobType.Warrior || Core.Player.CurrentJob == ClassJobType.Gladiator ||
                 Core.Player.CurrentJob == ClassJobType.Paladin || Core.Player.CurrentJob == ClassJobType.Marauder)

@@ -40,6 +40,17 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabpage1 = new System.Windows.Forms.TabPage();
             this.generalpropertygrid = new System.Windows.Forms.PropertyGrid();
             this.tabpage2 = new System.Windows.Forms.TabPage();
+            this.chromeComboBoxDark7 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
+            this.chromeComboBoxDark6 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
+            this.chromeComboBoxDark5 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
+            this.chromeComboBoxDark4 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
+            this.chromeLabel8 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel7 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel6 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel5 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel4 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel3 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel2 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
             this.chromeLabel1 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
             this.chromeComboBoxDark3 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
             this.chromeComboBoxDark2 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
@@ -49,17 +60,6 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabpage3 = new System.Windows.Forms.TabPage();
             this.spec1propertygrid = new System.Windows.Forms.PropertyGrid();
             this.logopicturebox = new System.Windows.Forms.PictureBox();
-            this.chromeLabel2 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeLabel3 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeLabel4 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeLabel5 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeLabel6 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeLabel7 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeLabel8 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
-            this.chromeComboBoxDark4 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
-            this.chromeComboBoxDark5 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
-            this.chromeComboBoxDark6 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
-            this.chromeComboBoxDark7 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
             this.chromeForm1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closepicturebox)).BeginInit();
             this.tabcontrol.SuspendLayout();
@@ -200,6 +200,142 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabpage2.TabIndex = 2;
             this.tabpage2.Text = "  Hotkey Settings";
             // 
+            // chromeComboBoxDark7
+            // 
+            this.chromeComboBoxDark7.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chromeComboBoxDark7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chromeComboBoxDark7.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chromeComboBoxDark7.FormattingEnabled = true;
+            this.chromeComboBoxDark7.Location = new System.Drawing.Point(182, 246);
+            this.chromeComboBoxDark7.Name = "chromeComboBoxDark7";
+            this.chromeComboBoxDark7.Size = new System.Drawing.Size(121, 24);
+            this.chromeComboBoxDark7.StartIndex = 0;
+            this.chromeComboBoxDark7.TabIndex = 14;
+            this.chromeComboBoxDark7.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark7_SelectedIndexChanged);
+            // 
+            // chromeComboBoxDark6
+            // 
+            this.chromeComboBoxDark6.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chromeComboBoxDark6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chromeComboBoxDark6.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chromeComboBoxDark6.FormattingEnabled = true;
+            this.chromeComboBoxDark6.Location = new System.Drawing.Point(182, 216);
+            this.chromeComboBoxDark6.Name = "chromeComboBoxDark6";
+            this.chromeComboBoxDark6.Size = new System.Drawing.Size(121, 24);
+            this.chromeComboBoxDark6.StartIndex = 0;
+            this.chromeComboBoxDark6.TabIndex = 13;
+            this.chromeComboBoxDark6.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark6_SelectedIndexChanged);
+            // 
+            // chromeComboBoxDark5
+            // 
+            this.chromeComboBoxDark5.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chromeComboBoxDark5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chromeComboBoxDark5.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chromeComboBoxDark5.FormattingEnabled = true;
+            this.chromeComboBoxDark5.Location = new System.Drawing.Point(182, 186);
+            this.chromeComboBoxDark5.Name = "chromeComboBoxDark5";
+            this.chromeComboBoxDark5.Size = new System.Drawing.Size(121, 24);
+            this.chromeComboBoxDark5.StartIndex = 0;
+            this.chromeComboBoxDark5.TabIndex = 12;
+            this.chromeComboBoxDark5.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark5_SelectedIndexChanged);
+            // 
+            // chromeComboBoxDark4
+            // 
+            this.chromeComboBoxDark4.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chromeComboBoxDark4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chromeComboBoxDark4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chromeComboBoxDark4.FormattingEnabled = true;
+            this.chromeComboBoxDark4.Location = new System.Drawing.Point(182, 156);
+            this.chromeComboBoxDark4.Name = "chromeComboBoxDark4";
+            this.chromeComboBoxDark4.Size = new System.Drawing.Size(121, 24);
+            this.chromeComboBoxDark4.StartIndex = 0;
+            this.chromeComboBoxDark4.TabIndex = 11;
+            this.chromeComboBoxDark4.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark4_SelectedIndexChanged);
+            // 
+            // chromeLabel8
+            // 
+            this.chromeLabel8.AutoSize = true;
+            this.chromeLabel8.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel8.Location = new System.Drawing.Point(3, 248);
+            this.chromeLabel8.Name = "chromeLabel8";
+            this.chromeLabel8.Size = new System.Drawing.Size(87, 16);
+            this.chromeLabel8.TabIndex = 10;
+            this.chromeLabel8.Text = "SpecialKey 1";
+            // 
+            // chromeLabel7
+            // 
+            this.chromeLabel7.AutoSize = true;
+            this.chromeLabel7.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel7.Location = new System.Drawing.Point(3, 218);
+            this.chromeLabel7.Name = "chromeLabel7";
+            this.chromeLabel7.Size = new System.Drawing.Size(80, 16);
+            this.chromeLabel7.TabIndex = 9;
+            this.chromeLabel7.Text = "Special Key";
+            // 
+            // chromeLabel6
+            // 
+            this.chromeLabel6.AutoSize = true;
+            this.chromeLabel6.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel6.Location = new System.Drawing.Point(3, 188);
+            this.chromeLabel6.Name = "chromeLabel6";
+            this.chromeLabel6.Size = new System.Drawing.Size(105, 16);
+            this.chromeLabel6.TabIndex = 8;
+            this.chromeLabel6.Text = "Multi-Target Key";
+            // 
+            // chromeLabel5
+            // 
+            this.chromeLabel5.AutoSize = true;
+            this.chromeLabel5.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel5.Location = new System.Drawing.Point(3, 158);
+            this.chromeLabel5.Name = "chromeLabel5";
+            this.chromeLabel5.Size = new System.Drawing.Size(94, 16);
+            this.chromeLabel5.TabIndex = 7;
+            this.chromeLabel5.Text = "Cooldown Key";
+            // 
+            // chromeLabel4
+            // 
+            this.chromeLabel4.AutoSize = true;
+            this.chromeLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel4.Location = new System.Drawing.Point(3, 128);
+            this.chromeLabel4.Name = "chromeLabel4";
+            this.chromeLabel4.Size = new System.Drawing.Size(73, 16);
+            this.chromeLabel4.TabIndex = 6;
+            this.chromeLabel4.Text = "Pause Key";
+            // 
+            // chromeLabel3
+            // 
+            this.chromeLabel3.AutoSize = true;
+            this.chromeLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel3.Location = new System.Drawing.Point(3, 98);
+            this.chromeLabel3.Name = "chromeLabel3";
+            this.chromeLabel3.Size = new System.Drawing.Size(82, 16);
+            this.chromeLabel3.TabIndex = 5;
+            this.chromeLabel3.Text = "Modifier Key";
+            // 
+            // chromeLabel2
+            // 
+            this.chromeLabel2.AutoSize = true;
+            this.chromeLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel2.Location = new System.Drawing.Point(3, 68);
+            this.chromeLabel2.Name = "chromeLabel2";
+            this.chromeLabel2.Size = new System.Drawing.Size(148, 16);
+            this.chromeLabel2.TabIndex = 4;
+            this.chromeLabel2.Text = "Hotkey Mode Selection";
+            // 
             // chromeLabel1
             // 
             this.chromeLabel1.AutoSize = true;
@@ -317,142 +453,6 @@ namespace YourRaidingBuddy.Interface.GUI
             this.logopicturebox.TabIndex = 1;
             this.logopicturebox.TabStop = false;
             this.logopicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GuiDragDrop);
-            // 
-            // chromeLabel2
-            // 
-            this.chromeLabel2.AutoSize = true;
-            this.chromeLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel2.Location = new System.Drawing.Point(3, 68);
-            this.chromeLabel2.Name = "chromeLabel2";
-            this.chromeLabel2.Size = new System.Drawing.Size(148, 16);
-            this.chromeLabel2.TabIndex = 4;
-            this.chromeLabel2.Text = "Hotkey Mode Selection";
-            // 
-            // chromeLabel3
-            // 
-            this.chromeLabel3.AutoSize = true;
-            this.chromeLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel3.Location = new System.Drawing.Point(3, 98);
-            this.chromeLabel3.Name = "chromeLabel3";
-            this.chromeLabel3.Size = new System.Drawing.Size(82, 16);
-            this.chromeLabel3.TabIndex = 5;
-            this.chromeLabel3.Text = "Modifier Key";
-            // 
-            // chromeLabel4
-            // 
-            this.chromeLabel4.AutoSize = true;
-            this.chromeLabel4.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel4.Location = new System.Drawing.Point(3, 128);
-            this.chromeLabel4.Name = "chromeLabel4";
-            this.chromeLabel4.Size = new System.Drawing.Size(73, 16);
-            this.chromeLabel4.TabIndex = 6;
-            this.chromeLabel4.Text = "Pause Key";
-            // 
-            // chromeLabel5
-            // 
-            this.chromeLabel5.AutoSize = true;
-            this.chromeLabel5.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel5.Location = new System.Drawing.Point(3, 158);
-            this.chromeLabel5.Name = "chromeLabel5";
-            this.chromeLabel5.Size = new System.Drawing.Size(94, 16);
-            this.chromeLabel5.TabIndex = 7;
-            this.chromeLabel5.Text = "Cooldown Key";
-            // 
-            // chromeLabel6
-            // 
-            this.chromeLabel6.AutoSize = true;
-            this.chromeLabel6.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel6.Location = new System.Drawing.Point(3, 188);
-            this.chromeLabel6.Name = "chromeLabel6";
-            this.chromeLabel6.Size = new System.Drawing.Size(105, 16);
-            this.chromeLabel6.TabIndex = 8;
-            this.chromeLabel6.Text = "Multi-Target Key";
-            // 
-            // chromeLabel7
-            // 
-            this.chromeLabel7.AutoSize = true;
-            this.chromeLabel7.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel7.Location = new System.Drawing.Point(3, 218);
-            this.chromeLabel7.Name = "chromeLabel7";
-            this.chromeLabel7.Size = new System.Drawing.Size(80, 16);
-            this.chromeLabel7.TabIndex = 9;
-            this.chromeLabel7.Text = "Special Key";
-            // 
-            // chromeLabel8
-            // 
-            this.chromeLabel8.AutoSize = true;
-            this.chromeLabel8.BackColor = System.Drawing.Color.Transparent;
-            this.chromeLabel8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.chromeLabel8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
-            this.chromeLabel8.Location = new System.Drawing.Point(3, 248);
-            this.chromeLabel8.Name = "chromeLabel8";
-            this.chromeLabel8.Size = new System.Drawing.Size(87, 16);
-            this.chromeLabel8.TabIndex = 10;
-            this.chromeLabel8.Text = "SpecialKey 1";
-            // 
-            // chromeComboBoxDark4
-            // 
-            this.chromeComboBoxDark4.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chromeComboBoxDark4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chromeComboBoxDark4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chromeComboBoxDark4.FormattingEnabled = true;
-            this.chromeComboBoxDark4.Location = new System.Drawing.Point(182, 156);
-            this.chromeComboBoxDark4.Name = "chromeComboBoxDark4";
-            this.chromeComboBoxDark4.Size = new System.Drawing.Size(121, 24);
-            this.chromeComboBoxDark4.StartIndex = 0;
-            this.chromeComboBoxDark4.TabIndex = 11;
-            this.chromeComboBoxDark4.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark4_SelectedIndexChanged);
-            // 
-            // chromeComboBoxDark5
-            // 
-            this.chromeComboBoxDark5.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chromeComboBoxDark5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chromeComboBoxDark5.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chromeComboBoxDark5.FormattingEnabled = true;
-            this.chromeComboBoxDark5.Location = new System.Drawing.Point(182, 186);
-            this.chromeComboBoxDark5.Name = "chromeComboBoxDark5";
-            this.chromeComboBoxDark5.Size = new System.Drawing.Size(121, 24);
-            this.chromeComboBoxDark5.StartIndex = 0;
-            this.chromeComboBoxDark5.TabIndex = 12;
-            this.chromeComboBoxDark5.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark5_SelectedIndexChanged);
-            // 
-            // chromeComboBoxDark6
-            // 
-            this.chromeComboBoxDark6.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chromeComboBoxDark6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chromeComboBoxDark6.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chromeComboBoxDark6.FormattingEnabled = true;
-            this.chromeComboBoxDark6.Location = new System.Drawing.Point(182, 216);
-            this.chromeComboBoxDark6.Name = "chromeComboBoxDark6";
-            this.chromeComboBoxDark6.Size = new System.Drawing.Size(121, 24);
-            this.chromeComboBoxDark6.StartIndex = 0;
-            this.chromeComboBoxDark6.TabIndex = 13;
-            this.chromeComboBoxDark6.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark6_SelectedIndexChanged);
-            // 
-            // chromeComboBoxDark7
-            // 
-            this.chromeComboBoxDark7.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chromeComboBoxDark7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.chromeComboBoxDark7.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chromeComboBoxDark7.FormattingEnabled = true;
-            this.chromeComboBoxDark7.Location = new System.Drawing.Point(182, 246);
-            this.chromeComboBoxDark7.Name = "chromeComboBoxDark7";
-            this.chromeComboBoxDark7.Size = new System.Drawing.Size(121, 24);
-            this.chromeComboBoxDark7.StartIndex = 0;
-            this.chromeComboBoxDark7.TabIndex = 14;
-            this.chromeComboBoxDark7.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark7_SelectedIndexChanged);
             // 
             // Interface
             // 
