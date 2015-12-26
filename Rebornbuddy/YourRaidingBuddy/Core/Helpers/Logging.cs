@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using Buddy.Overlay.Notifications;
 using ff14bot.Helpers;
 using ff14bot.Settings;
 using TreeSharp;
-using Action = TreeSharp.Action;
-using Color = System.Drawing.Color;
 using YourRaidingBuddy.Interfaces.Settings;
+using Action = System.Action;
 
 namespace YourRaidingBuddy.Helpers
 {
@@ -20,7 +24,103 @@ namespace YourRaidingBuddy.Helpers
         /// <param name="message">message text</param>
         public static void Write(string message)
         {
-            Write(Color.Green, message);
+            Write(Colors.Green, message);
+        }
+
+        internal class ToastLog : ToastUIComponent
+        {
+            private TextBlock _textBlock;
+
+            public Color Color
+            {
+                get;
+                private set;
+            }
+
+            public FontFamily FontFamily
+            {
+                get;
+                private set;
+            }
+
+            public Color ShadowColor
+            {
+                get;
+                private set;
+            }
+
+            public uint FontSize
+            {
+                get;
+                private set;
+            }
+
+            public override FrameworkElement GuiElement
+            {
+                get { return TextBlock; }
+            }
+
+            private TextBlock TextBlock
+            {
+                get
+                {
+                    var textBlock0 = _textBlock;
+                    if (textBlock0 != null) return textBlock0;
+                    var textBlock = Updater();
+                    var textBlock1 = textBlock;
+                    _textBlock = textBlock;
+                    textBlock0 = textBlock1;
+                    return textBlock0;
+                }
+            }
+
+            public Func<string> TextProducer { get; private set; }
+
+            public ToastLog(Func<string> textProducer, TimeSpan duration, Color color, Color shadowColor, FontFamily fontFamily, uint fontSize)
+            {
+                TextProducer = textProducer;
+                DisplayDuration = duration;
+                Color = color;
+                ShadowColor = shadowColor;
+                FontFamily = fontFamily;
+                FontSize = fontSize;
+
+            }
+
+            private TextBlock Updater()
+            {
+                var textBlock = new TextBlock
+                {
+                    Text = TextProducer(),
+                    FontFamily = FontFamily,
+                    FontSize = FontSize,
+                    FontWeight = FontWeights.UltraBold,
+                    Foreground = new SolidColorBrush(Color),
+                    RenderTransformOrigin = new Point(0.5, 0.5),
+                    IsHitTestVisible = false,
+                    TextAlignment = TextAlignment.Center
+                };
+
+                var dropShadowEffect = new DropShadowEffect
+                {
+                    Color = ShadowColor,
+                    BlurRadius = 25,
+                    ShadowDepth = 0
+                };
+
+                textBlock.Effect = dropShadowEffect;
+                textBlock.RenderTransform = new ScaleTransform(1, 1);
+                var textBlock1 = textBlock;
+                var scaleTransform = new ScaleTransform(1, 1);
+                textBlock1.RenderTransform = scaleTransform;
+
+                return textBlock1;
+            }
+
+            protected override void Update()
+            {
+                TextBlock.Text = TextProducer();
+            }
         }
 
         /// <summary>
@@ -30,7 +130,7 @@ namespace YourRaidingBuddy.Helpers
         /// <param name="args">replacement parameter values</param>
         public static void Write(string message, params object[] args)
         {
-            Write(Color.Green, message, args);
+            Write(Colors.Green, message, args);
         }
 
         /// <summary>
@@ -56,7 +156,7 @@ namespace YourRaidingBuddy.Helpers
         /// <param name="message">message text</param>
         public static void WriteDebug(string message)
         {
-            WriteDebug(Color.Orange, message);
+            WriteDebug(Colors.Orange, message);
         }
 
         /// <summary>
@@ -66,7 +166,7 @@ namespace YourRaidingBuddy.Helpers
         /// <param name="args">replacement parameter values</param>
         public static void WriteDebug(string message, params object[] args)
         {
-            WriteDebug(Color.Orange, message, args);
+            WriteDebug(Colors.Orange, message, args);
         }
 
         /// <summary>
@@ -122,7 +222,7 @@ namespace YourRaidingBuddy.Helpers
         /// <param name="message">message text</param>
         public static void WriteDiagnostic(string message)
         {
-            WriteDiagnostic(Color.Orange, message);
+            WriteDiagnostic(Colors.Orange, message);
         }
 
         /// <summary>
@@ -132,7 +232,7 @@ namespace YourRaidingBuddy.Helpers
         /// <param name="args">replacement parameter values</param>
         public static void WriteDiagnostic(string message, params object[] args)
         {
-            WriteDiagnostic(Color.Orange, message, args);
+            WriteDiagnostic(Colors.Orange, message, args);
         }
 
         /// <summary>
@@ -198,23 +298,5 @@ namespace YourRaidingBuddy.Helpers
                 WriteDebug(clr, message, args);
         }
     }
-
-    public class LogMessage : Action
-    {
-        private readonly string message;
-
-        public LogMessage(string message)
-        {
-            this.message = message;
-        }
-
-        protected override RunStatus Run(object context)
-        {
-            Logger.Write(message);
-
-            if (Parent is Selector)
-                return RunStatus.Failure;
-            return RunStatus.Success;
-        }
-    }
+   
 }

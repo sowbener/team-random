@@ -21,7 +21,12 @@ namespace YourRaidingBuddy
             Normal = 0x1,
             Instances = 0x2,
         }
-
+    public enum OverlayColor
+    {
+        Black,
+        BlackTranslucent,
+        Translucent
+    }
 
     [Flags]
     public enum ModifierKeyss

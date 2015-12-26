@@ -56,14 +56,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\RebornBeta\GreyMagic.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RebornBuddy, Version=1.0.283.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RebornBeta\RebornBuddy.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Input.Manipulations" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -100,6 +104,9 @@
     <Compile Include="Core\Interface\GUI\Overlay.Designer.cs">
       <DependentUpon>Overlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\Interface\Overlay\Extension.cs" />
+    <Compile Include="Core\Interface\Overlay\Overlay.cs" />
+    <Compile Include="Core\Interface\Overlay\OverlayControl.cs" />
     <Compile Include="Core\Settings\Class\ThaumaturgeSettings.cs" />
     <Compile Include="Core\Settings\Class\ArcanistSettings.cs" />
     <Compile Include="Core\Settings\Class\RogueSettings.cs" />

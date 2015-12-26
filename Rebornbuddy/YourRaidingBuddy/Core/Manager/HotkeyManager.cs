@@ -1,11 +1,12 @@
-﻿using System;
+﻿using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Windows.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using YourRaidingBuddy.Interfaces.Settings;
-using YourRaidingBuddy.Helpers;
 using YourRaidingBuddy.Books;
+using YourRaidingBuddy.Helpers;
+using YourRaidingBuddy.Interfaces.Settings;
 
 namespace YourRaidingBuddy.Managers
 {
@@ -93,20 +94,78 @@ namespace YourRaidingBuddy.Managers
 
         private static void Cooldowns()
         {
-            VariableBook.HkmCooldowns = !VariableBook.HkmCooldowns;
+            {
+                try
+                {
+                    VariableBook.HkmCooldowns = !VariableBook.HkmCooldowns;
 
-            Logger.Write(VariableBook.HkmCooldowns
-                ? @"Cooldowns enabled."
-                : @"Cooldowns disabled.");
+                    Logger.Write(VariableBook.HkmCooldowns
+                        ? @"HotkeyManager: Cooldowns enabled."
+                        : @"HotkeyManager: Cooldowns disabled.");
+
+                    VariableBook.OverlayRefreshCooldowns = true;
+
+                    if (InternalSettings.Instance.Hotkeys.CooldownKey != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmCooldowns)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: Cooldowns enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmCooldowns)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: Cooldowns disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiCooldownsHotkey() Exception: {0}", ex);
+                }
+            }
         }
 
         private static void MultiTarget()
         {
-            VariableBook.HkmMultiTarget = !VariableBook.HkmMultiTarget;
+            {
+                try
+                {
+                    VariableBook.HkmMultiTarget = !VariableBook.HkmMultiTarget;
 
-            Logger.Write(VariableBook.HkmMultiTarget
-                ? @"MultiTarget enabled."
-                : @"MultiTarget disabled.");
+                    Logger.Write(VariableBook.HkmMultiTarget
+                        ? @"HotkeyManager: AoE enabled."
+                        : @"HotkeyManager: AoE disabled.");
+
+                    VariableBook.OverlayRefreshMultiTarget = true;
+
+                    if (InternalSettings.Instance.Hotkeys.MultiTargetKey != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmMultiTarget)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: MultiTarget enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmCooldowns)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: MultiTarget disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiMultitargetHotkey() Exception: {0}", ex);
+                }
+            }
 
         }
 

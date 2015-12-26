@@ -25,12 +25,13 @@ namespace YourRaidingBuddy.Settings
         [Description("Select the hotkey mode: Auto, Semi Hotkey (Only Pause & Cooldowns) or Hotkey (All hotkeys).")]
         public HotkeyMode HotkeyModeSelection { get; set; }
 
+
         [Setting]
-        [DefaultValue(SemiHotkeyMode.Cooldown)]
-        [Category("Toggle Type Hotkeys")]
-        [DisplayName("Semi-Hotkey Mode Selector")]
-        [Description("Select which AoE or Cooldown mode you want to be hotkey'd. Cooldown is default")]
-        public SemiHotkeyMode SemiAutoSelection { get; set; }
+        [DefaultValue(true)]
+        [Category("Hotkey Settings")]
+        [DisplayName(@"Hotkeys - Enable Overlay Output")]
+        [Description("Enables Overlay output for hotkeys.")]
+        public bool HotkeyChatOutput { get; set; }
 
 
         [Setting]

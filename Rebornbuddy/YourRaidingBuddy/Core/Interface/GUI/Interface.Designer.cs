@@ -31,6 +31,7 @@ namespace YourRaidingBuddy.Interface.GUI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Interface));
             this.tabcontrolimagelist = new System.Windows.Forms.ImageList(this.components);
             this.chromeForm1 = new YourRaidingBuddy.Interface.Extensions.ChromeForm();
             this.SaveandCloseButton = new YourRaidingBuddy.Interface.Extensions.ChromeButton();
@@ -448,7 +449,7 @@ namespace YourRaidingBuddy.Interface.GUI
             // 
             // logopicturebox
             // 
-            this.logopicturebox.Image = global::YourRaidingBuddy.Resources.Resources.yrb_logo;
+            this.logopicturebox.Image = ((System.Drawing.Image)(resources.GetObject("logopicturebox.Image")));
             this.logopicturebox.Location = new System.Drawing.Point(7, 3);
             this.logopicturebox.Name = "logopicturebox";
             this.logopicturebox.Size = new System.Drawing.Size(558, 104);

@@ -13,6 +13,49 @@ namespace YourRaidingBuddy.Settings
             : base(InternalSettings.RoutineSettingsPath + "_General.json")
         {
         }
+        #region Overlay Settings
+        [Setting]
+        [DefaultValue(true)]
+        [Category("Overlay Settings")]
+        [DisplayName(@"Enable Overlay")]
+        [Description("Enables the routines built-in overlay.")]
+        public bool Overlay { get; set; }
+
+        [Setting]
+        [DefaultValue(18)]
+        [Category("Overlay Settings")]
+        [DisplayName(@"Overlay Text Size")]
+        [Description("Size of the text on the Overlay - 18 is the recommended value.")]
+        public int OverlayTextSize { get; set; }
+
+        [Setting]
+        [DefaultValue(OverlayColor.BlackTranslucent)]
+        [Category("Overlay Settings")]
+        [DisplayName(@"Overlay Opacity")]
+        [Description("Opacity of the Overlay.")]
+        public OverlayColor OverlayOpacity { get; set; }
+
+        [Setting]
+        [DefaultValue(100)]
+        [Browsable(false)]
+        [DisplayName(@"Overlay X")]
+        [Description("Location on X axis.")]
+        public double OverlayX { get; set; }
+
+        [Setting]
+        [DefaultValue(100)]
+        [Browsable(false)]
+        [DisplayName(@"Overlay Y")]
+        [Description("Location on Y axis.")]
+        public double OverlayY { get; set; }
+
+        [Setting]
+        [DefaultValue(1.0)]
+        [Browsable(false)]
+        [DisplayName(@"Overlay Text Opacity")]
+        [Description("Opacity of the text on the Overlay - Any number below 1 makes it translucent.")]
+        public double OverlayTextOpacity { get; set; }
+        #endregion
 
         [Setting]
         [DefaultValue(0)]
@@ -56,18 +99,6 @@ namespace YourRaidingBuddy.Settings
         [Category("Secondary Rotation")]
         public ModifierKey ModKeyChoice { get; set; }
 
-        [Setting]
-        [DefaultValue(null)]
-        [Category("Healer")]
-        public string TankName { get; set; }
-
-        [Setting]
-        [DefaultValue(80f)]
-        [Category("Healer")]
-        public float TankPrioritizeHealthPercent { get; set; }
-
-        [Browsable(false)]
-        public uint TankId { get; set; }
 
         [Setting]
         [DefaultValue(85f)]
@@ -79,20 +110,6 @@ namespace YourRaidingBuddy.Settings
         [Category("Healer")]
         public int CriticalHealthPercent { get; set; }
 
-        [Setting]
-        [DefaultValue(2)]
-        [Category("Healer")]
-        public int CriticalHealthCount { get; set; }
-
-        [Setting]
-        [DefaultValue(8)]
-        [Category("Healer")]
-        public int WorldHealScanning { get; set; }
-
-        [Setting]
-        [DefaultValue(false)]
-        [Category("Healer")]
-        public bool WorldHealPartyOnly { get; set; }
 
         [Setting]
         [DefaultValue(false)]
@@ -200,11 +217,6 @@ namespace YourRaidingBuddy.Settings
         public int SpellQueue { get; set; }
 
         [Setting]
-        [DefaultValue(true)]
-        [Category("Core")]
-        public bool NoneGcdIgnoreShiftingConditions { get; set; }
-
-        [Setting]
         [DefaultValue(1100)]
         [Category("Core")]
         public double NoneGcdWindowEnd { get; set; }
@@ -213,17 +225,6 @@ namespace YourRaidingBuddy.Settings
         [DefaultValue(ForceGameContext.None)]
         [Category("Core")]
         public ForceGameContext ForcedContext { get; set; }
-
-        [Setting]
-        [DefaultValue(15f)]
-        [Category("General")]
-        public float MinDotHp { get; set; }
-
-        [Browsable(false)]
-        public System.Windows.Input.Key LastHotKeyChoice { get; set; }
-
-        [Browsable(false)]
-        public ModifierKey LastModKeyChoice { get; set; }
 
         [Browsable(false)]
         public virtual float RestEnergyDone
