@@ -93,8 +93,10 @@ namespace YourRaidingBuddy
 
             TreeHooks.Instance.OnHooksCleared += OnInstanceOnHooksCleared;
 
-       //      RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
+            //      RoutineManager.Reloaded += OnRoutineManagerOnReloaded;
 
+
+            Interface.Overlay.Overlay.CreateOverlay();
             VariableBook.OldJob = Core.Player.CurrentJob;
             VariableBook.Initialize();
             Overlay.Overlay.onLocationChanged += Overlay_onLocationChanged;

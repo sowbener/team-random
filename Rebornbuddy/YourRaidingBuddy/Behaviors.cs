@@ -120,12 +120,14 @@ namespace YourRaidingBuddy
         {
             try
             {
+                Interface.Overlay.Overlay.RebuildOverlay(true);
                 /* Clearing all existing hooks */
-               // TreeHooks.Instance.ClearAll();
+                // TreeHooks.Instance.ClearAll();
 
                 /* Starting various functions */
                 if (reinitialized)
                 {
+                    Interface.Overlay.Overlay.RebuildOverlay(true);
                     HotkeyManager.Initialize(true);
                     //       Logger.PrintInformation();;
                 }
