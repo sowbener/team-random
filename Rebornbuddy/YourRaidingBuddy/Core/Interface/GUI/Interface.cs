@@ -48,47 +48,47 @@ namespace YourRaidingBuddy.Interface.GUI
             {
                 #region Jobs Loading on PropertyGrid
                 case ff14bot.Enums.ClassJobType.Ninja:
-                    tabpage3.Text = "Ninja";
+                    tabpage3.Text = "Ninja Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Ninja;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Bard:
-                    tabpage3.Text = "Bard";
+                    tabpage3.Text = "Bard Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Bard;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.BlackMage:
-                    tabpage3.Text = "Black-Mage";
+                    tabpage3.Text = "Black-Mage Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.BlackMage;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.DarkKnight:
-                    tabpage3.Text = "Dark-Knight";
+                    tabpage3.Text = "Dark-Knight Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.DarkKnight;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Machinist:
-                    tabpage3.Text = "Machinist";
+                    tabpage3.Text = "Machinist Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Machinist;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Astrologian:
-                    tabpage3.Text = "Astrologian";
+                    tabpage3.Text = "Astrologian Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Astrologian;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Dragoon:
-                    tabpage3.Text = "Dragoon";
+                    tabpage3.Text = "Dragoon Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Dragoon;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Monk:
-                    tabpage3.Text = "Monk";
+                    tabpage3.Text = "Monk Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Monk;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Paladin:
-                    tabpage3.Text = "Paladin";
+                    tabpage3.Text = "Paladin Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Paladin;
                     chromeLabel7.Text = "Really Change This #1";
                     chromeLabel8.Text = "Really Change This #2";
@@ -97,22 +97,22 @@ namespace YourRaidingBuddy.Interface.GUI
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Scholar:
-                    tabpage3.Text = "Scholar";
+                    tabpage3.Text = "Scholar Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Scholar;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Summoner:
-                    tabpage3.Text = "Summoner";
+                    tabpage3.Text = "Summoner Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Summoner;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Warrior:
-                    tabpage3.Text = "Warrior";
+                    tabpage3.Text = "Warrior Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Warrior;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.WhiteMage:
-                    tabpage3.Text = "White-Mage";
+                    tabpage3.Text = "White-Mage Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.WhiteMage;
                     Refresh();
                     break;
@@ -120,47 +120,47 @@ namespace YourRaidingBuddy.Interface.GUI
 
                 #region Class Loading on PropertyGrid
                 case ff14bot.Enums.ClassJobType.Arcanist:
-                    tabpage3.Text = "Arcanist";
+                    tabpage3.Text = "Arcanist Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Arcanist;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Archer:
-                    tabpage3.Text = "Archer";
+                    tabpage3.Text = "Archer Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Archer;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Conjurer:
-                    tabpage3.Text = "Conjurer";
+                    tabpage3.Text = "Conjurer Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Conjurer;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Gladiator:
-                    tabpage3.Text = "Gladiator";
+                    tabpage3.Text = "Gladiator Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Gladiator;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Lancer:
-                    tabpage3.Text = "Lancer";
+                    tabpage3.Text = "Lancer Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Lancer;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Marauder:
-                    tabpage3.Text = "Marauder";
+                    tabpage3.Text = "Marauder Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Marauder;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Pugilist:
-                    tabpage3.Text = "Pugilist";
+                    tabpage3.Text = "Pugilist Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Pugilist;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Rogue:
-                    tabpage3.Text = "Rogue";
+                    tabpage3.Text = "Rogue Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Rogue;
                     Refresh();
                     break;
                 case ff14bot.Enums.ClassJobType.Thaumaturge:
-                    tabpage3.Text = "Thaumaturge";
+                    tabpage3.Text = "Thaumaturge Settings";
                     spec1propertygrid.SelectedObject = InternalSettings.Instance.Thaumaturge;
                     Refresh();
                     break;
