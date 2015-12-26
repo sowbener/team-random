@@ -17,6 +17,8 @@ namespace YourRaidingBuddy.Books
             HkmMultiTarget = false;
             HkmSpecialKey = false;
             HkmSpecialKey1 = false;
+            HkmSpecialKey2 = false;
+            HkmSpecialKey3 = false;
 
             HostileUnitsCount = 0;
             FriendlyUnitsCount = 1;
@@ -114,6 +116,18 @@ namespace YourRaidingBuddy.Books
         }
 
         internal static bool HkmSpecialKey1
+        {
+            get;
+            set;
+        }
+
+        internal static bool HkmSpecialKey2
+        {
+            get;
+            set;
+        }
+
+        internal static bool HkmSpecialKey3
         {
             get;
             set;
@@ -221,7 +235,25 @@ namespace YourRaidingBuddy.Books
             set;
         }
 
-        internal static bool OverlayRefreshCharges
+        internal static bool OverlayRefreshSpecialKey
+        {
+            get;
+            set;
+        }
+
+        internal static bool OverlayRefreshSpecialKey1
+        {
+            get;
+            set;
+        }
+
+        internal static bool OverlayRefreshSpecialKey2
+        {
+            get;
+            set;
+        }
+
+        internal static bool OverlayRefreshSpecialKey3
         {
             get;
             set;

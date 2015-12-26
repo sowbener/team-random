@@ -72,6 +72,20 @@ namespace YourRaidingBuddy.Settings
         [Setting]
         [DefaultValue(Keys.None)]
         [Category("Toggle Type Hotkeys")]
+        [DisplayName("SpecialKey2")]
+        [Description("Select the preferred key to toggle SpecialKey2")]
+        public Keys SpecialKey2 { get; set; }
+
+        [Setting]
+        [DefaultValue(Keys.None)]
+        [Category("Toggle Type Hotkeys")]
+        [DisplayName("SpecialKey3")]
+        [Description("Select the preferred key to toggle SpecialKey3")]
+        public Keys SpecialKey3 { get; set; }
+
+        [Setting]
+        [DefaultValue(Keys.None)]
+        [Category("Toggle Type Hotkeys")]
         [DisplayName("Multi-Target Key (AoE)")]
         [Description("Select the preferred key to toggle AoE (Multi-Target).")]
         public Keys MultiTargetKey { get; set; }

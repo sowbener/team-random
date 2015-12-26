@@ -40,6 +40,10 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabpage1 = new System.Windows.Forms.TabPage();
             this.generalpropertygrid = new System.Windows.Forms.PropertyGrid();
             this.tabpage2 = new System.Windows.Forms.TabPage();
+            this.chromeLabel10 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeLabel9 = new YourRaidingBuddy.Interface.Extensions.ChromeLabel();
+            this.chromeComboBoxDark9 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
+            this.chromeComboBoxDark8 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
             this.chromeComboBoxDark7 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
             this.chromeComboBoxDark6 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
             this.chromeComboBoxDark5 = new YourRaidingBuddy.Interface.Extensions.ChromeComboBoxDark();
@@ -130,7 +134,7 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabcontrol.Controls.Add(this.tabpage7);
             this.tabcontrol.Controls.Add(this.tabpage3);
             this.tabcontrol.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.tabcontrol.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tabcontrol.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.tabcontrol.HotTrack = true;
             this.tabcontrol.ItemSize = new System.Drawing.Size(160, 24);
             this.tabcontrol.Location = new System.Drawing.Point(3, 113);
@@ -180,6 +184,10 @@ namespace YourRaidingBuddy.Interface.GUI
             // tabpage2
             // 
             this.tabpage2.BackColor = System.Drawing.Color.White;
+            this.tabpage2.Controls.Add(this.chromeLabel10);
+            this.tabpage2.Controls.Add(this.chromeLabel9);
+            this.tabpage2.Controls.Add(this.chromeComboBoxDark9);
+            this.tabpage2.Controls.Add(this.chromeComboBoxDark8);
             this.tabpage2.Controls.Add(this.chromeComboBoxDark7);
             this.tabpage2.Controls.Add(this.chromeComboBoxDark6);
             this.tabpage2.Controls.Add(this.chromeComboBoxDark5);
@@ -201,6 +209,56 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabpage2.Size = new System.Drawing.Size(572, 393);
             this.tabpage2.TabIndex = 2;
             this.tabpage2.Text = "  Hotkey Settings";
+            // 
+            // chromeLabel10
+            // 
+            this.chromeLabel10.AutoSize = true;
+            this.chromeLabel10.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel10.Location = new System.Drawing.Point(5, 308);
+            this.chromeLabel10.Name = "chromeLabel10";
+            this.chromeLabel10.Size = new System.Drawing.Size(87, 16);
+            this.chromeLabel10.TabIndex = 18;
+            this.chromeLabel10.Text = "SpecialKey 3";
+            // 
+            // chromeLabel9
+            // 
+            this.chromeLabel9.AutoSize = true;
+            this.chromeLabel9.BackColor = System.Drawing.Color.Transparent;
+            this.chromeLabel9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.chromeLabel9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(87)))), ((int)(((byte)(100)))));
+            this.chromeLabel9.Location = new System.Drawing.Point(5, 278);
+            this.chromeLabel9.Name = "chromeLabel9";
+            this.chromeLabel9.Size = new System.Drawing.Size(87, 16);
+            this.chromeLabel9.TabIndex = 17;
+            this.chromeLabel9.Text = "SpecialKey 2";
+            // 
+            // chromeComboBoxDark9
+            // 
+            this.chromeComboBoxDark9.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chromeComboBoxDark9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chromeComboBoxDark9.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chromeComboBoxDark9.FormattingEnabled = true;
+            this.chromeComboBoxDark9.Location = new System.Drawing.Point(182, 306);
+            this.chromeComboBoxDark9.Name = "chromeComboBoxDark9";
+            this.chromeComboBoxDark9.Size = new System.Drawing.Size(121, 24);
+            this.chromeComboBoxDark9.StartIndex = 0;
+            this.chromeComboBoxDark9.TabIndex = 16;
+            this.chromeComboBoxDark9.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark9_SelectedIndexChanged);
+            // 
+            // chromeComboBoxDark8
+            // 
+            this.chromeComboBoxDark8.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chromeComboBoxDark8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.chromeComboBoxDark8.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chromeComboBoxDark8.FormattingEnabled = true;
+            this.chromeComboBoxDark8.Location = new System.Drawing.Point(182, 276);
+            this.chromeComboBoxDark8.Name = "chromeComboBoxDark8";
+            this.chromeComboBoxDark8.Size = new System.Drawing.Size(121, 24);
+            this.chromeComboBoxDark8.StartIndex = 0;
+            this.chromeComboBoxDark8.TabIndex = 15;
+            this.chromeComboBoxDark8.SelectedIndexChanged += new System.EventHandler(this.chromeComboBoxDark8_SelectedIndexChanged);
             // 
             // chromeComboBoxDark7
             // 
@@ -501,7 +559,6 @@ namespace YourRaidingBuddy.Interface.GUI
         private ChromeComboBoxDark chromeComboBoxDark1;
         private ChromeComboBoxDark chromeComboBoxDark7;
         private ChromeComboBoxDark chromeComboBoxDark6;
-        private ChromeComboBoxDark chromeComboBoxDark5;
         private ChromeComboBoxDark chromeComboBoxDark4;
         private ChromeLabel chromeLabel8;
         private ChromeLabel chromeLabel7;
@@ -510,5 +567,10 @@ namespace YourRaidingBuddy.Interface.GUI
         private ChromeLabel chromeLabel4;
         private ChromeLabel chromeLabel3;
         private ChromeLabel chromeLabel2;
+        private ChromeLabel chromeLabel10;
+        private ChromeLabel chromeLabel9;
+        private ChromeComboBoxDark chromeComboBoxDark9;
+        private ChromeComboBoxDark chromeComboBoxDark8;
+        private ChromeComboBoxDark chromeComboBoxDark5;
     }
 }

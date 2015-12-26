@@ -4,6 +4,8 @@ using System.Windows.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ff14bot;
+using ff14bot.Enums;
 using YourRaidingBuddy.Books;
 using YourRaidingBuddy.Helpers;
 using YourRaidingBuddy.Interfaces.Settings;
@@ -48,6 +50,13 @@ namespace YourRaidingBuddy.Managers
             if (InternalSettings.Instance.Hotkeys.SpecialKey1 != Keys.None)
                 ff14bot.Managers.HotkeyManager.Register("YrbSpecialKey1", InternalSettings.Instance.Hotkeys.SpecialKey1, InternalSettings.Instance.Hotkeys.ModifierKey, hk => SpecialKey1());
 
+            if (InternalSettings.Instance.Hotkeys.SpecialKey2 != Keys.None)
+                ff14bot.Managers.HotkeyManager.Register("YrbSpecialKey2", InternalSettings.Instance.Hotkeys.SpecialKey2, InternalSettings.Instance.Hotkeys.ModifierKey, hk => SpecialKey2());
+
+            if (InternalSettings.Instance.Hotkeys.SpecialKey3 != Keys.None)
+                ff14bot.Managers.HotkeyManager.Register("YrbSpecialKey3", InternalSettings.Instance.Hotkeys.SpecialKey3, InternalSettings.Instance.Hotkeys.ModifierKey, hk => SpecialKey3());
+
+
             if (InternalSettings.Instance.Hotkeys.MultiTargetKey != Keys.None)
                 ff14bot.Managers.HotkeyManager.Register("YrbMultiTarget", InternalSettings.Instance.Hotkeys.MultiTargetKey, InternalSettings.Instance.Hotkeys.ModifierKey, hk => MultiTarget());
 
@@ -57,14 +66,16 @@ namespace YourRaidingBuddy.Managers
 
             Logger.WriteDebug(
                 reinitialized
-                    ? "Hotkeys reregistered: {0} as Pause Key - {1} as Cooldown Key - {2} as MultiTarget Key - {3} as SpecialKey - {4} as SpecialKey1 - {5} as Modifier Key."
-                    : "Hotkeys registered: {0} as Pause Key - {1} as Cooldown Key - {2} as MultiTarget Key - {3} as SpecialKey - {4} as SpecialKey1 - {5} as Modifier Key.",
+                    ? "Hotkeys reregistered: {0} as Pause Key - {1} as Cooldown Key - {2} as MultiTarget Key - {3} as SpecialKey - {4} as SpecialKey1 - {5} as Modifier Key - {6} as SpecialKey2 - {7} as SpecialKey3."
+                    : "Hotkeys registered: {0} as Pause Key - {1} as Cooldown Key - {2} as MultiTarget Key - {3} as SpecialKey - {4} as SpecialKey1 - {5} as Modifier Key - {6} as SpecialKey2 - {7} as SpecialKey3.",
                 InternalSettings.Instance.Hotkeys.PauseKey,
                 InternalSettings.Instance.Hotkeys.CooldownKey,
                 InternalSettings.Instance.Hotkeys.MultiTargetKey,
                 InternalSettings.Instance.Hotkeys.SpecialKey,
                 InternalSettings.Instance.Hotkeys.SpecialKey1,
-                InternalSettings.Instance.Hotkeys.ModifierKey);
+                InternalSettings.Instance.Hotkeys.ModifierKey,
+                InternalSettings.Instance.Hotkeys.SpecialKey2,
+                InternalSettings.Instance.Hotkeys.SpecialKey3);
         }
 
         private static void RegisterAutoMode(bool reinitialized)
@@ -78,16 +89,26 @@ namespace YourRaidingBuddy.Managers
             if (InternalSettings.Instance.Hotkeys.SpecialKey1 != Keys.None)
                 ff14bot.Managers.HotkeyManager.Register("YrbSpecialKey1", InternalSettings.Instance.Hotkeys.SpecialKey1, InternalSettings.Instance.Hotkeys.ModifierKey, hk => SpecialKey1());
 
+            if (InternalSettings.Instance.Hotkeys.SpecialKey2 != Keys.None)
+                ff14bot.Managers.HotkeyManager.Register("YrbSpecialKey2", InternalSettings.Instance.Hotkeys.SpecialKey2, InternalSettings.Instance.Hotkeys.ModifierKey, hk => SpecialKey2());
+
+
+            if (InternalSettings.Instance.Hotkeys.SpecialKey3 != Keys.None)
+                ff14bot.Managers.HotkeyManager.Register("YrbSpecialKey3", InternalSettings.Instance.Hotkeys.SpecialKey3, InternalSettings.Instance.Hotkeys.ModifierKey, hk => SpecialKey3());
+
+
             if (InternalSettings.Instance.Hotkeys.PauseKey != Keys.None)
                 ff14bot.Managers.HotkeyManager.Register("YrbPause", InternalSettings.Instance.Hotkeys.PauseKey, InternalSettings.Instance.Hotkeys.ModifierKey, hk => Paused());
 
 
             Logger.WriteDebug(
                 reinitialized
-                    ? "Hotkeys reregistered: {0} as SpecialKey - {1} as SpecialKey1 - {2} as PauseKey - {3} as ModifierKey"
-                    : "Hotkeys registered: {0} as SpecialKey - {1} as SpecialKey1 - {2} as PauseKey - {3} as ModifierKey",
+                    ? "Hotkeys reregistered: {0} as SpecialKey - {1} as SpecialKey1 - {2} as PauseKey - {3} as ModifierKey - {4} as SpecialKey1 - {5} as SpecialKey1"
+                    : "Hotkeys registered: {0} as SpecialKey - {1} as SpecialKey1 - {2} as PauseKey - {3} as ModifierKey - {4} as SpecialKey1 - {5} as SpecialKey1",
                 InternalSettings.Instance.Hotkeys.SpecialKey,
                 InternalSettings.Instance.Hotkeys.SpecialKey1,
+                InternalSettings.Instance.Hotkeys.SpecialKey2,
+                InternalSettings.Instance.Hotkeys.SpecialKey3,
                 InternalSettings.Instance.Hotkeys.PauseKey,
                 InternalSettings.Instance.Hotkeys.ModifierKey);
         }
@@ -153,7 +174,7 @@ namespace YourRaidingBuddy.Managers
                                 new FontFamily("Century Gothic"), 25));
                         }
 
-                        if (!VariableBook.HkmCooldowns)
+                        if (!VariableBook.HkmMultiTarget)
                         {
                             ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
                                 "YRB: MultiTarget disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
@@ -171,23 +192,194 @@ namespace YourRaidingBuddy.Managers
 
         private static void Paused()
         {
-            VariableBook.HkmPaused = !VariableBook.HkmPaused;
+            {
+                try
+                {
+                    VariableBook.HkmPaused = !VariableBook.HkmPaused;
 
-            Logger.Write(VariableBook.HkmPaused
-                ? @"Rotation paused."
-                : @"Rotation resumed.");
+                    Logger.Write(VariableBook.HkmPaused
+                        ? @"HotkeyManager: Pause enabled."
+                        : @"HotkeyManager: Pause disabled.");
+
+                    VariableBook.OverlayRefreshPaused = true;
+
+                    if (InternalSettings.Instance.Hotkeys.PauseKey != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmPaused)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: Pause enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmPaused)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: Pause disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiPauseHotkey() Exception: {0}", ex);
+                }
+            }
 
         }
 
         private static void SpecialKey()
         {
-            VariableBook.HkmSpecialKey = !VariableBook.HkmSpecialKey;
+            {
+                try
+                {
+                    VariableBook.HkmSpecialKey = !VariableBook.HkmSpecialKey;
+
+                    Logger.Write(VariableBook.HkmSpecialKey
+                        ? @"HotkeyManager: SpecialKey enabled."
+                        : @"HotkeyManager: SpecialKey disabled.");
+
+                    VariableBook.OverlayRefreshSpecialKey = true;
+
+                    if (InternalSettings.Instance.Hotkeys.SpecialKey != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmSpecialKey && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmSpecialKey && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiPauseHotkey() Exception: {0}", ex);
+                }
+            }
 
         }
 
         private static void SpecialKey1()
         {
-            VariableBook.HkmSpecialKey1 = !VariableBook.HkmSpecialKey1;
+            {
+                try
+                {
+                    VariableBook.HkmSpecialKey1 = !VariableBook.HkmSpecialKey1;
+
+                    Logger.Write(VariableBook.HkmSpecialKey1
+                        ? @"HotkeyManager: SpecialKey1 enabled."
+                        : @"HotkeyManager: SpecialKey1 disabled.");
+
+                    VariableBook.OverlayRefreshSpecialKey1 = true;
+
+                    if (InternalSettings.Instance.Hotkeys.SpecialKey1 != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmSpecialKey1 && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmSpecialKey1 && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiPauseHotkey() Exception: {0}", ex);
+                }
+            }
+        }
+
+        private static void SpecialKey2()
+        {
+            {
+                try
+                {
+                    VariableBook.HkmSpecialKey2 = !VariableBook.HkmSpecialKey2;
+
+                    Logger.Write(VariableBook.HkmSpecialKey2
+                        ? @"HotkeyManager: SpecialKey2 enabled."
+                        : @"HotkeyManager: SpecialKey2 disabled.");
+
+                    VariableBook.OverlayRefreshSpecialKey2 = true;
+
+                    if (InternalSettings.Instance.Hotkeys.SpecialKey2 != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmSpecialKey2 && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmSpecialKey2 && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiPauseHotkey() Exception: {0}", ex);
+                }
+            }
+        }
+
+        private static void SpecialKey3()
+        {
+            {
+                try
+                {
+                    VariableBook.HkmSpecialKey3 = !VariableBook.HkmSpecialKey3;
+
+                    Logger.Write(VariableBook.HkmSpecialKey3
+                        ? @"HotkeyManager: SpecialKey3 enabled."
+                        : @"HotkeyManager: SpecialKey3 disabled.");
+
+                    VariableBook.OverlayRefreshSpecialKey3 = true;
+
+                    if (InternalSettings.Instance.Hotkeys.SpecialKey3 != Keys.None &&
+                        InternalSettings.Instance.Hotkeys.HotkeyChatOutput && !VariableBook.HkmPaused)
+                    {
+                        if (VariableBook.HkmSpecialKey3 && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Enabled!", TimeSpan.FromSeconds(3), Colors.Green, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+
+                        if (!VariableBook.HkmSpecialKey3 && Core.Player.CurrentJob == ClassJobType.Paladin)
+                        {
+                            ff14bot.Core.OverlayManager.AddToast(new Logger.ToastLog(() =>
+                                "YRB: SomeTextHere Disabled!", TimeSpan.FromSeconds(3), Colors.Red, Colors.Black,
+                                new FontFamily("Century Gothic"), 25));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteDebug("HotkeyManager.ApiPauseHotkey() Exception: {0}", ex);
+                }
+            }
         }
 
 
@@ -201,6 +393,8 @@ namespace YourRaidingBuddy.Managers
             ff14bot.Managers.HotkeyManager.Unregister("YrbPause");
             ff14bot.Managers.HotkeyManager.Unregister("YrbSpecialKey");
             ff14bot.Managers.HotkeyManager.Unregister("YrbSpecialKey1");
+            ff14bot.Managers.HotkeyManager.Unregister("YrbSpecialKey2");
+            ff14bot.Managers.HotkeyManager.Unregister("YrbSpecialKey3");
 
             Logger.WriteDebug(
                 reinitialized
