@@ -130,7 +130,7 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabcontrol.Controls.Add(this.tabpage7);
             this.tabcontrol.Controls.Add(this.tabpage3);
             this.tabcontrol.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.tabcontrol.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(1)), true);
+            this.tabcontrol.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tabcontrol.HotTrack = true;
             this.tabcontrol.ItemSize = new System.Drawing.Size(160, 24);
             this.tabcontrol.Location = new System.Drawing.Point(3, 113);
@@ -149,6 +149,7 @@ namespace YourRaidingBuddy.Interface.GUI
             // 
             this.tabpage1.BackColor = System.Drawing.Color.White;
             this.tabpage1.Controls.Add(this.generalpropertygrid);
+            this.tabpage1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
             this.tabpage1.Location = new System.Drawing.Point(4, 52);
             this.tabpage1.Name = "tabpage1";
             this.tabpage1.Padding = new System.Windows.Forms.Padding(3);
@@ -194,6 +195,7 @@ namespace YourRaidingBuddy.Interface.GUI
             this.tabpage2.Controls.Add(this.chromeComboBoxDark3);
             this.tabpage2.Controls.Add(this.chromeComboBoxDark2);
             this.tabpage2.Controls.Add(this.chromeComboBoxDark1);
+            this.tabpage2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
             this.tabpage2.Location = new System.Drawing.Point(4, 52);
             this.tabpage2.Name = "tabpage2";
             this.tabpage2.Size = new System.Drawing.Size(572, 393);
@@ -391,7 +393,7 @@ namespace YourRaidingBuddy.Interface.GUI
             // 
             this.tabpage7.BackColor = System.Drawing.Color.White;
             this.tabpage7.Controls.Add(this.SettingsComposerButton);
-            this.tabpage7.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tabpage7.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tabpage7.Location = new System.Drawing.Point(4, 52);
             this.tabpage7.Name = "tabpage7";
             this.tabpage7.Padding = new System.Windows.Forms.Padding(3);
@@ -418,6 +420,7 @@ namespace YourRaidingBuddy.Interface.GUI
             // 
             this.tabpage3.BackColor = System.Drawing.Color.White;
             this.tabpage3.Controls.Add(this.spec1propertygrid);
+            this.tabpage3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
             this.tabpage3.Location = new System.Drawing.Point(4, 52);
             this.tabpage3.Name = "tabpage3";
             this.tabpage3.Size = new System.Drawing.Size(572, 393);
