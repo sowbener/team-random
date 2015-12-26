@@ -1,13 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Clio.Utilities;
 using YourRaidingBuddy.Helpers;
 using YourRaidingBuddy.Books;
 using YourRaidingBuddy.Settings;
 using YourRaidingBuddy.Interfaces.Settings;
 using ff14bot;
 using ff14bot.Enums;
+using ff14bot.Helpers;
 using YourRaidingBuddy.Interface.Extensions;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
@@ -22,8 +25,21 @@ namespace YourRaidingBuddy.Interface.GUI
 
             //generalwebbrowser.DocumentText = Resources.Resources.Introduction;
             //spec3 Propertygrid for Warrior,Deathknight,Demon-hunter,Druid and Paladin Tanks! Use Spec4 for dps if any else!
+           logopicturebox.BackgroundImageLayout = ImageLayout.Zoom;
+            string IconToLoad = "";
+            try
+            {
+                IconToLoad = string.Format("{0}\\Routines\\YourRaidingBuddy\\Resources\\yrb-logo.jpg",
+                    Utilities.AssemblyDirectory);
+                if (File.Exists(IconToLoad))
+                    logopicturebox.ImageLocation = IconToLoad;
+            }
+            catch (Exception e)
+            {
+                Logging.WriteDiagnostic("Couldn't load one of the Files ({0})", IconToLoad);
+                Logging.WriteDiagnostic("Thrown Exception: {0}", e.ToString());
+            }
             closepicturebox.Image = Resources.Resources.IconCloseRound;
-            logopicturebox.Image = Resources.Resources.yrb_logo;
 
 
             ExtensionMethods.ImportImage(tabcontrolimagelist, tabcontrol, tabpage7, Resources.Resources.IconInfo, 0);
