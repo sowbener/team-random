@@ -120,7 +120,6 @@ namespace YourRaidingBuddy
         {
             try
             {
-                Interface.Overlay.Overlay.RebuildOverlay(true);
                 /* Clearing all existing hooks */
                 // TreeHooks.Instance.ClearAll();
 
