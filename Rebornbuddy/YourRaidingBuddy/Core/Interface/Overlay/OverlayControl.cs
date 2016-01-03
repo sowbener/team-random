@@ -34,8 +34,25 @@ namespace YourRaidingBuddy.Interface.Overlay
         private static OutlinedTextBlock _multitargetenabled;
         private static OutlinedTextBlock _multitargetdisabled;
 
+        private static OutlinedTextBlock _specialkeylabel;
+        private static OutlinedTextBlock _specialkeyenabled;
+        private static OutlinedTextBlock _specialkeydisabled;
+
+        private static OutlinedTextBlock _specialkey1label;
+        private static OutlinedTextBlock _specialkey1enabled;
+        private static OutlinedTextBlock _specialkey1disabled;
+
+        private static OutlinedTextBlock _specialkey2label;
+        private static OutlinedTextBlock _specialkey2enabled;
+        private static OutlinedTextBlock _specialkey2disabled;
+
+        private static OutlinedTextBlock _specialkey3label;
+        private static OutlinedTextBlock _specialkey3enabled;
+        private static OutlinedTextBlock _specialkey3disabled;
+
         public FuOverlayControl()
-            : base(true) { }
+            : base(true)
+        { }
 
         /// <summary>
         /// Updating and rendering the actual overlay.
@@ -229,6 +246,198 @@ namespace YourRaidingBuddy.Interface.Overlay
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Center
                     };
+
+                    /* Creating a TextBlock */
+                    _specialkeylabel = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Black),
+                        Text = " Ninjutsu State: ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkeydisabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Red),
+                        Text = " Off ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkeyenabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Green),
+                        Text = " On ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey1label = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Black),
+                        Text = " Jugulate State: ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey1disabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Red),
+                        Text = " Off ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey1enabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Green),
+                        Text = " On ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey2label = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Black),
+                        Text = " Suiton State: ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey2disabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Red),
+                        Text = " Off ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey2enabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Green),
+                        Text = " On ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey3label = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Black),
+                        Text = " DancingEdge State: ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey3disabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Red),
+                        Text = " Off ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    /* Creating a TextBlock */
+                    _specialkey3enabled = new OutlinedTextBlock
+                    {
+                        FontFamily = new FontFamily("Century Gothic"),
+                        Fill = new SolidColorBrush(Colors.White),
+                        FontSize = InternalSettings.Instance.General.OverlayTextSize,
+                        FontWeight = FontWeights.ExtraBold,
+                        Opacity = InternalSettings.Instance.General.OverlayTextOpacity,
+                        StrokeThickness = 1,
+                        Stroke = new SolidColorBrush(Colors.Green),
+                        Text = " On ",
+
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
                     #endregion
 
                     #region Grids
@@ -282,6 +491,34 @@ namespace YourRaidingBuddy.Interface.Overlay
                         Height = GridLength.Auto
                     });
 
+
+                    /* Adding a Row to contentgrid (4) */
+                    _contentgrid.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = GridLength.Auto
+                    });
+
+
+                    /* Adding a Row to contentgrid (5) */
+                    _contentgrid.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = GridLength.Auto
+                    });
+
+
+                    /* Adding a Row to contentgrid (6) */
+                    _contentgrid.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = GridLength.Auto
+                    });
+
+
+                    /* Adding a Row to contentgrid (7) */
+                    _contentgrid.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = GridLength.Auto
+                    });
+
                     /* Adding a Column to contentgrid (0) */
                     _contentgrid.ColumnDefinitions.Add(new ColumnDefinition
                     {
@@ -314,12 +551,43 @@ namespace YourRaidingBuddy.Interface.Overlay
                     Grid.SetColumn(_cooldownsenabled, 2);
                     Grid.SetRow(_cooldownsenabled, 2);
 
+                    /* SpecialKey Grid functions */
+                    Grid.SetRow(_specialkeylabel, 3);
+                    Grid.SetColumn(_specialkeydisabled, 2);
+                    Grid.SetRow(_specialkeydisabled, 3);
+                    Grid.SetColumn(_specialkeyenabled, 2);
+                    Grid.SetRow(_specialkeyenabled, 3);
+
+
+                    /* SpecialKey Grid functions */
+                    Grid.SetRow(_specialkey2label, 4);
+                    Grid.SetColumn(_specialkey2disabled, 2);
+                    Grid.SetRow(_specialkey2disabled, 4);
+                    Grid.SetColumn(_specialkey2enabled, 2);
+                    Grid.SetRow(_specialkey2enabled, 4);
+
+
+                    /* SpecialKey Grid functions */
+                    Grid.SetRow(_specialkey1label, 5);
+                    Grid.SetColumn(_specialkey1disabled, 2);
+                    Grid.SetRow(_specialkey1disabled, 5);
+                    Grid.SetColumn(_specialkey1enabled, 2);
+                    Grid.SetRow(_specialkey1enabled, 5);
+
+
+                    /* SpecialKey Grid functions */
+                    Grid.SetRow(_specialkey3label, 6);
+                    Grid.SetColumn(_specialkey3disabled, 2);
+                    Grid.SetRow(_specialkey3disabled, 6);
+                    Grid.SetColumn(_specialkey3enabled, 2);
+                    Grid.SetRow(_specialkey3enabled, 6);
+
                     /* Pause Grid functions */
-                    Grid.SetRow(_pauselabel, 3);
+                    Grid.SetRow(_pauselabel, 7);
                     Grid.SetColumn(_pauseenabled, 2);
-                    Grid.SetRow(_pauseenabled, 3);
+                    Grid.SetRow(_pauseenabled, 7);
                     Grid.SetColumn(_pausedisabled, 2);
-                    Grid.SetRow(_pausedisabled, 3);
+                    Grid.SetRow(_pausedisabled, 7);
                     #endregion
 
                     #region Rendering
@@ -347,6 +615,22 @@ namespace YourRaidingBuddy.Interface.Overlay
                     /* Adding the multitarget functions to contentgrid */
                     _contentgrid.Children.Add(_multitargetlabel);
                     _contentgrid.Children.Add(VariableBook.HkmMultiTarget ? _multitargetenabled : _multitargetdisabled);
+
+                    /* Adding the multitarget functions to contentgrid */
+                    _contentgrid.Children.Add(_specialkeylabel);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey ? _specialkeyenabled : _specialkeydisabled);
+
+                    /* Adding the multitarget functions to contentgrid */
+                    _contentgrid.Children.Add(_specialkey1label);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey1 ? _specialkey1enabled : _specialkey1disabled);
+
+                    /* Adding the multitarget functions to contentgrid */
+                    _contentgrid.Children.Add(_specialkey2label);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey2 ? _specialkey2enabled : _specialkey2disabled);
+
+                    /* Adding the multitarget functions to contentgrid */
+                    _contentgrid.Children.Add(_specialkey3label);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey3 ? _specialkey3enabled : _specialkey3disabled);
 
                     Logger.Write("Overlay: Overlay is rendered (Complete).");
                     #endregion
@@ -388,6 +672,58 @@ namespace YourRaidingBuddy.Interface.Overlay
                     Logger.Write("Overlay: Rendering the overlay (YRBCooldowns).");
 
                     VariableBook.OverlayRefreshCooldowns = false;
+                }
+                #endregion
+
+                #region Ninjutsu
+                if (VariableBook.OverlayRefreshSpecialKey)
+                {
+                    if (_contentgrid.Children.Contains(_specialkeydisabled)) _contentgrid.Children.Remove(_specialkeydisabled);
+                    if (_contentgrid.Children.Contains(_specialkeyenabled)) _contentgrid.Children.Remove(_specialkeyenabled);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey ? _specialkeyenabled : _specialkeydisabled);
+
+                    Logger.Write("Overlay: Rendering the overlay (YRBNinjutsu).");
+
+                    VariableBook.OverlayRefreshSpecialKey = false;
+                }
+                #endregion
+
+                #region Suiton
+                if (VariableBook.OverlayRefreshSpecialKey2)
+                {
+                    if (_contentgrid.Children.Contains(_specialkey2disabled)) _contentgrid.Children.Remove(_specialkey2disabled);
+                    if (_contentgrid.Children.Contains(_specialkey2enabled)) _contentgrid.Children.Remove(_specialkey2enabled);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey2 ? _specialkey2enabled : _specialkey2disabled);
+
+                    Logger.Write("Overlay: Rendering the overlay (YRBSution).");
+
+                    VariableBook.OverlayRefreshSpecialKey2 = false;
+                }
+                #endregion
+
+                #region Jugulate
+                if (VariableBook.OverlayRefreshSpecialKey1)
+                {
+                    if (_contentgrid.Children.Contains(_specialkey1disabled)) _contentgrid.Children.Remove(_specialkey1disabled);
+                    if (_contentgrid.Children.Contains(_specialkey1enabled)) _contentgrid.Children.Remove(_specialkey1enabled);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey1 ? _specialkey1enabled : _specialkey1disabled);
+
+                    Logger.Write("Overlay: Rendering the overlay (YRBJugulate).");
+
+                    VariableBook.OverlayRefreshSpecialKey1 = false;
+                }
+                #endregion
+
+                #region Ninjutsu
+                if (VariableBook.OverlayRefreshSpecialKey3)
+                {
+                    if (_contentgrid.Children.Contains(_specialkey3disabled)) _contentgrid.Children.Remove(_specialkey3disabled);
+                    if (_contentgrid.Children.Contains(_specialkey3enabled)) _contentgrid.Children.Remove(_specialkey3enabled);
+                    _contentgrid.Children.Add(VariableBook.HkmSpecialKey3 ? _specialkey3enabled : _specialkey3disabled);
+
+                    Logger.Write("Overlay: Rendering the overlay (YRBDancingEdge).");
+
+                    VariableBook.OverlayRefreshSpecialKey3 = false;
                 }
                 #endregion
 

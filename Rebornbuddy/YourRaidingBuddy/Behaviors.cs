@@ -359,6 +359,43 @@ namespace YourRaidingBuddy
 
                 #endregion
 
+                #region Monk Hook
+                // Monk Job
+                if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Monk)
+                {
+                    //      if (InternalSettings.Instance.General.ArmsRotVersion == Enums.ArmsRotationVersion.Normal)
+                    {
+                        switch (InternalSettings.Instance.Hotkeys.HotkeyModeSelection)
+                        {
+                            case HotkeyMode.Automatic:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Monk.AutoMode()));
+                                //  TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildPreCombatBuffs()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_CombatBuff_Selector", new ActionRunCoroutine(ctx => Rotations.Ninja.NinjaBuildCombatBuffs()));
+                                break;
+
+                            case HotkeyMode.SemiHotkeyMode:
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.SemiHkMode()));
+                                //   TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            case HotkeyMode.HotkeyMode:
+                                TreeHooks.Instance.ReplaceHook("YRB_Combat_Selector", new ActionRunCoroutine(ctx => Rotations.Monk.HotkeyMode()));
+                                //    TreeHooks.Instance.ReplaceHook("YRB_Pre_Combat_Selector", new ActionRunCoroutine(ctx => Enhancement.PreCombat()));
+                                break;
+
+                            default:
+                                StopBehaviors("Unable to intialize Monk", "HookBehaviors");
+                                break;
+                        }
+                    }
+
+                    Logger.WriteDebug(reinitialized
+                        ? "Hooks reinitialized for Monk (RebuildBehaviors())."
+                        : "Hooks initialized for Monk (HookBehaviors()).");
+                }
+
+                #endregion
+
                 #region Summoner Hook
                 // Summoner Job
                 if (Core.Player.CurrentJob == ff14bot.Enums.ClassJobType.Summoner)
