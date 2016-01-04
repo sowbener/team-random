@@ -590,6 +590,9 @@ namespace YourRaidingBuddy
             /* Cleaning up for a clean shutdown */
             HotkeyManager.Stop();
 
+            /* Cleaning up Overlay */
+            Interface.Overlay.Overlay.Terminate();
+
             /* Stopping the TreeRoot */
             StopBot(reason, triggeredby);
         }
